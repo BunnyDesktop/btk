@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FA}</ProjectGuid>
-    <RootNamespace>gdkwin32</RootNamespace>
+    <RootNamespace>bdkwin32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -49,26 +49,26 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(GdkDefines);INSIDE_GDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(BdkDefines);INSIDE_BDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -80,8 +80,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(GdkDefines);INSIDE_GDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(BdkDefines);INSIDE_BDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -92,8 +92,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(GdkDefines);INSIDE_GDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(BdkDefines);INSIDE_BDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -105,8 +105,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(GdkDefines);INSIDE_GDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(BdkDefines);INSIDE_BDK_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -115,32 +115,32 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-   <ClCompile Include="..\..\..\gdk\win32\gdkapplaunchcontext-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkcolor-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkcursor-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkdisplay-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkdnd-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkdrawable-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkevents-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkfont-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkgc-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkgeometry-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkglobals-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkim-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkimage-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkinput.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkinput-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkkeys-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkmain-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkpixmap-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkproperty-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkscreen-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkselection-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkspawn-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdktestutils-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkvisual-win32.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkwin32id.c" />
-   <ClCompile Include="..\..\..\gdk\win32\gdkwindow-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkapplaunchcontext-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkcolor-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkcursor-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkdisplay-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkdnd-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkdrawable-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkevents-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkfont-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkgc-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkgeometry-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkglobals-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkim-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkimage-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkinput.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkinput-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkkeys-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkmain-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkpixmap-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkproperty-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkscreen-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkselection-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkspawn-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdktestutils-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkvisual-win32.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkwin32id.c" />
+   <ClCompile Include="..\..\..\bdk\win32\bdkwindow-win32.c" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\config.h.win32">
@@ -157,19 +157,19 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(CopyConfigH)</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\config.h;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\..\gdk\gdkconfig.h.win32">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying gdkconfig from gdkconfig.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(CopyGdkConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\gdk\gdkconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Copying gdkconfig from gdkconfig.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(CopyGdkConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\gdk\gdkconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying gdkconfig from gdkconfig.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(CopyGdkConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\gdk\gdkconfig.h;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Copying gdkconfig from gdkconfig.win32...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(CopyGdkConfigH)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\gdk\gdkconfig.h;%(Outputs)</Outputs>
+    <CustomBuild Include="..\..\..\bdk\bdkconfig.h.win32">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Copying bdkconfig from bdkconfig.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(CopyBdkConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bdk\bdkconfig.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Copying bdkconfig from bdkconfig.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(CopyBdkConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\bdk\bdkconfig.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Copying bdkconfig from bdkconfig.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(CopyBdkConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\bdk\bdkconfig.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Copying bdkconfig from bdkconfig.win32...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(CopyBdkConfigH)</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\bdk\bdkconfig.h;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,117 +21,117 @@
 
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
 
-#include "gailoptionmenu.h"
+#include "bailoptionmenu.h"
 
-static void                  gail_option_menu_class_init       (GailOptionMenuClass *klass);
-static void                  gail_option_menu_init             (GailOptionMenu  *menu);
-static void		     gail_option_menu_real_initialize  (AtkObject       *obj,
+static void                  bail_option_menu_class_init       (BailOptionMenuClass *klass);
+static void                  bail_option_menu_init             (BailOptionMenu  *menu);
+static void		     bail_option_menu_real_initialize  (BatkObject       *obj,
                                                                 gpointer        data);
 
-static gint                  gail_option_menu_get_n_children   (AtkObject       *obj);
-static AtkObject*            gail_option_menu_ref_child        (AtkObject       *obj,
+static gint                  bail_option_menu_get_n_children   (BatkObject       *obj);
+static BatkObject*            bail_option_menu_ref_child        (BatkObject       *obj,
                                                                 gint            i);
-static gint                  gail_option_menu_real_add_gtk     (GtkContainer    *container,
-                                                                GtkWidget       *widget,
+static gint                  bail_option_menu_real_add_btk     (BtkContainer    *container,
+                                                                BtkWidget       *widget,
                                                                 gpointer        data);
-static gint                  gail_option_menu_real_remove_gtk  (GtkContainer    *container,
-                                                                GtkWidget       *widget,
+static gint                  bail_option_menu_real_remove_btk  (BtkContainer    *container,
+                                                                BtkWidget       *widget,
                                                                 gpointer        data);
 
 
-static void                  atk_action_interface_init         (AtkActionIface  *iface);
+static void                  batk_action_interface_init         (BatkActionIface  *iface);
 
-static gboolean              gail_option_menu_do_action        (AtkAction       *action,
+static gboolean              bail_option_menu_do_action        (BatkAction       *action,
                                                                 gint            i);
 static gboolean              idle_do_action                    (gpointer        data);
-static gint                  gail_option_menu_get_n_actions    (AtkAction       *action);
-static const gchar*          gail_option_menu_get_description  (AtkAction       *action,
+static gint                  bail_option_menu_get_n_actions    (BatkAction       *action);
+static const gchar*          bail_option_menu_get_description  (BatkAction       *action,
                                                                 gint            i);
-static const gchar*          gail_option_menu_action_get_name  (AtkAction       *action,
+static const gchar*          bail_option_menu_action_get_name  (BatkAction       *action,
                                                                 gint            i);
-static gboolean              gail_option_menu_set_description  (AtkAction       *action,
+static gboolean              bail_option_menu_set_description  (BatkAction       *action,
                                                                 gint            i,
                                                                 const gchar     *desc);
-static void                  gail_option_menu_changed          (GtkOptionMenu   *option_menu);
+static void                  bail_option_menu_changed          (BtkOptionMenu   *option_menu);
 
-G_DEFINE_TYPE_WITH_CODE (GailOptionMenu, gail_option_menu, GAIL_TYPE_BUTTON,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailOptionMenu, bail_option_menu, BAIL_TYPE_BUTTON,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init))
 
 static void
-gail_option_menu_class_init (GailOptionMenuClass *klass)
+bail_option_menu_class_init (BailOptionMenuClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
-  GailContainerClass *container_class;
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
+  BailContainerClass *container_class;
 
-  container_class = (GailContainerClass *) klass;
+  container_class = (BailContainerClass *) klass;
 
-  class->get_n_children = gail_option_menu_get_n_children;
-  class->ref_child = gail_option_menu_ref_child;
-  class->initialize = gail_option_menu_real_initialize;
+  class->get_n_children = bail_option_menu_get_n_children;
+  class->ref_child = bail_option_menu_ref_child;
+  class->initialize = bail_option_menu_real_initialize;
 
-  container_class->add_gtk = gail_option_menu_real_add_gtk;
-  container_class->remove_gtk = gail_option_menu_real_remove_gtk;
+  container_class->add_btk = bail_option_menu_real_add_btk;
+  container_class->remove_btk = bail_option_menu_real_remove_btk;
 }
 
 static void
-gail_option_menu_init (GailOptionMenu  *menu)
+bail_option_menu_init (BailOptionMenu  *menu)
 {
 }
 
 static void
-gail_option_menu_real_initialize (AtkObject *obj,
+bail_option_menu_real_initialize (BatkObject *obj,
                                   gpointer  data)
 {
-  GtkOptionMenu *option_menu;
+  BtkOptionMenu *option_menu;
 
-  ATK_OBJECT_CLASS (gail_option_menu_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_option_menu_parent_class)->initialize (obj, data);
 
-  option_menu = GTK_OPTION_MENU (data);
+  option_menu = BTK_OPTION_MENU (data);
 
   g_signal_connect (option_menu, "changed",
-                    G_CALLBACK (gail_option_menu_changed), NULL);
+                    G_CALLBACK (bail_option_menu_changed), NULL);
 
-  obj->role = ATK_ROLE_COMBO_BOX;
+  obj->role = BATK_ROLE_COMBO_BOX;
 }
 
 static gint
-gail_option_menu_get_n_children (AtkObject *obj)
+bail_option_menu_get_n_children (BatkObject *obj)
 {
-  GtkWidget *widget;
-  GtkOptionMenu *option_menu;
+  BtkWidget *widget;
+  BtkOptionMenu *option_menu;
   gint n_children = 0;
 
-  g_return_val_if_fail (GAIL_IS_OPTION_MENU (obj), 0);
+  g_return_val_if_fail (BAIL_IS_OPTION_MENU (obj), 0);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return 0;
 
-  option_menu = GTK_OPTION_MENU (widget);
-  if (gtk_option_menu_get_menu (option_menu))
+  option_menu = BTK_OPTION_MENU (widget);
+  if (btk_option_menu_get_menu (option_menu))
       n_children++;
 
   return n_children;;
 }
 
-static AtkObject*
-gail_option_menu_ref_child (AtkObject *obj,
+static BatkObject*
+bail_option_menu_ref_child (BatkObject *obj,
                             gint      i)
 {
-  GtkWidget *widget;
-  AtkObject *accessible;
+  BtkWidget *widget;
+  BatkObject *accessible;
 
-  g_return_val_if_fail (GAIL_IS_OPTION_MENU (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_OPTION_MENU (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
@@ -140,7 +140,7 @@ gail_option_menu_ref_child (AtkObject *obj,
 
 
   if (i == 0)
-    accessible = g_object_ref (gtk_widget_get_accessible (gtk_option_menu_get_menu (GTK_OPTION_MENU (widget))));
+    accessible = g_object_ref (btk_widget_get_accessible (btk_option_menu_get_menu (BTK_OPTION_MENU (widget))));
    else
     accessible = NULL;
 
@@ -148,71 +148,71 @@ gail_option_menu_ref_child (AtkObject *obj,
 }
 
 static gint
-gail_option_menu_real_add_gtk (GtkContainer *container,
-                               GtkWidget    *widget,
+bail_option_menu_real_add_btk (BtkContainer *container,
+                               BtkWidget    *widget,
                                gpointer     data)
 {
-  AtkObject* atk_parent = ATK_OBJECT (data);
-  AtkObject* atk_child = gtk_widget_get_accessible (widget);
+  BatkObject* batk_parent = BATK_OBJECT (data);
+  BatkObject* batk_child = btk_widget_get_accessible (widget);
 
-  GAIL_CONTAINER_CLASS (gail_option_menu_parent_class)->add_gtk (container, widget, data);
+  BAIL_CONTAINER_CLASS (bail_option_menu_parent_class)->add_btk (container, widget, data);
 
-  g_object_notify (G_OBJECT (atk_child), "accessible_parent");
+  g_object_notify (G_OBJECT (batk_child), "accessible_parent");
 
-  g_signal_emit_by_name (atk_parent, "children_changed::add",
-			 1, atk_child, NULL);
+  g_signal_emit_by_name (batk_parent, "children_changed::add",
+			 1, batk_child, NULL);
 
   return 1;
 }
 
 static gint 
-gail_option_menu_real_remove_gtk (GtkContainer *container,
-                                  GtkWidget    *widget,
+bail_option_menu_real_remove_btk (BtkContainer *container,
+                                  BtkWidget    *widget,
                                   gpointer     data)
 {
-  AtkPropertyValues values = { NULL };
-  AtkObject* atk_parent = ATK_OBJECT (data);
-  AtkObject *atk_child = gtk_widget_get_accessible (widget);
+  BatkPropertyValues values = { NULL };
+  BatkObject* batk_parent = BATK_OBJECT (data);
+  BatkObject *batk_child = btk_widget_get_accessible (widget);
 
   g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, atk_parent);
+  g_value_set_pointer (&values.old_value, batk_parent);
 
   values.property_name = "accessible-parent";
-  g_signal_emit_by_name (atk_child,
+  g_signal_emit_by_name (batk_child,
                          "property_change::accessible-parent", &values, NULL);
-  g_signal_emit_by_name (atk_parent, "children_changed::remove",
-			 1, atk_child, NULL);
+  g_signal_emit_by_name (batk_parent, "children_changed::remove",
+			 1, batk_child, NULL);
 
   return 1;
 }
 
 static void
-atk_action_interface_init (AtkActionIface *iface)
+batk_action_interface_init (BatkActionIface *iface)
 {
-  iface->do_action = gail_option_menu_do_action;
-  iface->get_n_actions = gail_option_menu_get_n_actions;
-  iface->get_description = gail_option_menu_get_description;
-  iface->get_name = gail_option_menu_action_get_name;
-  iface->set_description = gail_option_menu_set_description;
+  iface->do_action = bail_option_menu_do_action;
+  iface->get_n_actions = bail_option_menu_get_n_actions;
+  iface->get_description = bail_option_menu_get_description;
+  iface->get_name = bail_option_menu_action_get_name;
+  iface->set_description = bail_option_menu_set_description;
 }
 
 static gboolean
-gail_option_menu_do_action (AtkAction *action,
+bail_option_menu_do_action (BatkAction *action,
                             gint      i)
 {
-  GtkWidget *widget;
-  GailButton *button; 
+  BtkWidget *widget;
+  BailButton *button; 
   gboolean return_value = TRUE;
 
-  button = GAIL_BUTTON (action);
-  widget = GTK_ACCESSIBLE (action)->widget;
+  button = BAIL_BUTTON (action);
+  widget = BTK_ACCESSIBLE (action)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  if (!gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
+  if (!btk_widget_get_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
   switch (i)
@@ -221,7 +221,7 @@ gail_option_menu_do_action (AtkAction *action,
       if (button->action_idle_handler)
         return_value = FALSE;
       else
-        button->action_idle_handler = gdk_threads_add_idle (idle_do_action, button);
+        button->action_idle_handler = bdk_threads_add_idle (idle_do_action, button);
       break;
     default:
       return_value = FALSE;
@@ -233,53 +233,53 @@ gail_option_menu_do_action (AtkAction *action,
 static gboolean 
 idle_do_action (gpointer data)
 {
-  GtkButton *button; 
-  GtkWidget *widget;
-  GdkEvent tmp_event;
-  GailButton *gail_button;
+  BtkButton *button; 
+  BtkWidget *widget;
+  BdkEvent tmp_event;
+  BailButton *bail_button;
 
-  gail_button = GAIL_BUTTON (data);
-  gail_button->action_idle_handler = 0;
+  bail_button = BAIL_BUTTON (data);
+  bail_button->action_idle_handler = 0;
 
-  widget = GTK_ACCESSIBLE (gail_button)->widget;
+  widget = BTK_ACCESSIBLE (bail_button)->widget;
   if (widget == NULL /* State is defunct */ ||
-      !gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
+      !btk_widget_get_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
-  button = GTK_BUTTON (widget); 
+  button = BTK_BUTTON (widget); 
 
   button->in_button = TRUE;
   g_signal_emit_by_name (button, "enter");
   /*
-   * Simulate a button press event. calling gtk_button_pressed() does
-   * not get the job done for a GtkOptionMenu.  
+   * Simulate a button press event. calling btk_button_pressed() does
+   * not get the job done for a BtkOptionMenu.  
    */
-  tmp_event.button.type = GDK_BUTTON_PRESS;
+  tmp_event.button.type = BDK_BUTTON_PRESS;
   tmp_event.button.window = widget->window;
   tmp_event.button.button = 1;
   tmp_event.button.send_event = TRUE;
-  tmp_event.button.time = GDK_CURRENT_TIME;
+  tmp_event.button.time = BDK_CURRENT_TIME;
   tmp_event.button.axes = NULL;
 
-  gtk_widget_event (widget, &tmp_event);
+  btk_widget_event (widget, &tmp_event);
 
   return FALSE;
 }
 
 static gint
-gail_option_menu_get_n_actions (AtkAction *action)
+bail_option_menu_get_n_actions (BatkAction *action)
 {
   return 1;
 }
 
 static const gchar*
-gail_option_menu_get_description (AtkAction *action,
+bail_option_menu_get_description (BatkAction *action,
                                   gint      i)
 {
-  GailButton *button;
+  BailButton *button;
   const gchar *return_value;
 
-  button = GAIL_BUTTON (action);
+  button = BAIL_BUTTON (action);
 
   switch (i)
     {
@@ -294,7 +294,7 @@ gail_option_menu_get_description (AtkAction *action,
 }
 
 static const gchar*
-gail_option_menu_action_get_name (AtkAction *action,
+bail_option_menu_action_get_name (BatkAction *action,
                                   gint      i)
 {
   const gchar *return_value;
@@ -316,14 +316,14 @@ gail_option_menu_action_get_name (AtkAction *action,
 }
 
 static gboolean
-gail_option_menu_set_description (AtkAction      *action,
+bail_option_menu_set_description (BatkAction      *action,
                                   gint           i,
                                   const gchar    *desc)
 {
-  GailButton *button;
+  BailButton *button;
   gchar **value;
 
-  button = GAIL_BUTTON (action);
+  button = BAIL_BUTTON (action);
 
   switch (i)
     {
@@ -346,11 +346,11 @@ gail_option_menu_set_description (AtkAction      *action,
 }
 
 static void
-gail_option_menu_changed (GtkOptionMenu   *option_menu)
+bail_option_menu_changed (BtkOptionMenu   *option_menu)
 {
-  GailOptionMenu *gail_option_menu;
+  BailOptionMenu *bail_option_menu;
 
-  gail_option_menu = GAIL_OPTION_MENU (gtk_widget_get_accessible (GTK_WIDGET (option_menu)));
-  g_object_notify (G_OBJECT (gail_option_menu), "accessible-name");
+  bail_option_menu = BAIL_OPTION_MENU (btk_widget_get_accessible (BTK_WIDGET (option_menu)));
+  g_object_notify (G_OBJECT (bail_option_menu), "accessible-name");
 }
 

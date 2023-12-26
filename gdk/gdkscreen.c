@@ -1,5 +1,5 @@
 /*
- * gdkscreen.c
+ * bdkscreen.c
  * 
  * Copyright 2001 Sun Microsystems Inc. 
  *
@@ -22,20 +22,20 @@
  */
 
 #include "config.h"
-#include "gdk.h"		/* For gdk_rectangle_intersect() */
-#include "gdkcolor.h"
-#include "gdkwindow.h"
-#include "gdkscreen.h"
-#include "gdkintl.h"
-#include "gdkalias.h"
+#include "bdk.h"		/* For bdk_rectangle_intersect() */
+#include "bdkcolor.h"
+#include "bdkwindow.h"
+#include "bdkscreen.h"
+#include "bdkintl.h"
+#include "bdkalias.h"
 
-static void gdk_screen_dispose      (GObject        *object);
-static void gdk_screen_finalize     (GObject        *object);
-static void gdk_screen_set_property (GObject        *object,
+static void bdk_screen_dispose      (GObject        *object);
+static void bdk_screen_finalize     (GObject        *object);
+static void bdk_screen_set_property (GObject        *object,
 				     guint           prop_id,
 				     const GValue   *value,
 				     GParamSpec     *pspec);
-static void gdk_screen_get_property (GObject        *object,
+static void bdk_screen_get_property (GObject        *object,
 				     guint           prop_id,
 				     GValue         *value,
 				     GParamSpec     *pspec);
@@ -57,17 +57,17 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GdkScreen, gdk_screen, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkScreen, bdk_screen, G_TYPE_OBJECT)
 
 static void
-gdk_screen_class_init (GdkScreenClass *klass)
+bdk_screen_class_init (BdkScreenClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->dispose = gdk_screen_dispose;
-  object_class->finalize = gdk_screen_finalize;
-  object_class->set_property = gdk_screen_set_property;
-  object_class->get_property = gdk_screen_get_property;
+  object_class->dispose = bdk_screen_dispose;
+  object_class->finalize = bdk_screen_finalize;
+  object_class->set_property = bdk_screen_set_property;
+  object_class->get_property = bdk_screen_get_property;
   
   g_object_class_install_property (object_class,
 				   PROP_FONT_OPTIONS,
@@ -89,7 +89,7 @@ gdk_screen_class_init (GdkScreenClass *klass)
 							G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 
   /**
-   * GdkScreen::size-changed:
+   * BdkScreen::size-changed:
    * @screen: the object on which the signal is emitted
    * 
    * The ::size-changed signal is emitted when the pixel width or 
@@ -101,14 +101,14 @@ gdk_screen_class_init (GdkScreenClass *klass)
     g_signal_new (g_intern_static_string ("size-changed"),
                   G_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GdkScreenClass, size_changed),
+                  G_STRUCT_OFFSET (BdkScreenClass, size_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE,
                   0);
 
   /**
-   * GdkScreen::composited-changed:
+   * BdkScreen::composited-changed:
    * @screen: the object on which the signal is emitted
    *
    * The ::composited-changed signal is emitted when the composited
@@ -120,14 +120,14 @@ gdk_screen_class_init (GdkScreenClass *klass)
     g_signal_new (g_intern_static_string ("composited-changed"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GdkScreenClass, composited_changed),
+		  G_STRUCT_OFFSET (BdkScreenClass, composited_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
 	
   /**
-   * GdkScreen::monitors-changed:
+   * BdkScreen::monitors-changed:
    * @screen: the object on which the signal is emitted
    *
    * The ::monitors-changed signal is emitted when the number, size
@@ -142,7 +142,7 @@ gdk_screen_class_init (GdkScreenClass *klass)
     g_signal_new (g_intern_static_string ("monitors-changed"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GdkScreenClass, monitors_changed),
+		  G_STRUCT_OFFSET (BdkScreenClass, monitors_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
@@ -150,15 +150,15 @@ gdk_screen_class_init (GdkScreenClass *klass)
 }
 
 static void
-gdk_screen_init (GdkScreen *screen)
+bdk_screen_init (BdkScreen *screen)
 {
   screen->resolution = -1.;
 }
 
 static void
-gdk_screen_dispose (GObject *object)
+bdk_screen_dispose (GObject *object)
 {
-  GdkScreen *screen = GDK_SCREEN (object);
+  BdkScreen *screen = BDK_SCREEN (object);
   gint i;
 
   for (i = 0; i < 32; ++i)
@@ -176,24 +176,24 @@ gdk_screen_dispose (GObject *object)
         }
     }
 
-  G_OBJECT_CLASS (gdk_screen_parent_class)->dispose (object);
+  G_OBJECT_CLASS (bdk_screen_parent_class)->dispose (object);
 }
 
 static void
-gdk_screen_finalize (GObject *object)
+bdk_screen_finalize (GObject *object)
 {
-  GdkScreen *screen = GDK_SCREEN (object);
+  BdkScreen *screen = BDK_SCREEN (object);
 
   if (screen->font_options)
-      cairo_font_options_destroy (screen->font_options);
+      bairo_font_options_destroy (screen->font_options);
 
-  G_OBJECT_CLASS (gdk_screen_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bdk_screen_parent_class)->finalize (object);
 }
 
 void 
-_gdk_screen_close (GdkScreen *screen)
+_bdk_screen_close (BdkScreen *screen)
 {
-  g_return_if_fail (GDK_IS_SCREEN (screen));
+  g_return_if_fail (BDK_IS_SCREEN (screen));
 
   if (!screen->closed)
     {
@@ -206,7 +206,7 @@ _gdk_screen_close (GdkScreen *screen)
  * doesn't exist.
  */
 static gint
-get_nearest_monitor (GdkScreen *screen,
+get_nearest_monitor (BdkScreen *screen,
 		     gint       x,
 		     gint       y)
 {
@@ -214,16 +214,16 @@ get_nearest_monitor (GdkScreen *screen,
   gint nearest_dist = G_MAXINT;
   gint nearest_monitor = 0;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
 
-  num_monitors = gdk_screen_get_n_monitors (screen);
+  num_monitors = bdk_screen_get_n_monitors (screen);
   
   for (i = 0; i < num_monitors; i++)
     {
-      GdkRectangle monitor;
+      BdkRectangle monitor;
       gint dist_x, dist_y, dist;
       
-      gdk_screen_get_monitor_geometry (screen, i, &monitor);
+      bdk_screen_get_monitor_geometry (screen, i, &monitor);
 
       if (x < monitor.x)
 	dist_x = monitor.x - x;
@@ -251,8 +251,8 @@ get_nearest_monitor (GdkScreen *screen,
 }
 
 /**
- * gdk_screen_get_monitor_at_point:
- * @screen: a #GdkScreen.
+ * bdk_screen_get_monitor_at_point:
+ * @screen: a #BdkScreen.
  * @x: the x coordinate in the virtual screen.
  * @y: the y coordinate in the virtual screen.
  *
@@ -264,21 +264,21 @@ get_nearest_monitor (GdkScreen *screen,
  * Since: 2.2
  **/
 gint 
-gdk_screen_get_monitor_at_point (GdkScreen *screen,
+bdk_screen_get_monitor_at_point (BdkScreen *screen,
 				 gint       x,
 				 gint       y)
 {
   gint num_monitors, i;
   
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
 
-  num_monitors = gdk_screen_get_n_monitors (screen);
+  num_monitors = bdk_screen_get_n_monitors (screen);
   
   for (i=0;i<num_monitors;i++)
     {
-      GdkRectangle monitor;
+      BdkRectangle monitor;
       
-      gdk_screen_get_monitor_geometry (screen, i, &monitor);
+      bdk_screen_get_monitor_geometry (screen, i, &monitor);
 
       if (x >= monitor.x &&
           x < monitor.x + monitor.width &&
@@ -291,9 +291,9 @@ gdk_screen_get_monitor_at_point (GdkScreen *screen,
 }
 
 /**
- * gdk_screen_get_monitor_at_window:
- * @screen: a #GdkScreen.
- * @window: a #GdkWindow
+ * bdk_screen_get_monitor_at_window:
+ * @screen: a #BdkScreen.
+ * @window: a #BdkWindow
  * @returns: the monitor number in which most of @window is located,
  *           or if @window does not intersect any monitors, a monitor,
  *           close to @window.
@@ -304,25 +304,25 @@ gdk_screen_get_monitor_at_point (GdkScreen *screen,
  * Since: 2.2
  **/
 gint 
-gdk_screen_get_monitor_at_window (GdkScreen      *screen,
-				  GdkWindow	 *window)
+bdk_screen_get_monitor_at_window (BdkScreen      *screen,
+				  BdkWindow	 *window)
 {
   gint num_monitors, i, area = 0, screen_num = -1;
-  GdkRectangle win_rect;
+  BdkRectangle win_rect;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
 
-  gdk_window_get_geometry (window, &win_rect.x, &win_rect.y, &win_rect.width,
+  bdk_window_get_geometry (window, &win_rect.x, &win_rect.y, &win_rect.width,
 			   &win_rect.height, NULL);
-  gdk_window_get_origin (window, &win_rect.x, &win_rect.y);
-  num_monitors = gdk_screen_get_n_monitors (screen);
+  bdk_window_get_origin (window, &win_rect.x, &win_rect.y);
+  num_monitors = bdk_screen_get_n_monitors (screen);
   
   for (i=0;i<num_monitors;i++)
     {
-      GdkRectangle tmp_monitor, intersect;
+      BdkRectangle tmp_monitor, intersect;
       
-      gdk_screen_get_monitor_geometry (screen, i, &tmp_monitor);
-      gdk_rectangle_intersect (&win_rect, &tmp_monitor, &intersect);
+      bdk_screen_get_monitor_geometry (screen, i, &tmp_monitor);
+      bdk_rectangle_intersect (&win_rect, &tmp_monitor, &intersect);
       
       if (intersect.width * intersect.height > area)
 	{ 
@@ -339,33 +339,33 @@ gdk_screen_get_monitor_at_window (GdkScreen      *screen,
 }
 
 /**
- * gdk_screen_width:
+ * bdk_screen_width:
  * 
  * Returns the width of the default screen in pixels.
  * 
  * Return value: the width of the default screen in pixels.
  **/
 gint
-gdk_screen_width (void)
+bdk_screen_width (void)
 {
-  return gdk_screen_get_width (gdk_screen_get_default ());
+  return bdk_screen_get_width (bdk_screen_get_default ());
 }
 
 /**
- * gdk_screen_height:
+ * bdk_screen_height:
  * 
  * Returns the height of the default screen in pixels.
  * 
  * Return value: the height of the default screen in pixels.
  **/
 gint
-gdk_screen_height (void)
+bdk_screen_height (void)
 {
-  return gdk_screen_get_height (gdk_screen_get_default ());
+  return bdk_screen_get_height (bdk_screen_get_default ());
 }
 
 /**
- * gdk_screen_width_mm:
+ * bdk_screen_width_mm:
  * 
  * Returns the width of the default screen in millimeters.
  * Note that on many X servers this value will not be correct.
@@ -374,13 +374,13 @@ gdk_screen_height (void)
  * though it is not always correct.
  **/
 gint
-gdk_screen_width_mm (void)
+bdk_screen_width_mm (void)
 {
-  return gdk_screen_get_width_mm (gdk_screen_get_default ());
+  return bdk_screen_get_width_mm (bdk_screen_get_default ());
 }
 
 /**
- * gdk_screen_height_mm:
+ * bdk_screen_height_mm:
  * 
  * Returns the height of the default screen in millimeters.
  * Note that on many X servers this value will not be correct.
@@ -389,38 +389,38 @@ gdk_screen_width_mm (void)
  * though it is not always correct.
  **/
 gint
-gdk_screen_height_mm (void)
+bdk_screen_height_mm (void)
 {
-  return gdk_screen_get_height_mm (gdk_screen_get_default ());
+  return bdk_screen_get_height_mm (bdk_screen_get_default ());
 }
 
 /**
- * gdk_screen_set_font_options:
- * @screen: a #GdkScreen
- * @options: (allow-none): a #cairo_font_options_t, or %NULL to unset any
+ * bdk_screen_set_font_options:
+ * @screen: a #BdkScreen
+ * @options: (allow-none): a #bairo_font_options_t, or %NULL to unset any
  *   previously set default font options.
  *
  * Sets the default font options for the screen. These
- * options will be set on any #PangoContext's newly created
- * with gdk_pango_context_get_for_screen(). Changing the
+ * options will be set on any #BangoContext's newly created
+ * with bdk_bango_context_get_for_screen(). Changing the
  * default set of font options does not affect contexts that
  * have already been created.
  *
  * Since: 2.10
  **/
 void
-gdk_screen_set_font_options (GdkScreen                  *screen,
-			     const cairo_font_options_t *options)
+bdk_screen_set_font_options (BdkScreen                  *screen,
+			     const bairo_font_options_t *options)
 {
-  g_return_if_fail (GDK_IS_SCREEN (screen));
+  g_return_if_fail (BDK_IS_SCREEN (screen));
 
   if (screen->font_options != options)
     {
       if (screen->font_options)
-        cairo_font_options_destroy (screen->font_options);
+        bairo_font_options_destroy (screen->font_options);
 
       if (options)
-        screen->font_options = cairo_font_options_copy (options);
+        screen->font_options = bairo_font_options_copy (options);
       else
         screen->font_options = NULL;
 
@@ -429,42 +429,42 @@ gdk_screen_set_font_options (GdkScreen                  *screen,
 }
 
 /**
- * gdk_screen_get_font_options:
- * @screen: a #GdkScreen
+ * bdk_screen_get_font_options:
+ * @screen: a #BdkScreen
  * 
- * Gets any options previously set with gdk_screen_set_font_options().
+ * Gets any options previously set with bdk_screen_set_font_options().
  * 
  * Return value: the current font options, or %NULL if no default
  *  font options have been set.
  *
  * Since: 2.10
  **/
-const cairo_font_options_t *
-gdk_screen_get_font_options (GdkScreen *screen)
+const bairo_font_options_t *
+bdk_screen_get_font_options (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
   return screen->font_options;
 }
 
 /**
- * gdk_screen_set_resolution:
- * @screen: a #GdkScreen
+ * bdk_screen_set_resolution:
+ * @screen: a #BdkScreen
  * @dpi: the resolution in "dots per inch". (Physical inches aren't actually
  *   involved; the terminology is conventional.)
  
  * Sets the resolution for font handling on the screen. This is a
- * scale factor between points specified in a #PangoFontDescription
- * and cairo units. The default value is 96, meaning that a 10 point
+ * scale factor between points specified in a #BangoFontDescription
+ * and bairo units. The default value is 96, meaning that a 10 point
  * font will be 13 units high. (10 * 96. / 72. = 13.3).
  *
  * Since: 2.10
  **/
 void
-gdk_screen_set_resolution (GdkScreen *screen,
+bdk_screen_set_resolution (BdkScreen *screen,
 			   gdouble    dpi)
 {
-  g_return_if_fail (GDK_IS_SCREEN (screen));
+  g_return_if_fail (BDK_IS_SCREEN (screen));
 
   if (dpi < 0)
     dpi = -1.0;
@@ -478,11 +478,11 @@ gdk_screen_set_resolution (GdkScreen *screen,
 }
 
 /**
- * gdk_screen_get_resolution:
- * @screen: a #GdkScreen
+ * bdk_screen_get_resolution:
+ * @screen: a #BdkScreen
  * 
  * Gets the resolution for font handling on the screen; see
- * gdk_screen_set_resolution() for full details.
+ * bdk_screen_set_resolution() for full details.
  * 
  * Return value: the current resolution, or -1 if no resolution
  * has been set.
@@ -490,28 +490,28 @@ gdk_screen_set_resolution (GdkScreen *screen,
  * Since: 2.10
  **/
 gdouble
-gdk_screen_get_resolution (GdkScreen *screen)
+bdk_screen_get_resolution (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), -1.0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), -1.0);
 
   return screen->resolution;
 }
 
 static void
-gdk_screen_get_property (GObject      *object,
+bdk_screen_get_property (GObject      *object,
 			 guint         prop_id,
 			 GValue       *value,
 			 GParamSpec   *pspec)
 {
-  GdkScreen *screen = GDK_SCREEN (object);
+  BdkScreen *screen = BDK_SCREEN (object);
 
   switch (prop_id)
     {
     case PROP_FONT_OPTIONS:
-      g_value_set_pointer (value, (gpointer) gdk_screen_get_font_options (screen));
+      g_value_set_pointer (value, (gpointer) bdk_screen_get_font_options (screen));
       break;
     case PROP_RESOLUTION:
-      g_value_set_double (value, gdk_screen_get_resolution (screen));
+      g_value_set_double (value, bdk_screen_get_resolution (screen));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -520,20 +520,20 @@ gdk_screen_get_property (GObject      *object,
 }
 
 static void
-gdk_screen_set_property (GObject      *object,
+bdk_screen_set_property (GObject      *object,
 			 guint         prop_id,
 			 const GValue *value,
 			 GParamSpec   *pspec)
 {
-  GdkScreen *screen = GDK_SCREEN (object);
+  BdkScreen *screen = BDK_SCREEN (object);
 
   switch (prop_id)
     {
     case PROP_FONT_OPTIONS:
-      gdk_screen_set_font_options (screen, g_value_get_pointer (value));
+      bdk_screen_set_font_options (screen, g_value_get_pointer (value));
       break;
     case PROP_RESOLUTION:
-      gdk_screen_set_resolution (screen, g_value_get_double (value));
+      bdk_screen_set_resolution (screen, g_value_get_double (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -541,5 +541,5 @@ gdk_screen_set_property (GObject      *object,
     }
 }
 
-#define __GDK_SCREEN_C__
-#include "gdkaliasdef.c"
+#define __BDK_SCREEN_C__
+#include "bdkaliasdef.c"

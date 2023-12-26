@@ -1,6 +1,6 @@
 === ChangeLog discontinued ===
 
-	With the move to git, GTK+ is switching from a ChangeLog file
+	With the move to git, BTK+ is switching from a ChangeLog file
 	to relying on commit messages to provide change history. Please
 	see README.commits for guidance on the expected message format.
 
@@ -415,11 +415,11 @@
 
 2009-01-13  Luca Ferretti  <elle.uca@libero.it>
 
-	* POTFILES.in: added missing gtk/gtkorientable.c
+	* POTFILES.in: added missing btk/btkorientable.c
 
 2009-01-12  Claude Paroz  <claude@2xlibre.net>
 
-	* crh.po: Commit an empty crh.po to make gtk+ build again.
+	* crh.po: Commit an empty crh.po to make btk+ build again.
 
 2009-01-07  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
 
@@ -963,7 +963,7 @@
 
 2008-04-22  Kjartan Maraas  <kmaraas@gnome.org>
 
-	* POTFILES.in: Add gtkmountoperation.c
+	* POTFILES.in: Add btkmountoperation.c
 
 2008-04-22  Adam Weinberger  <adamw@gnome.org>
 
@@ -1537,7 +1537,7 @@
 
 2007-05-21  Luca Ferretti  <elle.uca@libero.it>
 
-	* it.po: Backport updated Italian translation from gtk-2-10 branch.
+	* it.po: Backport updated Italian translation from btk-2-10 branch.
 
 2007-05-15  David Lodge <dave@cirt.net>
 
@@ -1719,7 +1719,7 @@
 
 2006-09-01  Abel Cheung  <abel@oaka.org>
 
-	* ang.po: Resurrected from gtk-2-4 branch.
+	* ang.po: Resurrected from btk-2-4 branch.
 
 2006-09-01  Subhransu Behera  <arya_subhransu@yahoo.co.in>
 
@@ -2406,7 +2406,7 @@
 
 2005-09-02  Jordi Mallach  <jordi@sindominio.net>
 
-	* ku.po: Added empty file to fix GTK+ build.
+	* ku.po: Added empty file to fix BTK+ build.
 
 2005-08-29  Changwoo Ryu  <cwryu@debian.org>
 
@@ -2809,7 +2809,7 @@
 
 2005-04-28  Tommi Vainikainen  <thv@iki.fi>
 
-	* fi.po: Finnish translation merged from gtk-2-6 and updated.
+	* fi.po: Finnish translation merged from btk-2-6 and updated.
 
 2005-04-28  Gabor Kelemen  <kelemeng@gnome.hu>
 
@@ -2866,7 +2866,7 @@
 
 2005-03-31  Michael Natterer  <mitch@gimp.org>
 
-	* POTFILES.in: added gtk/gtkmenushell.c
+	* POTFILES.in: added btk/btkmenushell.c
 
 2005-03-30  Steve Murphy <murf@e-tools.com>
 
@@ -3070,7 +3070,7 @@
 
 2004-11-27  Matthias Clasen  <mclasen@redhat.com>
 
-	* POTFILES.in: Add gdk/gdkpango.c.  (pointed out by
+	* POTFILES.in: Add bdk/bdkbango.c.  (pointed out by
 	Marcel Telka)
 
 2004-11-25  Martin Willemoes Hansen  <mwh@sysrq.dk>

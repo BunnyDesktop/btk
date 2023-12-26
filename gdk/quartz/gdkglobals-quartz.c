@@ -1,4 +1,4 @@
-/* gdkglobals-quartz.c
+/* bdkglobals-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -19,30 +19,30 @@
  */
 
 #include "config.h"
-#include "gdktypes.h"
-#include "gdkprivate.h"
-#include "gdkquartz.h"
+#include "bdktypes.h"
+#include "bdkprivate.h"
+#include "bdkquartz.h"
 
-GdkDisplay *_gdk_display = NULL;
-GdkScreen *_gdk_screen = NULL;
-GdkWindow *_gdk_root = NULL;
+BdkDisplay *_bdk_display = NULL;
+BdkScreen *_bdk_screen = NULL;
+BdkWindow *_bdk_root = NULL;
 
-GdkOSXVersion
-gdk_quartz_osx_version (void)
+BdkOSXVersion
+bdk_quartz_osx_version (void)
 {
-  static gint32 minor = GDK_OSX_UNSUPPORTED;
+  static gint32 minor = BDK_OSX_UNSUPPORTED;
 
-  if (minor == GDK_OSX_UNSUPPORTED)
+  if (minor == BDK_OSX_UNSUPPORTED)
     {
       OSErr err = Gestalt (gestaltSystemVersionMinor, (SInt32*)&minor);
 
-      g_return_val_if_fail (err == noErr, GDK_OSX_UNSUPPORTED);
+      g_return_val_if_fail (err == noErr, BDK_OSX_UNSUPPORTED);
     }
 
-  if (minor < GDK_OSX_MIN)
-    return GDK_OSX_UNSUPPORTED;
-  else if (minor > GDK_OSX_CURRENT)
-    return GDK_OSX_NEW;
+  if (minor < BDK_OSX_MIN)
+    return BDK_OSX_UNSUPPORTED;
+  else if (minor > BDK_OSX_CURRENT)
+    return BDK_OSX_NEW;
   else
     return minor;
 }

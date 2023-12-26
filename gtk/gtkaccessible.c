@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,102 +20,102 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtkwidget.h"
-#include "gtkintl.h"
-#include "gtkaccessible.h"
-#include "gtkalias.h"
+#include "btkwidget.h"
+#include "btkintl.h"
+#include "btkaccessible.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkaccessible
+ * SECTION:btkaccessible
  * @Short_description: Accessibility support for widgets
- * @Title: GtkAccessible
+ * @Title: BtkAccessible
  */
 
 
-static void gtk_accessible_real_connect_widget_destroyed (GtkAccessible *accessible);
+static void btk_accessible_real_connect_widget_destroyed (BtkAccessible *accessible);
 
-G_DEFINE_TYPE (GtkAccessible, gtk_accessible, ATK_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkAccessible, btk_accessible, BATK_TYPE_OBJECT)
 
 static void
-gtk_accessible_init (GtkAccessible *object)
+btk_accessible_init (BtkAccessible *object)
 {
 }
 
 static void
-gtk_accessible_class_init (GtkAccessibleClass *klass)
+btk_accessible_class_init (BtkAccessibleClass *klass)
 {
-  klass->connect_widget_destroyed = gtk_accessible_real_connect_widget_destroyed;
+  klass->connect_widget_destroyed = btk_accessible_real_connect_widget_destroyed;
 }
 
 /**
- * gtk_accessible_set_widget:
- * @accessible: a #GtkAccessible
- * @widget: a #GtkWidget
+ * btk_accessible_set_widget:
+ * @accessible: a #BtkAccessible
+ * @widget: a #BtkWidget
  *
- * Sets the #GtkWidget corresponding to the #GtkAccessible.
+ * Sets the #BtkWidget corresponding to the #BtkAccessible.
  *
  * Since: 2.22
  **/
 void
-gtk_accessible_set_widget (GtkAccessible *accessible,
-                           GtkWidget     *widget)
+btk_accessible_set_widget (BtkAccessible *accessible,
+                           BtkWidget     *widget)
 {
-  g_return_if_fail (GTK_IS_ACCESSIBLE (accessible));
+  g_return_if_fail (BTK_IS_ACCESSIBLE (accessible));
 
   accessible->widget = widget;
 }
 
 /**
- * gtk_accessible_get_widget:
- * @accessible: a #GtkAccessible
+ * btk_accessible_get_widget:
+ * @accessible: a #BtkAccessible
  *
- * Gets the #GtkWidget corresponding to the #GtkAccessible. The returned widget
+ * Gets the #BtkWidget corresponding to the #BtkAccessible. The returned widget
  * does not have a reference added, so you do not need to unref it.
  *
- * Returns: (transfer none): pointer to the #GtkWidget corresponding to
- *   the #GtkAccessible, or %NULL.
+ * Returns: (transfer none): pointer to the #BtkWidget corresponding to
+ *   the #BtkAccessible, or %NULL.
  *
  * Since: 2.22
  **/
-GtkWidget*
-gtk_accessible_get_widget (GtkAccessible *accessible)
+BtkWidget*
+btk_accessible_get_widget (BtkAccessible *accessible)
 {
-  g_return_val_if_fail (GTK_IS_ACCESSIBLE (accessible), NULL);
+  g_return_val_if_fail (BTK_IS_ACCESSIBLE (accessible), NULL);
 
   return accessible->widget;
 }
 
 /**
- * gtk_accessible_connect_widget_destroyed
- * @accessible: a #GtkAccessible
+ * btk_accessible_connect_widget_destroyed
+ * @accessible: a #BtkAccessible
  *
  * This function specifies the callback function to be called when the widget
- * corresponding to a GtkAccessible is destroyed.
+ * corresponding to a BtkAccessible is destroyed.
  */
 void
-gtk_accessible_connect_widget_destroyed (GtkAccessible *accessible)
+btk_accessible_connect_widget_destroyed (BtkAccessible *accessible)
 {
-  GtkAccessibleClass *class;
+  BtkAccessibleClass *class;
 
-  g_return_if_fail (GTK_IS_ACCESSIBLE (accessible));
+  g_return_if_fail (BTK_IS_ACCESSIBLE (accessible));
 
-  class = GTK_ACCESSIBLE_GET_CLASS (accessible);
+  class = BTK_ACCESSIBLE_GET_CLASS (accessible);
 
   if (class->connect_widget_destroyed)
     class->connect_widget_destroyed (accessible);
 }
 
 static void
-gtk_accessible_real_connect_widget_destroyed (GtkAccessible *accessible)
+btk_accessible_real_connect_widget_destroyed (BtkAccessible *accessible)
 {
   if (accessible->widget)
   {
     g_signal_connect (accessible->widget,
                       "destroy",
-                      G_CALLBACK (gtk_widget_destroyed),
+                      G_CALLBACK (btk_widget_destroyed),
                       &accessible->widget);
   }
 }
 
-#define __GTK_ACCESSIBLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_ACCESSIBLE_C__
+#include "btkaliasdef.c"

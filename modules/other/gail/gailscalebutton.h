@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2008 Jan Arne Petersen <jap@gnome.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,36 +17,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_SCALE_BUTTON_H__
-#define __GAIL_SCALE_BUTTON_H__
+#ifndef __BAIL_SCALE_BUTTON_H__
+#define __BAIL_SCALE_BUTTON_H__
 
-#include <gtk/gtk.h>
-#include <gail/gailbutton.h>
+#include <btk/btk.h>
+#include <bail/bailbutton.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_SCALE_BUTTON                     (gail_scale_button_get_type ())
-#define GAIL_SCALE_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_SCALE_BUTTON, GailScaleButton))
-#define GAIL_SCALE_BUTTON_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_SCALE_BUTTON, GailScaleButtonClass))
-#define GAIL_IS_SCALE_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_SCALE_BUTTON))
-#define GAIL_IS_SCALE_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_SCALE_BUTTON))
-#define GAIL_SCALE_BUTTON_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_SCALE_BUTTON, GailScaleButtonClass))
+#define BAIL_TYPE_SCALE_BUTTON                     (bail_scale_button_get_type ())
+#define BAIL_SCALE_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCALE_BUTTON, BailScaleButton))
+#define BAIL_SCALE_BUTTON_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SCALE_BUTTON, BailScaleButtonClass))
+#define BAIL_IS_SCALE_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SCALE_BUTTON))
+#define BAIL_IS_SCALE_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SCALE_BUTTON))
+#define BAIL_SCALE_BUTTON_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SCALE_BUTTON, BailScaleButtonClass))
 
-typedef struct _GailScaleButton                   GailScaleButton;
-typedef struct _GailScaleButtonClass              GailScaleButtonClass;
+typedef struct _BailScaleButton                   BailScaleButton;
+typedef struct _BailScaleButtonClass              BailScaleButtonClass;
 
-struct _GailScaleButton
+struct _BailScaleButton
 {
-  GailButton parent;
+  BailButton parent;
 };
 
-struct _GailScaleButtonClass
+struct _BailScaleButtonClass
 {
-  GailButtonClass parent_class;
+  BailButtonClass parent_class;
 };
 
-GType gail_scale_button_get_type (void);
+GType bail_scale_button_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GAIL_SCALE_BUTTON_H__ */
+#endif /* __BAIL_SCALE_BUTTON_H__ */

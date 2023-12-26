@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,76 +18,76 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_DND_H__
-#define __GDK_DND_H__
+#ifndef __BDK_DND_H__
+#define __BDK_DND_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GdkDragContext        GdkDragContext;
+typedef struct _BdkDragContext        BdkDragContext;
 
 typedef enum
 {
-  GDK_ACTION_DEFAULT = 1 << 0,
-  GDK_ACTION_COPY    = 1 << 1,
-  GDK_ACTION_MOVE    = 1 << 2,
-  GDK_ACTION_LINK    = 1 << 3,
-  GDK_ACTION_PRIVATE = 1 << 4,
-  GDK_ACTION_ASK     = 1 << 5
-} GdkDragAction;
+  BDK_ACTION_DEFAULT = 1 << 0,
+  BDK_ACTION_COPY    = 1 << 1,
+  BDK_ACTION_MOVE    = 1 << 2,
+  BDK_ACTION_LINK    = 1 << 3,
+  BDK_ACTION_PRIVATE = 1 << 4,
+  BDK_ACTION_ASK     = 1 << 5
+} BdkDragAction;
 
 typedef enum
 {
-  GDK_DRAG_PROTO_MOTIF,
-  GDK_DRAG_PROTO_XDND,
-  GDK_DRAG_PROTO_ROOTWIN,	  /* A root window with nobody claiming
+  BDK_DRAG_PROTO_MOTIF,
+  BDK_DRAG_PROTO_XDND,
+  BDK_DRAG_PROTO_ROOTWIN,	  /* A root window with nobody claiming
 				   * drags */
-  GDK_DRAG_PROTO_NONE,		  /* Not a valid drag window */
-  GDK_DRAG_PROTO_WIN32_DROPFILES, /* The simple WM_DROPFILES dnd */
-  GDK_DRAG_PROTO_OLE2,		  /* The complex OLE2 dnd (not implemented) */
-  GDK_DRAG_PROTO_LOCAL            /* Intra-app */
-} GdkDragProtocol;
+  BDK_DRAG_PROTO_NONE,		  /* Not a valid drag window */
+  BDK_DRAG_PROTO_WIN32_DROPFILES, /* The simple WM_DROPFILES dnd */
+  BDK_DRAG_PROTO_OLE2,		  /* The complex OLE2 dnd (not implemented) */
+  BDK_DRAG_PROTO_LOCAL            /* Intra-app */
+} BdkDragProtocol;
 
 /* Object that holds information about a drag in progress.
  * this is used on both source and destination sides.
  */
 
-typedef struct _GdkDragContextClass GdkDragContextClass;
+typedef struct _BdkDragContextClass BdkDragContextClass;
 
-#define GDK_TYPE_DRAG_CONTEXT              (gdk_drag_context_get_type ())
-#define GDK_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DRAG_CONTEXT, GdkDragContext))
-#define GDK_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DRAG_CONTEXT, GdkDragContextClass))
-#define GDK_IS_DRAG_CONTEXT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DRAG_CONTEXT))
-#define GDK_IS_DRAG_CONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DRAG_CONTEXT))
-#define GDK_DRAG_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DRAG_CONTEXT, GdkDragContextClass))
+#define BDK_TYPE_DRAG_CONTEXT              (bdk_drag_context_get_type ())
+#define BDK_DRAG_CONTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAG_CONTEXT, BdkDragContext))
+#define BDK_DRAG_CONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAG_CONTEXT, BdkDragContextClass))
+#define BDK_IS_DRAG_CONTEXT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAG_CONTEXT))
+#define BDK_IS_DRAG_CONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAG_CONTEXT))
+#define BDK_DRAG_CONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAG_CONTEXT, BdkDragContextClass))
 
-struct _GdkDragContext {
+struct _BdkDragContext {
   GObject parent_instance;
 
   /*< public >*/
   
-  GdkDragProtocol GSEAL (protocol);
+  BdkDragProtocol GSEAL (protocol);
 
   gboolean GSEAL (is_source);
   
-  GdkWindow *GSEAL (source_window);
-  GdkWindow *GSEAL (dest_window);
+  BdkWindow *GSEAL (source_window);
+  BdkWindow *GSEAL (dest_window);
 
   GList *GSEAL (targets);
-  GdkDragAction GSEAL (actions);
-  GdkDragAction GSEAL (suggested_action);
-  GdkDragAction GSEAL (action);
+  BdkDragAction GSEAL (actions);
+  BdkDragAction GSEAL (suggested_action);
+  BdkDragAction GSEAL (action);
 
   guint32 GSEAL (start_time);
 
@@ -96,91 +96,91 @@ struct _GdkDragContext {
   gpointer GSEAL (windowing_data);
 };
 
-struct _GdkDragContextClass {
+struct _BdkDragContextClass {
   GObjectClass parent_class;
 
 };
 
 /* Drag and Drop */
 
-GType            gdk_drag_context_get_type   (void) G_GNUC_CONST;
-#if !defined (GDK_DISABLE_DEPRECATED) || defined (GDK_COMPILATION)
-GdkDragContext * gdk_drag_context_new        (void);
+GType            bdk_drag_context_get_type   (void) G_GNUC_CONST;
+#if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
+BdkDragContext * bdk_drag_context_new        (void);
 #endif
 
-GList           *gdk_drag_context_list_targets         (GdkDragContext *context);
-GdkDragAction    gdk_drag_context_get_actions          (GdkDragContext *context);
-GdkDragAction    gdk_drag_context_get_suggested_action (GdkDragContext *context);
-GdkDragAction    gdk_drag_context_get_selected_action  (GdkDragContext *context);
+GList           *bdk_drag_context_list_targets         (BdkDragContext *context);
+BdkDragAction    bdk_drag_context_get_actions          (BdkDragContext *context);
+BdkDragAction    bdk_drag_context_get_suggested_action (BdkDragContext *context);
+BdkDragAction    bdk_drag_context_get_selected_action  (BdkDragContext *context);
 
-GdkWindow       *gdk_drag_context_get_source_window    (GdkDragContext *context);
-GdkWindow       *gdk_drag_context_get_dest_window      (GdkDragContext *context);
-GdkDragProtocol  gdk_drag_context_get_protocol         (GdkDragContext *context);
+BdkWindow       *bdk_drag_context_get_source_window    (BdkDragContext *context);
+BdkWindow       *bdk_drag_context_get_dest_window      (BdkDragContext *context);
+BdkDragProtocol  bdk_drag_context_get_protocol         (BdkDragContext *context);
 
 
-#ifndef GDK_DISABLE_DEPRECATED
-void             gdk_drag_context_ref        (GdkDragContext *context);
-void             gdk_drag_context_unref      (GdkDragContext *context);
+#ifndef BDK_DISABLE_DEPRECATED
+void             bdk_drag_context_ref        (BdkDragContext *context);
+void             bdk_drag_context_unref      (BdkDragContext *context);
 #endif
 
 /* Destination side */
 
-void             gdk_drag_status        (GdkDragContext   *context,
-				         GdkDragAction     action,
+void             bdk_drag_status        (BdkDragContext   *context,
+				         BdkDragAction     action,
 					 guint32           time_);
-void             gdk_drop_reply         (GdkDragContext   *context,
+void             bdk_drop_reply         (BdkDragContext   *context,
 					 gboolean          ok,
 					 guint32           time_);
-void             gdk_drop_finish        (GdkDragContext   *context,
+void             bdk_drop_finish        (BdkDragContext   *context,
 					 gboolean          success,
 					 guint32           time_);
-GdkAtom          gdk_drag_get_selection (GdkDragContext   *context);
+BdkAtom          bdk_drag_get_selection (BdkDragContext   *context);
 
 /* Source side */
 
-GdkDragContext * gdk_drag_begin      (GdkWindow      *window,
+BdkDragContext * bdk_drag_begin      (BdkWindow      *window,
 				      GList          *targets);
 
-GdkNativeWindow gdk_drag_get_protocol_for_display (GdkDisplay       *display,
-						   GdkNativeWindow   xid,
-						   GdkDragProtocol  *protocol);
+BdkNativeWindow bdk_drag_get_protocol_for_display (BdkDisplay       *display,
+						   BdkNativeWindow   xid,
+						   BdkDragProtocol  *protocol);
 
-void    gdk_drag_find_window_for_screen   (GdkDragContext   *context,
-					   GdkWindow        *drag_window,
-					   GdkScreen        *screen,
+void    bdk_drag_find_window_for_screen   (BdkDragContext   *context,
+					   BdkWindow        *drag_window,
+					   BdkScreen        *screen,
 					   gint              x_root,
 					   gint              y_root,
-					   GdkWindow       **dest_window,
-					   GdkDragProtocol  *protocol);
+					   BdkWindow       **dest_window,
+					   BdkDragProtocol  *protocol);
 
-#ifndef GDK_MULTIHEAD_SAFE
-#ifndef GDK_DISABLE_DEPRECATED
-GdkNativeWindow gdk_drag_get_protocol (GdkNativeWindow   xid,
-				       GdkDragProtocol  *protocol);
+#ifndef BDK_MULTIHEAD_SAFE
+#ifndef BDK_DISABLE_DEPRECATED
+BdkNativeWindow bdk_drag_get_protocol (BdkNativeWindow   xid,
+				       BdkDragProtocol  *protocol);
 
-void    gdk_drag_find_window  (GdkDragContext   *context,
-			       GdkWindow        *drag_window,
+void    bdk_drag_find_window  (BdkDragContext   *context,
+			       BdkWindow        *drag_window,
 			       gint              x_root,
 			       gint              y_root,
-			       GdkWindow       **dest_window,
-			       GdkDragProtocol  *protocol);
-#endif /* GDK_DISABLE_DEPRECATED */
-#endif /* GDK_MULTIHEAD_SAFE */
+			       BdkWindow       **dest_window,
+			       BdkDragProtocol  *protocol);
+#endif /* BDK_DISABLE_DEPRECATED */
+#endif /* BDK_MULTIHEAD_SAFE */
 
-gboolean        gdk_drag_motion      (GdkDragContext *context,
-				      GdkWindow      *dest_window,
-				      GdkDragProtocol protocol,
+gboolean        bdk_drag_motion      (BdkDragContext *context,
+				      BdkWindow      *dest_window,
+				      BdkDragProtocol protocol,
 				      gint            x_root, 
 				      gint            y_root,
-				      GdkDragAction   suggested_action,
-				      GdkDragAction   possible_actions,
+				      BdkDragAction   suggested_action,
+				      BdkDragAction   possible_actions,
 				      guint32         time_);
-void            gdk_drag_drop        (GdkDragContext *context,
+void            bdk_drag_drop        (BdkDragContext *context,
 				      guint32         time_);
-void            gdk_drag_abort       (GdkDragContext *context,
+void            bdk_drag_abort       (BdkDragContext *context,
 				      guint32         time_);
-gboolean        gdk_drag_drop_succeeded (GdkDragContext *context);
+gboolean        bdk_drag_drop_succeeded (BdkDragContext *context);
 
 G_END_DECLS
 
-#endif /* __GDK_DND_H__ */
+#endif /* __BDK_DND_H__ */

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,75 +18,75 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_MENU_BAR_H__
-#define __GTK_MENU_BAR_H__
+#ifndef __BTK_MENU_BAR_H__
+#define __BTK_MENU_BAR_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkmenushell.h>
+#include <btk/btkmenushell.h>
 
 
 G_BEGIN_DECLS
 
 
-#define	GTK_TYPE_MENU_BAR               (gtk_menu_bar_get_type ())
-#define GTK_MENU_BAR(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_MENU_BAR, GtkMenuBar))
-#define GTK_MENU_BAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_MENU_BAR, GtkMenuBarClass))
-#define GTK_IS_MENU_BAR(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_MENU_BAR))
-#define GTK_IS_MENU_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_MENU_BAR))
-#define GTK_MENU_BAR_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_MENU_BAR, GtkMenuBarClass))
+#define	BTK_TYPE_MENU_BAR               (btk_menu_bar_get_type ())
+#define BTK_MENU_BAR(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU_BAR, BtkMenuBar))
+#define BTK_MENU_BAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU_BAR, BtkMenuBarClass))
+#define BTK_IS_MENU_BAR(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU_BAR))
+#define BTK_IS_MENU_BAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU_BAR))
+#define BTK_MENU_BAR_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU_BAR, BtkMenuBarClass))
 
-typedef struct _GtkMenuBar       GtkMenuBar;
-typedef struct _GtkMenuBarClass  GtkMenuBarClass;
+typedef struct _BtkMenuBar       BtkMenuBar;
+typedef struct _BtkMenuBarClass  BtkMenuBarClass;
 
-struct _GtkMenuBar
+struct _BtkMenuBar
 {
-  GtkMenuShell menu_shell;
+  BtkMenuShell menu_shell;
 };
 
-struct _GtkMenuBarClass
+struct _BtkMenuBarClass
 {
-  GtkMenuShellClass parent_class;
+  BtkMenuShellClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_menu_bar_get_type        (void) G_GNUC_CONST;
-GtkWidget* gtk_menu_bar_new             (void);
+GType      btk_menu_bar_get_type        (void) G_GNUC_CONST;
+BtkWidget* btk_menu_bar_new             (void);
 
-GtkPackDirection gtk_menu_bar_get_pack_direction (GtkMenuBar       *menubar);
-void             gtk_menu_bar_set_pack_direction (GtkMenuBar       *menubar,
-						  GtkPackDirection  pack_dir);
-GtkPackDirection gtk_menu_bar_get_child_pack_direction (GtkMenuBar       *menubar);
-void             gtk_menu_bar_set_child_pack_direction (GtkMenuBar       *menubar,
-							GtkPackDirection  child_pack_dir);
+BtkPackDirection btk_menu_bar_get_pack_direction (BtkMenuBar       *menubar);
+void             btk_menu_bar_set_pack_direction (BtkMenuBar       *menubar,
+						  BtkPackDirection  pack_dir);
+BtkPackDirection btk_menu_bar_get_child_pack_direction (BtkMenuBar       *menubar);
+void             btk_menu_bar_set_child_pack_direction (BtkMenuBar       *menubar,
+							BtkPackDirection  child_pack_dir);
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define gtk_menu_bar_append(menu,child)	    gtk_menu_shell_append  ((GtkMenuShell *)(menu),(child))
-#define gtk_menu_bar_prepend(menu,child)    gtk_menu_shell_prepend ((GtkMenuShell *)(menu),(child))
-#define gtk_menu_bar_insert(menu,child,pos) gtk_menu_shell_insert ((GtkMenuShell *)(menu),(child),(pos))
-#endif /* GTK_DISABLE_DEPRECATED */
+#ifndef BTK_DISABLE_DEPRECATED
+#define btk_menu_bar_append(menu,child)	    btk_menu_shell_append  ((BtkMenuShell *)(menu),(child))
+#define btk_menu_bar_prepend(menu,child)    btk_menu_shell_prepend ((BtkMenuShell *)(menu),(child))
+#define btk_menu_bar_insert(menu,child,pos) btk_menu_shell_insert ((BtkMenuShell *)(menu),(child),(pos))
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* Private functions */
-void _gtk_menu_bar_cycle_focus (GtkMenuBar       *menubar,
-				GtkDirectionType  dir);
+void _btk_menu_bar_cycle_focus (BtkMenuBar       *menubar,
+				BtkDirectionType  dir);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_MENU_BAR_H__ */
+#endif /* __BTK_MENU_BAR_H__ */

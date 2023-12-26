@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,139 +19,139 @@
  * Global clipboard abstraction.
  */
 
-#ifndef __GTK_CLIPBOARD_H__
-#define __GTK_CLIPBOARD_H__
+#ifndef __BTK_CLIPBOARD_H__
+#define __BTK_CLIPBOARD_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkselection.h>
+#include <btk/btkselection.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CLIPBOARD            (gtk_clipboard_get_type ())
-#define GTK_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CLIPBOARD, GtkClipboard))
-#define GTK_IS_CLIPBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CLIPBOARD))
+#define BTK_TYPE_CLIPBOARD            (btk_clipboard_get_type ())
+#define BTK_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIPBOARD, BtkClipboard))
+#define BTK_IS_CLIPBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIPBOARD))
 
-typedef void (* GtkClipboardReceivedFunc)         (GtkClipboard     *clipboard,
-					           GtkSelectionData *selection_data,
+typedef void (* BtkClipboardReceivedFunc)         (BtkClipboard     *clipboard,
+					           BtkSelectionData *selection_data,
 					           gpointer          data);
-typedef void (* GtkClipboardTextReceivedFunc)     (GtkClipboard     *clipboard,
+typedef void (* BtkClipboardTextReceivedFunc)     (BtkClipboard     *clipboard,
 					           const gchar      *text,
 					           gpointer          data);
-typedef void (* GtkClipboardRichTextReceivedFunc) (GtkClipboard     *clipboard,
-                                                   GdkAtom           format,
+typedef void (* BtkClipboardRichTextReceivedFunc) (BtkClipboard     *clipboard,
+                                                   BdkAtom           format,
 					           const guint8     *text,
                                                    gsize             length,
 					           gpointer          data);
-typedef void (* GtkClipboardImageReceivedFunc)    (GtkClipboard     *clipboard,
-						   GdkPixbuf        *pixbuf,
+typedef void (* BtkClipboardImageReceivedFunc)    (BtkClipboard     *clipboard,
+						   BdkPixbuf        *pixbuf,
 						   gpointer          data);
-typedef void (* GtkClipboardURIReceivedFunc)      (GtkClipboard     *clipboard,
+typedef void (* BtkClipboardURIReceivedFunc)      (BtkClipboard     *clipboard,
 						   gchar           **uris,
 						   gpointer          data);
-typedef void (* GtkClipboardTargetsReceivedFunc)  (GtkClipboard     *clipboard,
-					           GdkAtom          *atoms,
+typedef void (* BtkClipboardTargetsReceivedFunc)  (BtkClipboard     *clipboard,
+					           BdkAtom          *atoms,
 						   gint              n_atoms,
 					           gpointer          data);
 
-/* Should these functions have GtkClipboard *clipboard as the first argument?
+/* Should these functions have BtkClipboard *clipboard as the first argument?
  * right now for ClearFunc, you may have trouble determining _which_ clipboard
  * was cleared, if you reuse your ClearFunc for multiple clipboards.
  */
-typedef void (* GtkClipboardGetFunc)          (GtkClipboard     *clipboard,
-					       GtkSelectionData *selection_data,
+typedef void (* BtkClipboardGetFunc)          (BtkClipboard     *clipboard,
+					       BtkSelectionData *selection_data,
 					       guint             info,
 					       gpointer          user_data_or_owner);
-typedef void (* GtkClipboardClearFunc)        (GtkClipboard     *clipboard,
+typedef void (* BtkClipboardClearFunc)        (BtkClipboard     *clipboard,
 					       gpointer          user_data_or_owner);
 
-GType         gtk_clipboard_get_type (void) G_GNUC_CONST;
+GType         btk_clipboard_get_type (void) G_GNUC_CONST;
 
-GtkClipboard *gtk_clipboard_get_for_display (GdkDisplay   *display,
-					     GdkAtom       selection);
-#ifndef GDK_MULTIHEAD_SAFE
-GtkClipboard *gtk_clipboard_get             (GdkAtom       selection);
+BtkClipboard *btk_clipboard_get_for_display (BdkDisplay   *display,
+					     BdkAtom       selection);
+#ifndef BDK_MULTIHEAD_SAFE
+BtkClipboard *btk_clipboard_get             (BdkAtom       selection);
 #endif
 
-GdkDisplay   *gtk_clipboard_get_display     (GtkClipboard *clipboard);
+BdkDisplay   *btk_clipboard_get_display     (BtkClipboard *clipboard);
 
 
-gboolean gtk_clipboard_set_with_data  (GtkClipboard          *clipboard,
-				       const GtkTargetEntry  *targets,
+gboolean btk_clipboard_set_with_data  (BtkClipboard          *clipboard,
+				       const BtkTargetEntry  *targets,
 				       guint                  n_targets,
-				       GtkClipboardGetFunc    get_func,
-				       GtkClipboardClearFunc  clear_func,
+				       BtkClipboardGetFunc    get_func,
+				       BtkClipboardClearFunc  clear_func,
 				       gpointer               user_data);
-gboolean gtk_clipboard_set_with_owner (GtkClipboard          *clipboard,
-				       const GtkTargetEntry  *targets,
+gboolean btk_clipboard_set_with_owner (BtkClipboard          *clipboard,
+				       const BtkTargetEntry  *targets,
 				       guint                  n_targets,
-				       GtkClipboardGetFunc    get_func,
-				       GtkClipboardClearFunc  clear_func,
+				       BtkClipboardGetFunc    get_func,
+				       BtkClipboardClearFunc  clear_func,
 				       GObject               *owner);
-GObject *gtk_clipboard_get_owner      (GtkClipboard          *clipboard);
-void     gtk_clipboard_clear          (GtkClipboard          *clipboard);
-void     gtk_clipboard_set_text       (GtkClipboard          *clipboard,
+GObject *btk_clipboard_get_owner      (BtkClipboard          *clipboard);
+void     btk_clipboard_clear          (BtkClipboard          *clipboard);
+void     btk_clipboard_set_text       (BtkClipboard          *clipboard,
 				       const gchar           *text,
 				       gint                   len);
-void     gtk_clipboard_set_image      (GtkClipboard          *clipboard,
-				       GdkPixbuf             *pixbuf);
+void     btk_clipboard_set_image      (BtkClipboard          *clipboard,
+				       BdkPixbuf             *pixbuf);
 
-void gtk_clipboard_request_contents  (GtkClipboard                     *clipboard,
-                                      GdkAtom                           target,
-                                      GtkClipboardReceivedFunc          callback,
+void btk_clipboard_request_contents  (BtkClipboard                     *clipboard,
+                                      BdkAtom                           target,
+                                      BtkClipboardReceivedFunc          callback,
                                       gpointer                          user_data);
-void gtk_clipboard_request_text      (GtkClipboard                     *clipboard,
-                                      GtkClipboardTextReceivedFunc      callback,
+void btk_clipboard_request_text      (BtkClipboard                     *clipboard,
+                                      BtkClipboardTextReceivedFunc      callback,
                                       gpointer                          user_data);
-void gtk_clipboard_request_rich_text (GtkClipboard                     *clipboard,
-                                      GtkTextBuffer                    *buffer,
-                                      GtkClipboardRichTextReceivedFunc  callback,
+void btk_clipboard_request_rich_text (BtkClipboard                     *clipboard,
+                                      BtkTextBuffer                    *buffer,
+                                      BtkClipboardRichTextReceivedFunc  callback,
                                       gpointer                          user_data);
-void gtk_clipboard_request_image     (GtkClipboard                     *clipboard,
-                                      GtkClipboardImageReceivedFunc     callback,
+void btk_clipboard_request_image     (BtkClipboard                     *clipboard,
+                                      BtkClipboardImageReceivedFunc     callback,
                                       gpointer                          user_data);
-void gtk_clipboard_request_uris      (GtkClipboard                     *clipboard,
-                                      GtkClipboardURIReceivedFunc       callback,
+void btk_clipboard_request_uris      (BtkClipboard                     *clipboard,
+                                      BtkClipboardURIReceivedFunc       callback,
                                       gpointer                          user_data);
-void gtk_clipboard_request_targets   (GtkClipboard                     *clipboard,
-                                      GtkClipboardTargetsReceivedFunc   callback,
+void btk_clipboard_request_targets   (BtkClipboard                     *clipboard,
+                                      BtkClipboardTargetsReceivedFunc   callback,
                                       gpointer                          user_data);
 
-GtkSelectionData *gtk_clipboard_wait_for_contents  (GtkClipboard  *clipboard,
-                                                    GdkAtom        target);
-gchar *           gtk_clipboard_wait_for_text      (GtkClipboard  *clipboard);
-guint8 *          gtk_clipboard_wait_for_rich_text (GtkClipboard  *clipboard,
-                                                    GtkTextBuffer *buffer,
-                                                    GdkAtom       *format,
+BtkSelectionData *btk_clipboard_wait_for_contents  (BtkClipboard  *clipboard,
+                                                    BdkAtom        target);
+gchar *           btk_clipboard_wait_for_text      (BtkClipboard  *clipboard);
+guint8 *          btk_clipboard_wait_for_rich_text (BtkClipboard  *clipboard,
+                                                    BtkTextBuffer *buffer,
+                                                    BdkAtom       *format,
                                                     gsize         *length);
-GdkPixbuf *       gtk_clipboard_wait_for_image     (GtkClipboard  *clipboard);
-gchar **          gtk_clipboard_wait_for_uris      (GtkClipboard  *clipboard);
-gboolean          gtk_clipboard_wait_for_targets   (GtkClipboard  *clipboard,
-                                                    GdkAtom      **targets,
+BdkPixbuf *       btk_clipboard_wait_for_image     (BtkClipboard  *clipboard);
+gchar **          btk_clipboard_wait_for_uris      (BtkClipboard  *clipboard);
+gboolean          btk_clipboard_wait_for_targets   (BtkClipboard  *clipboard,
+                                                    BdkAtom      **targets,
                                                     gint          *n_targets);
 
-gboolean gtk_clipboard_wait_is_text_available      (GtkClipboard  *clipboard);
-gboolean gtk_clipboard_wait_is_rich_text_available (GtkClipboard  *clipboard,
-                                                    GtkTextBuffer *buffer);
-gboolean gtk_clipboard_wait_is_image_available     (GtkClipboard  *clipboard);
-gboolean gtk_clipboard_wait_is_uris_available      (GtkClipboard  *clipboard);
-gboolean gtk_clipboard_wait_is_target_available    (GtkClipboard  *clipboard,
-                                                    GdkAtom        target);
+gboolean btk_clipboard_wait_is_text_available      (BtkClipboard  *clipboard);
+gboolean btk_clipboard_wait_is_rich_text_available (BtkClipboard  *clipboard,
+                                                    BtkTextBuffer *buffer);
+gboolean btk_clipboard_wait_is_image_available     (BtkClipboard  *clipboard);
+gboolean btk_clipboard_wait_is_uris_available      (BtkClipboard  *clipboard);
+gboolean btk_clipboard_wait_is_target_available    (BtkClipboard  *clipboard,
+                                                    BdkAtom        target);
 
 
-void gtk_clipboard_set_can_store (GtkClipboard         *clipboard,
-				  const GtkTargetEntry *targets,
+void btk_clipboard_set_can_store (BtkClipboard         *clipboard,
+				  const BtkTargetEntry *targets,
 				  gint                  n_targets);
 
-void gtk_clipboard_store         (GtkClipboard   *clipboard);
+void btk_clipboard_store         (BtkClipboard   *clipboard);
 
 /* private */
-void     _gtk_clipboard_handle_event    (GdkEventOwnerChange *event);
+void     _btk_clipboard_handle_event    (BdkEventOwnerChange *event);
 
-void     _gtk_clipboard_store_all       (void);
+void     _btk_clipboard_store_all       (void);
 
 G_END_DECLS
 
-#endif /* __GTK_CLIPBOARD_H__ */
+#endif /* __BTK_CLIPBOARD_H__ */

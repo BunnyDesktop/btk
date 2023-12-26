@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GTK Calendar Widget
+ * BTK Calendar Widget
  * Copyright (C) 1998 Cesar Miquel and Shawn T. Amundson
  *
  * This library is free software; you can redistribute it and/or
@@ -20,94 +20,94 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_CALENDAR_H__
-#define __GTK_CALENDAR_H__
+#ifndef __BTK_CALENDAR_H__
+#define __BTK_CALENDAR_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 /* Not needed, retained for compatibility -Yosh */
-#include <gtk/gtksignal.h>
+#include <btk/btksignal.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CALENDAR                  (gtk_calendar_get_type ())
-#define GTK_CALENDAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CALENDAR, GtkCalendar))
-#define GTK_CALENDAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CALENDAR, GtkCalendarClass))
-#define GTK_IS_CALENDAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CALENDAR))
-#define GTK_IS_CALENDAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CALENDAR))
-#define GTK_CALENDAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CALENDAR, GtkCalendarClass))
+#define BTK_TYPE_CALENDAR                  (btk_calendar_get_type ())
+#define BTK_CALENDAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CALENDAR, BtkCalendar))
+#define BTK_CALENDAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CALENDAR, BtkCalendarClass))
+#define BTK_IS_CALENDAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CALENDAR))
+#define BTK_IS_CALENDAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CALENDAR))
+#define BTK_CALENDAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CALENDAR, BtkCalendarClass))
 
 
-typedef struct _GtkCalendar	       GtkCalendar;
-typedef struct _GtkCalendarClass       GtkCalendarClass;
+typedef struct _BtkCalendar	       BtkCalendar;
+typedef struct _BtkCalendarClass       BtkCalendarClass;
 
-typedef struct _GtkCalendarPrivate     GtkCalendarPrivate;
+typedef struct _BtkCalendarPrivate     BtkCalendarPrivate;
 
 /**
- * GtkCalendarDisplayOptions:
- * @GTK_CALENDAR_SHOW_HEADING: Specifies that the month and year should be displayed.
- * @GTK_CALENDAR_SHOW_DAY_NAMES: Specifies that three letter day descriptions should be present.
- * @GTK_CALENDAR_NO_MONTH_CHANGE: Prevents the user from switching months with the calendar.
- * @GTK_CALENDAR_SHOW_WEEK_NUMBERS: Displays each week numbers of the current year, down the
+ * BtkCalendarDisplayOptions:
+ * @BTK_CALENDAR_SHOW_HEADING: Specifies that the month and year should be displayed.
+ * @BTK_CALENDAR_SHOW_DAY_NAMES: Specifies that three letter day descriptions should be present.
+ * @BTK_CALENDAR_NO_MONTH_CHANGE: Prevents the user from switching months with the calendar.
+ * @BTK_CALENDAR_SHOW_WEEK_NUMBERS: Displays each week numbers of the current year, down the
  * left side of the calendar.
- * @GTK_CALENDAR_WEEK_START_MONDAY: Since GTK+ 2.4, this option is deprecated and ignored by GTK+.
+ * @BTK_CALENDAR_WEEK_START_MONDAY: Since BTK+ 2.4, this option is deprecated and ignored by BTK+.
  * The information on which day the calendar week starts is derived from the locale.
- * @GTK_CALENDAR_SHOW_DETAILS: Just show an indicator, not the full details
- * text when details are provided. See gtk_calendar_set_detail_func().
+ * @BTK_CALENDAR_SHOW_DETAILS: Just show an indicator, not the full details
+ * text when details are provided. See btk_calendar_set_detail_func().
  *
- * These options can be used to influence the display and behaviour of a #GtkCalendar.
+ * These options can be used to influence the display and behaviour of a #BtkCalendar.
  */
 typedef enum
 {
-  GTK_CALENDAR_SHOW_HEADING		= 1 << 0,
-  GTK_CALENDAR_SHOW_DAY_NAMES		= 1 << 1,
-  GTK_CALENDAR_NO_MONTH_CHANGE		= 1 << 2,
-  GTK_CALENDAR_SHOW_WEEK_NUMBERS	= 1 << 3,
-  GTK_CALENDAR_WEEK_START_MONDAY	= 1 << 4,
-  GTK_CALENDAR_SHOW_DETAILS		= 1 << 5
-} GtkCalendarDisplayOptions;
+  BTK_CALENDAR_SHOW_HEADING		= 1 << 0,
+  BTK_CALENDAR_SHOW_DAY_NAMES		= 1 << 1,
+  BTK_CALENDAR_NO_MONTH_CHANGE		= 1 << 2,
+  BTK_CALENDAR_SHOW_WEEK_NUMBERS	= 1 << 3,
+  BTK_CALENDAR_WEEK_START_MONDAY	= 1 << 4,
+  BTK_CALENDAR_SHOW_DETAILS		= 1 << 5
+} BtkCalendarDisplayOptions;
 
 /**
- * GtkCalendarDetailFunc:
- * @calendar: a #GtkCalendar.
+ * BtkCalendarDetailFunc:
+ * @calendar: a #BtkCalendar.
  * @year: the year for which details are needed.
  * @month: the month for which details are needed.
  * @day: the day of @month for which details are needed.
- * @user_data: the data passed with gtk_calendar_set_detail_func().
+ * @user_data: the data passed with btk_calendar_set_detail_func().
  *
- * This kind of functions provide Pango markup with detail information for the
+ * This kind of functions provide Bango markup with detail information for the
  * specified day. Examples for such details are holidays or appointments. The
  * function returns %NULL when no information is available.
  *
  * Since: 2.14
  *
- * Return value: Newly allocated string with Pango markup with details
+ * Return value: Newly allocated string with Bango markup with details
  * for the specified day, or %NULL.
  */
-typedef gchar* (*GtkCalendarDetailFunc) (GtkCalendar *calendar,
+typedef gchar* (*BtkCalendarDetailFunc) (BtkCalendar *calendar,
                                          guint        year,
                                          guint        month,
                                          guint        day,
                                          gpointer     user_data);
 
-struct _GtkCalendar
+struct _BtkCalendar
 {
-  GtkWidget widget;
+  BtkWidget widget;
   
-  GtkStyle  *GSEAL (header_style);
-  GtkStyle  *GSEAL (label_style);
+  BtkStyle  *GSEAL (header_style);
+  BtkStyle  *GSEAL (label_style);
   
   gint GSEAL (month);
   gint GSEAL (year);
@@ -118,11 +118,11 @@ struct _GtkCalendar
   
   gint GSEAL (num_marked_dates);
   gint GSEAL (marked_date[31]);
-  GtkCalendarDisplayOptions  GSEAL (display_flags);
-  GdkColor GSEAL (marked_date_color[31]);
+  BtkCalendarDisplayOptions  GSEAL (display_flags);
+  BdkColor GSEAL (marked_date_color[31]);
   
-  GdkGC *GSEAL (gc);			/* unused */
-  GdkGC *GSEAL (xor_gc);		/* unused */
+  BdkGC *GSEAL (gc);			/* unused */
+  BdkGC *GSEAL (xor_gc);		/* unused */
 
   gint GSEAL (focus_row);
   gint GSEAL (focus_col);
@@ -130,80 +130,80 @@ struct _GtkCalendar
   gint GSEAL (highlight_row);
   gint GSEAL (highlight_col);
   
-  GtkCalendarPrivate *GSEAL (priv);
+  BtkCalendarPrivate *GSEAL (priv);
   gchar GSEAL (grow_space [32]);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-struct _GtkCalendarClass
+struct _BtkCalendarClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
   
   /* Signal handlers */
-  void (* month_changed)		(GtkCalendar *calendar);
-  void (* day_selected)			(GtkCalendar *calendar);
-  void (* day_selected_double_click)	(GtkCalendar *calendar);
-  void (* prev_month)			(GtkCalendar *calendar);
-  void (* next_month)			(GtkCalendar *calendar);
-  void (* prev_year)			(GtkCalendar *calendar);
-  void (* next_year)			(GtkCalendar *calendar);
+  void (* month_changed)		(BtkCalendar *calendar);
+  void (* day_selected)			(BtkCalendar *calendar);
+  void (* day_selected_double_click)	(BtkCalendar *calendar);
+  void (* prev_month)			(BtkCalendar *calendar);
+  void (* next_month)			(BtkCalendar *calendar);
+  void (* prev_year)			(BtkCalendar *calendar);
+  void (* next_year)			(BtkCalendar *calendar);
   
 };
 
 
-GType	   gtk_calendar_get_type	(void) G_GNUC_CONST;
-GtkWidget* gtk_calendar_new		(void);
+GType	   btk_calendar_get_type	(void) G_GNUC_CONST;
+BtkWidget* btk_calendar_new		(void);
 
-gboolean   gtk_calendar_select_month	(GtkCalendar *calendar,
+gboolean   btk_calendar_select_month	(BtkCalendar *calendar,
 					 guint	      month,
 					 guint	      year);
-void	   gtk_calendar_select_day	(GtkCalendar *calendar,
+void	   btk_calendar_select_day	(BtkCalendar *calendar,
 					 guint	      day);
 
-gboolean   gtk_calendar_mark_day	(GtkCalendar *calendar,
+gboolean   btk_calendar_mark_day	(BtkCalendar *calendar,
 					 guint	      day);
-gboolean   gtk_calendar_unmark_day	(GtkCalendar *calendar,
+gboolean   btk_calendar_unmark_day	(BtkCalendar *calendar,
 					 guint	      day);
-void	   gtk_calendar_clear_marks	(GtkCalendar *calendar);
+void	   btk_calendar_clear_marks	(BtkCalendar *calendar);
 
 
-void	   gtk_calendar_set_display_options (GtkCalendar    	      *calendar,
-					     GtkCalendarDisplayOptions flags);
-GtkCalendarDisplayOptions
-           gtk_calendar_get_display_options (GtkCalendar   	      *calendar);
-#ifndef GTK_DISABLE_DEPRECATED
-void	   gtk_calendar_display_options (GtkCalendar		  *calendar,
-					 GtkCalendarDisplayOptions flags);
+void	   btk_calendar_set_display_options (BtkCalendar    	      *calendar,
+					     BtkCalendarDisplayOptions flags);
+BtkCalendarDisplayOptions
+           btk_calendar_get_display_options (BtkCalendar   	      *calendar);
+#ifndef BTK_DISABLE_DEPRECATED
+void	   btk_calendar_display_options (BtkCalendar		  *calendar,
+					 BtkCalendarDisplayOptions flags);
 #endif
 
-void	   gtk_calendar_get_date	(GtkCalendar *calendar, 
+void	   btk_calendar_get_date	(BtkCalendar *calendar, 
 					 guint	     *year,
 					 guint	     *month,
 					 guint	     *day);
 
-void       gtk_calendar_set_detail_func (GtkCalendar           *calendar,
-                                         GtkCalendarDetailFunc  func,
+void       btk_calendar_set_detail_func (BtkCalendar           *calendar,
+                                         BtkCalendarDetailFunc  func,
                                          gpointer               data,
                                          GDestroyNotify         destroy);
 
-void       gtk_calendar_set_detail_width_chars (GtkCalendar    *calendar,
+void       btk_calendar_set_detail_width_chars (BtkCalendar    *calendar,
                                                 gint            chars);
-void       gtk_calendar_set_detail_height_rows (GtkCalendar    *calendar,
+void       btk_calendar_set_detail_height_rows (BtkCalendar    *calendar,
                                                 gint            rows);
 
-gint       gtk_calendar_get_detail_width_chars (GtkCalendar    *calendar);
-gint       gtk_calendar_get_detail_height_rows (GtkCalendar    *calendar);
+gint       btk_calendar_get_detail_width_chars (BtkCalendar    *calendar);
+gint       btk_calendar_get_detail_height_rows (BtkCalendar    *calendar);
 
-#ifndef GTK_DISABLE_DEPRECATED
-void	   gtk_calendar_freeze		(GtkCalendar *calendar);
-void	   gtk_calendar_thaw		(GtkCalendar *calendar);
+#ifndef BTK_DISABLE_DEPRECATED
+void	   btk_calendar_freeze		(BtkCalendar *calendar);
+void	   btk_calendar_thaw		(BtkCalendar *calendar);
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_CALENDAR_H__ */
+#endif /* __BTK_CALENDAR_H__ */

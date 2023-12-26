@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,44 +18,44 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gtktexttagtable.h"
-#include "gtkbuildable.h"
-#include "gtkmarshalers.h"
-#include "gtktextbuffer.h" /* just for the lame notify_will_remove_tag hack */
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btktexttagtable.h"
+#include "btkbuildable.h"
+#include "btkmarshalers.h"
+#include "btktextbuffer.h" /* just for the lame notify_will_remove_tag hack */
+#include "btkintl.h"
+#include "btkalias.h"
 
 #include <stdlib.h>
 
 /**
- * SECTION:gtktexttagtable
+ * SECTION:btktexttagtable
  * @Short_description: Collection of tags that can be used together
- * @Title: GtkTextTagTable
+ * @Title: BtkTextTagTable
  *
  * You may wish to begin by reading the <link linkend="TextWidget">text widget
  * conceptual overview</link> which gives an overview of all the objects and data
  * types related to the text widget and how they work together.
  *
- * <refsect2 id="GtkTextTagTable-BUILDER-UI">
- * <title>GtkTextTagTables as GtkBuildable</title>
+ * <refsect2 id="BtkTextTagTable-BUILDER-UI">
+ * <title>BtkTextTagTables as BtkBuildable</title>
  * <para>
- * The GtkTextTagTable implementation of the GtkBuildable interface
+ * The BtkTextTagTable implementation of the BtkBuildable interface
  * supports adding tags by specifying "tag" as the "type"
  * attribute of a &lt;child&gt; element.
  * </para>
  * <example>
  * <title>A UI definition fragment specifying tags</title>
  * <programlisting><![CDATA[
- * <object class="GtkTextTagTable">
+ * <object class="BtkTextTagTable">
  *  <child type="tag">
- *    <object class="GtkTextTag"/>
+ *    <object class="BtkTextTag"/>
  *  </child>
  * </object>
  * ]]></programlisting>
@@ -74,99 +74,99 @@ enum {
   LAST_ARG
 };
 
-static void gtk_text_tag_table_finalize     (GObject              *object);
-static void gtk_text_tag_table_set_property (GObject              *object,
+static void btk_text_tag_table_finalize     (GObject              *object);
+static void btk_text_tag_table_set_property (GObject              *object,
                                              guint                 prop_id,
                                              const GValue         *value,
                                              GParamSpec           *pspec);
-static void gtk_text_tag_table_get_property (GObject              *object,
+static void btk_text_tag_table_get_property (GObject              *object,
                                              guint                 prop_id,
                                              GValue               *value,
                                              GParamSpec           *pspec);
 
-static void gtk_text_tag_table_buildable_interface_init (GtkBuildableIface   *iface);
-static void gtk_text_tag_table_buildable_add_child      (GtkBuildable        *buildable,
-							 GtkBuilder          *builder,
+static void btk_text_tag_table_buildable_interface_init (BtkBuildableIface   *iface);
+static void btk_text_tag_table_buildable_add_child      (BtkBuildable        *buildable,
+							 BtkBuilder          *builder,
 							 GObject             *child,
 							 const gchar         *type);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_CODE (GtkTextTagTable, gtk_text_tag_table, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                                                gtk_text_tag_table_buildable_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BtkTextTagTable, btk_text_tag_table, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+                                                btk_text_tag_table_buildable_interface_init))
 
 static void
-gtk_text_tag_table_class_init (GtkTextTagTableClass *klass)
+btk_text_tag_table_class_init (BtkTextTagTableClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gtk_text_tag_table_set_property;
-  object_class->get_property = gtk_text_tag_table_get_property;
+  object_class->set_property = btk_text_tag_table_set_property;
+  object_class->get_property = btk_text_tag_table_get_property;
   
-  object_class->finalize = gtk_text_tag_table_finalize;
+  object_class->finalize = btk_text_tag_table_finalize;
   
   signals[TAG_CHANGED] =
     g_signal_new (I_("tag-changed"),
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkTextTagTableClass, tag_changed),
+                  G_STRUCT_OFFSET (BtkTextTagTableClass, tag_changed),
                   NULL, NULL,
-                  _gtk_marshal_VOID__OBJECT_BOOLEAN,
+                  _btk_marshal_VOID__OBJECT_BOOLEAN,
                   G_TYPE_NONE,
                   2,
-                  GTK_TYPE_TEXT_TAG,
+                  BTK_TYPE_TEXT_TAG,
                   G_TYPE_BOOLEAN);  
 
   signals[TAG_ADDED] =
     g_signal_new (I_("tag-added"),
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkTextTagTableClass, tag_added),
+                  G_STRUCT_OFFSET (BtkTextTagTableClass, tag_added),
                   NULL, NULL,
-                  _gtk_marshal_VOID__OBJECT,
+                  _btk_marshal_VOID__OBJECT,
                   G_TYPE_NONE,
                   1,
-                  GTK_TYPE_TEXT_TAG);
+                  BTK_TYPE_TEXT_TAG);
 
   signals[TAG_REMOVED] =
     g_signal_new (I_("tag-removed"),  
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkTextTagTableClass, tag_removed),
+                  G_STRUCT_OFFSET (BtkTextTagTableClass, tag_removed),
                   NULL, NULL,
-                  _gtk_marshal_VOID__OBJECT,
+                  _btk_marshal_VOID__OBJECT,
                   G_TYPE_NONE,
                   1,
-                  GTK_TYPE_TEXT_TAG);
+                  BTK_TYPE_TEXT_TAG);
 }
 
 static void
-gtk_text_tag_table_init (GtkTextTagTable *table)
+btk_text_tag_table_init (BtkTextTagTable *table)
 {
   table->hash = g_hash_table_new (g_str_hash, g_str_equal);
 }
 
 /**
- * gtk_text_tag_table_new:
+ * btk_text_tag_table_new:
  * 
- * Creates a new #GtkTextTagTable. The table contains no tags by
+ * Creates a new #BtkTextTagTable. The table contains no tags by
  * default.
  * 
- * Return value: a new #GtkTextTagTable
+ * Return value: a new #BtkTextTagTable
  **/
-GtkTextTagTable*
-gtk_text_tag_table_new (void)
+BtkTextTagTable*
+btk_text_tag_table_new (void)
 {
-  GtkTextTagTable *table;
+  BtkTextTagTable *table;
 
-  table = g_object_new (GTK_TYPE_TEXT_TAG_TABLE, NULL);
+  table = g_object_new (BTK_TYPE_TEXT_TAG_TABLE, NULL);
 
   return table;
 }
 
 static void
-foreach_unref (GtkTextTag *tag, gpointer data)
+foreach_unref (BtkTextTag *tag, gpointer data)
 {
   GSList *tmp;
   
@@ -177,7 +177,7 @@ foreach_unref (GtkTextTag *tag, gpointer data)
   tmp = tag->table->buffers;
   while (tmp != NULL)
     {
-      _gtk_text_buffer_notify_will_remove_tag (GTK_TEXT_BUFFER (tmp->data),
+      _btk_text_buffer_notify_will_remove_tag (BTK_TEXT_BUFFER (tmp->data),
                                                tag);
       
       tmp = tmp->next;
@@ -188,23 +188,23 @@ foreach_unref (GtkTextTag *tag, gpointer data)
 }
 
 static void
-gtk_text_tag_table_finalize (GObject *object)
+btk_text_tag_table_finalize (GObject *object)
 {
-  GtkTextTagTable *table;
+  BtkTextTagTable *table;
 
-  table = GTK_TEXT_TAG_TABLE (object);
+  table = BTK_TEXT_TAG_TABLE (object);
   
-  gtk_text_tag_table_foreach (table, foreach_unref, NULL);
+  btk_text_tag_table_foreach (table, foreach_unref, NULL);
 
   g_hash_table_destroy (table->hash);
   g_slist_free (table->anonymous);
 
   g_slist_free (table->buffers);
 
-  G_OBJECT_CLASS (gtk_text_tag_table_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_text_tag_table_parent_class)->finalize (object);
 }
 static void
-gtk_text_tag_table_set_property (GObject      *object,
+btk_text_tag_table_set_property (GObject      *object,
                                  guint         prop_id,
                                  const GValue *value,
                                  GParamSpec   *pspec)
@@ -220,7 +220,7 @@ gtk_text_tag_table_set_property (GObject      *object,
 
 
 static void
-gtk_text_tag_table_get_property (GObject      *object,
+btk_text_tag_table_get_property (GObject      *object,
                                  guint         prop_id,
                                  GValue       *value,
                                  GParamSpec   *pspec)
@@ -235,26 +235,26 @@ gtk_text_tag_table_get_property (GObject      *object,
 }
 
 static void
-gtk_text_tag_table_buildable_interface_init (GtkBuildableIface   *iface)
+btk_text_tag_table_buildable_interface_init (BtkBuildableIface   *iface)
 {
-  iface->add_child = gtk_text_tag_table_buildable_add_child;
+  iface->add_child = btk_text_tag_table_buildable_add_child;
 }
 
 static void
-gtk_text_tag_table_buildable_add_child (GtkBuildable        *buildable,
-					GtkBuilder          *builder,
+btk_text_tag_table_buildable_add_child (BtkBuildable        *buildable,
+					BtkBuilder          *builder,
 					GObject             *child,
 					const gchar         *type)
 {
   if (type && strcmp (type, "tag") == 0)
-    gtk_text_tag_table_add (GTK_TEXT_TAG_TABLE (buildable),
-			    GTK_TEXT_TAG (child));
+    btk_text_tag_table_add (BTK_TEXT_TAG_TABLE (buildable),
+			    BTK_TEXT_TAG (child));
 }
 
 /**
- * gtk_text_tag_table_add:
- * @table: a #GtkTextTagTable
- * @tag: a #GtkTextTag
+ * btk_text_tag_table_add:
+ * @table: a #BtkTextTagTable
+ * @tag: a #BtkTextTag
  *
  * Add a tag to the table. The tag is assigned the highest priority
  * in the table.
@@ -263,13 +263,13 @@ gtk_text_tag_table_buildable_add_child (GtkBuildable        *buildable,
  * the same name as an already-added tag.
  **/
 void
-gtk_text_tag_table_add (GtkTextTagTable *table,
-                        GtkTextTag      *tag)
+btk_text_tag_table_add (BtkTextTagTable *table,
+                        BtkTextTag      *tag)
 {
   guint size;
 
-  g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
-  g_return_if_fail (GTK_IS_TEXT_TAG (tag));
+  g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
+  g_return_if_fail (BTK_IS_TEXT_TAG (tag));
   g_return_if_fail (tag->table == NULL);
 
   if (tag->name && g_hash_table_lookup (table->hash, tag->name))
@@ -292,9 +292,9 @@ gtk_text_tag_table_add (GtkTextTagTable *table,
   tag->table = table;
 
   /* We get the highest tag priority, as the most-recently-added
-     tag. Note that we do NOT use gtk_text_tag_set_priority,
+     tag. Note that we do NOT use btk_text_tag_set_priority,
      as it assumes the tag is already in the table. */
-  size = gtk_text_tag_table_get_size (table);
+  size = btk_text_tag_table_get_size (table);
   g_assert (size > 0);
   tag->priority = size - 1;
 
@@ -302,41 +302,41 @@ gtk_text_tag_table_add (GtkTextTagTable *table,
 }
 
 /**
- * gtk_text_tag_table_lookup:
- * @table: a #GtkTextTagTable 
+ * btk_text_tag_table_lookup:
+ * @table: a #BtkTextTagTable 
  * @name: name of a tag
  * 
  * Look up a named tag.
  * 
  * Return value: (transfer none): The tag, or %NULL if none by that name is in the table.
  **/
-GtkTextTag*
-gtk_text_tag_table_lookup (GtkTextTagTable *table,
+BtkTextTag*
+btk_text_tag_table_lookup (BtkTextTagTable *table,
                            const gchar     *name)
 {
-  g_return_val_if_fail (GTK_IS_TEXT_TAG_TABLE (table), NULL);
+  g_return_val_if_fail (BTK_IS_TEXT_TAG_TABLE (table), NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
   return g_hash_table_lookup (table->hash, name);
 }
 
 /**
- * gtk_text_tag_table_remove:
- * @table: a #GtkTextTagTable
- * @tag: a #GtkTextTag
+ * btk_text_tag_table_remove:
+ * @table: a #BtkTextTagTable
+ * @tag: a #BtkTextTag
  * 
  * Remove a tag from the table. This will remove the table's
  * reference to the tag, so be careful - the tag will end
  * up destroyed if you don't have a reference to it.
  **/
 void
-gtk_text_tag_table_remove (GtkTextTagTable *table,
-                           GtkTextTag      *tag)
+btk_text_tag_table_remove (BtkTextTagTable *table,
+                           BtkTextTag      *tag)
 {
   GSList *tmp;
   
-  g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
-  g_return_if_fail (GTK_IS_TEXT_TAG (tag));
+  g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
+  g_return_if_fail (BTK_IS_TEXT_TAG (tag));
   g_return_if_fail (tag->table == table);
 
   /* Our little bad hack to be sure buffers don't still have the tag
@@ -345,7 +345,7 @@ gtk_text_tag_table_remove (GtkTextTagTable *table,
   tmp = table->buffers;
   while (tmp != NULL)
     {
-      _gtk_text_buffer_notify_will_remove_tag (GTK_TEXT_BUFFER (tmp->data),
+      _btk_text_buffer_notify_will_remove_tag (BTK_TEXT_BUFFER (tmp->data),
                                                tag);
       
       tmp = tmp->next;
@@ -354,7 +354,7 @@ gtk_text_tag_table_remove (GtkTextTagTable *table,
   /* Set ourselves to the highest priority; this means
      when we're removed, there won't be any gaps in the
      priorities of the tags in the table. */
-  gtk_text_tag_set_priority (tag, gtk_text_tag_table_get_size (table) - 1);
+  btk_text_tag_set_priority (tag, btk_text_tag_table_get_size (table) - 1);
 
   tag->table = NULL;
 
@@ -373,7 +373,7 @@ gtk_text_tag_table_remove (GtkTextTagTable *table,
 
 struct ForeachData
 {
-  GtkTextTagTableForeach func;
+  BtkTextTagTableForeach func;
   gpointer data;
 };
 
@@ -382,7 +382,7 @@ hash_foreach (gpointer key, gpointer value, gpointer data)
 {
   struct ForeachData *fd = data;
 
-  g_return_if_fail (GTK_IS_TEXT_TAG (value));
+  g_return_if_fail (BTK_IS_TEXT_TAG (value));
 
   (* fd->func) (value, fd->data);
 }
@@ -392,14 +392,14 @@ list_foreach (gpointer data, gpointer user_data)
 {
   struct ForeachData *fd = user_data;
 
-  g_return_if_fail (GTK_IS_TEXT_TAG (data));
+  g_return_if_fail (BTK_IS_TEXT_TAG (data));
 
   (* fd->func) (data, fd->data);
 }
 
 /**
- * gtk_text_tag_table_foreach:
- * @table: a #GtkTextTagTable
+ * btk_text_tag_table_foreach:
+ * @table: a #BtkTextTagTable
  * @func: (scope call): a function to call on each tag
  * @data: user data
  *
@@ -408,13 +408,13 @@ list_foreach (gpointer data, gpointer user_data)
  * over it (you can't add/remove tags).
  **/
 void
-gtk_text_tag_table_foreach (GtkTextTagTable       *table,
-                            GtkTextTagTableForeach func,
+btk_text_tag_table_foreach (BtkTextTagTable       *table,
+                            BtkTextTagTableForeach func,
                             gpointer               data)
 {
   struct ForeachData d;
 
-  g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
+  g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
   g_return_if_fail (func != NULL);
 
   d.func = func;
@@ -425,50 +425,50 @@ gtk_text_tag_table_foreach (GtkTextTagTable       *table,
 }
 
 /**
- * gtk_text_tag_table_get_size:
- * @table: a #GtkTextTagTable
+ * btk_text_tag_table_get_size:
+ * @table: a #BtkTextTagTable
  * 
  * Returns the size of the table (number of tags)
  * 
  * Return value: number of tags in @table
  **/
 gint
-gtk_text_tag_table_get_size (GtkTextTagTable *table)
+btk_text_tag_table_get_size (BtkTextTagTable *table)
 {
-  g_return_val_if_fail (GTK_IS_TEXT_TAG_TABLE (table), 0);
+  g_return_val_if_fail (BTK_IS_TEXT_TAG_TABLE (table), 0);
 
   return g_hash_table_size (table->hash) + table->anon_count;
 }
 
 void
-_gtk_text_tag_table_add_buffer (GtkTextTagTable *table,
+_btk_text_tag_table_add_buffer (BtkTextTagTable *table,
                                 gpointer         buffer)
 {
-  g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
+  g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
 
   table->buffers = g_slist_prepend (table->buffers, buffer);
 }
 
 static void
-foreach_remove_tag (GtkTextTag *tag, gpointer data)
+foreach_remove_tag (BtkTextTag *tag, gpointer data)
 {
-  GtkTextBuffer *buffer;
+  BtkTextBuffer *buffer;
 
-  buffer = GTK_TEXT_BUFFER (data);
+  buffer = BTK_TEXT_BUFFER (data);
 
-  _gtk_text_buffer_notify_will_remove_tag (buffer, tag);
+  _btk_text_buffer_notify_will_remove_tag (buffer, tag);
 }
 
 void
-_gtk_text_tag_table_remove_buffer (GtkTextTagTable *table,
+_btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
                                    gpointer         buffer)
 {
-  g_return_if_fail (GTK_IS_TEXT_TAG_TABLE (table));
+  g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
 
-  gtk_text_tag_table_foreach (table, foreach_remove_tag, buffer);
+  btk_text_tag_table_foreach (table, foreach_remove_tag, buffer);
   
   table->buffers = g_slist_remove (table->buffers, buffer);
 }
 
-#define __GTK_TEXT_TAG_TABLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_TEXT_TAG_TABLE_C__
+#include "btkaliasdef.c"

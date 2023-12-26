@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkBindingSet: Keybinding manager for GtkObjects.
+ * BtkBindingSet: Keybinding manager for BtkObjects.
  * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -21,31 +21,31 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <string.h>
 #include <stdarg.h>
-#include <gdkkeysyms.h>
+#include <bdkkeysyms.h>
 
-#include "gtkbindings.h"
-#include "gtkkeyhash.h"
-#include "gtkwidget.h"
-#include "gtkrc.h"
-#include "gtkalias.h"
+#include "btkbindings.h"
+#include "btkkeyhash.h"
+#include "btkwidget.h"
+#include "btkrc.h"
+#include "btkalias.h"
 
 
 /* --- defines --- */
-#define	BINDING_MOD_MASK()	(gtk_accelerator_get_default_mod_mask () | GDK_RELEASE_MASK)
+#define	BINDING_MOD_MASK()	(btk_accelerator_get_default_mod_mask () | BDK_RELEASE_MASK)
 
 
 /* --- structures --- */
 typedef struct {
-  GtkPathType   type;
+  BtkPathType   type;
   GPatternSpec *pspec;
   GSList       *path;
   gpointer      user_data;
@@ -57,7 +57,7 @@ typedef struct {
 static GHashTable	*binding_entry_hash_table = NULL;
 static GSList           *binding_key_hashes = NULL;
 static GSList		*binding_set_list = NULL;
-static const gchar	 key_class_binding_set[] = "gtk-class-binding-set";
+static const gchar	 key_class_binding_set[] = "btk-class-binding-set";
 static GQuark		 key_id_class_binding_set = 0;
 
 
@@ -65,29 +65,29 @@ static GQuark		 key_id_class_binding_set = 0;
 static void
 pattern_spec_free (PatternSpec *pspec)
 {
-  _gtk_rc_free_widget_class_path (pspec->path);
+  _btk_rc_free_widget_class_path (pspec->path);
   if (pspec->pspec)
     g_pattern_spec_free (pspec->pspec);
   g_free (pspec);
 }
 
-static GtkBindingSignal*
+static BtkBindingSignal*
 binding_signal_new (const gchar *signal_name,
 		    guint	 n_args)
 {
-  GtkBindingSignal *signal;
+  BtkBindingSignal *signal;
 
-  signal = (GtkBindingSignal *) g_slice_alloc0 (sizeof (GtkBindingSignal) + n_args * sizeof (GtkBindingArg));
+  signal = (BtkBindingSignal *) g_slice_alloc0 (sizeof (BtkBindingSignal) + n_args * sizeof (BtkBindingArg));
   signal->next = NULL;
   signal->signal_name = (gchar *)g_intern_string (signal_name);
   signal->n_args = n_args;
-  signal->args = (GtkBindingArg *)(signal + 1);
+  signal->args = (BtkBindingArg *)(signal + 1);
   
   return signal;
 }
 
 static void
-binding_signal_free (GtkBindingSignal *sig)
+binding_signal_free (BtkBindingSignal *sig)
 {
   guint i;
   
@@ -96,13 +96,13 @@ binding_signal_free (GtkBindingSignal *sig)
       if (G_TYPE_FUNDAMENTAL (sig->args[i].arg_type) == G_TYPE_STRING)
 	g_free (sig->args[i].d.string_data);
     }
-  g_slice_free1 (sizeof (GtkBindingSignal) + sig->n_args * sizeof (GtkBindingArg), sig);
+  g_slice_free1 (sizeof (BtkBindingSignal) + sig->n_args * sizeof (BtkBindingArg), sig);
 }
 
 static guint
 binding_entry_hash (gconstpointer  key)
 {
-  register const GtkBindingEntry *e = key;
+  register const BtkBindingEntry *e = key;
   register guint h;
 
   h = e->keyval;
@@ -115,39 +115,39 @@ static gint
 binding_entries_compare (gconstpointer  a,
 			 gconstpointer  b)
 {
-  register const GtkBindingEntry *ea = a;
-  register const GtkBindingEntry *eb = b;
+  register const BtkBindingEntry *ea = a;
+  register const BtkBindingEntry *eb = b;
 
   return (ea->keyval == eb->keyval && ea->modifiers == eb->modifiers);
 }
 
 static void
-binding_key_hash_insert_entry (GtkKeyHash      *key_hash,
-			       GtkBindingEntry *entry)
+binding_key_hash_insert_entry (BtkKeyHash      *key_hash,
+			       BtkBindingEntry *entry)
 {
   guint keyval = entry->keyval;
   
   /* We store lowercased accelerators. To deal with this, if <Shift>
    * was specified, uppercase.
    */
-  if (entry->modifiers & GDK_SHIFT_MASK)
+  if (entry->modifiers & BDK_SHIFT_MASK)
     {
-      if (keyval == GDK_Tab)
-	keyval = GDK_ISO_Left_Tab;
+      if (keyval == BDK_Tab)
+	keyval = BDK_ISO_Left_Tab;
       else
-	keyval = gdk_keyval_to_upper (keyval);
+	keyval = bdk_keyval_to_upper (keyval);
     }
   
-  _gtk_key_hash_add_entry (key_hash, keyval, entry->modifiers & ~GDK_RELEASE_MASK, entry);
+  _btk_key_hash_add_entry (key_hash, keyval, entry->modifiers & ~BDK_RELEASE_MASK, entry);
 }
 
 static void
 binding_key_hash_destroy (gpointer data)
 {
-  GtkKeyHash *key_hash = data;
+  BtkKeyHash *key_hash = data;
   
   binding_key_hashes = g_slist_remove (binding_key_hashes, key_hash);
-  _gtk_key_hash_free (key_hash);
+  _btk_key_hash_free (key_hash);
 }
 
 static void
@@ -155,27 +155,27 @@ insert_entries_into_key_hash (gpointer key,
 			      gpointer value,
 			      gpointer data)
 {
-  GtkKeyHash *key_hash = data;
-  GtkBindingEntry *entry = value;
+  BtkKeyHash *key_hash = data;
+  BtkBindingEntry *entry = value;
 
   for (; entry; entry = entry->hash_next)
     binding_key_hash_insert_entry (key_hash, entry);
 }
 
-static GtkKeyHash *
-binding_key_hash_for_keymap (GdkKeymap *keymap)
+static BtkKeyHash *
+binding_key_hash_for_keymap (BdkKeymap *keymap)
 {
   static GQuark key_hash_quark = 0;
-  GtkKeyHash *key_hash;
+  BtkKeyHash *key_hash;
 
   if (!key_hash_quark)
-    key_hash_quark = g_quark_from_static_string ("gtk-binding-key-hash");
+    key_hash_quark = g_quark_from_static_string ("btk-binding-key-hash");
   
   key_hash = g_object_get_qdata (G_OBJECT (keymap), key_hash_quark);
 
   if (!key_hash)
     {
-      key_hash = _gtk_key_hash_new (keymap, NULL);
+      key_hash = _btk_key_hash_new (keymap, NULL);
       g_object_set_qdata_full (G_OBJECT (keymap), key_hash_quark, key_hash, binding_key_hash_destroy);
 
       if (binding_entry_hash_table)
@@ -190,18 +190,18 @@ binding_key_hash_for_keymap (GdkKeymap *keymap)
 }
 
 
-static GtkBindingEntry*
-binding_entry_new (GtkBindingSet  *binding_set,
+static BtkBindingEntry*
+binding_entry_new (BtkBindingSet  *binding_set,
 		   guint           keyval,
-		   GdkModifierType modifiers)
+		   BdkModifierType modifiers)
 {
   GSList *tmp_list;
-  GtkBindingEntry *entry;
+  BtkBindingEntry *entry;
   
   if (!binding_entry_hash_table)
     binding_entry_hash_table = g_hash_table_new (binding_entry_hash, binding_entries_compare);
 
-  entry = g_new (GtkBindingEntry, 1);
+  entry = g_new (BtkBindingEntry, 1);
   entry->keyval = keyval;
   entry->modifiers = modifiers;
   entry->binding_set = binding_set,
@@ -220,7 +220,7 @@ binding_entry_new (GtkBindingSet  *binding_set,
 
   for (tmp_list = binding_key_hashes; tmp_list; tmp_list = tmp_list->next)
     {
-      GtkKeyHash *key_hash = tmp_list->data;
+      BtkKeyHash *key_hash = tmp_list->data;
       binding_key_hash_insert_entry (key_hash, entry);
     }
   
@@ -228,9 +228,9 @@ binding_entry_new (GtkBindingSet  *binding_set,
 }
 
 static void
-binding_entry_free (GtkBindingEntry *entry)
+binding_entry_free (BtkBindingEntry *entry)
 {
-  GtkBindingSignal *sig;
+  BtkBindingSignal *sig;
 
   g_assert (entry->set_next == NULL &&
 	    entry->hash_next == NULL &&
@@ -242,7 +242,7 @@ binding_entry_free (GtkBindingEntry *entry)
   sig = entry->signals;
   while (sig)
     {
-      GtkBindingSignal *prev;
+      BtkBindingSignal *prev;
       
       prev = sig;
       sig = prev->next;
@@ -252,12 +252,12 @@ binding_entry_free (GtkBindingEntry *entry)
 }
 
 static void
-binding_entry_destroy (GtkBindingEntry *entry)
+binding_entry_destroy (BtkBindingEntry *entry)
 {
-  GtkBindingEntry *o_entry;
-  register GtkBindingEntry *tmp;
-  GtkBindingEntry *begin;
-  register GtkBindingEntry *last;
+  BtkBindingEntry *o_entry;
+  register BtkBindingEntry *tmp;
+  BtkBindingEntry *begin;
+  register BtkBindingEntry *last;
   GSList *tmp_list;
 
   /* unlink from binding set
@@ -308,8 +308,8 @@ binding_entry_destroy (GtkBindingEntry *entry)
 
   for (tmp_list = binding_key_hashes; tmp_list; tmp_list = tmp_list->next)
     {
-      GtkKeyHash *key_hash = tmp_list->data;
-      _gtk_key_hash_remove_entry (key_hash, entry);
+      BtkKeyHash *key_hash = tmp_list->data;
+      _btk_key_hash_remove_entry (key_hash, entry);
     }
 
   entry->destroyed = TRUE;
@@ -318,13 +318,13 @@ binding_entry_destroy (GtkBindingEntry *entry)
     binding_entry_free (entry);
 }
 
-static GtkBindingEntry*
-binding_ht_lookup_entry (GtkBindingSet  *set,
+static BtkBindingEntry*
+binding_ht_lookup_entry (BtkBindingSet  *set,
 			 guint		 keyval,
-			 GdkModifierType modifiers)
+			 BdkModifierType modifiers)
 {
-  GtkBindingEntry lookup_entry = { 0 };
-  GtkBindingEntry *entry;
+  BtkBindingEntry lookup_entry = { 0 };
+  BtkBindingEntry *entry;
   
   if (!binding_entry_hash_table)
     return NULL;
@@ -341,8 +341,8 @@ binding_ht_lookup_entry (GtkBindingSet  *set,
 }
 
 static gboolean
-binding_compose_params (GtkObject       *object,
-			GtkBindingArg	*args,
+binding_compose_params (BtkObject       *object,
+			BtkBindingArg	*args,
 			GSignalQuery	*query,
 			GValue	       **params_p)
 {
@@ -379,7 +379,7 @@ binding_compose_params (GtkObject       *object,
 	  g_value_set_long (&tmp_value, args->d.long_data);
 	  break;
 	case G_TYPE_STRING:
-	  /* gtk_rc_parse_flags/enum() has fancier parsing for this; we can't call
+	  /* btk_rc_parse_flags/enum() has fancier parsing for this; we can't call
 	   * that since we don't have a GParamSpec, so just do something simple
 	   */
 	  if (G_TYPE_FUNDAMENTAL (*types) == G_TYPE_ENUM)
@@ -388,7 +388,7 @@ binding_compose_params (GtkObject       *object,
 	      
 	      valid = FALSE;
 	      
-	      if (args->arg_type == GTK_TYPE_IDENTIFIER)
+	      if (args->arg_type == BTK_TYPE_IDENTIFIER)
 		{
 		  GEnumValue *enum_value = NULL;
 		  enum_value = g_enum_get_value_by_name (class, args->d.string_data);
@@ -404,9 +404,9 @@ binding_compose_params (GtkObject       *object,
 
 	      g_type_class_unref (class);
 	    }
-	  /* This is just a hack for compatibility with GTK+-1.2 where a string
+	  /* This is just a hack for compatibility with BTK+-1.2 where a string
 	   * could be used for a single flag value / without the support for multiple
-	   * values in gtk_rc_parse_flags(), this isn't very useful.
+	   * values in btk_rc_parse_flags(), this isn't very useful.
 	   */
 	  else if (G_TYPE_FUNDAMENTAL (*types) == G_TYPE_FLAGS)
 	    {
@@ -414,7 +414,7 @@ binding_compose_params (GtkObject       *object,
 	      
 	      valid = FALSE;
 	      
-	      if (args->arg_type == GTK_TYPE_IDENTIFIER)
+	      if (args->arg_type == BTK_TYPE_IDENTIFIER)
 		{
 		  GFlagsValue *flags_value = NULL;
 		  flags_value = g_flags_get_value_by_name (class, args->d.string_data);
@@ -469,10 +469,10 @@ binding_compose_params (GtkObject       *object,
 }
 
 static gboolean
-gtk_binding_entry_activate (GtkBindingEntry *entry,
-			    GtkObject	    *object)
+btk_binding_entry_activate (BtkBindingEntry *entry,
+			    BtkObject	    *object)
 {
-  GtkBindingSignal *sig;
+  BtkBindingSignal *sig;
   gboolean old_emission;
   gboolean handled = FALSE;
   gint i;
@@ -493,8 +493,8 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
       signal_id = g_signal_lookup (sig->signal_name, G_OBJECT_TYPE (object));
       if (!signal_id)
 	{
-	  accelerator = gtk_accelerator_name (entry->keyval, entry->modifiers);
-	  g_warning ("gtk_binding_entry_activate(): binding \"%s::%s\": "
+	  accelerator = btk_accelerator_name (entry->keyval, entry->modifiers);
+	  g_warning ("btk_binding_entry_activate(): binding \"%s::%s\": "
 		     "could not find signal \"%s\" in the `%s' class ancestry",
 		     entry->binding_set->set_name,
 		     accelerator,
@@ -509,8 +509,8 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
 	  (query.return_type != G_TYPE_NONE && query.return_type != G_TYPE_BOOLEAN) || 
 	  !binding_compose_params (object, sig->args, &query, &params))
 	{
-	  accelerator = gtk_accelerator_name (entry->keyval, entry->modifiers);
-	  g_warning ("gtk_binding_entry_activate(): binding \"%s::%s\": "
+	  accelerator = btk_accelerator_name (entry->keyval, entry->modifiers);
+	  g_warning ("btk_binding_entry_activate(): binding \"%s::%s\": "
 		     "signature mismatch for signal \"%s\" in the `%s' class ancestry",
 		     entry->binding_set->set_name,
 		     accelerator,
@@ -519,8 +519,8 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
 	}
       else if (!(query.signal_flags & G_SIGNAL_ACTION))
 	{
-	  accelerator = gtk_accelerator_name (entry->keyval, entry->modifiers);
-	  g_warning ("gtk_binding_entry_activate(): binding \"%s::%s\": "
+	  accelerator = btk_accelerator_name (entry->keyval, entry->modifiers);
+	  g_warning ("btk_binding_entry_activate(): binding \"%s::%s\": "
 		     "signal \"%s\" in the `%s' class ancestry cannot be used for action emissions",
 		     entry->binding_set->set_name,
 		     accelerator,
@@ -563,22 +563,22 @@ gtk_binding_entry_activate (GtkBindingEntry *entry,
 }
 
 /**
- * gtk_binding_set_new:
+ * btk_binding_set_new:
  * @set_name: unique name of this binding set
  *
- * GTK+ maintains a global list of binding sets. Each binding set has
+ * BTK+ maintains a global list of binding sets. Each binding set has
  * a unique name which needs to be specified upon creation.
  *
  * Return value: new binding set
  */
-GtkBindingSet*
-gtk_binding_set_new (const gchar *set_name)
+BtkBindingSet*
+btk_binding_set_new (const gchar *set_name)
 {
-  GtkBindingSet *binding_set;
+  BtkBindingSet *binding_set;
   
   g_return_val_if_fail (set_name != NULL, NULL);
   
-  binding_set = g_new (GtkBindingSet, 1);
+  binding_set = g_new (BtkBindingSet, 1);
   binding_set->set_name = (gchar *) g_intern_string (set_name);
   binding_set->widget_path_pspecs = NULL;
   binding_set->widget_class_pspecs = NULL;
@@ -593,8 +593,8 @@ gtk_binding_set_new (const gchar *set_name)
 }
 
 /**
- * gtk_binding_set_by_class:
- * @object_class: a valid #GtkObject class
+ * btk_binding_set_by_class:
+ * @object_class: a valid #BtkObject class
  *
  * This function returns the binding set named after the type name of
  * the passed in class structure. New binding sets are created on
@@ -602,13 +602,13 @@ gtk_binding_set_new (const gchar *set_name)
  *
  * Return value: the binding set corresponding to @object_class
  */
-GtkBindingSet*
-gtk_binding_set_by_class (gpointer object_class)
+BtkBindingSet*
+btk_binding_set_by_class (gpointer object_class)
 {
-  GtkObjectClass *class = object_class;
-  GtkBindingSet* binding_set;
+  BtkObjectClass *class = object_class;
+  BtkBindingSet* binding_set;
 
-  g_return_val_if_fail (GTK_IS_OBJECT_CLASS (class), NULL);
+  g_return_val_if_fail (BTK_IS_OBJECT_CLASS (class), NULL);
 
   if (!key_id_class_binding_set)
     key_id_class_binding_set = g_quark_from_static_string (key_class_binding_set);
@@ -618,28 +618,28 @@ gtk_binding_set_by_class (gpointer object_class)
   if (binding_set)
     return binding_set;
 
-  binding_set = gtk_binding_set_new (g_type_name (G_OBJECT_CLASS_TYPE (class)));
-  gtk_binding_set_add_path (binding_set,
-			    GTK_PATH_CLASS,
+  binding_set = btk_binding_set_new (g_type_name (G_OBJECT_CLASS_TYPE (class)));
+  btk_binding_set_add_path (binding_set,
+			    BTK_PATH_CLASS,
 			    g_type_name (G_OBJECT_CLASS_TYPE (class)),
-			    GTK_PATH_PRIO_GTK);
+			    BTK_PATH_PRIO_BTK);
   g_dataset_id_set_data (class, key_id_class_binding_set, binding_set);
 
   return binding_set;
 }
 
 /**
- * gtk_binding_set_find:
+ * btk_binding_set_find:
  * @set_name: unique binding set name
  *
  * Find a binding set by its globally unique name. The @set_name can
- * either be a name used for gtk_binding_set_new() or the type name of
- * a class used in gtk_binding_set_by_class().
+ * either be a name used for btk_binding_set_new() or the type name of
+ * a class used in btk_binding_set_by_class().
  *
  * Return value: (transfer none): %NULL or the specified binding set
  */
-GtkBindingSet*
-gtk_binding_set_find (const gchar *set_name)
+BtkBindingSet*
+btk_binding_set_find (const gchar *set_name)
 {
   GSList *slist;
   
@@ -647,7 +647,7 @@ gtk_binding_set_find (const gchar *set_name)
   
   for (slist = binding_set_list; slist; slist = slist->next)
     {
-      GtkBindingSet *binding_set;
+      BtkBindingSet *binding_set;
       
       binding_set = slist->data;
       if (g_str_equal (binding_set->set_name, (gpointer) set_name))
@@ -657,8 +657,8 @@ gtk_binding_set_find (const gchar *set_name)
 }
 
 /**
- * gtk_binding_set_activate:
- * @binding_set: a #GtkBindingSet set to activate
+ * btk_binding_set_activate:
+ * @binding_set: a #BtkBindingSet set to activate
  * @keyval:      key value of the binding
  * @modifiers:   key modifier of the binding
  * @object:      object to activate when binding found
@@ -669,34 +669,34 @@ gtk_binding_set_find (const gchar *set_name)
  * Return value: %TRUE if a binding was found and activated
  */
 gboolean
-gtk_binding_set_activate (GtkBindingSet	 *binding_set,
+btk_binding_set_activate (BtkBindingSet	 *binding_set,
 			  guint		  keyval,
-			  GdkModifierType modifiers,
-			  GtkObject	 *object)
+			  BdkModifierType modifiers,
+			  BtkObject	 *object)
 {
-  GtkBindingEntry *entry;
+  BtkBindingEntry *entry;
   
   g_return_val_if_fail (binding_set != NULL, FALSE);
-  g_return_val_if_fail (GTK_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (BTK_IS_OBJECT (object), FALSE);
   
-  keyval = gdk_keyval_to_lower (keyval);
+  keyval = bdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
   
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
   if (entry)
-    return gtk_binding_entry_activate (entry, object);
+    return btk_binding_entry_activate (entry, object);
   
   return FALSE;
 }
 
 static void
-gtk_binding_entry_clear_internal (GtkBindingSet  *binding_set,
+btk_binding_entry_clear_internal (BtkBindingSet  *binding_set,
                                   guint           keyval,
-                                  GdkModifierType modifiers)
+                                  BdkModifierType modifiers)
 {
-  GtkBindingEntry *entry;
+  BtkBindingEntry *entry;
 
-  keyval = gdk_keyval_to_lower (keyval);
+  keyval = bdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
 
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
@@ -707,39 +707,39 @@ gtk_binding_entry_clear_internal (GtkBindingSet  *binding_set,
 }
 
 /**
- * gtk_binding_entry_add:
- * @binding_set: #a GtkBindingSet to clear an entry of
+ * btk_binding_entry_add:
+ * @binding_set: #a BtkBindingSet to clear an entry of
  * @keyval:      key value of binding to clear
  * @modifiers:   key modifier of binding to clear
  *
  * Adds a binding entry.
  *
- * Deprecated: 2.12: Use gtk_binding_entry_add_signal() instead.
+ * Deprecated: 2.12: Use btk_binding_entry_add_signal() instead.
  */
 
 /**
- * gtk_binding_entry_clear:
+ * btk_binding_entry_clear:
  * @binding_set: binding set to clear an entry of
  * @keyval:      key value of binding to clear
  * @modifiers:   key modifier of binding to clear
  *
  * Clears a binding entry.
  *
- * Deprecated: 2.12: Use gtk_binding_entry_remove() instead.
+ * Deprecated: 2.12: Use btk_binding_entry_remove() instead.
  */
 void
-gtk_binding_entry_clear (GtkBindingSet	*binding_set,
+btk_binding_entry_clear (BtkBindingSet	*binding_set,
 			 guint		 keyval,
-			 GdkModifierType modifiers)
+			 BdkModifierType modifiers)
 {
   g_return_if_fail (binding_set != NULL);
 
-  gtk_binding_entry_clear_internal (binding_set, keyval, modifiers);
+  btk_binding_entry_clear_internal (binding_set, keyval, modifiers);
 }
 
 /**
- * gtk_binding_entry_skip:
- * @binding_set: a #GtkBindingSet to skip an entry of
+ * btk_binding_entry_skip:
+ * @binding_set: a #BtkBindingSet to skip an entry of
  * @keyval:      key value of binding to skip
  * @modifiers:   key modifier of binding to skip
  *
@@ -750,15 +750,15 @@ gtk_binding_entry_clear (GtkBindingSet	*binding_set,
  * Since: 2.12
  */
 void
-gtk_binding_entry_skip (GtkBindingSet  *binding_set,
+btk_binding_entry_skip (BtkBindingSet  *binding_set,
                         guint           keyval,
-                        GdkModifierType modifiers)
+                        BdkModifierType modifiers)
 {
-  GtkBindingEntry *entry;
+  BtkBindingEntry *entry;
 
   g_return_if_fail (binding_set != NULL);
 
-  keyval = gdk_keyval_to_lower (keyval);
+  keyval = bdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
 
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
@@ -770,24 +770,24 @@ gtk_binding_entry_skip (GtkBindingSet  *binding_set,
 }
 
 /**
- * gtk_binding_entry_remove:
- * @binding_set: a #GtkBindingSet to remove an entry of
+ * btk_binding_entry_remove:
+ * @binding_set: a #BtkBindingSet to remove an entry of
  * @keyval:      key value of binding to remove
  * @modifiers:   key modifier of binding to remove
  *
  * Remove a binding previously installed via
- * gtk_binding_entry_add_signal() on @binding_set.
+ * btk_binding_entry_add_signal() on @binding_set.
  */
 void
-gtk_binding_entry_remove (GtkBindingSet	 *binding_set,
+btk_binding_entry_remove (BtkBindingSet	 *binding_set,
 			  guint		  keyval,
-			  GdkModifierType modifiers)
+			  BdkModifierType modifiers)
 {
-  GtkBindingEntry *entry;
+  BtkBindingEntry *entry;
   
   g_return_if_fail (binding_set != NULL);
   
-  keyval = gdk_keyval_to_lower (keyval);
+  keyval = bdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
   
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
@@ -796,46 +796,46 @@ gtk_binding_entry_remove (GtkBindingSet	 *binding_set,
 }
 
 /**
- * gtk_binding_entry_add_signall:
- * @binding_set:  a #GtkBindingSet to add a signal to
+ * btk_binding_entry_add_signall:
+ * @binding_set:  a #BtkBindingSet to add a signal to
  * @keyval:       key value
  * @modifiers:    key modifier
  * @signal_name:  signal name to be bound
- * @binding_args: (transfer none) (element-type GtkBindingArg):
- *     list of #GtkBindingArg signal arguments
+ * @binding_args: (transfer none) (element-type BtkBindingArg):
+ *     list of #BtkBindingArg signal arguments
  *
  * Override or install a new key binding for @keyval with @modifiers on
  * @binding_set.
  */
 void
-gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
+btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
                                guint	       keyval,
-                               GdkModifierType modifiers,
+                               BdkModifierType modifiers,
                                const gchar    *signal_name,
                                GSList	      *binding_args)
 {
-  _gtk_binding_entry_add_signall (binding_set,
+  _btk_binding_entry_add_signall (binding_set,
                                   keyval, modifiers,
                                   signal_name, binding_args);
 }
 
 void
-_gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
+_btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
                                 guint	       keyval,
-                                GdkModifierType modifiers,
+                                BdkModifierType modifiers,
                                 const gchar    *signal_name,
                                 GSList	      *binding_args)
 {
-  GtkBindingEntry *entry;
-  GtkBindingSignal *signal, **signal_p;
+  BtkBindingEntry *entry;
+  BtkBindingSignal *signal, **signal_p;
   GSList *slist;
   guint n = 0;
-  GtkBindingArg *arg;
+  BtkBindingArg *arg;
   
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (signal_name != NULL);
   
-  keyval = gdk_keyval_to_lower (keyval);
+  keyval = bdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
   
   signal = binding_signal_new (signal_name, g_slist_length (binding_args));
@@ -843,12 +843,12 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
   arg = signal->args;
   for (slist = binding_args; slist; slist = slist->next)
     {
-      GtkBindingArg *tmp_arg;
+      BtkBindingArg *tmp_arg;
       
       tmp_arg = slist->data;
       if (!tmp_arg)
 	{
-	  g_warning ("gtk_binding_entry_add_signall(): arg[%u] is `NULL'", n);
+	  g_warning ("btk_binding_entry_add_signall(): arg[%u] is `NULL'", n);
 	  binding_signal_free (signal);
 	  return;
 	}
@@ -863,20 +863,20 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
 	  arg->d.double_data = tmp_arg->d.double_data;
 	  break;
 	case  G_TYPE_STRING:
-          if (tmp_arg->arg_type != GTK_TYPE_IDENTIFIER)
+          if (tmp_arg->arg_type != BTK_TYPE_IDENTIFIER)
 	    arg->arg_type = G_TYPE_STRING;
 	  else
-	    arg->arg_type = GTK_TYPE_IDENTIFIER;
+	    arg->arg_type = BTK_TYPE_IDENTIFIER;
 	  arg->d.string_data = g_strdup (tmp_arg->d.string_data);
 	  if (!arg->d.string_data)
 	    {
-	      g_warning ("gtk_binding_entry_add_signall(): value of `string' arg[%u] is `NULL'", n);
+	      g_warning ("btk_binding_entry_add_signall(): value of `string' arg[%u] is `NULL'", n);
 	      binding_signal_free (signal);
 	      return;
 	    }
 	  break;
 	default:
-	  g_warning ("gtk_binding_entry_add_signall(): unsupported type `%s' for arg[%u]",
+	  g_warning ("btk_binding_entry_add_signall(): unsupported type `%s' for arg[%u]",
 		     g_type_name (arg->arg_type), n);
 	  binding_signal_free (signal);
 	  return;
@@ -888,7 +888,7 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
   entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
   if (!entry)
     {
-      gtk_binding_entry_clear_internal (binding_set, keyval, modifiers);
+      btk_binding_entry_clear_internal (binding_set, keyval, modifiers);
       entry = binding_ht_lookup_entry (binding_set, keyval, modifiers);
     }
   signal_p = &entry->signals;
@@ -898,8 +898,8 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
 }
 
 /**
- * gtk_binding_entry_add_signal:
- * @binding_set: a #GtkBindingSet to install an entry for
+ * btk_binding_entry_add_signal:
+ * @binding_set: a #BtkBindingSet to install an entry for
  * @keyval:      key value of binding to install
  * @modifiers:   key modifier of binding to install
  * @signal_name: signal to execute upon activation
@@ -912,9 +912,9 @@ _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
  * arguments.
  */
 void
-gtk_binding_entry_add_signal (GtkBindingSet  *binding_set,
+btk_binding_entry_add_signal (BtkBindingSet  *binding_set,
 			      guint           keyval,
-			      GdkModifierType modifiers,
+			      BdkModifierType modifiers,
 			      const gchar    *signal_name,
 			      guint           n_args,
 			      ...)
@@ -930,9 +930,9 @@ gtk_binding_entry_add_signal (GtkBindingSet  *binding_set,
   slist = NULL;
   for (i = 0; i < n_args; i++)
     {
-      GtkBindingArg *arg;
+      BtkBindingArg *arg;
 
-      arg = g_slice_new0 (GtkBindingArg);
+      arg = g_slice_new0 (BtkBindingArg);
       slist = g_slist_prepend (slist, arg);
 
       arg->arg_type = va_arg (args, GType);
@@ -959,19 +959,19 @@ gtk_binding_entry_add_signal (GtkBindingSet  *binding_set,
 	  arg->d.double_data = va_arg (args, gdouble);
 	  break;
 	case G_TYPE_STRING:
-	  if (arg->arg_type != GTK_TYPE_IDENTIFIER)
+	  if (arg->arg_type != BTK_TYPE_IDENTIFIER)
 	    arg->arg_type = G_TYPE_STRING;
 	  arg->d.string_data = va_arg (args, gchar*);
 	  if (!arg->d.string_data)
 	    {
-	      g_warning ("gtk_binding_entry_add_signal(): type `%s' arg[%u] is `NULL'",
+	      g_warning ("btk_binding_entry_add_signal(): type `%s' arg[%u] is `NULL'",
 			 g_type_name (arg->arg_type),
 			 i);
 	      i += n_args + 1;
 	    }
 	  break;
 	default:
-	  g_warning ("gtk_binding_entry_add_signal(): unsupported type `%s' for arg[%u]",
+	  g_warning ("btk_binding_entry_add_signal(): unsupported type `%s' for arg[%u]",
 		     g_type_name (arg->arg_type), i);
 	  i += n_args + 1;
 	  break;
@@ -982,33 +982,33 @@ gtk_binding_entry_add_signal (GtkBindingSet  *binding_set,
   if (i == n_args || i == 0)
     {
       slist = g_slist_reverse (slist);
-      _gtk_binding_entry_add_signall (binding_set, keyval, modifiers, signal_name, slist);
+      _btk_binding_entry_add_signall (binding_set, keyval, modifiers, signal_name, slist);
     }
 
   free_slist = slist;
   while (slist)
     {
-      g_slice_free (GtkBindingArg, slist->data);
+      g_slice_free (BtkBindingArg, slist->data);
       slist = slist->next;
     }
   g_slist_free (free_slist);
 }
 
 /**
- * gtk_binding_set_add_path:
- * @binding_set:  a #GtkBindingSet to add a path to
+ * btk_binding_set_add_path:
+ * @binding_set:  a #BtkBindingSet to add a path to
  * @path_type:    path type the pattern applies to
  * @path_pattern: the actual match pattern
  * @priority:     binding priority
  *
- * This function is used internally by the GtkRC parsing mechanism to
- * assign match patterns to #GtkBindingSet structures.
+ * This function is used internally by the BtkRC parsing mechanism to
+ * assign match patterns to #BtkBindingSet structures.
  */
 void
-gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
-			  GtkPathType	      path_type,
+btk_binding_set_add_path (BtkBindingSet	     *binding_set,
+			  BtkPathType	      path_type,
 			  const gchar	     *path_pattern,
-			  GtkPathPriorityType priority)
+			  BtkPathPriorityType priority)
 {
   PatternSpec *pspec;
   GSList **slist_p, *slist;
@@ -1016,19 +1016,19 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
   
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (path_pattern != NULL);
-  g_return_if_fail (priority <= GTK_PATH_PRIO_MASK);
+  g_return_if_fail (priority <= BTK_PATH_PRIO_MASK);
 
-  priority &= GTK_PATH_PRIO_MASK;
+  priority &= BTK_PATH_PRIO_MASK;
   
   switch (path_type)
     {
-    case  GTK_PATH_WIDGET:
+    case  BTK_PATH_WIDGET:
       slist_p = &binding_set->widget_path_pspecs;
       break;
-    case  GTK_PATH_WIDGET_CLASS:
+    case  BTK_PATH_WIDGET_CLASS:
       slist_p = &binding_set->widget_class_pspecs;
       break;
-    case  GTK_PATH_CLASS:
+    case  BTK_PATH_CLASS:
       slist_p = &binding_set->class_branch_pspecs;
       break;
     default:
@@ -1039,10 +1039,10 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
   
   pspec = g_new (PatternSpec, 1);
   pspec->type = path_type;
-  if (path_type == GTK_PATH_WIDGET_CLASS)
+  if (path_type == BTK_PATH_WIDGET_CLASS)
     {
       pspec->pspec = NULL;
-      pspec->path = _gtk_rc_parse_widget_class_path (path_pattern);
+      pspec->path = _btk_rc_parse_widget_class_path (path_pattern);
     }
   else
     {
@@ -1063,7 +1063,7 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
       
       if (g_pattern_spec_equal (tmp_pspec->pspec, pspec->pspec))
 	{
-	  GtkPathPriorityType lprio = tmp_pspec->seq_id >> 28;
+	  BtkPathPriorityType lprio = tmp_pspec->seq_id >> 28;
 
 	  pattern_spec_free (pspec);
 	  pspec = NULL;
@@ -1084,7 +1084,7 @@ gtk_binding_set_add_path (GtkBindingSet	     *binding_set,
 
 static gboolean
 binding_match_activate (GSList          *pspec_list,
-			GtkObject	*object,
+			BtkObject	*object,
 			guint	         path_length,
 			gchar           *path,
 			gchar           *path_reversed,
@@ -1097,14 +1097,14 @@ binding_match_activate (GSList          *pspec_list,
   for (slist = pspec_list; slist; slist = slist->next)
     {
       PatternSpec *pspec;
-      GtkBindingSet *binding_set;
+      BtkBindingSet *binding_set;
 
       binding_set = NULL;
       pspec = slist->data;
       
-      if (pspec->type == GTK_PATH_WIDGET_CLASS)
+      if (pspec->type == BTK_PATH_WIDGET_CLASS)
         {
-          if (_gtk_rc_match_widget_class (pspec->path, path_length, path, path_reversed))
+          if (_btk_rc_match_widget_class (pspec->path, path_length, path, path_reversed))
 	    binding_set = pspec->user_data;
         }
       else
@@ -1121,7 +1121,7 @@ binding_match_activate (GSList          *pspec_list,
               return FALSE;
             }
 
-          if (gtk_binding_entry_activate (binding_set->current, object))
+          if (btk_binding_entry_activate (binding_set->current, object))
             return TRUE;
         }
     }
@@ -1130,7 +1130,7 @@ binding_match_activate (GSList          *pspec_list,
 }
 
 static gint
-gtk_binding_pattern_compare (gconstpointer new_pattern,
+btk_binding_pattern_compare (gconstpointer new_pattern,
 			     gconstpointer existing_pattern)
 {
   register const PatternSpec *np  = new_pattern;
@@ -1144,8 +1144,8 @@ gtk_binding_pattern_compare (gconstpointer new_pattern,
 }
 
 static GSList*
-gtk_binding_entries_sort_patterns (GSList      *entries,
-				   GtkPathType  path_id,
+btk_binding_entries_sort_patterns (GSList      *entries,
+				   BtkPathType  path_id,
 				   gboolean     is_release)
 {
   GSList *patterns;
@@ -1154,8 +1154,8 @@ gtk_binding_entries_sort_patterns (GSList      *entries,
   patterns = NULL;
   for (tmp_list = entries; tmp_list; tmp_list = tmp_list->next)
     {
-      GtkBindingEntry *entry = tmp_list->data;
-      GtkBindingSet *binding_set;
+      BtkBindingEntry *entry = tmp_list->data;
+      BtkBindingSet *binding_set;
 
       binding_set = entry->binding_set;
       binding_set->current = NULL;
@@ -1163,11 +1163,11 @@ gtk_binding_entries_sort_patterns (GSList      *entries,
   
   for (; entries; entries = entries->next)
     {
-      GtkBindingEntry *entry = entries->data;
-      GtkBindingSet *binding_set;
+      BtkBindingEntry *entry = entries->data;
+      BtkBindingSet *binding_set;
       GSList *slist = NULL;
 
-      if (is_release != ((entry->modifiers & GDK_RELEASE_MASK) != 0))
+      if (is_release != ((entry->modifiers & BDK_RELEASE_MASK) != 0))
 	continue;
 
       binding_set = entry->binding_set;
@@ -1178,13 +1178,13 @@ gtk_binding_entries_sort_patterns (GSList      *entries,
 
       switch (path_id)
 	{
-	case GTK_PATH_WIDGET:
+	case BTK_PATH_WIDGET:
 	  slist = binding_set->widget_path_pspecs;
 	  break;
-	case GTK_PATH_WIDGET_CLASS:
+	case BTK_PATH_WIDGET_CLASS:
 	  slist = binding_set->widget_class_pspecs;
 	  break;
-	case GTK_PATH_CLASS:
+	case BTK_PATH_CLASS:
 	  slist = binding_set->class_branch_pspecs;
 	  break;
 	}
@@ -1194,7 +1194,7 @@ gtk_binding_entries_sort_patterns (GSList      *entries,
 	  PatternSpec *pspec;
 
 	  pspec = slist->data;
-	  patterns = g_slist_insert_sorted (patterns, pspec, gtk_binding_pattern_compare);
+	  patterns = g_slist_insert_sorted (patterns, pspec, btk_binding_pattern_compare);
 	}
     }
 
@@ -1202,11 +1202,11 @@ gtk_binding_entries_sort_patterns (GSList      *entries,
 }
 
 static gboolean
-gtk_bindings_activate_list (GtkObject *object,
+btk_bindings_activate_list (BtkObject *object,
 			    GSList    *entries,
 			    gboolean   is_release)
 {
-  GtkWidget *widget = GTK_WIDGET (object);
+  BtkWidget *widget = BTK_WIDGET (object);
   gboolean handled = FALSE;
 
   if (!entries)
@@ -1219,8 +1219,8 @@ gtk_bindings_activate_list (GtkObject *object,
       GSList *patterns;
       gboolean unbound;
 
-      gtk_widget_path (widget, &path_length, &path, &path_reversed);
-      patterns = gtk_binding_entries_sort_patterns (entries, GTK_PATH_WIDGET, is_release);
+      btk_widget_path (widget, &path_length, &path, &path_reversed);
+      patterns = btk_binding_entries_sort_patterns (entries, BTK_PATH_WIDGET, is_release);
       handled = binding_match_activate (patterns, object, path_length, path, path_reversed, &unbound);
       g_slist_free (patterns);
       g_free (path);
@@ -1237,8 +1237,8 @@ gtk_bindings_activate_list (GtkObject *object,
       GSList *patterns;
       gboolean unbound;
 
-      gtk_widget_class_path (widget, &path_length, &path, &path_reversed);
-      patterns = gtk_binding_entries_sort_patterns (entries, GTK_PATH_WIDGET_CLASS, is_release);
+      btk_widget_class_path (widget, &path_length, &path, &path_reversed);
+      patterns = btk_binding_entries_sort_patterns (entries, BTK_PATH_WIDGET_CLASS, is_release);
       handled = binding_match_activate (patterns, object, path_length, path, path_reversed, &unbound);
       g_slist_free (patterns);
       g_free (path);
@@ -1254,7 +1254,7 @@ gtk_bindings_activate_list (GtkObject *object,
       GType class_type;
       gboolean unbound = FALSE;
 
-      patterns = gtk_binding_entries_sort_patterns (entries, GTK_PATH_CLASS, is_release);
+      patterns = btk_binding_entries_sort_patterns (entries, BTK_PATH_CLASS, is_release);
       class_type = G_TYPE_FROM_INSTANCE (object);
       while (class_type && !handled)
 	{
@@ -1285,7 +1285,7 @@ gtk_bindings_activate_list (GtkObject *object,
 }
 
 /**
- * gtk_bindings_activate:
+ * btk_bindings_activate:
  * @object: object to activate when binding found
  * @keyval: key value of the binding
  * @modifiers: key modifier of the binding
@@ -1296,30 +1296,30 @@ gtk_bindings_activate_list (GtkObject *object,
  * Return value: %TRUE if a binding was found and activated
  */
 gboolean
-gtk_bindings_activate (GtkObject       *object,
+btk_bindings_activate (BtkObject       *object,
 		       guint	        keyval,
-		       GdkModifierType  modifiers)
+		       BdkModifierType  modifiers)
 {
   GSList *entries = NULL;
-  GdkDisplay *display;
-  GtkKeyHash *key_hash;
+  BdkDisplay *display;
+  BtkKeyHash *key_hash;
   gboolean handled = FALSE;
   gboolean is_release;
 
-  g_return_val_if_fail (GTK_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (BTK_IS_OBJECT (object), FALSE);
 
-  if (!GTK_IS_WIDGET (object))
+  if (!BTK_IS_WIDGET (object))
     return FALSE;
 
-  is_release = (modifiers & GDK_RELEASE_MASK) != 0;
-  modifiers = modifiers & BINDING_MOD_MASK () & ~GDK_RELEASE_MASK;
+  is_release = (modifiers & BDK_RELEASE_MASK) != 0;
+  modifiers = modifiers & BINDING_MOD_MASK () & ~BDK_RELEASE_MASK;
 
-  display = gtk_widget_get_display (GTK_WIDGET (object));
-  key_hash = binding_key_hash_for_keymap (gdk_keymap_get_for_display (display));
+  display = btk_widget_get_display (BTK_WIDGET (object));
+  key_hash = binding_key_hash_for_keymap (bdk_keymap_get_for_display (display));
   
-  entries = _gtk_key_hash_lookup_keyval (key_hash, keyval, modifiers);
+  entries = _btk_key_hash_lookup_keyval (key_hash, keyval, modifiers);
 
-  handled = gtk_bindings_activate_list (object, entries, is_release);
+  handled = btk_bindings_activate_list (object, entries, is_release);
 
   g_slist_free (entries);
 
@@ -1327,9 +1327,9 @@ gtk_bindings_activate (GtkObject       *object,
 }
 
 /**
- * gtk_bindings_activate_event:
- * @object: a #GtkObject (generally must be a widget)
- * @event: a #GdkEventKey
+ * btk_bindings_activate_event:
+ * @object: a #BtkObject (generally must be a widget)
+ * @event: a #BdkEventKey
  * 
  * Looks up key bindings for @object to find one matching
  * @event, and if one was found, activate it.
@@ -1339,30 +1339,30 @@ gtk_bindings_activate (GtkObject       *object,
  * Since: 2.4
  */
 gboolean
-gtk_bindings_activate_event (GtkObject   *object,
-                             GdkEventKey *event)
+btk_bindings_activate_event (BtkObject   *object,
+                             BdkEventKey *event)
 {
   GSList *entries = NULL;
-  GdkDisplay *display;
-  GtkKeyHash *key_hash;
+  BdkDisplay *display;
+  BtkKeyHash *key_hash;
   gboolean handled = FALSE;
 
-  g_return_val_if_fail (GTK_IS_OBJECT (object), FALSE);
+  g_return_val_if_fail (BTK_IS_OBJECT (object), FALSE);
 
-  if (!GTK_IS_WIDGET (object))
+  if (!BTK_IS_WIDGET (object))
     return FALSE;
 
-  display = gtk_widget_get_display (GTK_WIDGET (object));
-  key_hash = binding_key_hash_for_keymap (gdk_keymap_get_for_display (display));
+  display = btk_widget_get_display (BTK_WIDGET (object));
+  key_hash = binding_key_hash_for_keymap (bdk_keymap_get_for_display (display));
 
-  entries = _gtk_key_hash_lookup (key_hash,
+  entries = _btk_key_hash_lookup (key_hash,
 				  event->hardware_keycode,
 				  event->state,
-				  BINDING_MOD_MASK () & ~GDK_RELEASE_MASK,
+				  BINDING_MOD_MASK () & ~BDK_RELEASE_MASK,
 				  event->group);
   
-  handled = gtk_bindings_activate_list (object, entries,
-					event->type == GDK_KEY_RELEASE);
+  handled = btk_bindings_activate_list (object, entries,
+					event->type == BDK_KEY_RELEASE);
 
   g_slist_free (entries);
 
@@ -1370,10 +1370,10 @@ gtk_bindings_activate_event (GtkObject   *object,
 }
 
 static guint
-gtk_binding_parse_signal (GScanner       *scanner,
-			  GtkBindingSet  *binding_set,
+btk_binding_parse_signal (GScanner       *scanner,
+			  BtkBindingSet  *binding_set,
 			  guint		  keyval,
-			  GdkModifierType modifiers)
+			  BdkModifierType modifiers)
 {
   gchar *signal;
   guint expected_token = 0;
@@ -1413,13 +1413,13 @@ gtk_binding_parse_signal (GScanner       *scanner,
       g_scanner_get_next_token (scanner);
       switch ((guint) scanner->token)
 	{
-	  GtkBindingArg *arg;
+	  BtkBindingArg *arg;
 
 	case G_TOKEN_FLOAT:
 	  if (need_arg)
 	    {
 	      need_arg = FALSE;
-	      arg = g_new (GtkBindingArg, 1);
+	      arg = g_new (BtkBindingArg, 1);
 	      arg->arg_type = G_TYPE_DOUBLE;
 	      arg->d.double_data = scanner->value.v_float;
 	      if (negate)
@@ -1436,7 +1436,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
 	  if (need_arg)
 	    {
 	      need_arg = FALSE;
-	      arg = g_new (GtkBindingArg, 1);
+	      arg = g_new (BtkBindingArg, 1);
 	      arg->arg_type = G_TYPE_LONG;
 	      arg->d.long_data = scanner->value.v_int;
 	      if (negate)
@@ -1453,7 +1453,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
 	  if (need_arg && !negate)
 	    {
 	      need_arg = FALSE;
-	      arg = g_new (GtkBindingArg, 1);
+	      arg = g_new (BtkBindingArg, 1);
 	      arg->arg_type = G_TYPE_STRING;
 	      arg->d.string_data = g_strdup (scanner->value.v_string);
 	      args = g_slist_prepend (args, arg);
@@ -1465,8 +1465,8 @@ gtk_binding_parse_signal (GScanner       *scanner,
 	  if (need_arg && !negate)
 	    {
 	      need_arg = FALSE;
-	      arg = g_new (GtkBindingArg, 1);
-	      arg->arg_type = GTK_TYPE_IDENTIFIER;
+	      arg = g_new (BtkBindingArg, 1);
+	      arg->arg_type = BTK_TYPE_IDENTIFIER;
 	      arg->d.string_data = g_strdup (scanner->value.v_identifier);
 	      args = g_slist_prepend (args, arg);
 	    }
@@ -1495,7 +1495,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
 	  if (!(need_arg && seen_comma) && !negate)
 	    {
 	      args = g_slist_reverse (args);
-	      _gtk_binding_entry_add_signall (binding_set,
+	      _btk_binding_entry_add_signall (binding_set,
                                               keyval,
                                               modifiers,
                                               signal,
@@ -1514,7 +1514,7 @@ gtk_binding_parse_signal (GScanner       *scanner,
   
   for (slist = args; slist; slist = slist->next)
     {
-      GtkBindingArg *arg;
+      BtkBindingArg *arg;
 
       arg = slist->data;
       if (G_TYPE_FUNDAMENTAL (arg->arg_type) == G_TYPE_STRING)
@@ -1528,31 +1528,31 @@ gtk_binding_parse_signal (GScanner       *scanner,
 }
 
 static inline guint
-gtk_binding_parse_bind (GScanner       *scanner,
-			GtkBindingSet  *binding_set)
+btk_binding_parse_bind (GScanner       *scanner,
+			BtkBindingSet  *binding_set)
 {
   guint keyval = 0;
-  GdkModifierType modifiers = 0;
+  BdkModifierType modifiers = 0;
   gboolean unbind = FALSE;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
   
   g_scanner_get_next_token (scanner);
-  if (scanner->token != (guint) GTK_RC_TOKEN_BIND &&
-      scanner->token != (guint) GTK_RC_TOKEN_UNBIND)
-    return GTK_RC_TOKEN_BIND;
-  unbind = scanner->token == (guint) GTK_RC_TOKEN_UNBIND;
+  if (scanner->token != (guint) BTK_RC_TOKEN_BIND &&
+      scanner->token != (guint) BTK_RC_TOKEN_UNBIND)
+    return BTK_RC_TOKEN_BIND;
+  unbind = scanner->token == (guint) BTK_RC_TOKEN_UNBIND;
   g_scanner_get_next_token (scanner);
   if (scanner->token != (guint) G_TOKEN_STRING)
     return G_TOKEN_STRING;
-  gtk_accelerator_parse (scanner->value.v_string, &keyval, &modifiers);
+  btk_accelerator_parse (scanner->value.v_string, &keyval, &modifiers);
   modifiers &= BINDING_MOD_MASK ();
   if (keyval == 0)
     return G_TOKEN_STRING;
 
   if (unbind)
     {
-      gtk_binding_entry_skip (binding_set, keyval, modifiers);
+      btk_binding_entry_skip (binding_set, keyval, modifiers);
       return G_TOKEN_NONE;
     }
 
@@ -1561,7 +1561,7 @@ gtk_binding_parse_bind (GScanner       *scanner,
   if (scanner->token != '{')
     return '{';
 
-  gtk_binding_entry_clear_internal (binding_set, keyval, modifiers);
+  btk_binding_entry_clear_internal (binding_set, keyval, modifiers);
 
   g_scanner_peek_next_token (scanner);
   while (scanner->next_token != '}')
@@ -1571,7 +1571,7 @@ gtk_binding_parse_bind (GScanner       *scanner,
 	  guint expected_token;
 
 	case G_TOKEN_STRING:
-	  expected_token = gtk_binding_parse_signal (scanner,
+	  expected_token = btk_binding_parse_signal (scanner,
 						     binding_set,
 						     keyval,
 						     modifiers);
@@ -1590,32 +1590,32 @@ gtk_binding_parse_bind (GScanner       *scanner,
 }
 
 /**
- * gtk_binding_parse_binding:
- * @scanner: GtkRC scanner
+ * btk_binding_parse_binding:
+ * @scanner: BtkRC scanner
  *
- * Parse a binding entry from a gtkrc file.
+ * Parse a binding entry from a btkrc file.
  *
  * Return value: expected token upon errors, %G_TOKEN_NONE on success.
  *
- * Deprecated: 2.12: There should be no need to call this function outside GTK+.
+ * Deprecated: 2.12: There should be no need to call this function outside BTK+.
  */
 guint
-gtk_binding_parse_binding (GScanner *scanner)
+btk_binding_parse_binding (GScanner *scanner)
 {
-  return _gtk_binding_parse_binding (scanner);
+  return _btk_binding_parse_binding (scanner);
 }
 
 guint
-_gtk_binding_parse_binding (GScanner *scanner)
+_btk_binding_parse_binding (GScanner *scanner)
 {
   gchar *name;
-  GtkBindingSet *binding_set;
+  BtkBindingSet *binding_set;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
 
   g_scanner_get_next_token (scanner);
-  if (scanner->token != (guint) GTK_RC_TOKEN_BINDING)
-    return GTK_RC_TOKEN_BINDING;
+  if (scanner->token != (guint) BTK_RC_TOKEN_BINDING)
+    return BTK_RC_TOKEN_BINDING;
   g_scanner_get_next_token (scanner);
   if (scanner->token != (guint) G_TOKEN_STRING)
     return G_TOKEN_STRING;
@@ -1628,10 +1628,10 @@ _gtk_binding_parse_binding (GScanner *scanner)
       return G_TOKEN_STRING;
     }
 
-  binding_set = gtk_binding_set_find (name);
+  binding_set = btk_binding_set_find (name);
   if (!binding_set)
     {
-      binding_set = gtk_binding_set_new (name);
+      binding_set = btk_binding_set_new (name);
       binding_set->parsed = 1;
     }
   g_free (name);
@@ -1643,9 +1643,9 @@ _gtk_binding_parse_binding (GScanner *scanner)
 	{
 	  guint expected_token;
 
-	case GTK_RC_TOKEN_BIND:
-	case GTK_RC_TOKEN_UNBIND:
-	  expected_token = gtk_binding_parse_bind (scanner, binding_set);
+	case BTK_RC_TOKEN_BIND:
+	case BTK_RC_TOKEN_UNBIND:
+	  expected_token = btk_binding_parse_bind (scanner, binding_set);
 	  if (expected_token != G_TOKEN_NONE)
 	    return expected_token;
 	  break;
@@ -1678,9 +1678,9 @@ free_pattern_specs (GSList *pattern_specs)
 }
 
 static void
-binding_set_delete (GtkBindingSet *binding_set)
+binding_set_delete (BtkBindingSet *binding_set)
 {
-  GtkBindingEntry *entry, *next;
+  BtkBindingEntry *entry, *next;
 
   entry = binding_set->entries;
   while (entry)
@@ -1698,19 +1698,19 @@ binding_set_delete (GtkBindingSet *binding_set)
 }
 
 /**
- * _gtk_binding_reset_parsed:
+ * _btk_binding_reset_parsed:
  * 
- * Remove all binding sets that were added by gtk_binding_parse_binding().
+ * Remove all binding sets that were added by btk_binding_parse_binding().
  */
 void
-_gtk_binding_reset_parsed (void)
+_btk_binding_reset_parsed (void)
 {
   GSList *slist, *next;
   
   slist = binding_set_list;
   while (slist)
     {
-      GtkBindingSet *binding_set;
+      BtkBindingSet *binding_set;
 
       binding_set = slist->data;
       next = slist->next;
@@ -1725,5 +1725,5 @@ _gtk_binding_reset_parsed (void)
     }
 }
 
-#define __GTK_BINDINGS_C__
-#include "gtkaliasdef.c"
+#define __BTK_BINDINGS_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_BOX_H__
-#define __GAIL_BOX_H__
+#ifndef __BAIL_BOX_H__
+#define __BAIL_BOX_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_BOX                        (gail_box_get_type ())
-#define GAIL_BOX(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_BOX, GailBox))
-#define GAIL_BOX_CLASS(klass)                (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_BOX, GailBoxClass))
-#define GAIL_IS_BOX(obj)                     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_BOX))
-#define GAIL_IS_BOX_CLASS(klass)             (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_BOX))
-#define GAIL_BOX_GET_CLASS(obj)              (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_BOX, GailBoxClass))
+#define BAIL_TYPE_BOX                        (bail_box_get_type ())
+#define BAIL_BOX(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOX, BailBox))
+#define BAIL_BOX_CLASS(klass)                (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BOX, BailBoxClass))
+#define BAIL_IS_BOX(obj)                     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BOX))
+#define BAIL_IS_BOX_CLASS(klass)             (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BOX))
+#define BAIL_BOX_GET_CLASS(obj)              (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BOX, BailBoxClass))
 
-typedef struct _GailBox              GailBox;
-typedef struct _GailBoxClass         GailBoxClass;
+typedef struct _BailBox              BailBox;
+typedef struct _BailBoxClass         BailBoxClass;
 
-struct _GailBox
+struct _BailBox
 {
-  GailContainer parent;
+  BailContainer parent;
 };
 
-GType gail_box_get_type (void);
+GType bail_box_get_type (void);
 
-struct _GailBoxClass
+struct _BailBoxClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_BOX_H__ */
+#endif /* __BAIL_BOX_H__ */

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
  *
@@ -19,11 +19,11 @@
  */
 
 #include "config.h"
-#define GDK_PIXBUF_ENABLE_BACKEND /* Ugly? */
-#include "gdkdisplay.h"
-#include "gdkscreen.h"
-#include "gdkcursor.h"
-#include "gdkprivate-win32.h"
+#define BDK_PIXBUF_ENABLE_BACKEND /* Ugly? */
+#include "bdkdisplay.h"
+#include "bdkscreen.h"
+#include "bdkcursor.h"
+#include "bdkprivate-win32.h"
 
 #ifdef __MINGW32__
 #include <w32api.h>
@@ -61,14 +61,14 @@ typedef struct {
 #endif
 
 static HCURSOR
-hcursor_from_type (GdkCursorType cursor_type)
+hcursor_from_type (BdkCursorType cursor_type)
 {
   gint i, j, x, y, ofs;
   HCURSOR rv;
   gint w, h;
   guchar *and_plane, *xor_plane;
 
-  if (cursor_type != GDK_BLANK_CURSOR)
+  if (cursor_type != BDK_BLANK_CURSOR)
     {
       for (i = 0; i < G_N_ELEMENTS (cursors); i++)
 	if (cursors[i].type == cursor_type)
@@ -90,7 +90,7 @@ hcursor_from_type (GdkCursorType cursor_type)
   xor_plane = g_malloc ((w/8) * h);
   memset (xor_plane, 0, (w/8) * h);
 
-  if (cursor_type != GDK_BLANK_CURSOR)
+  if (cursor_type != BDK_BLANK_CURSOR)
     {
 
 #define SET_BIT(v,b)  (v |= (1 << b))
@@ -119,12 +119,12 @@ hcursor_from_type (GdkCursorType cursor_type)
 #undef SET_BIT
 #undef RESET_BIT
 
-      rv = CreateCursor (_gdk_app_hmodule, cursors[i].hotx, cursors[i].hoty,
+      rv = CreateCursor (_bdk_app_hmodule, cursors[i].hotx, cursors[i].hoty,
 			 w, h, and_plane, xor_plane);
     }
   else
     {
-      rv = CreateCursor (_gdk_app_hmodule, 0, 0,
+      rv = CreateCursor (_bdk_app_hmodule, 0, 0,
 			 w, h, and_plane, xor_plane);
     }
   if (rv == NULL)
@@ -135,58 +135,58 @@ hcursor_from_type (GdkCursorType cursor_type)
   return rv;
 }
 
-static GdkCursor*
+static BdkCursor*
 cursor_new_from_hcursor (HCURSOR       hcursor,
-			 GdkCursorType cursor_type)
+			 BdkCursorType cursor_type)
 {
-  GdkCursorPrivate *private;
-  GdkCursor *cursor;
+  BdkCursorPrivate *private;
+  BdkCursor *cursor;
 
-  private = g_new (GdkCursorPrivate, 1);
+  private = g_new (BdkCursorPrivate, 1);
   private->hcursor = hcursor;
-  cursor = (GdkCursor*) private;
+  cursor = (BdkCursor*) private;
   cursor->type = cursor_type;
   cursor->ref_count = 1;
 
   return cursor;
 }
 
-GdkCursor*
-gdk_cursor_new_for_display (GdkDisplay   *display,
-			    GdkCursorType cursor_type)
+BdkCursor*
+bdk_cursor_new_for_display (BdkDisplay   *display,
+			    BdkCursorType cursor_type)
 {
   HCURSOR hcursor;
 
-  g_return_val_if_fail (display == _gdk_display, NULL);
+  g_return_val_if_fail (display == _bdk_display, NULL);
 
   hcursor = hcursor_from_type (cursor_type);
 
   if (hcursor == NULL)
-    g_warning ("gdk_cursor_new_for_display: no cursor %d found", cursor_type);
+    g_warning ("bdk_cursor_new_for_display: no cursor %d found", cursor_type);
   else
-    GDK_NOTE (CURSOR, g_print ("gdk_cursor_new_for_display: %d: %p\n",
+    BDK_NOTE (CURSOR, g_print ("bdk_cursor_new_for_display: %d: %p\n",
 			       cursor_type, hcursor));
 
   return cursor_new_from_hcursor (hcursor, cursor_type);
 }
 
 static gboolean
-color_is_white (const GdkColor *color)
+color_is_white (const BdkColor *color)
 {
   return (color->red == 0xFFFF
 	  && color->green == 0xFFFF
 	  && color->blue == 0xFFFF);
 }
 
-GdkCursor*
-gdk_cursor_new_from_pixmap (GdkPixmap      *source,
-			    GdkPixmap      *mask,
-			    const GdkColor *fg,
-			    const GdkColor *bg,
+BdkCursor*
+bdk_cursor_new_from_pixmap (BdkPixmap      *source,
+			    BdkPixmap      *mask,
+			    const BdkColor *fg,
+			    const BdkColor *bg,
 			    gint            x,
 			    gint            y)
 {
-  GdkPixmapImplWin32 *source_impl, *mask_impl;
+  BdkPixmapImplWin32 *source_impl, *mask_impl;
   guchar *source_bits, *mask_bits;
   gint source_bpl, mask_bpl;
   HCURSOR hcursor;
@@ -196,16 +196,16 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   gint ix, iy;
   const gboolean bg_is_white = color_is_white (bg);
   
-  g_return_val_if_fail (GDK_IS_PIXMAP (source), NULL);
-  g_return_val_if_fail (GDK_IS_PIXMAP (mask), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (source), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (mask), NULL);
   g_return_val_if_fail (fg != NULL, NULL);
   g_return_val_if_fail (bg != NULL, NULL);
 
   /* Flush outstanding GDI ops before accessing pixmap->bits */
   GdiFlush ();
 
-  source_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (source)->impl);
-  mask_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (mask)->impl);
+  source_impl = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (source)->impl);
+  mask_impl = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (mask)->impl);
 
   g_return_val_if_fail (source_impl->width == mask_impl->width
 			&& source_impl->height == mask_impl->height,
@@ -223,15 +223,15 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   source_bits = source_impl->bits;
   mask_bits = mask_impl->bits;
 
-  g_return_val_if_fail (GDK_PIXMAP_OBJECT (source)->depth == 1
-  			&& GDK_PIXMAP_OBJECT (mask)->depth == 1,
+  g_return_val_if_fail (BDK_PIXMAP_OBJECT (source)->depth == 1
+  			&& BDK_PIXMAP_OBJECT (mask)->depth == 1,
 			NULL);
 
   source_bpl = ((width - 1)/32 + 1)*4;
   mask_bpl = ((mask_impl->width - 1)/32 + 1)*4;
 
-  GDK_NOTE (CURSOR, {
-      g_print ("gdk_cursor_new_from_pixmap: source=%p:\n",
+  BDK_NOTE (CURSOR, {
+      g_print ("bdk_cursor_new_from_pixmap: source=%p:\n",
 	       source_impl->parent_instance.handle);
       for (iy = 0; iy < height; iy++)
 	{
@@ -327,33 +327,33 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
       q[-1] |= residue;	/* Set left-over bits */
     }
       
-  hcursor = CreateCursor (_gdk_app_hmodule, x, y, cursor_width, cursor_height,
+  hcursor = CreateCursor (_bdk_app_hmodule, x, y, cursor_width, cursor_height,
 			  and_mask, xor_mask);
 
-  GDK_NOTE (CURSOR, g_print ("gdk_cursor_new_from_pixmap: "
+  BDK_NOTE (CURSOR, g_print ("bdk_cursor_new_from_pixmap: "
 			     "%p (%dx%d) %p (%dx%d) = %p (%dx%d)\n",
-			     GDK_PIXMAP_HBITMAP (source),
+			     BDK_PIXMAP_HBITMAP (source),
 			     source_impl->width, source_impl->height,
-			     GDK_PIXMAP_HBITMAP (mask),
+			     BDK_PIXMAP_HBITMAP (mask),
 			     mask_impl->width, mask_impl->height,
 			     hcursor, cursor_width, cursor_height));
 
   g_free (xor_mask);
   g_free (and_mask);
 
-  return cursor_new_from_hcursor (hcursor, GDK_CURSOR_IS_PIXMAP);
+  return cursor_new_from_hcursor (hcursor, BDK_CURSOR_IS_PIXMAP);
 }
 
 /* FIXME: The named cursors below are presumably not really useful, as
- * the names are Win32-specific. No GTK+ application developed on Unix
- * (and most cross-platform GTK+ apps are developed on Unix) is going
+ * the names are Win32-specific. No BTK+ application developed on Unix
+ * (and most cross-platform BTK+ apps are developed on Unix) is going
  * to look for cursors under these Win32 names anyway.
  *
  * Would the following make any sense: The ms-windows theme engine
- * calls some (to-be-defined private) API here in gdk/win32 to
+ * calls some (to-be-defined private) API here in bdk/win32 to
  * register the relevant cursors used by the currently active XP
- * visual style under the names that libgtk uses to look for them
- * ("color-picker", "dnd-ask", "dnd-copy", etc), and then when libgtk
+ * visual style under the names that libbtk uses to look for them
+ * ("color-picker", "dnd-ask", "dnd-copy", etc), and then when libbtk
  * asks for those we return the ones registered by the ms-windows
  * theme engine, if any.
  */
@@ -379,14 +379,14 @@ static struct {
   { "wait", IDC_WAIT }
 };
 
-GdkCursor*  
-gdk_cursor_new_from_name (GdkDisplay  *display,
+BdkCursor*  
+bdk_cursor_new_from_name (BdkDisplay  *display,
 			  const gchar *name)
 {
   HCURSOR hcursor = NULL;
   int i;
 
-  g_return_val_if_fail (display == _gdk_display, NULL);
+  g_return_val_if_fail (display == _bdk_display, NULL);
 
   for (i = 0; i < G_N_ELEMENTS(default_cursors); i++)
     {
@@ -395,24 +395,24 @@ gdk_cursor_new_from_name (GdkDisplay  *display,
     }
   /* allow to load named cursor resources linked into the executable */
   if (!hcursor)
-    hcursor = LoadCursor (_gdk_app_hmodule, name);
+    hcursor = LoadCursor (_bdk_app_hmodule, name);
 
   if (hcursor)
-    return cursor_new_from_hcursor (hcursor, GDK_X_CURSOR);
+    return cursor_new_from_hcursor (hcursor, BDK_X_CURSOR);
 
   return NULL;
 }
 
 void
-_gdk_cursor_destroy (GdkCursor *cursor)
+_bdk_cursor_destroy (BdkCursor *cursor)
 {
-  GdkCursorPrivate *private;
+  BdkCursorPrivate *private;
 
   g_return_if_fail (cursor != NULL);
-  private = (GdkCursorPrivate *) cursor;
+  private = (BdkCursorPrivate *) cursor;
 
-  GDK_NOTE (CURSOR, g_print ("_gdk_cursor_destroy: %p\n",
-			     (cursor->type == GDK_CURSOR_IS_PIXMAP) ? private->hcursor : 0));
+  BDK_NOTE (CURSOR, g_print ("_bdk_cursor_destroy: %p\n",
+			     (cursor->type == BDK_CURSOR_IS_PIXMAP) ? private->hcursor : 0));
 
   if (GetCursor () == private->hcursor)
     SetCursor (NULL);
@@ -423,16 +423,16 @@ _gdk_cursor_destroy (GdkCursor *cursor)
   g_free (private);
 }
 
-GdkDisplay *
-gdk_cursor_get_display (GdkCursor *cursor)
+BdkDisplay *
+bdk_cursor_get_display (BdkCursor *cursor)
 {
-  return gdk_display_get_default ();
+  return bdk_display_get_default ();
 }
 
-GdkPixbuf *
-gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
+BdkPixbuf *
+bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon)
 {
-  GdkPixbuf *pixbuf = NULL;
+  BdkPixbuf *pixbuf = NULL;
   ICONINFO ii;
   struct
   {
@@ -478,9 +478,9 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
       if (!GDI_CALL (GetDIBits, (hdc, ii.hbmColor, 0, h, bits, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	goto out2;
 
-      pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, w, h);
-      pixels = gdk_pixbuf_get_pixels (pixbuf);
-      rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+      pixbuf = bdk_pixbuf_new (BDK_COLORSPACE_RGB, TRUE, 8, w, h);
+      pixels = bdk_pixbuf_get_pixels (pixbuf);
+      rowstride = bdk_pixbuf_get_rowstride (pixbuf);
       no_alpha = TRUE;
       for (y = 0; y < h; y++)
 	{
@@ -501,7 +501,7 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
       if (no_alpha &&
 	  GDI_CALL (GetDIBits, (hdc, ii.hbmMask, 0, h, bits, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	{
-	  pixels = gdk_pixbuf_get_pixels (pixbuf);
+	  pixels = bdk_pixbuf_get_pixels (pixbuf);
 	  for (y = 0; y < h; y++)
 	    {
 	      for (x = 0; x < w; x++)
@@ -531,9 +531,9 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
       if (!GDI_CALL (GetDIBits, (hdc, ii.hbmMask, 0, h*2, bits, (BITMAPINFO *)&bmi, DIB_RGB_COLORS)))
 	goto out2;
 
-      pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, w, h);
-      pixels = gdk_pixbuf_get_pixels (pixbuf);
-      rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+      pixbuf = bdk_pixbuf_new (BDK_COLORSPACE_RGB, TRUE, 8, w, h);
+      pixels = bdk_pixbuf_get_pixels (pixbuf);
+      rowstride = bdk_pixbuf_get_rowstride (pixbuf);
       bpl = ((w-1)/32 + 1)*4;
 #if 0
       for (y = 0; y < h*2; y++)
@@ -588,10 +588,10 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
     }
 
   g_snprintf (buf, sizeof (buf), "%ld", ii.xHotspot);
-  gdk_pixbuf_set_option (pixbuf, "x_hot", buf);
+  bdk_pixbuf_set_option (pixbuf, "x_hot", buf);
 
   g_snprintf (buf, sizeof (buf), "%ld", ii.yHotspot);
-  gdk_pixbuf_set_option (pixbuf, "y_hot", buf);
+  bdk_pixbuf_set_option (pixbuf, "y_hot", buf);
 
   /* release temporary resources */
  out2:
@@ -605,63 +605,63 @@ gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon)
   return pixbuf;
 }
 
-GdkPixbuf*  
-gdk_cursor_get_image (GdkCursor *cursor)
+BdkPixbuf*  
+bdk_cursor_get_image (BdkCursor *cursor)
 {
   g_return_val_if_fail (cursor != NULL, NULL);
 
-  return gdk_win32_icon_to_pixbuf_libgtk_only (((GdkCursorPrivate *) cursor)->hcursor);
+  return bdk_win32_icon_to_pixbuf_libbtk_only (((BdkCursorPrivate *) cursor)->hcursor);
 }
 
-GdkCursor *
-gdk_cursor_new_from_pixbuf (GdkDisplay *display, 
-			    GdkPixbuf  *pixbuf,
+BdkCursor *
+bdk_cursor_new_from_pixbuf (BdkDisplay *display, 
+			    BdkPixbuf  *pixbuf,
 			    gint        x,
 			    gint        y)
 {
   HCURSOR hcursor;
 
-  g_return_val_if_fail (display == _gdk_display, NULL);
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-  g_return_val_if_fail (0 <= x && x < gdk_pixbuf_get_width (pixbuf), NULL);
-  g_return_val_if_fail (0 <= y && y < gdk_pixbuf_get_height (pixbuf), NULL);
+  g_return_val_if_fail (display == _bdk_display, NULL);
+  g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), NULL);
+  g_return_val_if_fail (0 <= x && x < bdk_pixbuf_get_width (pixbuf), NULL);
+  g_return_val_if_fail (0 <= y && y < bdk_pixbuf_get_height (pixbuf), NULL);
 
-  hcursor = _gdk_win32_pixbuf_to_hcursor (pixbuf, x, y);
+  hcursor = _bdk_win32_pixbuf_to_hcursor (pixbuf, x, y);
   if (!hcursor)
     return NULL;
-  return cursor_new_from_hcursor (hcursor, GDK_CURSOR_IS_PIXMAP);
+  return cursor_new_from_hcursor (hcursor, BDK_CURSOR_IS_PIXMAP);
 }
 
 gboolean 
-gdk_display_supports_cursor_alpha (GdkDisplay    *display)
+bdk_display_supports_cursor_alpha (BdkDisplay    *display)
 {
-  g_return_val_if_fail (display == _gdk_display, FALSE);
+  g_return_val_if_fail (display == _bdk_display, FALSE);
 
-  return _gdk_win32_pixbuf_to_hicon_supports_alpha ();
+  return _bdk_win32_pixbuf_to_hicon_supports_alpha ();
 }
 
 gboolean 
-gdk_display_supports_cursor_color (GdkDisplay    *display)
+bdk_display_supports_cursor_color (BdkDisplay    *display)
 {
-  g_return_val_if_fail (display == _gdk_display, FALSE);
+  g_return_val_if_fail (display == _bdk_display, FALSE);
 
   return TRUE;
 }
 
 guint     
-gdk_display_get_default_cursor_size (GdkDisplay    *display)
+bdk_display_get_default_cursor_size (BdkDisplay    *display)
 {
-  g_return_val_if_fail (display == _gdk_display, 0);
+  g_return_val_if_fail (display == _bdk_display, 0);
   
   return MIN (GetSystemMetrics (SM_CXCURSOR), GetSystemMetrics (SM_CYCURSOR));
 }
 
 void     
-gdk_display_get_maximal_cursor_size (GdkDisplay *display,
+bdk_display_get_maximal_cursor_size (BdkDisplay *display,
 				     guint       *width,
 				     guint       *height)
 {
-  g_return_if_fail (display == _gdk_display);
+  g_return_if_fail (display == _bdk_display);
   
   if (width)
     *width = GetSystemMetrics (SM_CXCURSOR);
@@ -672,7 +672,7 @@ gdk_display_get_maximal_cursor_size (GdkDisplay *display,
 
 /* Convert a pixbuf to an HICON (or HCURSOR).  Supports alpha under
  * Windows XP, thresholds alpha otherwise.  Also used from
- * gdkwindow-win32.c for creating application icons.
+ * bdkwindow-win32.c for creating application icons.
  */
 
 static HBITMAP
@@ -755,7 +755,7 @@ create_color_bitmap (gint     size,
 }
 
 static gboolean
-pixbuf_to_hbitmaps_alpha_winxp (GdkPixbuf *pixbuf,
+pixbuf_to_hbitmaps_alpha_winxp (BdkPixbuf *pixbuf,
 				HBITMAP   *color,
 				HBITMAP   *mask)
 {
@@ -768,8 +768,8 @@ pixbuf_to_hbitmaps_alpha_winxp (GdkPixbuf *pixbuf,
   gint width, height, size, i, i_offset, j, j_offset, rowstride;
   guint maskstride, mask_bit;
 
-  width = gdk_pixbuf_get_width (pixbuf); /* width of icon */
-  height = gdk_pixbuf_get_height (pixbuf); /* height of icon */
+  width = bdk_pixbuf_get_width (pixbuf); /* width of icon */
+  height = bdk_pixbuf_get_height (pixbuf); /* height of icon */
 
   /* The bitmaps are created square */
   size = MAX (width, height);
@@ -787,8 +787,8 @@ pixbuf_to_hbitmaps_alpha_winxp (GdkPixbuf *pixbuf,
   /* MSDN says mask rows are aligned to "LONG" boundaries */
   maskstride = (((size + 31) & ~31) >> 3);
 
-  indata = gdk_pixbuf_get_pixels (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  indata = bdk_pixbuf_get_pixels (pixbuf);
+  rowstride = bdk_pixbuf_get_rowstride (pixbuf);
 
   if (width > height)
     {
@@ -833,7 +833,7 @@ pixbuf_to_hbitmaps_alpha_winxp (GdkPixbuf *pixbuf,
 }
 
 static gboolean
-pixbuf_to_hbitmaps_normal (GdkPixbuf *pixbuf,
+pixbuf_to_hbitmaps_normal (BdkPixbuf *pixbuf,
 			   HBITMAP   *color,
 			   HBITMAP   *mask)
 {
@@ -847,8 +847,8 @@ pixbuf_to_hbitmaps_normal (GdkPixbuf *pixbuf,
   gboolean has_alpha;
   guint maskstride, mask_bit;
 
-  width = gdk_pixbuf_get_width (pixbuf); /* width of icon */
-  height = gdk_pixbuf_get_height (pixbuf); /* height of icon */
+  width = bdk_pixbuf_get_width (pixbuf); /* width of icon */
+  height = bdk_pixbuf_get_height (pixbuf); /* height of icon */
 
   /* The bitmaps are created square */
   size = MAX (width, height);
@@ -871,10 +871,10 @@ pixbuf_to_hbitmaps_normal (GdkPixbuf *pixbuf,
   /* MSDN says mask rows are aligned to "LONG" boundaries */
   maskstride = (((size + 31) & ~31) >> 3);
 
-  indata = gdk_pixbuf_get_pixels (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  nc = gdk_pixbuf_get_n_channels (pixbuf);
-  has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
+  indata = bdk_pixbuf_get_pixels (pixbuf);
+  rowstride = bdk_pixbuf_get_rowstride (pixbuf);
+  nc = bdk_pixbuf_get_n_channels (pixbuf);
+  has_alpha = bdk_pixbuf_get_has_alpha (pixbuf);
 
   if (width > height)
     {
@@ -923,7 +923,7 @@ pixbuf_to_hbitmaps_normal (GdkPixbuf *pixbuf,
 }
 
 static HICON
-pixbuf_to_hicon (GdkPixbuf *pixbuf,
+pixbuf_to_hicon (BdkPixbuf *pixbuf,
 		 gboolean   is_icon,
 		 gint       x,
 		 gint       y)
@@ -935,7 +935,7 @@ pixbuf_to_hicon (GdkPixbuf *pixbuf,
   if (pixbuf == NULL)
     return NULL;
 
-  if (_gdk_win32_pixbuf_to_hicon_supports_alpha() && gdk_pixbuf_get_has_alpha (pixbuf))
+  if (_bdk_win32_pixbuf_to_hicon_supports_alpha() && bdk_pixbuf_get_has_alpha (pixbuf))
     success = pixbuf_to_hbitmaps_alpha_winxp (pixbuf, &ii.hbmColor, &ii.hbmMask);
   else
     success = pixbuf_to_hbitmaps_normal (pixbuf, &ii.hbmColor, &ii.hbmMask);
@@ -953,13 +953,13 @@ pixbuf_to_hicon (GdkPixbuf *pixbuf,
 }
 
 HICON
-_gdk_win32_pixbuf_to_hicon (GdkPixbuf *pixbuf)
+_bdk_win32_pixbuf_to_hicon (BdkPixbuf *pixbuf)
 {
   return pixbuf_to_hicon (pixbuf, TRUE, 0, 0);
 }
 
 HICON
-_gdk_win32_pixbuf_to_hcursor (GdkPixbuf *pixbuf,
+_bdk_win32_pixbuf_to_hcursor (BdkPixbuf *pixbuf,
 			      gint       x_hotspot,
 			      gint       y_hotspot)
 {
@@ -967,7 +967,7 @@ _gdk_win32_pixbuf_to_hcursor (GdkPixbuf *pixbuf,
 }
 
 gboolean
-_gdk_win32_pixbuf_to_hicon_supports_alpha (void)
+_bdk_win32_pixbuf_to_hicon_supports_alpha (void)
 {
   static gboolean is_win_xp=FALSE, is_win_xp_checked=FALSE;
 
@@ -988,7 +988,7 @@ _gdk_win32_pixbuf_to_hicon_supports_alpha (void)
 }
 
 HICON
-gdk_win32_pixbuf_to_hicon_libgtk_only (GdkPixbuf *pixbuf)
+bdk_win32_pixbuf_to_hicon_libbtk_only (BdkPixbuf *pixbuf)
 {
-  return _gdk_win32_pixbuf_to_hicon (pixbuf);
+  return _bdk_win32_pixbuf_to_hicon (pixbuf);
 }

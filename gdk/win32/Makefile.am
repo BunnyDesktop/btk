@@ -1,22 +1,22 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-libgdkincludedir = $(includedir)/gtk-2.0/gdk
+libbdkincludedir = $(includedir)/btk-2.0/bdk
 
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"Gdk\"	\
-	-DINSIDE_GDK_WIN32	\
+	-DG_LOG_DOMAIN=\"Bdk\"	\
+	-DINSIDE_BDK_WIN32	\
 	-I$(top_srcdir)		\
-	-I$(top_srcdir)/gdk	\
-	-I$(top_builddir)/gdk	\
-	$(GTK_DEBUG_FLAGS) 	\
-	$(GDK_DEP_CFLAGS)	\
-	$(GDK_WIN32_EXTRA_CFLAGS)\
-	-DGDK_COMPILATION
+	-I$(top_srcdir)/bdk	\
+	-I$(top_builddir)/bdk	\
+	$(BTK_DEBUG_FLAGS) 	\
+	$(BDK_DEP_CFLAGS)	\
+	$(BDK_WIN32_EXTRA_CFLAGS)\
+	-DBDK_COMPILATION
 
-LDADDS = $(GDK_DEP_LIBS)
+LDADDS = $(BDK_DEP_LIBS)
 
-noinst_LTLIBRARIES = libgdk-win32.la
+noinst_LTLIBRARIES = libbdk-win32.la
 
 SUBDIRS=rc
 
@@ -24,59 +24,59 @@ EXTRA_DIST += \
 	bdfcursor.c \
 	makefile.msc
 
-libgdk_win32_la_SOURCES = \
+libbdk_win32_la_SOURCES = \
 	xcursors.h \
-	gdkapplaunchcontext-win32.c \
-	gdkcolor-win32.c \
-	gdkcursor-win32.c \
-	gdkdisplay-win32.c \
-	gdkdnd-win32.c \
-	gdkdrawable-win32.c \
-	gdkdrawable-win32.h \
-	gdkevents-win32.c \
-	gdkfont-win32.c \
-	gdkgc-win32.c \
-	gdkgeometry-win32.c \
-	gdkglobals-win32.c \
-	gdkim-win32.c \
-	gdkimage-win32.c \
-	gdkinput.c \
-	gdkinput-win32.c \
-	gdkinput-win32.h \
-	gdkkeys-win32.c \
-	gdkmain-win32.c \
-	gdkpixmap-win32.c \
-	gdkpixmap-win32.h \
-	gdkprivate-win32.h \
-	gdkproperty-win32.c \
-	gdkscreen-win32.c \
-	gdkselection-win32.c \
-	gdkspawn-win32.c \
-	gdktestutils-win32.c \
-	gdkvisual-win32.c \
-	gdkwin32.h \
-	gdkwin32keys.h \
-	gdkwin32id.c \
-	gdkwindow-win32.c \
-	gdkwindow-win32.h \
+	bdkapplaunchcontext-win32.c \
+	bdkcolor-win32.c \
+	bdkcursor-win32.c \
+	bdkdisplay-win32.c \
+	bdkdnd-win32.c \
+	bdkdrawable-win32.c \
+	bdkdrawable-win32.h \
+	bdkevents-win32.c \
+	bdkfont-win32.c \
+	bdkgc-win32.c \
+	bdkgeometry-win32.c \
+	bdkglobals-win32.c \
+	bdkim-win32.c \
+	bdkimage-win32.c \
+	bdkinput.c \
+	bdkinput-win32.c \
+	bdkinput-win32.h \
+	bdkkeys-win32.c \
+	bdkmain-win32.c \
+	bdkpixmap-win32.c \
+	bdkpixmap-win32.h \
+	bdkprivate-win32.h \
+	bdkproperty-win32.c \
+	bdkscreen-win32.c \
+	bdkselection-win32.c \
+	bdkspawn-win32.c \
+	bdktestutils-win32.c \
+	bdkvisual-win32.c \
+	bdkwin32.h \
+	bdkwin32keys.h \
+	bdkwin32id.c \
+	bdkwindow-win32.c \
+	bdkwindow-win32.h \
 	wintab.h \
 	pktdef.h
 
-libgdkinclude_HEADERS =		\
-	gdkwin32.h
+libbdkinclude_HEADERS =		\
+	bdkwin32.h
 
 # -------- MSVC Project Items -----
-MSVCPROJS = gdk-win32
+MSVCPROJS = bdk-win32
 
-gdk_win32_FILES = $(libgdk_win32_la_SOURCES)
-gdk_win32_EXCLUDES = gdkwin32dummy
+bdk_win32_FILES = $(libbdk_win32_la_SOURCES)
+bdk_win32_EXCLUDES = bdkwin32dummy
 
-gdk_win32_HEADERS_DIR = $(libgdkincludedir)
-gdk_win32_HEADERS_INST = $(libgdkinclude_HEADERS)
-gdk_win32_HEADERS_EXCLUDES = gdkwin32dummy
+bdk_win32_HEADERS_DIR = $(libbdkincludedir)
+bdk_win32_HEADERS_INST = $(libbdkinclude_HEADERS)
+bdk_win32_HEADERS_EXCLUDES = bdkwin32dummy
 
 include $(top_srcdir)/build/Makefile.msvcproj
 
-dist-hook: $(top_builddir)/build/win32/vs9/gdk-win32.vcproj $(top_builddir)/build/win32/vs9/gdk-win32.headers
+dist-hook: $(top_builddir)/build/win32/vs9/bdk-win32.vcproj $(top_builddir)/build/win32/vs9/bdk-win32.headers
 
 -include $(top_srcdir)/git.mk

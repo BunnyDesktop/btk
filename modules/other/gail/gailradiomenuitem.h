@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2002 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,39 +17,39 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_RADIO_MENU_ITEM_H__
-#define __GAIL_RADIO_MENU_ITEM_H__
+#ifndef __BAIL_RADIO_MENU_ITEM_H__
+#define __BAIL_RADIO_MENU_ITEM_H__
 
-#include <gail/gailcheckmenuitem.h>
+#include <bail/bailcheckmenuitem.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_RADIO_MENU_ITEM               (gail_radio_menu_item_get_type ())
-#define GAIL_RADIO_MENU_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_RADIO_MENU_ITEM, GailRadioMenuItem))
-#define GAIL_RADIO_MENU_ITEM_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_RADIO_MENU_ITEM, GailRadioMenuItemClass))
-#define GAIL_IS_RADIO_MENU_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_RADIO_MENU_ITEM))
-#define GAIL_IS_RADIO_MENU_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_RADIO_MENU_ITEM))
-#define GAIL_RADIO_MENU_ITEM_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_RADIO_MENU_ITEM, GailRadioMenuItemClass))
+#define BAIL_TYPE_RADIO_MENU_ITEM               (bail_radio_menu_item_get_type ())
+#define BAIL_RADIO_MENU_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RADIO_MENU_ITEM, BailRadioMenuItem))
+#define BAIL_RADIO_MENU_ITEM_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RADIO_MENU_ITEM, BailRadioMenuItemClass))
+#define BAIL_IS_RADIO_MENU_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RADIO_MENU_ITEM))
+#define BAIL_IS_RADIO_MENU_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RADIO_MENU_ITEM))
+#define BAIL_RADIO_MENU_ITEM_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RADIO_MENU_ITEM, BailRadioMenuItemClass))
 
-typedef struct _GailRadioMenuItem              GailRadioMenuItem;
-typedef struct _GailRadioMenuItemClass         GailRadioMenuItemClass;
+typedef struct _BailRadioMenuItem              BailRadioMenuItem;
+typedef struct _BailRadioMenuItemClass         BailRadioMenuItemClass;
 
-struct _GailRadioMenuItem
+struct _BailRadioMenuItem
 {
-  GailCheckMenuItem parent;
+  BailCheckMenuItem parent;
 
   GSList *old_group;
 };
 
-GType gail_radio_menu_item_get_type (void);
+GType bail_radio_menu_item_get_type (void);
 
-struct _GailRadioMenuItemClass
+struct _BailRadioMenuItemClass
 {
-  GailCheckMenuItemClass parent_class;
+  BailCheckMenuItemClass parent_class;
 };
 
-AtkObject* gail_radio_menu_item_new (GtkWidget *widget);
+BatkObject* bail_radio_menu_item_new (BtkWidget *widget);
 
 G_END_DECLS
 
-#endif /* __GAIL_RADIO_MENU_ITEM_H__ */
+#endif /* __BAIL_RADIO_MENU_ITEM_H__ */

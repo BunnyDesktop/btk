@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,114 +18,114 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_OBJECT_H__
-#define __GTK_OBJECT_H__
+#ifndef __BTK_OBJECT_H__
+#define __BTK_OBJECT_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gdkconfig.h>
-#include <gtk/gtkenums.h>
-#include <gtk/gtktypeutils.h>
-#include <gtk/gtkdebug.h>
+#include <bdkconfig.h>
+#include <btk/btkenums.h>
+#include <btk/btktypeutils.h>
+#include <btk/btkdebug.h>
 
 
 G_BEGIN_DECLS
 
-/* macros for casting a pointer to a GtkObject or GtkObjectClass pointer,
- * and to test whether `object' and `klass' are of type GTK_TYPE_OBJECT.
- * these are the standard macros for all GtkObject-derived classes.
+/* macros for casting a pointer to a BtkObject or BtkObjectClass pointer,
+ * and to test whether `object' and `klass' are of type BTK_TYPE_OBJECT.
+ * these are the standard macros for all BtkObject-derived classes.
  */
-#define GTK_TYPE_OBJECT              (gtk_object_get_type ())
-#define GTK_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GTK_TYPE_OBJECT, GtkObject))
-#define GTK_OBJECT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_OBJECT, GtkObjectClass))
-#define GTK_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GTK_TYPE_OBJECT))
-#define GTK_IS_OBJECT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_OBJECT))
-#define GTK_OBJECT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), GTK_TYPE_OBJECT, GtkObjectClass))
+#define BTK_TYPE_OBJECT              (btk_object_get_type ())
+#define BTK_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_OBJECT, BtkObject))
+#define BTK_OBJECT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_OBJECT, BtkObjectClass))
+#define BTK_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_OBJECT))
+#define BTK_IS_OBJECT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_OBJECT))
+#define BTK_OBJECT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), BTK_TYPE_OBJECT, BtkObjectClass))
 
-/* Macros for extracting various fields from GtkObject and GtkObjectClass.
+/* Macros for extracting various fields from BtkObject and BtkObjectClass.
  */
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 /**
- * GTK_OBJECT_TYPE:
- * @object: a #GtkObject.
+ * BTK_OBJECT_TYPE:
+ * @object: a #BtkObject.
  *
  * Gets the type of an object.
  *
  * Deprecated: 2.20: Use G_OBJECT_TYPE() instead.
  */
-#define GTK_OBJECT_TYPE                   G_OBJECT_TYPE
+#define BTK_OBJECT_TYPE                   G_OBJECT_TYPE
 /**
- * GTK_OBJECT_TYPE_NAME:
- * @object: a #GtkObject.
+ * BTK_OBJECT_TYPE_NAME:
+ * @object: a #BtkObject.
  *
  * Gets the name of an object's type.
  *
  * Deprecated: 2.20: Use G_OBJECT_TYPE_NAME() instead.
  */
-#define GTK_OBJECT_TYPE_NAME              G_OBJECT_TYPE_NAME
+#define BTK_OBJECT_TYPE_NAME              G_OBJECT_TYPE_NAME
 #endif
 
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
-/* GtkObject only uses the first 4 bits of the flags field.
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
+/* BtkObject only uses the first 4 bits of the flags field.
  * Derived objects may use the remaining bits. Though this
  * is a kinda nasty break up, it does make the size of
  * derived objects smaller.
  */
 typedef enum
 {
-  GTK_IN_DESTRUCTION	= 1 << 0, /* Used internally during dispose */
-  GTK_FLOATING		= 1 << 1,
-  GTK_RESERVED_1	= 1 << 2,
-  GTK_RESERVED_2	= 1 << 3
-} GtkObjectFlags;
+  BTK_IN_DESTRUCTION	= 1 << 0, /* Used internally during dispose */
+  BTK_FLOATING		= 1 << 1,
+  BTK_RESERVED_1	= 1 << 2,
+  BTK_RESERVED_2	= 1 << 3
+} BtkObjectFlags;
 
-/* Macros for extracting the object_flags from GtkObject.
+/* Macros for extracting the object_flags from BtkObject.
  */
-#define GTK_OBJECT_FLAGS(obj)		  (GTK_OBJECT (obj)->flags)
-#ifndef GTK_DISABLE_DEPRECATED
-#define GTK_OBJECT_FLOATING(obj)	  (g_object_is_floating (obj))
+#define BTK_OBJECT_FLAGS(obj)		  (BTK_OBJECT (obj)->flags)
+#ifndef BTK_DISABLE_DEPRECATED
+#define BTK_OBJECT_FLOATING(obj)	  (g_object_is_floating (obj))
 #endif
 
-/* Macros for setting and clearing bits in the object_flags field of GtkObject.
+/* Macros for setting and clearing bits in the object_flags field of BtkObject.
  */
-#define GTK_OBJECT_SET_FLAGS(obj,flag)	  G_STMT_START{ (GTK_OBJECT_FLAGS (obj) |= (flag)); }G_STMT_END
-#define GTK_OBJECT_UNSET_FLAGS(obj,flag)  G_STMT_START{ (GTK_OBJECT_FLAGS (obj) &= ~(flag)); }G_STMT_END
+#define BTK_OBJECT_SET_FLAGS(obj,flag)	  G_STMT_START{ (BTK_OBJECT_FLAGS (obj) |= (flag)); }G_STMT_END
+#define BTK_OBJECT_UNSET_FLAGS(obj,flag)  G_STMT_START{ (BTK_OBJECT_FLAGS (obj) &= ~(flag)); }G_STMT_END
 #endif
 
-typedef struct _GtkObjectClass	GtkObjectClass;
+typedef struct _BtkObjectClass	BtkObjectClass;
 
 
-struct _GtkObject
+struct _BtkObject
 {
   GInitiallyUnowned parent_instance;
 
-  /* 32 bits of flags. GtkObject only uses 4 of these bits and
-   *  GtkWidget uses the rest. This is done because structs are
+  /* 32 bits of flags. BtkObject only uses 4 of these bits and
+   *  BtkWidget uses the rest. This is done because structs are
    *  aligned on 4 or 8 byte boundaries. If a new bitfield were
-   *  used in GtkWidget much space would be wasted.
+   *  used in BtkWidget much space would be wasted.
    */
   guint32 GSEAL (flags);
 };
 
-struct _GtkObjectClass
+struct _BtkObjectClass
 {
   GInitiallyUnownedClass parent_class;
 
   /* Non overridable class methods to set and get per class arguments */
-  void (*set_arg) (GtkObject *object,
-		   GtkArg    *arg,
+  void (*set_arg) (BtkObject *object,
+		   BtkArg    *arg,
 		   guint      arg_id);
-  void (*get_arg) (GtkObject *object,
-		   GtkArg    *arg,
+  void (*get_arg) (BtkObject *object,
+		   BtkArg    *arg,
 		   guint      arg_id);
 
   /* Default signal handler for the ::destroy signal, which is
@@ -133,36 +133,36 @@ struct _GtkObjectClass
    *  If an object class overrides destroy() in order to perform class
    *  specific destruction then it must still invoke its superclass'
    *  implementation of the method after it is finished with its
-   *  own cleanup. (See gtk_widget_real_destroy() for an example of
+   *  own cleanup. (See btk_widget_real_destroy() for an example of
    *  how to do this).
    */
-  void (*destroy)  (GtkObject *object);
+  void (*destroy)  (BtkObject *object);
 };
 
 
 
 /* Application-level methods */
 
-GType gtk_object_get_type (void) G_GNUC_CONST;
+GType btk_object_get_type (void) G_GNUC_CONST;
 
-#ifndef GTK_DISABLE_DEPRECATED
-void gtk_object_sink	  (GtkObject *object);
+#ifndef BTK_DISABLE_DEPRECATED
+void btk_object_sink	  (BtkObject *object);
 #endif
-void gtk_object_destroy	  (GtkObject *object);
+void btk_object_destroy	  (BtkObject *object);
 
 /****************************************************************/
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-GtkObject*	gtk_object_new		  (GType	       type,
+BtkObject*	btk_object_new		  (GType	       type,
 					   const gchar	      *first_property_name,
 					   ...);
-GtkObject*	gtk_object_ref		  (GtkObject	      *object);
-void		gtk_object_unref	  (GtkObject	      *object);
-void gtk_object_weakref	  (GtkObject	    *object,
+BtkObject*	btk_object_ref		  (BtkObject	      *object);
+void		btk_object_unref	  (BtkObject	      *object);
+void btk_object_weakref	  (BtkObject	    *object,
 			   GDestroyNotify    notify,
 			   gpointer	     data);
-void gtk_object_weakunref (GtkObject	    *object,
+void btk_object_weakunref (BtkObject	    *object,
 			   GDestroyNotify    notify,
 			   gpointer	     data);
 
@@ -170,81 +170,81 @@ void gtk_object_weakunref (GtkObject	    *object,
  *  data is indexed by the "key". If there is already data
  *  associated with "key" then the new data will replace it.
  *  If 'data' is NULL then this call is equivalent to
- *  'gtk_object_remove_data'.
- *  The gtk_object_set_data_full variant acts just the same,
+ *  'btk_object_remove_data'.
+ *  The btk_object_set_data_full variant acts just the same,
  *  but takes an additional argument which is a function to
  *  be called when the data is removed.
- *  `gtk_object_remove_data' is equivalent to the above,
+ *  `btk_object_remove_data' is equivalent to the above,
  *  where 'data' is NULL
- *  `gtk_object_get_data' gets the data associated with "key".
+ *  `btk_object_get_data' gets the data associated with "key".
  */
-void	 gtk_object_set_data	     (GtkObject	     *object,
+void	 btk_object_set_data	     (BtkObject	     *object,
 				      const gchar    *key,
 				      gpointer	      data);
-void	 gtk_object_set_data_full    (GtkObject	     *object,
+void	 btk_object_set_data_full    (BtkObject	     *object,
 				      const gchar    *key,
 				      gpointer	      data,
 				      GDestroyNotify  destroy);
-void	 gtk_object_remove_data	     (GtkObject	     *object,
+void	 btk_object_remove_data	     (BtkObject	     *object,
 				      const gchar    *key);
-gpointer gtk_object_get_data	     (GtkObject	     *object,
+gpointer btk_object_get_data	     (BtkObject	     *object,
 				      const gchar    *key);
-void	 gtk_object_remove_no_notify (GtkObject	     *object,
+void	 btk_object_remove_no_notify (BtkObject	     *object,
 				      const gchar    *key);
 
 /* Set/get the "user_data" object data field of "object". It should
  *  be noted that these functions are no different than calling
- *  `gtk_object_set_data'/`gtk_object_get_data' with a key of "user_data".
+ *  `btk_object_set_data'/`btk_object_get_data' with a key of "user_data".
  *  They are merely provided as a convenience.
  */
-void	 gtk_object_set_user_data (GtkObject	*object,
+void	 btk_object_set_user_data (BtkObject	*object,
 				   gpointer	 data);
-gpointer gtk_object_get_user_data (GtkObject	*object);
+gpointer btk_object_get_user_data (BtkObject	*object);
 
 
 /* Object-level methods */
 
 /* Object data method variants that operate on key ids. */
-void gtk_object_set_data_by_id		(GtkObject	 *object,
+void btk_object_set_data_by_id		(BtkObject	 *object,
 					 GQuark		  data_id,
 					 gpointer	  data);
-void gtk_object_set_data_by_id_full	(GtkObject	 *object,
+void btk_object_set_data_by_id_full	(BtkObject	 *object,
 					 GQuark		  data_id,
 					 gpointer	  data,
 					 GDestroyNotify   destroy);
-gpointer gtk_object_get_data_by_id	(GtkObject	 *object,
+gpointer btk_object_get_data_by_id	(BtkObject	 *object,
 					 GQuark		  data_id);
-void  gtk_object_remove_data_by_id	(GtkObject	 *object,
+void  btk_object_remove_data_by_id	(BtkObject	 *object,
 					 GQuark		  data_id);
-void  gtk_object_remove_no_notify_by_id	(GtkObject	 *object,
+void  btk_object_remove_no_notify_by_id	(BtkObject	 *object,
 					 GQuark		  key_id);
-#define	gtk_object_data_try_key	    g_quark_try_string
-#define	gtk_object_data_force_id    g_quark_from_string
+#define	btk_object_data_try_key	    g_quark_try_string
+#define	btk_object_data_force_id    g_quark_from_string
 
-/* GtkArg flag bits for gtk_object_add_arg_type
+/* BtkArg flag bits for btk_object_add_arg_type
  */
 typedef enum
 {
-  GTK_ARG_READABLE	 = G_PARAM_READABLE,
-  GTK_ARG_WRITABLE	 = G_PARAM_WRITABLE,
-  GTK_ARG_CONSTRUCT	 = G_PARAM_CONSTRUCT,
-  GTK_ARG_CONSTRUCT_ONLY = G_PARAM_CONSTRUCT_ONLY,
-  GTK_ARG_CHILD_ARG	 = 1 << 4
-} GtkArgFlags;
-#define	GTK_ARG_READWRITE	(GTK_ARG_READABLE | GTK_ARG_WRITABLE)
-void	gtk_object_get		(GtkObject	*object,
+  BTK_ARG_READABLE	 = G_PARAM_READABLE,
+  BTK_ARG_WRITABLE	 = G_PARAM_WRITABLE,
+  BTK_ARG_CONSTRUCT	 = G_PARAM_CONSTRUCT,
+  BTK_ARG_CONSTRUCT_ONLY = G_PARAM_CONSTRUCT_ONLY,
+  BTK_ARG_CHILD_ARG	 = 1 << 4
+} BtkArgFlags;
+#define	BTK_ARG_READWRITE	(BTK_ARG_READABLE | BTK_ARG_WRITABLE)
+void	btk_object_get		(BtkObject	*object,
 				 const gchar	*first_property_name,
 				 ...) G_GNUC_NULL_TERMINATED;
-void	gtk_object_set		(GtkObject	*object,
+void	btk_object_set		(BtkObject	*object,
 				 const gchar	*first_property_name,
 				 ...) G_GNUC_NULL_TERMINATED;
-void	gtk_object_add_arg_type		(const gchar    *arg_name,
+void	btk_object_add_arg_type		(const gchar    *arg_name,
 					 GType           arg_type,
 					 guint           arg_flags,
 					 guint           arg_id);
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GTK_OBJECT_H__ */
+#endif /* __BTK_OBJECT_H__ */

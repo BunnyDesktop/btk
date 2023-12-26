@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,115 +18,115 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_CURSOR_H__
-#define __GDK_CURSOR_H__
+#ifndef __BDK_CURSOR_H__
+#define __BDK_CURSOR_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bdk/bdktypes.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_CURSOR (gdk_cursor_get_type ())
+#define BDK_TYPE_CURSOR (bdk_cursor_get_type ())
 
 /* Cursor types.
  */
 typedef enum
 {
-  GDK_X_CURSOR 		  = 0,
-  GDK_ARROW 		  = 2,
-  GDK_BASED_ARROW_DOWN    = 4,
-  GDK_BASED_ARROW_UP 	  = 6,
-  GDK_BOAT 		  = 8,
-  GDK_BOGOSITY 		  = 10,
-  GDK_BOTTOM_LEFT_CORNER  = 12,
-  GDK_BOTTOM_RIGHT_CORNER = 14,
-  GDK_BOTTOM_SIDE 	  = 16,
-  GDK_BOTTOM_TEE 	  = 18,
-  GDK_BOX_SPIRAL 	  = 20,
-  GDK_CENTER_PTR 	  = 22,
-  GDK_CIRCLE 		  = 24,
-  GDK_CLOCK	 	  = 26,
-  GDK_COFFEE_MUG 	  = 28,
-  GDK_CROSS 		  = 30,
-  GDK_CROSS_REVERSE 	  = 32,
-  GDK_CROSSHAIR 	  = 34,
-  GDK_DIAMOND_CROSS 	  = 36,
-  GDK_DOT 		  = 38,
-  GDK_DOTBOX 		  = 40,
-  GDK_DOUBLE_ARROW 	  = 42,
-  GDK_DRAFT_LARGE 	  = 44,
-  GDK_DRAFT_SMALL 	  = 46,
-  GDK_DRAPED_BOX 	  = 48,
-  GDK_EXCHANGE 		  = 50,
-  GDK_FLEUR 		  = 52,
-  GDK_GOBBLER 		  = 54,
-  GDK_GUMBY 		  = 56,
-  GDK_HAND1 		  = 58,
-  GDK_HAND2 		  = 60,
-  GDK_HEART 		  = 62,
-  GDK_ICON 		  = 64,
-  GDK_IRON_CROSS 	  = 66,
-  GDK_LEFT_PTR 		  = 68,
-  GDK_LEFT_SIDE 	  = 70,
-  GDK_LEFT_TEE 		  = 72,
-  GDK_LEFTBUTTON 	  = 74,
-  GDK_LL_ANGLE 		  = 76,
-  GDK_LR_ANGLE 	 	  = 78,
-  GDK_MAN 		  = 80,
-  GDK_MIDDLEBUTTON 	  = 82,
-  GDK_MOUSE 		  = 84,
-  GDK_PENCIL 		  = 86,
-  GDK_PIRATE 		  = 88,
-  GDK_PLUS 		  = 90,
-  GDK_QUESTION_ARROW 	  = 92,
-  GDK_RIGHT_PTR 	  = 94,
-  GDK_RIGHT_SIDE 	  = 96,
-  GDK_RIGHT_TEE 	  = 98,
-  GDK_RIGHTBUTTON 	  = 100,
-  GDK_RTL_LOGO 		  = 102,
-  GDK_SAILBOAT 		  = 104,
-  GDK_SB_DOWN_ARROW 	  = 106,
-  GDK_SB_H_DOUBLE_ARROW   = 108,
-  GDK_SB_LEFT_ARROW 	  = 110,
-  GDK_SB_RIGHT_ARROW 	  = 112,
-  GDK_SB_UP_ARROW 	  = 114,
-  GDK_SB_V_DOUBLE_ARROW   = 116,
-  GDK_SHUTTLE 		  = 118,
-  GDK_SIZING 		  = 120,
-  GDK_SPIDER		  = 122,
-  GDK_SPRAYCAN 		  = 124,
-  GDK_STAR 		  = 126,
-  GDK_TARGET 		  = 128,
-  GDK_TCROSS 		  = 130,
-  GDK_TOP_LEFT_ARROW 	  = 132,
-  GDK_TOP_LEFT_CORNER 	  = 134,
-  GDK_TOP_RIGHT_CORNER 	  = 136,
-  GDK_TOP_SIDE 		  = 138,
-  GDK_TOP_TEE 		  = 140,
-  GDK_TREK 		  = 142,
-  GDK_UL_ANGLE 		  = 144,
-  GDK_UMBRELLA 		  = 146,
-  GDK_UR_ANGLE 		  = 148,
-  GDK_WATCH 		  = 150,
-  GDK_XTERM 		  = 152,
-  GDK_LAST_CURSOR,
-  GDK_BLANK_CURSOR        = -2,
-  GDK_CURSOR_IS_PIXMAP 	  = -1
-} GdkCursorType;
+  BDK_X_CURSOR 		  = 0,
+  BDK_ARROW 		  = 2,
+  BDK_BASED_ARROW_DOWN    = 4,
+  BDK_BASED_ARROW_UP 	  = 6,
+  BDK_BOAT 		  = 8,
+  BDK_BOGOSITY 		  = 10,
+  BDK_BOTTOM_LEFT_CORNER  = 12,
+  BDK_BOTTOM_RIGHT_CORNER = 14,
+  BDK_BOTTOM_SIDE 	  = 16,
+  BDK_BOTTOM_TEE 	  = 18,
+  BDK_BOX_SPIRAL 	  = 20,
+  BDK_CENTER_PTR 	  = 22,
+  BDK_CIRCLE 		  = 24,
+  BDK_CLOCK	 	  = 26,
+  BDK_COFFEE_MUG 	  = 28,
+  BDK_CROSS 		  = 30,
+  BDK_CROSS_REVERSE 	  = 32,
+  BDK_CROSSHAIR 	  = 34,
+  BDK_DIAMOND_CROSS 	  = 36,
+  BDK_DOT 		  = 38,
+  BDK_DOTBOX 		  = 40,
+  BDK_DOUBLE_ARROW 	  = 42,
+  BDK_DRAFT_LARGE 	  = 44,
+  BDK_DRAFT_SMALL 	  = 46,
+  BDK_DRAPED_BOX 	  = 48,
+  BDK_EXCHANGE 		  = 50,
+  BDK_FLEUR 		  = 52,
+  BDK_GOBBLER 		  = 54,
+  BDK_GUMBY 		  = 56,
+  BDK_HAND1 		  = 58,
+  BDK_HAND2 		  = 60,
+  BDK_HEART 		  = 62,
+  BDK_ICON 		  = 64,
+  BDK_IRON_CROSS 	  = 66,
+  BDK_LEFT_PTR 		  = 68,
+  BDK_LEFT_SIDE 	  = 70,
+  BDK_LEFT_TEE 		  = 72,
+  BDK_LEFTBUTTON 	  = 74,
+  BDK_LL_ANGLE 		  = 76,
+  BDK_LR_ANGLE 	 	  = 78,
+  BDK_MAN 		  = 80,
+  BDK_MIDDLEBUTTON 	  = 82,
+  BDK_MOUSE 		  = 84,
+  BDK_PENCIL 		  = 86,
+  BDK_PIRATE 		  = 88,
+  BDK_PLUS 		  = 90,
+  BDK_QUESTION_ARROW 	  = 92,
+  BDK_RIGHT_PTR 	  = 94,
+  BDK_RIGHT_SIDE 	  = 96,
+  BDK_RIGHT_TEE 	  = 98,
+  BDK_RIGHTBUTTON 	  = 100,
+  BDK_RTL_LOGO 		  = 102,
+  BDK_SAILBOAT 		  = 104,
+  BDK_SB_DOWN_ARROW 	  = 106,
+  BDK_SB_H_DOUBLE_ARROW   = 108,
+  BDK_SB_LEFT_ARROW 	  = 110,
+  BDK_SB_RIGHT_ARROW 	  = 112,
+  BDK_SB_UP_ARROW 	  = 114,
+  BDK_SB_V_DOUBLE_ARROW   = 116,
+  BDK_SHUTTLE 		  = 118,
+  BDK_SIZING 		  = 120,
+  BDK_SPIDER		  = 122,
+  BDK_SPRAYCAN 		  = 124,
+  BDK_STAR 		  = 126,
+  BDK_TARGET 		  = 128,
+  BDK_TCROSS 		  = 130,
+  BDK_TOP_LEFT_ARROW 	  = 132,
+  BDK_TOP_LEFT_CORNER 	  = 134,
+  BDK_TOP_RIGHT_CORNER 	  = 136,
+  BDK_TOP_SIDE 		  = 138,
+  BDK_TOP_TEE 		  = 140,
+  BDK_TREK 		  = 142,
+  BDK_UL_ANGLE 		  = 144,
+  BDK_UMBRELLA 		  = 146,
+  BDK_UR_ANGLE 		  = 148,
+  BDK_WATCH 		  = 150,
+  BDK_XTERM 		  = 152,
+  BDK_LAST_CURSOR,
+  BDK_BLANK_CURSOR        = -2,
+  BDK_CURSOR_IS_PIXMAP 	  = -1
+} BdkCursorType;
 
-struct _GdkCursor
+struct _BdkCursor
 {
-  GdkCursorType GSEAL (type);
+  BdkCursorType GSEAL (type);
   /*< private >*/
   guint GSEAL (ref_count);
 };
@@ -134,35 +134,35 @@ struct _GdkCursor
 /* Cursors
  */
 
-GType      gdk_cursor_get_type           (void) G_GNUC_CONST;
+GType      bdk_cursor_get_type           (void) G_GNUC_CONST;
 
-GdkCursor* gdk_cursor_new_for_display	 (GdkDisplay      *display,
-					  GdkCursorType    cursor_type);
-#ifndef GDK_MULTIHEAD_SAFE
-GdkCursor* gdk_cursor_new		 (GdkCursorType	   cursor_type);
+BdkCursor* bdk_cursor_new_for_display	 (BdkDisplay      *display,
+					  BdkCursorType    cursor_type);
+#ifndef BDK_MULTIHEAD_SAFE
+BdkCursor* bdk_cursor_new		 (BdkCursorType	   cursor_type);
 #endif
-GdkCursor* gdk_cursor_new_from_pixmap	 (GdkPixmap	  *source,
-					  GdkPixmap	  *mask,
-					  const GdkColor  *fg,
-					  const GdkColor  *bg,
+BdkCursor* bdk_cursor_new_from_pixmap	 (BdkPixmap	  *source,
+					  BdkPixmap	  *mask,
+					  const BdkColor  *fg,
+					  const BdkColor  *bg,
 					  gint		   x,
 					  gint		   y);
-GdkCursor* gdk_cursor_new_from_pixbuf	 (GdkDisplay      *display,
-					  GdkPixbuf       *pixbuf,
+BdkCursor* bdk_cursor_new_from_pixbuf	 (BdkDisplay      *display,
+					  BdkPixbuf       *pixbuf,
 					  gint             x,
 					  gint             y);
-GdkDisplay* gdk_cursor_get_display	 (GdkCursor	  *cursor);
-GdkCursor*  gdk_cursor_ref               (GdkCursor       *cursor);
-void        gdk_cursor_unref             (GdkCursor       *cursor);
-GdkCursor*  gdk_cursor_new_from_name	 (GdkDisplay      *display,
+BdkDisplay* bdk_cursor_get_display	 (BdkCursor	  *cursor);
+BdkCursor*  bdk_cursor_ref               (BdkCursor       *cursor);
+void        bdk_cursor_unref             (BdkCursor       *cursor);
+BdkCursor*  bdk_cursor_new_from_name	 (BdkDisplay      *display,
 					  const gchar     *name);
-GdkPixbuf*  gdk_cursor_get_image         (GdkCursor       *cursor);
-GdkCursorType gdk_cursor_get_cursor_type (GdkCursor       *cursor);
+BdkPixbuf*  bdk_cursor_get_image         (BdkCursor       *cursor);
+BdkCursorType bdk_cursor_get_cursor_type (BdkCursor       *cursor);
 
-#ifndef GDK_DISABLE_DEPRECATED
-#define gdk_cursor_destroy             gdk_cursor_unref
-#endif /* GDK_DISABLE_DEPRECATED */
+#ifndef BDK_DISABLE_DEPRECATED
+#define bdk_cursor_destroy             bdk_cursor_unref
+#endif /* BDK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GDK_CURSOR_H__ */
+#endif /* __BDK_CURSOR_H__ */

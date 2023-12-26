@@ -1,4 +1,4 @@
-/* gdkapplaunchcontext.h - Gtk+ implementation for GAppLaunchContext
+/* bdkapplaunchcontext.h - Btk+ implementation for GAppLaunchContext
  *
  * Copyright (C) 2007 Red Hat, Inc.
  *
@@ -20,57 +20,57 @@
  * Author: Alexander Larsson <alexl@redhat.com>
  */
 
-#ifndef __GDK_APP_LAUNCH_CONTEXT_H__
-#define __GDK_APP_LAUNCH_CONTEXT_H__
+#ifndef __BDK_APP_LAUNCH_CONTEXT_H__
+#define __BDK_APP_LAUNCH_CONTEXT_H__
 
-#if !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gio/gio.h>
-#include <gdk/gdkscreen.h>
+#include <bunnyio/bunnyio.h>
+#include <bdk/bdkscreen.h>
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_APP_LAUNCH_CONTEXT         (gdk_app_launch_context_get_type ())
-#define GDK_APP_LAUNCH_CONTEXT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GDK_TYPE_APP_LAUNCH_CONTEXT, GdkAppLaunchContext))
-#define GDK_APP_LAUNCH_CONTEXT_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), GDK_TYPE_APP_LAUNCH_CONTEXT, GdkAppLaunchContextClass))
-#define GDK_IS_APP_LAUNCH_CONTEXT(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GDK_TYPE_APP_LAUNCH_CONTEXT))
-#define GDK_IS_APP_LAUNCH_CONTEXT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), GDK_TYPE_APP_LAUNCH_CONTEXT))
-#define GDK_APP_LAUNCH_CONTEXT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GDK_TYPE_APP_LAUNCH_CONTEXT, GdkAppLaunchContextClass))
+#define BDK_TYPE_APP_LAUNCH_CONTEXT         (bdk_app_launch_context_get_type ())
+#define BDK_APP_LAUNCH_CONTEXT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContext))
+#define BDK_APP_LAUNCH_CONTEXT_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContextClass))
+#define BDK_IS_APP_LAUNCH_CONTEXT(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BDK_TYPE_APP_LAUNCH_CONTEXT))
+#define BDK_IS_APP_LAUNCH_CONTEXT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BDK_TYPE_APP_LAUNCH_CONTEXT))
+#define BDK_APP_LAUNCH_CONTEXT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContextClass))
 
-typedef struct GdkAppLaunchContext	      GdkAppLaunchContext;
-typedef struct GdkAppLaunchContextClass       GdkAppLaunchContextClass;
-typedef struct GdkAppLaunchContextPrivate     GdkAppLaunchContextPrivate;
+typedef struct BdkAppLaunchContext	      BdkAppLaunchContext;
+typedef struct BdkAppLaunchContextClass       BdkAppLaunchContextClass;
+typedef struct BdkAppLaunchContextPrivate     BdkAppLaunchContextPrivate;
 
-struct GdkAppLaunchContext
+struct BdkAppLaunchContext
 {
   GAppLaunchContext parent_instance;
 
-  GdkAppLaunchContextPrivate *priv;
+  BdkAppLaunchContextPrivate *priv;
 };
 
-struct GdkAppLaunchContextClass
+struct BdkAppLaunchContextClass
 {
   GAppLaunchContextClass parent_class;
 };
 
-GType                gdk_app_launch_context_get_type      (void);
+GType                bdk_app_launch_context_get_type      (void);
 
-GdkAppLaunchContext *gdk_app_launch_context_new           (void);
-void                 gdk_app_launch_context_set_display   (GdkAppLaunchContext *context,
-							   GdkDisplay          *display);
-void                 gdk_app_launch_context_set_screen    (GdkAppLaunchContext *context,
-							   GdkScreen           *screen);
-void                 gdk_app_launch_context_set_desktop   (GdkAppLaunchContext *context,
+BdkAppLaunchContext *bdk_app_launch_context_new           (void);
+void                 bdk_app_launch_context_set_display   (BdkAppLaunchContext *context,
+							   BdkDisplay          *display);
+void                 bdk_app_launch_context_set_screen    (BdkAppLaunchContext *context,
+							   BdkScreen           *screen);
+void                 bdk_app_launch_context_set_desktop   (BdkAppLaunchContext *context,
 							   gint                 desktop);
-void                 gdk_app_launch_context_set_timestamp (GdkAppLaunchContext *context,
+void                 bdk_app_launch_context_set_timestamp (BdkAppLaunchContext *context,
 							   guint32              timestamp);
-void                 gdk_app_launch_context_set_icon      (GdkAppLaunchContext *context,
+void                 bdk_app_launch_context_set_icon      (BdkAppLaunchContext *context,
 							   GIcon               *icon);
-void                 gdk_app_launch_context_set_icon_name (GdkAppLaunchContext *context,
+void                 bdk_app_launch_context_set_icon_name (BdkAppLaunchContext *context,
 							   const char          *icon_name);
 
 G_END_DECLS
 
-#endif /* __GDK_APP_LAUNCH_CONTEXT_H__ */
+#endif /* __BDK_APP_LAUNCH_CONTEXT_H__ */

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
 
  * Copyright 2001 Sun Microsystems Inc.
  *
@@ -20,11 +20,11 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailcellparent.h"
+#include <btk/btk.h>
+#include "bailcellparent.h"
 
 GType
-gail_cell_parent_get_type (void)
+bail_cell_parent_get_type (void)
 {
   static volatile gsize g_define_type_id__volatile = 0;
 
@@ -32,8 +32,8 @@ gail_cell_parent_get_type (void)
     {
       GType g_define_type_id =
         g_type_register_static_simple (G_TYPE_INTERFACE,
-                                       "GailCellParent",
-                                       sizeof (GailCellParentIface),
+                                       "BailCellParent",
+                                       sizeof (BailCellParentIface),
                                        NULL,
                                        0,
                                        NULL,
@@ -46,9 +46,9 @@ gail_cell_parent_get_type (void)
 }
 
 /**
- * gail_cell_parent_get_cell_extents:
- * @parent: a #GObject instance that implements GailCellParentIface
- * @cell: a #GailCell whose extents is required
+ * bail_cell_parent_get_cell_extents:
+ * @parent: a #GObject instance that implements BailCellParentIface
+ * @cell: a #BailCell whose extents is required
  * @x: address of #gint to put x coordinate
  * @y: address of #gint to put y coordinate
  * @width: address of #gint to put width
@@ -60,65 +60,65 @@ gail_cell_parent_get_type (void)
  *
  **/
 void
-gail_cell_parent_get_cell_extents (GailCellParent *parent,
-                                   GailCell       *cell,
+bail_cell_parent_get_cell_extents (BailCellParent *parent,
+                                   BailCell       *cell,
                                    gint           *x,
                                    gint           *y,
                                    gint           *width,
                                    gint           *height,
-                                   AtkCoordType   coord_type)
+                                   BatkCoordType   coord_type)
 {
-  GailCellParentIface *iface;
+  BailCellParentIface *iface;
 
-  g_return_if_fail (GAIL_IS_CELL_PARENT (parent));
+  g_return_if_fail (BAIL_IS_CELL_PARENT (parent));
 
-  iface = GAIL_CELL_PARENT_GET_IFACE (parent);
+  iface = BAIL_CELL_PARENT_GET_IFACE (parent);
 
   if (iface->get_cell_extents)
     (iface->get_cell_extents) (parent, cell, x, y, width, height, coord_type);
 }
 
 /**
- * gail_cell_parent_get_cell_area:
- * @parent: a #GObject instance that implements GailCellParentIface
- * @cell: a #GailCell whose area is required
- * @cell_rect: address of #GdkRectangle to put the cell area
+ * bail_cell_parent_get_cell_area:
+ * @parent: a #GObject instance that implements BailCellParentIface
+ * @cell: a #BailCell whose area is required
+ * @cell_rect: address of #BdkRectangle to put the cell area
  *
  * Gets the cell area of the @cell.
  *
  **/
 void
-gail_cell_parent_get_cell_area (GailCellParent *parent,
-                                GailCell       *cell,
-                                GdkRectangle   *cell_rect)
+bail_cell_parent_get_cell_area (BailCellParent *parent,
+                                BailCell       *cell,
+                                BdkRectangle   *cell_rect)
 {
-  GailCellParentIface *iface;
+  BailCellParentIface *iface;
 
-  g_return_if_fail (GAIL_IS_CELL_PARENT (parent));
+  g_return_if_fail (BAIL_IS_CELL_PARENT (parent));
   g_return_if_fail (cell_rect);
 
-  iface = GAIL_CELL_PARENT_GET_IFACE (parent);
+  iface = BAIL_CELL_PARENT_GET_IFACE (parent);
 
   if (iface->get_cell_area)
     (iface->get_cell_area) (parent, cell, cell_rect);
 }
 /**
- * gail_cell_parent_grab_focus:
- * @parent: a #GObject instance that implements GailCellParentIface
- * @cell: a #GailCell whose area is required
+ * bail_cell_parent_grab_focus:
+ * @parent: a #GObject instance that implements BailCellParentIface
+ * @cell: a #BailCell whose area is required
  *
  * Puts focus in the specified cell.
  *
  **/
 gboolean
-gail_cell_parent_grab_focus (GailCellParent *parent,
-                             GailCell       *cell)
+bail_cell_parent_grab_focus (BailCellParent *parent,
+                             BailCell       *cell)
 {
-  GailCellParentIface *iface;
+  BailCellParentIface *iface;
 
-  g_return_val_if_fail (GAIL_IS_CELL_PARENT (parent), FALSE);
+  g_return_val_if_fail (BAIL_IS_CELL_PARENT (parent), FALSE);
 
-  iface = GAIL_CELL_PARENT_GET_IFACE (parent);
+  iface = BAIL_CELL_PARENT_GET_IFACE (parent);
 
   if (iface->grab_focus)
     return (iface->grab_focus) (parent, cell);

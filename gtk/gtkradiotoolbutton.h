@@ -1,4 +1,4 @@
-/* gtkradiotoolbutton.h
+/* btkradiotoolbutton.h
  *
  * Copyright (C) 2002 Anders Carlsson <andersca@gnome.org>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
@@ -20,55 +20,55 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_RADIO_TOOL_BUTTON_H__
-#define __GTK_RADIO_TOOL_BUTTON_H__
+#ifndef __BTK_RADIO_TOOL_BUTTON_H__
+#define __BTK_RADIO_TOOL_BUTTON_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktoggletoolbutton.h>
+#include <btk/btktoggletoolbutton.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_RADIO_TOOL_BUTTON            (gtk_radio_tool_button_get_type ())
-#define GTK_RADIO_TOOL_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_RADIO_TOOL_BUTTON, GtkRadioToolButton))
-#define GTK_RADIO_TOOL_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_RADIO_TOOL_BUTTON, GtkRadioToolButtonClass))
-#define GTK_IS_RADIO_TOOL_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_RADIO_TOOL_BUTTON))
-#define GTK_IS_RADIO_TOOL_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_RADIO_TOOL_BUTTON))
-#define GTK_RADIO_TOOL_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GTK_TYPE_RADIO_TOOL_BUTTON, GtkRadioToolButtonClass))
+#define BTK_TYPE_RADIO_TOOL_BUTTON            (btk_radio_tool_button_get_type ())
+#define BTK_RADIO_TOOL_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButton))
+#define BTK_RADIO_TOOL_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButtonClass))
+#define BTK_IS_RADIO_TOOL_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RADIO_TOOL_BUTTON))
+#define BTK_IS_RADIO_TOOL_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RADIO_TOOL_BUTTON))
+#define BTK_RADIO_TOOL_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButtonClass))
 
-typedef struct _GtkRadioToolButton      GtkRadioToolButton;
-typedef struct _GtkRadioToolButtonClass GtkRadioToolButtonClass;
+typedef struct _BtkRadioToolButton      BtkRadioToolButton;
+typedef struct _BtkRadioToolButtonClass BtkRadioToolButtonClass;
 
-struct _GtkRadioToolButton
+struct _BtkRadioToolButton
 {
-  GtkToggleToolButton parent;
+  BtkToggleToolButton parent;
 };
 
-struct _GtkRadioToolButtonClass
+struct _BtkRadioToolButtonClass
 {
-  GtkToggleToolButtonClass parent_class;
+  BtkToggleToolButtonClass parent_class;
 
   /* Padding for future expansion */
-  void (* _gtk_reserved1) (void);
-  void (* _gtk_reserved2) (void);
-  void (* _gtk_reserved3) (void);
-  void (* _gtk_reserved4) (void);
+  void (* _btk_reserved1) (void);
+  void (* _btk_reserved2) (void);
+  void (* _btk_reserved3) (void);
+  void (* _btk_reserved4) (void);
 };
 
-GType        gtk_radio_tool_button_get_type       (void) G_GNUC_CONST;
+GType        btk_radio_tool_button_get_type       (void) G_GNUC_CONST;
 
-GtkToolItem *gtk_radio_tool_button_new                        (GSList             *group);
-GtkToolItem *gtk_radio_tool_button_new_from_stock             (GSList             *group,
+BtkToolItem *btk_radio_tool_button_new                        (GSList             *group);
+BtkToolItem *btk_radio_tool_button_new_from_stock             (GSList             *group,
 							       const gchar        *stock_id);
-GtkToolItem *gtk_radio_tool_button_new_from_widget            (GtkRadioToolButton *group);
-GtkToolItem *gtk_radio_tool_button_new_with_stock_from_widget (GtkRadioToolButton *group,
+BtkToolItem *btk_radio_tool_button_new_from_widget            (BtkRadioToolButton *group);
+BtkToolItem *btk_radio_tool_button_new_with_stock_from_widget (BtkRadioToolButton *group,
 							       const gchar        *stock_id);
-GSList *     gtk_radio_tool_button_get_group                  (GtkRadioToolButton *button);
-void         gtk_radio_tool_button_set_group                  (GtkRadioToolButton *button,
+GSList *     btk_radio_tool_button_get_group                  (BtkRadioToolButton *button);
+void         btk_radio_tool_button_set_group                  (BtkRadioToolButton *button,
 							       GSList             *group);
 
 G_END_DECLS
 
-#endif /* __GTK_RADIO_TOOL_BUTTON_H__ */
+#endif /* __BTK_RADIO_TOOL_BUTTON_H__ */

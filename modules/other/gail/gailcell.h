@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,47 +17,47 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_CELL_H__
-#define __GAIL_CELL_H__
+#ifndef __BAIL_CELL_H__
+#define __BAIL_CELL_H__
 
-#include <atk/atk.h>
+#include <batk/batk.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_CELL                           (gail_cell_get_type ())
-#define GAIL_CELL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_CELL, GailCell))
-#define GAIL_CELL_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_CELL, GailCellClass))
-#define GAIL_IS_CELL(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_CELL))
-#define GAIL_IS_CELL_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_CELL))
-#define GAIL_CELL_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_CELL, GailCellClass))
+#define BAIL_TYPE_CELL                           (bail_cell_get_type ())
+#define BAIL_CELL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CELL, BailCell))
+#define BAIL_CELL_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CELL, BailCellClass))
+#define BAIL_IS_CELL(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CELL))
+#define BAIL_IS_CELL_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CELL))
+#define BAIL_CELL_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CELL, BailCellClass))
 
-typedef struct _GailCell                  GailCell;
-typedef struct _GailCellClass             GailCellClass;
+typedef struct _BailCell                  BailCell;
+typedef struct _BailCellClass             BailCellClass;
 typedef struct _ActionInfo ActionInfo;
-typedef void (*ACTION_FUNC) (GailCell *cell);
+typedef void (*ACTION_FUNC) (BailCell *cell);
   
-struct _GailCell
+struct _BailCell
 {
-  AtkObject parent;
+  BatkObject parent;
 
-  GtkWidget    *widget;
+  BtkWidget    *widget;
   /*
-   * This cached value is used only by atk_object_get_index_in_parent()
+   * This cached value is used only by batk_object_get_index_in_parent()
    * which updates the value when it is stale.
    */
   gint         index;
-  AtkStateSet *state_set;
+  BatkStateSet *state_set;
   GList       *action_list;
-  void (*refresh_index) (GailCell *cell);
+  void (*refresh_index) (BailCell *cell);
   gint         action_idle_handler;
   ACTION_FUNC  action_func;
 };
 
-GType gail_cell_get_type (void);
+GType bail_cell_get_type (void);
 
-struct _GailCellClass
+struct _BailCellClass
 {
-  AtkObjectClass parent_class;
+  BatkObjectClass parent_class;
 };
 
 struct _ActionInfo {
@@ -67,36 +67,36 @@ struct _ActionInfo {
   ACTION_FUNC do_action_func;
 };
 
-void      gail_cell_initialise           (GailCell        *cell,
-                                          GtkWidget       *widget, 
-                                          AtkObject       *parent,
+void      bail_cell_initialise           (BailCell        *cell,
+                                          BtkWidget       *widget, 
+                                          BatkObject       *parent,
 			                  gint            index);
 
-gboolean gail_cell_add_state             (GailCell        *cell,
-                                          AtkStateType    state_type,
+gboolean bail_cell_add_state             (BailCell        *cell,
+                                          BatkStateType    state_type,
                                           gboolean        emit_signal);
 
-gboolean gail_cell_remove_state          (GailCell        *cell,
-                                          AtkStateType    state_type,
+gboolean bail_cell_remove_state          (BailCell        *cell,
+                                          BatkStateType    state_type,
                                           gboolean        emit_signal);
 
-#ifndef GTK_DISABLE_DEPRECATED
-void     gail_cell_type_add_action_interface 
+#ifndef BTK_DISABLE_DEPRECATED
+void     bail_cell_type_add_action_interface 
                                          (GType           type);
 #endif
 
-gboolean gail_cell_add_action            (GailCell        *cell,
+gboolean bail_cell_add_action            (BailCell        *cell,
 		                          const gchar     *action_name,
 		                          const gchar     *action_description,
 		                          const gchar     *action_keybinding,
 		                          ACTION_FUNC     action_func);
 
-gboolean gail_cell_remove_action         (GailCell        *cell,
+gboolean bail_cell_remove_action         (BailCell        *cell,
                                           gint            action_id);
 
-gboolean gail_cell_remove_action_by_name (GailCell        *cell,
+gboolean bail_cell_remove_action_by_name (BailCell        *cell,
                                           const gchar     *action_name);
 
 G_END_DECLS
 
-#endif /* __GAIL_CELL_H__ */
+#endif /* __BAIL_CELL_H__ */

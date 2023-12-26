@@ -1,14 +1,14 @@
 Date: Sun, 14 Sep 1997 20:17:06 -0700 (PDT)
 From: Josh MacDonald <jmacd@CS.Berkeley.EDU>
-To: gnome@athena.nuclecu.unam.mx, gtk-list@redhat.com
-Subject: [gtk-list] gtktext widget internal documentation
+To: gnome@athena.nuclecu.unam.mx, btk-list@redhat.com
+Subject: [btk-list] btktext widget internal documentation
 
 
 Pete convinced me to just write up the text widget and let someone else
 finish it.  I'm pretty busy and have other commitments now.  Sorry.  I think
 I'm not the most qualified for some of the remaining work anyway, because I
-don't really know Gtk and it's event model very well.  Most of the work so 
-far was possible without knowing Gtk all that well, it was simply a data 
+don't really know Btk and it's event model very well.  Most of the work so 
+far was possible without knowing Btk all that well, it was simply a data 
 structure exercise (though after reading this you might say it was a fairly
 complicated data structure exercise).  I'm happy to answer questions.
 
@@ -28,7 +28,7 @@ lines on screen.  In addition to these data structures, there are
 structures to help iterate over text in the buffer.
 
 The gapped text segment is quite simple.  It's parameters are (all
-parameters I mention here are in the structure GtkText):
+parameters I mention here are in the structure BtkText):
 
   guchar* text;
   guint text_len;
@@ -54,8 +54,8 @@ The data field of the GList points to a TextProperty structure, which
 contains:
 
   TextFont* font;
-  GdkColor* back_color;
-  GdkColor* fore_color;
+  BdkColor* back_color;
+  BdkColor* fore_color;
   guint length;
 
 Currently, only font and color data are contained in the property
@@ -69,9 +69,9 @@ by INSERT_TEXT_PROPERTY.  A similar procedure exists to delete from
 the text property list, DELETE_TEXT_PROPERTY.  Since the property
 structure doesn't contain an offset, insertion into the list is an
 O(1) operation.  All such operations act on the insertion point, which
-is the POINT field of the GtkText structure.
+is the POINT field of the BtkText structure.
 
-The GtkPropertyMark structure is used for keeping track of the mapping
+The BtkPropertyMark structure is used for keeping track of the mapping
 between absolute buffer offsets and positions in the property list.
 These will be referred to as property marks.  Generally, there are
 four property marks the system keeps track of.  Two are trivial, the
@@ -79,7 +79,7 @@ beginning and the end of the buffer are easy to find.  The other two
 are the insertion point (POINT) and the cursor point (CURSOR_MARK).
 All operations on the text buffer are done using a property mark as a
 sort of cursor to keep track of the alignment of the property list and
-the absolute buffer offset.  The GtkPropertyMark structure contains:
+the absolute buffer offset.  The BtkPropertyMark structure contains:
 
   GList* property;
   guint offset;
@@ -96,15 +96,15 @@ because as the next section describes, line data is cached and by
 necessity contains text property marks.  The functions for operating
 and computing property marks are:
 
- void advance_mark     (GtkPropertyMark* mark);
- void decrement_mark   (GtkPropertyMark* mark);
- void advance_mark_n   (GtkPropertyMark* mark, gint n);
- void decrement_mark_n (GtkPropertyMark* mark, gint n);
- void move_mark_n      (GtkPropertyMark* mark, gint n);
+ void advance_mark     (BtkPropertyMark* mark);
+ void decrement_mark   (BtkPropertyMark* mark);
+ void advance_mark_n   (BtkPropertyMark* mark, gint n);
+ void decrement_mark_n (BtkPropertyMark* mark, gint n);
+ void move_mark_n      (BtkPropertyMark* mark, gint n);
 
- GtkPropertyMark find_mark      (GtkText* text, guint mark_position);
- GtkPropertyMark find_mark_near (GtkText* text, guint mark_position,
-                                 const GtkPropertyMark* near);
+ BtkPropertyMark find_mark      (BtkText* text, guint mark_position);
+ BtkPropertyMark find_mark_near (BtkText* text, guint mark_position,
+                                 const BtkPropertyMark* near);
 
 ADVANCE_MARK and DECREMENT_MARK modify the mark by plus or minus one
 buffer index.  ADVANCE_MARK_N and DECREMENT_MARK_N modify the mark by
@@ -134,12 +134,12 @@ LineParams structure includes the following fields:
   PrevTabCont tab_cont;
   PrevTabCont tab_cont_next;
 
-  GtkPropertyMark start;
-  GtkPropertyMark end;
+  BtkPropertyMark start;
+  BtkPropertyMark end;
 
 FONT_ASCENT and FONT_DESCENT are the maximum ascent and descent of any
 character in the line.  PIXEL_WIDTH is the number of pixels wide the
-drawn region is, though I don't think it's actually being used
+drawn rebunnyion is, though I don't think it's actually being used
 currently.  You may wish to remove this field, eventually, though I
 suspect it will come in handy implementing horizontal scrolling.
 DISPLAYABLE_CHARS is the number of characters in the line actually
@@ -172,7 +172,7 @@ often, the last index is treated as a newline.
   characters inserted at the last position. OWT 2/9/98 ]
 
 Tab stops are variable width.  A list of tab stops is contained in the
-GtkText structure:
+BtkText structure:
 
   GList *tab_stops;
   gint default_tab_width;
@@ -204,7 +204,7 @@ the next tab stop.  A TabStopMark contains:
   GList* tab_stops;
   gint to_next_tab;
 
-TAB_STOPS is a pointer into the TAB_STOPS field of the GtkText
+TAB_STOPS is a pointer into the TAB_STOPS field of the BtkText
 structure.  TO_NEXT_TAB is the number of characters before the next
 tab.  The functions ADVANCE_TAB_MARK and ADVANCE_TAB_MARK_N advance
 these marks.  The LineParams structure contains two PrevTabCont
@@ -220,8 +220,8 @@ parameters of a single line.  The function LINE_PARAMS_ITERATE is used
 for computing the properties of some number (> 0) of sequential lines.
 
 void
-line_params_iterate (GtkText* text,
-		     const GtkPropertyMark* mark0,
+line_params_iterate (BtkText* text,
+		     const BtkPropertyMark* mark0,
 		     const PrevTabCont* tab_mark0,
 		     gboolean alloc,
 		     gpointer data,
@@ -229,7 +229,7 @@ line_params_iterate (GtkText* text,
 
 where LineIteratorFunction is:
 
-typedef gint (*LineIteratorFunction) (GtkText* text,
+typedef gint (*LineIteratorFunction) (BtkText* text,
                                       LineParams* lp,
                                       gpointer data);
 
@@ -256,7 +256,7 @@ There are currently two uses of LINE_PARAMS_ITERATE:
 * Computing geometry of some pixel height worth of lines.  This is
   done in FETCH_LINES, FETCH_LINES_BACKWARD, FETCH_LINES_FORWARD, etc.
 
-The GtkText structure contains a cache of the LineParams data for all
+The BtkText structure contains a cache of the LineParams data for all
 visible lines:
 
   GList *current_line;
@@ -286,25 +286,25 @@ newline).  FIRST_CUT_PIXELS is the number of pixels which are not
 drawn on the first visible line.  If FIRST_CUT_PIXELS is zero, the
 whole line is visible.  FIRST_ONSCREEN_HOR_PIXEL is not used.
 FIRST_ONSCREEN_VER_PIXEL is the absolute pixel which starts the
-visible region.  This is used for setting the vertical scroll bar.
+visible rebunnyion.  This is used for setting the vertical scroll bar.
 
-Other miscellaneous things in the GtkText structure:
+Other miscellaneous things in the BtkText structure:
 
-Gtk specific things:
+Btk specific things:
 
-  GtkWidget widget;
+  BtkWidget widget;
 
-  GdkWindow *text_area;
+  BdkWindow *text_area;
 
-  GtkAdjustment *hadj;
-  GtkAdjustment *vadj;
+  BtkAdjustment *hadj;
+  BtkAdjustment *vadj;
 
-  GdkGC *gc;
+  BdkGC *gc;
 
-  GdkPixmap* line_wrap_bitmap;
-  GdkPixmap* line_arrow_bitmap;
+  BdkPixmap* line_wrap_bitmap;
+  BdkPixmap* line_arrow_bitmap;
 
-These are pretty self explanatory, especially if you know Gtk.
+These are pretty self explanatory, especially if you know Btk.
 LINE_WRAP_BITMAP and LINE_ARROW_BITMAP are two bitmaps used to
 indicate that a line wraps and is continued offscreen, respectively.
 
@@ -348,7 +348,7 @@ The cursor:
 
   gint            cursor_pos_x;
   gint            cursor_pos_y;
-  GtkPropertyMark cursor_mark;
+  BtkPropertyMark cursor_mark;
   gchar           cursor_char;
   gchar           cursor_char_offset;
   gint            cursor_virtual_x;
@@ -399,7 +399,7 @@ Exposure and drawing:
 
 Exposure is handled from the EXPOSE_TEXT function.  It assumes that
 the LINE_START_CACHE and all its parameters are accurate and simply
-exposes any line which is in the exposure region.  It calls the
+exposes any line which is in the exposure rebunnyion.  It calls the
 CLEAR_AREA function to clear the background and/or lay down a pixmap
 background.  The text widget has a scrollable pixmap background, which
 is implemented in CLEAR_AREA.  CLEAR_AREA does the math to figure out
@@ -427,7 +427,7 @@ RECOMPUTE_GEOMETRY is called when the geometry of the window changes
 or when it is first drawn.  This is probably not done right.  My
 biggest weakness in writing this code is that I've never written a
 widget before so I got most of the event handling stuff wrong as far
-as Gtk is concerned.  Fortunately, most of the code is unrelated and
+as Btk is concerned.  Fortunately, most of the code is unrelated and
 simply an exercise in data structure manipulation.
 
 Scrolling:
@@ -438,7 +438,7 @@ height and then advances the LINE_START_CACHE.  When it runs out of
 lines it fetches more.  The function SCROLL_INT is used to scroll from
 inside the code, it calls the appropriate functions and handles
 updating the scroll bars.  It dispatches a change event which causes
-Gtk to call the correct scroll action, which then enters SCROLL_UP or
+Btk to call the correct scroll action, which then enters SCROLL_UP or
 SCROLL_DOWN.  Careful with the cursor during these changes.
 
 Insertion, deletion:
@@ -453,7 +453,7 @@ Currently I've got functions to do insertion and deletion of a single
 character.  It's fairly complicated.  In order to do efficient pasting
 into the buffer, or write code that modifies the buffer while the
 buffer is drawn, it needs to do multiple characters at at time.  This
-is the hardest part of what remains.  Currently, gtk_text_insert does
+is the hardest part of what remains.  Currently, btk_text_insert does
 not re-expose the modified lines.  It needs to.  Pete did this wrong at
 one point and I disabled modification completely, I don't know what
 the current state of things are.  The functions
@@ -479,7 +479,7 @@ What needs to be done:
 
 Horizontal scrolling, robustness, testing, selection handling.  If you
 want to work in the text widget pay attention to the debugging
-facilities I've written at the end of gtktext.c.  I'm sorry I waited
+facilities I've written at the end of btktext.c.  I'm sorry I waited
 so long to try and pass this off.  I'm super busy with school and
 work, and when I have free time my highest priority is another version
 of PRCS.

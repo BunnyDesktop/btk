@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,59 +19,59 @@
  *
  */
 
-#ifndef __GTK_IM_CONTEXT_THAI_H__
-#define __GTK_IM_CONTEXT_THAI_H__
+#ifndef __BTK_IM_CONTEXT_THAI_H__
+#define __BTK_IM_CONTEXT_THAI_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
-extern GType gtk_type_im_context_thai;
+extern GType btk_type_im_context_thai;
 
-#define GTK_TYPE_IM_CONTEXT_THAI            (gtk_type_im_context_thai)
-#define GTK_IM_CONTEXT_THAI(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_IM_CONTEXT_THAI, GtkIMContextThai))
-#define GTK_IM_CONTEXT_THAI_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_IM_CONTEXT_THAI, GtkIMContextThaiClass))
-#define GTK_IS_IM_CONTEXT_THAI(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_IM_CONTEXT_THAI))
-#define GTK_IS_IM_CONTEXT_THAI_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_IM_CONTEXT_THAI))
-#define GTK_IM_CONTEXT_THAI_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_IM_CONTEXT_THAI, GtkIMContextThaiClass))
+#define BTK_TYPE_IM_CONTEXT_THAI            (btk_type_im_context_thai)
+#define BTK_IM_CONTEXT_THAI(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThai))
+#define BTK_IM_CONTEXT_THAI_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThaiClass))
+#define BTK_IS_IM_CONTEXT_THAI(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_THAI))
+#define BTK_IS_IM_CONTEXT_THAI_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_THAI))
+#define BTK_IM_CONTEXT_THAI_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThaiClass))
 
 
-typedef struct _GtkIMContextThai       GtkIMContextThai;
-typedef struct _GtkIMContextThaiClass  GtkIMContextThaiClass;
+typedef struct _BtkIMContextThai       BtkIMContextThai;
+typedef struct _BtkIMContextThaiClass  BtkIMContextThaiClass;
 
 typedef enum
 {
   ISC_PASSTHROUGH,
   ISC_BASICCHECK,
   ISC_STRICT
-} GtkIMContextThaiISCMode;
-#define GTK_IM_CONTEXT_THAI_BUFF_SIZE 2
+} BtkIMContextThaiISCMode;
+#define BTK_IM_CONTEXT_THAI_BUFF_SIZE 2
 
-struct _GtkIMContextThai
+struct _BtkIMContextThai
 {
-  GtkIMContext object;
+  BtkIMContext object;
 
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
-  gunichar                char_buff[GTK_IM_CONTEXT_THAI_BUFF_SIZE];
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
-  GtkIMContextThaiISCMode isc_mode;
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
+  gunichar                char_buff[BTK_IM_CONTEXT_THAI_BUFF_SIZE];
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
+  BtkIMContextThaiISCMode isc_mode;
 };
 
-struct _GtkIMContextThaiClass
+struct _BtkIMContextThaiClass
 {
-  GtkIMContextClass parent_class;
+  BtkIMContextClass parent_class;
 };
 
-void gtk_im_context_thai_register_type (GTypeModule *type_module);
-GtkIMContext *gtk_im_context_thai_new (void);
+void btk_im_context_thai_register_type (GTypeModule *type_module);
+BtkIMContext *btk_im_context_thai_new (void);
 
-GtkIMContextThaiISCMode
-  gtk_im_context_thai_get_isc_mode (GtkIMContextThai *context_thai);
+BtkIMContextThaiISCMode
+  btk_im_context_thai_get_isc_mode (BtkIMContextThai *context_thai);
 
-GtkIMContextThaiISCMode
-  gtk_im_context_thai_set_isc_mode (GtkIMContextThai *context_thai,
-                                    GtkIMContextThaiISCMode mode);
+BtkIMContextThaiISCMode
+  btk_im_context_thai_set_isc_mode (BtkIMContextThai *context_thai,
+                                    BtkIMContextThaiISCMode mode);
 
 G_END_DECLS
 
-#endif /* __GTK_IM_CONTEXT_THAI_H__ */
+#endif /* __BTK_IM_CONTEXT_THAI_H__ */

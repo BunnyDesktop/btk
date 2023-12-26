@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,74 +18,74 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_EVENTS_H__
-#define __GDK_EVENTS_H__
+#ifndef __BDK_EVENTS_H__
+#define __BDK_EVENTS_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdkcolor.h>
-#include <gdk/gdktypes.h>
-#include <gdk/gdkdnd.h>
-#include <gdk/gdkinput.h>
+#include <bdk/bdkcolor.h>
+#include <bdk/bdktypes.h>
+#include <bdk/bdkdnd.h>
+#include <bdk/bdkinput.h>
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_EVENT          (gdk_event_get_type ())
+#define BDK_TYPE_EVENT          (bdk_event_get_type ())
 
-#define GDK_PRIORITY_EVENTS	(G_PRIORITY_DEFAULT)
-#define GDK_PRIORITY_REDRAW     (G_PRIORITY_HIGH_IDLE + 20)
+#define BDK_PRIORITY_EVENTS	(G_PRIORITY_DEFAULT)
+#define BDK_PRIORITY_REDRAW     (G_PRIORITY_HIGH_IDLE + 20)
 
 
-typedef struct _GdkEventAny	    GdkEventAny;
-typedef struct _GdkEventExpose	    GdkEventExpose;
-typedef struct _GdkEventNoExpose    GdkEventNoExpose;
-typedef struct _GdkEventVisibility  GdkEventVisibility;
-typedef struct _GdkEventMotion	    GdkEventMotion;
-typedef struct _GdkEventButton	    GdkEventButton;
-typedef struct _GdkEventScroll      GdkEventScroll;  
-typedef struct _GdkEventKey	    GdkEventKey;
-typedef struct _GdkEventFocus	    GdkEventFocus;
-typedef struct _GdkEventCrossing    GdkEventCrossing;
-typedef struct _GdkEventConfigure   GdkEventConfigure;
-typedef struct _GdkEventProperty    GdkEventProperty;
-typedef struct _GdkEventSelection   GdkEventSelection;
-typedef struct _GdkEventOwnerChange GdkEventOwnerChange;
-typedef struct _GdkEventProximity   GdkEventProximity;
-typedef struct _GdkEventClient	    GdkEventClient;
-typedef struct _GdkEventDND         GdkEventDND;
-typedef struct _GdkEventWindowState GdkEventWindowState;
-typedef struct _GdkEventSetting     GdkEventSetting;
-typedef struct _GdkEventGrabBroken  GdkEventGrabBroken;
+typedef struct _BdkEventAny	    BdkEventAny;
+typedef struct _BdkEventExpose	    BdkEventExpose;
+typedef struct _BdkEventNoExpose    BdkEventNoExpose;
+typedef struct _BdkEventVisibility  BdkEventVisibility;
+typedef struct _BdkEventMotion	    BdkEventMotion;
+typedef struct _BdkEventButton	    BdkEventButton;
+typedef struct _BdkEventScroll      BdkEventScroll;  
+typedef struct _BdkEventKey	    BdkEventKey;
+typedef struct _BdkEventFocus	    BdkEventFocus;
+typedef struct _BdkEventCrossing    BdkEventCrossing;
+typedef struct _BdkEventConfigure   BdkEventConfigure;
+typedef struct _BdkEventProperty    BdkEventProperty;
+typedef struct _BdkEventSelection   BdkEventSelection;
+typedef struct _BdkEventOwnerChange BdkEventOwnerChange;
+typedef struct _BdkEventProximity   BdkEventProximity;
+typedef struct _BdkEventClient	    BdkEventClient;
+typedef struct _BdkEventDND         BdkEventDND;
+typedef struct _BdkEventWindowState BdkEventWindowState;
+typedef struct _BdkEventSetting     BdkEventSetting;
+typedef struct _BdkEventGrabBroken  BdkEventGrabBroken;
 
-typedef union  _GdkEvent	    GdkEvent;
+typedef union  _BdkEvent	    BdkEvent;
 
-typedef void (*GdkEventFunc) (GdkEvent *event,
+typedef void (*BdkEventFunc) (BdkEvent *event,
 			      gpointer	data);
 
 /* Event filtering */
 
-typedef void GdkXEvent;	  /* Can be cast to window system specific
+typedef void BdkXEvent;	  /* Can be cast to window system specific
 			   * even type, XEvent on X11, MSG on Win32.
 			   */
 
 typedef enum {
-  GDK_FILTER_CONTINUE,	  /* Event not handled, continue processesing */
-  GDK_FILTER_TRANSLATE,	  /* Native event translated into a GDK event and
+  BDK_FILTER_CONTINUE,	  /* Event not handled, continue processesing */
+  BDK_FILTER_TRANSLATE,	  /* Native event translated into a BDK event and
                              stored in the "event" structure that was
                              passed in */
-  GDK_FILTER_REMOVE	  /* Terminate processing, removing event */
-} GdkFilterReturn;
+  BDK_FILTER_REMOVE	  /* Terminate processing, removing event */
+} BdkFilterReturn;
 
-typedef GdkFilterReturn (*GdkFilterFunc) (GdkXEvent *xevent,
-					  GdkEvent *event,
+typedef BdkFilterReturn (*BdkFilterFunc) (BdkXEvent *xevent,
+					  BdkEvent *event,
 					  gpointer  data);
 
 
@@ -114,90 +114,90 @@ typedef GdkFilterReturn (*GdkFilterFunc) (GdkXEvent *xevent,
  */
 typedef enum
 {
-  GDK_NOTHING		= -1,
-  GDK_DELETE		= 0,
-  GDK_DESTROY		= 1,
-  GDK_EXPOSE		= 2,
-  GDK_MOTION_NOTIFY	= 3,
-  GDK_BUTTON_PRESS	= 4,
-  GDK_2BUTTON_PRESS	= 5,
-  GDK_3BUTTON_PRESS	= 6,
-  GDK_BUTTON_RELEASE	= 7,
-  GDK_KEY_PRESS		= 8,
-  GDK_KEY_RELEASE	= 9,
-  GDK_ENTER_NOTIFY	= 10,
-  GDK_LEAVE_NOTIFY	= 11,
-  GDK_FOCUS_CHANGE	= 12,
-  GDK_CONFIGURE		= 13,
-  GDK_MAP		= 14,
-  GDK_UNMAP		= 15,
-  GDK_PROPERTY_NOTIFY	= 16,
-  GDK_SELECTION_CLEAR	= 17,
-  GDK_SELECTION_REQUEST = 18,
-  GDK_SELECTION_NOTIFY	= 19,
-  GDK_PROXIMITY_IN	= 20,
-  GDK_PROXIMITY_OUT	= 21,
-  GDK_DRAG_ENTER        = 22,
-  GDK_DRAG_LEAVE        = 23,
-  GDK_DRAG_MOTION       = 24,
-  GDK_DRAG_STATUS       = 25,
-  GDK_DROP_START        = 26,
-  GDK_DROP_FINISHED     = 27,
-  GDK_CLIENT_EVENT	= 28,
-  GDK_VISIBILITY_NOTIFY = 29,
-  GDK_NO_EXPOSE		= 30,
-  GDK_SCROLL            = 31,
-  GDK_WINDOW_STATE      = 32,
-  GDK_SETTING           = 33,
-  GDK_OWNER_CHANGE      = 34,
-  GDK_GRAB_BROKEN       = 35,
-  GDK_DAMAGE            = 36,
-  GDK_EVENT_LAST        /* helper variable for decls */
-} GdkEventType;
+  BDK_NOTHING		= -1,
+  BDK_DELETE		= 0,
+  BDK_DESTROY		= 1,
+  BDK_EXPOSE		= 2,
+  BDK_MOTION_NOTIFY	= 3,
+  BDK_BUTTON_PRESS	= 4,
+  BDK_2BUTTON_PRESS	= 5,
+  BDK_3BUTTON_PRESS	= 6,
+  BDK_BUTTON_RELEASE	= 7,
+  BDK_KEY_PRESS		= 8,
+  BDK_KEY_RELEASE	= 9,
+  BDK_ENTER_NOTIFY	= 10,
+  BDK_LEAVE_NOTIFY	= 11,
+  BDK_FOCUS_CHANGE	= 12,
+  BDK_CONFIGURE		= 13,
+  BDK_MAP		= 14,
+  BDK_UNMAP		= 15,
+  BDK_PROPERTY_NOTIFY	= 16,
+  BDK_SELECTION_CLEAR	= 17,
+  BDK_SELECTION_REQUEST = 18,
+  BDK_SELECTION_NOTIFY	= 19,
+  BDK_PROXIMITY_IN	= 20,
+  BDK_PROXIMITY_OUT	= 21,
+  BDK_DRAG_ENTER        = 22,
+  BDK_DRAG_LEAVE        = 23,
+  BDK_DRAG_MOTION       = 24,
+  BDK_DRAG_STATUS       = 25,
+  BDK_DROP_START        = 26,
+  BDK_DROP_FINISHED     = 27,
+  BDK_CLIENT_EVENT	= 28,
+  BDK_VISIBILITY_NOTIFY = 29,
+  BDK_NO_EXPOSE		= 30,
+  BDK_SCROLL            = 31,
+  BDK_WINDOW_STATE      = 32,
+  BDK_SETTING           = 33,
+  BDK_OWNER_CHANGE      = 34,
+  BDK_GRAB_BROKEN       = 35,
+  BDK_DAMAGE            = 36,
+  BDK_EVENT_LAST        /* helper variable for decls */
+} BdkEventType;
 
 /* Event masks. (Used to select what types of events a window
  *  will receive).
  */
 typedef enum
 {
-  GDK_EXPOSURE_MASK		= 1 << 1,
-  GDK_POINTER_MOTION_MASK	= 1 << 2,
-  GDK_POINTER_MOTION_HINT_MASK	= 1 << 3,
-  GDK_BUTTON_MOTION_MASK	= 1 << 4,
-  GDK_BUTTON1_MOTION_MASK	= 1 << 5,
-  GDK_BUTTON2_MOTION_MASK	= 1 << 6,
-  GDK_BUTTON3_MOTION_MASK	= 1 << 7,
-  GDK_BUTTON_PRESS_MASK		= 1 << 8,
-  GDK_BUTTON_RELEASE_MASK	= 1 << 9,
-  GDK_KEY_PRESS_MASK		= 1 << 10,
-  GDK_KEY_RELEASE_MASK		= 1 << 11,
-  GDK_ENTER_NOTIFY_MASK		= 1 << 12,
-  GDK_LEAVE_NOTIFY_MASK		= 1 << 13,
-  GDK_FOCUS_CHANGE_MASK		= 1 << 14,
-  GDK_STRUCTURE_MASK		= 1 << 15,
-  GDK_PROPERTY_CHANGE_MASK	= 1 << 16,
-  GDK_VISIBILITY_NOTIFY_MASK	= 1 << 17,
-  GDK_PROXIMITY_IN_MASK		= 1 << 18,
-  GDK_PROXIMITY_OUT_MASK	= 1 << 19,
-  GDK_SUBSTRUCTURE_MASK		= 1 << 20,
-  GDK_SCROLL_MASK               = 1 << 21,
-  GDK_ALL_EVENTS_MASK		= 0x3FFFFE
-} GdkEventMask;
+  BDK_EXPOSURE_MASK		= 1 << 1,
+  BDK_POINTER_MOTION_MASK	= 1 << 2,
+  BDK_POINTER_MOTION_HINT_MASK	= 1 << 3,
+  BDK_BUTTON_MOTION_MASK	= 1 << 4,
+  BDK_BUTTON1_MOTION_MASK	= 1 << 5,
+  BDK_BUTTON2_MOTION_MASK	= 1 << 6,
+  BDK_BUTTON3_MOTION_MASK	= 1 << 7,
+  BDK_BUTTON_PRESS_MASK		= 1 << 8,
+  BDK_BUTTON_RELEASE_MASK	= 1 << 9,
+  BDK_KEY_PRESS_MASK		= 1 << 10,
+  BDK_KEY_RELEASE_MASK		= 1 << 11,
+  BDK_ENTER_NOTIFY_MASK		= 1 << 12,
+  BDK_LEAVE_NOTIFY_MASK		= 1 << 13,
+  BDK_FOCUS_CHANGE_MASK		= 1 << 14,
+  BDK_STRUCTURE_MASK		= 1 << 15,
+  BDK_PROPERTY_CHANGE_MASK	= 1 << 16,
+  BDK_VISIBILITY_NOTIFY_MASK	= 1 << 17,
+  BDK_PROXIMITY_IN_MASK		= 1 << 18,
+  BDK_PROXIMITY_OUT_MASK	= 1 << 19,
+  BDK_SUBSTRUCTURE_MASK		= 1 << 20,
+  BDK_SCROLL_MASK               = 1 << 21,
+  BDK_ALL_EVENTS_MASK		= 0x3FFFFE
+} BdkEventMask;
 
 typedef enum
 {
-  GDK_VISIBILITY_UNOBSCURED,
-  GDK_VISIBILITY_PARTIAL,
-  GDK_VISIBILITY_FULLY_OBSCURED
-} GdkVisibilityState;
+  BDK_VISIBILITY_UNOBSCURED,
+  BDK_VISIBILITY_PARTIAL,
+  BDK_VISIBILITY_FULLY_OBSCURED
+} BdkVisibilityState;
 
 typedef enum
 {
-  GDK_SCROLL_UP,
-  GDK_SCROLL_DOWN,
-  GDK_SCROLL_LEFT,
-  GDK_SCROLL_RIGHT
-} GdkScrollDirection;
+  BDK_SCROLL_UP,
+  BDK_SCROLL_DOWN,
+  BDK_SCROLL_LEFT,
+  BDK_SCROLL_RIGHT
+} BdkScrollDirection;
 
 /* Types of enter/leave notifications.
  *   Ancestor:
@@ -209,13 +209,13 @@ typedef enum
  */
 typedef enum
 {
-  GDK_NOTIFY_ANCESTOR		= 0,
-  GDK_NOTIFY_VIRTUAL		= 1,
-  GDK_NOTIFY_INFERIOR		= 2,
-  GDK_NOTIFY_NONLINEAR		= 3,
-  GDK_NOTIFY_NONLINEAR_VIRTUAL	= 4,
-  GDK_NOTIFY_UNKNOWN		= 5
-} GdkNotifyType;
+  BDK_NOTIFY_ANCESTOR		= 0,
+  BDK_NOTIFY_VIRTUAL		= 1,
+  BDK_NOTIFY_INFERIOR		= 2,
+  BDK_NOTIFY_NONLINEAR		= 3,
+  BDK_NOTIFY_NONLINEAR_VIRTUAL	= 4,
+  BDK_NOTIFY_UNKNOWN		= 5
+} BdkNotifyType;
 
 /* Enter/leave event modes.
  *   NotifyNormal
@@ -224,81 +224,81 @@ typedef enum
  */
 typedef enum
 {
-  GDK_CROSSING_NORMAL,
-  GDK_CROSSING_GRAB,
-  GDK_CROSSING_UNGRAB,
-  GDK_CROSSING_GTK_GRAB,
-  GDK_CROSSING_GTK_UNGRAB,
-  GDK_CROSSING_STATE_CHANGED
-} GdkCrossingMode;
+  BDK_CROSSING_NORMAL,
+  BDK_CROSSING_GRAB,
+  BDK_CROSSING_UNGRAB,
+  BDK_CROSSING_BTK_GRAB,
+  BDK_CROSSING_BTK_UNGRAB,
+  BDK_CROSSING_STATE_CHANGED
+} BdkCrossingMode;
 
 typedef enum
 {
-  GDK_PROPERTY_NEW_VALUE,
-  GDK_PROPERTY_DELETE
-} GdkPropertyState;
+  BDK_PROPERTY_NEW_VALUE,
+  BDK_PROPERTY_DELETE
+} BdkPropertyState;
 
 typedef enum
 {
-  GDK_WINDOW_STATE_WITHDRAWN  = 1 << 0,
-  GDK_WINDOW_STATE_ICONIFIED  = 1 << 1,
-  GDK_WINDOW_STATE_MAXIMIZED  = 1 << 2,
-  GDK_WINDOW_STATE_STICKY     = 1 << 3,
-  GDK_WINDOW_STATE_FULLSCREEN = 1 << 4,
-  GDK_WINDOW_STATE_ABOVE      = 1 << 5,
-  GDK_WINDOW_STATE_BELOW      = 1 << 6
-} GdkWindowState;
+  BDK_WINDOW_STATE_WITHDRAWN  = 1 << 0,
+  BDK_WINDOW_STATE_ICONIFIED  = 1 << 1,
+  BDK_WINDOW_STATE_MAXIMIZED  = 1 << 2,
+  BDK_WINDOW_STATE_STICKY     = 1 << 3,
+  BDK_WINDOW_STATE_FULLSCREEN = 1 << 4,
+  BDK_WINDOW_STATE_ABOVE      = 1 << 5,
+  BDK_WINDOW_STATE_BELOW      = 1 << 6
+} BdkWindowState;
 
 typedef enum
 {
-  GDK_SETTING_ACTION_NEW,
-  GDK_SETTING_ACTION_CHANGED,
-  GDK_SETTING_ACTION_DELETED
-} GdkSettingAction;
+  BDK_SETTING_ACTION_NEW,
+  BDK_SETTING_ACTION_CHANGED,
+  BDK_SETTING_ACTION_DELETED
+} BdkSettingAction;
 
 typedef enum
 {
-  GDK_OWNER_CHANGE_NEW_OWNER,
-  GDK_OWNER_CHANGE_DESTROY,
-  GDK_OWNER_CHANGE_CLOSE
-} GdkOwnerChange;
+  BDK_OWNER_CHANGE_NEW_OWNER,
+  BDK_OWNER_CHANGE_DESTROY,
+  BDK_OWNER_CHANGE_CLOSE
+} BdkOwnerChange;
 
-struct _GdkEventAny
+struct _BdkEventAny
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
 };
 
-struct _GdkEventExpose
+struct _BdkEventExpose
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkRectangle area;
-  GdkRegion *region;
+  BdkRectangle area;
+  BdkRebunnyion *rebunnyion;
   gint count; /* If non-zero, how many more events follow. */
 };
 
-struct _GdkEventNoExpose
+struct _BdkEventNoExpose
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
 };
 
-struct _GdkEventVisibility
+struct _BdkEventVisibility
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkVisibilityState state;
+  BdkVisibilityState state;
 };
 
-struct _GdkEventMotion
+struct _BdkEventMotion
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   guint32 time;
   gdouble x;
@@ -306,14 +306,14 @@ struct _GdkEventMotion
   gdouble *axes;
   guint state;
   gint16 is_hint;
-  GdkDevice *device;
+  BdkDevice *device;
   gdouble x_root, y_root;
 };
 
-struct _GdkEventButton
+struct _BdkEventButton
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   guint32 time;
   gdouble x;
@@ -321,28 +321,28 @@ struct _GdkEventButton
   gdouble *axes;
   guint state;
   guint button;
-  GdkDevice *device;
+  BdkDevice *device;
   gdouble x_root, y_root;
 };
 
-struct _GdkEventScroll
+struct _BdkEventScroll
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   guint32 time;
   gdouble x;
   gdouble y;
   guint state;
-  GdkScrollDirection direction;
-  GdkDevice *device;
+  BdkScrollDirection direction;
+  BdkDevice *device;
   gdouble x_root, y_root;
 };
 
-struct _GdkEventKey
+struct _BdkEventKey
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   guint32 time;
   guint state;
@@ -354,71 +354,71 @@ struct _GdkEventKey
   guint is_modifier : 1;
 };
 
-struct _GdkEventCrossing
+struct _BdkEventCrossing
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkWindow *subwindow;
+  BdkWindow *subwindow;
   guint32 time;
   gdouble x;
   gdouble y;
   gdouble x_root;
   gdouble y_root;
-  GdkCrossingMode mode;
-  GdkNotifyType detail;
+  BdkCrossingMode mode;
+  BdkNotifyType detail;
   gboolean focus;
   guint state;
 };
 
-struct _GdkEventFocus
+struct _BdkEventFocus
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   gint16 in;
 };
 
-struct _GdkEventConfigure
+struct _BdkEventConfigure
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   gint x, y;
   gint width;
   gint height;
 };
 
-struct _GdkEventProperty
+struct _BdkEventProperty
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkAtom atom;
+  BdkAtom atom;
   guint32 time;
   guint state;
 };
 
-struct _GdkEventSelection
+struct _BdkEventSelection
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkAtom selection;
-  GdkAtom target;
-  GdkAtom property;
+  BdkAtom selection;
+  BdkAtom target;
+  BdkAtom property;
   guint32 time;
-  GdkNativeWindow requestor;
+  BdkNativeWindow requestor;
 };
 
-struct _GdkEventOwnerChange
+struct _BdkEventOwnerChange
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkNativeWindow owner;
-  GdkOwnerChange reason;
-  GdkAtom selection;
+  BdkNativeWindow owner;
+  BdkOwnerChange reason;
+  BdkAtom selection;
   guint32 time;
   guint32 selection_time;
 };
@@ -426,21 +426,21 @@ struct _GdkEventOwnerChange
 /* This event type will be used pretty rarely. It only is important
    for XInput aware programs that are drawing their own cursor */
 
-struct _GdkEventProximity
+struct _BdkEventProximity
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   guint32 time;
-  GdkDevice *device;
+  BdkDevice *device;
 };
 
-struct _GdkEventClient
+struct _BdkEventClient
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkAtom message_type;
+  BdkAtom message_type;
   gushort data_format;
   union {
     char b[20];
@@ -449,118 +449,118 @@ struct _GdkEventClient
   } data;
 };
 
-struct _GdkEventSetting
+struct _BdkEventSetting
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkSettingAction action;
+  BdkSettingAction action;
   char *name;
 };
 
-struct _GdkEventWindowState
+struct _BdkEventWindowState
 {
-  GdkEventType type;
-  GdkWindow *window;
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkWindowState changed_mask;
-  GdkWindowState new_window_state;
+  BdkWindowState changed_mask;
+  BdkWindowState new_window_state;
 };
 
-struct _GdkEventGrabBroken {
-  GdkEventType type;
-  GdkWindow *window;
+struct _BdkEventGrabBroken {
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
   gboolean keyboard;
   gboolean implicit;
-  GdkWindow *grab_window;
+  BdkWindow *grab_window;
 };
 
 /* Event types for DND */
 
-struct _GdkEventDND {
-  GdkEventType type;
-  GdkWindow *window;
+struct _BdkEventDND {
+  BdkEventType type;
+  BdkWindow *window;
   gint8 send_event;
-  GdkDragContext *context;
+  BdkDragContext *context;
 
   guint32 time;
   gshort x_root, y_root;
 };
 
-union _GdkEvent
+union _BdkEvent
 {
-  GdkEventType		    type;
-  GdkEventAny		    any;
-  GdkEventExpose	    expose;
-  GdkEventNoExpose	    no_expose;
-  GdkEventVisibility	    visibility;
-  GdkEventMotion	    motion;
-  GdkEventButton	    button;
-  GdkEventScroll            scroll;
-  GdkEventKey		    key;
-  GdkEventCrossing	    crossing;
-  GdkEventFocus		    focus_change;
-  GdkEventConfigure	    configure;
-  GdkEventProperty	    property;
-  GdkEventSelection	    selection;
-  GdkEventOwnerChange  	    owner_change;
-  GdkEventProximity	    proximity;
-  GdkEventClient	    client;
-  GdkEventDND               dnd;
-  GdkEventWindowState       window_state;
-  GdkEventSetting           setting;
-  GdkEventGrabBroken        grab_broken;
+  BdkEventType		    type;
+  BdkEventAny		    any;
+  BdkEventExpose	    expose;
+  BdkEventNoExpose	    no_expose;
+  BdkEventVisibility	    visibility;
+  BdkEventMotion	    motion;
+  BdkEventButton	    button;
+  BdkEventScroll            scroll;
+  BdkEventKey		    key;
+  BdkEventCrossing	    crossing;
+  BdkEventFocus		    focus_change;
+  BdkEventConfigure	    configure;
+  BdkEventProperty	    property;
+  BdkEventSelection	    selection;
+  BdkEventOwnerChange  	    owner_change;
+  BdkEventProximity	    proximity;
+  BdkEventClient	    client;
+  BdkEventDND               dnd;
+  BdkEventWindowState       window_state;
+  BdkEventSetting           setting;
+  BdkEventGrabBroken        grab_broken;
 };
 
-GType     gdk_event_get_type            (void) G_GNUC_CONST;
+GType     bdk_event_get_type            (void) G_GNUC_CONST;
 
-gboolean  gdk_events_pending	 	(void);
-GdkEvent* gdk_event_get			(void);
+gboolean  bdk_events_pending	 	(void);
+BdkEvent* bdk_event_get			(void);
 
-GdkEvent* gdk_event_peek                (void);
-#ifndef GDK_DISABLE_DEPRECATED
-GdkEvent* gdk_event_get_graphics_expose (GdkWindow 	*window);
+BdkEvent* bdk_event_peek                (void);
+#ifndef BDK_DISABLE_DEPRECATED
+BdkEvent* bdk_event_get_graphics_expose (BdkWindow 	*window);
 #endif
-void      gdk_event_put	 		(const GdkEvent *event);
+void      bdk_event_put	 		(const BdkEvent *event);
 
-GdkEvent* gdk_event_new                 (GdkEventType    type);
-GdkEvent* gdk_event_copy     		(const GdkEvent *event);
-void	  gdk_event_free     		(GdkEvent 	*event);
+BdkEvent* bdk_event_new                 (BdkEventType    type);
+BdkEvent* bdk_event_copy     		(const BdkEvent *event);
+void	  bdk_event_free     		(BdkEvent 	*event);
 
-guint32   gdk_event_get_time            (const GdkEvent  *event);
-gboolean  gdk_event_get_state           (const GdkEvent  *event,
-                                         GdkModifierType *state);
-gboolean  gdk_event_get_coords		(const GdkEvent  *event,
+guint32   bdk_event_get_time            (const BdkEvent  *event);
+gboolean  bdk_event_get_state           (const BdkEvent  *event,
+                                         BdkModifierType *state);
+gboolean  bdk_event_get_coords		(const BdkEvent  *event,
 					 gdouble	 *x_win,
 					 gdouble	 *y_win);
-gboolean  gdk_event_get_root_coords	(const GdkEvent  *event,
+gboolean  bdk_event_get_root_coords	(const BdkEvent  *event,
 					 gdouble	 *x_root,
 					 gdouble	 *y_root);
-gboolean  gdk_event_get_axis            (const GdkEvent  *event,
-                                         GdkAxisUse       axis_use,
+gboolean  bdk_event_get_axis            (const BdkEvent  *event,
+                                         BdkAxisUse       axis_use,
                                          gdouble         *value);
-void      gdk_event_request_motions     (const GdkEventMotion *event);
-void	  gdk_event_handler_set 	(GdkEventFunc    func,
+void      bdk_event_request_motions     (const BdkEventMotion *event);
+void	  bdk_event_handler_set 	(BdkEventFunc    func,
 					 gpointer        data,
 					 GDestroyNotify  notify);
 
-void       gdk_event_set_screen         (GdkEvent        *event,
-                                         GdkScreen       *screen);
-GdkScreen *gdk_event_get_screen         (const GdkEvent  *event);
+void       bdk_event_set_screen         (BdkEvent        *event,
+                                         BdkScreen       *screen);
+BdkScreen *bdk_event_get_screen         (const BdkEvent  *event);
 
-void	  gdk_set_show_events		(gboolean	 show_events);
-gboolean  gdk_get_show_events		(void);
+void	  bdk_set_show_events		(gboolean	 show_events);
+gboolean  bdk_get_show_events		(void);
 
-#ifndef GDK_MULTIHEAD_SAFE
-void gdk_add_client_message_filter (GdkAtom       message_type,
-				    GdkFilterFunc func,
+#ifndef BDK_MULTIHEAD_SAFE
+void bdk_add_client_message_filter (BdkAtom       message_type,
+				    BdkFilterFunc func,
 				    gpointer      data);
 
-gboolean gdk_setting_get (const gchar *name,
+gboolean bdk_setting_get (const gchar *name,
 			  GValue      *value); 
-#endif /* GDK_MULTIHEAD_SAFE */
+#endif /* BDK_MULTIHEAD_SAFE */
 
 G_END_DECLS
 
-#endif /* __GDK_EVENTS_H__ */
+#endif /* __BDK_EVENTS_H__ */

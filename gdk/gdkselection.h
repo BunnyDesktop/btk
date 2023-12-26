@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,94 +18,94 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_SELECTION_H__
-#define __GDK_SELECTION_H__
+#ifndef __BDK_SELECTION_H__
+#define __BDK_SELECTION_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
 /* Predefined atoms relating to selections. In general, one will need to use
- * gdk_intern_atom
+ * bdk_intern_atom
  */
-#define GDK_SELECTION_PRIMARY 		_GDK_MAKE_ATOM (1)
-#define GDK_SELECTION_SECONDARY 	_GDK_MAKE_ATOM (2)
-#define GDK_SELECTION_CLIPBOARD 	_GDK_MAKE_ATOM (69)
-#define GDK_TARGET_BITMAP 		_GDK_MAKE_ATOM (5)
-#define GDK_TARGET_COLORMAP 		_GDK_MAKE_ATOM (7)
-#define GDK_TARGET_DRAWABLE 		_GDK_MAKE_ATOM (17)
-#define GDK_TARGET_PIXMAP 		_GDK_MAKE_ATOM (20)
-#define GDK_TARGET_STRING 		_GDK_MAKE_ATOM (31)
-#define GDK_SELECTION_TYPE_ATOM 	_GDK_MAKE_ATOM (4)
-#define GDK_SELECTION_TYPE_BITMAP 	_GDK_MAKE_ATOM (5)
-#define GDK_SELECTION_TYPE_COLORMAP 	_GDK_MAKE_ATOM (7)
-#define GDK_SELECTION_TYPE_DRAWABLE 	_GDK_MAKE_ATOM (17)
-#define GDK_SELECTION_TYPE_INTEGER 	_GDK_MAKE_ATOM (19)
-#define GDK_SELECTION_TYPE_PIXMAP 	_GDK_MAKE_ATOM (20)
-#define GDK_SELECTION_TYPE_WINDOW 	_GDK_MAKE_ATOM (33)
-#define GDK_SELECTION_TYPE_STRING 	_GDK_MAKE_ATOM (31)
+#define BDK_SELECTION_PRIMARY 		_BDK_MAKE_ATOM (1)
+#define BDK_SELECTION_SECONDARY 	_BDK_MAKE_ATOM (2)
+#define BDK_SELECTION_CLIPBOARD 	_BDK_MAKE_ATOM (69)
+#define BDK_TARGET_BITMAP 		_BDK_MAKE_ATOM (5)
+#define BDK_TARGET_COLORMAP 		_BDK_MAKE_ATOM (7)
+#define BDK_TARGET_DRAWABLE 		_BDK_MAKE_ATOM (17)
+#define BDK_TARGET_PIXMAP 		_BDK_MAKE_ATOM (20)
+#define BDK_TARGET_STRING 		_BDK_MAKE_ATOM (31)
+#define BDK_SELECTION_TYPE_ATOM 	_BDK_MAKE_ATOM (4)
+#define BDK_SELECTION_TYPE_BITMAP 	_BDK_MAKE_ATOM (5)
+#define BDK_SELECTION_TYPE_COLORMAP 	_BDK_MAKE_ATOM (7)
+#define BDK_SELECTION_TYPE_DRAWABLE 	_BDK_MAKE_ATOM (17)
+#define BDK_SELECTION_TYPE_INTEGER 	_BDK_MAKE_ATOM (19)
+#define BDK_SELECTION_TYPE_PIXMAP 	_BDK_MAKE_ATOM (20)
+#define BDK_SELECTION_TYPE_WINDOW 	_BDK_MAKE_ATOM (33)
+#define BDK_SELECTION_TYPE_STRING 	_BDK_MAKE_ATOM (31)
 
-#ifndef GDK_DISABLE_DEPRECATED
+#ifndef BDK_DISABLE_DEPRECATED
 
-typedef GdkAtom GdkSelection;
-typedef GdkAtom GdkTarget;
-typedef GdkAtom GdkSelectionType;
+typedef BdkAtom BdkSelection;
+typedef BdkAtom BdkTarget;
+typedef BdkAtom BdkSelectionType;
 
-#endif /* GDK_DISABLE_DEPRECATED */
+#endif /* BDK_DISABLE_DEPRECATED */
 
 /* Selections
  */
 
-#ifndef GDK_MULTIHEAD_SAFE
-gboolean   gdk_selection_owner_set (GdkWindow	 *owner,
-				    GdkAtom	  selection,
+#ifndef BDK_MULTIHEAD_SAFE
+gboolean   bdk_selection_owner_set (BdkWindow	 *owner,
+				    BdkAtom	  selection,
 				    guint32	  time_,
 				    gboolean      send_event);
-GdkWindow* gdk_selection_owner_get (GdkAtom	  selection);
-#endif/* GDK_MULTIHEAD_SAFE */
+BdkWindow* bdk_selection_owner_get (BdkAtom	  selection);
+#endif/* BDK_MULTIHEAD_SAFE */
 
-gboolean   gdk_selection_owner_set_for_display (GdkDisplay *display,
-						GdkWindow  *owner,
-						GdkAtom     selection,
+gboolean   bdk_selection_owner_set_for_display (BdkDisplay *display,
+						BdkWindow  *owner,
+						BdkAtom     selection,
 						guint32     time_,
 						gboolean    send_event);
-GdkWindow *gdk_selection_owner_get_for_display (GdkDisplay *display,
-						GdkAtom     selection);
+BdkWindow *bdk_selection_owner_get_for_display (BdkDisplay *display,
+						BdkAtom     selection);
 
-void	   gdk_selection_convert   (GdkWindow	 *requestor,
-				    GdkAtom	  selection,
-				    GdkAtom	  target,
+void	   bdk_selection_convert   (BdkWindow	 *requestor,
+				    BdkAtom	  selection,
+				    BdkAtom	  target,
 				    guint32	  time_);
-gint       gdk_selection_property_get (GdkWindow  *requestor,
+gint       bdk_selection_property_get (BdkWindow  *requestor,
 				       guchar	 **data,
-				       GdkAtom	  *prop_type,
+				       BdkAtom	  *prop_type,
 				       gint	  *prop_format);
 
-#ifndef GDK_MULTIHEAD_SAFE
-void	   gdk_selection_send_notify (GdkNativeWindow requestor,
-				      GdkAtom	      selection,
-				      GdkAtom	      target,
-				      GdkAtom	      property,
+#ifndef BDK_MULTIHEAD_SAFE
+void	   bdk_selection_send_notify (BdkNativeWindow requestor,
+				      BdkAtom	      selection,
+				      BdkAtom	      target,
+				      BdkAtom	      property,
 				      guint32	      time_);
-#endif /* GDK_MULTIHEAD_SAFE */
+#endif /* BDK_MULTIHEAD_SAFE */
 
-void       gdk_selection_send_notify_for_display (GdkDisplay      *display,
-						  GdkNativeWindow  requestor,
-						  GdkAtom     	   selection,
-						  GdkAtom     	   target,
-						  GdkAtom     	   property,
+void       bdk_selection_send_notify_for_display (BdkDisplay      *display,
+						  BdkNativeWindow  requestor,
+						  BdkAtom     	   selection,
+						  BdkAtom     	   target,
+						  BdkAtom     	   property,
 						  guint32     	   time_);
 
 G_END_DECLS
 
-#endif /* __GDK_SELECTION_H__ */
+#endif /* __BDK_SELECTION_H__ */

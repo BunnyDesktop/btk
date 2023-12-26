@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,28 +18,28 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gdkwindowimpl.h"
-#include "gdkinternals.h"
+#include "bdkwindowimpl.h"
+#include "bdkinternals.h"
 
-#include "gdkalias.h"
+#include "bdkalias.h"
 
 GType
-gdk_window_impl_get_type (void)
+bdk_window_impl_get_type (void)
 {
   static GType gtype = 0;
 
   if (G_UNLIKELY (!gtype))
     {
       gtype = g_type_register_static_simple (G_TYPE_INTERFACE,
-                                             "GdkWindowImpl",
-                                             sizeof (GdkWindowImplIface),
+                                             "BdkWindowImpl",
+                                             sizeof (BdkWindowImplIface),
                                              NULL, 0, NULL, 0);
       g_type_interface_add_prerequisite (gtype, G_TYPE_OBJECT);
     }
@@ -47,6 +47,6 @@ gdk_window_impl_get_type (void)
   return gtype;
 }
 
-#define __GDK_WINDOW_IMPL_C__
-#include "gdkaliasdef.c"
+#define __BDK_WINDOW_IMPL_C__
+#include "bdkaliasdef.c"
 

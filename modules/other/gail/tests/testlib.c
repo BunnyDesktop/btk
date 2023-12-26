@@ -9,68 +9,68 @@ static gint	_get_position_in_parameters	(gint		window,
 						gchar		*label,
 						gint		position);
 static void	_create_output_window		(OutputWindow	**outwin);
-static gboolean	_create_select_tests_window	(AtkObject	*obj,
+static gboolean	_create_select_tests_window	(BatkObject	*obj,
                                                 TLruntest	runtest,
                                                 OutputWindow	**outwin);
-static void	_toggle_selectedcb		(GtkWidget	*widget,
+static void	_toggle_selectedcb		(BtkWidget	*widget,
 						gpointer	test);
-static void	_testselectioncb		(GtkWidget	*widget,
+static void	_testselectioncb		(BtkWidget	*widget,
 						gpointer	data);
-static void	_destroy			(GtkWidget	*widget,
+static void	_destroy			(BtkWidget	*widget,
 						gpointer	data);
 
 /* General functions */
 
 /**
  * find_object_by_role:
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @roles: An array of roles to search for
  * @num_roles: The number of entries in @roles
  *
- * Find the #AtkObject which is a decendant of the specified @obj
- * which is of an #AtkRole type specified in the @roles array.
+ * Find the #BatkObject which is a decendant of the specified @obj
+ * which is of an #BatkRole type specified in the @roles array.
  *
- * Returns: the #AtkObject that meets the specified criteria or NULL
+ * Returns: the #BatkObject that meets the specified criteria or NULL
  * if no object is found. 
  **/
-AtkObject*
-find_object_by_role (AtkObject *obj,
-                     AtkRole   *roles,
+BatkObject*
+find_object_by_role (BatkObject *obj,
+                     BatkRole   *roles,
                      gint      num_roles)
 {
   /*
    * Find the first object which is a descendant of the specified object
    * which matches the specified role.
    *
-   * This function returns a reference to the AtkObject which should be
+   * This function returns a reference to the BatkObject which should be
    * removed when finished with the object.
    */
   gint i, j;
   gint n_children;
-  AtkObject *child;
+  BatkObject *child;
 
   if (obj == NULL)
     return NULL;
 
   for (j=0; j < num_roles; j++)
     {
-      if (atk_object_get_role (obj) == roles[j])
+      if (batk_object_get_role (obj) == roles[j])
         return obj;
     }
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
     {
-      AtkObject* found_obj;
+      BatkObject* found_obj;
 
-      child = atk_object_ref_accessible_child (obj, i);
+      child = batk_object_ref_accessible_child (obj, i);
 
       if (child == NULL)
         continue;
 
       for (j=0; j < num_roles; j++)
         {
-          if (atk_object_get_role (child) == roles[j])
+          if (batk_object_get_role (child) == roles[j])
             return child;
         }
 
@@ -84,63 +84,63 @@ find_object_by_role (AtkObject *obj,
 
 /**
  * find_object_by_name_and_role:
- * @obj: An #AtkObject
- * @name: The GTK widget name
+ * @obj: An #BatkObject
+ * @name: The BTK widget name
  * @roles: An array of roles to search for
  * @num_roles: The number of entries in @roles
  *
- * Find the #AtkObject which is a decendant of the specified @obj
- * which is of an #AtkRole type specified in the @roles array which
- * also has the GTK widget name specified in @name.
+ * Find the #BatkObject which is a decendant of the specified @obj
+ * which is of an #BatkRole type specified in the @roles array which
+ * also has the BTK widget name specified in @name.
  *
- * Returns: the #AtkObject that meets the specified criteria or NULL
+ * Returns: the #BatkObject that meets the specified criteria or NULL
  * if no object is found. 
  **/
-AtkObject*
-find_object_by_name_and_role(AtkObject   *obj,
+BatkObject*
+find_object_by_name_and_role(BatkObject   *obj,
                              const gchar *name,
-                             AtkRole	 *roles,
+                             BatkRole	 *roles,
                              gint        num_roles)
 {
-  AtkObject *child;
-  GtkWidget* widget;
+  BatkObject *child;
+  BtkWidget* widget;
   gint i, j;
   gint n_children;
 
   if (obj == NULL)
     return NULL;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
-  if (GTK_IS_WIDGET (widget))
+  widget = BTK_ACCESSIBLE (obj)->widget;
+  if (BTK_IS_WIDGET (widget))
     {
-      if (strcmp (name, gtk_widget_get_name(GTK_WIDGET (widget))) == 0)
+      if (strcmp (name, btk_widget_get_name(BTK_WIDGET (widget))) == 0)
         {
           for (j=0; j < num_roles; j++)
             {
-              if (atk_object_get_role (obj) == roles[j])
+              if (batk_object_get_role (obj) == roles[j])
                 return obj;
             }
         }
     }
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
     {
-      AtkObject* found_obj;
+      BatkObject* found_obj;
  
-      child = atk_object_ref_accessible_child (obj, i);
+      child = batk_object_ref_accessible_child (obj, i);
 
       if (child == NULL)
         continue;
 
-      widget = GTK_ACCESSIBLE (child)->widget;
-      if (GTK_IS_WIDGET (widget))
+      widget = BTK_ACCESSIBLE (child)->widget;
+      if (BTK_IS_WIDGET (widget))
         {
-          if (strcmp(name, gtk_widget_get_name(GTK_WIDGET (widget))) == 0)
+          if (strcmp(name, btk_widget_get_name(BTK_WIDGET (widget))) == 0)
             {
               for (j=0; j < num_roles; j++)
                 {
-                  if (atk_object_get_role (child) == roles[j])
+                  if (batk_object_get_role (child) == roles[j])
                     return child;
                 }
             }
@@ -155,25 +155,25 @@ find_object_by_name_and_role(AtkObject   *obj,
 
 /**
  * find_object_by_accessible_name_and_role:
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @name: The accessible name
  * @roles: An array of roles to search for
  * @num_roles: The number of entries in @roles
  *
- * Find the #AtkObject which is a decendant of the specified @obj
+ * Find the #BatkObject which is a decendant of the specified @obj
  * which has the specified @name and matches one of the 
  * specified @roles.
  * 
- * Returns: the #AtkObject that meets the specified criteria or NULL
+ * Returns: the #BatkObject that meets the specified criteria or NULL
  * if no object is found. 
  */
-AtkObject*
-find_object_by_accessible_name_and_role (AtkObject   *obj,
+BatkObject*
+find_object_by_accessible_name_and_role (BatkObject   *obj,
                                          const gchar *name,
-                                         AtkRole     *roles,
+                                         BatkRole     *roles,
 	                                 gint        num_roles)
 {
-  AtkObject *child;
+  BatkObject *child;
   gint i, j;
   gint n_children;
   const gchar *accessible_name;
@@ -181,32 +181,32 @@ find_object_by_accessible_name_and_role (AtkObject   *obj,
   if (obj == NULL)
     return NULL;
 
-  accessible_name = atk_object_get_name (obj);
+  accessible_name = batk_object_get_name (obj);
   if (accessible_name && (strcmp(name, accessible_name) == 0))
     {
       for (j=0; j < num_roles; j++)
         {
-          if (atk_object_get_role (obj) == roles[j])
+          if (batk_object_get_role (obj) == roles[j])
             return obj;
         }
     }
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
     {
-      AtkObject* found_obj;
+      BatkObject* found_obj;
 
-      child = atk_object_ref_accessible_child (obj, i);
+      child = batk_object_ref_accessible_child (obj, i);
 
       if (child == NULL)
         continue;
 
-      accessible_name = atk_object_get_name (child);
+      accessible_name = batk_object_get_name (child);
       if (accessible_name && (strcmp(name, accessible_name) == 0))
         {
           for (j=0; j < num_roles; j++)
             {
-              if (atk_object_get_role (child) == roles[j])
+              if (batk_object_get_role (child) == roles[j])
                 return child;
             }
         }
@@ -221,29 +221,29 @@ find_object_by_accessible_name_and_role (AtkObject   *obj,
 
 /**
  * find_object_by_name_and_role:
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @type: The type 
  *
- * Find the #AtkObject which is a decendant of the specified @obj
+ * Find the #BatkObject which is a decendant of the specified @obj
  * which has the specified @type.
  * 
- * Returns: the #AtkObject that meets the specified criteria or NULL
+ * Returns: the #BatkObject that meets the specified criteria or NULL
  * if no object is found. 
  */
-AtkObject*
-find_object_by_type (AtkObject *obj, 
+BatkObject*
+find_object_by_type (BatkObject *obj, 
                      gchar     *type)
 {
   /*
    * Find the first object which is a descendant of the specified object
    * which matches the specified type.
    *
-   * This function returns a reference to the AtkObject which should be
+   * This function returns a reference to the BatkObject which should be
    * removed when finished with the object.
    */
   gint i;
   gint n_children;
-  AtkObject *child;
+  BatkObject *child;
   const gchar * typename = NULL;
 
   if (obj == NULL)
@@ -253,12 +253,12 @@ find_object_by_type (AtkObject *obj,
   if (strcmp (typename, type) == 0)
      return obj;
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
     {
-      AtkObject* found_obj;
+      BatkObject* found_obj;
 
-      child = atk_object_ref_accessible_child (obj, i);
+      child = batk_object_ref_accessible_child (obj, i);
 
       if (child == NULL)
         continue;
@@ -277,8 +277,8 @@ find_object_by_type (AtkObject *obj,
 }
 
 /**
- * already_accessed_atk_object
- * @obj: An #AtkObject
+ * already_accessed_batk_object
+ * @obj: An #BatkObject
  *
  * Keeps a static GPtrArray of objects that have been passed into this
  * function. 
@@ -287,7 +287,7 @@ find_object_by_type (AtkObject *obj,
  * and FALSE otherwise.
  */
 gboolean
-already_accessed_atk_object (AtkObject *obj)
+already_accessed_batk_object (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
   gboolean found = FALSE;
@@ -319,14 +319,14 @@ already_accessed_atk_object (AtkObject *obj)
 
 /**
  * display_children
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @depth: Number of spaces to indent output.
  * @child_number: The child number of this object.
  *
  * Displays the hierarchy of widgets starting from @obj.
  **/
 void
-display_children (AtkObject *obj, 
+display_children (BatkObject *obj, 
                   gint      depth, 
                   gint      child_number)
 {
@@ -335,7 +335,7 @@ display_children (AtkObject *obj,
 
 /**
  * display_children_to_depth
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @to_depth: Display to this depth.
  * @depth: Number of spaces to indent output.
  * @child_number: The child number of this object.
@@ -344,12 +344,12 @@ display_children (AtkObject *obj,
  * to the specified depth.
  **/
 void
-display_children_to_depth (AtkObject *obj,
+display_children_to_depth (BatkObject *obj,
                            gint      to_depth,
                            gint      depth,
                            gint      child_number)
 {
-  AtkRole role;
+  BatkRole role;
   const gchar *rolename;
   const gchar *typename;
   gint n_children, parent_index, i;
@@ -363,17 +363,17 @@ display_children_to_depth (AtkObject *obj,
   for (i=0; i < depth; i++)
     g_print(" ");
 
-  role = atk_object_get_role (obj);
-  rolename = atk_role_get_name (role);
+  role = batk_object_get_role (obj);
+  rolename = batk_role_get_name (role);
 
  /*
   * Note that child_number and parent_index should be the same
   * unless there is an error.
   */
-  parent_index = atk_object_get_index_in_parent(obj);
+  parent_index = batk_object_get_index_in_parent(obj);
   g_print("child <%d == %d> ", child_number, parent_index);
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   g_print ("children <%d> ", n_children);
 
   if (rolename)
@@ -381,12 +381,12 @@ display_children_to_depth (AtkObject *obj,
   else
     g_print("role <error>");
 
-  if (GTK_IS_ACCESSIBLE(obj))
+  if (BTK_IS_ACCESSIBLE(obj))
     {
-      GtkWidget *widget;
+      BtkWidget *widget;
 
-      widget = GTK_ACCESSIBLE (obj)->widget;
-      g_print("name <%s>, ", gtk_widget_get_name(GTK_WIDGET (widget)));
+      widget = BTK_ACCESSIBLE (obj)->widget;
+      g_print("name <%s>, ", btk_widget_get_name(BTK_WIDGET (widget)));
     }
   else
     g_print("name <NULL>, ");
@@ -396,9 +396,9 @@ display_children_to_depth (AtkObject *obj,
 
   for (i = 0; i < n_children; i++)
     {
-      AtkObject *child;
+      BatkObject *child;
 
-      child = atk_object_ref_accessible_child (obj, i);
+      child = batk_object_ref_accessible_child (obj, i);
       if (child != NULL)
         {
           display_children_to_depth (child, to_depth, depth + 1, i);
@@ -412,22 +412,22 @@ display_children_to_depth (AtkObject *obj,
 /* GUI Information for the Select Tests Window */
 typedef struct
 {
-  GtkWidget     *selecttestsWindow;
-  GtkWidget     *hbox;
-  GtkWidget     *vbox;
-  GtkWidget     *label;
-  GtkWidget     *textInsert;
-  GtkWidget     *button;
+  BtkWidget     *selecttestsWindow;
+  BtkWidget     *hbox;
+  BtkWidget     *vbox;
+  BtkWidget     *label;
+  BtkWidget     *textInsert;
+  BtkWidget     *button;
   gchar         *selecttestsTitle;
 }MainDialog;
 
 /* Functionality information about each added test */
 typedef struct
 {
-  GtkWidget     *toggleButton;
-  GtkWidget     *hbox;
-  GtkWidget     *parameterLabel[MAX_PARAMS];
-  GtkWidget     *parameterInput[MAX_PARAMS];
+  BtkWidget     *toggleButton;
+  BtkWidget     *hbox;
+  BtkWidget     *parameterLabel[MAX_PARAMS];
+  BtkWidget     *parameterInput[MAX_PARAMS];
   gchar         *testName;
   gint          numParameters;
 }TestList;
@@ -435,7 +435,7 @@ typedef struct
 typedef struct
 {
    TLruntest   runtest;
-   AtkObject*  obj;
+   BatkObject*  obj;
    gint	       win_num;
 }TestCB;
 
@@ -458,7 +458,7 @@ static TestCB          testcb[MAX_WINDOWS];
 
 /**
  * create_windows:
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @runtest: The callback function to run when the "Run Tests" button
  *   is clicked.
  * @outwin: The output window to use.  If NULL is passed in, then 
@@ -471,7 +471,7 @@ static TestCB          testcb[MAX_WINDOWS];
  * Returns: The window number of the created window if successful, -1 otherwise.
  **/
 gint
-create_windows (AtkObject    *obj,
+create_windows (BatkObject    *obj,
                 TLruntest    runtest,
                 OutputWindow **outwin)
 {
@@ -501,36 +501,36 @@ create_windows (AtkObject    *obj,
 static void
 _create_output_window (OutputWindow **outwin)
 {
-  GtkWidget *view;
-  GtkWidget *scrolled_window;
+  BtkWidget *view;
+  BtkWidget *scrolled_window;
   OutputWindow *localow;
 
   if (*outwin == NULL)
     {
       localow = (OutputWindow *) malloc (sizeof(OutputWindow));
    
-      localow->outputBuffer = gtk_text_buffer_new(NULL);
-      view = gtk_text_view_new_with_buffer(GTK_TEXT_BUFFER(localow->outputBuffer));
-      gtk_widget_set_size_request (view, 700, 500);
-      gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD);
-      gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);	
+      localow->outputBuffer = btk_text_buffer_new(NULL);
+      view = btk_text_view_new_with_buffer(BTK_TEXT_BUFFER(localow->outputBuffer));
+      btk_widget_set_size_request (view, 700, 500);
+      btk_text_view_set_wrap_mode(BTK_TEXT_VIEW(view), BTK_WRAP_WORD);
+      btk_text_view_set_editable(BTK_TEXT_VIEW(view), FALSE);	
 
-      localow->outputWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_title(GTK_WINDOW(localow->outputWindow), "Test Output");
-      scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+      localow->outputWindow = btk_window_new(BTK_WINDOW_TOPLEVEL);
+      btk_window_set_title(BTK_WINDOW(localow->outputWindow), "Test Output");
+      scrolled_window = btk_scrolled_window_new(NULL, NULL);
 
-      gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
-                                     GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-      gtk_container_add(GTK_CONTAINER(localow->outputWindow), scrolled_window);
-      gtk_container_add(GTK_CONTAINER(scrolled_window), view);
-      gtk_text_buffer_get_iter_at_offset(localow->outputBuffer, &localow->outputIter, 0);
-      gtk_widget_show(view);
-      gtk_widget_show(scrolled_window);
-      gtk_widget_show(localow->outputWindow);
+      btk_scrolled_window_set_policy(BTK_SCROLLED_WINDOW(scrolled_window),
+                                     BTK_POLICY_NEVER, BTK_POLICY_AUTOMATIC);
+      btk_container_add(BTK_CONTAINER(localow->outputWindow), scrolled_window);
+      btk_container_add(BTK_CONTAINER(scrolled_window), view);
+      btk_text_buffer_get_iter_at_offset(localow->outputBuffer, &localow->outputIter, 0);
+      btk_widget_show(view);
+      btk_widget_show(scrolled_window);
+      btk_widget_show(localow->outputWindow);
 
-      gtk_text_buffer_set_text(GTK_TEXT_BUFFER(localow->outputBuffer),
+      btk_text_buffer_set_text(BTK_TEXT_BUFFER(localow->outputBuffer),
         "\n\nWelcome to the test GUI:\nTest results are printed here\n\n", 58);
-      gtk_text_buffer_get_iter_at_offset(GTK_TEXT_BUFFER(localow->outputBuffer),
+      btk_text_buffer_get_iter_at_offset(BTK_TEXT_BUFFER(localow->outputBuffer),
                                           &localow->outputIter, 0);
       *outwin = localow;
       ow = *outwin;
@@ -539,7 +539,7 @@ _create_output_window (OutputWindow **outwin)
 
 /** 
  * _create_select_tests_window:
- * @obj: An #AtkObject
+ * @obj: An #BatkObject
  * @runtest: The callback function that is run when the "Run Tests"
  *   button is clicked.
  * @outwin: The output window to use.
@@ -549,69 +549,69 @@ _create_output_window (OutputWindow **outwin)
  * Returns: TRUE if successful, FALSE otherwise
  **/
 static gboolean
-_create_select_tests_window (AtkObject    *obj,
+_create_select_tests_window (BatkObject    *obj,
                              TLruntest    runtest,
                              OutputWindow **outwin)
 {
-  AtkText   *textwidget;
-  GtkWidget *hbuttonbox;
-  GtkWidget *scrolledWindow;
+  BatkText   *textwidget;
+  BtkWidget *hbuttonbox;
+  BtkWidget *scrolledWindow;
 
   if (window_no >= 0 && window_no < MAX_WINDOWS)
     {
       md[window_no] = (MainDialog *) malloc (sizeof(MainDialog));
      
-      textwidget = ATK_TEXT (obj);
+      textwidget = BATK_TEXT (obj);
      
       /* Setup Window */
       md[window_no]->selecttestsTitle = "Test Setting";
-      md[window_no]->selecttestsWindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_title (GTK_WINDOW( ow->outputWindow),
+      md[window_no]->selecttestsWindow = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      btk_window_set_title (BTK_WINDOW( ow->outputWindow),
                             md[window_no]->selecttestsTitle);
-      gtk_window_set_resizable (GTK_WINDOW(md[window_no]->selecttestsWindow),
+      btk_window_set_resizable (BTK_WINDOW(md[window_no]->selecttestsWindow),
                                 FALSE);
-      gtk_window_set_position (GTK_WINDOW(md[window_no]->selecttestsWindow),
-                               GTK_WIN_POS_CENTER); 
-      g_signal_connect (GTK_OBJECT(md[window_no]->selecttestsWindow), 
+      btk_window_set_position (BTK_WINDOW(md[window_no]->selecttestsWindow),
+                               BTK_WIN_POS_CENTER); 
+      g_signal_connect (BTK_OBJECT(md[window_no]->selecttestsWindow), 
                         "destroy",
                         G_CALLBACK (_destroy),
                         &md[window_no]->selecttestsWindow);
      
       /* Setup Scrolling */
-      scrolledWindow = gtk_scrolled_window_new(NULL, NULL);
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledWindow),
-                                      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC); 
-      gtk_widget_set_size_request (scrolledWindow, 500, 600);
-      gtk_container_add (GTK_CONTAINER (md[window_no]->selecttestsWindow), 
+      scrolledWindow = btk_scrolled_window_new(NULL, NULL);
+      btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolledWindow),
+                                      BTK_POLICY_NEVER, BTK_POLICY_AUTOMATIC); 
+      btk_widget_set_size_request (scrolledWindow, 500, 600);
+      btk_container_add (BTK_CONTAINER (md[window_no]->selecttestsWindow), 
                          scrolledWindow);
       
       /* Setup Layout */
-      md[window_no]->vbox = gtk_vbox_new (TRUE, 0);
-      md[window_no]->button = gtk_button_new_with_mnemonic ("_Run Tests");
-      hbuttonbox = gtk_hbutton_box_new ();
-      gtk_button_box_set_layout (GTK_BUTTON_BOX (hbuttonbox),
-                                 GTK_BUTTONBOX_SPREAD);
-      gtk_box_pack_end (GTK_BOX (hbuttonbox),
-                        GTK_WIDGET (md[window_no]->button), TRUE, TRUE, 0);
-      gtk_box_pack_end (GTK_BOX (md[window_no]->vbox), hbuttonbox,
+      md[window_no]->vbox = btk_vbox_new (TRUE, 0);
+      md[window_no]->button = btk_button_new_with_mnemonic ("_Run Tests");
+      hbuttonbox = btk_hbutton_box_new ();
+      btk_button_box_set_layout (BTK_BUTTON_BOX (hbuttonbox),
+                                 BTK_BUTTONBOX_SPREAD);
+      btk_box_pack_end (BTK_BOX (hbuttonbox),
+                        BTK_WIDGET (md[window_no]->button), TRUE, TRUE, 0);
+      btk_box_pack_end (BTK_BOX (md[window_no]->vbox), hbuttonbox,
                         TRUE, TRUE, 0);
-      gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolledWindow),
+      btk_scrolled_window_add_with_viewport (BTK_SCROLLED_WINDOW (scrolledWindow),
                                              md[window_no]->vbox);
 
       testcb[window_no].runtest = runtest;
       testcb[window_no].obj = obj;
       testcb[window_no].win_num = window_no; 
-      g_signal_connect (GTK_OBJECT (md[window_no]->button), 
+      g_signal_connect (BTK_OBJECT (md[window_no]->button), 
                         "clicked",
                         G_CALLBACK (_testselectioncb),
                         (gpointer)&testcb[window_no]);
      
       /* Show all */
-      gtk_widget_grab_focus (md[window_no]->button);
-      gtk_widget_show (md[window_no]->button);
-      gtk_widget_show (hbuttonbox); 
-      gtk_widget_show (scrolledWindow); 
-      gtk_widget_show_all (GTK_WIDGET (md[window_no]->selecttestsWindow));
+      btk_widget_grab_focus (md[window_no]->button);
+      btk_widget_show (md[window_no]->button);
+      btk_widget_show (hbuttonbox); 
+      btk_widget_show (scrolledWindow); 
+      btk_widget_show_all (BTK_WIDGET (md[window_no]->selecttestsWindow));
       return TRUE;
     }
   else
@@ -645,42 +645,42 @@ add_test (gint   window,
     return FALSE;
   else
     {
-      md[window]->hbox = gtk_hbox_new (FALSE, 0);
-      gtk_box_set_spacing (GTK_BOX (md[window]->hbox), 10);
-      gtk_container_set_border_width (GTK_CONTAINER (md[window]->hbox), 10);
-      gtk_container_add (GTK_CONTAINER (md[window]->vbox), md[window]->hbox);
+      md[window]->hbox = btk_hbox_new (FALSE, 0);
+      btk_box_set_spacing (BTK_BOX (md[window]->hbox), 10);
+      btk_container_set_border_width (BTK_CONTAINER (md[window]->hbox), 10);
+      btk_container_add (BTK_CONTAINER (md[window]->vbox), md[window]->hbox);
       listoftests[window][testcount[window]].toggleButton =
-         gtk_toggle_button_new_with_label (name);
-      gtk_box_pack_start (GTK_BOX (md[window]->hbox),
+         btk_toggle_button_new_with_label (name);
+      btk_box_pack_start (BTK_BOX (md[window]->hbox),
           listoftests[window][testcount[window]].toggleButton, FALSE, FALSE, 0);
       listoftests[window][testcount[window]].testName = name;
       listoftests[window][testcount[window]].numParameters = num_params;
       for (i=0; i<num_params; i++) 
         {
      	  listoftests[window][testcount[window]].parameterLabel[i] =
-            gtk_label_new (parameter_names[i]);
-          gtk_box_pack_start (GTK_BOX (md[window]->hbox),
+            btk_label_new (parameter_names[i]);
+          btk_box_pack_start (BTK_BOX (md[window]->hbox),
           listoftests[window][testcount[window]].parameterLabel[i], FALSE, FALSE, 0);
-	  listoftests[window][testcount[window]].parameterInput[i] = gtk_entry_new();
-          gtk_entry_set_text (GTK_ENTRY (listoftests[window][testcount[window]].parameterInput[i]),
+	  listoftests[window][testcount[window]].parameterInput[i] = btk_entry_new();
+          btk_entry_set_text (BTK_ENTRY (listoftests[window][testcount[window]].parameterInput[i]),
             default_names[i]);
-          gtk_widget_set_size_request (listoftests[window][testcount[window]].parameterInput[i], 50, 22);
-	  gtk_box_pack_start (GTK_BOX (md[window]->hbox),
+          btk_widget_set_size_request (listoftests[window][testcount[window]].parameterInput[i], 50, 22);
+	  btk_box_pack_start (BTK_BOX (md[window]->hbox),
             listoftests[window][testcount[window]].parameterInput[i], FALSE, FALSE, 0);
-          gtk_widget_set_sensitive (
-            GTK_WIDGET (listoftests[window][testcount[window]].parameterLabel[i]), FALSE);
-          gtk_widget_set_sensitive (
-            GTK_WIDGET (listoftests[window][testcount[window]].parameterInput[i]), FALSE);
-	  gtk_widget_show (listoftests[window][testcount[window]].parameterLabel[i]);
-	  gtk_widget_show (listoftests[window][testcount[window]].parameterInput[i]);
+          btk_widget_set_sensitive (
+            BTK_WIDGET (listoftests[window][testcount[window]].parameterLabel[i]), FALSE);
+          btk_widget_set_sensitive (
+            BTK_WIDGET (listoftests[window][testcount[window]].parameterInput[i]), FALSE);
+	  btk_widget_show (listoftests[window][testcount[window]].parameterLabel[i]);
+	  btk_widget_show (listoftests[window][testcount[window]].parameterInput[i]);
         }
-      g_signal_connect (GTK_OBJECT (listoftests[window][testcount[window]].toggleButton),
+      g_signal_connect (BTK_OBJECT (listoftests[window][testcount[window]].toggleButton),
                         "toggled",
                         G_CALLBACK (_toggle_selectedcb),
                         (gpointer)&(listoftests[window][testcount[window]]));
-      gtk_widget_show (listoftests[window][testcount[window]].toggleButton);
-      gtk_widget_show (md[window]->hbox);
-      gtk_widget_show (md[window]->vbox);
+      btk_widget_show (listoftests[window][testcount[window]].toggleButton);
+      btk_widget_show (md[window]->hbox);
+      btk_widget_show (md[window]->vbox);
 
       testcount[window]++;
       counter++;
@@ -713,13 +713,13 @@ gchar **tests_set(gint window, int *count)
   for (i = 0; i < testcount[window]; i++)
     {
       nullparam = FALSE;
-      if (GTK_TOGGLE_BUTTON(listoftests[window][i].toggleButton)->active)
+      if (BTK_TOGGLE_BUTTON(listoftests[window][i].toggleButton)->active)
         {
           num = listoftests[window][i].numParameters;
           for (j = 0; j < num; j++)
             {
-              input = gtk_editable_get_chars (
-                    GTK_EDITABLE (listoftests[window][i].parameterInput[j]), 0, -1);
+              input = btk_editable_get_chars (
+                    BTK_EDITABLE (listoftests[window][i].parameterInput[j]), 0, -1);
 
               if (input != NULL && (! strcmp(input, "")))
                 nullparam = TRUE;
@@ -778,8 +778,8 @@ _get_position_in_parameters(gint  window,
   
   for (i = 0; i < MAX_PARAMS; i++)
     {
-      label_string = gtk_label_get_text( 
-               GTK_LABEL (listoftests[window][position].parameterLabel[i]));
+      label_string = btk_label_get_text( 
+               BTK_LABEL (listoftests[window][position].parameterLabel[i]));
 
       if (strcmp(label_string, label) == 0)
         return i;
@@ -796,9 +796,9 @@ _get_position_in_parameters(gint  window,
 void
 set_output_buffer(gchar *output)
 {
-  gtk_text_buffer_insert (GTK_TEXT_BUFFER (ow->outputBuffer),
+  btk_text_buffer_insert (BTK_TEXT_BUFFER (ow->outputBuffer),
                           &ow->outputIter, output, strlen(output));
-  gtk_text_buffer_get_iter_at_offset (GTK_TEXT_BUFFER (ow->outputBuffer),
+  btk_text_buffer_get_iter_at_offset (BTK_TEXT_BUFFER (ow->outputBuffer),
                                       &ow->outputIter, 0);
 }
 
@@ -855,8 +855,8 @@ get_arg_of_func (gint  window,
 
   if (position != -1 && paramPosition != -1)
     {
-      argString = gtk_editable_get_chars (
-        GTK_EDITABLE (listoftests[window][position].parameterInput[paramPosition]),
+      argString = btk_editable_get_chars (
+        BTK_EDITABLE (listoftests[window][position].parameterInput[paramPosition]),
       0, -1);
       retString = g_strdup(argString);
     }
@@ -902,14 +902,14 @@ string_to_int (const char *the_string)
  * Toggle Button Callback, activating the text entry fields 
  **/
 static void
-_toggle_selectedcb (GtkWidget *widget,
+_toggle_selectedcb (BtkWidget *widget,
                     gpointer  test)
 {
   int i;
   TestList *testlist = (TestList *) test;
   gboolean toggled;
   gboolean sensitive;
-  toggled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget));
+  toggled = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget));
   if (toggled)
     sensitive = TRUE;
   else
@@ -917,9 +917,9 @@ _toggle_selectedcb (GtkWidget *widget,
 
   for (i=0; i < testlist->numParameters; i++)
     {
-      gtk_widget_set_sensitive (GTK_WIDGET (testlist->parameterLabel[i]),
+      btk_widget_set_sensitive (BTK_WIDGET (testlist->parameterLabel[i]),
                                 sensitive);
-      gtk_widget_set_sensitive (GTK_WIDGET (testlist->parameterInput[i]),
+      btk_widget_set_sensitive (BTK_WIDGET (testlist->parameterInput[i]),
                                 sensitive);
     }
 }
@@ -932,7 +932,7 @@ _toggle_selectedcb (GtkWidget *widget,
  * Callback for when the "Run Tests" button is pressed 
  **/
 static void
-_testselectioncb (GtkWidget *widget,
+_testselectioncb (BtkWidget *widget,
                   gpointer data)
 {
   TestCB* local_testcb = (TestCB *)data;
@@ -947,9 +947,9 @@ _testselectioncb (GtkWidget *widget,
  * Destroy Callback.
  **/
 static void
-_destroy (GtkWidget *widget,
+_destroy (BtkWidget *widget,
           gpointer  data)
 {
-  gtk_main_quit();
+  btk_main_quit();
 }
 

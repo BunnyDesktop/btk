@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,38 +17,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_STATUSBAR_H__
-#define __GAIL_STATUSBAR_H__
+#ifndef __BAIL_STATUSBAR_H__
+#define __BAIL_STATUSBAR_H__
 
-#include <gail/gailcontainer.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailcontainer.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_STATUSBAR                  (gail_statusbar_get_type ())
-#define GAIL_STATUSBAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_STATUSBAR, GailStatusbar))
-#define GAIL_STATUSBAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_STATUSBAR, GailStatusbarClass))
-#define GAIL_IS_STATUSBAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_STATUSBAR))
-#define GAIL_IS_STATUSBAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_STATUSBAR))
-#define GAIL_STATUSBAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_STATUSBAR, GailStatusbarClass))
+#define BAIL_TYPE_STATUSBAR                  (bail_statusbar_get_type ())
+#define BAIL_STATUSBAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_STATUSBAR, BailStatusbar))
+#define BAIL_STATUSBAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_STATUSBAR, BailStatusbarClass))
+#define BAIL_IS_STATUSBAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_STATUSBAR))
+#define BAIL_IS_STATUSBAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_STATUSBAR))
+#define BAIL_STATUSBAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_STATUSBAR, BailStatusbarClass))
 
-typedef struct _GailStatusbar              GailStatusbar;
-typedef struct _GailStatusbarClass         GailStatusbarClass;
+typedef struct _BailStatusbar              BailStatusbar;
+typedef struct _BailStatusbarClass         BailStatusbarClass;
 
-struct _GailStatusbar
+struct _BailStatusbar
 {
-  GailContainer parent;
+  BailContainer parent;
 
-  GailTextUtil *textutil;
+  BailTextUtil *textutil;
 };
 
-GType gail_statusbar_get_type (void);
+GType bail_statusbar_get_type (void);
 
-struct _GailStatusbarClass
+struct _BailStatusbarClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_STATUSBAR_H__ */
+#endif /* __BAIL_STATUSBAR_H__ */

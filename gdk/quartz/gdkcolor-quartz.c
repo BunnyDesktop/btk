@@ -1,4 +1,4 @@
-/* gdkcolor-quartz.c
+/* bdkcolor-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,11 +20,11 @@
 
 #include "config.h"
 
-#include "gdkcolor.h"
-#include "gdkprivate-quartz.h"
+#include "bdkcolor.h"
+#include "bdkprivate-quartz.h"
 
 GType
-gdk_colormap_get_type (void)
+bdk_colormap_get_type (void)
 {
   static GType object_type = 0;
 
@@ -32,19 +32,19 @@ gdk_colormap_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkColormapClass),
+        sizeof (BdkColormapClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
         (GClassInitFunc) NULL,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkColormap),
+        sizeof (BdkColormap),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkColormap",
+                                            "BdkColormap",
                                             &object_info,
 					    0);
     }
@@ -52,8 +52,8 @@ gdk_colormap_get_type (void)
   return object_type;
 }
 
-GdkColormap *
-gdk_colormap_new (GdkVisual *visual,
+BdkColormap *
+bdk_colormap_new (BdkVisual *visual,
 		  gint       private_cmap)
 {
   g_return_val_if_fail (visual != NULL, NULL);
@@ -62,18 +62,18 @@ gdk_colormap_new (GdkVisual *visual,
   return NULL;
 }
 
-GdkColormap *
-gdk_screen_get_system_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_system_colormap (BdkScreen *screen)
 {
-  static GdkColormap *colormap = NULL;
+  static BdkColormap *colormap = NULL;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
   if (!colormap)
     {
-      colormap = g_object_new (GDK_TYPE_COLORMAP, NULL);
+      colormap = g_object_new (BDK_TYPE_COLORMAP, NULL);
 
-      colormap->visual = gdk_visual_get_system ();
+      colormap->visual = bdk_visual_get_system ();
       colormap->size = colormap->visual->colormap_size;
     }
 
@@ -81,18 +81,18 @@ gdk_screen_get_system_colormap (GdkScreen *screen)
 }
 
 
-GdkColormap *
-gdk_screen_get_rgba_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_rgba_colormap (BdkScreen *screen)
 {
-  static GdkColormap *colormap = NULL;
+  static BdkColormap *colormap = NULL;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
   if (!colormap)
     {
-      colormap = g_object_new (GDK_TYPE_COLORMAP, NULL);
+      colormap = g_object_new (BDK_TYPE_COLORMAP, NULL);
 
-      colormap->visual = gdk_screen_get_rgba_visual (screen);
+      colormap->visual = bdk_screen_get_rgba_visual (screen);
       colormap->size = colormap->visual->colormap_size;
     }
 
@@ -100,21 +100,21 @@ gdk_screen_get_rgba_colormap (GdkScreen *screen)
 }
 
 gint
-gdk_colormap_get_system_size (void)
+bdk_colormap_get_system_size (void)
 {
   /* FIXME: Implement */
   return 0;
 }
 
 void
-gdk_colormap_change (GdkColormap *colormap,
+bdk_colormap_change (BdkColormap *colormap,
 		     gint         ncolors)
 {
   /* FIXME: Implement */
 }
 
 gboolean
-gdk_colors_alloc (GdkColormap   *colormap,
+bdk_colors_alloc (BdkColormap   *colormap,
 		  gboolean       contiguous,
 		  gulong        *planes,
 		  gint           nplanes,
@@ -125,7 +125,7 @@ gdk_colors_alloc (GdkColormap   *colormap,
 }
 
 void
-gdk_colors_free (GdkColormap *colormap,
+bdk_colors_free (BdkColormap *colormap,
 		 gulong      *pixels,
 		 gint         npixels,
 		 gulong       planes)
@@ -133,16 +133,16 @@ gdk_colors_free (GdkColormap *colormap,
 }
 
 void
-gdk_colormap_free_colors (GdkColormap    *colormap,
-                          const GdkColor *colors,
+bdk_colormap_free_colors (BdkColormap    *colormap,
+                          const BdkColor *colors,
                           gint            n_colors)
 {
   /* This function shouldn't do anything since colors are never allocated. */
 }
 
 gint
-gdk_colormap_alloc_colors (GdkColormap *colormap,
-			   GdkColor    *colors,
+bdk_colormap_alloc_colors (BdkColormap *colormap,
+			   BdkColor    *colors,
 			   gint         ncolors,
 			   gboolean     writeable,
 			   gboolean     best_match,
@@ -151,11 +151,11 @@ gdk_colormap_alloc_colors (GdkColormap *colormap,
   int i;
   int alpha;
 
-  g_return_val_if_fail (GDK_IS_COLORMAP (colormap), ncolors);
+  g_return_val_if_fail (BDK_IS_COLORMAP (colormap), ncolors);
   g_return_val_if_fail (colors != NULL, ncolors);
   g_return_val_if_fail (success != NULL, ncolors);
 
-  if (gdk_colormap_get_visual (colormap)->depth == 32)
+  if (bdk_colormap_get_visual (colormap)->depth == 32)
     alpha = 0xff;
   else
     alpha = 0;
@@ -174,9 +174,9 @@ gdk_colormap_alloc_colors (GdkColormap *colormap,
 }
 
 void
-gdk_colormap_query_color (GdkColormap *colormap,
+bdk_colormap_query_color (BdkColormap *colormap,
 			  gulong       pixel,
-			  GdkColor    *result)
+			  BdkColor    *result)
 {
   result->red = pixel >> 16 & 0xff;
   result->red += result->red << 8;
@@ -188,34 +188,34 @@ gdk_colormap_query_color (GdkColormap *colormap,
   result->blue += result->blue << 8;
 }
 
-GdkScreen*
-gdk_colormap_get_screen (GdkColormap *cmap)
+BdkScreen*
+bdk_colormap_get_screen (BdkColormap *cmap)
 {
   g_return_val_if_fail (cmap != NULL, NULL);
 
-  return gdk_screen_get_default ();
+  return bdk_screen_get_default ();
 }
 
 CGColorRef
-_gdk_quartz_colormap_get_cgcolor_from_pixel (GdkDrawable *drawable,
+_bdk_quartz_colormap_get_cgcolor_from_pixel (BdkDrawable *drawable,
                                              guint32      pixel)
 {
   CGFloat components[4] = { 0.0f, };
   CGColorRef color;
   CGColorSpaceRef colorspace;
-  const GdkVisual *visual;
-  GdkColormap *colormap;
+  const BdkVisual *visual;
+  BdkColormap *colormap;
 
-  colormap = gdk_drawable_get_colormap (drawable);
+  colormap = bdk_drawable_get_colormap (drawable);
   if (colormap)
-    visual = gdk_colormap_get_visual (colormap);
+    visual = bdk_colormap_get_visual (colormap);
   else
-    visual = gdk_visual_get_best_with_depth (gdk_drawable_get_depth (drawable));
+    visual = bdk_visual_get_best_with_depth (bdk_drawable_get_depth (drawable));
 
   switch (visual->type)
     {
-      case GDK_VISUAL_STATIC_GRAY:
-      case GDK_VISUAL_GRAYSCALE:
+      case BDK_VISUAL_STATIC_GRAY:
+      case BDK_VISUAL_GRAYSCALE:
         components[0] = (pixel & 0xff) / 255.0f;
 
         if (visual->depth == 1)
@@ -247,8 +247,8 @@ _gdk_quartz_colormap_get_cgcolor_from_pixel (GdkDrawable *drawable,
 }
 
 gboolean
-gdk_color_change (GdkColormap *colormap,
-		  GdkColor    *color)
+bdk_color_change (BdkColormap *colormap,
+		  BdkColor    *color)
 {
   if (color->pixel < 0 || color->pixel >= colormap->size)
     return FALSE;

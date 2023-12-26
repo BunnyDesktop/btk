@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-1999 Tor Lillqvist
  *
@@ -19,12 +19,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -32,103 +32,103 @@
  */
 
 #include "config.h"
-#include "gdk.h"
-#include "gdkwindowimpl.h"
-#include "gdkwindow.h"
+#include "bdk.h"
+#include "bdkwindowimpl.h"
+#include "bdkwindow.h"
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
-#include "gdkdisplay-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
+#include "bdkdisplay-directfb.h"
 
-#include "gdkregion-generic.h"
+#include "bdkrebunnyion-generic.h"
 
-#include "gdkinternals.h"
-#include "gdkalias.h"
-#include "cairo.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
+#include "bairo.h"
 #include <assert.h>
 
 #include <direct/debug.h>
 
 #include <directfb_util.h>
 
-D_DEBUG_DOMAIN (GDKDFB_Crossing,  "GDKDFB/Crossing",  "GDK DirectFB Crossing Events");
-D_DEBUG_DOMAIN (GDKDFB_Updates,   "GDKDFB/Updates",   "GDK DirectFB Updates");
-D_DEBUG_DOMAIN (GDKDFB_Paintable, "GDKDFB/Paintable", "GDK DirectFB Paintable");
-D_DEBUG_DOMAIN (GDKDFB_Window,    "GDKDFB/Window",    "GDK DirectFB Window");
+D_DEBUG_DOMAIN (BDKDFB_Crossing,  "BDKDFB/Crossing",  "BDK DirectFB Crossing Events");
+D_DEBUG_DOMAIN (BDKDFB_Updates,   "BDKDFB/Updates",   "BDK DirectFB Updates");
+D_DEBUG_DOMAIN (BDKDFB_Paintable, "BDKDFB/Paintable", "BDK DirectFB Paintable");
+D_DEBUG_DOMAIN (BDKDFB_Window,    "BDKDFB/Window",    "BDK DirectFB Window");
 
 
-static GdkRegion * gdk_window_impl_directfb_get_visible_region (GdkDrawable *drawable);
-static void        gdk_window_impl_directfb_set_colormap       (GdkDrawable *drawable,
-                                                                GdkColormap *colormap);
-static void gdk_window_impl_directfb_init       (GdkWindowImplDirectFB      *window);
-static void gdk_window_impl_directfb_class_init (GdkWindowImplDirectFBClass *klass);
-static void gdk_window_impl_directfb_finalize   (GObject                    *object);
+static BdkRebunnyion * bdk_window_impl_directfb_get_visible_rebunnyion (BdkDrawable *drawable);
+static void        bdk_window_impl_directfb_set_colormap       (BdkDrawable *drawable,
+                                                                BdkColormap *colormap);
+static void bdk_window_impl_directfb_init       (BdkWindowImplDirectFB      *window);
+static void bdk_window_impl_directfb_class_init (BdkWindowImplDirectFBClass *klass);
+static void bdk_window_impl_directfb_finalize   (GObject                    *object);
 
-static void gdk_window_impl_iface_init (GdkWindowImplIface *iface);
-static void gdk_directfb_window_destroy (GdkWindow *window,
+static void bdk_window_impl_iface_init (BdkWindowImplIface *iface);
+static void bdk_directfb_window_destroy (BdkWindow *window,
                                          gboolean   recursing,
                                          gboolean   foreign_destroy);
 
 typedef struct
 {
-  GdkWindowChildChanged changed;
-  GdkWindowChildGetPos  get_pos;
+  BdkWindowChildChanged changed;
+  BdkWindowChildGetPos  get_pos;
   gpointer              user_data;
-} GdkWindowChildHandlerData;
+} BdkWindowChildHandlerData;
 
 
-static GdkWindow *gdk_directfb_window_containing_pointer = NULL;
-static GdkWindow *gdk_directfb_focused_window            = NULL;
+static BdkWindow *bdk_directfb_window_containing_pointer = NULL;
+static BdkWindow *bdk_directfb_focused_window            = NULL;
 static gpointer   parent_class                           = NULL;
-GdkWindow * _gdk_parent_root = NULL;
+BdkWindow * _bdk_parent_root = NULL;
 
-static void gdk_window_impl_directfb_paintable_init (GdkPaintableIface *iface);
+static void bdk_window_impl_directfb_paintable_init (BdkPaintableIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (GdkWindowImplDirectFB,
-                         gdk_window_impl_directfb,
-                         GDK_TYPE_DRAWABLE_IMPL_DIRECTFB,
-                         G_IMPLEMENT_INTERFACE (GDK_TYPE_WINDOW_IMPL,
-                                                gdk_window_impl_iface_init)
-                         G_IMPLEMENT_INTERFACE (GDK_TYPE_PAINTABLE,
-                                                gdk_window_impl_directfb_paintable_init));
+G_DEFINE_TYPE_WITH_CODE (BdkWindowImplDirectFB,
+                         bdk_window_impl_directfb,
+                         BDK_TYPE_DRAWABLE_IMPL_DIRECTFB,
+                         G_IMPLEMENT_INTERFACE (BDK_TYPE_WINDOW_IMPL,
+                                                bdk_window_impl_iface_init)
+                         G_IMPLEMENT_INTERFACE (BDK_TYPE_PAINTABLE,
+                                                bdk_window_impl_directfb_paintable_init));
 
 GType
-_gdk_window_impl_get_type (void)
+_bdk_window_impl_get_type (void)
 {
-  return gdk_window_impl_directfb_get_type ();
+  return bdk_window_impl_directfb_get_type ();
 }
 
 static void
-gdk_window_impl_directfb_init (GdkWindowImplDirectFB *impl)
+bdk_window_impl_directfb_init (BdkWindowImplDirectFB *impl)
 {
   impl->drawable.width  = 1;
   impl->drawable.height = 1;
-  //cannot use gdk_cursor_new here since gdk_display_get_default
+  //cannot use bdk_cursor_new here since bdk_display_get_default
   //does not work yet.
-  impl->cursor  = gdk_cursor_new_for_display (GDK_DISPLAY_OBJECT (_gdk_display),
-                                              GDK_LEFT_PTR);
+  impl->cursor  = bdk_cursor_new_for_display (BDK_DISPLAY_OBJECT (_bdk_display),
+                                              BDK_LEFT_PTR);
   impl->opacity = 255;
 }
 
 static void
-gdk_window_impl_directfb_class_init (GdkWindowImplDirectFBClass *klass)
+bdk_window_impl_directfb_class_init (BdkWindowImplDirectFBClass *klass)
 {
   GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
-  GdkDrawableClass *drawable_class = GDK_DRAWABLE_CLASS (klass);
+  BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_window_impl_directfb_finalize;
+  object_class->finalize = bdk_window_impl_directfb_finalize;
 
-  drawable_class->set_colormap = gdk_window_impl_directfb_set_colormap;
+  drawable_class->set_colormap = bdk_window_impl_directfb_set_colormap;
 
-  /* Visible and clip regions are the same */
+  /* Visible and clip rebunnyions are the same */
 
-  drawable_class->get_clip_region =
-    gdk_window_impl_directfb_get_visible_region;
+  drawable_class->get_clip_rebunnyion =
+    bdk_window_impl_directfb_get_visible_rebunnyion;
 
-  drawable_class->get_visible_region =
-    gdk_window_impl_directfb_get_visible_region;
+  drawable_class->get_visible_rebunnyion =
+    bdk_window_impl_directfb_get_visible_rebunnyion;
 }
 
 static void
@@ -140,18 +140,18 @@ g_free_2nd (gpointer a,
 }
 
 static void
-gdk_window_impl_directfb_finalize (GObject *object)
+bdk_window_impl_directfb_finalize (GObject *object)
 {
-  GdkWindowImplDirectFB *impl = GDK_WINDOW_IMPL_DIRECTFB (object);
+  BdkWindowImplDirectFB *impl = BDK_WINDOW_IMPL_DIRECTFB (object);
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p ) <- %dx%d\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p ) <- %dx%d\n", G_STRFUNC,
               impl, impl->drawable.width, impl->drawable.height);
 
-  if (GDK_WINDOW_IS_MAPPED (impl->drawable.wrapper))
-    gdk_window_hide (impl->drawable.wrapper);
+  if (BDK_WINDOW_IS_MAPPED (impl->drawable.wrapper))
+    bdk_window_hide (impl->drawable.wrapper);
 
   if (impl->cursor)
-    gdk_cursor_unref (impl->cursor);
+    bdk_cursor_unref (impl->cursor);
 
   if (impl->properties)
     {
@@ -160,7 +160,7 @@ gdk_window_impl_directfb_finalize (GObject *object)
     }
   if (impl->window)
     {
-      gdk_directfb_window_id_table_remove (impl->dfb_id);
+      bdk_directfb_window_id_table_remove (impl->dfb_id);
       /* native window resource must be release before we can finalize !*/
       impl->window = NULL;
     }
@@ -169,14 +169,14 @@ gdk_window_impl_directfb_finalize (GObject *object)
     G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-static GdkRegion *
-gdk_window_impl_directfb_get_visible_region (GdkDrawable *drawable)
+static BdkRebunnyion *
+bdk_window_impl_directfb_get_visible_rebunnyion (BdkDrawable *drawable)
 {
-  GdkDrawableImplDirectFB *priv  = GDK_DRAWABLE_IMPL_DIRECTFB (drawable);
-  GdkRectangle             rect  = { 0, 0, 0, 0 };
+  BdkDrawableImplDirectFB *priv  = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
+  BdkRectangle             rect  = { 0, 0, 0, 0 };
   DFBRectangle             drect = { 0, 0, 0, 0 };
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, drawable);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, drawable);
 
   if (priv->surface)
     priv->surface->GetVisibleRectangle (priv->surface, &drect);
@@ -185,25 +185,25 @@ gdk_window_impl_directfb_get_visible_region (GdkDrawable *drawable)
   rect.width  = drect.w;
   rect.height = drect.h;
 
-  D_DEBUG_AT (GDKDFB_Window, "  -> returning %4d,%4d-%4dx%4d\n",
+  D_DEBUG_AT (BDKDFB_Window, "  -> returning %4d,%4d-%4dx%4d\n",
               drect.x, drect.y, drect.w, drect.h);
 
-  return gdk_region_rectangle (&rect);
+  return bdk_rebunnyion_rectangle (&rect);
 }
 
 static void
-gdk_window_impl_directfb_set_colormap (GdkDrawable *drawable,
-                                       GdkColormap *colormap)
+bdk_window_impl_directfb_set_colormap (BdkDrawable *drawable,
+                                       BdkColormap *colormap)
 {
-  GDK_DRAWABLE_CLASS (parent_class)->set_colormap (drawable, colormap);
+  BDK_DRAWABLE_CLASS (parent_class)->set_colormap (drawable, colormap);
 
   if (colormap)
     {
-      GdkDrawableImplDirectFB *priv = GDK_DRAWABLE_IMPL_DIRECTFB (drawable);
+      BdkDrawableImplDirectFB *priv = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
       if (priv->surface)
         {
-          IDirectFBPalette *palette = gdk_directfb_colormap_get_palette (colormap);
+          IDirectFBPalette *palette = bdk_directfb_colormap_get_palette (colormap);
 
           if (palette)
             priv->surface->SetPalette (priv->surface, palette);
@@ -213,21 +213,21 @@ gdk_window_impl_directfb_set_colormap (GdkDrawable *drawable,
 
 
 static gboolean
-create_directfb_window (GdkWindowImplDirectFB *impl,
+create_directfb_window (BdkWindowImplDirectFB *impl,
                         DFBWindowDescription  *desc,
                         DFBWindowOptions       window_options)
 {
   DFBResult        ret;
   IDirectFBWindow *window;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %4dx%4d, caps 0x%08x )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Window, "%s( %4dx%4d, caps 0x%08x )\n", G_STRFUNC,
               desc->width, desc->height, desc->caps);
 
-  ret = _gdk_display->layer->CreateWindow (_gdk_display->layer, desc, &window);
+  ret = _bdk_display->layer->CreateWindow (_bdk_display->layer, desc, &window);
 
   if (ret != DFB_OK)
     {
-      DirectFBError ("gdk_window_new: Layer->CreateWindow failed", ret);
+      DirectFBError ("bdk_window_new: Layer->CreateWindow failed", ret);
       g_assert (0);
       return FALSE;
     }
@@ -247,34 +247,34 @@ create_directfb_window (GdkWindowImplDirectFB *impl,
 
   impl->window = window;
 
-#ifndef GDK_DIRECTFB_NO_EXPERIMENTS
+#ifndef BDK_DIRECTFB_NO_EXPERIMENTS
   //direct_log_printf (NULL, "Initializing (window %p, wimpl %p)\n", win, impl);
 
-  dfb_updates_init (&impl->flips, impl->flip_regions,
-                    G_N_ELEMENTS (impl->flip_regions));
+  dfb_updates_init (&impl->flips, impl->flip_rebunnyions,
+                    G_N_ELEMENTS (impl->flip_rebunnyions));
 #endif
 
   return TRUE;
 }
 
 void
-_gdk_windowing_window_init (GdkScreen *screen)
+_bdk_windowing_window_init (BdkScreen *screen)
 {
-  GdkWindowObject         *private;
-  GdkDrawableImplDirectFB *draw_impl;
+  BdkWindowObject         *private;
+  BdkDrawableImplDirectFB *draw_impl;
   DFBDisplayLayerConfig    dlc;
 
-  g_assert (_gdk_parent_root == NULL);
+  g_assert (_bdk_parent_root == NULL);
 
-  _gdk_display->layer->GetConfiguration (_gdk_display->layer, &dlc);
+  _bdk_display->layer->GetConfiguration (_bdk_display->layer, &dlc);
 
-  _gdk_parent_root = g_object_new (GDK_TYPE_WINDOW, NULL);
+  _bdk_parent_root = g_object_new (BDK_TYPE_WINDOW, NULL);
 
-  private = GDK_WINDOW_OBJECT (_gdk_parent_root);
-  private->impl = g_object_new (_gdk_window_impl_get_type (), NULL);
+  private = BDK_WINDOW_OBJECT (_bdk_parent_root);
+  private->impl = g_object_new (_bdk_window_impl_get_type (), NULL);
   private->impl_window = private;
 
-  draw_impl = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+  draw_impl = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
 
   /* custom root window init */
   {
@@ -293,14 +293,14 @@ _gdk_windowing_window_init (GdkScreen *screen)
     desc.width   = dlc.width;
     desc.height  = dlc.height;
 
-    create_directfb_window (GDK_WINDOW_IMPL_DIRECTFB (private->impl),
+    create_directfb_window (BDK_WINDOW_IMPL_DIRECTFB (private->impl),
                             &desc, 0);
 
-    g_assert (GDK_WINDOW_IMPL_DIRECTFB (private->impl)->window != NULL);
+    g_assert (BDK_WINDOW_IMPL_DIRECTFB (private->impl)->window != NULL);
     g_assert (draw_impl->surface != NULL);
   }
 
-  private->window_type = GDK_WINDOW_ROOT;
+  private->window_type = BDK_WINDOW_ROOT;
   private->viewable    = TRUE;
   private->x           = 0;
   private->y           = 0;
@@ -309,63 +309,63 @@ _gdk_windowing_window_init (GdkScreen *screen)
   private->width       = dlc.width;
   private->height      = dlc.height;
 
-  //  impl->drawable.paint_region = NULL;
+  //  impl->drawable.paint_rebunnyion = NULL;
   /* impl->window                    = NULL; */
   draw_impl->abs_x    = 0;
   draw_impl->abs_y    = 0;
   draw_impl->width    = dlc.width;
   draw_impl->height   = dlc.height;
-  draw_impl->wrapper  = GDK_DRAWABLE (private);
-  draw_impl->colormap = gdk_screen_get_system_colormap (screen);
+  draw_impl->wrapper  = BDK_DRAWABLE (private);
+  draw_impl->colormap = bdk_screen_get_system_colormap (screen);
   g_object_ref (draw_impl->colormap);
 
   draw_impl->surface->GetPixelFormat (draw_impl->surface,
                                       &draw_impl->format);
   private->depth = DFB_BITS_PER_PIXEL (draw_impl->format);
 
-  _gdk_window_update_size (_gdk_parent_root);
+  _bdk_window_update_size (_bdk_parent_root);
 }
 
 
-GdkWindow *
-gdk_directfb_window_new (GdkWindow              *parent,
-                         GdkWindowAttr          *attributes,
+BdkWindow *
+bdk_directfb_window_new (BdkWindow              *parent,
+                         BdkWindowAttr          *attributes,
                          gint                    attributes_mask,
                          DFBWindowCapabilities   window_caps,
                          DFBWindowOptions        window_options,
                          DFBSurfaceCapabilities  surface_caps)
 {
-  GdkWindow             *window;
-  GdkWindowObject       *private;
-  GdkWindowObject       *parent_private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindowImplDirectFB *parent_impl;
-  GdkVisual             *visual;
+  BdkWindow             *window;
+  BdkWindowObject       *private;
+  BdkWindowObject       *parent_private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *parent_impl;
+  BdkVisual             *visual;
   DFBWindowDescription   desc;
   gint x, y;
 
   g_return_val_if_fail (attributes != NULL, NULL);
 
-  D_DEBUG_AT( GDKDFB_Window, "%s( %p )\n", G_STRFUNC, parent );
+  D_DEBUG_AT( BDKDFB_Window, "%s( %p )\n", G_STRFUNC, parent );
 
-  if (!parent || attributes->window_type != GDK_WINDOW_CHILD)
-    parent = _gdk_parent_root;
+  if (!parent || attributes->window_type != BDK_WINDOW_CHILD)
+    parent = _bdk_parent_root;
 
-  window = g_object_new (GDK_TYPE_WINDOW, NULL);
-  private = GDK_WINDOW_OBJECT (window);
-  private->impl = g_object_new (_gdk_window_impl_get_type (), NULL);
+  window = g_object_new (BDK_TYPE_WINDOW, NULL);
+  private = BDK_WINDOW_OBJECT (window);
+  private->impl = g_object_new (_bdk_window_impl_get_type (), NULL);
 
-  parent_private = GDK_WINDOW_OBJECT (parent);
-  parent_impl = GDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
+  parent_private = BDK_WINDOW_OBJECT (parent);
+  parent_impl = BDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
   private->parent = parent_private;
 
-  x = (attributes_mask & GDK_WA_X) ? attributes->x : 0;
-  y = (attributes_mask & GDK_WA_Y) ? attributes->y : 0;
+  x = (attributes_mask & BDK_WA_X) ? attributes->x : 0;
+  y = (attributes_mask & BDK_WA_Y) ? attributes->y : 0;
 
-  gdk_window_set_events (window, attributes->event_mask | GDK_STRUCTURE_MASK);
+  bdk_window_set_events (window, attributes->event_mask | BDK_STRUCTURE_MASK);
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
-  impl->drawable.wrapper = GDK_DRAWABLE (window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  impl->drawable.wrapper = BDK_DRAWABLE (window);
 
   private->x = x;
   private->y = y;
@@ -377,18 +377,18 @@ gdk_directfb_window_new (GdkWindow              *parent,
 
   desc.flags = 0;
 
-  if (attributes_mask & GDK_WA_VISUAL)
+  if (attributes_mask & BDK_WA_VISUAL)
     visual = attributes->visual;
   else
-    visual = gdk_drawable_get_visual (parent);
+    visual = bdk_drawable_get_visual (parent);
 
   switch (attributes->wclass)
     {
-    case GDK_INPUT_OUTPUT:
+    case BDK_INPUT_OUTPUT:
       private->input_only = FALSE;
 
       desc.flags |= DWDESC_PIXELFORMAT;
-      desc.pixelformat = ((GdkVisualDirectFB *) visual)->format;
+      desc.pixelformat = ((BdkVisualDirectFB *) visual)->format;
 
       if (DFB_PIXELFORMAT_HAS_ALPHA (desc.pixelformat))
         {
@@ -397,23 +397,23 @@ gdk_directfb_window_new (GdkWindow              *parent,
         }
       break;
 
-    case GDK_INPUT_ONLY:
+    case BDK_INPUT_ONLY:
       private->input_only = TRUE;
       desc.flags |= DWDESC_CAPS;
       desc.caps = DWCAPS_INPUTONLY;
       break;
 
     default:
-      g_warning ("gdk_window_new: unsupported window class\n");
-      _gdk_window_destroy (window, FALSE);
+      g_warning ("bdk_window_new: unsupported window class\n");
+      _bdk_window_destroy (window, FALSE);
       return NULL;
     }
 
   switch (private->window_type)
     {
-    case GDK_WINDOW_TOPLEVEL:
-    case GDK_WINDOW_DIALOG:
-    case GDK_WINDOW_TEMP:
+    case BDK_WINDOW_TOPLEVEL:
+    case BDK_WINDOW_DIALOG:
+    case BDK_WINDOW_TEMP:
       desc.flags |= ( DWDESC_WIDTH | DWDESC_HEIGHT |
                       DWDESC_POSX  | DWDESC_POSY );
       desc.posx   = x;
@@ -443,7 +443,7 @@ gdk_directfb_window_new (GdkWindow              *parent,
       if (!create_directfb_window (impl, &desc, window_options))
         {
           g_assert(0);
-          _gdk_window_destroy (window, FALSE);
+          _bdk_window_destroy (window, FALSE);
 
           return NULL;
         }
@@ -455,7 +455,7 @@ gdk_directfb_window_new (GdkWindow              *parent,
 
       break;
 
-    case GDK_WINDOW_CHILD:
+    case BDK_WINDOW_CHILD:
       impl->window=NULL;
 
       if (!private->input_only && parent_impl->drawable.surface)
@@ -471,43 +471,43 @@ gdk_directfb_window_new (GdkWindow              *parent,
       break;
 
     default:
-      g_warning ("gdk_window_new: unsupported window type: %d",
+      g_warning ("bdk_window_new: unsupported window type: %d",
                  private->window_type);
-      _gdk_window_destroy (window, FALSE);
+      _bdk_window_destroy (window, FALSE);
 
       return NULL;
     }
 
   if (impl->drawable.surface)
     {
-      GdkColormap *colormap;
+      BdkColormap *colormap;
 
       impl->drawable.surface->GetPixelFormat (impl->drawable.surface,
                                               &impl->drawable.format);
 
       private->depth = DFB_BITS_PER_PIXEL(impl->drawable.format);
 
-      if ((attributes_mask & GDK_WA_COLORMAP) && attributes->colormap)
+      if ((attributes_mask & BDK_WA_COLORMAP) && attributes->colormap)
         {
           colormap = attributes->colormap;
         }
       else
         {
-          if (gdk_visual_get_system () == visual)
-            colormap = gdk_colormap_get_system ();
+          if (bdk_visual_get_system () == visual)
+            colormap = bdk_colormap_get_system ();
           else
-            colormap =gdk_drawable_get_colormap (parent);
+            colormap =bdk_drawable_get_colormap (parent);
         }
 
-      gdk_drawable_set_colormap (GDK_DRAWABLE (window), colormap);
+      bdk_drawable_set_colormap (BDK_DRAWABLE (window), colormap);
     }
   else
     {
-      impl->drawable.format = ((GdkVisualDirectFB *)visual)->format;
+      impl->drawable.format = ((BdkVisualDirectFB *)visual)->format;
       private->depth = visual->depth;
     }
 
-  gdk_window_set_cursor (window, ((attributes_mask & GDK_WA_CURSOR) ?
+  bdk_window_set_cursor (window, ((attributes_mask & BDK_WA_CURSOR) ?
                                   (attributes->cursor) : NULL));
 
   if (parent_private)
@@ -520,40 +520,40 @@ gdk_directfb_window_new (GdkWindow              *parent,
   if (impl->window)
     {
       impl->window->GetID (impl->window, &impl->dfb_id);
-      gdk_directfb_window_id_table_insert (impl->dfb_id, window);
-      gdk_directfb_event_windows_add (window);
+      bdk_directfb_window_id_table_insert (impl->dfb_id, window);
+      bdk_directfb_event_windows_add (window);
     }
 
-  if (attributes_mask & GDK_WA_TYPE_HINT)
-    gdk_window_set_type_hint (window, attributes->type_hint);
+  if (attributes_mask & BDK_WA_TYPE_HINT)
+    bdk_window_set_type_hint (window, attributes->type_hint);
 
   return window;
 }
 
 
 void
-_gdk_window_impl_new (GdkWindow     *window,
-                      GdkWindow     *real_parent,
-                      GdkScreen     *screen,
-                      GdkVisual     *visual,
-                      GdkEventMask   event_mask,
-                      GdkWindowAttr *attributes,
+_bdk_window_impl_new (BdkWindow     *window,
+                      BdkWindow     *real_parent,
+                      BdkScreen     *screen,
+                      BdkVisual     *visual,
+                      BdkEventMask   event_mask,
+                      BdkWindowAttr *attributes,
                       gint           attributes_mask)
 {
-  GdkWindowObject       *private;
-  GdkWindowObject       *parent_private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindowImplDirectFB *parent_impl;
+  BdkWindowObject       *private;
+  BdkWindowObject       *parent_private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *parent_impl;
   DFBWindowDescription   desc;
 
-  impl = g_object_new (_gdk_window_impl_get_type (), NULL);
-  impl->drawable.wrapper = GDK_DRAWABLE (window);
+  impl = g_object_new (_bdk_window_impl_get_type (), NULL);
+  impl->drawable.wrapper = BDK_DRAWABLE (window);
 
-  private = GDK_WINDOW_OBJECT (window);
-  private->impl = (GdkDrawable *)impl;
+  private = BDK_WINDOW_OBJECT (window);
+  private->impl = (BdkDrawable *)impl;
 
-  parent_private = GDK_WINDOW_OBJECT (real_parent);
-  parent_impl = GDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
+  parent_private = BDK_WINDOW_OBJECT (real_parent);
+  parent_impl = BDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
 
   impl->drawable.width  = MAX (1, attributes->width);
   impl->drawable.height = MAX (1, attributes->height);
@@ -562,9 +562,9 @@ _gdk_window_impl_new (GdkWindow     *window,
 
   switch (attributes->wclass)
     {
-    case GDK_INPUT_OUTPUT:
+    case BDK_INPUT_OUTPUT:
       desc.flags       |= DWDESC_PIXELFORMAT;
-      desc.pixelformat  = ((GdkVisualDirectFB *)visual)->format;
+      desc.pixelformat  = ((BdkVisualDirectFB *)visual)->format;
 
       if (DFB_PIXELFORMAT_HAS_ALPHA (desc.pixelformat))
         {
@@ -574,22 +574,22 @@ _gdk_window_impl_new (GdkWindow     *window,
 
       break;
 
-    case GDK_INPUT_ONLY:
+    case BDK_INPUT_ONLY:
       desc.flags          |= DWDESC_CAPS;
       desc.caps            = DWCAPS_INPUTONLY;
       break;
 
     default:
-      g_warning ("_gdk_window_impl_new: unsupported window class\n");
-      _gdk_window_destroy (window, FALSE);
+      g_warning ("_bdk_window_impl_new: unsupported window class\n");
+      _bdk_window_destroy (window, FALSE);
       return;
     }
 
   switch (private->window_type)
     {
-    case GDK_WINDOW_TOPLEVEL:
-    case GDK_WINDOW_DIALOG:
-    case GDK_WINDOW_TEMP:
+    case BDK_WINDOW_TOPLEVEL:
+    case BDK_WINDOW_DIALOG:
+    case BDK_WINDOW_TEMP:
       desc.flags |= (DWDESC_WIDTH | DWDESC_HEIGHT |
                      DWDESC_POSX  | DWDESC_POSY);
       desc.posx   = private->x;
@@ -600,7 +600,7 @@ _gdk_window_impl_new (GdkWindow     *window,
       if (!create_directfb_window (impl, &desc, DWOP_NONE))
         {
           g_assert (0);
-          _gdk_window_destroy (window, FALSE);
+          _bdk_window_destroy (window, FALSE);
 
           return;
         }
@@ -612,7 +612,7 @@ _gdk_window_impl_new (GdkWindow     *window,
 
       break;
 
-    case GDK_WINDOW_CHILD:
+    case BDK_WINDOW_CHILD:
       impl->window = NULL;
 
       if (!private->input_only && parent_impl->drawable.surface)
@@ -629,41 +629,41 @@ _gdk_window_impl_new (GdkWindow     *window,
       break;
 
     default:
-      g_warning ("_gdk_window_impl_new: unsupported window type: %d",
+      g_warning ("_bdk_window_impl_new: unsupported window type: %d",
                  private->window_type);
-      _gdk_window_destroy (window, FALSE);
+      _bdk_window_destroy (window, FALSE);
 
       return;
     }
 
   if (impl->drawable.surface)
     {
-      GdkColormap *colormap;
+      BdkColormap *colormap;
 
       impl->drawable.surface->GetPixelFormat (impl->drawable.surface,
                                               &impl->drawable.format);
 
-      if ((attributes_mask & GDK_WA_COLORMAP) && attributes->colormap)
+      if ((attributes_mask & BDK_WA_COLORMAP) && attributes->colormap)
         {
           colormap = attributes->colormap;
         }
       else
         {
-          if (gdk_visual_get_system () == visual)
-            colormap = gdk_colormap_get_system ();
+          if (bdk_visual_get_system () == visual)
+            colormap = bdk_colormap_get_system ();
           else
-            colormap = gdk_colormap_new (visual, FALSE);
+            colormap = bdk_colormap_new (visual, FALSE);
         }
 
-      gdk_drawable_set_colormap (GDK_DRAWABLE (window), colormap);
+      bdk_drawable_set_colormap (BDK_DRAWABLE (window), colormap);
     }
   else
     {
-      impl->drawable.format = ((GdkVisualDirectFB *)visual)->format;
+      impl->drawable.format = ((BdkVisualDirectFB *)visual)->format;
     }
 
-  gdk_window_set_cursor (window,
-                         ((attributes_mask & GDK_WA_CURSOR) ?
+  bdk_window_set_cursor (window,
+                         ((attributes_mask & BDK_WA_CURSOR) ?
                           (attributes->cursor) : NULL));
 
   /* we hold a reference count on ourself */
@@ -672,55 +672,55 @@ _gdk_window_impl_new (GdkWindow     *window,
   if (impl->window)
     {
       impl->window->GetID (impl->window, &impl->dfb_id);
-      gdk_directfb_window_id_table_insert (impl->dfb_id, window);
-      gdk_directfb_event_windows_add (window);
+      bdk_directfb_window_id_table_insert (impl->dfb_id, window);
+      bdk_directfb_event_windows_add (window);
     }
 
-  if (attributes_mask & GDK_WA_TYPE_HINT)
-    gdk_window_set_type_hint (window, attributes->type_hint);
+  if (attributes_mask & BDK_WA_TYPE_HINT)
+    bdk_window_set_type_hint (window, attributes->type_hint);
 }
 
 void
-_gdk_windowing_window_destroy_foreign (GdkWindow *window)
+_bdk_windowing_window_destroy_foreign (BdkWindow *window)
 {
   /* It's somebody else's window, but in our hierarchy,
    * so reparent it to the root window, and then send
    * it a delete event, as if we were a WM
    */
-  gdk_directfb_window_destroy (window, TRUE, TRUE);
+  bdk_directfb_window_destroy (window, TRUE, TRUE);
 }
 
 static void
-gdk_directfb_window_destroy (GdkWindow *window,
+bdk_directfb_window_destroy (BdkWindow *window,
                              gboolean   recursing,
                              gboolean   foreign_destroy)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, %srecursing, %sforeign )\n", G_STRFUNC, window,
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, %srecursing, %sforeign )\n", G_STRFUNC, window,
               recursing ? "" : "not ", foreign_destroy ? "" : "no ");
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
-  _gdk_selection_window_destroyed (window);
-  gdk_directfb_event_windows_remove (window);
+  _bdk_selection_window_destroyed (window);
+  bdk_directfb_event_windows_remove (window);
 
-  if (window == _gdk_directfb_pointer_grab_window)
-    gdk_pointer_ungrab (GDK_CURRENT_TIME);
-  if (window == _gdk_directfb_keyboard_grab_window)
-    gdk_keyboard_ungrab (GDK_CURRENT_TIME);
+  if (window == _bdk_directfb_pointer_grab_window)
+    bdk_pointer_ungrab (BDK_CURRENT_TIME);
+  if (window == _bdk_directfb_keyboard_grab_window)
+    bdk_keyboard_ungrab (BDK_CURRENT_TIME);
 
-  if (window == gdk_directfb_focused_window)
-    gdk_directfb_change_focus (NULL);
+  if (window == bdk_directfb_focused_window)
+    bdk_directfb_change_focus (NULL);
 
   if (impl->drawable.surface) {
-    GdkDrawableImplDirectFB *dimpl = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
-    if (dimpl->cairo_surface)
-      cairo_surface_destroy (dimpl->cairo_surface);
+    BdkDrawableImplDirectFB *dimpl = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+    if (dimpl->bairo_surface)
+      bairo_surface_destroy (dimpl->bairo_surface);
     impl->drawable.surface->Release (impl->drawable.surface);
     impl->drawable.surface = NULL;
   }
@@ -736,106 +736,106 @@ gdk_directfb_window_destroy (GdkWindow *window,
 /* This function is called when the window is really gone.
  */
 void
-gdk_window_destroy_notify (GdkWindow *window)
+bdk_window_destroy_notify (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
-  if (!GDK_WINDOW_DESTROYED (window))
+  if (!BDK_WINDOW_DESTROYED (window))
     {
-      if (GDK_WINDOW_TYPE(window) != GDK_WINDOW_FOREIGN)
-	g_warning ("GdkWindow %p unexpectedly destroyed", window);
+      if (BDK_WINDOW_TYPE(window) != BDK_WINDOW_FOREIGN)
+	g_warning ("BdkWindow %p unexpectedly destroyed", window);
 
-      _gdk_window_destroy (window, TRUE);
+      _bdk_window_destroy (window, TRUE);
     }
   g_object_unref (window);
 }
 
 /* Focus follows pointer */
-GdkWindow *
-gdk_directfb_window_find_toplevel (GdkWindow *window)
+BdkWindow *
+bdk_directfb_window_find_toplevel (BdkWindow *window)
 {
-  while (window && window != _gdk_parent_root)
+  while (window && window != _bdk_parent_root)
     {
-      GdkWindow *parent = (GdkWindow *) (GDK_WINDOW_OBJECT (window))->parent;
+      BdkWindow *parent = (BdkWindow *) (BDK_WINDOW_OBJECT (window))->parent;
 
-      if ((parent == _gdk_parent_root) && GDK_WINDOW_IS_MAPPED (window))
+      if ((parent == _bdk_parent_root) && BDK_WINDOW_IS_MAPPED (window))
         return window;
 
       window = parent;
     }
 
-  return _gdk_parent_root;
+  return _bdk_parent_root;
 }
 
-GdkWindow *
-gdk_directfb_window_find_focus (void)
+BdkWindow *
+bdk_directfb_window_find_focus (void)
 {
-  if (_gdk_directfb_keyboard_grab_window)
-    return _gdk_directfb_keyboard_grab_window;
+  if (_bdk_directfb_keyboard_grab_window)
+    return _bdk_directfb_keyboard_grab_window;
 
-  if (!gdk_directfb_focused_window)
-    gdk_directfb_focused_window = g_object_ref (_gdk_parent_root);
+  if (!bdk_directfb_focused_window)
+    bdk_directfb_focused_window = g_object_ref (_bdk_parent_root);
 
-  return gdk_directfb_focused_window;
+  return bdk_directfb_focused_window;
 }
 
 void
-gdk_directfb_change_focus (GdkWindow *new_focus_window)
+bdk_directfb_change_focus (BdkWindow *new_focus_window)
 {
-  GdkEventFocus *event;
-  GdkWindow     *old_win;
-  GdkWindow     *new_win;
-  GdkWindow     *event_win;
+  BdkEventFocus *event;
+  BdkWindow     *old_win;
+  BdkWindow     *new_win;
+  BdkWindow     *event_win;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, new_focus_window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, new_focus_window);
 
   /* No focus changes while the pointer is grabbed */
-  if (_gdk_directfb_pointer_grab_window)
+  if (_bdk_directfb_pointer_grab_window)
     return;
 
-  old_win = gdk_directfb_focused_window;
-  new_win = gdk_directfb_window_find_toplevel (new_focus_window);
+  old_win = bdk_directfb_focused_window;
+  new_win = bdk_directfb_window_find_toplevel (new_focus_window);
 
   if (old_win == new_win)
     return;
 
   if (old_win)
     {
-      event_win = gdk_directfb_keyboard_event_window (old_win,
-                                                      GDK_FOCUS_CHANGE);
+      event_win = bdk_directfb_keyboard_event_window (old_win,
+                                                      BDK_FOCUS_CHANGE);
       if (event_win)
         {
-          event = (GdkEventFocus *) gdk_directfb_event_make (event_win,
-                                                             GDK_FOCUS_CHANGE);
+          event = (BdkEventFocus *) bdk_directfb_event_make (event_win,
+                                                             BDK_FOCUS_CHANGE);
           event->in = FALSE;
         }
     }
 
-  event_win = gdk_directfb_keyboard_event_window (new_win,
-                                                  GDK_FOCUS_CHANGE);
+  event_win = bdk_directfb_keyboard_event_window (new_win,
+                                                  BDK_FOCUS_CHANGE);
   if (event_win)
     {
-      event = (GdkEventFocus *) gdk_directfb_event_make (event_win,
-                                                         GDK_FOCUS_CHANGE);
+      event = (BdkEventFocus *) bdk_directfb_event_make (event_win,
+                                                         BDK_FOCUS_CHANGE);
       event->in = TRUE;
     }
 
-  if (gdk_directfb_focused_window)
-    g_object_unref (gdk_directfb_focused_window);
-  gdk_directfb_focused_window = g_object_ref (new_win);
+  if (bdk_directfb_focused_window)
+    g_object_unref (bdk_directfb_focused_window);
+  bdk_directfb_focused_window = g_object_ref (new_win);
 }
 
 void
-gdk_window_set_accept_focus (GdkWindow *window,
+bdk_window_set_accept_focus (BdkWindow *window,
                              gboolean accept_focus)
 {
-  GdkWindowObject *private;
+  BdkWindowObject *private;
   g_return_if_fail (window != NULL);
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  private = (GdkWindowObject *)window;
+  private = (BdkWindowObject *)window;
 
   accept_focus = accept_focus != FALSE;
 
@@ -845,14 +845,14 @@ gdk_window_set_accept_focus (GdkWindow *window,
 }
 
 void
-gdk_window_set_focus_on_map (GdkWindow *window,
+bdk_window_set_focus_on_map (BdkWindow *window,
                              gboolean focus_on_map)
 {
-  GdkWindowObject *private;
+  BdkWindowObject *private;
   g_return_if_fail (window != NULL);
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  private = (GdkWindowObject *)window;
+  private = (BdkWindowObject *)window;
 
   focus_on_map = focus_on_map != FALSE;
 
@@ -861,13 +861,13 @@ gdk_window_set_focus_on_map (GdkWindow *window,
 }
 
 static gboolean
-gdk_directfb_window_raise (GdkWindow *window)
+bdk_directfb_window_raise (BdkWindow *window)
 {
-  GdkWindowObject *parent;
+  BdkWindowObject *parent;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
-  parent = GDK_WINDOW_OBJECT (window)->parent;
+  parent = BDK_WINDOW_OBJECT (window)->parent;
 
   if (parent->children->data == window)
     return FALSE;
@@ -879,25 +879,25 @@ gdk_directfb_window_raise (GdkWindow *window)
 }
 
 static void
-gdk_directfb_window_lower (GdkWindow *window)
+bdk_directfb_window_lower (BdkWindow *window)
 {
-  GdkWindowObject *parent;
+  BdkWindowObject *parent;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
-  parent = GDK_WINDOW_OBJECT (window)->parent;
+  parent = BDK_WINDOW_OBJECT (window)->parent;
 
   parent->children = g_list_remove (parent->children, window);
   parent->children = g_list_append (parent->children, window);
 }
 
 static gboolean
-all_parents_shown (GdkWindowObject *private)
+all_parents_shown (BdkWindowObject *private)
 {
-  while (GDK_WINDOW_IS_MAPPED (private))
+  while (BDK_WINDOW_IS_MAPPED (private))
     {
       if (private->parent)
-        private = GDK_WINDOW_OBJECT (private)->parent;
+        private = BDK_WINDOW_OBJECT (private)->parent;
       else
         return TRUE;
     }
@@ -906,79 +906,79 @@ all_parents_shown (GdkWindowObject *private)
 }
 
 static void
-send_map_events (GdkWindowObject *private)
+send_map_events (BdkWindowObject *private)
 {
   GList     *list;
-  GdkWindow *event_win;
+  BdkWindow *event_win;
 
-  if (!GDK_WINDOW_IS_MAPPED (private))
+  if (!BDK_WINDOW_IS_MAPPED (private))
     return;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, private);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, private);
 
-  event_win = gdk_directfb_other_event_window ((GdkWindow *) private, GDK_MAP);
+  event_win = bdk_directfb_other_event_window ((BdkWindow *) private, BDK_MAP);
   if (event_win)
-    gdk_directfb_event_make (event_win, GDK_MAP);
+    bdk_directfb_event_make (event_win, BDK_MAP);
 
   for (list = private->children; list; list = list->next)
     send_map_events (list->data);
 }
 
-static GdkWindow *
-gdk_directfb_find_common_ancestor (GdkWindow *win1,
-                                   GdkWindow *win2)
+static BdkWindow *
+bdk_directfb_find_common_ancestor (BdkWindow *win1,
+                                   BdkWindow *win2)
 {
-  GdkWindowObject *a;
-  GdkWindowObject *b;
+  BdkWindowObject *a;
+  BdkWindowObject *b;
 
-  for (a = GDK_WINDOW_OBJECT (win1); a; a = a->parent)
-    for (b = GDK_WINDOW_OBJECT (win2); b; b = b->parent)
+  for (a = BDK_WINDOW_OBJECT (win1); a; a = a->parent)
+    for (b = BDK_WINDOW_OBJECT (win2); b; b = b->parent)
       {
         if (a == b)
-          return GDK_WINDOW (a);
+          return BDK_WINDOW (a);
       }
 
   return NULL;
 }
 
 void
-gdk_directfb_window_send_crossing_events (GdkWindow       *src,
-                                          GdkWindow       *dest,
-                                          GdkCrossingMode  mode)
+bdk_directfb_window_send_crossing_events (BdkWindow       *src,
+                                          BdkWindow       *dest,
+                                          BdkCrossingMode  mode)
 {
-  GdkWindow       *c;
-  GdkWindow       *win, *last, *next;
-  GdkEvent        *event;
+  BdkWindow       *c;
+  BdkWindow       *win, *last, *next;
+  BdkEvent        *event;
   gint             x, y, x_int, y_int;
-  GdkModifierType  modifiers;
+  BdkModifierType  modifiers;
   GSList          *path, *list;
   gboolean         non_linear;
-  GdkWindow       *a;
-  GdkWindow       *b;
-  GdkWindow       *event_win;
+  BdkWindow       *a;
+  BdkWindow       *b;
+  BdkWindow       *event_win;
 
-  D_DEBUG_AT (GDKDFB_Crossing, "%s( %p -> %p, %d )\n", G_STRFUNC, src, dest, mode);
+  D_DEBUG_AT (BDKDFB_Crossing, "%s( %p -> %p, %d )\n", G_STRFUNC, src, dest, mode);
 
   /* Do a possible cursor change before checking if we need to
      generate crossing events so cursor changes due to pointer
      grabs work correctly. */
   {
-    static GdkCursorDirectFB *last_cursor = NULL;
+    static BdkCursorDirectFB *last_cursor = NULL;
 
-    GdkWindowObject       *private = GDK_WINDOW_OBJECT (dest);
-    GdkWindowImplDirectFB *impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
-    GdkCursorDirectFB     *cursor;
+    BdkWindowObject       *private = BDK_WINDOW_OBJECT (dest);
+    BdkWindowImplDirectFB *impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
+    BdkCursorDirectFB     *cursor;
 
-    if (_gdk_directfb_pointer_grab_cursor)
-      cursor = (GdkCursorDirectFB*) _gdk_directfb_pointer_grab_cursor;
+    if (_bdk_directfb_pointer_grab_cursor)
+      cursor = (BdkCursorDirectFB*) _bdk_directfb_pointer_grab_cursor;
     else
-      cursor = (GdkCursorDirectFB*) impl->cursor;
+      cursor = (BdkCursorDirectFB*) impl->cursor;
 
     if (cursor != last_cursor)
       {
-        win     = gdk_directfb_window_find_toplevel (dest);
-        private = GDK_WINDOW_OBJECT (win);
-        impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+        win     = bdk_directfb_window_find_toplevel (dest);
+        private = BDK_WINDOW_OBJECT (win);
+        impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
         if (impl->window)
           impl->window->SetCursorShape (impl->window,
@@ -988,54 +988,54 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
       }
   }
 
-  if (dest == gdk_directfb_window_containing_pointer) {
-    D_DEBUG_AT (GDKDFB_Crossing, "  -> already containing the pointer\n");
+  if (dest == bdk_directfb_window_containing_pointer) {
+    D_DEBUG_AT (BDKDFB_Crossing, "  -> already containing the pointer\n");
     return;
   }
 
-  if (gdk_directfb_window_containing_pointer == NULL)
-    gdk_directfb_window_containing_pointer = g_object_ref (_gdk_parent_root);
+  if (bdk_directfb_window_containing_pointer == NULL)
+    bdk_directfb_window_containing_pointer = g_object_ref (_bdk_parent_root);
 
   if (src)
     a = src;
   else
-    a = gdk_directfb_window_containing_pointer;
+    a = bdk_directfb_window_containing_pointer;
 
   b = dest;
 
   if (a == b) {
-    D_DEBUG_AT (GDKDFB_Crossing, "  -> src == dest\n");
+    D_DEBUG_AT (BDKDFB_Crossing, "  -> src == dest\n");
     return;
   }
 
-  /* gdk_directfb_window_containing_pointer might have been destroyed.
+  /* bdk_directfb_window_containing_pointer might have been destroyed.
    * The refcount we hold on it should keep it, but it's parents
    * might have died.
    */
-  if (GDK_WINDOW_DESTROYED (a)) {
-    D_DEBUG_AT (GDKDFB_Crossing, "  -> src is destroyed!\n");
-    a = _gdk_parent_root;
+  if (BDK_WINDOW_DESTROYED (a)) {
+    D_DEBUG_AT (BDKDFB_Crossing, "  -> src is destroyed!\n");
+    a = _bdk_parent_root;
   }
 
-  gdk_directfb_mouse_get_info (&x, &y, &modifiers);
+  bdk_directfb_mouse_get_info (&x, &y, &modifiers);
 
-  c = gdk_directfb_find_common_ancestor (a, b);
+  c = bdk_directfb_find_common_ancestor (a, b);
 
-  D_DEBUG_AT (GDKDFB_Crossing, "  -> common ancestor %p\n", c);
+  D_DEBUG_AT (BDKDFB_Crossing, "  -> common ancestor %p\n", c);
 
   non_linear = (c != a) && (c != b);
 
-  D_DEBUG_AT (GDKDFB_Crossing, "  -> non_linear: %s\n", non_linear ? "YES" : "NO");
+  D_DEBUG_AT (BDKDFB_Crossing, "  -> non_linear: %s\n", non_linear ? "YES" : "NO");
 
-  event_win = gdk_directfb_pointer_event_window (a, GDK_LEAVE_NOTIFY);
+  event_win = bdk_directfb_pointer_event_window (a, BDK_LEAVE_NOTIFY);
   if (event_win)
     {
-      D_DEBUG_AT (GDKDFB_Crossing, "  -> sending LEAVE to src\n");
+      D_DEBUG_AT (BDKDFB_Crossing, "  -> sending LEAVE to src\n");
 
-      event = gdk_directfb_event_make (event_win, GDK_LEAVE_NOTIFY);
+      event = bdk_directfb_event_make (event_win, BDK_LEAVE_NOTIFY);
       event->crossing.subwindow = NULL;
 
-      gdk_window_get_origin (a, &x_int, &y_int);
+      bdk_window_get_origin (a, &x_int, &y_int);
 
       event->crossing.x      = x - x_int;
       event->crossing.y      = y - y_int;
@@ -1044,16 +1044,16 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
       event->crossing.mode   = mode;
 
       if (non_linear)
-        event->crossing.detail = GDK_NOTIFY_NONLINEAR;
+        event->crossing.detail = BDK_NOTIFY_NONLINEAR;
       else if (c == a)
-        event->crossing.detail = GDK_NOTIFY_INFERIOR;
+        event->crossing.detail = BDK_NOTIFY_INFERIOR;
       else
-        event->crossing.detail = GDK_NOTIFY_ANCESTOR;
+        event->crossing.detail = BDK_NOTIFY_ANCESTOR;
 
       event->crossing.focus = FALSE;
       event->crossing.state = modifiers;
 
-      D_DEBUG_AT (GDKDFB_Crossing,
+      D_DEBUG_AT (BDKDFB_Crossing,
                   "  => LEAVE (%p/%p) at %4f,%4f (%4f,%4f) mode %d, detail %d\n",
                   event_win, a,
                   event->crossing.x, event->crossing.y,
@@ -1065,19 +1065,19 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
   if (c != a)
     {
       last = a;
-      win = GDK_WINDOW (GDK_WINDOW_OBJECT (a)->parent);
+      win = BDK_WINDOW (BDK_WINDOW_OBJECT (a)->parent);
       while (win != c)
         {
           event_win =
-            gdk_directfb_pointer_event_window (win, GDK_LEAVE_NOTIFY);
+            bdk_directfb_pointer_event_window (win, BDK_LEAVE_NOTIFY);
 
           if (event_win)
             {
-              event = gdk_directfb_event_make (event_win, GDK_LEAVE_NOTIFY);
+              event = bdk_directfb_event_make (event_win, BDK_LEAVE_NOTIFY);
 
               event->crossing.subwindow = g_object_ref (last);
 
-              gdk_window_get_origin (win, &x_int, &y_int);
+              bdk_window_get_origin (win, &x_int, &y_int);
 
               event->crossing.x      = x - x_int;
               event->crossing.y      = y - y_int;
@@ -1086,14 +1086,14 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
               event->crossing.mode   = mode;
 
               if (non_linear)
-                event->crossing.detail = GDK_NOTIFY_NONLINEAR_VIRTUAL;
+                event->crossing.detail = BDK_NOTIFY_NONLINEAR_VIRTUAL;
               else
-                event->crossing.detail = GDK_NOTIFY_VIRTUAL;
+                event->crossing.detail = BDK_NOTIFY_VIRTUAL;
 
               event->crossing.focus = FALSE;
               event->crossing.state = modifiers;
 
-              D_DEBUG_AT (GDKDFB_Crossing,
+              D_DEBUG_AT (BDKDFB_Crossing,
                           "  -> LEAVE (%p/%p) at %4f,%4f (%4f,%4f) mode %d, detail %d\n",
                           event_win, win,
                           event->crossing.x, event->crossing.y,
@@ -1102,7 +1102,7 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
             }
 
           last = win;
-          win = GDK_WINDOW (GDK_WINDOW_OBJECT (win)->parent);
+          win = BDK_WINDOW (BDK_WINDOW_OBJECT (win)->parent);
         }
     }
 
@@ -1110,34 +1110,34 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
   if (c != b)
     {
       path = NULL;
-      win = GDK_WINDOW (GDK_WINDOW_OBJECT (b)->parent);
+      win = BDK_WINDOW (BDK_WINDOW_OBJECT (b)->parent);
       while (win != c)
         {
           path = g_slist_prepend (path, win);
-          win = GDK_WINDOW (GDK_WINDOW_OBJECT (win)->parent);
+          win = BDK_WINDOW (BDK_WINDOW_OBJECT (win)->parent);
         }
 
       list = path;
       while (list)
         {
-          win = GDK_WINDOW (list->data);
+          win = BDK_WINDOW (list->data);
           list = g_slist_next (list);
 
           if (list)
-            next = GDK_WINDOW (list->data);
+            next = BDK_WINDOW (list->data);
           else
             next = b;
 
           event_win =
-            gdk_directfb_pointer_event_window (win, GDK_ENTER_NOTIFY);
+            bdk_directfb_pointer_event_window (win, BDK_ENTER_NOTIFY);
 
           if (event_win)
             {
-              event = gdk_directfb_event_make (event_win, GDK_ENTER_NOTIFY);
+              event = bdk_directfb_event_make (event_win, BDK_ENTER_NOTIFY);
 
               event->crossing.subwindow = g_object_ref (next);
 
-              gdk_window_get_origin (win, &x_int, &y_int);
+              bdk_window_get_origin (win, &x_int, &y_int);
 
               event->crossing.x      = x - x_int;
               event->crossing.y      = y - y_int;
@@ -1146,14 +1146,14 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
               event->crossing.mode   = mode;
 
               if (non_linear)
-                event->crossing.detail = GDK_NOTIFY_NONLINEAR_VIRTUAL;
+                event->crossing.detail = BDK_NOTIFY_NONLINEAR_VIRTUAL;
               else
-                event->crossing.detail = GDK_NOTIFY_VIRTUAL;
+                event->crossing.detail = BDK_NOTIFY_VIRTUAL;
 
               event->crossing.focus = FALSE;
               event->crossing.state = modifiers;
 
-              D_DEBUG_AT (GDKDFB_Crossing,
+              D_DEBUG_AT (BDKDFB_Crossing,
                           "  -> ENTER (%p/%p) at %4f,%4f (%4f,%4f) mode %d, detail %d\n",
                           event_win, win,
                           event->crossing.x, event->crossing.y,
@@ -1165,14 +1165,14 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
       g_slist_free (path);
     }
 
-  event_win = gdk_directfb_pointer_event_window (b, GDK_ENTER_NOTIFY);
+  event_win = bdk_directfb_pointer_event_window (b, BDK_ENTER_NOTIFY);
   if (event_win)
     {
-      event = gdk_directfb_event_make (event_win, GDK_ENTER_NOTIFY);
+      event = bdk_directfb_event_make (event_win, BDK_ENTER_NOTIFY);
 
       event->crossing.subwindow = NULL;
 
-      gdk_window_get_origin (b, &x_int, &y_int);
+      bdk_window_get_origin (b, &x_int, &y_int);
 
       event->crossing.x      = x - x_int;
       event->crossing.y      = y - y_int;
@@ -1181,16 +1181,16 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
       event->crossing.mode   = mode;
 
       if (non_linear)
-        event->crossing.detail = GDK_NOTIFY_NONLINEAR;
+        event->crossing.detail = BDK_NOTIFY_NONLINEAR;
       else if (c==a)
-        event->crossing.detail = GDK_NOTIFY_ANCESTOR;
+        event->crossing.detail = BDK_NOTIFY_ANCESTOR;
       else
-        event->crossing.detail = GDK_NOTIFY_INFERIOR;
+        event->crossing.detail = BDK_NOTIFY_INFERIOR;
 
       event->crossing.focus = FALSE;
       event->crossing.state = modifiers;
 
-      D_DEBUG_AT (GDKDFB_Crossing,
+      D_DEBUG_AT (BDKDFB_Crossing,
                   "  => ENTER (%p/%p) at %4f,%4f (%4f,%4f) mode %d, detail %d\n",
                   event_win, b,
                   event->crossing.x, event->crossing.y,
@@ -1198,55 +1198,55 @@ gdk_directfb_window_send_crossing_events (GdkWindow       *src,
                   event->crossing.mode, event->crossing.detail);
     }
 
-  if (mode != GDK_CROSSING_GRAB)
+  if (mode != BDK_CROSSING_GRAB)
     {
       //this seems to cause focus to change as the pointer moves yuck
-      //gdk_directfb_change_focus (b);
-      if (b != gdk_directfb_window_containing_pointer)
+      //bdk_directfb_change_focus (b);
+      if (b != bdk_directfb_window_containing_pointer)
         {
-          g_object_unref (gdk_directfb_window_containing_pointer);
-          gdk_directfb_window_containing_pointer = g_object_ref (b);
+          g_object_unref (bdk_directfb_window_containing_pointer);
+          bdk_directfb_window_containing_pointer = g_object_ref (b);
         }
     }
 }
 
 static void
-show_window_internal (GdkWindow *window,
+show_window_internal (BdkWindow *window,
                       gboolean   raise)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindow             *mousewin;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindow             *mousewin;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, %sraise )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, %sraise )\n", G_STRFUNC,
               window, raise ? "" : "no ");
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
-  if (!private->destroyed && !GDK_WINDOW_IS_MAPPED (private))
+  if (!private->destroyed && !BDK_WINDOW_IS_MAPPED (private))
     {
       if (raise)
-        gdk_window_raise (window);
+        bdk_window_raise (window);
 
-      if (all_parents_shown (GDK_WINDOW_OBJECT (private)->parent))
+      if (all_parents_shown (BDK_WINDOW_OBJECT (private)->parent))
         {
           send_map_events (private);
 
-          mousewin = gdk_window_at_pointer (NULL, NULL);
-          gdk_directfb_window_send_crossing_events (NULL, mousewin,
-                                                    GDK_CROSSING_NORMAL);
+          mousewin = bdk_window_at_pointer (NULL, NULL);
+          bdk_directfb_window_send_crossing_events (NULL, mousewin,
+                                                    BDK_CROSSING_NORMAL);
 
           if (private->input_only)
             return;
 
-          gdk_window_invalidate_rect (window, NULL, TRUE);
+          bdk_window_invalidate_rect (window, NULL, TRUE);
         }
     }
 
   if (impl->window)
     {
-      if (gdk_directfb_apply_focus_opacity)
+      if (bdk_directfb_apply_focus_opacity)
 	impl->window->SetOpacity (impl->window,
 				  (impl->opacity >> 1) + (impl->opacity >> 2));
       else
@@ -1256,88 +1256,88 @@ show_window_internal (GdkWindow *window,
 }
 
 static void
-gdk_directfb_window_show (GdkWindow *window,
+bdk_directfb_window_show (BdkWindow *window,
                           gboolean   raise)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
   show_window_internal (window, raise);
 }
 
 static void
-gdk_directfb_window_hide (GdkWindow *window)
+bdk_directfb_window_hide (BdkWindow *window)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindow             *mousewin;
-  GdkWindow             *event_win;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindow             *mousewin;
+  BdkWindow             *event_win;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
   if (impl->window)
     impl->window->SetOpacity (impl->window, 0);
 
-  if (!private->destroyed && GDK_WINDOW_IS_MAPPED (private))
+  if (!private->destroyed && BDK_WINDOW_IS_MAPPED (private))
     {
-      GdkEvent *event;
+      BdkEvent *event;
 
       if (!private->input_only && private->parent)
         {
-          gdk_window_clear_area (GDK_WINDOW (private->parent),
+          bdk_window_clear_area (BDK_WINDOW (private->parent),
                                  private->x,
                                  private->y,
                                  impl->drawable.width,
                                  impl->drawable.height);
         }
 
-      event_win = gdk_directfb_other_event_window (window, GDK_UNMAP);
+      event_win = bdk_directfb_other_event_window (window, BDK_UNMAP);
       if (event_win)
-        event = gdk_directfb_event_make (event_win, GDK_UNMAP);
+        event = bdk_directfb_event_make (event_win, BDK_UNMAP);
 
-      mousewin = gdk_window_at_pointer (NULL, NULL);
-      gdk_directfb_window_send_crossing_events (NULL,
+      mousewin = bdk_window_at_pointer (NULL, NULL);
+      bdk_directfb_window_send_crossing_events (NULL,
                                                 mousewin,
-                                                GDK_CROSSING_NORMAL);
+                                                BDK_CROSSING_NORMAL);
 
-      if (window == _gdk_directfb_pointer_grab_window)
-        gdk_pointer_ungrab (GDK_CURRENT_TIME);
-      if (window == _gdk_directfb_keyboard_grab_window)
-        gdk_keyboard_ungrab (GDK_CURRENT_TIME);
+      if (window == _bdk_directfb_pointer_grab_window)
+        bdk_pointer_ungrab (BDK_CURRENT_TIME);
+      if (window == _bdk_directfb_keyboard_grab_window)
+        bdk_keyboard_ungrab (BDK_CURRENT_TIME);
     }
 }
 
 static void
-gdk_directfb_window_withdraw (GdkWindow *window)
+bdk_directfb_window_withdraw (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
   /* for now this should be enough */
-  gdk_window_hide (window);
+  bdk_window_hide (window);
 }
 
 void
-_gdk_directfb_move_resize_child (GdkWindow *window,
+_bdk_directfb_move_resize_child (BdkWindow *window,
                                  gint       x,
                                  gint       y,
                                  gint       width,
                                  gint       height)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindowImplDirectFB *parent_impl;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *parent_impl;
   GList                 *list;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
   impl->drawable.width  = width;
   impl->drawable.height = height;
@@ -1346,14 +1346,14 @@ _gdk_directfb_move_resize_child (GdkWindow *window,
     {
       if (impl->drawable.surface)
         {
-          if (impl->drawable.cairo_surface)
-            cairo_surface_destroy (impl->drawable.cairo_surface);
+          if (impl->drawable.bairo_surface)
+            bairo_surface_destroy (impl->drawable.bairo_surface);
 
           impl->drawable.surface->Release (impl->drawable.surface);
           impl->drawable.surface = NULL;
         }
 
-      parent_impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (private->parent)->impl);
+      parent_impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (private->parent)->impl);
 
       if (parent_impl->drawable.surface)
         {
@@ -1367,17 +1367,17 @@ _gdk_directfb_move_resize_child (GdkWindow *window,
 }
 
 static  void
-gdk_directfb_window_move (GdkWindow *window,
+bdk_directfb_window_move (BdkWindow *window,
                           gint       x,
                           gint       y)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
   if (impl->window)
     {
@@ -1387,45 +1387,45 @@ gdk_directfb_window_move (GdkWindow *window,
     {
       gint         width  = impl->drawable.width;
       gint         height = impl->drawable.height;
-      GdkRectangle old    = { private->x, private->y,width,height };
+      BdkRectangle old    = { private->x, private->y,width,height };
 
-      _gdk_directfb_move_resize_child (window, x, y, width, height);
+      _bdk_directfb_move_resize_child (window, x, y, width, height);
 
-      if (GDK_WINDOW_IS_MAPPED (private))
+      if (BDK_WINDOW_IS_MAPPED (private))
         {
-          GdkWindow    *mousewin;
-          GdkRectangle  new = { x, y, width, height };
+          BdkWindow    *mousewin;
+          BdkRectangle  new = { x, y, width, height };
 
-          gdk_rectangle_union (&new, &old, &new);
-          gdk_window_invalidate_rect (GDK_WINDOW (private->parent), &new,TRUE);
+          bdk_rectangle_union (&new, &old, &new);
+          bdk_window_invalidate_rect (BDK_WINDOW (private->parent), &new,TRUE);
 
           /* The window the pointer is in might have changed */
-          mousewin = gdk_window_at_pointer (NULL, NULL);
-          gdk_directfb_window_send_crossing_events (NULL, mousewin,
-                                                    GDK_CROSSING_NORMAL);
+          mousewin = bdk_window_at_pointer (NULL, NULL);
+          bdk_directfb_window_send_crossing_events (NULL, mousewin,
+                                                    BDK_CROSSING_NORMAL);
         }
     }
 }
 
 static void
-gdk_directfb_window_move_resize (GdkWindow *window,
+bdk_directfb_window_move_resize (BdkWindow *window,
                                  gboolean   with_move,
                                  gint       x,
                                  gint       y,
                                  gint       width,
                                  gint       height)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
   if (with_move && (width < 0 && height < 0))
     {
-      gdk_directfb_window_move (window, x, y);
+      bdk_directfb_window_move (window, x, y);
       return;
     }
 
@@ -1439,12 +1439,12 @@ gdk_directfb_window_move_resize (GdkWindow *window,
        impl->drawable.width == width  &&  impl->drawable.height == height))
     return;
 
-  if (private->parent && (private->parent->window_type != GDK_WINDOW_CHILD))
+  if (private->parent && (private->parent->window_type != BDK_WINDOW_CHILD))
     {
-      GdkWindowChildHandlerData *data;
+      BdkWindowChildHandlerData *data;
 
       data = g_object_get_data (G_OBJECT (private->parent),
-                                "gdk-window-child-handler");
+                                "bdk-window-child-handler");
 
       if (data &&
           (*data->changed) (window, x, y, width, height, data->user_data))
@@ -1454,7 +1454,7 @@ gdk_directfb_window_move_resize (GdkWindow *window,
   if (impl->drawable.width == width  &&  impl->drawable.height == height)
     {
       if (with_move)
-        gdk_directfb_window_move (window, x, y);
+        bdk_directfb_window_move (window, x, y);
     }
   else if (impl->window)
     {
@@ -1468,9 +1468,9 @@ gdk_directfb_window_move_resize (GdkWindow *window,
     }
   else
     {
-      GdkRectangle old = { private->x, private->y,
+      BdkRectangle old = { private->x, private->y,
                            impl->drawable.width, impl->drawable.height };
-      GdkRectangle new = { x, y, width, height };
+      BdkRectangle new = { x, y, width, height };
 
       if (! with_move)
         {
@@ -1478,58 +1478,58 @@ gdk_directfb_window_move_resize (GdkWindow *window,
           new.y = private->y;
         }
 
-      _gdk_directfb_move_resize_child (window,
+      _bdk_directfb_move_resize_child (window,
                                        new.x, new.y, new.width, new.height);
 
-      if (GDK_WINDOW_IS_MAPPED (private))
+      if (BDK_WINDOW_IS_MAPPED (private))
         {
-          GdkWindow *mousewin;
+          BdkWindow *mousewin;
 
-          gdk_rectangle_union (&new, &old, &new);
-          gdk_window_invalidate_rect (GDK_WINDOW (private->parent), &new,TRUE);
+          bdk_rectangle_union (&new, &old, &new);
+          bdk_window_invalidate_rect (BDK_WINDOW (private->parent), &new,TRUE);
 
           /* The window the pointer is in might have changed */
-          mousewin = gdk_window_at_pointer (NULL, NULL);
-          gdk_directfb_window_send_crossing_events (NULL, mousewin,
-                                                    GDK_CROSSING_NORMAL);
+          mousewin = bdk_window_at_pointer (NULL, NULL);
+          bdk_directfb_window_send_crossing_events (NULL, mousewin,
+                                                    BDK_CROSSING_NORMAL);
         }
     }
 }
 
 static gboolean
-gdk_directfb_window_reparent (GdkWindow *window,
-                              GdkWindow *new_parent,
+bdk_directfb_window_reparent (BdkWindow *window,
+                              BdkWindow *new_parent,
                               gint       x,
                               gint       y)
 {
-  GdkWindowObject *window_private;
-  GdkWindowObject *parent_private;
-  GdkWindowObject *old_parent_private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindowImplDirectFB *parent_impl;
-  GdkVisual             *visual;
+  BdkWindowObject *window_private;
+  BdkWindowObject *parent_private;
+  BdkWindowObject *old_parent_private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *parent_impl;
+  BdkVisual             *visual;
 
-  g_return_val_if_fail (GDK_IS_WINDOW (window), FALSE);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return FALSE;
 
   if (!new_parent)
-    new_parent = _gdk_parent_root;
+    new_parent = _bdk_parent_root;
 
-  window_private     = (GdkWindowObject *) window;
-  old_parent_private = (GdkWindowObject *) window_private->parent;
-  parent_private     = (GdkWindowObject *) new_parent;
-  parent_impl        = GDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
-  visual             = gdk_drawable_get_visual (window);
+  window_private     = (BdkWindowObject *) window;
+  old_parent_private = (BdkWindowObject *) window_private->parent;
+  parent_private     = (BdkWindowObject *) new_parent;
+  parent_impl        = BDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
+  visual             = bdk_drawable_get_visual (window);
 
   /* already parented */
-  if (window_private->parent == (GdkWindowObject *) new_parent)
+  if (window_private->parent == (BdkWindowObject *) new_parent)
     return FALSE;
 
-  window_private->parent = (GdkWindowObject *) new_parent;
+  window_private->parent = (BdkWindowObject *) new_parent;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (window_private->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (window_private->impl);
 
   if (impl->drawable.surface) {
     impl->drawable.surface->Release (impl->drawable.surface);
@@ -1537,7 +1537,7 @@ gdk_directfb_window_reparent (GdkWindow *window,
   }
 
   if (impl->window != NULL) {
-    gdk_directfb_window_id_table_remove (impl->dfb_id);
+    bdk_directfb_window_id_table_remove (impl->dfb_id);
     impl->window->SetOpacity (impl->window, 0);
     impl->window->Close (impl->window);
     impl->window->Release (impl->window);
@@ -1545,7 +1545,7 @@ gdk_directfb_window_reparent (GdkWindow *window,
   }
 
   //create window were a child of the root now
-  if (window_private->parent == (GdkWindowObject *)_gdk_parent_root)  {
+  if (window_private->parent == (BdkWindowObject *)_bdk_parent_root)  {
     DFBWindowDescription  desc;
     DFBWindowOptions  window_options = DWOP_NONE;
     desc.flags = DWDESC_CAPS;
@@ -1553,14 +1553,14 @@ gdk_directfb_window_reparent (GdkWindow *window,
       desc.caps = DWCAPS_INPUTONLY;
     } else {
       desc.flags |= DWDESC_PIXELFORMAT;
-      desc.pixelformat = ((GdkVisualDirectFB *) visual)->format;
+      desc.pixelformat = ((BdkVisualDirectFB *) visual)->format;
       if (DFB_PIXELFORMAT_HAS_ALPHA (desc.pixelformat)) {
         desc.flags |= DWDESC_CAPS;
         desc.caps = DWCAPS_ALPHACHANNEL;
       }
     }
-    if (window_private->window_type ==  GDK_WINDOW_CHILD)
-      window_private->window_type = GDK_WINDOW_TOPLEVEL;
+    if (window_private->window_type ==  BDK_WINDOW_CHILD)
+      window_private->window_type = BDK_WINDOW_TOPLEVEL;
     desc.flags |= (DWDESC_WIDTH | DWDESC_HEIGHT |
                    DWDESC_POSX  | DWDESC_POSY);
     desc.posx   = x;
@@ -1570,14 +1570,14 @@ gdk_directfb_window_reparent (GdkWindow *window,
     if (!create_directfb_window (impl, &desc, window_options))
       {
         g_assert (0);
-        _gdk_window_destroy (window, FALSE);
+        _bdk_window_destroy (window, FALSE);
         return FALSE;
       }
     /* we hold a reference count on ourselves */
     g_object_ref (window);
     impl->window->GetID (impl->window, &impl->dfb_id);
-    gdk_directfb_window_id_table_insert (impl->dfb_id, window);
-    gdk_directfb_event_windows_add (window);
+    bdk_directfb_window_id_table_insert (impl->dfb_id, window);
+    bdk_directfb_event_windows_add (window);
   } else {
     DFBRectangle rect = { x, y,
                           impl->drawable.width,
@@ -1592,18 +1592,18 @@ gdk_directfb_window_reparent (GdkWindow *window,
 }
 
 static void
-gdk_window_directfb_raise (GdkWindow *window)
+bdk_window_directfb_raise (BdkWindow *window)
 {
-  GdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *impl;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (impl->window)
     {
@@ -1611,30 +1611,30 @@ gdk_window_directfb_raise (GdkWindow *window)
 
       ret = impl->window->RaiseToTop (impl->window);
       if (ret)
-        DirectFBError ("gdkwindow-directfb.c: RaiseToTop", ret);
+        DirectFBError ("bdkwindow-directfb.c: RaiseToTop", ret);
       else
-        gdk_directfb_window_raise (window);
+        bdk_directfb_window_raise (window);
     }
   else
     {
-      if (gdk_directfb_window_raise (window))
-        gdk_window_invalidate_rect (window, NULL, TRUE);
+      if (bdk_directfb_window_raise (window))
+        bdk_window_invalidate_rect (window, NULL, TRUE);
     }
 }
 
 static void
-gdk_window_directfb_lower (GdkWindow *window)
+bdk_window_directfb_lower (BdkWindow *window)
 {
-  GdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *impl;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (impl->window)
     {
@@ -1642,19 +1642,19 @@ gdk_window_directfb_lower (GdkWindow *window)
 
       ret = impl->window->LowerToBottom (impl->window);
       if (ret)
-        DirectFBError ("gdkwindow-directfb.c: LowerToBottom", ret);
+        DirectFBError ("bdkwindow-directfb.c: LowerToBottom", ret);
       else
-        gdk_directfb_window_lower (window);
+        bdk_directfb_window_lower (window);
     }
   else
     {
-      gdk_directfb_window_lower (window);
-      gdk_window_invalidate_rect (window, NULL, TRUE);
+      bdk_directfb_window_lower (window);
+      bdk_window_invalidate_rect (window, NULL, TRUE);
     }
 }
 
 void
-gdk_window_set_hints (GdkWindow *window,
+bdk_window_set_hints (BdkWindow *window,
                       gint       x,
                       gint       y,
                       gint       min_width,
@@ -1663,88 +1663,88 @@ gdk_window_set_hints (GdkWindow *window,
                       gint       max_height,
                       gint       flags)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  D_DEBUG_AT( GDKDFB_Window, "%s( %p, %3d,%3d, min %4dx%4d, max %4dx%4d, flags 0x%08x )\n", G_STRFUNC,
+  D_DEBUG_AT( BDKDFB_Window, "%s( %p, %3d,%3d, min %4dx%4d, max %4dx%4d, flags 0x%08x )\n", G_STRFUNC,
               window, x,y, min_width, min_height, max_width, max_height, flags );
   /* N/A */
 }
 
 void
-gdk_window_set_geometry_hints (GdkWindow         *window,
-                               const GdkGeometry *geometry,
-                               GdkWindowHints     geom_mask)
+bdk_window_set_geometry_hints (BdkWindow         *window,
+                               const BdkGeometry *geometry,
+                               BdkWindowHints     geom_mask)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_set_title (GdkWindow   *window,
+bdk_window_set_title (BdkWindow   *window,
                       const gchar *title)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, '%s' )\n", G_STRFUNC, window, title);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, '%s' )\n", G_STRFUNC, window, title);
   /* N/A */
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, window);
 }
 
 void
-gdk_window_set_role (GdkWindow   *window,
+bdk_window_set_role (BdkWindow   *window,
                      const gchar *role)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 /**
- * gdk_window_set_startup_id:
- * @window: a toplevel #GdkWindow
+ * bdk_window_set_startup_id:
+ * @window: a toplevel #BdkWindow
  * @startup_id: a string with startup-notification identifier
  *
- * When using GTK+, typically you should use gtk_window_set_startup_id()
+ * When using BTK+, typically you should use btk_window_set_startup_id()
  * instead of this low-level function.
  *
  * Since: 2.12
  *
  **/
 void
-gdk_window_set_startup_id (GdkWindow   *window,
+bdk_window_set_startup_id (BdkWindow   *window,
                            const gchar *startup_id)
 {
 }
 
 void
-gdk_window_set_transient_for (GdkWindow *window,
-                              GdkWindow *parent)
+bdk_window_set_transient_for (BdkWindow *window,
+                              BdkWindow *parent)
 {
-  GdkWindowObject *private;
-  GdkWindowObject *root;
+  BdkWindowObject *private;
+  BdkWindowObject *root;
   gint i;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
-  g_return_if_fail (GDK_IS_WINDOW (parent));
+  g_return_if_fail (BDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (parent));
 
-  private = GDK_WINDOW_OBJECT (window);
-  root    = GDK_WINDOW_OBJECT (_gdk_parent_root);
+  private = BDK_WINDOW_OBJECT (window);
+  root    = BDK_WINDOW_OBJECT (_bdk_parent_root);
 
-  g_return_if_fail (GDK_WINDOW (private->parent) == _gdk_parent_root);
-  g_return_if_fail (GDK_WINDOW (GDK_WINDOW_OBJECT (parent)->parent) == _gdk_parent_root);
+  g_return_if_fail (BDK_WINDOW (private->parent) == _bdk_parent_root);
+  g_return_if_fail (BDK_WINDOW (BDK_WINDOW_OBJECT (parent)->parent) == _bdk_parent_root);
 
   root->children = g_list_remove (root->children, window);
 
@@ -1756,52 +1756,52 @@ gdk_window_set_transient_for (GdkWindow *window,
 }
 
 static void
-gdk_directfb_window_set_background (GdkWindow      *window,
-                                    const GdkColor *color)
+bdk_directfb_window_set_background (BdkWindow      *window,
+                                    const BdkColor *color)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
   g_return_if_fail (color != NULL);
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, %d,%d,%d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, %d,%d,%d )\n", G_STRFUNC,
               window, color->red, color->green, color->blue);
 }
 
 static void
-gdk_directfb_window_set_back_pixmap (GdkWindow *window,
-                                     GdkPixmap *pixmap)
+bdk_directfb_window_set_back_pixmap (BdkWindow *window,
+                                     BdkPixmap *pixmap)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, %p )\n", G_STRFUNC, window, pixmap);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, %p )\n", G_STRFUNC, window, pixmap);
 }
 
 static void
-gdk_directfb_window_set_cursor (GdkWindow *window,
-                                GdkCursor *cursor)
+bdk_directfb_window_set_cursor (BdkWindow *window,
+                                BdkCursor *cursor)
 {
-  GdkWindowImplDirectFB *impl;
-  GdkCursor             *old_cursor;
+  BdkWindowImplDirectFB *impl;
+  BdkCursor             *old_cursor;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
   old_cursor = impl->cursor;
 
   impl->cursor = (cursor ?
-                  gdk_cursor_ref (cursor) : gdk_cursor_new (GDK_LEFT_PTR));
+                  bdk_cursor_ref (cursor) : bdk_cursor_new (BDK_LEFT_PTR));
 
-  if (gdk_window_at_pointer (NULL, NULL) == window)
+  if (bdk_window_at_pointer (NULL, NULL) == window)
     {
       /* This is a bit evil but we want to keep all cursor changes in
-         one place, so let gdk_directfb_window_send_crossing_events
+         one place, so let bdk_directfb_window_send_crossing_events
          do the work for us. */
 
-      gdk_directfb_window_send_crossing_events (window, window,
-                                                GDK_CROSSING_NORMAL);
+      bdk_directfb_window_send_crossing_events (window, window,
+                                                BDK_CROSSING_NORMAL);
     }
   else if (impl->window)
     {
-      GdkCursorDirectFB *dfb_cursor = (GdkCursorDirectFB *) impl->cursor;
+      BdkCursorDirectFB *dfb_cursor = (BdkCursorDirectFB *) impl->cursor;
 
       /* this branch takes care of setting the cursor for unmapped windows */
 
@@ -1811,26 +1811,26 @@ gdk_directfb_window_set_cursor (GdkWindow *window,
     }
 
   if (old_cursor)
-    gdk_cursor_unref (old_cursor);
+    bdk_cursor_unref (old_cursor);
 }
 
 static void
-gdk_directfb_window_get_geometry (GdkWindow *window,
+bdk_directfb_window_get_geometry (BdkWindow *window,
                                   gint      *x,
                                   gint      *y,
                                   gint      *width,
                                   gint      *height,
                                   gint      *depth)
 {
-  GdkWindowObject         *private;
-  GdkDrawableImplDirectFB *impl;
+  BdkWindowObject         *private;
+  BdkDrawableImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
 
-  if (!GDK_WINDOW_DESTROYED (window))
+  if (!BDK_WINDOW_DESTROYED (window))
     {
       if (x)
 	*x = private->x;
@@ -1850,33 +1850,33 @@ gdk_directfb_window_get_geometry (GdkWindow *window,
 }
 
 static gboolean
-gdk_directfb_window_get_deskrelative_origin (GdkWindow *window,
+bdk_directfb_window_get_deskrelative_origin (BdkWindow *window,
                                              gint      *x,
                                              gint      *y)
 {
-  return gdk_window_get_origin (window, x, y);
+  return bdk_window_get_origin (window, x, y);
 }
 
 void
-gdk_window_get_root_origin (GdkWindow *window,
+bdk_window_get_root_origin (BdkWindow *window,
                             gint      *x,
                             gint      *y)
 {
-  GdkWindowObject *rover;
+  BdkWindowObject *rover;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  rover = (GdkWindowObject*) window;
+  rover = (BdkWindowObject*) window;
   if (x)
     *x = 0;
   if (y)
     *y = 0;
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  while (rover->parent && ((GdkWindowObject*) rover->parent)->parent)
-    rover = (GdkWindowObject *) rover->parent;
+  while (rover->parent && ((BdkWindowObject*) rover->parent)->parent)
+    rover = (BdkWindowObject *) rover->parent;
   if (rover->destroyed)
     return;
 
@@ -1886,28 +1886,28 @@ gdk_window_get_root_origin (GdkWindow *window,
     *y = rover->y;
 }
 
-GdkWindow *
-gdk_directfb_window_get_pointer_helper (GdkWindow       *window,
+BdkWindow *
+bdk_directfb_window_get_pointer_helper (BdkWindow       *window,
                                         gint            *x,
                                         gint            *y,
-                                        GdkModifierType *mask)
+                                        BdkModifierType *mask)
 {
-  GdkWindow               *retval = NULL;
+  BdkWindow               *retval = NULL;
   gint                     rx, ry, wx, wy;
-  GdkDrawableImplDirectFB *impl;
+  BdkDrawableImplDirectFB *impl;
 
-  g_return_val_if_fail (window == NULL || GDK_IS_WINDOW (window), NULL);
+  g_return_val_if_fail (window == NULL || BDK_IS_WINDOW (window), NULL);
 
   if (!window)
-    window = _gdk_parent_root;
+    window = _bdk_parent_root;
 
-  gdk_directfb_mouse_get_info (&rx, &ry, mask);
+  bdk_directfb_mouse_get_info (&rx, &ry, mask);
 
   wx = rx;
   wy = ry;
-  retval = gdk_directfb_child_at (_gdk_parent_root, &wx, &wy);
+  retval = bdk_directfb_child_at (_bdk_parent_root, &wx, &wy);
 
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (x)
     *x = rx - impl->abs_x;
@@ -1918,27 +1918,27 @@ gdk_directfb_window_get_pointer_helper (GdkWindow       *window,
 }
 
 static gboolean
-gdk_directfb_window_get_pointer (GdkWindow       *window,
+bdk_directfb_window_get_pointer (BdkWindow       *window,
                                  gint            *x,
                                  gint            *y,
-                                 GdkModifierType *mask)
+                                 BdkModifierType *mask)
 {
-  return gdk_directfb_window_get_pointer_helper (window, x, y, mask) != NULL;
+  return bdk_directfb_window_get_pointer_helper (window, x, y, mask) != NULL;
 }
 
-GdkWindow *
-_gdk_windowing_window_at_pointer (GdkDisplay      *display,
+BdkWindow *
+_bdk_windowing_window_at_pointer (BdkDisplay      *display,
                                   gint            *win_x,
 				  gint            *win_y,
-                                  GdkModifierType *mask,
+                                  BdkModifierType *mask,
                                   gboolean         get_toplevel)
 {
-  GdkWindow *retval;
+  BdkWindow *retval;
   gint       wx, wy;
 
-  gdk_directfb_mouse_get_info (&wx, &wy, NULL);
+  bdk_directfb_mouse_get_info (&wx, &wy, NULL);
 
-  retval = gdk_directfb_child_at (_gdk_parent_root, &wx, &wy);
+  retval = bdk_directfb_child_at (_bdk_parent_root, &wx, &wy);
 
   if (win_x)
     *win_x = wx;
@@ -1948,7 +1948,7 @@ _gdk_windowing_window_at_pointer (GdkDisplay      *display,
 
   if (get_toplevel)
     {
-      GdkWindowObject *w = (GdkWindowObject *)retval;
+      BdkWindowObject *w = (BdkWindowObject *)retval;
       /* Requested toplevel, find it. */
       /* TODO: This can be implemented more efficient by never
 	 recursing into children in the first place */
@@ -1956,13 +1956,13 @@ _gdk_windowing_window_at_pointer (GdkDisplay      *display,
 	{
 	  /* Convert to toplevel */
 	  while (w->parent != NULL &&
-		 w->parent->window_type != GDK_WINDOW_ROOT)
+		 w->parent->window_type != BDK_WINDOW_ROOT)
 	    {
 	      *win_x += w->x;
 	      *win_y += w->y;
 	      w = w->parent;
 	    }
-	  retval = (GdkWindow *)w;
+	  retval = (BdkWindow *)w;
         }
     }
 
@@ -1970,17 +1970,17 @@ _gdk_windowing_window_at_pointer (GdkDisplay      *display,
 }
 
 void
-_gdk_windowing_get_pointer (GdkDisplay       *display,
-                            GdkScreen       **screen,
+_bdk_windowing_get_pointer (BdkDisplay       *display,
+                            BdkScreen       **screen,
                             gint             *x,
                             gint             *y,
-                            GdkModifierType  *mask)
+                            BdkModifierType  *mask)
 {
   if (screen) {
-    *screen = gdk_display_get_default_screen (display);
+    *screen = bdk_display_get_default_screen (display);
   }
 
-  gdk_directfb_window_get_pointer (_gdk_windowing_window_at_pointer (display,
+  bdk_directfb_window_get_pointer (_bdk_windowing_window_at_pointer (display,
                                                                      NULL,
                                                                      NULL,
                                                                      NULL,
@@ -1988,188 +1988,188 @@ _gdk_windowing_get_pointer (GdkDisplay       *display,
                                    x, y, mask);
 }
 
-static GdkEventMask
-gdk_directfb_window_get_events (GdkWindow *window)
+static BdkEventMask
+bdk_directfb_window_get_events (BdkWindow *window)
 {
-  g_return_val_if_fail (GDK_IS_WINDOW (window), 0);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return 0;
   else
-    return GDK_WINDOW_OBJECT (window)->event_mask;
+    return BDK_WINDOW_OBJECT (window)->event_mask;
 }
 
 static void
-gdk_directfb_window_set_events (GdkWindow    *window,
-                                GdkEventMask  event_mask)
+bdk_directfb_window_set_events (BdkWindow    *window,
+                                BdkEventMask  event_mask)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (event_mask & GDK_BUTTON_MOTION_MASK)
-    event_mask |= (GDK_BUTTON1_MOTION_MASK |
-                   GDK_BUTTON2_MOTION_MASK |
-                   GDK_BUTTON3_MOTION_MASK);
+  if (event_mask & BDK_BUTTON_MOTION_MASK)
+    event_mask |= (BDK_BUTTON1_MOTION_MASK |
+                   BDK_BUTTON2_MOTION_MASK |
+                   BDK_BUTTON3_MOTION_MASK);
 
-  GDK_WINDOW_OBJECT (window)->event_mask = event_mask;
+  BDK_WINDOW_OBJECT (window)->event_mask = event_mask;
 }
 
 static void
-gdk_directfb_window_shape_combine_region (GdkWindow       *window,
-                                          const GdkRegion *shape_region,
+bdk_directfb_window_shape_combine_rebunnyion (BdkWindow       *window,
+                                          const BdkRebunnyion *shape_rebunnyion,
                                           gint             offset_x,
                                           gint             offset_y)
 {
 }
 
 void
-gdk_directfb_window_input_shape_combine_region (GdkWindow       *window,
-                                                const GdkRegion *shape_region,
+bdk_directfb_window_input_shape_combine_rebunnyion (BdkWindow       *window,
+                                                const BdkRebunnyion *shape_rebunnyion,
                                                 gint             offset_x,
                                                 gint             offset_y)
 {
 }
 
 static void
-gdk_directfb_window_queue_translation (GdkWindow *window,
-				       GdkGC     *gc,
-                                       GdkRegion *region,
+bdk_directfb_window_queue_translation (BdkWindow *window,
+				       BdkGC     *gc,
+                                       BdkRebunnyion *rebunnyion,
                                        gint       dx,
                                        gint       dy)
 {
-  GdkWindowObject         *private = GDK_WINDOW_OBJECT (window);
-  GdkDrawableImplDirectFB *impl    = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+  BdkWindowObject         *private = BDK_WINDOW_OBJECT (window);
+  BdkDrawableImplDirectFB *impl    = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, %p, %4d,%4d-%4d,%4d (%ld boxes), %d, %d )\n",
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, %p, %4d,%4d-%4d,%4d (%ld boxes), %d, %d )\n",
               G_STRFUNC, window, gc,
-              GDKDFB_RECTANGLE_VALS_FROM_BOX (&region->extents),
-              region->numRects, dx, dy);
+              BDKDFB_RECTANGLE_VALS_FROM_BOX (&rebunnyion->extents),
+              rebunnyion->numRects, dx, dy);
 
-  gdk_region_offset (region, dx, dy);
-  gdk_region_offset (region, private->abs_x, private->abs_y);
+  bdk_rebunnyion_offset (rebunnyion, dx, dy);
+  bdk_rebunnyion_offset (rebunnyion, private->abs_x, private->abs_y);
 
   if (!impl->buffered)
-    temp_region_init_copy (&impl->paint_region, region);
+    temp_rebunnyion_init_copy (&impl->paint_rebunnyion, rebunnyion);
   else
-    gdk_region_union (&impl->paint_region, region);
+    bdk_rebunnyion_union (&impl->paint_rebunnyion, rebunnyion);
   impl->buffered = TRUE;
 
-  gdk_region_offset (region, -dx, -dy);
-  gdk_region_offset (region, -private->abs_x, -private->abs_y);
+  bdk_rebunnyion_offset (rebunnyion, -dx, -dy);
+  bdk_rebunnyion_offset (rebunnyion, -private->abs_x, -private->abs_y);
 }
 
 void
-gdk_window_set_override_redirect (GdkWindow *window,
+bdk_window_set_override_redirect (BdkWindow *window,
                                   gboolean   override_redirect)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_set_icon_list (GdkWindow *window,
+bdk_window_set_icon_list (BdkWindow *window,
                           GList     *pixbufs)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_set_icon (GdkWindow *window,
-                     GdkWindow *icon_window,
-                     GdkPixmap *pixmap,
-                     GdkBitmap *mask)
+bdk_window_set_icon (BdkWindow *window,
+                     BdkWindow *icon_window,
+                     BdkPixmap *pixmap,
+                     BdkBitmap *mask)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_set_icon_name (GdkWindow   *window,
+bdk_window_set_icon_name (BdkWindow   *window,
                           const gchar *name)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_iconify (GdkWindow *window)
+bdk_window_iconify (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  gdk_window_hide (window);
+  bdk_window_hide (window);
 }
 
 void
-gdk_window_deiconify (GdkWindow *window)
+bdk_window_deiconify (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  gdk_window_show (window);
+  bdk_window_show (window);
 }
 
 void
-gdk_window_stick (GdkWindow *window)
+bdk_window_stick (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
-    return;
-
-  /* N/A */
-}
-
-void
-gdk_window_unstick (GdkWindow *window)
-{
-  g_return_if_fail (GDK_IS_WINDOW (window));
-
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_directfb_window_set_opacity (GdkWindow *window,
+bdk_window_unstick (BdkWindow *window)
+{
+  g_return_if_fail (BDK_IS_WINDOW (window));
+
+  if (BDK_WINDOW_DESTROYED (window))
+    return;
+
+  /* N/A */
+}
+
+void
+bdk_directfb_window_set_opacity (BdkWindow *window,
                                  guchar     opacity)
 {
-  GdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   impl->opacity = opacity;
 
-  if (impl->window && GDK_WINDOW_IS_MAPPED (window))
+  if (impl->window && BDK_WINDOW_IS_MAPPED (window))
     {
-      if (gdk_directfb_apply_focus_opacity &&
-	  window == gdk_directfb_focused_window)
+      if (bdk_directfb_apply_focus_opacity &&
+	  window == bdk_directfb_focused_window)
 	impl->window->SetOpacity (impl->window,
 				  (impl->opacity >> 1) + (impl->opacity >> 2));
       else
@@ -2178,90 +2178,90 @@ gdk_directfb_window_set_opacity (GdkWindow *window,
 }
 
 void
-gdk_window_focus (GdkWindow *window,
+bdk_window_focus (BdkWindow *window,
                   guint32    timestamp)
 {
-  GdkWindow *toplevel;
+  BdkWindow *toplevel;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  toplevel = gdk_directfb_window_find_toplevel (window);
-  if (toplevel != _gdk_parent_root)
+  toplevel = bdk_directfb_window_find_toplevel (window);
+  if (toplevel != _bdk_parent_root)
     {
-      GdkWindowImplDirectFB *impl;
+      BdkWindowImplDirectFB *impl;
 
-      impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (toplevel)->impl);
+      impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (toplevel)->impl);
 
       impl->window->RequestFocus (impl->window);
     }
 }
 
 void
-gdk_window_maximize (GdkWindow *window)
+bdk_window_maximize (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_unmaximize (GdkWindow *window)
+bdk_window_unmaximize (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
 void
-gdk_window_set_type_hint (GdkWindow        *window,
-                          GdkWindowTypeHint hint)
+bdk_window_set_type_hint (BdkWindow        *window,
+                          BdkWindowTypeHint hint)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  GDK_NOTE (MISC, g_print ("gdk_window_set_type_hint: 0x%x: %d\n",
-                           GDK_WINDOW_DFB_ID (window), hint));
+  BDK_NOTE (MISC, g_print ("bdk_window_set_type_hint: 0x%x: %d\n",
+                           BDK_WINDOW_DFB_ID (window), hint));
 
-  ((GdkWindowImplDirectFB *)((GdkWindowObject *)window)->impl)->type_hint = hint;
+  ((BdkWindowImplDirectFB *)((BdkWindowObject *)window)->impl)->type_hint = hint;
 
 
   /* N/A */
 }
 
-GdkWindowTypeHint
-gdk_window_get_type_hint (GdkWindow *window)
+BdkWindowTypeHint
+bdk_window_get_type_hint (BdkWindow *window)
 {
-  g_return_val_if_fail (GDK_IS_WINDOW (window), GDK_WINDOW_TYPE_HINT_NORMAL);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), BDK_WINDOW_TYPE_HINT_NORMAL);
 
-  if (GDK_WINDOW_DESTROYED (window))
-    return GDK_WINDOW_TYPE_HINT_NORMAL;
+  if (BDK_WINDOW_DESTROYED (window))
+    return BDK_WINDOW_TYPE_HINT_NORMAL;
 
-  return GDK_WINDOW_IMPL_DIRECTFB (((GdkWindowObject *) window)->impl)->type_hint;
+  return BDK_WINDOW_IMPL_DIRECTFB (((BdkWindowObject *) window)->impl)->type_hint;
 }
 
 void
-gdk_window_set_modal_hint (GdkWindow *window,
+bdk_window_set_modal_hint (BdkWindow *window,
                            gboolean   modal)
 {
-  GdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (impl->window)
     {
@@ -2271,84 +2271,84 @@ gdk_window_set_modal_hint (GdkWindow *window,
 }
 
 void
-gdk_window_set_skip_taskbar_hint (GdkWindow *window,
+bdk_window_set_skip_taskbar_hint (BdkWindow *window,
 				  gboolean   skips_taskbar)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 }
 
 void
-gdk_window_set_skip_pager_hint (GdkWindow *window,
+bdk_window_set_skip_pager_hint (BdkWindow *window,
 				gboolean   skips_pager)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 }
 
 
 void
-gdk_window_set_group (GdkWindow *window,
-                      GdkWindow *leader)
+bdk_window_set_group (BdkWindow *window,
+                      BdkWindow *leader)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
-  g_return_if_fail (GDK_IS_WINDOW (leader));
+  g_return_if_fail (BDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (leader));
   g_warning (" DirectFb set_group groups not supported \n");
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
 }
 
-GdkWindow *
-gdk_window_get_group (GdkWindow *window)
+BdkWindow *
+bdk_window_get_group (BdkWindow *window)
 {
   g_warning (" DirectFb get_group groups not supported \n");
   return window;
 }
 
 void
-gdk_fb_window_set_child_handler (GdkWindow             *window,
-                                 GdkWindowChildChanged  changed,
-                                 GdkWindowChildGetPos   get_pos,
+bdk_fb_window_set_child_handler (BdkWindow             *window,
+                                 BdkWindowChildChanged  changed,
+                                 BdkWindowChildGetPos   get_pos,
                                  gpointer               user_data)
 {
-  GdkWindowChildHandlerData *data;
+  BdkWindowChildHandlerData *data;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  data = g_new (GdkWindowChildHandlerData, 1);
+  data = g_new (BdkWindowChildHandlerData, 1);
   data->changed   = changed;
   data->get_pos   = get_pos;
   data->user_data = user_data;
 
-  g_object_set_data_full (G_OBJECT (window), "gdk-window-child-handler",
+  g_object_set_data_full (G_OBJECT (window), "bdk-window-child-handler",
                           data, (GDestroyNotify) g_free);
 }
 
 void
-gdk_window_set_decorations (GdkWindow       *window,
-                            GdkWMDecoration  decorations)
+bdk_window_set_decorations (BdkWindow       *window,
+                            BdkWMDecoration  decorations)
 {
-  GdkWMDecoration *dec;
+  BdkWMDecoration *dec;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  dec = g_new (GdkWMDecoration, 1);
+  dec = g_new (BdkWMDecoration, 1);
   *dec = decorations;
 
-  g_object_set_data_full (G_OBJECT (window), "gdk-window-decorations",
+  g_object_set_data_full (G_OBJECT (window), "bdk-window-decorations",
                           dec, (GDestroyNotify) g_free);
 }
 
 gboolean
-gdk_window_get_decorations (GdkWindow       *window,
-			    GdkWMDecoration *decorations)
+bdk_window_get_decorations (BdkWindow       *window,
+			    BdkWMDecoration *decorations)
 {
-  GdkWMDecoration *dec;
+  BdkWMDecoration *dec;
 
-  g_return_val_if_fail (GDK_IS_WINDOW (window), FALSE);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
 
-  dec = g_object_get_data (G_OBJECT (window), "gdk-window-decorations");
+  dec = g_object_get_data (G_OBJECT (window), "bdk-window-decorations");
   if (dec)
     {
       *decorations = *dec;
@@ -2358,12 +2358,12 @@ gdk_window_get_decorations (GdkWindow       *window,
 }
 
 void
-gdk_window_set_functions (GdkWindow     *window,
-                          GdkWMFunction  functions)
+bdk_window_set_functions (BdkWindow     *window,
+                          BdkWMFunction  functions)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   /* N/A */
@@ -2371,12 +2371,12 @@ gdk_window_set_functions (GdkWindow     *window,
 }
 
 static gboolean
-gdk_directfb_window_set_static_gravities (GdkWindow *window,
+bdk_directfb_window_set_static_gravities (BdkWindow *window,
                                           gboolean   use_static)
 {
-  g_return_val_if_fail (GDK_IS_WINDOW (window), FALSE);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return FALSE;
 
   /* N/A */
@@ -2386,68 +2386,68 @@ gdk_directfb_window_set_static_gravities (GdkWindow *window,
 }
 
 void
-gdk_window_begin_resize_drag (GdkWindow     *window,
-                              GdkWindowEdge  edge,
+bdk_window_begin_resize_drag (BdkWindow     *window,
+                              BdkWindowEdge  edge,
                               gint           button,
                               gint           root_x,
                               gint           root_y,
                               guint32        timestamp)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   g_message ("unimplemented %s", G_STRFUNC);
 }
 
 void
-gdk_window_begin_move_drag (GdkWindow *window,
+bdk_window_begin_move_drag (BdkWindow *window,
                             gint       button,
                             gint       root_x,
                             gint       root_y,
                             guint32    timestamp)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
   g_message ("unimplemented %s", G_STRFUNC);
 }
 
 /**
- * gdk_window_get_frame_extents:
- * @window: a #GdkWindow
+ * bdk_window_get_frame_extents:
+ * @window: a #BdkWindow
  * @rect: rectangle to fill with bounding box of the window frame
  *
  * Obtains the bounding box of the window, including window manager
  * titlebar/borders if any. The frame position is given in root window
  * coordinates. To get the position of the window itself (rather than
- * the frame) in root window coordinates, use gdk_window_get_origin().
+ * the frame) in root window coordinates, use bdk_window_get_origin().
  *
  **/
 void
-gdk_window_get_frame_extents (GdkWindow    *window,
-                              GdkRectangle *rect)
+bdk_window_get_frame_extents (BdkWindow    *window,
+                              BdkRectangle *rect)
 {
-  GdkWindowObject         *private;
-  GdkDrawableImplDirectFB *impl;
+  BdkWindowObject         *private;
+  BdkDrawableImplDirectFB *impl;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
   g_return_if_fail (rect != NULL);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  private = GDK_WINDOW_OBJECT (window);
+  private = BDK_WINDOW_OBJECT (window);
 
-  while (private->parent && ((GdkWindowObject*) private->parent)->parent)
-    private = (GdkWindowObject*) private->parent;
-  if (GDK_WINDOW_DESTROYED (window))
+  while (private->parent && ((BdkWindowObject*) private->parent)->parent)
+    private = (BdkWindowObject*) private->parent;
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
 
   rect->x      = impl->abs_x;
   rect->y      = impl->abs_y;
@@ -2457,33 +2457,33 @@ gdk_window_get_frame_extents (GdkWindow    *window,
 
 /*
  * Given a directfb window and a subsurface of that window
- * create a gdkwindow child wrapper
+ * create a bdkwindow child wrapper
  */
-GdkWindow *
-gdk_directfb_create_child_window (GdkWindow *parent,
+BdkWindow *
+bdk_directfb_create_child_window (BdkWindow *parent,
                                   IDirectFBSurface *subsurface)
 {
-  GdkWindow             *window;
-  GdkWindowObject       *private;
-  GdkWindowObject       *parent_private;
-  GdkWindowImplDirectFB *impl;
-  GdkWindowImplDirectFB *parent_impl;
+  BdkWindow             *window;
+  BdkWindowObject       *private;
+  BdkWindowObject       *parent_private;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowImplDirectFB *parent_impl;
   gint                   x, y, w, h;
 
   g_return_val_if_fail (parent != NULL, NULL);
 
-  window          = g_object_new (GDK_TYPE_WINDOW, NULL);
-  private         = GDK_WINDOW_OBJECT (window);
-  private->impl   = g_object_new (_gdk_window_impl_get_type (), NULL);
-  parent_private  = GDK_WINDOW_OBJECT (parent);
-  parent_impl     = GDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
+  window          = g_object_new (BDK_TYPE_WINDOW, NULL);
+  private         = BDK_WINDOW_OBJECT (window);
+  private->impl   = g_object_new (_bdk_window_impl_get_type (), NULL);
+  parent_private  = BDK_WINDOW_OBJECT (parent);
+  parent_impl     = BDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
   private->parent = parent_private;
 
   subsurface->GetPosition (subsurface, &x, &y);
   subsurface->GetSize (subsurface, &w, &h);
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
-  impl->drawable.wrapper = GDK_DRAWABLE (window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  impl->drawable.wrapper = BDK_DRAWABLE (window);
 
   private->x = x;
   private->y = y;
@@ -2493,13 +2493,13 @@ gdk_directfb_create_child_window (GdkWindow *parent,
 
   impl->drawable.width     = w;
   impl->drawable.height    = h;
-  private->window_type     = GDK_WINDOW_CHILD;
+  private->window_type     = BDK_WINDOW_CHILD;
   impl->drawable.surface   = subsurface;
   impl->drawable.format    = parent_impl->drawable.format;
   private->depth           = parent_private->depth;
-  gdk_drawable_set_colormap (GDK_DRAWABLE (window),
-                             gdk_drawable_get_colormap (parent));
-  gdk_window_set_cursor (window, NULL);
+  bdk_drawable_set_colormap (BDK_DRAWABLE (window),
+                             bdk_drawable_get_colormap (parent));
+  bdk_window_set_cursor (window, NULL);
   parent_private->children = g_list_prepend (parent_private->children,window);
   /*we hold a reference count on ourselves */
   g_object_ref (window);
@@ -2512,56 +2512,56 @@ gdk_directfb_create_child_window (GdkWindow *parent,
  * The wrapping is not perfect since directfb does not give full access
  * to the current state of a window event mask etc need to fix dfb
  */
-GdkWindow *
-gdk_window_foreign_new_for_display (GdkDisplay* display, GdkNativeWindow anid)
+BdkWindow *
+bdk_window_foreign_new_for_display (BdkDisplay* display, BdkNativeWindow anid)
 {
-  GdkWindow             *window         = NULL;
-  GdkWindow             *parent         = NULL;
-  GdkWindowObject       *private        = NULL;
-  GdkWindowObject       *parent_private = NULL;
-  GdkWindowImplDirectFB *parent_impl    = NULL;
-  GdkWindowImplDirectFB *impl           = NULL;
+  BdkWindow             *window         = NULL;
+  BdkWindow             *parent         = NULL;
+  BdkWindowObject       *private        = NULL;
+  BdkWindowObject       *parent_private = NULL;
+  BdkWindowImplDirectFB *parent_impl    = NULL;
+  BdkWindowImplDirectFB *impl           = NULL;
   DFBWindowOptions       options;
   DFBResult              ret;
-  GdkDisplayDFB *        gdkdisplay     = _gdk_display;
+  BdkDisplayDFB *        bdkdisplay     = _bdk_display;
   IDirectFBWindow       *dfbwindow;
 
-  window = gdk_window_lookup (anid);
+  window = bdk_window_lookup (anid);
 
   if (window) {
     g_object_ref (window);
     return window;
   }
   if (display != NULL)
-    gdkdisplay = GDK_DISPLAY_DFB (display);
+    bdkdisplay = BDK_DISPLAY_DFB (display);
 
-  ret = gdkdisplay->layer->GetWindow (gdkdisplay->layer,
+  ret = bdkdisplay->layer->GetWindow (bdkdisplay->layer,
                                       (DFBWindowID)anid,
                                       &dfbwindow);
 
   if (ret != DFB_OK) {
-    DirectFBError ("gdk_window_new: Layer->GetWindow failed", ret);
+    DirectFBError ("bdk_window_new: Layer->GetWindow failed", ret);
     return NULL;
   }
 
-  parent = _gdk_parent_root;
+  parent = _bdk_parent_root;
 
   if (parent) {
-    parent_private = GDK_WINDOW_OBJECT (parent);
-    parent_impl = GDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
+    parent_private = BDK_WINDOW_OBJECT (parent);
+    parent_impl = BDK_WINDOW_IMPL_DIRECTFB (parent_private->impl);
   }
 
-  window = g_object_new (GDK_TYPE_WINDOW, NULL);
+  window = g_object_new (BDK_TYPE_WINDOW, NULL);
   /* we hold a reference count on ourselves */
   g_object_ref (window);
-  private              = GDK_WINDOW_OBJECT (window);
-  private->impl        = g_object_new (_gdk_window_impl_get_type (), NULL);
+  private              = BDK_WINDOW_OBJECT (window);
+  private->impl        = g_object_new (_bdk_window_impl_get_type (), NULL);
   private->parent      = parent_private;
-  private->window_type = GDK_WINDOW_TOPLEVEL;
+  private->window_type = BDK_WINDOW_TOPLEVEL;
   private->viewable    = TRUE;
-  impl                 = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  impl                 = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
-  impl->drawable.wrapper = GDK_DRAWABLE (window);
+  impl->drawable.wrapper = BDK_DRAWABLE (window);
   impl->window           = dfbwindow;
   dfbwindow->GetOptions (dfbwindow, &options);
   dfbwindow->GetPosition (dfbwindow, &private->x, &private->y);
@@ -2579,7 +2579,7 @@ gdk_window_foreign_new_for_display (GdkDisplay* display, GdkNativeWindow anid)
   /* We default to all events least surprise to the user
    * minus the poll for motion events
    */
-  gdk_window_set_events (window, (GDK_ALL_EVENTS_MASK ^ GDK_POINTER_MOTION_HINT_MASK));
+  bdk_window_set_events (window, (BDK_ALL_EVENTS_MASK ^ BDK_POINTER_MOTION_HINT_MASK));
 
   if (impl->drawable.surface)
     {
@@ -2588,204 +2588,204 @@ gdk_window_foreign_new_for_display (GdkDisplay* display, GdkNativeWindow anid)
 
       private->depth = DFB_BITS_PER_PIXEL(impl->drawable.format);
       if (parent)
-        gdk_drawable_set_colormap (GDK_DRAWABLE (window), gdk_drawable_get_colormap (parent));
+        bdk_drawable_set_colormap (BDK_DRAWABLE (window), bdk_drawable_get_colormap (parent));
       else
-        gdk_drawable_set_colormap (GDK_DRAWABLE (window), gdk_colormap_get_system ());
+        bdk_drawable_set_colormap (BDK_DRAWABLE (window), bdk_colormap_get_system ());
     }
 
   //can  be null for the soft cursor window itself when
-  //running a gtk directfb wm
-  if (gdk_display_get_default () != NULL) {
-    gdk_window_set_cursor (window, NULL);
+  //running a btk directfb wm
+  if (bdk_display_get_default () != NULL) {
+    bdk_window_set_cursor (window, NULL);
   }
 
   if (parent_private)
     parent_private->children = g_list_prepend (parent_private->children,
                                                window);
   impl->dfb_id = (DFBWindowID)anid;
-  gdk_directfb_window_id_table_insert (impl->dfb_id, window);
-  gdk_directfb_event_windows_add (window);
+  bdk_directfb_window_id_table_insert (impl->dfb_id, window);
+  bdk_directfb_event_windows_add (window);
 
   return window;
 }
 
-GdkWindow *
-gdk_window_lookup_for_display (GdkDisplay *display,GdkNativeWindow anid)
+BdkWindow *
+bdk_window_lookup_for_display (BdkDisplay *display,BdkNativeWindow anid)
 {
-  return gdk_directfb_window_id_table_lookup ((DFBWindowID) anid);
+  return bdk_directfb_window_id_table_lookup ((DFBWindowID) anid);
 }
 
-GdkWindow *
-gdk_window_lookup (GdkNativeWindow anid)
+BdkWindow *
+bdk_window_lookup (BdkNativeWindow anid)
 {
-  return gdk_directfb_window_id_table_lookup ((DFBWindowID) anid);
+  return bdk_directfb_window_id_table_lookup ((DFBWindowID) anid);
 }
 
 IDirectFBWindow *
-gdk_directfb_window_lookup (GdkWindow *window)
+bdk_directfb_window_lookup (BdkWindow *window)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_val_if_fail (GDK_IS_WINDOW (window), NULL);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), NULL);
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
   return impl->window;
 }
 
 IDirectFBSurface *
-gdk_directfb_surface_lookup (GdkWindow *window)
+bdk_directfb_surface_lookup (BdkWindow *window)
 {
-  GdkWindowObject       *private;
-  GdkWindowImplDirectFB *impl;
+  BdkWindowObject       *private;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_val_if_fail (GDK_IS_WINDOW (window),NULL);
+  g_return_val_if_fail (BDK_IS_WINDOW (window),NULL);
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl    = GDK_WINDOW_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl    = BDK_WINDOW_IMPL_DIRECTFB (private->impl);
 
   return impl->drawable.surface;
 }
 
 void
-gdk_window_fullscreen (GdkWindow *window)
+bdk_window_fullscreen (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
-  g_warning ("gdk_window_fullscreen() not implemented.\n");
+  g_return_if_fail (BDK_IS_WINDOW (window));
+  g_warning ("bdk_window_fullscreen() not implemented.\n");
 }
 
 void
-gdk_window_unfullscreen (GdkWindow *window)
+bdk_window_unfullscreen (BdkWindow *window)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
-  /* g_warning ("gdk_window_unfullscreen() not implemented.\n");*/
+  g_return_if_fail (BDK_IS_WINDOW (window));
+  /* g_warning ("bdk_window_unfullscreen() not implemented.\n");*/
 }
 
 void
-gdk_window_set_keep_above (GdkWindow *window, gboolean setting)
+bdk_window_set_keep_above (BdkWindow *window, gboolean setting)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
   static gboolean first_call = TRUE;
   if (first_call) {
-    g_warning ("gdk_window_set_keep_above() not implemented.\n");
+    g_warning ("bdk_window_set_keep_above() not implemented.\n");
     first_call=FALSE;
   }
 
 }
 
 void
-gdk_window_set_keep_below (GdkWindow *window, gboolean setting)
+bdk_window_set_keep_below (BdkWindow *window, gboolean setting)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
   static gboolean first_call = TRUE;
   if (first_call) {
-    g_warning ("gdk_window_set_keep_below() not implemented.\n");
+    g_warning ("bdk_window_set_keep_below() not implemented.\n");
     first_call=FALSE;
   }
 
 }
 
 void
-gdk_window_enable_synchronized_configure (GdkWindow *window)
+bdk_window_enable_synchronized_configure (BdkWindow *window)
 {
 }
 
 void
-gdk_window_configure_finished (GdkWindow *window)
+bdk_window_configure_finished (BdkWindow *window)
 {
 }
 
 void
-gdk_display_warp_pointer (GdkDisplay *display,
-                          GdkScreen  *screen,
+bdk_display_warp_pointer (BdkDisplay *display,
+                          BdkScreen  *screen,
                           gint        x,
                           gint        y)
 {
-  g_warning ("gdk_display_warp_pointer() not implemented.\n");
+  g_warning ("bdk_display_warp_pointer() not implemented.\n");
 }
 
 void
-gdk_window_set_urgency_hint (GdkWindow *window,
+bdk_window_set_urgency_hint (BdkWindow *window,
                              gboolean   urgent)
 {
-  g_return_if_fail (GDK_IS_WINDOW (window));
-  g_return_if_fail (GDK_WINDOW_TYPE (window) != GDK_WINDOW_CHILD);
+  g_return_if_fail (BDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_WINDOW_TYPE (window) != BDK_WINDOW_CHILD);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  g_warning ("gdk_window_set_urgency_hint() not implemented.\n");
+  g_warning ("bdk_window_set_urgency_hint() not implemented.\n");
 
 }
 
 static void
-gdk_window_impl_directfb_begin_paint_region (GdkPaintable    *paintable,
-                                             GdkWindow       *window,
-                                             const GdkRegion *region)
+bdk_window_impl_directfb_begin_paint_rebunnyion (BdkPaintable    *paintable,
+                                             BdkWindow       *window,
+                                             const BdkRebunnyion *rebunnyion)
 {
-  GdkWindowObject         *private = GDK_WINDOW_OBJECT (window);
-  /* GdkWindowImplDirectFB   *wimpl   = GDK_WINDOW_IMPL_DIRECTFB (paintable); */
-  GdkDrawableImplDirectFB *impl    = GDK_DRAWABLE_IMPL_DIRECTFB (paintable);
-  GdkRegion               *native_region;
+  BdkWindowObject         *private = BDK_WINDOW_OBJECT (window);
+  /* BdkWindowImplDirectFB   *wimpl   = BDK_WINDOW_IMPL_DIRECTFB (paintable); */
+  BdkDrawableImplDirectFB *impl    = BDK_DRAWABLE_IMPL_DIRECTFB (paintable);
+  BdkRebunnyion               *native_rebunnyion;
   gint                     i;
 
-  g_assert (region != NULL);
+  g_assert (rebunnyion != NULL);
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p, %p, %4d,%4d-%4d,%4d (%ld boxes) )\n",
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p, %p, %4d,%4d-%4d,%4d (%ld boxes) )\n",
               G_STRFUNC, paintable, window,
-              GDKDFB_RECTANGLE_VALS_FROM_BOX (&region->extents),
-              region->numRects);
-  D_DEBUG_AT (GDKDFB_Window, "  -> window @ pos=%ix%i abs_pos=%ix%i\n",
+              BDKDFB_RECTANGLE_VALS_FROM_BOX (&rebunnyion->extents),
+              rebunnyion->numRects);
+  D_DEBUG_AT (BDKDFB_Window, "  -> window @ pos=%ix%i abs_pos=%ix%i\n",
               private->x, private->y, private->abs_x, private->abs_y);
 
-  native_region = gdk_region_copy (region);
-  gdk_region_offset (native_region, private->abs_x, private->abs_y);
+  native_rebunnyion = bdk_rebunnyion_copy (rebunnyion);
+  bdk_rebunnyion_offset (native_rebunnyion, private->abs_x, private->abs_y);
 
   /* /\* When it's buffered... *\/ */
   if (impl->buffered)
     {
       /* ...we're already painting on it! */
-      D_DEBUG_AT (GDKDFB_Window, "  -> painted  %4d,%4d-%4dx%4d (%ld boxes)\n",
-                  DFB_RECTANGLE_VALS_FROM_REGION (&impl->paint_region.extents),
-                  impl->paint_region.numRects);
+      D_DEBUG_AT (BDKDFB_Window, "  -> painted  %4d,%4d-%4dx%4d (%ld boxes)\n",
+                  DFB_RECTANGLE_VALS_FROM_REBUNNYION (&impl->paint_rebunnyion.extents),
+                  impl->paint_rebunnyion.numRects);
 
       if (impl->paint_depth < 1)
-        gdk_directfb_clip_region (GDK_DRAWABLE (paintable),
-                                  NULL, NULL, &impl->clip_region);
+        bdk_directfb_clip_rebunnyion (BDK_DRAWABLE (paintable),
+                                  NULL, NULL, &impl->clip_rebunnyion);
 
-      gdk_region_union (&impl->paint_region, native_region);
+      bdk_rebunnyion_union (&impl->paint_rebunnyion, native_rebunnyion);
     }
   else
     {
       /* ...otherwise it's the first time! */
       g_assert (impl->paint_depth == 0);
 
-      /* Generate the clip region for painting around child windows. */
-      gdk_directfb_clip_region (GDK_DRAWABLE (paintable),
-                                NULL, NULL, &impl->clip_region);
+      /* Generate the clip rebunnyion for painting around child windows. */
+      bdk_directfb_clip_rebunnyion (BDK_DRAWABLE (paintable),
+                                NULL, NULL, &impl->clip_rebunnyion);
 
-      /* Initialize the paint region with the new one... */
-      temp_region_init_copy (&impl->paint_region, native_region);
+      /* Initialize the paint rebunnyion with the new one... */
+      temp_rebunnyion_init_copy (&impl->paint_rebunnyion, native_rebunnyion);
 
       impl->buffered = TRUE;
     }
 
-  D_DEBUG_AT (GDKDFB_Window, "  -> painting %4d,%4d-%4dx%4d (%ld boxes)\n",
-              DFB_RECTANGLE_VALS_FROM_REGION (&impl->paint_region.extents),
-              impl->paint_region.numRects);
+  D_DEBUG_AT (BDKDFB_Window, "  -> painting %4d,%4d-%4dx%4d (%ld boxes)\n",
+              DFB_RECTANGLE_VALS_FROM_REBUNNYION (&impl->paint_rebunnyion.extents),
+              impl->paint_rebunnyion.numRects);
 
-  /* ...but clip the initial/compound result against the clip region. */
-  /* gdk_region_intersect (&impl->paint_region, &impl->clip_region); */
+  /* ...but clip the initial/compound result against the clip rebunnyion. */
+  /* bdk_rebunnyion_intersect (&impl->paint_rebunnyion, &impl->clip_rebunnyion); */
 
-  D_DEBUG_AT (GDKDFB_Window, "  -> clipped  %4d,%4d-%4dx%4d (%ld boxes)\n",
-              DFB_RECTANGLE_VALS_FROM_REGION (&impl->paint_region.extents),
-              impl->paint_region.numRects);
+  D_DEBUG_AT (BDKDFB_Window, "  -> clipped  %4d,%4d-%4dx%4d (%ld boxes)\n",
+              DFB_RECTANGLE_VALS_FROM_REBUNNYION (&impl->paint_rebunnyion.extents),
+              impl->paint_rebunnyion.numRects);
 
   impl->paint_depth++;
 
-  D_DEBUG_AT (GDKDFB_Window, "  -> depth is now %d\n", impl->paint_depth);
+  D_DEBUG_AT (BDKDFB_Window, "  -> depth is now %d\n", impl->paint_depth);
 
   /*
    * Redraw background on area which are going to be repainted.
@@ -2793,14 +2793,14 @@ gdk_window_impl_directfb_begin_paint_region (GdkPaintable    *paintable,
    * TODO: handle pixmap background
    */
   impl->surface->SetClip (impl->surface, NULL);
-  for (i = 0 ; i < native_region->numRects ; i++)
+  for (i = 0 ; i < native_rebunnyion->numRects ; i++)
     {
-      GdkRegionBox *box = &native_region->rects[i];
+      BdkRebunnyionBox *box = &native_rebunnyion->rects[i];
 
-      D_DEBUG_AT (GDKDFB_Window, "  -> clearing [%2d] %4d,%4d-%4dx%4d\n",
-                  i, GDKDFB_RECTANGLE_VALS_FROM_BOX (box));
+      D_DEBUG_AT (BDKDFB_Window, "  -> clearing [%2d] %4d,%4d-%4dx%4d\n",
+                  i, BDKDFB_RECTANGLE_VALS_FROM_BOX (box));
 
-      /* gdk_window_clear_area (window, */
+      /* bdk_window_clear_area (window, */
       /*                        box->x1, */
       /*                        box->y1, */
       /*                        box->x2 - box->x1, */
@@ -2818,17 +2818,17 @@ gdk_window_impl_directfb_begin_paint_region (GdkPaintable    *paintable,
                                     box->y2 - box->y1);
     }
 
-  gdk_region_destroy (native_region);
+  bdk_rebunnyion_destroy (native_rebunnyion);
 }
 
 static void
-gdk_window_impl_directfb_end_paint (GdkPaintable *paintable)
+bdk_window_impl_directfb_end_paint (BdkPaintable *paintable)
 {
-  GdkDrawableImplDirectFB *impl;
+  BdkDrawableImplDirectFB *impl;
 
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (paintable);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (paintable);
 
-  D_DEBUG_AT (GDKDFB_Window, "%s( %p )\n", G_STRFUNC, paintable);
+  D_DEBUG_AT (BDKDFB_Window, "%s( %p )\n", G_STRFUNC, paintable);
 
   g_return_if_fail (impl->paint_depth > 0);
 
@@ -2836,25 +2836,25 @@ gdk_window_impl_directfb_end_paint (GdkPaintable *paintable)
 
   impl->paint_depth--;
 
-#ifdef GDK_DIRECTFB_NO_EXPERIMENTS
+#ifdef BDK_DIRECTFB_NO_EXPERIMENTS
   if (impl->paint_depth == 0)
     {
       impl->buffered = FALSE;
 
-      if (impl->paint_region.numRects)
+      if (impl->paint_rebunnyion.numRects)
         {
-          DFBRegion reg = { impl->paint_region.extents.x1,
-                            impl->paint_region.extents.y1,
-                            impl->paint_region.extents.x2 - 1,
-                            impl->paint_region.extents.y2 - 1 };
+          DFBRebunnyion reg = { impl->paint_rebunnyion.extents.x1,
+                            impl->paint_rebunnyion.extents.y1,
+                            impl->paint_rebunnyion.extents.x2 - 1,
+                            impl->paint_rebunnyion.extents.y2 - 1 };
 
-          D_DEBUG_AT (GDKDFB_Window, "  -> flip %4d,%4d-%4dx%4d (%ld boxes)\n",
-                      DFB_RECTANGLE_VALS_FROM_REGION (&reg),
-                      impl->paint_region.numRects);
+          D_DEBUG_AT (BDKDFB_Window, "  -> flip %4d,%4d-%4dx%4d (%ld boxes)\n",
+                      DFB_RECTANGLE_VALS_FROM_REBUNNYION (&reg),
+                      impl->paint_rebunnyion.numRects);
 
           impl->surface->Flip (impl->surface, &reg, 0);
 
-          temp_region_reset (&impl->paint_region);
+          temp_rebunnyion_reset (&impl->paint_rebunnyion);
         }
     }
 #else
@@ -2862,126 +2862,126 @@ gdk_window_impl_directfb_end_paint (GdkPaintable *paintable)
     {
       impl->buffered = FALSE;
 
-      temp_region_deinit (&impl->clip_region);
+      temp_rebunnyion_deinit (&impl->clip_rebunnyion);
 
-      if (impl->paint_region.numRects)
+      if (impl->paint_rebunnyion.numRects)
         {
-          GdkWindow *window = GDK_WINDOW (impl->wrapper);
+          BdkWindow *window = BDK_WINDOW (impl->wrapper);
 
-          if (GDK_IS_WINDOW (window))
+          if (BDK_IS_WINDOW (window))
             {
-              GdkWindowObject *top = GDK_WINDOW_OBJECT (gdk_window_get_toplevel (window));
+              BdkWindowObject *top = BDK_WINDOW_OBJECT (bdk_window_get_toplevel (window));
 
               if (top)
                 {
-                  DFBRegion              reg;
-                  GdkWindowImplDirectFB *wimpl = GDK_WINDOW_IMPL_DIRECTFB (top->impl);
+                  DFBRebunnyion              reg;
+                  BdkWindowImplDirectFB *wimpl = BDK_WINDOW_IMPL_DIRECTFB (top->impl);
 
-                  reg.x1 = impl->abs_x - top->x + impl->paint_region.extents.x1;
-                  reg.y1 = impl->abs_y - top->y + impl->paint_region.extents.y1;
-                  reg.x2 = impl->abs_x - top->x + impl->paint_region.extents.x2 - 1;
-                  reg.y2 = impl->abs_y - top->y + impl->paint_region.extents.y2 - 1;
+                  reg.x1 = impl->abs_x - top->x + impl->paint_rebunnyion.extents.x1;
+                  reg.y1 = impl->abs_y - top->y + impl->paint_rebunnyion.extents.y1;
+                  reg.x2 = impl->abs_x - top->x + impl->paint_rebunnyion.extents.x2 - 1;
+                  reg.y2 = impl->abs_y - top->y + impl->paint_rebunnyion.extents.y2 - 1;
 
-                  D_DEBUG_AT (GDKDFB_Window, "  -> queue flip %4d,%4d-%4dx%4d (%ld boxes)\n",
-                              DFB_RECTANGLE_VALS_FROM_REGION (&reg),
-                              impl->paint_region.numRects);
+                  D_DEBUG_AT (BDKDFB_Window, "  -> queue flip %4d,%4d-%4dx%4d (%ld boxes)\n",
+                              DFB_RECTANGLE_VALS_FROM_REBUNNYION (&reg),
+                              impl->paint_rebunnyion.numRects);
 
                   dfb_updates_add (&wimpl->flips, &reg);
                 }
             }
 
-          temp_region_reset (&impl->paint_region);
+          temp_rebunnyion_reset (&impl->paint_rebunnyion);
         }
     }
 #endif
   else
-    D_DEBUG_AT (GDKDFB_Window, "  -> depth is still %d\n", impl->paint_depth);
+    D_DEBUG_AT (BDKDFB_Window, "  -> depth is still %d\n", impl->paint_depth);
 }
 
-GdkRegion *
-_gdk_windowing_get_shape_for_mask (GdkBitmap *mask)
+BdkRebunnyion *
+_bdk_windowing_get_shape_for_mask (BdkBitmap *mask)
 {
   return NULL;
 }
 
-GdkRegion *
-_gdk_windowing_window_get_shape (GdkWindow *window)
+BdkRebunnyion *
+_bdk_windowing_window_get_shape (BdkWindow *window)
 {
   return NULL;
 }
 
 gulong
-_gdk_windowing_window_get_next_serial (GdkDisplay *display)
+_bdk_windowing_window_get_next_serial (BdkDisplay *display)
 {
   return 0;
 }
 
-GdkRegion *
-_gdk_windowing_window_get_input_shape (GdkWindow *window)
+BdkRebunnyion *
+_bdk_windowing_window_get_input_shape (BdkWindow *window)
 {
   return NULL;
 }
 
 void
-_gdk_windowing_before_process_all_updates (void)
+_bdk_windowing_before_process_all_updates (void)
 {
 }
 
 void
-_gdk_windowing_after_process_all_updates (void)
+_bdk_windowing_after_process_all_updates (void)
 {
 }
 
 void
-_gdk_windowing_window_process_updates_recurse (GdkWindow *window,
-                                               GdkRegion *region)
+_bdk_windowing_window_process_updates_recurse (BdkWindow *window,
+                                               BdkRebunnyion *rebunnyion)
 {
-  _gdk_window_process_updates_recurse (window, region);
+  _bdk_window_process_updates_recurse (window, rebunnyion);
 }
 
 static void
-gdk_window_impl_directfb_paintable_init (GdkPaintableIface *iface)
+bdk_window_impl_directfb_paintable_init (BdkPaintableIface *iface)
 {
-  iface->begin_paint_region = gdk_window_impl_directfb_begin_paint_region;
-  iface->end_paint          = gdk_window_impl_directfb_end_paint;
+  iface->begin_paint_rebunnyion = bdk_window_impl_directfb_begin_paint_rebunnyion;
+  iface->end_paint          = bdk_window_impl_directfb_end_paint;
 }
 
 void
-_gdk_windowing_window_beep (GdkWindow *window)
+_bdk_windowing_window_beep (BdkWindow *window)
 {
-  gdk_display_beep (gdk_display_get_default());
+  bdk_display_beep (bdk_display_get_default());
 }
 
 void
-gdk_window_set_opacity (GdkWindow *window,
+bdk_window_set_opacity (BdkWindow *window,
 			gdouble    opacity)
 {
-  GdkDisplay *display;
+  BdkDisplay *display;
   guint8 cardinal;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  display = gdk_drawable_get_display (window);
+  display = bdk_drawable_get_display (window);
 
   if (opacity < 0)
     opacity = 0;
   else if (opacity > 1)
     opacity = 1;
   cardinal = opacity * 0xff;
-  gdk_directfb_window_set_opacity (window, cardinal);
+  bdk_directfb_window_set_opacity (window, cardinal);
 }
 
 void
-_gdk_windowing_window_set_composited (GdkWindow *window,
+_bdk_windowing_window_set_composited (BdkWindow *window,
                                       gboolean   composited)
 {
 }
 
 static gint
-gdk_directfb_window_get_root_coords (GdkWindow *window,
+bdk_directfb_window_get_root_coords (BdkWindow *window,
                                      gint       x,
                                      gint       y,
                                      gint      *root_x,
@@ -2992,39 +2992,39 @@ gdk_directfb_window_get_root_coords (GdkWindow *window,
 }
 
 static gboolean
-gdk_directfb_window_queue_antiexpose (GdkWindow *window,
-                                      GdkRegion *area)
+bdk_directfb_window_queue_antiexpose (BdkWindow *window,
+                                      BdkRebunnyion *area)
 {
   return FALSE;
 }
 
 static void
-gdk_window_impl_iface_init (GdkWindowImplIface *iface)
+bdk_window_impl_iface_init (BdkWindowImplIface *iface)
 {
-  iface->show                       = gdk_directfb_window_show;
-  iface->hide                       = gdk_directfb_window_hide;
-  iface->withdraw                   = gdk_directfb_window_withdraw;
-  iface->set_events                 = gdk_directfb_window_set_events;
-  iface->get_events                 = gdk_directfb_window_get_events;
-  iface->raise                      = gdk_window_directfb_raise;
-  iface->lower                      = gdk_window_directfb_lower;
-  iface->move_resize                = gdk_directfb_window_move_resize;
-  iface->set_background             = gdk_directfb_window_set_background;
-  iface->set_back_pixmap            = gdk_directfb_window_set_back_pixmap;
-  iface->reparent                   = gdk_directfb_window_reparent;
-  iface->set_cursor                 = gdk_directfb_window_set_cursor;
-  iface->get_geometry               = gdk_directfb_window_get_geometry;
-  iface->get_root_coords            = gdk_directfb_window_get_root_coords;
-  iface->get_pointer                = gdk_directfb_window_get_pointer;
-  iface->get_deskrelative_origin    = gdk_directfb_window_get_deskrelative_origin;
-  iface->shape_combine_region       = gdk_directfb_window_shape_combine_region;
-  iface->input_shape_combine_region = gdk_directfb_window_input_shape_combine_region;
-  iface->set_static_gravities       = gdk_directfb_window_set_static_gravities;
-  iface->queue_antiexpose           = gdk_directfb_window_queue_antiexpose;
-  iface->queue_translation          = gdk_directfb_window_queue_translation;
-  iface->destroy                    = gdk_directfb_window_destroy;
+  iface->show                       = bdk_directfb_window_show;
+  iface->hide                       = bdk_directfb_window_hide;
+  iface->withdraw                   = bdk_directfb_window_withdraw;
+  iface->set_events                 = bdk_directfb_window_set_events;
+  iface->get_events                 = bdk_directfb_window_get_events;
+  iface->raise                      = bdk_window_directfb_raise;
+  iface->lower                      = bdk_window_directfb_lower;
+  iface->move_resize                = bdk_directfb_window_move_resize;
+  iface->set_background             = bdk_directfb_window_set_background;
+  iface->set_back_pixmap            = bdk_directfb_window_set_back_pixmap;
+  iface->reparent                   = bdk_directfb_window_reparent;
+  iface->set_cursor                 = bdk_directfb_window_set_cursor;
+  iface->get_geometry               = bdk_directfb_window_get_geometry;
+  iface->get_root_coords            = bdk_directfb_window_get_root_coords;
+  iface->get_pointer                = bdk_directfb_window_get_pointer;
+  iface->get_deskrelative_origin    = bdk_directfb_window_get_deskrelative_origin;
+  iface->shape_combine_rebunnyion       = bdk_directfb_window_shape_combine_rebunnyion;
+  iface->input_shape_combine_rebunnyion = bdk_directfb_window_input_shape_combine_rebunnyion;
+  iface->set_static_gravities       = bdk_directfb_window_set_static_gravities;
+  iface->queue_antiexpose           = bdk_directfb_window_queue_antiexpose;
+  iface->queue_translation          = bdk_directfb_window_queue_translation;
+  iface->destroy                    = bdk_directfb_window_destroy;
 }
 
-#define __GDK_WINDOW_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_WINDOW_X11_C__
+#include "bdkaliasdef.c"
 

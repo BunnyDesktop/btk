@@ -1,4 +1,4 @@
-/* gdkquartz.h
+/* bdkquartz.h
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -18,11 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_QUARTZ_H__
-#define __GDK_QUARTZ_H__
+#ifndef __BDK_QUARTZ_H__
+#define __BDK_QUARTZ_H__
 
 #include <AppKit/AppKit.h>
-#include <gdk/gdkprivate.h>
+#include <bdk/bdkprivate.h>
 
 G_BEGIN_DECLS
 
@@ -41,35 +41,35 @@ typedef float CGFloat;
 
 typedef enum
 {
-  GDK_OSX_UNSUPPORTED = 0,
-  GDK_OSX_MIN = 4,
-  GDK_OSX_TIGER = 4,
-  GDK_OSX_LEOPARD = 5,
-  GDK_OSX_SNOW_LEOPARD = 6,
-  GDK_OSX_LION = 7,
-  GDK_OSX_MOUNTAIN_LION = 8,
-  GDK_OSX_MAVERICKS = 9,
-  GDK_OSX_YOSEMITE = 10,
-  GDK_OSX_EL_CAPITAN = 11,
-  GDK_OSX_SIERRA = 12,
-  GDK_OSX_HIGH_SIERRA = 13,
-  GDK_OSX_MOJAVE = 14,
-  GDK_OSX_CURRENT = 14,
-  GDK_OSX_NEW = 99
-} GdkOSXVersion;
+  BDK_OSX_UNSUPPORTED = 0,
+  BDK_OSX_MIN = 4,
+  BDK_OSX_TIGER = 4,
+  BDK_OSX_LEOPARD = 5,
+  BDK_OSX_SNOW_LEOPARD = 6,
+  BDK_OSX_LION = 7,
+  BDK_OSX_MOUNTAIN_LION = 8,
+  BDK_OSX_MAVERICKS = 9,
+  BDK_OSX_YOSEMITE = 10,
+  BDK_OSX_EL_CAPITAN = 11,
+  BDK_OSX_SIERRA = 12,
+  BDK_OSX_HIGH_SIERRA = 13,
+  BDK_OSX_MOJAVE = 14,
+  BDK_OSX_CURRENT = 14,
+  BDK_OSX_NEW = 99
+} BdkOSXVersion;
 
-gboolean  gdk_quartz_window_is_quartz                           (GdkWindow      *window);
-NSWindow *gdk_quartz_window_get_nswindow                        (GdkWindow      *window);
-NSView   *gdk_quartz_window_get_nsview                          (GdkWindow      *window);
-NSImage  *gdk_quartz_pixbuf_to_ns_image_libgtk_only             (GdkPixbuf      *pixbuf);
-id        gdk_quartz_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context);
-NSEvent  *gdk_quartz_event_get_nsevent                          (GdkEvent       *event);
-GdkOSXVersion gdk_quartz_osx_version                            (void);
+gboolean  bdk_quartz_window_is_quartz                           (BdkWindow      *window);
+NSWindow *bdk_quartz_window_get_nswindow                        (BdkWindow      *window);
+NSView   *bdk_quartz_window_get_nsview                          (BdkWindow      *window);
+NSImage  *bdk_quartz_pixbuf_to_ns_image_libbtk_only             (BdkPixbuf      *pixbuf);
+id        bdk_quartz_drag_context_get_dragging_info_libbtk_only (BdkDragContext *context);
+NSEvent  *bdk_quartz_event_get_nsevent                          (BdkEvent       *event);
+BdkOSXVersion bdk_quartz_osx_version                            (void);
 
-GdkAtom   gdk_quartz_pasteboard_type_to_atom_libgtk_only        (NSString       *type);
-NSString *gdk_quartz_target_to_pasteboard_type_libgtk_only      (const gchar    *target);
-NSString *gdk_quartz_atom_to_pasteboard_type_libgtk_only        (GdkAtom         atom);
+BdkAtom   bdk_quartz_pasteboard_type_to_atom_libbtk_only        (NSString       *type);
+NSString *bdk_quartz_target_to_pasteboard_type_libbtk_only      (const gchar    *target);
+NSString *bdk_quartz_atom_to_pasteboard_type_libbtk_only        (BdkAtom         atom);
 
 G_END_DECLS
 
-#endif /* __GDK_QUARTZ_H__ */
+#endif /* __BDK_QUARTZ_H__ */

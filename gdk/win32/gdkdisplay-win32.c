@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2002,2005 Hans Breuer
  * Copyright (C) 2003 Tor Lillqvist
  *
@@ -19,8 +19,8 @@
  */
 
 #include "config.h"
-#include "gdk.h"
-#include "gdkprivate-win32.h"
+#include "bdk.h"
+#include "bdkprivate-win32.h"
 
 #define HAVE_MONITOR_INFO
 
@@ -31,13 +31,13 @@
 #endif
 
 void
-_gdk_windowing_set_default_display (GdkDisplay *display)
+_bdk_windowing_set_default_display (BdkDisplay *display)
 {
-  g_assert (display == NULL || _gdk_display == display);
+  g_assert (display == NULL || _bdk_display == display);
 }
 
 gulong
-_gdk_windowing_window_get_next_serial (GdkDisplay *display)
+_bdk_windowing_window_get_next_serial (BdkDisplay *display)
 {
 	return 0;
 }
@@ -80,16 +80,16 @@ enum_monitor (HMONITOR hmonitor,
   HDC hDC;
 
   gint *index = (gint *) data;
-  GdkWin32Monitor *monitor;
+  BdkWin32Monitor *monitor;
 
-  if (*index >= _gdk_num_monitors)
+  if (*index >= _bdk_num_monitors)
     {
       (*index) += 1;
 
       return TRUE;
     }
 
-  monitor = _gdk_monitors + *index;
+  monitor = _bdk_monitors + *index;
 
   monitor_info.cbSize = sizeof (MONITORINFOEX);
   GetMonitorInfoA (hmonitor, (MONITORINFO *) &monitor_info);
@@ -114,9 +114,9 @@ enum_monitor (HMONITOR hmonitor,
       /* Put primary monitor at index 0, just in case somebody needs
        * to know which one is the primary.
        */
-      GdkWin32Monitor temp = *monitor;
-      *monitor = _gdk_monitors[0];
-      _gdk_monitors[0] = temp;
+      BdkWin32Monitor temp = *monitor;
+      *monitor = _bdk_monitors[0];
+      _bdk_monitors[0] = temp;
     }
 
   (*index)++;
@@ -126,117 +126,117 @@ enum_monitor (HMONITOR hmonitor,
 #endif /* HAVE_MONITOR_INFO */
 
 void
-_gdk_monitor_init (void)
+_bdk_monitor_init (void)
 {
 #ifdef HAVE_MONITOR_INFO
   gint i, index;
 
   /* In case something happens between monitor counting and monitor
    * enumeration, repeat until the count matches up.
-   * enum_monitor is coded to ignore any monitors past _gdk_num_monitors.
+   * enum_monitor is coded to ignore any monitors past _bdk_num_monitors.
    */
   do
   {
-    _gdk_num_monitors = 0;
+    _bdk_num_monitors = 0;
 
-    EnumDisplayMonitors (NULL, NULL, count_monitor, (LPARAM) &_gdk_num_monitors);
+    EnumDisplayMonitors (NULL, NULL, count_monitor, (LPARAM) &_bdk_num_monitors);
 
-    _gdk_monitors = g_renew (GdkWin32Monitor, _gdk_monitors, _gdk_num_monitors);
+    _bdk_monitors = g_renew (BdkWin32Monitor, _bdk_monitors, _bdk_num_monitors);
 
     index = 0;
     EnumDisplayMonitors (NULL, NULL, enum_monitor, (LPARAM) &index);
-  } while (index != _gdk_num_monitors);
+  } while (index != _bdk_num_monitors);
 
-  _gdk_offset_x = G_MININT;
-  _gdk_offset_y = G_MININT;
+  _bdk_offset_x = G_MININT;
+  _bdk_offset_y = G_MININT;
 
   /* Calculate offset */
-  for (i = 0; i < _gdk_num_monitors; i++)
+  for (i = 0; i < _bdk_num_monitors; i++)
     {
-      _gdk_offset_x = MAX (_gdk_offset_x, -_gdk_monitors[i].rect.x);
-      _gdk_offset_y = MAX (_gdk_offset_y, -_gdk_monitors[i].rect.y);
+      _bdk_offset_x = MAX (_bdk_offset_x, -_bdk_monitors[i].rect.x);
+      _bdk_offset_y = MAX (_bdk_offset_y, -_bdk_monitors[i].rect.y);
     }
-  GDK_NOTE (MISC, g_print ("Multi-monitor offset: (%d,%d)\n",
-			   _gdk_offset_x, _gdk_offset_y));
+  BDK_NOTE (MISC, g_print ("Multi-monitor offset: (%d,%d)\n",
+			   _bdk_offset_x, _bdk_offset_y));
 
-  /* Translate monitor coords into GDK coordinate space */
-  for (i = 0; i < _gdk_num_monitors; i++)
+  /* Translate monitor coords into BDK coordinate space */
+  for (i = 0; i < _bdk_num_monitors; i++)
     {
-      _gdk_monitors[i].rect.x += _gdk_offset_x;
-      _gdk_monitors[i].rect.y += _gdk_offset_y;
-      GDK_NOTE (MISC, g_print ("Monitor %d: %dx%d@%+d%+d\n",
-			       i, _gdk_monitors[i].rect.width,
-			       _gdk_monitors[i].rect.height,
-			       _gdk_monitors[i].rect.x,
-			       _gdk_monitors[i].rect.y));
+      _bdk_monitors[i].rect.x += _bdk_offset_x;
+      _bdk_monitors[i].rect.y += _bdk_offset_y;
+      BDK_NOTE (MISC, g_print ("Monitor %d: %dx%d@%+d%+d\n",
+			       i, _bdk_monitors[i].rect.width,
+			       _bdk_monitors[i].rect.height,
+			       _bdk_monitors[i].rect.x,
+			       _bdk_monitors[i].rect.y));
     }
 #else
   HDC hDC;
 
-  _gdk_num_monitors = 1;
-  _gdk_monitors = g_renew (GdkWin32Monitor, _gdk_monitors, 1);
+  _bdk_num_monitors = 1;
+  _bdk_monitors = g_renew (BdkWin32Monitor, _bdk_monitors, 1);
 
-  _gdk_monitors[0].name = g_strdup ("DISPLAY");
+  _bdk_monitors[0].name = g_strdup ("DISPLAY");
   hDC = GetDC (NULL);
-  _gdk_monitors[0].width_mm = GetDeviceCaps (hDC, HORZSIZE);
-  _gdk_monitors[0].height_mm = GetDeviceCaps (hDC, VERTSIZE);
+  _bdk_monitors[0].width_mm = GetDeviceCaps (hDC, HORZSIZE);
+  _bdk_monitors[0].height_mm = GetDeviceCaps (hDC, VERTSIZE);
   ReleaseDC (NULL, hDC);
-  _gdk_monitors[0].rect.x = 0;
-  _gdk_monitors[0].rect.y = 0;
-  _gdk_monitors[0].rect.width = GetSystemMetrics (SM_CXSCREEN);
-  _gdk_monitors[0].rect.height = GetSystemMetrics (SM_CYSCREEN);
-  _gdk_offset_x = 0;
-  _gdk_offset_y = 0;
+  _bdk_monitors[0].rect.x = 0;
+  _bdk_monitors[0].rect.y = 0;
+  _bdk_monitors[0].rect.width = GetSystemMetrics (SM_CXSCREEN);
+  _bdk_monitors[0].rect.height = GetSystemMetrics (SM_CYSCREEN);
+  _bdk_offset_x = 0;
+  _bdk_offset_y = 0;
 #endif
 }
 
-GdkDisplay *
-gdk_display_open (const gchar *display_name)
+BdkDisplay *
+bdk_display_open (const gchar *display_name)
 {
-  GDK_NOTE (MISC, g_print ("gdk_display_open: %s\n", (display_name ? display_name : "NULL")));
+  BDK_NOTE (MISC, g_print ("bdk_display_open: %s\n", (display_name ? display_name : "NULL")));
 
   if (display_name == NULL ||
       g_ascii_strcasecmp (display_name,
-			  gdk_display_get_name (_gdk_display)) == 0)
+			  bdk_display_get_name (_bdk_display)) == 0)
     {
-      if (_gdk_display != NULL)
+      if (_bdk_display != NULL)
 	{
-	  GDK_NOTE (MISC, g_print ("... return _gdk_display\n"));
-	  return _gdk_display;
+	  BDK_NOTE (MISC, g_print ("... return _bdk_display\n"));
+	  return _bdk_display;
 	}
     }
   else
     {
-      GDK_NOTE (MISC, g_print ("... return NULL\n"));
+      BDK_NOTE (MISC, g_print ("... return NULL\n"));
       return NULL;
     }
 
-  _gdk_display = g_object_new (GDK_TYPE_DISPLAY, NULL);
-  _gdk_screen = g_object_new (GDK_TYPE_SCREEN, NULL);
+  _bdk_display = g_object_new (BDK_TYPE_DISPLAY, NULL);
+  _bdk_screen = g_object_new (BDK_TYPE_SCREEN, NULL);
 
-  _gdk_monitor_init ();
-  _gdk_visual_init ();
-  gdk_screen_set_default_colormap (_gdk_screen,
-                                   gdk_screen_get_system_colormap (_gdk_screen));
-  _gdk_windowing_window_init (_gdk_screen);
-  _gdk_windowing_image_init ();
-  _gdk_events_init ();
-  _gdk_input_init (_gdk_display);
-  _gdk_dnd_init ();
+  _bdk_monitor_init ();
+  _bdk_visual_init ();
+  bdk_screen_set_default_colormap (_bdk_screen,
+                                   bdk_screen_get_system_colormap (_bdk_screen));
+  _bdk_windowing_window_init (_bdk_screen);
+  _bdk_windowing_image_init ();
+  _bdk_events_init ();
+  _bdk_input_init (_bdk_display);
+  _bdk_dnd_init ();
 
   /* Precalculate display name */
-  (void) gdk_display_get_name (_gdk_display);
+  (void) bdk_display_get_name (_bdk_display);
 
-  g_signal_emit_by_name (gdk_display_manager_get (),
-			 "display_opened", _gdk_display);
+  g_signal_emit_by_name (bdk_display_manager_get (),
+			 "display_opened", _bdk_display);
 
-  GDK_NOTE (MISC, g_print ("... _gdk_display now set up\n"));
+  BDK_NOTE (MISC, g_print ("... _bdk_display now set up\n"));
 
-  return _gdk_display;
+  return _bdk_display;
 }
 
 const gchar *
-gdk_display_get_name (GdkDisplay *display)
+bdk_display_get_name (BdkDisplay *display)
 {
   HDESK hdesk = GetThreadDesktop (GetCurrentThreadId ());
   char dummy;
@@ -250,7 +250,7 @@ gdk_display_get_name (GdkDisplay *display)
   typedef BOOL (WINAPI *PFN_ProcessIdToSessionId) (DWORD, DWORD *);
   PFN_ProcessIdToSessionId processIdToSessionId;
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
   if (display_name_cache != NULL)
     return display_name_cache;
@@ -292,7 +292,7 @@ gdk_display_get_name (GdkDisplay *display)
 				  window_station_name,
 				  desktop_name);
 
-  GDK_NOTE (MISC, g_print ("gdk_display_get_name: %s\n", display_name));
+  BDK_NOTE (MISC, g_print ("bdk_display_get_name: %s\n", display_name));
 
   display_name_cache = display_name;
 
@@ -300,45 +300,45 @@ gdk_display_get_name (GdkDisplay *display)
 }
 
 gint
-gdk_display_get_n_screens (GdkDisplay *display)
+bdk_display_get_n_screens (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), 0);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
 
   return 1;
 }
 
-GdkScreen *
-gdk_display_get_screen (GdkDisplay *display,
+BdkScreen *
+bdk_display_get_screen (BdkDisplay *display,
 			gint        screen_num)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (screen_num == 0, NULL);
 
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
-GdkScreen *
-gdk_display_get_default_screen (GdkDisplay *display)
+BdkScreen *
+bdk_display_get_default_screen (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
-GdkWindow *
-gdk_display_get_default_group (GdkDisplay *display)
+BdkWindow *
+bdk_display_get_default_group (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
-  g_warning ("gdk_display_get_default_group not yet implemented");
+  g_warning ("bdk_display_get_default_group not yet implemented");
 
   return NULL;
 }
 
 gboolean
-gdk_display_supports_selection_notification (GdkDisplay *display)
+bdk_display_supports_selection_notification (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   return TRUE;
 }
@@ -385,37 +385,37 @@ inner_clipboard_window_procedure (HWND   hwnd,
 #ifdef G_ENABLE_DEBUG
         UINT nFormat = 0;
 #endif
-        GdkEvent *event;
-        GdkWindow *owner;
+        BdkEvent *event;
+        BdkWindow *owner;
 
         success = OpenClipboard (hwnd);
         g_return_val_if_fail (success, 0);
         hwndOwner = GetClipboardOwner ();
-        owner = gdk_win32_window_lookup_for_display (_gdk_display, hwndOwner);
+        owner = bdk_win32_window_lookup_for_display (_bdk_display, hwndOwner);
         if (owner == NULL)
-          owner = gdk_win32_window_foreign_new_for_display (_gdk_display, hwndOwner);
+          owner = bdk_win32_window_foreign_new_for_display (_bdk_display, hwndOwner);
 
-        GDK_NOTE (DND, g_print (" drawclipboard owner: %p", hwndOwner));
+        BDK_NOTE (DND, g_print (" drawclipboard owner: %p", hwndOwner));
 
 #ifdef G_ENABLE_DEBUG
-        if (_gdk_debug_flags & GDK_DEBUG_DND)
+        if (_bdk_debug_flags & BDK_DEBUG_DND)
           {
             while ((nFormat = EnumClipboardFormats (nFormat)) != 0)
-              g_print ("%s ", _gdk_win32_cf_to_string (nFormat));
+              g_print ("%s ", _bdk_win32_cf_to_string (nFormat));
           }
 #endif
 
-        GDK_NOTE (DND, g_print (" \n"));
+        BDK_NOTE (DND, g_print (" \n"));
 
 
-        event = gdk_event_new (GDK_OWNER_CHANGE);
-        event->owner_change.window = _gdk_root;
+        event = bdk_event_new (BDK_OWNER_CHANGE);
+        event->owner_change.window = _bdk_root;
         event->owner_change.owner = owner;
-        event->owner_change.reason = GDK_OWNER_CHANGE_NEW_OWNER;
-        event->owner_change.selection = GDK_SELECTION_CLIPBOARD;
-        event->owner_change.time = _gdk_win32_get_next_tick (0);
-        event->owner_change.selection_time = GDK_CURRENT_TIME;
-        _gdk_win32_append_event (event);
+        event->owner_change.reason = BDK_OWNER_CHANGE_NEW_OWNER;
+        event->owner_change.selection = BDK_SELECTION_CLIPBOARD;
+        event->owner_change.time = _bdk_win32_get_next_tick (0);
+        event->owner_change.selection_time = BDK_CURRENT_TIME;
+        _bdk_win32_append_event (event);
 
         CloseClipboard ();
 
@@ -428,7 +428,7 @@ inner_clipboard_window_procedure (HWND   hwnd,
       }
     default:
       /* Otherwise call DefWindowProcW(). */
-      GDK_NOTE (EVENTS, g_print (" DefWindowProcW"));
+      BDK_NOTE (EVENTS, g_print (" DefWindowProcW"));
       return DefWindowProc (hwnd, message, wparam, lparam);
     }
 }
@@ -441,15 +441,15 @@ _clipboard_window_procedure (HWND   hwnd,
 {
   LRESULT retval;
 
-  GDK_NOTE (EVENTS, g_print ("%s%*s%s %p",
+  BDK_NOTE (EVENTS, g_print ("%s%*s%s %p",
 			     (debug_indent > 0 ? "\n" : ""),
 			     debug_indent, "",
-			     _gdk_win32_message_to_string (message), hwnd));
+			     _bdk_win32_message_to_string (message), hwnd));
   debug_indent += 2;
   retval = inner_clipboard_window_procedure (hwnd, message, wparam, lparam);
   debug_indent -= 2;
 
-  GDK_NOTE (EVENTS, g_print (" => %I64d%s", (gint64) retval, (debug_indent == 0 ? "\n" : "")));
+  BDK_NOTE (EVENTS, g_print (" => %I64d%s", (gint64) retval, (debug_indent == 0 ? "\n" : "")));
 
   return retval;
 }
@@ -458,15 +458,15 @@ _clipboard_window_procedure (HWND   hwnd,
  * Creates a hidden window and adds it to the clipboard chain
  */
 static HWND
-_gdk_win32_register_clipboard_notification (void)
+_bdk_win32_register_clipboard_notification (void)
 {
   WNDCLASS wclass = { 0, };
   HWND     hwnd;
   ATOM     klass;
 
-  wclass.lpszClassName = "GdkClipboardNotification";
+  wclass.lpszClassName = "BdkClipboardNotification";
   wclass.lpfnWndProc   = _clipboard_window_procedure;
-  wclass.hInstance     = _gdk_app_hmodule;
+  wclass.hInstance     = _bdk_app_hmodule;
 
   klass = RegisterClass (&wclass);
   if (!klass)
@@ -475,7 +475,7 @@ _gdk_win32_register_clipboard_notification (void)
   hwnd = CreateWindow (MAKEINTRESOURCE (klass),
                        NULL, WS_POPUP,
                        0, 0, 0, 0, NULL, NULL,
-                       _gdk_app_hmodule, NULL);
+                       _bdk_app_hmodule, NULL);
   if (!hwnd)
     goto failed;
 
@@ -494,79 +494,79 @@ _gdk_win32_register_clipboard_notification (void)
 
 failed:
   g_critical ("Failed to install clipboard viewer");
-  UnregisterClass (MAKEINTRESOURCE (klass), _gdk_app_hmodule);
+  UnregisterClass (MAKEINTRESOURCE (klass), _bdk_app_hmodule);
   return NULL;
 }
 
 gboolean
-gdk_display_request_selection_notification (GdkDisplay *display,
-                                            GdkAtom     selection)
+bdk_display_request_selection_notification (BdkDisplay *display,
+                                            BdkAtom     selection)
 
 {
   static HWND hwndViewer = NULL;
   gboolean ret = FALSE;
 
-  GDK_NOTE (DND,
-            g_print ("gdk_display_request_selection_notification (..., %s)",
-                     gdk_atom_name (selection)));
+  BDK_NOTE (DND,
+            g_print ("bdk_display_request_selection_notification (..., %s)",
+                     bdk_atom_name (selection)));
 
-  if (selection == GDK_SELECTION_CLIPBOARD ||
-      selection == GDK_SELECTION_PRIMARY)
+  if (selection == BDK_SELECTION_CLIPBOARD ||
+      selection == BDK_SELECTION_PRIMARY)
     {
       if (!hwndViewer)
         {
-          hwndViewer = _gdk_win32_register_clipboard_notification ();
-          GDK_NOTE (DND, g_print (" registered"));
+          hwndViewer = _bdk_win32_register_clipboard_notification ();
+          BDK_NOTE (DND, g_print (" registered"));
         }
       ret = (hwndViewer != NULL);
     }
   else
     {
-      GDK_NOTE (DND, g_print (" unsupported"));
+      BDK_NOTE (DND, g_print (" unsupported"));
       ret = FALSE;
     }
 
-  GDK_NOTE (DND, g_print (" -> %s\n", ret ? "TRUE" : "FALSE"));
+  BDK_NOTE (DND, g_print (" -> %s\n", ret ? "TRUE" : "FALSE"));
   return ret;
 }
 
 gboolean
-gdk_display_supports_clipboard_persistence (GdkDisplay *display)
+bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
   return FALSE;
 }
 
 void
-gdk_display_store_clipboard (GdkDisplay    *display,
-			     GdkWindow     *clipboard_window,
+bdk_display_store_clipboard (BdkDisplay    *display,
+			     BdkWindow     *clipboard_window,
 			     guint32        time_,
-			     const GdkAtom *targets,
+			     const BdkAtom *targets,
 			     gint           n_targets)
 {
 }
 
 gboolean
-gdk_display_supports_shapes (GdkDisplay *display)
+bdk_display_supports_shapes (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   return TRUE;
 }
 
 gboolean
-gdk_display_supports_input_shapes (GdkDisplay *display)
+bdk_display_supports_input_shapes (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   /* Not yet implemented. See comment in
-   * gdk_window_input_shape_combine_mask().
+   * bdk_window_input_shape_combine_mask().
    */
 
   return FALSE;
 }
 
 gboolean
-gdk_display_supports_composite (GdkDisplay *display)
+bdk_display_supports_composite (BdkDisplay *display)
 {
   return FALSE;
 }

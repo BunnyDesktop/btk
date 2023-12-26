@@ -2,7 +2,7 @@
 # Common autotools file for constructing the g-ir-scanner and
 # g-ir-compiler command lines for Visual Studio builds.
 
-# This is copied from $(srcroot)/build from the gobject-introspection
+# This is copied from $(srcroot)/build from the bobject-introspection
 # project, which may be included in projects that support both
 # Visual Studio builds and introspection.
 
@@ -32,7 +32,7 @@
 # Private functions
 
 ## Transform the MSVC project filename (no filename extensions) to something which can reference through a variable
-## without automake/make complaining, eg Gtk-2.0 -> Gtk_2_0
+## without automake/make complaining, eg Btk-2.0 -> Btk_2_0
 _gir_name=$(subst /,_,$(subst -,_,$(subst .,_,$(1))))
 
 # Namespace and Version is either fetched from the gir filename

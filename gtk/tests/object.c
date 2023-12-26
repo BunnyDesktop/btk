@@ -1,4 +1,4 @@
-/* Gtk+ object tests
+/* Btk+ object tests
  * Copyright (C) 2007 Imendio AB
  * Authors: Tim Janik
  *
@@ -17,7 +17,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <string.h>
 
 /* --- helper macros for property value generation --- */
@@ -55,45 +55,45 @@ list_ignore_properties (gboolean buglist)
 {
   /* currently untestable properties */
   static const IgnoreProperty ignore_properties[] = {
-    { "GtkCurve",               "",                     NULL, },                        /* Just ignore it, not worth fixing */
-    { "GtkContainer",           "child",                NULL, },                        /* needs working child widget */
-    { "GtkRadioMenuItem",       "group",                NULL, },                        /* needs working sibling */
-    { "GtkWidget",              "parent",               NULL, },                        /* needs working parent widget */
-    { "GtkCList",               "selection-mode",       (void*) GTK_SELECTION_NONE, },
-    { "GtkWidget",              "has-default",          (void*) TRUE, },                /* conflicts with toplevel-less widgets */
-    { "GtkWidget",              "screen",               NULL, },
-    { "GtkWindow",              "type-hint",            (void*) GDK_WINDOW_TYPE_HINT_DND, }, /* conflicts with ::visible=TRUE */
-    { "GtkCellView",            "background",           (void*) "", },                  /* "" is not a valid background color */
-    { "GtkColorButton",         "color",                (void*) NULL, },                /* not a valid boxed color */
-    { "GtkInputDialog",         "has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
-    { "GtkMessageDialog",       "has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
-    { "GtkFontSelectionDialog", "has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
-    { "GtkColorSelectionDialog","has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
-    { "GtkColorSelection",      "child",                NULL, },
-    { "GtkColorSelection",      "current-color",        (void*) NULL, },                /* not a valid boxed color */
-    { "GtkComboBox",            "row-span-column",      (void*) MATCH_ANY_VALUE },      /* GtkComboBoxEntry needs a tree model for this */
-    { "GtkComboBox",            "column-span-column",   (void*) MATCH_ANY_VALUE },      /* GtkComboBoxEntry needs a tree model for this */
-    { "GtkFileChooserButton",   "select-multiple",      (void*) MATCH_ANY_VALUE },      /* property disabled */
-    { "GtkFileChooserButton",   "action",               (void*) GTK_FILE_CHOOSER_ACTION_SAVE },
-    { "GtkFileChooserButton",   "action",               (void*) GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER },
-    { "GtkFileChooserWidget",   "select-multiple",      (void*) 0x1 },                  /* property conflicts */
-    { "GtkFileChooserDialog",   "select-multiple",      (void*) MATCH_ANY_VALUE },      /* property disabled */
-    { "GtkMenu",                "accel-path",           (void*) MATCH_ANY_VALUE },      /* has odd restrictions in the setter */
-    { "GtkMenuItem",            "accel-path",           (void*) MATCH_ANY_VALUE },      /* has odd restrictions in the setter */
-    { "GtkRecentChooserMenu",   "select-multiple",      (void*) MATCH_ANY_VALUE },      /* property disabled */
-    { "GtkTextView",            "overwrite",            (void*) MATCH_ANY_VALUE },      /* needs text buffer */
-    { "GtkToolbar",             "icon-size",            (void*) GTK_ICON_SIZE_INVALID },
+    { "BtkCurve",               "",                     NULL, },                        /* Just ignore it, not worth fixing */
+    { "BtkContainer",           "child",                NULL, },                        /* needs working child widget */
+    { "BtkRadioMenuItem",       "group",                NULL, },                        /* needs working sibling */
+    { "BtkWidget",              "parent",               NULL, },                        /* needs working parent widget */
+    { "BtkCList",               "selection-mode",       (void*) BTK_SELECTION_NONE, },
+    { "BtkWidget",              "has-default",          (void*) TRUE, },                /* conflicts with toplevel-less widgets */
+    { "BtkWidget",              "screen",               NULL, },
+    { "BtkWindow",              "type-hint",            (void*) BDK_WINDOW_TYPE_HINT_DND, }, /* conflicts with ::visible=TRUE */
+    { "BtkCellView",            "background",           (void*) "", },                  /* "" is not a valid background color */
+    { "BtkColorButton",         "color",                (void*) NULL, },                /* not a valid boxed color */
+    { "BtkInputDialog",         "has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
+    { "BtkMessageDialog",       "has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
+    { "BtkFontSelectionDialog", "has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
+    { "BtkColorSelectionDialog","has-separator",        (void*) MATCH_ANY_VALUE, },     /* property disabled */
+    { "BtkColorSelection",      "child",                NULL, },
+    { "BtkColorSelection",      "current-color",        (void*) NULL, },                /* not a valid boxed color */
+    { "BtkComboBox",            "row-span-column",      (void*) MATCH_ANY_VALUE },      /* BtkComboBoxEntry needs a tree model for this */
+    { "BtkComboBox",            "column-span-column",   (void*) MATCH_ANY_VALUE },      /* BtkComboBoxEntry needs a tree model for this */
+    { "BtkFileChooserButton",   "select-multiple",      (void*) MATCH_ANY_VALUE },      /* property disabled */
+    { "BtkFileChooserButton",   "action",               (void*) BTK_FILE_CHOOSER_ACTION_SAVE },
+    { "BtkFileChooserButton",   "action",               (void*) BTK_FILE_CHOOSER_ACTION_CREATE_FOLDER },
+    { "BtkFileChooserWidget",   "select-multiple",      (void*) 0x1 },                  /* property conflicts */
+    { "BtkFileChooserDialog",   "select-multiple",      (void*) MATCH_ANY_VALUE },      /* property disabled */
+    { "BtkMenu",                "accel-path",           (void*) MATCH_ANY_VALUE },      /* has odd restrictions in the setter */
+    { "BtkMenuItem",            "accel-path",           (void*) MATCH_ANY_VALUE },      /* has odd restrictions in the setter */
+    { "BtkRecentChooserMenu",   "select-multiple",      (void*) MATCH_ANY_VALUE },      /* property disabled */
+    { "BtkTextView",            "overwrite",            (void*) MATCH_ANY_VALUE },      /* needs text buffer */
+    { "BtkToolbar",             "icon-size",            (void*) BTK_ICON_SIZE_INVALID },
     { NULL, NULL, NULL }
   };
-  /* properties suspected to be Gdk/Gtk+ bugs */
+  /* properties suspected to be Bdk/Btk+ bugs */
   static const IgnoreProperty bug_properties[] = {
-    { "GtkComboBox",            "active",               (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL model bug */
-    { "GtkCTree",               "spacing",              (void*) MATCH_ANY_VALUE },      /* FIXME: triggers signedness bug */
-    { "GtkFileChooserButton",   "local-only",           (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL path assertion */
-    { "GtkFileChooserDialog",   "local-only",           (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL path assertion */
-    { "GtkFileChooserWidget",   "local-only",           (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL path assertion */
-    { "GtkMenu",                "tearoff-state",        (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL widget cast */
-    { "GtkText",                "text-position",        (void*) MATCH_ANY_VALUE },      /* FIXME: segfaults, fix property minimum/maximum */
+    { "BtkComboBox",            "active",               (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL model bug */
+    { "BtkCTree",               "spacing",              (void*) MATCH_ANY_VALUE },      /* FIXME: triggers signedness bug */
+    { "BtkFileChooserButton",   "local-only",           (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL path assertion */
+    { "BtkFileChooserDialog",   "local-only",           (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL path assertion */
+    { "BtkFileChooserWidget",   "local-only",           (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL path assertion */
+    { "BtkMenu",                "tearoff-state",        (void*) MATCH_ANY_VALUE },      /* FIXME: triggers NULL widget cast */
+    { "BtkText",                "text-position",        (void*) MATCH_ANY_VALUE },      /* FIXME: segfaults, fix property minimum/maximum */
     { NULL, NULL, NULL }
   };
   if (buglist)
@@ -134,7 +134,7 @@ pspec_select_value (GParamSpec *pspec,
   else if (G_IS_PARAM_SPEC_UNICHAR (pspec))
     g_value_set_uint (value, SELECT_VALUE (dvalue, ((GParamSpecUnichar*) pspec)->default_value, FALSE, TRUE));
   else if (G_IS_PARAM_SPEC_GTYPE (pspec))
-    g_value_set_gtype (value, SELECT_VALUE ((int) dvalue, ((GParamSpecGType*) pspec)->is_a_type, 0, GTK_TYPE_WIDGET));
+    g_value_set_gtype (value, SELECT_VALUE ((int) dvalue, ((GParamSpecGType*) pspec)->is_a_type, 0, BTK_TYPE_WIDGET));
   else if (G_IS_PARAM_SPEC_STRING (pspec))
     {
       GParamSpecString *sspec = (GParamSpecString*) pspec;
@@ -259,7 +259,7 @@ object_test_property (GObject           *object,
 }
 
 static void
-widget_test_properties (GtkWidget   *widget,
+widget_test_properties (BtkWidget   *widget,
                         double       dvalue)
 {
   /* try setting all possible properties, according to dvalue */
@@ -280,7 +280,7 @@ widget_property_tests (gconstpointer test_data)
 {
   GType wtype = (GType) test_data;
   /* create widget */
-  GtkWidget *widget = gtk_widget_new (wtype, NULL);
+  BtkWidget *widget = btk_widget_new (wtype, NULL);
   g_object_ref_sink (widget);
   /* test property values */
   widget_test_properties (widget,  +2); /* test default_value */
@@ -289,7 +289,7 @@ widget_property_tests (gconstpointer test_data)
   widget_test_properties (widget,   1); /* test maximum */
   widget_test_properties (widget,  -1); /* test random value */
   /* cleanup */
-  gtk_widget_destroy (widget);
+  btk_widget_destroy (widget);
   g_object_unref (widget);
 }
 
@@ -304,12 +304,12 @@ main (int   argc,
   guint i;
   /* initialize test program */
   pixbuf_init ();
-  gtk_test_init (&argc, &argv);
-  gtk_test_register_all_types ();
+  btk_test_init (&argc, &argv);
+  btk_test_register_all_types ();
   /* install a property test for each widget type */
-  otypes = gtk_test_list_all_types (NULL);
+  otypes = btk_test_list_all_types (NULL);
   for (i = 0; otypes[i]; i++)
-    if (g_type_is_a (otypes[i], GTK_TYPE_WIDGET) &&
+    if (g_type_is_a (otypes[i], BTK_TYPE_WIDGET) &&
         G_TYPE_IS_OBJECT (otypes[i]) &&
         !G_TYPE_IS_ABSTRACT (otypes[i]))
       {

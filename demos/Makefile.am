@@ -1,24 +1,24 @@
-## Makefile.am for gtk+/demos
+## Makefile.am for btk+/demos
 include $(top_srcdir)/Makefile.decl
 
-SUBDIRS = gtk-demo
+SUBDIRS = btk-demo
 
 INCLUDES = 				\
 	-I$(top_srcdir) 		\
-	-I$(top_builddir)/gdk		\
-	-DGDK_DISABLE_DEPRECATED	\
-	-DGTK_DISABLE_DEPRECATED	\
-	$(GTK_DEBUG_FLAGS)		\
-	$(GTK_DEP_CFLAGS)
+	-I$(top_builddir)/bdk		\
+	-DBDK_DISABLE_DEPRECATED	\
+	-DBTK_DISABLE_DEPRECATED	\
+	$(BTK_DEBUG_FLAGS)		\
+	$(BTK_DEP_CFLAGS)
 
 DEPS = 									\
-	$(top_builddir)/gdk/$(gdktargetlib) 				\
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(top_builddir)/bdk/$(bdktargetlib) 				\
+	$(top_builddir)/btk/$(btktargetlib)
 
 LDADDS = 								\
-	$(top_builddir)/gdk/$(gdktargetlib)        			\
-	$(top_builddir)/gtk/$(gtktargetlib)				\
-	$(GTK_DEP_LIBS)							\
+	$(top_builddir)/bdk/$(bdktargetlib)        			\
+	$(top_builddir)/btk/$(btktargetlib)				\
+	$(BTK_DEP_LIBS)							\
 	$(MATH_LIB)
 
 noinst_PROGRAMS = 		\
@@ -34,7 +34,7 @@ noinst_PROGRAMS += testpixbuf
 BUILT_SOURCES = test-inline-pixbufs.h
 
 test-inline-pixbufs.h: apple-red.png gnome-foot.png
-	$(GDK_PIXBUF_CSOURCE) --raw --build-list		\
+	$(BDK_PIXBUF_CSOURCE) --raw --build-list		\
 	        apple_red  $(srcdir)/apple-red.png	\
                 gnome_foot $(srcdir)/gnome-foot.png	\
         > test-inline-pixbufs.h				\

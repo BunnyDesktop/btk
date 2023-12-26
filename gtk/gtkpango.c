@@ -1,4 +1,4 @@
-/* gtktextdisplay.c - display layed-out text
+/* btktextdisplay.c - display layed-out text
  *
  * Copyright (c) 2010 Red Hat, Inc.
  *
@@ -17,88 +17,88 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
-#include <pango/pangocairo.h>
-#include "gtkintl.h"
+#include <bango/bangobairo.h>
+#include "btkintl.h"
 
-#define GTK_TYPE_FILL_LAYOUT_RENDERER            (_gtk_fill_layout_renderer_get_type())
-#define GTK_FILL_LAYOUT_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), GTK_TYPE_FILL_LAYOUT_RENDERER, GtkFillLayoutRenderer))
-#define GTK_IS_FILL_LAYOUT_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), GTK_TYPE_FILL_LAYOUT_RENDERER))
-#define GTK_FILL_LAYOUT_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FILL_LAYOUT_RENDERER, GtkFillLayoutRendererClass))
-#define GTK_IS_FILL_LAYOUT_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FILL_LAYOUT_RENDERER))
-#define GTK_FILL_LAYOUT_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FILL_LAYOUT_RENDERER, GtkFillLayoutRendererClass))
+#define BTK_TYPE_FILL_LAYOUT_RENDERER            (_btk_fill_layout_renderer_get_type())
+#define BTK_FILL_LAYOUT_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRenderer))
+#define BTK_IS_FILL_LAYOUT_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_FILL_LAYOUT_RENDERER))
+#define BTK_FILL_LAYOUT_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRendererClass))
+#define BTK_IS_FILL_LAYOUT_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILL_LAYOUT_RENDERER))
+#define BTK_FILL_LAYOUT_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILL_LAYOUT_RENDERER, BtkFillLayoutRendererClass))
 
-typedef struct _GtkFillLayoutRenderer      GtkFillLayoutRenderer;
-typedef struct _GtkFillLayoutRendererClass GtkFillLayoutRendererClass;
+typedef struct _BtkFillLayoutRenderer      BtkFillLayoutRenderer;
+typedef struct _BtkFillLayoutRendererClass BtkFillLayoutRendererClass;
 
-struct _GtkFillLayoutRenderer
+struct _BtkFillLayoutRenderer
 {
-  PangoRenderer parent_instance;
+  BangoRenderer parent_instance;
 
-  cairo_t *cr;
+  bairo_t *cr;
 };
 
-struct _GtkFillLayoutRendererClass
+struct _BtkFillLayoutRendererClass
 {
-  PangoRendererClass parent_class;
+  BangoRendererClass parent_class;
 };
 
-G_DEFINE_TYPE (GtkFillLayoutRenderer, _gtk_fill_layout_renderer, PANGO_TYPE_RENDERER)
+G_DEFINE_TYPE (BtkFillLayoutRenderer, _btk_fill_layout_renderer, BANGO_TYPE_RENDERER)
 
 static void
-gtk_fill_layout_renderer_draw_glyphs (PangoRenderer     *renderer,
-                                      PangoFont         *font,
-                                      PangoGlyphString  *glyphs,
+btk_fill_layout_renderer_draw_glyphs (BangoRenderer     *renderer,
+                                      BangoFont         *font,
+                                      BangoGlyphString  *glyphs,
                                       int                x,
                                       int                y)
 {
-  GtkFillLayoutRenderer *text_renderer = GTK_FILL_LAYOUT_RENDERER (renderer);
+  BtkFillLayoutRenderer *text_renderer = BTK_FILL_LAYOUT_RENDERER (renderer);
 
-  cairo_move_to (text_renderer->cr, (double)x / PANGO_SCALE, (double)y / PANGO_SCALE);
-  pango_cairo_show_glyph_string (text_renderer->cr, font, glyphs);
+  bairo_move_to (text_renderer->cr, (double)x / BANGO_SCALE, (double)y / BANGO_SCALE);
+  bango_bairo_show_glyph_string (text_renderer->cr, font, glyphs);
 }
 
 static void
-gtk_fill_layout_renderer_draw_glyph_item (PangoRenderer     *renderer,
+btk_fill_layout_renderer_draw_glyph_item (BangoRenderer     *renderer,
                                           const char        *text,
-                                          PangoGlyphItem    *glyph_item,
+                                          BangoGlyphItem    *glyph_item,
                                           int                x,
                                           int                y)
 {
-  GtkFillLayoutRenderer *text_renderer = GTK_FILL_LAYOUT_RENDERER (renderer);
+  BtkFillLayoutRenderer *text_renderer = BTK_FILL_LAYOUT_RENDERER (renderer);
 
-  cairo_move_to (text_renderer->cr, (double)x / PANGO_SCALE, (double)y / PANGO_SCALE);
-  pango_cairo_show_glyph_item (text_renderer->cr, text, glyph_item);
+  bairo_move_to (text_renderer->cr, (double)x / BANGO_SCALE, (double)y / BANGO_SCALE);
+  bango_bairo_show_glyph_item (text_renderer->cr, text, glyph_item);
 }
 
 static void
-gtk_fill_layout_renderer_draw_rectangle (PangoRenderer     *renderer,
-                                         PangoRenderPart    part,
+btk_fill_layout_renderer_draw_rectangle (BangoRenderer     *renderer,
+                                         BangoRenderPart    part,
                                          int                x,
                                          int                y,
                                          int                width,
                                          int                height)
 {
-  GtkFillLayoutRenderer *text_renderer = GTK_FILL_LAYOUT_RENDERER (renderer);
+  BtkFillLayoutRenderer *text_renderer = BTK_FILL_LAYOUT_RENDERER (renderer);
 
-  if (part == PANGO_RENDER_PART_BACKGROUND)
+  if (part == BANGO_RENDER_PART_BACKGROUND)
     return;
 
-  cairo_rectangle (text_renderer->cr,
-                   (double)x / PANGO_SCALE, (double)y / PANGO_SCALE,
-		   (double)width / PANGO_SCALE, (double)height / PANGO_SCALE);
-  cairo_fill (text_renderer->cr);
+  bairo_rectangle (text_renderer->cr,
+                   (double)x / BANGO_SCALE, (double)y / BANGO_SCALE,
+		   (double)width / BANGO_SCALE, (double)height / BANGO_SCALE);
+  bairo_fill (text_renderer->cr);
 }
 
 static void
-gtk_fill_layout_renderer_draw_trapezoid (PangoRenderer     *renderer,
-                                         PangoRenderPart    part,
+btk_fill_layout_renderer_draw_trapezoid (BangoRenderer     *renderer,
+                                         BangoRenderPart    part,
                                          double             y1_,
                                          double             x11,
                                          double             x21,
@@ -106,128 +106,128 @@ gtk_fill_layout_renderer_draw_trapezoid (PangoRenderer     *renderer,
                                          double             x12,
                                          double             x22)
 {
-  GtkFillLayoutRenderer *text_renderer = GTK_FILL_LAYOUT_RENDERER (renderer);
-  cairo_matrix_t matrix;
-  cairo_t *cr;
+  BtkFillLayoutRenderer *text_renderer = BTK_FILL_LAYOUT_RENDERER (renderer);
+  bairo_matrix_t matrix;
+  bairo_t *cr;
 
   cr = text_renderer->cr;
 
-  cairo_save (cr);
+  bairo_save (cr);
 
   /* use identity scale, but keep translation */
-  cairo_get_matrix (cr, &matrix);
+  bairo_get_matrix (cr, &matrix);
   matrix.xx = matrix.yy = 1;
   matrix.xy = matrix.yx = 0;
-  cairo_set_matrix (cr, &matrix);
+  bairo_set_matrix (cr, &matrix);
 
-  cairo_move_to (cr, x11, y1_);
-  cairo_line_to (cr, x21, y1_);
-  cairo_line_to (cr, x22, y2);
-  cairo_line_to (cr, x12, y2);
-  cairo_close_path (cr);
+  bairo_move_to (cr, x11, y1_);
+  bairo_line_to (cr, x21, y1_);
+  bairo_line_to (cr, x22, y2);
+  bairo_line_to (cr, x12, y2);
+  bairo_close_path (cr);
 
-  cairo_fill (cr);
+  bairo_fill (cr);
 
-  cairo_restore (cr);
+  bairo_restore (cr);
 }
 
 static void
-gtk_fill_layout_renderer_draw_error_underline (PangoRenderer *renderer,
+btk_fill_layout_renderer_draw_error_underline (BangoRenderer *renderer,
                                                int            x,
                                                int            y,
                                                int            width,
                                                int            height)
 {
-  GtkFillLayoutRenderer *text_renderer = GTK_FILL_LAYOUT_RENDERER (renderer);
+  BtkFillLayoutRenderer *text_renderer = BTK_FILL_LAYOUT_RENDERER (renderer);
 
-  pango_cairo_show_error_underline (text_renderer->cr,
-                                    (double)x / PANGO_SCALE, (double)y / PANGO_SCALE,
-                                    (double)width / PANGO_SCALE, (double)height / PANGO_SCALE);
+  bango_bairo_show_error_underline (text_renderer->cr,
+                                    (double)x / BANGO_SCALE, (double)y / BANGO_SCALE,
+                                    (double)width / BANGO_SCALE, (double)height / BANGO_SCALE);
 }
 
 static void
-gtk_fill_layout_renderer_draw_shape (PangoRenderer   *renderer,
-                                     PangoAttrShape  *attr,
+btk_fill_layout_renderer_draw_shape (BangoRenderer   *renderer,
+                                     BangoAttrShape  *attr,
                                      int              x,
                                      int              y)
 {
-  GtkFillLayoutRenderer *text_renderer = GTK_FILL_LAYOUT_RENDERER (renderer);
-  cairo_t *cr = text_renderer->cr;
-  PangoLayout *layout;
-  PangoCairoShapeRendererFunc shape_renderer;
+  BtkFillLayoutRenderer *text_renderer = BTK_FILL_LAYOUT_RENDERER (renderer);
+  bairo_t *cr = text_renderer->cr;
+  BangoLayout *layout;
+  BangoBairoShapeRendererFunc shape_renderer;
   gpointer                    shape_renderer_data;
 
-  layout = pango_renderer_get_layout (renderer);
+  layout = bango_renderer_get_layout (renderer);
 
   if (!layout)
   	return;
 
-  shape_renderer = pango_cairo_context_get_shape_renderer (pango_layout_get_context (layout),
+  shape_renderer = bango_bairo_context_get_shape_renderer (bango_layout_get_context (layout),
 							   &shape_renderer_data);
 
   if (!shape_renderer)
     return;
 
-  cairo_save (cr);
+  bairo_save (cr);
 
-  cairo_move_to (cr, (double)x / PANGO_SCALE, (double)y / PANGO_SCALE);
+  bairo_move_to (cr, (double)x / BANGO_SCALE, (double)y / BANGO_SCALE);
 
   shape_renderer (cr, attr, FALSE, shape_renderer_data);
 
-  cairo_restore (cr);
+  bairo_restore (cr);
 }
 
 static void
-gtk_fill_layout_renderer_finalize (GObject *object)
+btk_fill_layout_renderer_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (_gtk_fill_layout_renderer_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_fill_layout_renderer_parent_class)->finalize (object);
 }
 
 static void
-_gtk_fill_layout_renderer_init (GtkFillLayoutRenderer *renderer)
+_btk_fill_layout_renderer_init (BtkFillLayoutRenderer *renderer)
 {
 }
 
 static void
-_gtk_fill_layout_renderer_class_init (GtkFillLayoutRendererClass *klass)
+_btk_fill_layout_renderer_class_init (BtkFillLayoutRendererClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   
-  PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
+  BangoRendererClass *renderer_class = BANGO_RENDERER_CLASS (klass);
   
-  renderer_class->draw_glyphs = gtk_fill_layout_renderer_draw_glyphs;
-  renderer_class->draw_glyph_item = gtk_fill_layout_renderer_draw_glyph_item;
-  renderer_class->draw_rectangle = gtk_fill_layout_renderer_draw_rectangle;
-  renderer_class->draw_trapezoid = gtk_fill_layout_renderer_draw_trapezoid;
-  renderer_class->draw_error_underline = gtk_fill_layout_renderer_draw_error_underline;
-  renderer_class->draw_shape = gtk_fill_layout_renderer_draw_shape;
+  renderer_class->draw_glyphs = btk_fill_layout_renderer_draw_glyphs;
+  renderer_class->draw_glyph_item = btk_fill_layout_renderer_draw_glyph_item;
+  renderer_class->draw_rectangle = btk_fill_layout_renderer_draw_rectangle;
+  renderer_class->draw_trapezoid = btk_fill_layout_renderer_draw_trapezoid;
+  renderer_class->draw_error_underline = btk_fill_layout_renderer_draw_error_underline;
+  renderer_class->draw_shape = btk_fill_layout_renderer_draw_shape;
 
-  object_class->finalize = gtk_fill_layout_renderer_finalize;
+  object_class->finalize = btk_fill_layout_renderer_finalize;
 }
 
 void
-_gtk_pango_fill_layout (cairo_t     *cr,
-                        PangoLayout *layout)
+_btk_bango_fill_layout (bairo_t     *cr,
+                        BangoLayout *layout)
 {
-  static GtkFillLayoutRenderer *renderer = NULL;
+  static BtkFillLayoutRenderer *renderer = NULL;
   gboolean has_current_point;
   double current_x, current_y;
 
-  has_current_point = cairo_has_current_point (cr);
-  cairo_get_current_point (cr, &current_x, &current_y);
+  has_current_point = bairo_has_current_point (cr);
+  bairo_get_current_point (cr, &current_x, &current_y);
 
   if (renderer == NULL)
-    renderer = g_object_new (GTK_TYPE_FILL_LAYOUT_RENDERER, NULL);
+    renderer = g_object_new (BTK_TYPE_FILL_LAYOUT_RENDERER, NULL);
 
-  cairo_save (cr);
-  cairo_translate (cr, current_x, current_y);
+  bairo_save (cr);
+  bairo_translate (cr, current_x, current_y);
 
   renderer->cr = cr;
-  pango_renderer_draw_layout (PANGO_RENDERER (renderer), layout, 0, 0);
+  bango_renderer_draw_layout (BANGO_RENDERER (renderer), layout, 0, 0);
 
-  cairo_restore (cr);
+  bairo_restore (cr);
 
   if (has_current_point)
-    cairo_move_to (cr, current_x, current_y);
+    bairo_move_to (cr, current_x, current_y);
 }
 

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -20,9 +20,9 @@
 #define __TICTACTOE_H__
 
 
-#include <glib.h>
-#include <glib-object.h>
-#include <gtk/gtktable.h>
+#include <bunnylib.h>
+#include <bunnylib-object.h>
+#include <btk/btktable.h>
 
 
 G_BEGIN_DECLS
@@ -39,20 +39,20 @@ typedef struct _TictactoeClass  TictactoeClass;
 
 struct _Tictactoe
 {
-  GtkTable table;
+  BtkTable table;
   
-  GtkWidget *buttons[3][3];
+  BtkWidget *buttons[3][3];
 };
 
 struct _TictactoeClass
 {
-  GtkTableClass parent_class;
+  BtkTableClass parent_class;
 
   void (* tictactoe) (Tictactoe *ttt);
 };
 
 GType          tictactoe_get_type        (void);
-GtkWidget*     tictactoe_new             (void);
+BtkWidget*     tictactoe_new             (void);
 void	       tictactoe_clear           (Tictactoe *ttt);
 
 G_END_DECLS

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,96 +19,96 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailsubmenuitem.h"
+#include <btk/btk.h>
+#include "bailsubmenuitem.h"
 
-static void         gail_sub_menu_item_class_init       (GailSubMenuItemClass *klass);
-static void         gail_sub_menu_item_init             (GailSubMenuItem *item);
-static void         gail_sub_menu_item_real_initialize  (AtkObject      *obj,
+static void         bail_sub_menu_item_class_init       (BailSubMenuItemClass *klass);
+static void         bail_sub_menu_item_init             (BailSubMenuItem *item);
+static void         bail_sub_menu_item_real_initialize  (BatkObject      *obj,
                                                          gpointer       data);
 
-static void         atk_selection_interface_init        (AtkSelectionIface  *iface);
-static gboolean     gail_sub_menu_item_add_selection    (AtkSelection   *selection,
+static void         batk_selection_interface_init        (BatkSelectionIface  *iface);
+static gboolean     bail_sub_menu_item_add_selection    (BatkSelection   *selection,
                                                          gint           i);
-static gboolean     gail_sub_menu_item_clear_selection  (AtkSelection   *selection);
-static AtkObject*   gail_sub_menu_item_ref_selection    (AtkSelection   *selection,
+static gboolean     bail_sub_menu_item_clear_selection  (BatkSelection   *selection);
+static BatkObject*   bail_sub_menu_item_ref_selection    (BatkSelection   *selection,
                                                          gint           i);
-static gint         gail_sub_menu_item_get_selection_count
-                                                        (AtkSelection   *selection);
-static gboolean     gail_sub_menu_item_is_child_selected
-                                                        (AtkSelection   *selection,
+static gint         bail_sub_menu_item_get_selection_count
+                                                        (BatkSelection   *selection);
+static gboolean     bail_sub_menu_item_is_child_selected
+                                                        (BatkSelection   *selection,
                                                          gint           i);
-static gboolean     gail_sub_menu_item_remove_selection (AtkSelection   *selection,
+static gboolean     bail_sub_menu_item_remove_selection (BatkSelection   *selection,
                                                          gint           i);
-static gint         menu_item_add_gtk                   (GtkContainer   *container,
-                                                         GtkWidget      *widget);
-static gint         menu_item_remove_gtk                (GtkContainer   *container,
-                                                         GtkWidget      *widget);
+static gint         menu_item_add_btk                   (BtkContainer   *container,
+                                                         BtkWidget      *widget);
+static gint         menu_item_remove_btk                (BtkContainer   *container,
+                                                         BtkWidget      *widget);
 
-G_DEFINE_TYPE_WITH_CODE (GailSubMenuItem, gail_sub_menu_item, GAIL_TYPE_MENU_ITEM,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_SELECTION, atk_selection_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailSubMenuItem, bail_sub_menu_item, BAIL_TYPE_MENU_ITEM,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_SELECTION, batk_selection_interface_init))
 
 static void
-gail_sub_menu_item_class_init (GailSubMenuItemClass *klass)
+bail_sub_menu_item_class_init (BailSubMenuItemClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_sub_menu_item_real_initialize;
+  class->initialize = bail_sub_menu_item_real_initialize;
 }
 
 static void
-gail_sub_menu_item_init (GailSubMenuItem *item)
+bail_sub_menu_item_init (BailSubMenuItem *item)
 {
 }
 
 static void
-gail_sub_menu_item_real_initialize (AtkObject *obj,
+bail_sub_menu_item_real_initialize (BatkObject *obj,
                                    gpointer   data)
 {
-  GtkWidget *submenu;
+  BtkWidget *submenu;
 
-  ATK_OBJECT_CLASS (gail_sub_menu_item_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_sub_menu_item_parent_class)->initialize (obj, data);
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (data));
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (data));
   g_return_if_fail (submenu);
 
   g_signal_connect (submenu,
                     "add",
-                    G_CALLBACK (menu_item_add_gtk),
+                    G_CALLBACK (menu_item_add_btk),
                     NULL);
   g_signal_connect (submenu,
                     "remove",
-                    G_CALLBACK (menu_item_remove_gtk),
+                    G_CALLBACK (menu_item_remove_btk),
                     NULL);
 
-  obj->role = ATK_ROLE_MENU;
+  obj->role = BATK_ROLE_MENU;
 }
 
-AtkObject*
-gail_sub_menu_item_new (GtkWidget *widget)
+BatkObject*
+bail_sub_menu_item_new (BtkWidget *widget)
 {
   GObject *object;
-  AtkObject *accessible;
+  BatkObject *accessible;
 
-  g_return_val_if_fail (GTK_IS_MENU_ITEM (widget), NULL);
+  g_return_val_if_fail (BTK_IS_MENU_ITEM (widget), NULL);
 
-  object = g_object_new (GAIL_TYPE_SUB_MENU_ITEM, NULL);
+  object = g_object_new (BAIL_TYPE_SUB_MENU_ITEM, NULL);
 
-  accessible = ATK_OBJECT (object);
-  atk_object_initialize (accessible, widget);
+  accessible = BATK_OBJECT (object);
+  batk_object_initialize (accessible, widget);
 
   return accessible;
 }
 
 static void
-atk_selection_interface_init (AtkSelectionIface *iface)
+batk_selection_interface_init (BatkSelectionIface *iface)
 {
-  iface->add_selection = gail_sub_menu_item_add_selection;
-  iface->clear_selection = gail_sub_menu_item_clear_selection;
-  iface->ref_selection = gail_sub_menu_item_ref_selection;
-  iface->get_selection_count = gail_sub_menu_item_get_selection_count;
-  iface->is_child_selected = gail_sub_menu_item_is_child_selected;
-  iface->remove_selection = gail_sub_menu_item_remove_selection;
+  iface->add_selection = bail_sub_menu_item_add_selection;
+  iface->clear_selection = bail_sub_menu_item_clear_selection;
+  iface->ref_selection = bail_sub_menu_item_ref_selection;
+  iface->get_selection_count = bail_sub_menu_item_get_selection_count;
+  iface->is_child_selected = bail_sub_menu_item_is_child_selected;
+  iface->remove_selection = bail_sub_menu_item_remove_selection;
   /*
    * select_all_selection does not make sense for a submenu of a menu item
    * so no implementation is provided.
@@ -116,79 +116,79 @@ atk_selection_interface_init (AtkSelectionIface *iface)
 }
 
 static gboolean
-gail_sub_menu_item_add_selection (AtkSelection *selection,
+bail_sub_menu_item_add_selection (BatkSelection *selection,
                                   gint          i)
 {
-  GtkMenuShell *shell;
+  BtkMenuShell *shell;
   GList *item;
   guint length;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
-  widget =  GTK_ACCESSIBLE (selection)->widget;
+  widget =  BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
-  g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), FALSE);
-  shell = GTK_MENU_SHELL (submenu);
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
+  g_return_val_if_fail (BTK_IS_MENU_SHELL (submenu), FALSE);
+  shell = BTK_MENU_SHELL (submenu);
   length = g_list_length (shell->children);
   if (i < 0 || i > length)
     return FALSE;
 
   item = g_list_nth (shell->children, i);
   g_return_val_if_fail (item != NULL, FALSE);
-  g_return_val_if_fail (GTK_IS_MENU_ITEM(item->data), FALSE);
+  g_return_val_if_fail (BTK_IS_MENU_ITEM(item->data), FALSE);
    
-  gtk_menu_shell_select_item (shell, GTK_WIDGET (item->data));
+  btk_menu_shell_select_item (shell, BTK_WIDGET (item->data));
   return TRUE;
 }
 
 static gboolean
-gail_sub_menu_item_clear_selection (AtkSelection   *selection)
+bail_sub_menu_item_clear_selection (BatkSelection   *selection)
 {
-  GtkMenuShell *shell;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkMenuShell *shell;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
-  widget =  GTK_ACCESSIBLE (selection)->widget;
+  widget =  BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
-  g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), FALSE);
-  shell = GTK_MENU_SHELL (submenu);
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
+  g_return_val_if_fail (BTK_IS_MENU_SHELL (submenu), FALSE);
+  shell = BTK_MENU_SHELL (submenu);
 
-  gtk_menu_shell_deselect (shell);
+  btk_menu_shell_deselect (shell);
   return TRUE;
 }
 
-static AtkObject*
-gail_sub_menu_item_ref_selection (AtkSelection   *selection,
+static BatkObject*
+bail_sub_menu_item_ref_selection (BatkSelection   *selection,
                                   gint           i)
 {
-  GtkMenuShell *shell;
-  AtkObject *obj;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkMenuShell *shell;
+  BatkObject *obj;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
   if (i != 0)
     return NULL;
 
-  widget =  GTK_ACCESSIBLE (selection)->widget;
+  widget =  BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
-  g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), NULL);
-  shell = GTK_MENU_SHELL (submenu);
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
+  g_return_val_if_fail (BTK_IS_MENU_SHELL (submenu), NULL);
+  shell = BTK_MENU_SHELL (submenu);
   
   if (shell->active_menu_item != NULL)
     {
-      obj = gtk_widget_get_accessible (shell->active_menu_item);
+      obj = btk_widget_get_accessible (shell->active_menu_item);
       g_object_ref (obj);
       return obj;
     }
@@ -199,20 +199,20 @@ gail_sub_menu_item_ref_selection (AtkSelection   *selection,
 }
 
 static gint
-gail_sub_menu_item_get_selection_count (AtkSelection   *selection)
+bail_sub_menu_item_get_selection_count (BatkSelection   *selection)
 {
-  GtkMenuShell *shell;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkMenuShell *shell;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
-  widget =  GTK_ACCESSIBLE (selection)->widget;
+  widget =  BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
-  g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), FALSE);
-  shell = GTK_MENU_SHELL (submenu);
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
+  g_return_val_if_fail (BTK_IS_MENU_SHELL (submenu), FALSE);
+  shell = BTK_MENU_SHELL (submenu);
 
   /*
    * Identifies the currently selected menu item
@@ -224,22 +224,22 @@ gail_sub_menu_item_get_selection_count (AtkSelection   *selection)
 }
 
 static gboolean
-gail_sub_menu_item_is_child_selected (AtkSelection   *selection,
+bail_sub_menu_item_is_child_selected (BatkSelection   *selection,
                                        gint           i)
 {
-  GtkMenuShell *shell;
+  BtkMenuShell *shell;
   gint j;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
-  widget =  GTK_ACCESSIBLE (selection)->widget;
+  widget =  BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
-  g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), FALSE);
-  shell = GTK_MENU_SHELL (submenu);
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
+  g_return_val_if_fail (BTK_IS_MENU_SHELL (submenu), FALSE);
+  shell = BTK_MENU_SHELL (submenu);
 
   if (shell->active_menu_item == NULL)
     return FALSE;
@@ -250,101 +250,101 @@ gail_sub_menu_item_is_child_selected (AtkSelection   *selection,
 }
 
 static gboolean
-gail_sub_menu_item_remove_selection (AtkSelection   *selection,
+bail_sub_menu_item_remove_selection (BatkSelection   *selection,
                                   gint           i)
 {
-  GtkMenuShell *shell;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkMenuShell *shell;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
   if (i != 0)
     return FALSE;
 
-  widget =  GTK_ACCESSIBLE (selection)->widget;
+  widget =  BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
-  g_return_val_if_fail (GTK_IS_MENU_SHELL (submenu), FALSE);
-  shell = GTK_MENU_SHELL (submenu);
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
+  g_return_val_if_fail (BTK_IS_MENU_SHELL (submenu), FALSE);
+  shell = BTK_MENU_SHELL (submenu);
 
   if (shell->active_menu_item && 
-      GTK_MENU_ITEM (shell->active_menu_item)->submenu)
+      BTK_MENU_ITEM (shell->active_menu_item)->submenu)
     {
     /*
      * Menu item contains a menu and it is the selected menu item
      * so deselect it.
      */
-      gtk_menu_shell_deselect (shell);
+      btk_menu_shell_deselect (shell);
     }
   return TRUE;
 }
 
 static gint
-menu_item_add_gtk (GtkContainer *container,
-                   GtkWidget	*widget)
+menu_item_add_btk (BtkContainer *container,
+                   BtkWidget	*widget)
 {
-  GtkWidget *parent_widget;
-  AtkObject *atk_parent;
-  AtkObject *atk_child;
-  GailContainer *gail_container;
+  BtkWidget *parent_widget;
+  BatkObject *batk_parent;
+  BatkObject *batk_child;
+  BailContainer *bail_container;
   gint index;
 
-  g_return_val_if_fail (GTK_IS_MENU (container), 1);
+  g_return_val_if_fail (BTK_IS_MENU (container), 1);
 
-  parent_widget = gtk_menu_get_attach_widget (GTK_MENU (container));
-  if (GTK_IS_MENU_ITEM (parent_widget))
+  parent_widget = btk_menu_get_attach_widget (BTK_MENU (container));
+  if (BTK_IS_MENU_ITEM (parent_widget))
     {
-      atk_parent = gtk_widget_get_accessible (parent_widget);
-      atk_child = gtk_widget_get_accessible (widget);
+      batk_parent = btk_widget_get_accessible (parent_widget);
+      batk_child = btk_widget_get_accessible (widget);
 
-      gail_container = GAIL_CONTAINER (atk_parent);
-      g_object_notify (G_OBJECT (atk_child), "accessible_parent");
+      bail_container = BAIL_CONTAINER (batk_parent);
+      g_object_notify (G_OBJECT (batk_child), "accessible_parent");
 
-      g_list_free (gail_container->children);
-      gail_container->children = gtk_container_get_children (container);
-      index = g_list_index (gail_container->children, widget);
-      g_signal_emit_by_name (atk_parent, "children_changed::add",
-                             index, atk_child, NULL);
+      g_list_free (bail_container->children);
+      bail_container->children = btk_container_get_children (container);
+      index = g_list_index (bail_container->children, widget);
+      g_signal_emit_by_name (batk_parent, "children_changed::add",
+                             index, batk_child, NULL);
     }
   return 1;
 }
 
 static gint
-menu_item_remove_gtk (GtkContainer *container,
-                      GtkWidget	   *widget)
+menu_item_remove_btk (BtkContainer *container,
+                      BtkWidget	   *widget)
 {
-  GtkWidget *parent_widget;
-  AtkObject *atk_parent;
-  AtkObject *atk_child;
-  GailContainer *gail_container;
-  AtkPropertyValues values = { NULL };
+  BtkWidget *parent_widget;
+  BatkObject *batk_parent;
+  BatkObject *batk_child;
+  BailContainer *bail_container;
+  BatkPropertyValues values = { NULL };
   gint index;
   gint list_length;
 
-  g_return_val_if_fail (GTK_IS_MENU (container), 1);
+  g_return_val_if_fail (BTK_IS_MENU (container), 1);
 
-  parent_widget = gtk_menu_get_attach_widget (GTK_MENU (container));
-  if (GTK_IS_MENU_ITEM (parent_widget))
+  parent_widget = btk_menu_get_attach_widget (BTK_MENU (container));
+  if (BTK_IS_MENU_ITEM (parent_widget))
     {
-      atk_parent = gtk_widget_get_accessible (parent_widget);
-      atk_child = gtk_widget_get_accessible (widget);
+      batk_parent = btk_widget_get_accessible (parent_widget);
+      batk_child = btk_widget_get_accessible (widget);
 
-      gail_container = GAIL_CONTAINER (atk_parent);
+      bail_container = BAIL_CONTAINER (batk_parent);
       g_value_init (&values.old_value, G_TYPE_POINTER);
-      g_value_set_pointer (&values.old_value, atk_parent);
+      g_value_set_pointer (&values.old_value, batk_parent);
       values.property_name = "accessible-parent";
-      g_signal_emit_by_name (atk_child,
+      g_signal_emit_by_name (batk_child,
                              "property_change::accessible-parent", &values, NULL);
 
-      index = g_list_index (gail_container->children, widget);
-      list_length = g_list_length (gail_container->children);
-      g_list_free (gail_container->children);
-      gail_container->children = gtk_container_get_children (container);
+      index = g_list_index (bail_container->children, widget);
+      list_length = g_list_length (bail_container->children);
+      g_list_free (bail_container->children);
+      bail_container->children = btk_container_get_children (container);
       if (index >= 0 && index <= list_length)
-        g_signal_emit_by_name (atk_parent, "children_changed::remove",
-                               index, atk_child, NULL);
+        g_signal_emit_by_name (batk_parent, "children_changed::remove",
+                               index, batk_child, NULL);
     }
   return 1;
 }

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_MENU_H__
-#define __GAIL_MENU_H__
+#ifndef __BAIL_MENU_H__
+#define __BAIL_MENU_H__
 
-#include <gail/gailmenushell.h>
+#include <bail/bailmenushell.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_MENU                          (gail_menu_get_type ())
-#define GAIL_MENU(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_MENU_SHELL, GailMenu))
-#define GAIL_MENU_CLASS(klass)                  (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_MENU, GailMenuClass))
-#define GAIL_IS_MENU(obj)                       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_MENU))
-#define GAIL_IS_MENU_CLASS(klass)               (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_MENU))
-#define GAIL_MENU_GET_CLASS(obj)                (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_MENU, GailMenuClass))
+#define BAIL_TYPE_MENU                          (bail_menu_get_type ())
+#define BAIL_MENU(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_SHELL, BailMenu))
+#define BAIL_MENU_CLASS(klass)                  (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU, BailMenuClass))
+#define BAIL_IS_MENU(obj)                       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU))
+#define BAIL_IS_MENU_CLASS(klass)               (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU))
+#define BAIL_MENU_GET_CLASS(obj)                (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU, BailMenuClass))
 
-typedef struct _GailMenu                   GailMenu;
-typedef struct _GailMenuClass              GailMenuClass;
+typedef struct _BailMenu                   BailMenu;
+typedef struct _BailMenuClass              BailMenuClass;
 
-struct _GailMenu
+struct _BailMenu
 {
-  GailMenuShell parent;
+  BailMenuShell parent;
 };
 
-GType gail_menu_get_type (void);
+GType bail_menu_get_type (void);
 
-struct _GailMenuClass
+struct _BailMenuClass
 {
-  GailMenuShellClass parent_class;
+  BailMenuShellClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_MENU_H__ */
+#endif /* __BAIL_MENU_H__ */

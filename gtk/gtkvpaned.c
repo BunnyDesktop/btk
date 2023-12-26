@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,55 +18,55 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkorientable.h"
-#include "gtkvpaned.h"
-#include "gtkalias.h"
+#include "btkorientable.h"
+#include "btkvpaned.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkvpaned
+ * SECTION:btkvpaned
  * @Short_description: A container with two panes arranged vertically
- * @Title: GtkVPaned
+ * @Title: BtkVPaned
  *
  * The VPaned widget is a container widget with two
  * children arranged vertically. The division between
  * the two panes is adjustable by the user by dragging
- * a handle. See #GtkPaned for details.
+ * a handle. See #BtkPaned for details.
  */
 
-G_DEFINE_TYPE (GtkVPaned, gtk_vpaned, GTK_TYPE_PANED)
+G_DEFINE_TYPE (BtkVPaned, btk_vpaned, BTK_TYPE_PANED)
 
 static void
-gtk_vpaned_class_init (GtkVPanedClass *class)
+btk_vpaned_class_init (BtkVPanedClass *class)
 {
 }
 
 static void
-gtk_vpaned_init (GtkVPaned *vpaned)
+btk_vpaned_init (BtkVPaned *vpaned)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (vpaned),
-                                  GTK_ORIENTATION_VERTICAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (vpaned),
+                                  BTK_ORIENTATION_VERTICAL);
 }
 
 /**
- * gtk_vpaned_new:
+ * btk_vpaned_new:
  *
- * Create a new #GtkVPaned
+ * Create a new #BtkVPaned
  *
- * Returns: the new #GtkVPaned
+ * Returns: the new #BtkVPaned
  */
-GtkWidget *
-gtk_vpaned_new (void)
+BtkWidget *
+btk_vpaned_new (void)
 {
-  return g_object_new (GTK_TYPE_VPANED, NULL);
+  return g_object_new (BTK_TYPE_VPANED, NULL);
 }
 
-#define __GTK_VPANED_C__
-#include "gtkaliasdef.c"
+#define __BTK_VPANED_C__
+#include "btkaliasdef.c"

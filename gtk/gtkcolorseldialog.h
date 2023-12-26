@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,65 +18,65 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_COLOR_SELECTION_DIALOG_H__
-#define __GTK_COLOR_SELECTION_DIALOG_H__
+#ifndef __BTK_COLOR_SELECTION_DIALOG_H__
+#define __BTK_COLOR_SELECTION_DIALOG_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkcolorsel.h>
-#include <gtk/gtkvbox.h>
+#include <btk/btkdialog.h>
+#include <btk/btkcolorsel.h>
+#include <btk/btkvbox.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_COLOR_SELECTION_DIALOG            (gtk_color_selection_dialog_get_type ())
-#define GTK_COLOR_SELECTION_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_COLOR_SELECTION_DIALOG, GtkColorSelectionDialog))
-#define GTK_COLOR_SELECTION_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_COLOR_SELECTION_DIALOG, GtkColorSelectionDialogClass))
-#define GTK_IS_COLOR_SELECTION_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_COLOR_SELECTION_DIALOG))
-#define GTK_IS_COLOR_SELECTION_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_COLOR_SELECTION_DIALOG))
-#define GTK_COLOR_SELECTION_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_COLOR_SELECTION_DIALOG, GtkColorSelectionDialogClass))
+#define BTK_TYPE_COLOR_SELECTION_DIALOG            (btk_color_selection_dialog_get_type ())
+#define BTK_COLOR_SELECTION_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialog))
+#define BTK_COLOR_SELECTION_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialogClass))
+#define BTK_IS_COLOR_SELECTION_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG))
+#define BTK_IS_COLOR_SELECTION_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_SELECTION_DIALOG))
+#define BTK_COLOR_SELECTION_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialogClass))
 
 
-typedef struct _GtkColorSelectionDialog       GtkColorSelectionDialog;
-typedef struct _GtkColorSelectionDialogClass  GtkColorSelectionDialogClass;
+typedef struct _BtkColorSelectionDialog       BtkColorSelectionDialog;
+typedef struct _BtkColorSelectionDialogClass  BtkColorSelectionDialogClass;
 
 
-struct _GtkColorSelectionDialog
+struct _BtkColorSelectionDialog
 {
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
-  GtkWidget *GSEAL (colorsel);
-  GtkWidget *GSEAL (ok_button);
-  GtkWidget *GSEAL (cancel_button);
-  GtkWidget *GSEAL (help_button);
+  BtkWidget *GSEAL (colorsel);
+  BtkWidget *GSEAL (ok_button);
+  BtkWidget *GSEAL (cancel_button);
+  BtkWidget *GSEAL (help_button);
 };
 
-struct _GtkColorSelectionDialogClass
+struct _BtkColorSelectionDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
 /* ColorSelectionDialog */
-GType      gtk_color_selection_dialog_get_type            (void) G_GNUC_CONST;
-GtkWidget* gtk_color_selection_dialog_new                 (const gchar *title);
-GtkWidget* gtk_color_selection_dialog_get_color_selection (GtkColorSelectionDialog *colorsel);
+GType      btk_color_selection_dialog_get_type            (void) G_GNUC_CONST;
+BtkWidget* btk_color_selection_dialog_new                 (const gchar *title);
+BtkWidget* btk_color_selection_dialog_get_color_selection (BtkColorSelectionDialog *colorsel);
 
 
 G_END_DECLS
 
-#endif /* __GTK_COLOR_SELECTION_DIALOG_H__ */
+#endif /* __BTK_COLOR_SELECTION_DIALOG_H__ */

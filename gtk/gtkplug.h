@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,89 +17,89 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_PLUG_H__
-#define __GTK_PLUG_H__
+#ifndef __BTK_PLUG_H__
+#define __BTK_PLUG_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtksocket.h>
-#include <gtk/gtkwindow.h>
+#include <btk/btksocket.h>
+#include <btk/btkwindow.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PLUG            (gtk_plug_get_type ())
-#define GTK_PLUG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PLUG, GtkPlug))
-#define GTK_PLUG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PLUG, GtkPlugClass))
-#define GTK_IS_PLUG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PLUG))
-#define GTK_IS_PLUG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PLUG))
-#define GTK_PLUG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PLUG, GtkPlugClass))
+#define BTK_TYPE_PLUG            (btk_plug_get_type ())
+#define BTK_PLUG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PLUG, BtkPlug))
+#define BTK_PLUG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PLUG, BtkPlugClass))
+#define BTK_IS_PLUG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PLUG))
+#define BTK_IS_PLUG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PLUG))
+#define BTK_PLUG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PLUG, BtkPlugClass))
 
 
-typedef struct _GtkPlug        GtkPlug;
-typedef struct _GtkPlugClass   GtkPlugClass;
+typedef struct _BtkPlug        BtkPlug;
+typedef struct _BtkPlugClass   BtkPlugClass;
 
 
-struct _GtkPlug
+struct _BtkPlug
 {
-  GtkWindow window;
+  BtkWindow window;
 
-  GdkWindow *GSEAL (socket_window);
-  GtkWidget *GSEAL (modality_window);
-  GtkWindowGroup *GSEAL (modality_group);
+  BdkWindow *GSEAL (socket_window);
+  BtkWidget *GSEAL (modality_window);
+  BtkWindowGroup *GSEAL (modality_group);
   GHashTable *GSEAL (grabbed_keys);
 
   guint GSEAL (same_app) : 1;
 };
 
-struct _GtkPlugClass
+struct _BtkPlugClass
 {
-  GtkWindowClass parent_class;
+  BtkWindowClass parent_class;
 
-  void (*embedded) (GtkPlug *plug);
+  void (*embedded) (BtkPlug *plug);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_plug_get_type  (void) G_GNUC_CONST;
+GType      btk_plug_get_type  (void) G_GNUC_CONST;
 
-#ifndef GDK_MULTIHEAD_SAFE
-void       gtk_plug_construct (GtkPlug         *plug,
-			       GdkNativeWindow  socket_id);
-GtkWidget* gtk_plug_new       (GdkNativeWindow  socket_id);
+#ifndef BDK_MULTIHEAD_SAFE
+void       btk_plug_construct (BtkPlug         *plug,
+			       BdkNativeWindow  socket_id);
+BtkWidget* btk_plug_new       (BdkNativeWindow  socket_id);
 #endif
 
-void       gtk_plug_construct_for_display (GtkPlug         *plug,
-					   GdkDisplay      *display,
-					   GdkNativeWindow  socket_id);
-GtkWidget* gtk_plug_new_for_display       (GdkDisplay      *display,
-					   GdkNativeWindow  socket_id);
+void       btk_plug_construct_for_display (BtkPlug         *plug,
+					   BdkDisplay      *display,
+					   BdkNativeWindow  socket_id);
+BtkWidget* btk_plug_new_for_display       (BdkDisplay      *display,
+					   BdkNativeWindow  socket_id);
 
-GdkNativeWindow gtk_plug_get_id (GtkPlug         *plug);
+BdkNativeWindow btk_plug_get_id (BtkPlug         *plug);
 
-gboolean  gtk_plug_get_embedded (GtkPlug         *plug);
+gboolean  btk_plug_get_embedded (BtkPlug         *plug);
 
-GdkWindow *gtk_plug_get_socket_window (GtkPlug   *plug);
+BdkWindow *btk_plug_get_socket_window (BtkPlug   *plug);
 
-void _gtk_plug_add_to_socket      (GtkPlug   *plug,
-				   GtkSocket *socket_);
-void _gtk_plug_remove_from_socket (GtkPlug   *plug,
-				   GtkSocket *socket_);
+void _btk_plug_add_to_socket      (BtkPlug   *plug,
+				   BtkSocket *socket_);
+void _btk_plug_remove_from_socket (BtkPlug   *plug,
+				   BtkSocket *socket_);
 
 G_END_DECLS
 
-#endif /* __GTK_PLUG_H__ */
+#endif /* __BTK_PLUG_H__ */

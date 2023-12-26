@@ -1,4 +1,4 @@
-/* gdkselection-quartz.c
+/* bdkselection-quartz.c
  *
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
@@ -22,14 +22,14 @@
 
 #include "config.h"
 
-#include "gdkselection.h"
-#include "gdkproperty.h"
-#include "gdkquartz.h"
+#include "bdkselection.h"
+#include "bdkproperty.h"
+#include "bdkquartz.h"
 
 gboolean
-gdk_selection_owner_set_for_display (GdkDisplay *display,
-				     GdkWindow  *owner,
-				     GdkAtom     selection,
+bdk_selection_owner_set_for_display (BdkDisplay *display,
+				     BdkWindow  *owner,
+				     BdkAtom     selection,
 				     guint32     time,
 				     gint        send_event)
 {
@@ -37,27 +37,27 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
   return TRUE;
 }
 
-GdkWindow*
-gdk_selection_owner_get_for_display (GdkDisplay *display,
-				     GdkAtom     selection)
+BdkWindow*
+bdk_selection_owner_get_for_display (BdkDisplay *display,
+				     BdkAtom     selection)
 {
   /* FIXME: Implement */
   return NULL;
 }
 
 void
-gdk_selection_convert (GdkWindow *requestor,
-		       GdkAtom    selection,
-		       GdkAtom    target,
+bdk_selection_convert (BdkWindow *requestor,
+		       BdkAtom    selection,
+		       BdkAtom    target,
 		       guint32    time)
 {
   /* FIXME: Implement */
 }
 
 gint
-gdk_selection_property_get (GdkWindow  *requestor,
+bdk_selection_property_get (BdkWindow  *requestor,
 			    guchar    **data,
-			    GdkAtom    *ret_type,
+			    BdkAtom    *ret_type,
 			    gint       *ret_format)
 {
   /* FIXME: Implement */
@@ -65,19 +65,19 @@ gdk_selection_property_get (GdkWindow  *requestor,
 }
 
 void
-gdk_selection_send_notify_for_display (GdkDisplay      *display,
-				       GdkNativeWindow  requestor,
-				       GdkAtom          selection,
-				       GdkAtom          target,
-				       GdkAtom          property,
+bdk_selection_send_notify_for_display (BdkDisplay      *display,
+				       BdkNativeWindow  requestor,
+				       BdkAtom          selection,
+				       BdkAtom          target,
+				       BdkAtom          property,
 				       guint32          time)
 {
   /* FIXME: Implement */
 }
 
 gint
-gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
-					    GdkAtom       encoding,
+bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
+					    BdkAtom       encoding,
 					    gint          format, 
 					    const guchar *text,
 					    gint          length,
@@ -88,9 +88,9 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 }
 
 gint
-gdk_string_to_compound_text_for_display (GdkDisplay  *display,
+bdk_string_to_compound_text_for_display (BdkDisplay  *display,
 					 const gchar *str,
-					 GdkAtom     *encoding,
+					 BdkAtom     *encoding,
 					 gint        *format,
 					 guchar     **ctext,
 					 gint        *length)
@@ -99,22 +99,22 @@ gdk_string_to_compound_text_for_display (GdkDisplay  *display,
   return 0;
 }
 
-void gdk_free_compound_text (guchar *ctext)
+void bdk_free_compound_text (guchar *ctext)
 {
   /* FIXME: Implement */
 }
 
 gchar *
-gdk_utf8_to_string_target (const gchar *str)
+bdk_utf8_to_string_target (const gchar *str)
 {
   /* FIXME: Implement */
   return NULL;
 }
 
 gboolean
-gdk_utf8_to_compound_text_for_display (GdkDisplay  *display,
+bdk_utf8_to_compound_text_for_display (BdkDisplay  *display,
 				       const gchar *str,
-				       GdkAtom     *encoding,
+				       BdkAtom     *encoding,
 				       gint        *format,
 				       guchar     **ctext,
 				       gint        *length)
@@ -124,7 +124,7 @@ gdk_utf8_to_compound_text_for_display (GdkDisplay  *display,
 }
 
 void
-gdk_free_text_list (gchar **list)
+bdk_free_text_list (gchar **list)
 {
   g_return_if_fail (list != NULL);
 
@@ -200,8 +200,8 @@ make_list (const gchar  *text,
 }
 
 gint 
-gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
-					    GdkAtom        encoding,
+bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
+					    BdkAtom        encoding,
 					    gint           format,
 					    const guchar  *text,
 					    gint           length,
@@ -210,19 +210,19 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
 
-  if (encoding == GDK_TARGET_STRING)
+  if (encoding == BDK_TARGET_STRING)
     {
       return make_list ((gchar *)text, length, TRUE, list);
     }
-  else if (encoding == gdk_atom_intern_static_string ("UTF8_STRING"))
+  else if (encoding == bdk_atom_intern_static_string ("UTF8_STRING"))
     {
       return make_list ((gchar *)text, length, FALSE, list);
     }
   else
     {
-      gchar *enc_name = gdk_atom_name (encoding);
+      gchar *enc_name = bdk_atom_name (encoding);
 
-      g_warning ("gdk_text_property_to_utf8_list_for_display: encoding %s not handled\n", enc_name);
+      g_warning ("bdk_text_property_to_utf8_list_for_display: encoding %s not handled\n", enc_name);
       g_free (enc_name);
 
       if (list)
@@ -232,23 +232,23 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
     }
 }
 
-GdkAtom
-gdk_quartz_pasteboard_type_to_atom_libgtk_only (NSString *type)
+BdkAtom
+bdk_quartz_pasteboard_type_to_atom_libbtk_only (NSString *type)
 {
   if ([type isEqualToString:NSStringPboardType])
-    return gdk_atom_intern_static_string ("UTF8_STRING");
+    return bdk_atom_intern_static_string ("UTF8_STRING");
   else if ([type isEqualToString:NSTIFFPboardType])
-    return gdk_atom_intern_static_string ("image/tiff");
+    return bdk_atom_intern_static_string ("image/tiff");
   else if ([type isEqualToString:NSColorPboardType])
-    return gdk_atom_intern_static_string ("application/x-color");
+    return bdk_atom_intern_static_string ("application/x-color");
   else if ([type isEqualToString:NSURLPboardType])
-    return gdk_atom_intern_static_string ("text/uri-list");
+    return bdk_atom_intern_static_string ("text/uri-list");
   else
-    return gdk_atom_intern ([type UTF8String], FALSE);
+    return bdk_atom_intern ([type UTF8String], FALSE);
 }
 
 NSString *
-gdk_quartz_target_to_pasteboard_type_libgtk_only (const char *target)
+bdk_quartz_target_to_pasteboard_type_libbtk_only (const char *target)
 {
   if (strcmp (target, "UTF8_STRING") == 0)
     return NSStringPboardType;
@@ -263,10 +263,10 @@ gdk_quartz_target_to_pasteboard_type_libgtk_only (const char *target)
 }
 
 NSString *
-gdk_quartz_atom_to_pasteboard_type_libgtk_only (GdkAtom atom)
+bdk_quartz_atom_to_pasteboard_type_libbtk_only (BdkAtom atom)
 {
-  gchar *target = gdk_atom_name (atom);
-  NSString *ret = gdk_quartz_target_to_pasteboard_type_libgtk_only (target);
+  gchar *target = bdk_atom_name (atom);
+  NSString *ret = bdk_quartz_target_to_pasteboard_type_libbtk_only (target);
   g_free (target);
 
   return ret;

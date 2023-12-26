@@ -1,4 +1,4 @@
-/* gtkcellrendererpixbuf.c
+/* btkcellrendererpixbuf.c
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,38 +19,38 @@
 
 #include "config.h"
 #include <stdlib.h>
-#include "gtkcellrendererpixbuf.h"
-#include "gtkiconfactory.h"
-#include "gtkicontheme.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkcellrendererpixbuf.h"
+#include "btkiconfactory.h"
+#include "btkicontheme.h"
+#include "btkintl.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
-static void gtk_cell_renderer_pixbuf_get_property  (GObject                    *object,
+static void btk_cell_renderer_pixbuf_get_property  (GObject                    *object,
 						    guint                       param_id,
 						    GValue                     *value,
 						    GParamSpec                 *pspec);
-static void gtk_cell_renderer_pixbuf_set_property  (GObject                    *object,
+static void btk_cell_renderer_pixbuf_set_property  (GObject                    *object,
 						    guint                       param_id,
 						    const GValue               *value,
 						    GParamSpec                 *pspec);
-static void gtk_cell_renderer_pixbuf_finalize   (GObject                    *object);
-static void gtk_cell_renderer_pixbuf_create_stock_pixbuf (GtkCellRendererPixbuf *cellpixbuf,
-							  GtkWidget             *widget);
-static void gtk_cell_renderer_pixbuf_get_size   (GtkCellRenderer            *cell,
-						 GtkWidget                  *widget,
-						 GdkRectangle               *rectangle,
+static void btk_cell_renderer_pixbuf_finalize   (GObject                    *object);
+static void btk_cell_renderer_pixbuf_create_stock_pixbuf (BtkCellRendererPixbuf *cellpixbuf,
+							  BtkWidget             *widget);
+static void btk_cell_renderer_pixbuf_get_size   (BtkCellRenderer            *cell,
+						 BtkWidget                  *widget,
+						 BdkRectangle               *rectangle,
 						 gint                       *x_offset,
 						 gint                       *y_offset,
 						 gint                       *width,
 						 gint                       *height);
-static void gtk_cell_renderer_pixbuf_render     (GtkCellRenderer            *cell,
-						 GdkDrawable                *window,
-						 GtkWidget                  *widget,
-						 GdkRectangle               *background_area,
-						 GdkRectangle               *cell_area,
-						 GdkRectangle               *expose_area,
-						 GtkCellRendererState        flags);
+static void btk_cell_renderer_pixbuf_render     (BtkCellRenderer            *cell,
+						 BdkDrawable                *window,
+						 BtkWidget                  *widget,
+						 BdkRectangle               *background_area,
+						 BdkRectangle               *cell_area,
+						 BdkRectangle               *expose_area,
+						 BtkCellRendererState        flags);
 
 
 enum {
@@ -67,67 +67,67 @@ enum {
 };
 
 
-#define GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_CELL_RENDERER_PIXBUF, GtkCellRendererPixbufPrivate))
+#define BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_PIXBUF, BtkCellRendererPixbufPrivate))
 
-typedef struct _GtkCellRendererPixbufPrivate GtkCellRendererPixbufPrivate;
-struct _GtkCellRendererPixbufPrivate
+typedef struct _BtkCellRendererPixbufPrivate BtkCellRendererPixbufPrivate;
+struct _BtkCellRendererPixbufPrivate
 {
   gchar *stock_id;
-  GtkIconSize stock_size;
+  BtkIconSize stock_size;
   gchar *stock_detail;
   gboolean follow_state;
   gchar *icon_name;
   GIcon *gicon;
 };
 
-G_DEFINE_TYPE (GtkCellRendererPixbuf, gtk_cell_renderer_pixbuf, GTK_TYPE_CELL_RENDERER)
+G_DEFINE_TYPE (BtkCellRendererPixbuf, btk_cell_renderer_pixbuf, BTK_TYPE_CELL_RENDERER)
 
 static void
-gtk_cell_renderer_pixbuf_init (GtkCellRendererPixbuf *cellpixbuf)
+btk_cell_renderer_pixbuf_init (BtkCellRendererPixbuf *cellpixbuf)
 {
-  GtkCellRendererPixbufPrivate *priv;
+  BtkCellRendererPixbufPrivate *priv;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
-  priv->stock_size = GTK_ICON_SIZE_MENU;
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
+  priv->stock_size = BTK_ICON_SIZE_MENU;
 }
 
 static void
-gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
+btk_cell_renderer_pixbuf_class_init (BtkCellRendererPixbufClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
-  GtkCellRendererClass *cell_class = GTK_CELL_RENDERER_CLASS (class);
+  BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (class);
 
-  object_class->finalize = gtk_cell_renderer_pixbuf_finalize;
+  object_class->finalize = btk_cell_renderer_pixbuf_finalize;
 
-  object_class->get_property = gtk_cell_renderer_pixbuf_get_property;
-  object_class->set_property = gtk_cell_renderer_pixbuf_set_property;
+  object_class->get_property = btk_cell_renderer_pixbuf_get_property;
+  object_class->set_property = btk_cell_renderer_pixbuf_set_property;
 
-  cell_class->get_size = gtk_cell_renderer_pixbuf_get_size;
-  cell_class->render = gtk_cell_renderer_pixbuf_render;
+  cell_class->get_size = btk_cell_renderer_pixbuf_get_size;
+  cell_class->render = btk_cell_renderer_pixbuf_render;
 
   g_object_class_install_property (object_class,
 				   PROP_PIXBUF,
 				   g_param_spec_object ("pixbuf",
 							P_("Pixbuf Object"),
 							P_("The pixbuf to render"),
-							GDK_TYPE_PIXBUF,
-							GTK_PARAM_READWRITE));
+							BDK_TYPE_PIXBUF,
+							BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_PIXBUF_EXPANDER_OPEN,
 				   g_param_spec_object ("pixbuf-expander-open",
 							P_("Pixbuf Expander Open"),
 							P_("Pixbuf for open expander"),
-							GDK_TYPE_PIXBUF,
-							GTK_PARAM_READWRITE));
+							BDK_TYPE_PIXBUF,
+							BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_PIXBUF_EXPANDER_CLOSED,
 				   g_param_spec_object ("pixbuf-expander-closed",
 							P_("Pixbuf Expander Closed"),
 							P_("Pixbuf for closed expander"),
-							GDK_TYPE_PIXBUF,
-							GTK_PARAM_READWRITE));
+							BDK_TYPE_PIXBUF,
+							BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_STOCK_ID,
@@ -135,17 +135,17 @@ gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
 							P_("Stock ID"),
 							P_("The stock ID of the stock icon to render"),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_STOCK_SIZE,
 				   g_param_spec_uint ("stock-size",
 						      P_("Size"),
-						      P_("The GtkIconSize value that specifies the size of the rendered icon"),
+						      P_("The BtkIconSize value that specifies the size of the rendered icon"),
 						      0,
 						      G_MAXUINT,
-						      GTK_ICON_SIZE_MENU,
-						      GTK_PARAM_READWRITE));
+						      BTK_ICON_SIZE_MENU,
+						      BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_STOCK_DETAIL,
@@ -153,11 +153,11 @@ gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
 							P_("Detail"),
 							P_("Render detail to pass to the theme engine"),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
   
   /**
-   * GtkCellRendererPixbuf:icon-name:
+   * BtkCellRendererPixbuf:icon-name:
    *
    * The name of the themed icon to display.
    * This property only has an effect if not overridden by "stock_id" 
@@ -171,13 +171,13 @@ gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
 							P_("Icon Name"),
 							P_("The name of the icon from the icon theme"),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
   /**
-   * GtkCellRendererPixbuf:follow-state:
+   * BtkCellRendererPixbuf:follow-state:
    *
    * Specifies whether the rendered pixbuf should be colorized
-   * according to the #GtkCellRendererState.
+   * according to the #BtkCellRendererState.
    *
    * Since: 2.8
    */
@@ -188,10 +188,10 @@ gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
  							 P_("Whether the rendered pixbuf should be "
 							    "colorized according to the state"),
  							 FALSE,
- 							 GTK_PARAM_READWRITE));
+ 							 BTK_PARAM_READWRITE));
 
   /**
-   * GtkCellRendererPixbuf:gicon:
+   * BtkCellRendererPixbuf:gicon:
    *
    * The GIcon representing the icon to display.
    * If the icon theme is changed, the image will be updated
@@ -205,20 +205,20 @@ gtk_cell_renderer_pixbuf_class_init (GtkCellRendererPixbufClass *class)
                                                         P_("Icon"),
                                                         P_("The GIcon being displayed"),
                                                         G_TYPE_ICON,
-                                                        GTK_PARAM_READWRITE));
+                                                        BTK_PARAM_READWRITE));
 
 
 
-  g_type_class_add_private (object_class, sizeof (GtkCellRendererPixbufPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkCellRendererPixbufPrivate));
 }
 
 static void
-gtk_cell_renderer_pixbuf_finalize (GObject *object)
+btk_cell_renderer_pixbuf_finalize (GObject *object)
 {
-  GtkCellRendererPixbuf *cellpixbuf = GTK_CELL_RENDERER_PIXBUF (object);
-  GtkCellRendererPixbufPrivate *priv;
+  BtkCellRendererPixbuf *cellpixbuf = BTK_CELL_RENDERER_PIXBUF (object);
+  BtkCellRendererPixbufPrivate *priv;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
   
   if (cellpixbuf->pixbuf)
     g_object_unref (cellpixbuf->pixbuf);
@@ -234,19 +234,19 @@ gtk_cell_renderer_pixbuf_finalize (GObject *object)
   if (priv->gicon)
     g_object_unref (priv->gicon);
 
-  G_OBJECT_CLASS (gtk_cell_renderer_pixbuf_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_cell_renderer_pixbuf_parent_class)->finalize (object);
 }
 
 static void
-gtk_cell_renderer_pixbuf_get_property (GObject        *object,
+btk_cell_renderer_pixbuf_get_property (GObject        *object,
 				       guint           param_id,
 				       GValue         *value,
 				       GParamSpec     *pspec)
 {
-  GtkCellRendererPixbuf *cellpixbuf = GTK_CELL_RENDERER_PIXBUF (object);
-  GtkCellRendererPixbufPrivate *priv;
+  BtkCellRendererPixbuf *cellpixbuf = BTK_CELL_RENDERER_PIXBUF (object);
+  BtkCellRendererPixbufPrivate *priv;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
   
   switch (param_id)
     {
@@ -284,22 +284,22 @@ gtk_cell_renderer_pixbuf_get_property (GObject        *object,
 }
 
 static void
-gtk_cell_renderer_pixbuf_set_property (GObject      *object,
+btk_cell_renderer_pixbuf_set_property (GObject      *object,
 				       guint         param_id,
 				       const GValue *value,
 				       GParamSpec   *pspec)
 {
-  GtkCellRendererPixbuf *cellpixbuf = GTK_CELL_RENDERER_PIXBUF (object);
-  GtkCellRendererPixbufPrivate *priv;
+  BtkCellRendererPixbuf *cellpixbuf = BTK_CELL_RENDERER_PIXBUF (object);
+  BtkCellRendererPixbufPrivate *priv;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (object);
   
   switch (param_id)
     {
     case PROP_PIXBUF:
       if (cellpixbuf->pixbuf)
 	g_object_unref (cellpixbuf->pixbuf);
-      cellpixbuf->pixbuf = (GdkPixbuf*) g_value_dup_object (value);
+      cellpixbuf->pixbuf = (BdkPixbuf*) g_value_dup_object (value);
       if (cellpixbuf->pixbuf)
         {
           if (priv->stock_id)
@@ -325,12 +325,12 @@ gtk_cell_renderer_pixbuf_set_property (GObject      *object,
     case PROP_PIXBUF_EXPANDER_OPEN:
       if (cellpixbuf->pixbuf_expander_open)
 	g_object_unref (cellpixbuf->pixbuf_expander_open);
-      cellpixbuf->pixbuf_expander_open = (GdkPixbuf*) g_value_dup_object (value);
+      cellpixbuf->pixbuf_expander_open = (BdkPixbuf*) g_value_dup_object (value);
       break;
     case PROP_PIXBUF_EXPANDER_CLOSED:
       if (cellpixbuf->pixbuf_expander_closed)
 	g_object_unref (cellpixbuf->pixbuf_expander_closed);
-      cellpixbuf->pixbuf_expander_closed = (GdkPixbuf*) g_value_dup_object (value);
+      cellpixbuf->pixbuf_expander_closed = (BdkPixbuf*) g_value_dup_object (value);
       break;
     case PROP_STOCK_ID:
       if (priv->stock_id)
@@ -451,36 +451,36 @@ gtk_cell_renderer_pixbuf_set_property (GObject      *object,
 }
 
 /**
- * gtk_cell_renderer_pixbuf_new:
+ * btk_cell_renderer_pixbuf_new:
  * 
- * Creates a new #GtkCellRendererPixbuf. Adjust rendering
+ * Creates a new #BtkCellRendererPixbuf. Adjust rendering
  * parameters using object properties. Object properties can be set
- * globally (with g_object_set()). Also, with #GtkTreeViewColumn, you
- * can bind a property to a value in a #GtkTreeModel. For example, you
+ * globally (with g_object_set()). Also, with #BtkTreeViewColumn, you
+ * can bind a property to a value in a #BtkTreeModel. For example, you
  * can bind the "pixbuf" property on the cell renderer to a pixbuf value
  * in the model, thus rendering a different image in each row of the
- * #GtkTreeView.
+ * #BtkTreeView.
  * 
  * Return value: the new cell renderer
  **/
-GtkCellRenderer *
-gtk_cell_renderer_pixbuf_new (void)
+BtkCellRenderer *
+btk_cell_renderer_pixbuf_new (void)
 {
-  return g_object_new (GTK_TYPE_CELL_RENDERER_PIXBUF, NULL);
+  return g_object_new (BTK_TYPE_CELL_RENDERER_PIXBUF, NULL);
 }
 
 static void
-gtk_cell_renderer_pixbuf_create_stock_pixbuf (GtkCellRendererPixbuf *cellpixbuf,
-                                              GtkWidget             *widget)
+btk_cell_renderer_pixbuf_create_stock_pixbuf (BtkCellRendererPixbuf *cellpixbuf,
+                                              BtkWidget             *widget)
 {
-  GtkCellRendererPixbufPrivate *priv;
+  BtkCellRendererPixbufPrivate *priv;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
 
   if (cellpixbuf->pixbuf)
     g_object_unref (cellpixbuf->pixbuf);
 
-  cellpixbuf->pixbuf = gtk_widget_render_icon (widget,
+  cellpixbuf->pixbuf = btk_widget_render_icon (widget,
                                                priv->stock_id,
                                                priv->stock_size,
                                                priv->stock_detail);
@@ -489,16 +489,16 @@ gtk_cell_renderer_pixbuf_create_stock_pixbuf (GtkCellRendererPixbuf *cellpixbuf,
 }
 
 static void 
-gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf,
-					       GtkWidget             *widget)
+btk_cell_renderer_pixbuf_create_themed_pixbuf (BtkCellRendererPixbuf *cellpixbuf,
+					       BtkWidget             *widget)
 {
-  GtkCellRendererPixbufPrivate *priv;
-  GdkScreen *screen;
-  GtkIconTheme *icon_theme;
-  GtkSettings *settings;
+  BtkCellRendererPixbufPrivate *priv;
+  BdkScreen *screen;
+  BtkIconTheme *icon_theme;
+  BtkSettings *settings;
   gint width, height;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
 
   if (cellpixbuf->pixbuf)
     {
@@ -506,11 +506,11 @@ gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf
       cellpixbuf->pixbuf = NULL;
     }
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (widget));
-  icon_theme = gtk_icon_theme_get_for_screen (screen);
-  settings = gtk_settings_get_for_screen (screen);
+  screen = btk_widget_get_screen (BTK_WIDGET (widget));
+  icon_theme = btk_icon_theme_get_for_screen (screen);
+  settings = btk_settings_get_for_screen (screen);
 
-  if (!gtk_icon_size_lookup_for_settings (settings,
+  if (!btk_icon_size_lookup_for_settings (settings,
 					  priv->stock_size,
 					  &width, &height))
     {
@@ -519,32 +519,32 @@ gtk_cell_renderer_pixbuf_create_themed_pixbuf (GtkCellRendererPixbuf *cellpixbuf
     }
 
   if (priv->icon_name)
-    cellpixbuf->pixbuf = gtk_icon_theme_load_icon (icon_theme,
+    cellpixbuf->pixbuf = btk_icon_theme_load_icon (icon_theme,
 			                           priv->icon_name,
 			                           MIN (width, height), 
-                                                   GTK_ICON_LOOKUP_USE_BUILTIN,
+                                                   BTK_ICON_LOOKUP_USE_BUILTIN,
                                                    NULL);
   else if (priv->gicon)
     {
-      GtkIconInfo *info;
+      BtkIconInfo *info;
 
-      info = gtk_icon_theme_lookup_by_gicon (icon_theme,
+      info = btk_icon_theme_lookup_by_gicon (icon_theme,
                                              priv->gicon,
 			                     MIN (width, height), 
-                                             GTK_ICON_LOOKUP_USE_BUILTIN);
+                                             BTK_ICON_LOOKUP_USE_BUILTIN);
       if (info)
         {
-          cellpixbuf->pixbuf = gtk_icon_info_load_icon (info, NULL);
-          gtk_icon_info_free (info);
+          cellpixbuf->pixbuf = btk_icon_info_load_icon (info, NULL);
+          btk_icon_info_free (info);
         }
     }
 
   g_object_notify (G_OBJECT (cellpixbuf), "pixbuf");
 }
 
-static GdkPixbuf *
-create_colorized_pixbuf (GdkPixbuf *src, 
-			 GdkColor  *new_color)
+static BdkPixbuf *
+create_colorized_pixbuf (BdkPixbuf *src, 
+			 BdkColor  *new_color)
 {
   gint i, j;
   gint width, height, has_alpha, src_row_stride, dst_row_stride;
@@ -553,25 +553,25 @@ create_colorized_pixbuf (GdkPixbuf *src,
   guchar *original_pixels;
   guchar *pixsrc;
   guchar *pixdest;
-  GdkPixbuf *dest;
+  BdkPixbuf *dest;
   
   red_value = new_color->red / 255.0;
   green_value = new_color->green / 255.0;
   blue_value = new_color->blue / 255.0;
   
-  dest = gdk_pixbuf_new (gdk_pixbuf_get_colorspace (src),
-			 gdk_pixbuf_get_has_alpha (src),
-			 gdk_pixbuf_get_bits_per_sample (src),
-			 gdk_pixbuf_get_width (src),
-			 gdk_pixbuf_get_height (src));
+  dest = bdk_pixbuf_new (bdk_pixbuf_get_colorspace (src),
+			 bdk_pixbuf_get_has_alpha (src),
+			 bdk_pixbuf_get_bits_per_sample (src),
+			 bdk_pixbuf_get_width (src),
+			 bdk_pixbuf_get_height (src));
   
-  has_alpha = gdk_pixbuf_get_has_alpha (src);
-  width = gdk_pixbuf_get_width (src);
-  height = gdk_pixbuf_get_height (src);
-  src_row_stride = gdk_pixbuf_get_rowstride (src);
-  dst_row_stride = gdk_pixbuf_get_rowstride (dest);
-  target_pixels = gdk_pixbuf_get_pixels (dest);
-  original_pixels = gdk_pixbuf_get_pixels (src);
+  has_alpha = bdk_pixbuf_get_has_alpha (src);
+  width = bdk_pixbuf_get_width (src);
+  height = bdk_pixbuf_get_height (src);
+  src_row_stride = bdk_pixbuf_get_rowstride (src);
+  dst_row_stride = bdk_pixbuf_get_rowstride (dest);
+  target_pixels = bdk_pixbuf_get_pixels (dest);
+  original_pixels = bdk_pixbuf_get_pixels (src);
   
   for (i = 0; i < height; i++) {
     pixdest = target_pixels + i*dst_row_stride;
@@ -590,45 +590,45 @@ create_colorized_pixbuf (GdkPixbuf *src,
 
 
 static void
-gtk_cell_renderer_pixbuf_get_size (GtkCellRenderer *cell,
-				   GtkWidget       *widget,
-				   GdkRectangle    *cell_area,
+btk_cell_renderer_pixbuf_get_size (BtkCellRenderer *cell,
+				   BtkWidget       *widget,
+				   BdkRectangle    *cell_area,
 				   gint            *x_offset,
 				   gint            *y_offset,
 				   gint            *width,
 				   gint            *height)
 {
-  GtkCellRendererPixbuf *cellpixbuf = (GtkCellRendererPixbuf *) cell;
-  GtkCellRendererPixbufPrivate *priv;
+  BtkCellRendererPixbuf *cellpixbuf = (BtkCellRendererPixbuf *) cell;
+  BtkCellRendererPixbufPrivate *priv;
   gint pixbuf_width  = 0;
   gint pixbuf_height = 0;
   gint calc_width;
   gint calc_height;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cell);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cell);
 
   if (!cellpixbuf->pixbuf)
     {
       if (priv->stock_id)
-	gtk_cell_renderer_pixbuf_create_stock_pixbuf (cellpixbuf, widget);
+	btk_cell_renderer_pixbuf_create_stock_pixbuf (cellpixbuf, widget);
       else if (priv->icon_name || priv->gicon)
-	gtk_cell_renderer_pixbuf_create_themed_pixbuf (cellpixbuf, widget);
+	btk_cell_renderer_pixbuf_create_themed_pixbuf (cellpixbuf, widget);
     }
   
   if (cellpixbuf->pixbuf)
     {
-      pixbuf_width  = gdk_pixbuf_get_width (cellpixbuf->pixbuf);
-      pixbuf_height = gdk_pixbuf_get_height (cellpixbuf->pixbuf);
+      pixbuf_width  = bdk_pixbuf_get_width (cellpixbuf->pixbuf);
+      pixbuf_height = bdk_pixbuf_get_height (cellpixbuf->pixbuf);
     }
   if (cellpixbuf->pixbuf_expander_open)
     {
-      pixbuf_width  = MAX (pixbuf_width, gdk_pixbuf_get_width (cellpixbuf->pixbuf_expander_open));
-      pixbuf_height = MAX (pixbuf_height, gdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_open));
+      pixbuf_width  = MAX (pixbuf_width, bdk_pixbuf_get_width (cellpixbuf->pixbuf_expander_open));
+      pixbuf_height = MAX (pixbuf_height, bdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_open));
     }
   if (cellpixbuf->pixbuf_expander_closed)
     {
-      pixbuf_width  = MAX (pixbuf_width, gdk_pixbuf_get_width (cellpixbuf->pixbuf_expander_closed));
-      pixbuf_height = MAX (pixbuf_height, gdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_closed));
+      pixbuf_width  = MAX (pixbuf_width, bdk_pixbuf_get_width (cellpixbuf->pixbuf_expander_closed));
+      pixbuf_height = MAX (pixbuf_height, bdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_closed));
     }
   
   calc_width  = (gint) cell->xpad * 2 + pixbuf_width;
@@ -638,7 +638,7 @@ gtk_cell_renderer_pixbuf_get_size (GtkCellRenderer *cell,
     {
       if (x_offset)
 	{
-	  *x_offset = (((gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) ?
+	  *x_offset = (((btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL) ?
                         (1.0 - cell->xalign) : cell->xalign) * 
                        (cell_area->width - calc_width));
 	  *x_offset = MAX (*x_offset, 0);
@@ -664,27 +664,27 @@ gtk_cell_renderer_pixbuf_get_size (GtkCellRenderer *cell,
 }
 
 static void
-gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
-				 GdkWindow            *window,
-				 GtkWidget            *widget,
-				 GdkRectangle         *background_area,
-				 GdkRectangle         *cell_area,
-				 GdkRectangle         *expose_area,
-				 GtkCellRendererState  flags)
+btk_cell_renderer_pixbuf_render (BtkCellRenderer      *cell,
+				 BdkWindow            *window,
+				 BtkWidget            *widget,
+				 BdkRectangle         *background_area,
+				 BdkRectangle         *cell_area,
+				 BdkRectangle         *expose_area,
+				 BtkCellRendererState  flags)
 
 {
-  GtkCellRendererPixbuf *cellpixbuf = (GtkCellRendererPixbuf *) cell;
-  GtkCellRendererPixbufPrivate *priv;
-  GdkPixbuf *pixbuf;
-  GdkPixbuf *invisible = NULL;
-  GdkPixbuf *colorized = NULL;
-  GdkRectangle pix_rect;
-  GdkRectangle draw_rect;
-  cairo_t *cr;
+  BtkCellRendererPixbuf *cellpixbuf = (BtkCellRendererPixbuf *) cell;
+  BtkCellRendererPixbufPrivate *priv;
+  BdkPixbuf *pixbuf;
+  BdkPixbuf *invisible = NULL;
+  BdkPixbuf *colorized = NULL;
+  BdkRectangle pix_rect;
+  BdkRectangle draw_rect;
+  bairo_t *cr;
 
-  priv = GTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cell);
+  priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cell);
 
-  gtk_cell_renderer_pixbuf_get_size (cell, widget, cell_area,
+  btk_cell_renderer_pixbuf_get_size (cell, widget, cell_area,
 				     &pix_rect.x,
 				     &pix_rect.y,
 				     &pix_rect.width,
@@ -695,8 +695,8 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
   pix_rect.width  -= cell->xpad * 2;
   pix_rect.height -= cell->ypad * 2;
 
-  if (!gdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect) ||
-      !gdk_rectangle_intersect (expose_area, &draw_rect, &draw_rect))
+  if (!bdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect) ||
+      !bdk_rectangle_intersect (expose_area, &draw_rect, &draw_rect))
     return;
 
   pixbuf = cellpixbuf->pixbuf;
@@ -714,46 +714,46 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
   if (!pixbuf)
     return;
 
-  if (gtk_widget_get_state (widget) == GTK_STATE_INSENSITIVE || !cell->sensitive)
+  if (btk_widget_get_state (widget) == BTK_STATE_INSENSITIVE || !cell->sensitive)
     {
-      GtkIconSource *source;
+      BtkIconSource *source;
       
-      source = gtk_icon_source_new ();
-      gtk_icon_source_set_pixbuf (source, pixbuf);
+      source = btk_icon_source_new ();
+      btk_icon_source_set_pixbuf (source, pixbuf);
       /* The size here is arbitrary; since size isn't
        * wildcarded in the source, it isn't supposed to be
        * scaled by the engine function
        */
-      gtk_icon_source_set_size (source, GTK_ICON_SIZE_SMALL_TOOLBAR);
-      gtk_icon_source_set_size_wildcarded (source, FALSE);
+      btk_icon_source_set_size (source, BTK_ICON_SIZE_SMALL_TOOLBAR);
+      btk_icon_source_set_size_wildcarded (source, FALSE);
       
-     invisible = gtk_style_render_icon (widget->style,
+     invisible = btk_style_render_icon (widget->style,
 					source,
-					gtk_widget_get_direction (widget),
-					GTK_STATE_INSENSITIVE,
+					btk_widget_get_direction (widget),
+					BTK_STATE_INSENSITIVE,
 					/* arbitrary */
-					(GtkIconSize)-1,
+					(BtkIconSize)-1,
 					widget,
-					"gtkcellrendererpixbuf");
+					"btkcellrendererpixbuf");
      
-     gtk_icon_source_free (source);
+     btk_icon_source_free (source);
      
      pixbuf = invisible;
     }
   else if (priv->follow_state && 
-	   (flags & (GTK_CELL_RENDERER_SELECTED|GTK_CELL_RENDERER_PRELIT)) != 0)
+	   (flags & (BTK_CELL_RENDERER_SELECTED|BTK_CELL_RENDERER_PRELIT)) != 0)
     {
-      GtkStateType state;
+      BtkStateType state;
 
-      if ((flags & GTK_CELL_RENDERER_SELECTED) != 0)
+      if ((flags & BTK_CELL_RENDERER_SELECTED) != 0)
 	{
-	  if (gtk_widget_has_focus (widget))
-	    state = GTK_STATE_SELECTED;
+	  if (btk_widget_has_focus (widget))
+	    state = BTK_STATE_SELECTED;
 	  else
-	    state = GTK_STATE_ACTIVE;
+	    state = BTK_STATE_ACTIVE;
 	}
       else
-	state = GTK_STATE_PRELIGHT;
+	state = BTK_STATE_PRELIGHT;
 
       colorized = create_colorized_pixbuf (pixbuf,
 					   &widget->style->base[state]);
@@ -761,13 +761,13 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
       pixbuf = colorized;
     }
 
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
   
-  gdk_cairo_set_source_pixbuf (cr, pixbuf, pix_rect.x, pix_rect.y);
-  gdk_cairo_rectangle (cr, &draw_rect);
-  cairo_fill (cr);
+  bdk_bairo_set_source_pixbuf (cr, pixbuf, pix_rect.x, pix_rect.y);
+  bdk_bairo_rectangle (cr, &draw_rect);
+  bairo_fill (cr);
 
-  cairo_destroy (cr);
+  bairo_destroy (cr);
   
   if (invisible)
     g_object_unref (invisible);
@@ -776,5 +776,5 @@ gtk_cell_renderer_pixbuf_render (GtkCellRenderer      *cell,
     g_object_unref (colorized);
 }
 
-#define __GTK_CELL_RENDERER_PIXBUF_C__
-#include "gtkaliasdef.c"
+#define __BTK_CELL_RENDERER_PIXBUF_C__
+#include "btkaliasdef.c"

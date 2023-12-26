@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * Copyright (C) 2010 Christian Dywan
  *
@@ -16,62 +16,62 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __GTK_COMBO_BOX_TEXT_H__
-#define __GTK_COMBO_BOX_TEXT_H__
+#ifndef __BTK_COMBO_BOX_TEXT_H__
+#define __BTK_COMBO_BOX_TEXT_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcombobox.h>
+#include <btk/btkcombobox.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_COMBO_BOX_TEXT                 (gtk_combo_box_text_get_type ())
-#define GTK_COMBO_BOX_TEXT(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_COMBO_BOX_TEXT, GtkComboBoxText))
-#define GTK_COMBO_BOX_TEXT_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_COMBO_BOX_TEXT, GtkComboBoxTextClass))
-#define GTK_IS_COMBO_BOX_TEXT(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_COMBO_BOX_TEXT))
-#define GTK_IS_COMBO_BOX_TEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_COMBO_BOX_TEXT))
-#define GTK_COMBO_BOX_TEXT_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_COMBO_BOX_TEXT, GtkComboBoxTextClass))
+#define BTK_TYPE_COMBO_BOX_TEXT                 (btk_combo_box_text_get_type ())
+#define BTK_COMBO_BOX_TEXT(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxText))
+#define BTK_COMBO_BOX_TEXT_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxTextClass))
+#define BTK_IS_COMBO_BOX_TEXT(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX_TEXT))
+#define BTK_IS_COMBO_BOX_TEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COMBO_BOX_TEXT))
+#define BTK_COMBO_BOX_TEXT_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COMBO_BOX_TEXT, BtkComboBoxTextClass))
 
-typedef struct _GtkComboBoxText             GtkComboBoxText;
-typedef struct _GtkComboBoxTextPrivate      GtkComboBoxTextPrivate;
-typedef struct _GtkComboBoxTextClass        GtkComboBoxTextClass;
+typedef struct _BtkComboBoxText             BtkComboBoxText;
+typedef struct _BtkComboBoxTextPrivate      BtkComboBoxTextPrivate;
+typedef struct _BtkComboBoxTextClass        BtkComboBoxTextClass;
 
-struct _GtkComboBoxText
+struct _BtkComboBoxText
 {
   /* <private> */
-  GtkComboBox parent_instance;
+  BtkComboBox parent_instance;
 
-  GtkComboBoxTextPrivate *priv;
+  BtkComboBoxTextPrivate *priv;
 };
 
-struct _GtkComboBoxTextClass
+struct _BtkComboBoxTextClass
 {
-  GtkComboBoxClass parent_class;
+  BtkComboBoxClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType         gtk_combo_box_text_get_type        (void) G_GNUC_CONST;
-GtkWidget*    gtk_combo_box_text_new             (void);
-GtkWidget*    gtk_combo_box_text_new_with_entry  (void);
-void          gtk_combo_box_text_append_text     (GtkComboBoxText     *combo_box,
+GType         btk_combo_box_text_get_type        (void) G_GNUC_CONST;
+BtkWidget*    btk_combo_box_text_new             (void);
+BtkWidget*    btk_combo_box_text_new_with_entry  (void);
+void          btk_combo_box_text_append_text     (BtkComboBoxText     *combo_box,
                                                   const gchar         *text);
-void          gtk_combo_box_text_insert_text     (GtkComboBoxText     *combo_box,
+void          btk_combo_box_text_insert_text     (BtkComboBoxText     *combo_box,
                                                   gint                 position,
                                                   const gchar         *text);
-void          gtk_combo_box_text_prepend_text    (GtkComboBoxText     *combo_box,
+void          btk_combo_box_text_prepend_text    (BtkComboBoxText     *combo_box,
                                                   const gchar         *text);
-void          gtk_combo_box_text_remove          (GtkComboBoxText     *combo_box,
+void          btk_combo_box_text_remove          (BtkComboBoxText     *combo_box,
                                                   gint                 position);
-gchar        *gtk_combo_box_text_get_active_text (GtkComboBoxText     *combo_box);
+gchar        *btk_combo_box_text_get_active_text (BtkComboBoxText     *combo_box);
 
 
 G_END_DECLS
 
-#endif /* __GTK_COMBO_BOX_TEXT_H__ */
+#endif /* __BTK_COMBO_BOX_TEXT_H__ */

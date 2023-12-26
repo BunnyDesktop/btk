@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,29 +17,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_ENTRY_H__
-#define __GAIL_ENTRY_H__
+#ifndef __BAIL_ENTRY_H__
+#define __BAIL_ENTRY_H__
 
-#include <gail/gailwidget.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailwidget.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_ENTRY                      (gail_entry_get_type ())
-#define GAIL_ENTRY(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_ENTRY, GailEntry))
-#define GAIL_ENTRY_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_ENTRY, GailEntryClass))
-#define GAIL_IS_ENTRY(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_ENTRY))
-#define GAIL_IS_ENTRY_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_ENTRY))
-#define GAIL_ENTRY_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_ENTRY, GailEntryClass))
+#define BAIL_TYPE_ENTRY                      (bail_entry_get_type ())
+#define BAIL_ENTRY(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ENTRY, BailEntry))
+#define BAIL_ENTRY_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ENTRY, BailEntryClass))
+#define BAIL_IS_ENTRY(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ENTRY))
+#define BAIL_IS_ENTRY_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ENTRY))
+#define BAIL_ENTRY_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ENTRY, BailEntryClass))
 
-typedef struct _GailEntry              GailEntry;
-typedef struct _GailEntryClass         GailEntryClass;
+typedef struct _BailEntry              BailEntry;
+typedef struct _BailEntryClass         BailEntryClass;
 
-struct _GailEntry
+struct _BailEntry
 {
-  GailWidget parent;
+  BailWidget parent;
 
-  GailTextUtil *textutil;
+  BailTextUtil *textutil;
   /*
    * These fields store information about text changed
    */
@@ -58,13 +58,13 @@ struct _GailEntry
   guint          insert_idle_handler;
 };
 
-GType gail_entry_get_type (void);
+GType bail_entry_get_type (void);
 
-struct _GailEntryClass
+struct _BailEntryClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_ENTRY_H__ */
+#endif /* __BAIL_ENTRY_H__ */

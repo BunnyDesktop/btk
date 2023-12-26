@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,38 +18,38 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_PREVIEW_H__
-#define __GTK_PREVIEW_H__
+#ifndef __BTK_PREVIEW_H__
+#define __BTK_PREVIEW_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PREVIEW            (gtk_preview_get_type ())
-#define GTK_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PREVIEW, GtkPreview))
-#define GTK_PREVIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PREVIEW, GtkPreviewClass))
-#define GTK_IS_PREVIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PREVIEW))
-#define GTK_IS_PREVIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PREVIEW))
-#define GTK_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PREVIEW, GtkPreviewClass))
+#define BTK_TYPE_PREVIEW            (btk_preview_get_type ())
+#define BTK_PREVIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PREVIEW, BtkPreview))
+#define BTK_PREVIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PREVIEW, BtkPreviewClass))
+#define BTK_IS_PREVIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PREVIEW))
+#define BTK_IS_PREVIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PREVIEW))
+#define BTK_PREVIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PREVIEW, BtkPreviewClass))
 
 
-typedef struct _GtkPreview       GtkPreview;
-typedef struct _GtkPreviewInfo   GtkPreviewInfo;
-typedef union  _GtkDitherInfo    GtkDitherInfo;
-typedef struct _GtkPreviewClass  GtkPreviewClass;
+typedef struct _BtkPreview       BtkPreview;
+typedef struct _BtkPreviewInfo   BtkPreviewInfo;
+typedef union  _BtkDitherInfo    BtkDitherInfo;
+typedef struct _BtkPreviewClass  BtkPreviewClass;
 
-struct _GtkPreview
+struct _BtkPreview
 {
-  GtkWidget widget;
+  BtkWidget widget;
 
   guchar *buffer;
   guint16 buffer_width;
@@ -58,80 +58,80 @@ struct _GtkPreview
   guint16 bpp;
   guint16 rowstride;
 
-  GdkRgbDither dither;
+  BdkRgbDither dither;
 
   guint type : 1;
   guint expand : 1;
 };
 
-struct _GtkPreviewInfo
+struct _BtkPreviewInfo
 {
   guchar *lookup;
 
   gdouble gamma;
 };
 
-union _GtkDitherInfo
+union _BtkDitherInfo
 {
   gushort s[2];
   guchar c[4];
 };
 
-struct _GtkPreviewClass
+struct _BtkPreviewClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 
-  GtkPreviewInfo info;
+  BtkPreviewInfo info;
 
 };
 
 
-GType           gtk_preview_get_type           (void) G_GNUC_CONST;
-void            gtk_preview_uninit             (void);
-GtkWidget*      gtk_preview_new                (GtkPreviewType   type);
-void            gtk_preview_size               (GtkPreview      *preview,
+GType           btk_preview_get_type           (void) G_GNUC_CONST;
+void            btk_preview_uninit             (void);
+BtkWidget*      btk_preview_new                (BtkPreviewType   type);
+void            btk_preview_size               (BtkPreview      *preview,
 						gint             width,
 						gint             height);
-void            gtk_preview_put                (GtkPreview      *preview,
-						GdkWindow       *window,
-						GdkGC           *gc,
+void            btk_preview_put                (BtkPreview      *preview,
+						BdkWindow       *window,
+						BdkGC           *gc,
 						gint             srcx,
 						gint             srcy,
 						gint             destx,
 						gint             desty,
 						gint             width,
 						gint             height);
-void            gtk_preview_draw_row           (GtkPreview      *preview,
+void            btk_preview_draw_row           (BtkPreview      *preview,
 						guchar          *data,
 						gint             x,
 						gint             y,
 						gint             w);
-void            gtk_preview_set_expand         (GtkPreview      *preview,
+void            btk_preview_set_expand         (BtkPreview      *preview,
 						gboolean         expand);
 
-void            gtk_preview_set_gamma          (double           gamma_);
-void            gtk_preview_set_color_cube     (guint            nred_shades,
+void            btk_preview_set_gamma          (double           gamma_);
+void            btk_preview_set_color_cube     (guint            nred_shades,
 						guint            ngreen_shades,
 						guint            nblue_shades,
 						guint            ngray_shades);
-void            gtk_preview_set_install_cmap   (gint             install_cmap);
-void            gtk_preview_set_reserved       (gint             nreserved);
-void            gtk_preview_set_dither         (GtkPreview      *preview,
-						GdkRgbDither     dither);
-GdkVisual*      gtk_preview_get_visual         (void);
-GdkColormap*    gtk_preview_get_cmap           (void);
-GtkPreviewInfo* gtk_preview_get_info           (void);
+void            btk_preview_set_install_cmap   (gint             install_cmap);
+void            btk_preview_set_reserved       (gint             nreserved);
+void            btk_preview_set_dither         (BtkPreview      *preview,
+						BdkRgbDither     dither);
+BdkVisual*      btk_preview_get_visual         (void);
+BdkColormap*    btk_preview_get_cmap           (void);
+BtkPreviewInfo* btk_preview_get_info           (void);
 
 /* This function reinitializes the preview colormap and visual from
  * the current gamma/color_cube/install_cmap settings. It must only
  * be called if there are no previews or users's of the preview
  * colormap in existence.
  */
-void            gtk_preview_reset              (void);
+void            btk_preview_reset              (void);
 
 
 G_END_DECLS
 
-#endif /* __GTK_PREVIEW_H__ */
+#endif /* __BTK_PREVIEW_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

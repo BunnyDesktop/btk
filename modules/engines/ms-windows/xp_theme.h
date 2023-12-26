@@ -1,4 +1,4 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Raymond Penners <raymond@dotsphinx.com>
  *
@@ -23,7 +23,7 @@
 
 #include <windows.h>
 
-#include "gtk/gtk.h"
+#include "btk/btk.h"
 
 typedef enum
 {
@@ -116,8 +116,8 @@ typedef enum
 
 typedef struct
 {
-  GdkDrawable *drawable;
-  GdkGC *gc;
+  BdkDrawable *drawable;
+  BdkGC *gc;
   
   gint x_offset;
   gint y_offset;
@@ -126,9 +126,9 @@ typedef struct
   gpointer data;
 } XpDCInfo;
 
-HDC get_window_dc (GtkStyle *style,
-		   GdkWindow *window,
-		   GtkStateType state_type,
+HDC get_window_dc (BtkStyle *style,
+		   BdkWindow *window,
+		   BtkStateType state_type,
 		   XpDCInfo *dc_info_out,
 		   gint x, gint y, gint width, gint height,
 		   RECT *rect_out);
@@ -137,13 +137,13 @@ void release_window_dc (XpDCInfo *dc_info);
 void xp_theme_init (void);
 void xp_theme_reset (void);
 void xp_theme_exit (void);
-gboolean xp_theme_draw (GdkWindow *win, XpThemeElement element,
-                        GtkStyle *style, int x, int y, int width,
-                        int height, GtkStateType state_type,
-                        GdkRectangle *area);
+gboolean xp_theme_draw (BdkWindow *win, XpThemeElement element,
+                        BtkStyle *style, int x, int y, int width,
+                        int height, BtkStateType state_type,
+                        BdkRectangle *area);
 gboolean xp_theme_is_drawable (XpThemeElement element);
 gboolean xp_theme_get_element_dimensions (XpThemeElement element,
-                                          GtkStateType state_type,
+                                          BtkStateType state_type,
                                           gint *cx, gint *cy);
 gboolean xp_theme_get_system_font (XpThemeClass klazz, XpThemeFont fontId, OUT LOGFONTW *lf);
 gboolean xp_theme_get_system_color (XpThemeClass klazz, int colorId, OUT DWORD *pColor);

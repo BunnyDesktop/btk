@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,36 +19,36 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailobject.h"
+#include <btk/btk.h>
+#include "bailobject.h"
 
-static void       gail_object_class_init               (GailObjectClass *klass);
+static void       bail_object_class_init               (BailObjectClass *klass);
 
-static void       gail_object_init                     (GailObject *object);
+static void       bail_object_init                     (BailObject *object);
 
-static void       gail_object_real_initialize          (AtkObject       *obj,
+static void       bail_object_real_initialize          (BatkObject       *obj,
                                                         gpointer        data);
 
-G_DEFINE_TYPE (GailObject, gail_object, ATK_TYPE_GOBJECT_ACCESSIBLE)
+G_DEFINE_TYPE (BailObject, bail_object, BATK_TYPE_BOBJECT_ACCESSIBLE)
 
 static void
-gail_object_class_init (GailObjectClass *klass)
+bail_object_class_init (BailObjectClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_object_real_initialize;
+  class->initialize = bail_object_real_initialize;
 }
 
 static void
-gail_object_init (GailObject *object)
+bail_object_init (BailObject *object)
 {
 }
 
 static void
-gail_object_real_initialize (AtkObject *obj,
+bail_object_real_initialize (BatkObject *obj,
                              gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_object_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_object_parent_class)->initialize (obj, data);
 
-  obj->role = ATK_ROLE_UNKNOWN;
+  obj->role = BATK_ROLE_UNKNOWN;
 }

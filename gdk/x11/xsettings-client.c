@@ -595,7 +595,7 @@ xsettings_client_process_event (XSettingsClient *client,
       if (xev->xany.type == DestroyNotify)
 	{
 	  check_manager_window (client);
-          /* let GDK do its cleanup */
+          /* let BDK do its cleanup */
 	  return False; 
 	}
       else if (xev->xany.type == PropertyNotify)

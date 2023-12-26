@@ -1,9 +1,9 @@
-/* gtktexttag.c - text tag object
+/* btktexttag.c - text tag object
  *
  * Copyright (c) 1992-1994 The Regents of the University of California.
  * Copyright (c) 1994-1997 Sun Microsystems, Inc.
  * Copyright (c) 2000      Red Hat, Inc.
- * Tk -> Gtk port by Havoc Pennington <hp@redhat.com>
+ * Tk -> Btk port by Havoc Pennington <hp@redhat.com>
  *
  * This software is copyrighted by the Regents of the University of
  * California, Sun Microsystems, Inc., and other parties.  The
@@ -47,45 +47,45 @@
  *
  */
 
-#ifndef __GTK_TEXT_TAG_H__
-#define __GTK_TEXT_TAG_H__
+#ifndef __BTK_TEXT_TAG_H__
+#define __BTK_TEXT_TAG_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gdk/gdk.h>
-#include <gtk/gtkenums.h>
+#include <bdk/bdk.h>
+#include <btk/btkenums.h>
 
 /* Not needed, retained for compatibility -Yosh */
-#include <gtk/gtkobject.h>
+#include <btk/btkobject.h>
 
 
 G_BEGIN_DECLS
 
-typedef struct _GtkTextIter GtkTextIter;
-typedef struct _GtkTextTagTable GtkTextTagTable;
+typedef struct _BtkTextIter BtkTextIter;
+typedef struct _BtkTextTagTable BtkTextTagTable;
 
-typedef struct _GtkTextAttributes GtkTextAttributes;
+typedef struct _BtkTextAttributes BtkTextAttributes;
 
-#define GTK_TYPE_TEXT_TAG            (gtk_text_tag_get_type ())
-#define GTK_TEXT_TAG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TEXT_TAG, GtkTextTag))
-#define GTK_TEXT_TAG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TEXT_TAG, GtkTextTagClass))
-#define GTK_IS_TEXT_TAG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TEXT_TAG))
-#define GTK_IS_TEXT_TAG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TEXT_TAG))
-#define GTK_TEXT_TAG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TEXT_TAG, GtkTextTagClass))
+#define BTK_TYPE_TEXT_TAG            (btk_text_tag_get_type ())
+#define BTK_TEXT_TAG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG, BtkTextTag))
+#define BTK_TEXT_TAG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
+#define BTK_IS_TEXT_TAG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG))
+#define BTK_IS_TEXT_TAG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG))
+#define BTK_TEXT_TAG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
 
-#define GTK_TYPE_TEXT_ATTRIBUTES     (gtk_text_attributes_get_type ())
+#define BTK_TYPE_TEXT_ATTRIBUTES     (btk_text_attributes_get_type ())
 
-typedef struct _GtkTextTag GtkTextTag;
-typedef struct _GtkTextTagClass GtkTextTagClass;
+typedef struct _BtkTextTag BtkTextTag;
+typedef struct _BtkTextTagClass BtkTextTagClass;
 
-struct _GtkTextTag
+struct _BtkTextTag
 {
   GObject parent_instance;
 
-  GtkTextTagTable *GSEAL (table);
+  BtkTextTagTable *GSEAL (table);
 
   char *GSEAL (name);           /* Name of this tag.  This field is actually
                                  * a pointer to the key from the entry in
@@ -103,7 +103,7 @@ struct _GtkTextTag
    * defaults if no tag specifies an override.
    */
 
-  GtkTextAttributes *GSEAL (values);
+  BtkTextAttributes *GSEAL (values);
   
   /* Flags for whether a given value is set; if a value is unset, then
    * this tag does not affect it.
@@ -137,45 +137,45 @@ struct _GtkTextTag
   guint GSEAL (pad1) : 1;
 };
 
-struct _GtkTextTagClass
+struct _BtkTextTagClass
 {
   GObjectClass parent_class;
 
-  gboolean (* event) (GtkTextTag        *tag,
+  gboolean (* event) (BtkTextTag        *tag,
                       GObject           *event_object, /* widget, canvas item, whatever */
-                      GdkEvent          *event,        /* the event itself */
-                      const GtkTextIter *iter);        /* location of event in buffer */
+                      BdkEvent          *event,        /* the event itself */
+                      const BtkTextIter *iter);        /* location of event in buffer */
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType        gtk_text_tag_get_type     (void) G_GNUC_CONST;
-GtkTextTag  *gtk_text_tag_new          (const gchar       *name);
-gint         gtk_text_tag_get_priority (GtkTextTag        *tag);
-void         gtk_text_tag_set_priority (GtkTextTag        *tag,
+GType        btk_text_tag_get_type     (void) G_GNUC_CONST;
+BtkTextTag  *btk_text_tag_new          (const gchar       *name);
+gint         btk_text_tag_get_priority (BtkTextTag        *tag);
+void         btk_text_tag_set_priority (BtkTextTag        *tag,
                                         gint               priority);
-gboolean     gtk_text_tag_event        (GtkTextTag        *tag,
+gboolean     btk_text_tag_event        (BtkTextTag        *tag,
                                         GObject           *event_object,
-                                        GdkEvent          *event,
-                                        const GtkTextIter *iter);
+                                        BdkEvent          *event,
+                                        const BtkTextIter *iter);
 
 /*
  * Style object created by folding a set of tags together
  */
 
-typedef struct _GtkTextAppearance GtkTextAppearance;
+typedef struct _BtkTextAppearance BtkTextAppearance;
 
-struct _GtkTextAppearance
+struct _BtkTextAppearance
 {
   /*< public >*/
-  GdkColor bg_color;
-  GdkColor fg_color;
-  GdkBitmap *bg_stipple;
-  GdkBitmap *fg_stipple;
+  BdkColor bg_color;
+  BdkColor fg_color;
+  BdkBitmap *bg_stipple;
+  BdkBitmap *fg_stipple;
 
   /* super/subscript rise, can be negative */
   gint rise;
@@ -187,7 +187,7 @@ struct _GtkTextAppearance
   gpointer padding1;
 
   /*< public >*/
-  guint underline : 4;          /* PangoUnderline */
+  guint underline : 4;          /* BangoUnderline */
   guint strikethrough : 1;
 
   /* Whether to use background-related values; this is irrelevant for
@@ -198,8 +198,8 @@ struct _GtkTextAppearance
   guint draw_bg : 1;
   
   /* These are only used when we are actually laying out and rendering
-   * a paragraph; not when a GtkTextAppearance is part of a
-   * GtkTextAttributes.
+   * a paragraph; not when a BtkTextAppearance is part of a
+   * BtkTextAttributes.
    */
   guint inside_selection : 1;
   guint is_text : 1;
@@ -211,19 +211,19 @@ struct _GtkTextAppearance
   guint pad4 : 1;
 };
 
-struct _GtkTextAttributes
+struct _BtkTextAttributes
 {
   /*< private >*/
   guint refcount;
 
   /*< public >*/
-  GtkTextAppearance appearance;
+  BtkTextAppearance appearance;
 
-  GtkJustification justification;
-  GtkTextDirection direction;
+  BtkJustification justification;
+  BtkTextDirection direction;
 
   /* Individual chunks of this can be set/unset as a group */
-  PangoFontDescription *font;
+  BangoFontDescription *font;
 
   gdouble font_scale;
   
@@ -239,17 +239,17 @@ struct _GtkTextAttributes
 
   gint pixels_inside_wrap;
 
-  PangoTabArray *tabs;
+  BangoTabArray *tabs;
 
-  GtkWrapMode wrap_mode;        /* How to handle wrap-around for this tag.
-                                 * Must be GTK_WRAPMODE_CHAR,
-                                 * GTK_WRAPMODE_NONE, GTK_WRAPMODE_WORD
+  BtkWrapMode wrap_mode;        /* How to handle wrap-around for this tag.
+                                 * Must be BTK_WRAPMODE_CHAR,
+                                 * BTK_WRAPMODE_NONE, BTK_WRAPMODE_WORD
                                  */
 
-  PangoLanguage *language;
+  BangoLanguage *language;
 
   /*< private >*/
-  GdkColor *pg_bg_color;
+  BdkColor *pg_bg_color;
 
   /*< public >*/
   /* hide the text  */
@@ -273,14 +273,14 @@ struct _GtkTextAttributes
   guint pad4 : 1;
 };
 
-GtkTextAttributes* gtk_text_attributes_new         (void);
-GtkTextAttributes* gtk_text_attributes_copy        (GtkTextAttributes *src);
-void               gtk_text_attributes_copy_values (GtkTextAttributes *src,
-                                                    GtkTextAttributes *dest);
-void               gtk_text_attributes_unref       (GtkTextAttributes *values);
-GtkTextAttributes *gtk_text_attributes_ref         (GtkTextAttributes *values);
+BtkTextAttributes* btk_text_attributes_new         (void);
+BtkTextAttributes* btk_text_attributes_copy        (BtkTextAttributes *src);
+void               btk_text_attributes_copy_values (BtkTextAttributes *src,
+                                                    BtkTextAttributes *dest);
+void               btk_text_attributes_unref       (BtkTextAttributes *values);
+BtkTextAttributes *btk_text_attributes_ref         (BtkTextAttributes *values);
 
-GType              gtk_text_attributes_get_type    (void) G_GNUC_CONST;
+GType              btk_text_attributes_get_type    (void) G_GNUC_CONST;
 
 
 G_END_DECLS

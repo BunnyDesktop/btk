@@ -1,4 +1,4 @@
-/* $TOG: region.h /main/9 1998/02/06 17:50:30 kaleb $ */
+/* $TOG: rebunnyion.h /main/9 1998/02/06 17:50:30 kaleb $ */
 /************************************************************************
 
 Copyright 1987, 1998  The Open Group
@@ -42,26 +42,26 @@ SOFTWARE.
 
 ************************************************************************/
 
-#ifndef __GDK_REGION_GENERIC_H__
-#define __GDK_REGION_GENERIC_H__
+#ifndef __BDK_REBUNNYION_GENERIC_H__
+#define __BDK_REBUNNYION_GENERIC_H__
 
-typedef GdkSegment GdkRegionBox;
+typedef BdkSegment BdkRebunnyionBox;
 
 /* 
- *   clip region
+ *   clip rebunnyion
  */
 
-struct _GdkRegion
+struct _BdkRebunnyion
 {
   long size;
   long numRects;
-  GdkRegionBox *rects;
-  GdkRegionBox extents;
+  BdkRebunnyionBox *rects;
+  BdkRebunnyionBox extents;
 };
 
 /*  1 if two BOXs overlap.
  *  0 if two BOXs do not overlap.
- *  Remember, x2 and y2 are not in the region 
+ *  Remember, x2 and y2 are not in the rebunnyion 
  */
 #define EXTENTCHECK(r1, r2) \
 	((r1)->x2 > (r2)->x1 && \
@@ -70,7 +70,7 @@ struct _GdkRegion
 	 (r1)->y1 < (r2)->y2)
 
 /*
- *  update region extents
+ *  update rebunnyion extents
  */
 #define EXTENTS(r,idRect){\
             if((r)->x1 < (idRect)->extents.x1)\
@@ -83,7 +83,7 @@ struct _GdkRegion
               (idRect)->extents.y2 = (r)->y2;\
         }
 
-#define GROWREGION(reg, nRects) {  					   \
+#define GROWREBUNNYION(reg, nRects) {  					   \
 	  if ((nRects) == 0) {						   \
             if ((reg)->rects != &(reg)->extents) {			   \
 	      g_free ((reg)->rects);					   \
@@ -91,20 +91,20 @@ struct _GdkRegion
 	    }								   \
 	  }  								   \
 	  else if ((reg)->rects == &(reg)->extents) {                      \
-            (reg)->rects = g_new (GdkRegionBox, (nRects));		   \
+            (reg)->rects = g_new (BdkRebunnyionBox, (nRects));		   \
             (reg)->rects[0] = (reg)->extents;                              \
           }                                                                \
           else                                                             \
-            (reg)->rects = g_renew (GdkRegionBox, (reg)->rects, (nRects)); \
+            (reg)->rects = g_renew (BdkRebunnyionBox, (reg)->rects, (nRects)); \
 	  (reg)->size = (nRects);                                          \
        }				 
 
 /*
- *   Check to see if there is enough memory in the present region.
+ *   Check to see if there is enough memory in the present rebunnyion.
  */
 #define MEMCHECK(reg, rect, firstrect){					  	 \
         if ((reg)->numRects >= ((reg)->size - 1)) {			 	 \
-          GROWREGION(reg,2*(reg)->size);                                         \
+          GROWREBUNNYION(reg,2*(reg)->size);                                         \
           (rect) = &(firstrect)[(reg)->numRects];				 \
          }									 \
        }
@@ -120,7 +120,7 @@ struct _GdkRegion
                   ((R-1)->x1 <= (Rx1)) &&\
                   ((R-1)->x2 >= (Rx2))))
 
-/*  add a rectangle to the given Region */
+/*  add a rectangle to the given Rebunnyion */
 #define ADDRECT(reg, r, rx1, ry1, rx2, ry2){\
     if (((rx1) < (rx2)) && ((ry1) < (ry2)) &&\
         CHECK_PREVIOUS((reg), (r), (rx1), (ry1), (rx2), (ry2))){\
@@ -136,7 +136,7 @@ struct _GdkRegion
 
 
 
-/*  add a rectangle to the given Region */
+/*  add a rectangle to the given Rebunnyion */
 #define ADDRECTNOX(reg, r, rx1, ry1, rx2, ry2){\
             if ((rx1 < rx2) && (ry1 < ry2) &&\
                 CHECK_PREVIOUS((reg), (r), (rx1), (ry1), (rx2), (ry2))){\
@@ -149,9 +149,9 @@ struct _GdkRegion
             }\
         }
 
-#define EMPTY_REGION(pReg) pReg->numRects = 0
+#define EMPTY_REBUNNYION(pReg) pReg->numRects = 0
 
-#define REGION_NOT_EMPTY(pReg) pReg->numRects
+#define REBUNNYION_NOT_EMPTY(pReg) pReg->numRects
 
 #define INBOX(r, x, y) \
       ( ( ((r).x2 >  x)) && \
@@ -170,8 +170,8 @@ struct _GdkRegion
  * the buffers together
  */
 typedef struct _POINTBLOCK {
-  GdkPoint pts[NUMPTSTOBUFFER];
+  BdkPoint pts[NUMPTSTOBUFFER];
   struct _POINTBLOCK *next;
 } POINTBLOCK;
 
-#endif /* __GDK_REGION_GENERIC_H__ */
+#endif /* __BDK_REBUNNYION_GENERIC_H__ */

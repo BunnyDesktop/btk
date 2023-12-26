@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,21 +18,21 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_DIALOG_H__
-#define __GTK_DIALOG_H__
+#ifndef __BTK_DIALOG_H__
+#define __BTK_DIALOG_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwindow.h>
+#include <btk/btkwindow.h>
 
 
 G_BEGIN_DECLS
@@ -40,147 +40,147 @@ G_BEGIN_DECLS
 /* Parameters for dialog construction */
 typedef enum
 {
-  GTK_DIALOG_MODAL               = 1 << 0, /* call gtk_window_set_modal (win, TRUE) */
-  GTK_DIALOG_DESTROY_WITH_PARENT = 1 << 1, /* call gtk_window_set_destroy_with_parent () */
-  GTK_DIALOG_NO_SEPARATOR        = 1 << 2  /* no separator bar above buttons */
-} GtkDialogFlags;
+  BTK_DIALOG_MODAL               = 1 << 0, /* call btk_window_set_modal (win, TRUE) */
+  BTK_DIALOG_DESTROY_WITH_PARENT = 1 << 1, /* call btk_window_set_destroy_with_parent () */
+  BTK_DIALOG_NO_SEPARATOR        = 1 << 2  /* no separator bar above buttons */
+} BtkDialogFlags;
 
 /* Convenience enum to use for response_id's.  Positive values are
- * totally user-interpreted. GTK will sometimes return
- * GTK_RESPONSE_NONE if no response_id is available.
+ * totally user-interpreted. BTK will sometimes return
+ * BTK_RESPONSE_NONE if no response_id is available.
  *
  *  Typical usage is:
- *     if (gtk_dialog_run(dialog) == GTK_RESPONSE_ACCEPT)
+ *     if (btk_dialog_run(dialog) == BTK_RESPONSE_ACCEPT)
  *       blah();
  */
 typedef enum
 {
-  /* GTK returns this if a response widget has no response_id,
+  /* BTK returns this if a response widget has no response_id,
    * or if the dialog gets programmatically hidden or destroyed.
    */
-  GTK_RESPONSE_NONE = -1,
+  BTK_RESPONSE_NONE = -1,
 
-  /* GTK won't return these unless you pass them in
+  /* BTK won't return these unless you pass them in
    * as the response for an action widget. They are
    * for your convenience.
    */
-  GTK_RESPONSE_REJECT = -2,
-  GTK_RESPONSE_ACCEPT = -3,
+  BTK_RESPONSE_REJECT = -2,
+  BTK_RESPONSE_ACCEPT = -3,
 
   /* If the dialog is deleted. */
-  GTK_RESPONSE_DELETE_EVENT = -4,
+  BTK_RESPONSE_DELETE_EVENT = -4,
 
-  /* These are returned from GTK dialogs, and you can also use them
+  /* These are returned from BTK dialogs, and you can also use them
    * yourself if you like.
    */
-  GTK_RESPONSE_OK     = -5,
-  GTK_RESPONSE_CANCEL = -6,
-  GTK_RESPONSE_CLOSE  = -7,
-  GTK_RESPONSE_YES    = -8,
-  GTK_RESPONSE_NO     = -9,
-  GTK_RESPONSE_APPLY  = -10,
-  GTK_RESPONSE_HELP   = -11
-} GtkResponseType;
+  BTK_RESPONSE_OK     = -5,
+  BTK_RESPONSE_CANCEL = -6,
+  BTK_RESPONSE_CLOSE  = -7,
+  BTK_RESPONSE_YES    = -8,
+  BTK_RESPONSE_NO     = -9,
+  BTK_RESPONSE_APPLY  = -10,
+  BTK_RESPONSE_HELP   = -11
+} BtkResponseType;
 
 
-#define GTK_TYPE_DIALOG                  (gtk_dialog_get_type ())
-#define GTK_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DIALOG, GtkDialog))
-#define GTK_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DIALOG, GtkDialogClass))
-#define GTK_IS_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DIALOG))
-#define GTK_IS_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DIALOG))
-#define GTK_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DIALOG, GtkDialogClass))
+#define BTK_TYPE_DIALOG                  (btk_dialog_get_type ())
+#define BTK_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DIALOG, BtkDialog))
+#define BTK_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_DIALOG, BtkDialogClass))
+#define BTK_IS_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_DIALOG))
+#define BTK_IS_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_DIALOG))
+#define BTK_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_DIALOG, BtkDialogClass))
 
 
-typedef struct _GtkDialog        GtkDialog;
-typedef struct _GtkDialogClass   GtkDialogClass;
+typedef struct _BtkDialog        BtkDialog;
+typedef struct _BtkDialogClass   BtkDialogClass;
 
-struct _GtkDialog
+struct _BtkDialog
 {
-  GtkWindow window;
+  BtkWindow window;
 
   /*< public >*/
-  GtkWidget *GSEAL (vbox);
-  GtkWidget *GSEAL (action_area);
+  BtkWidget *GSEAL (vbox);
+  BtkWidget *GSEAL (action_area);
 
   /*< private >*/
-  GtkWidget *GSEAL (separator);
+  BtkWidget *GSEAL (separator);
 };
 
-struct _GtkDialogClass
+struct _BtkDialogClass
 {
-  GtkWindowClass parent_class;
+  BtkWindowClass parent_class;
 
-  void (* response) (GtkDialog *dialog, gint response_id);
+  void (* response) (BtkDialog *dialog, gint response_id);
 
   /* Keybinding signals */
 
-  void (* close)    (GtkDialog *dialog);
+  void (* close)    (BtkDialog *dialog);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_dialog_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_dialog_new      (void);
+GType      btk_dialog_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_dialog_new      (void);
 
-GtkWidget* gtk_dialog_new_with_buttons (const gchar     *title,
-                                        GtkWindow       *parent,
-                                        GtkDialogFlags   flags,
+BtkWidget* btk_dialog_new_with_buttons (const gchar     *title,
+                                        BtkWindow       *parent,
+                                        BtkDialogFlags   flags,
                                         const gchar     *first_button_text,
                                         ...);
 
-void       gtk_dialog_add_action_widget (GtkDialog   *dialog,
-                                         GtkWidget   *child,
+void       btk_dialog_add_action_widget (BtkDialog   *dialog,
+                                         BtkWidget   *child,
                                          gint         response_id);
-GtkWidget* gtk_dialog_add_button        (GtkDialog   *dialog,
+BtkWidget* btk_dialog_add_button        (BtkDialog   *dialog,
                                          const gchar *button_text,
                                          gint         response_id);
-void       gtk_dialog_add_buttons       (GtkDialog   *dialog,
+void       btk_dialog_add_buttons       (BtkDialog   *dialog,
                                          const gchar *first_button_text,
                                          ...) G_GNUC_NULL_TERMINATED;
 
-void gtk_dialog_set_response_sensitive (GtkDialog *dialog,
+void btk_dialog_set_response_sensitive (BtkDialog *dialog,
                                         gint       response_id,
                                         gboolean   setting);
-void gtk_dialog_set_default_response   (GtkDialog *dialog,
+void btk_dialog_set_default_response   (BtkDialog *dialog,
                                         gint       response_id);
-GtkWidget* gtk_dialog_get_widget_for_response (GtkDialog *dialog,
+BtkWidget* btk_dialog_get_widget_for_response (BtkDialog *dialog,
                                                gint       response_id);
-gint gtk_dialog_get_response_for_widget (GtkDialog *dialog,
-					 GtkWidget *widget);
+gint btk_dialog_get_response_for_widget (BtkDialog *dialog,
+					 BtkWidget *widget);
 
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
-void     gtk_dialog_set_has_separator (GtkDialog *dialog,
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
+void     btk_dialog_set_has_separator (BtkDialog *dialog,
                                        gboolean   setting);
-gboolean gtk_dialog_get_has_separator (GtkDialog *dialog);
+gboolean btk_dialog_get_has_separator (BtkDialog *dialog);
 #endif
 
-gboolean gtk_alternative_dialog_button_order (GdkScreen *screen);
-void     gtk_dialog_set_alternative_button_order (GtkDialog *dialog,
+gboolean btk_alternative_dialog_button_order (BdkScreen *screen);
+void     btk_dialog_set_alternative_button_order (BtkDialog *dialog,
 						  gint       first_response_id,
 						  ...);
-void     gtk_dialog_set_alternative_button_order_from_array (GtkDialog *dialog,
+void     btk_dialog_set_alternative_button_order_from_array (BtkDialog *dialog,
                                                              gint       n_params,
                                                              gint      *new_order);
 
 /* Emit response signal */
-void gtk_dialog_response           (GtkDialog *dialog,
+void btk_dialog_response           (BtkDialog *dialog,
                                     gint       response_id);
 
 /* Returns response_id */
-gint gtk_dialog_run                (GtkDialog *dialog);
+gint btk_dialog_run                (BtkDialog *dialog);
 
-GtkWidget * gtk_dialog_get_action_area  (GtkDialog *dialog);
-GtkWidget * gtk_dialog_get_content_area (GtkDialog *dialog);
+BtkWidget * btk_dialog_get_action_area  (BtkDialog *dialog);
+BtkWidget * btk_dialog_get_content_area (BtkDialog *dialog);
 
 /* For private use only */
-void _gtk_dialog_set_ignore_separator (GtkDialog *dialog,
+void _btk_dialog_set_ignore_separator (BtkDialog *dialog,
 				       gboolean   ignore_separator);
 
 G_END_DECLS
 
-#endif /* __GTK_DIALOG_H__ */
+#endif /* __BTK_DIALOG_H__ */

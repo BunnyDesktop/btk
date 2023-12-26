@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilesystemmodel.c: GtkTreeModel wrapping a GtkFileSystem
+/* BTK - The GIMP Toolkit
+ * btkfilesystemmodel.c: BtkTreeModel wrapping a BtkFileSystem
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,28 +20,28 @@
 
 #include "config.h"
 
-#include "gtkfilesystemmodel.h"
+#include "btkfilesystemmodel.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "gtkfilesystem.h"
-#include "gtkintl.h"
-#include "gtkmarshalers.h"
-#include "gtktreedatalist.h"
-#include "gtktreednd.h"
-#include "gtktreemodel.h"
-#include "gtkalias.h"
+#include "btkfilesystem.h"
+#include "btkintl.h"
+#include "btkmarshalers.h"
+#include "btktreedatalist.h"
+#include "btktreednd.h"
+#include "btktreemodel.h"
+#include "btkalias.h"
 
-/*** Structure: how GtkFileSystemModel works
+/*** Structure: how BtkFileSystemModel works
  *
- * This is a custom GtkTreeModel used to hold a collection of files for GtkFileChooser.  There are two use cases:
+ * This is a custom BtkTreeModel used to hold a collection of files for BtkFileChooser.  There are two use cases:
  *
- *   1. The model populates itself from a folder, using the GIO file enumerator API.  This happens if you use
- *      _gtk_file_system_model_new_for_directory().  This is the normal usage for showing the contents of a folder.
+ *   1. The model populates itself from a folder, using the BUNNYIO file enumerator API.  This happens if you use
+ *      _btk_file_system_model_new_for_directory().  This is the normal usage for showing the contents of a folder.
  *
  *   2. The caller populates the model by hand, with files not necessarily in the same folder.  This happens
- *      if you use _gtk_file_system_model_new() and then _gtk_file_system_model_add_and_query_file().  This is
+ *      if you use _btk_file_system_model_new() and then _btk_file_system_model_add_and_query_file().  This is
  *      the special kind of usage for "search" and "recent-files", where the file chooser gives the model the
  *      files to be displayed.
  *
@@ -50,7 +50,7 @@
  *
  * Each file is kept in a FileModelNode structure.  Each FileModelNode holds a GFile* and other data.  All the
  * node structures have the same size, determined at runtime, depending on the number of columns that were passed
- * to _gtk_file_system_model_new() or _gtk_file_system_model_new_for_directory() (that is, the size of a node is
+ * to _btk_file_system_model_new() or _btk_file_system_model_new_for_directory() (that is, the size of a node is
  * not sizeof (FileModelNode), but rather model->node_size).  The last field in the FileModelNode structure,
  * node->values[], is an array of GValue, used to hold the data for those columns.
  *
@@ -70,7 +70,7 @@
  * (model->file_lookup) are already added to the hash table. The hash table will get cleared when we re-sort the
  * files, as the array will be in a different order and the indexes need to be rebuilt.
  *
- * Each FileModelNode has a node->visible field, which indicates whether the node is visible in the GtkTreeView.
+ * Each FileModelNode has a node->visible field, which indicates whether the node is visible in the BtkTreeView.
  * A node may be invisible if, for example, it corresponds to a hidden file and the file chooser is not showing
  * hidden files.  Also, a file filter may be explicitly set onto the model, for example, to only show files that
  * match "*.jpg".  In this case, node->filtered_out says whether the node failed the filter.  The ultimate
@@ -87,14 +87,14 @@
  *   index - An index in the model->files array.  All variables/fields that represent indexes are either called
  *   "index" or "i_*", or simply "i" for things like loop counters.
  *
- *   row - An index in the GtkTreeView, i.e. the index of a row within the outward-facing API of the
- *   GtkFileSystemModel.  However, note that our rows are 1-based, not 0-based, for the reason explained in the
+ *   row - An index in the BtkTreeView, i.e. the index of a row within the outward-facing API of the
+ *   BtkFileSystemModel.  However, note that our rows are 1-based, not 0-based, for the reason explained in the
  *   following paragraph.  Variables/fields that represent visible rows are called "row", or "r_*", or simply
  *   "r".
  *
  * Each FileModelNode has a node->row field which is the number of visible rows in the treeview, *before and
  * including* that node.  This means that node->row is 1-based, instead of 0-based --- this makes some code
- * simpler, believe it or not :)  This also means that when the calling GtkTreeView gives us a GtkTreePath, we
+ * simpler, believe it or not :)  This also means that when the calling BtkTreeView gives us a BtkTreePath, we
  * turn the 0-based treepath into a 1-based row for our purposes.  If a node is not visible, it will have the
  * same row number as its closest preceding visible node.
  *
@@ -112,7 +112,7 @@
  * Sorting
  * -------
  *
- * The model implements the GtkTreeSortable interface.  To avoid re-sorting
+ * The model implements the BtkTreeSortable interface.  To avoid re-sorting
  * every time a node gets added (which would lead to O(n^2) performance during
  * the initial population of the model), the model can freeze itself (with
  * freeze_updates()) during the intial population process.  When the model is
@@ -131,7 +131,7 @@
 #define FILES_PER_QUERY 100
 
 typedef struct _FileModelNode           FileModelNode;
-typedef struct _GtkFileSystemModelClass GtkFileSystemModelClass;
+typedef struct _BtkFileSystemModelClass BtkFileSystemModelClass;
 
 struct _FileModelNode
 {
@@ -149,7 +149,7 @@ struct _FileModelNode
   GValue                values[1];      /* actually n_columns values */
 };
 
-struct _GtkFileSystemModel
+struct _BtkFileSystemModel
 {
   GObject               parent_instance;
 
@@ -171,15 +171,15 @@ struct _GtkFileSystemModel
 
   guint                 n_columns;      /* number of columns */
   GType *               column_types;   /* types of each column */
-  GtkFileSystemModelGetValue get_func;  /* function to call to fill in values in columns */
+  BtkFileSystemModelGetValue get_func;  /* function to call to fill in values in columns */
   gpointer              get_data;       /* data to pass to get_func */
 
-  GtkFileFilter *       filter;         /* filter to use for deciding which nodes are visible */
+  BtkFileFilter *       filter;         /* filter to use for deciding which nodes are visible */
 
   int                   sort_column_id; /* current sorting column */
-  GtkSortType           sort_order;     /* current sorting order */
+  BtkSortType           sort_order;     /* current sorting order */
   GList *               sort_list;      /* list of sorting functions */
-  GtkTreeIterCompareFunc default_sort_func; /* default sort function */
+  BtkTreeIterCompareFunc default_sort_func; /* default sort function */
   gpointer              default_sort_data; /* data to pass to default sort func */
   GDestroyNotify        default_sort_destroy; /* function to call to destroy default_sort_data */
 
@@ -194,29 +194,29 @@ struct _GtkFileSystemModel
   guint                 filter_folders :1;/* whether filter applies to folders */
 };
 
-#define GTK_FILE_SYSTEM_MODEL_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FILE_SYSTEM_MODEL, GtkFileSystemModelClass))
-#define GTK_IS_FILE_SYSTEM_MODEL_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FILE_SYSTEM_MODEL))
-#define GTK_FILE_SYSTEM_MODEL_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FILE_SYSTEM_MODEL, GtkFileSystemModelClass))
+#define BTK_FILE_SYSTEM_MODEL_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModelClass))
+#define BTK_IS_FILE_SYSTEM_MODEL_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_SYSTEM_MODEL))
+#define BTK_FILE_SYSTEM_MODEL_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModelClass))
 
-struct _GtkFileSystemModelClass
+struct _BtkFileSystemModelClass
 {
   GObjectClass parent_class;
 
   /* Signals */
 
-  void (*finished_loading) (GtkFileSystemModel *model, GError *error);
+  void (*finished_loading) (BtkFileSystemModel *model, GError *error);
 };
 
-static void freeze_updates (GtkFileSystemModel *model);
-static void thaw_updates (GtkFileSystemModel *model);
+static void freeze_updates (BtkFileSystemModel *model);
+static void thaw_updates (BtkFileSystemModel *model);
 
-static guint node_get_for_file (GtkFileSystemModel *model,
+static guint node_get_for_file (BtkFileSystemModel *model,
 				GFile              *file);
 
-static void add_file (GtkFileSystemModel *model,
+static void add_file (BtkFileSystemModel *model,
 		      GFile              *file,
 		      GFileInfo          *info);
-static void remove_file (GtkFileSystemModel *model,
+static void remove_file (BtkFileSystemModel *model,
 			 GFile              *file);
 
 /* iter setup:
@@ -250,7 +250,7 @@ static void remove_file (GtkFileSystemModel *model,
  * G_MAXUINT for both arguments for "validate everything".
  */
 static void
-node_validate_rows (GtkFileSystemModel *model, guint up_to_index, guint up_to_row)
+node_validate_rows (BtkFileSystemModel *model, guint up_to_index, guint up_to_row)
 {
   guint i, row;
 
@@ -277,7 +277,7 @@ node_validate_rows (GtkFileSystemModel *model, guint up_to_index, guint up_to_ro
 }
 
 static guint
-node_get_tree_row (GtkFileSystemModel *model, guint index)
+node_get_tree_row (BtkFileSystemModel *model, guint index)
 {
   if (model->n_nodes_valid <= index)
     node_validate_rows (model, index, G_MAXUINT);
@@ -286,57 +286,57 @@ node_get_tree_row (GtkFileSystemModel *model, guint index)
 }
 
 static void 
-node_invalidate_index (GtkFileSystemModel *model, guint id)
+node_invalidate_index (BtkFileSystemModel *model, guint id)
 {
   model->n_nodes_valid = MIN (model->n_nodes_valid, id);
 }
 
-static GtkTreePath *
-tree_path_new_from_node (GtkFileSystemModel *model, guint id)
+static BtkTreePath *
+tree_path_new_from_node (BtkFileSystemModel *model, guint id)
 {
   guint r = node_get_tree_row (model, id);
 
   g_assert (r < model->files->len);
 
-  return gtk_tree_path_new_from_indices (r, -1);
+  return btk_tree_path_new_from_indices (r, -1);
 }
 
 static void
-emit_row_inserted_for_node (GtkFileSystemModel *model, guint id)
+emit_row_inserted_for_node (BtkFileSystemModel *model, guint id)
 {
-  GtkTreePath *path;
-  GtkTreeIter iter;
+  BtkTreePath *path;
+  BtkTreeIter iter;
 
   path = tree_path_new_from_node (model, id);
   ITER_INIT_FROM_INDEX (model, &iter, id);
-  gtk_tree_model_row_inserted (GTK_TREE_MODEL (model), path, &iter);
-  gtk_tree_path_free (path);
+  btk_tree_model_row_inserted (BTK_TREE_MODEL (model), path, &iter);
+  btk_tree_path_free (path);
 }
 
 static void
-emit_row_changed_for_node (GtkFileSystemModel *model, guint id)
+emit_row_changed_for_node (BtkFileSystemModel *model, guint id)
 {
-  GtkTreePath *path;
-  GtkTreeIter iter;
+  BtkTreePath *path;
+  BtkTreeIter iter;
 
   path = tree_path_new_from_node (model, id);
   ITER_INIT_FROM_INDEX (model, &iter, id);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (model), path, &iter);
-  gtk_tree_path_free (path);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (model), path, &iter);
+  btk_tree_path_free (path);
 }
 
 static void
-emit_row_deleted_for_row (GtkFileSystemModel *model, guint row)
+emit_row_deleted_for_row (BtkFileSystemModel *model, guint row)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
 
-  path = gtk_tree_path_new_from_indices (row, -1);
-  gtk_tree_model_row_deleted (GTK_TREE_MODEL (model), path);
-  gtk_tree_path_free (path);
+  path = btk_tree_path_new_from_indices (row, -1);
+  btk_tree_model_row_deleted (BTK_TREE_MODEL (model), path);
+  btk_tree_path_free (path);
 }
 
 static void
-node_set_visible_and_filtered_out (GtkFileSystemModel *model, guint id, gboolean visible, gboolean filtered_out)
+node_set_visible_and_filtered_out (BtkFileSystemModel *model, guint id, gboolean visible, gboolean filtered_out)
 {
   FileModelNode *node = get_node (model, id);
 
@@ -375,11 +375,11 @@ node_set_visible_and_filtered_out (GtkFileSystemModel *model, guint id, gboolean
 }
 
 static gboolean
-node_should_be_filtered_out (GtkFileSystemModel *model, guint id)
+node_should_be_filtered_out (BtkFileSystemModel *model, guint id)
 {
   FileModelNode *node = get_node (model, id);
-  GtkFileFilterInfo filter_info = { 0, };
-  GtkFileFilterFlags required;
+  BtkFileFilterInfo filter_info = { 0, };
+  BtkFileFilterFlags required;
   gboolean result;
   char *mime_type = NULL;
   char *filename = NULL;
@@ -392,12 +392,12 @@ node_should_be_filtered_out (GtkFileSystemModel *model, guint id)
     return FALSE;
 
   /* fill info */
-  required = gtk_file_filter_get_needed (model->filter);
+  required = btk_file_filter_get_needed (model->filter);
 
-  filter_info.contains = GTK_FILE_FILTER_DISPLAY_NAME;
+  filter_info.contains = BTK_FILE_FILTER_DISPLAY_NAME;
   filter_info.display_name = g_file_info_get_display_name (node->info);
 
-  if (required & GTK_FILE_FILTER_MIME_TYPE)
+  if (required & BTK_FILE_FILTER_MIME_TYPE)
     {
       const char *s = g_file_info_get_content_type (node->info);
       if (s)
@@ -406,32 +406,32 @@ node_should_be_filtered_out (GtkFileSystemModel *model, guint id)
 	  if (mime_type)
 	    {
 	      filter_info.mime_type = mime_type;
-	      filter_info.contains |= GTK_FILE_FILTER_MIME_TYPE;
+	      filter_info.contains |= BTK_FILE_FILTER_MIME_TYPE;
 	    }
 	}
     }
 
-  if (required & GTK_FILE_FILTER_FILENAME)
+  if (required & BTK_FILE_FILTER_FILENAME)
     {
       filename = g_file_get_path (node->file);
       if (filename)
         {
           filter_info.filename = filename;
-	  filter_info.contains |= GTK_FILE_FILTER_FILENAME;
+	  filter_info.contains |= BTK_FILE_FILTER_FILENAME;
         }
     }
 
-  if (required & GTK_FILE_FILTER_URI)
+  if (required & BTK_FILE_FILTER_URI)
     {
       uri = g_file_get_uri (node->file);
       if (uri)
         {
           filter_info.uri = uri;
-	  filter_info.contains |= GTK_FILE_FILTER_URI;
+	  filter_info.contains |= BTK_FILE_FILTER_URI;
         }
     }
 
-  result = !gtk_file_filter_filter (model->filter, &filter_info);
+  result = !btk_file_filter_filter (model->filter, &filter_info);
 
   g_free (mime_type);
   g_free (filename);
@@ -441,7 +441,7 @@ node_should_be_filtered_out (GtkFileSystemModel *model, guint id)
 }
 
 static gboolean
-node_should_be_visible (GtkFileSystemModel *model, guint id, gboolean filtered_out)
+node_should_be_visible (BtkFileSystemModel *model, guint id, gboolean filtered_out)
 {
   FileModelNode *node = get_node (model, id);
   gboolean result;
@@ -453,7 +453,7 @@ node_should_be_visible (GtkFileSystemModel *model, guint id, gboolean filtered_o
       (g_file_info_get_is_hidden (node->info) || g_file_info_get_is_backup (node->info)))
     return FALSE;
 
-  if (_gtk_file_info_consider_as_directory (node->info))
+  if (_btk_file_info_consider_as_directory (node->info))
     {
       if (!model->show_folders)
         return FALSE;
@@ -473,7 +473,7 @@ node_should_be_visible (GtkFileSystemModel *model, guint id, gboolean filtered_o
 }
 
 static void
-node_compute_visibility_and_filters (GtkFileSystemModel *model, guint id)
+node_compute_visibility_and_filters (BtkFileSystemModel *model, guint id)
 {
   gboolean filtered_out;
   gboolean visible;
@@ -484,28 +484,28 @@ node_compute_visibility_and_filters (GtkFileSystemModel *model, guint id)
   node_set_visible_and_filtered_out (model, id, visible, filtered_out);
 }
 
-/*** GtkTreeModel ***/
+/*** BtkTreeModel ***/
 
-static GtkTreeModelFlags
-gtk_file_system_model_get_flags (GtkTreeModel *tree_model)
+static BtkTreeModelFlags
+btk_file_system_model_get_flags (BtkTreeModel *tree_model)
 {
-  /* GTK_TREE_MODEL_ITERS_PERSIST doesn't work with arrays :( */
-  return GTK_TREE_MODEL_LIST_ONLY;
+  /* BTK_TREE_MODEL_ITERS_PERSIST doesn't work with arrays :( */
+  return BTK_TREE_MODEL_LIST_ONLY;
 }
 
 static gint
-gtk_file_system_model_get_n_columns (GtkTreeModel *tree_model)
+btk_file_system_model_get_n_columns (BtkTreeModel *tree_model)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
   
   return model->n_columns;
 }
 
 static GType
-gtk_file_system_model_get_column_type (GtkTreeModel *tree_model,
+btk_file_system_model_get_column_type (BtkTreeModel *tree_model,
 				       gint          i)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
   
   g_return_val_if_fail (i >= 0 && (guint) i < model->n_columns, G_TYPE_NONE);
 
@@ -521,12 +521,12 @@ compare_indices (gconstpointer key, gconstpointer _node)
 }
 
 static gboolean
-gtk_file_system_model_iter_nth_child (GtkTreeModel *tree_model,
-				      GtkTreeIter  *iter,
-				      GtkTreeIter  *parent,
+btk_file_system_model_iter_nth_child (BtkTreeModel *tree_model,
+				      BtkTreeIter  *iter,
+				      BtkTreeIter  *parent,
 				      gint          n)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
   char *node;
   guint id;
   guint row_to_find;
@@ -576,26 +576,26 @@ gtk_file_system_model_iter_nth_child (GtkTreeModel *tree_model,
 }
 
 static gboolean
-gtk_file_system_model_get_iter (GtkTreeModel *tree_model,
-				GtkTreeIter  *iter,
-				GtkTreePath  *path)
+btk_file_system_model_get_iter (BtkTreeModel *tree_model,
+				BtkTreeIter  *iter,
+				BtkTreePath  *path)
 {
-  g_return_val_if_fail (gtk_tree_path_get_depth (path) > 0, FALSE);
+  g_return_val_if_fail (btk_tree_path_get_depth (path) > 0, FALSE);
 
-  if (gtk_tree_path_get_depth (path) > 1)
+  if (btk_tree_path_get_depth (path) > 1)
     return FALSE;
 
-  return gtk_file_system_model_iter_nth_child (tree_model, 
+  return btk_file_system_model_iter_nth_child (tree_model, 
                                                iter,
                                                NULL, 
-                                               gtk_tree_path_get_indices (path)[0]);
+                                               btk_tree_path_get_indices (path)[0]);
 }
 
-static GtkTreePath *
-gtk_file_system_model_get_path (GtkTreeModel *tree_model,
-				GtkTreeIter  *iter)
+static BtkTreePath *
+btk_file_system_model_get_path (BtkTreeModel *tree_model,
+				BtkTreeIter  *iter)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
       
   g_return_val_if_fail (ITER_IS_VALID (model, iter), NULL);
 
@@ -603,18 +603,18 @@ gtk_file_system_model_get_path (GtkTreeModel *tree_model,
 }
 
 static void
-gtk_file_system_model_get_value (GtkTreeModel *tree_model,
-				 GtkTreeIter  *iter,
+btk_file_system_model_get_value (BtkTreeModel *tree_model,
+				 BtkTreeIter  *iter,
 				 gint          column,
 				 GValue       *value)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
   const GValue *original;
   
   g_return_if_fail ((guint) column < model->n_columns);
   g_return_if_fail (ITER_IS_VALID (model, iter));
 
-  original = _gtk_file_system_model_get_value (model, iter, column);
+  original = _btk_file_system_model_get_value (model, iter, column);
   if (original)
     {
       g_value_init (value, G_VALUE_TYPE (original));
@@ -625,10 +625,10 @@ gtk_file_system_model_get_value (GtkTreeModel *tree_model,
 }
 
 static gboolean
-gtk_file_system_model_iter_next (GtkTreeModel *tree_model,
-				 GtkTreeIter  *iter)
+btk_file_system_model_iter_next (BtkTreeModel *tree_model,
+				 BtkTreeIter  *iter)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
   guint i;
 
   g_return_val_if_fail (ITER_IS_VALID (model, iter), FALSE);
@@ -648,25 +648,25 @@ gtk_file_system_model_iter_next (GtkTreeModel *tree_model,
 }
 
 static gboolean
-gtk_file_system_model_iter_children (GtkTreeModel *tree_model,
-				     GtkTreeIter  *iter,
-				     GtkTreeIter  *parent)
+btk_file_system_model_iter_children (BtkTreeModel *tree_model,
+				     BtkTreeIter  *iter,
+				     BtkTreeIter  *parent)
 {
   return FALSE;
 }
 
 static gboolean
-gtk_file_system_model_iter_has_child (GtkTreeModel *tree_model,
-				      GtkTreeIter  *iter)
+btk_file_system_model_iter_has_child (BtkTreeModel *tree_model,
+				      BtkTreeIter  *iter)
 {
   return FALSE;
 }
 
 static gint
-gtk_file_system_model_iter_n_children (GtkTreeModel *tree_model,
-				       GtkTreeIter  *iter)
+btk_file_system_model_iter_n_children (BtkTreeModel *tree_model,
+				       BtkTreeIter  *iter)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (tree_model);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (tree_model);
 
   if (iter)
     return 0;
@@ -675,77 +675,77 @@ gtk_file_system_model_iter_n_children (GtkTreeModel *tree_model,
 }
 
 static gboolean
-gtk_file_system_model_iter_parent (GtkTreeModel *tree_model,
-				   GtkTreeIter  *iter,
-				   GtkTreeIter  *child)
+btk_file_system_model_iter_parent (BtkTreeModel *tree_model,
+				   BtkTreeIter  *iter,
+				   BtkTreeIter  *child)
 {
   return FALSE;
 }
 
 static void
-gtk_file_system_model_ref_node (GtkTreeModel *tree_model,
-				GtkTreeIter  *iter)
+btk_file_system_model_ref_node (BtkTreeModel *tree_model,
+				BtkTreeIter  *iter)
 {
   /* nothing to do */
 }
 
 static void
-gtk_file_system_model_unref_node (GtkTreeModel *tree_model,
-				  GtkTreeIter  *iter)
+btk_file_system_model_unref_node (BtkTreeModel *tree_model,
+				  BtkTreeIter  *iter)
 {
   /* nothing to do */
 }
 
 static void
-gtk_file_system_model_iface_init (GtkTreeModelIface *iface)
+btk_file_system_model_iface_init (BtkTreeModelIface *iface)
 {
-  iface->get_flags =       gtk_file_system_model_get_flags;
-  iface->get_n_columns =   gtk_file_system_model_get_n_columns;
-  iface->get_column_type = gtk_file_system_model_get_column_type;
-  iface->get_iter =        gtk_file_system_model_get_iter;
-  iface->get_path =        gtk_file_system_model_get_path;
-  iface->get_value =       gtk_file_system_model_get_value;
-  iface->iter_next =       gtk_file_system_model_iter_next;
-  iface->iter_children =   gtk_file_system_model_iter_children;
-  iface->iter_has_child =  gtk_file_system_model_iter_has_child;
-  iface->iter_n_children = gtk_file_system_model_iter_n_children;
-  iface->iter_nth_child =  gtk_file_system_model_iter_nth_child;
-  iface->iter_parent =     gtk_file_system_model_iter_parent;
-  iface->ref_node =        gtk_file_system_model_ref_node;
-  iface->unref_node =      gtk_file_system_model_unref_node;
+  iface->get_flags =       btk_file_system_model_get_flags;
+  iface->get_n_columns =   btk_file_system_model_get_n_columns;
+  iface->get_column_type = btk_file_system_model_get_column_type;
+  iface->get_iter =        btk_file_system_model_get_iter;
+  iface->get_path =        btk_file_system_model_get_path;
+  iface->get_value =       btk_file_system_model_get_value;
+  iface->iter_next =       btk_file_system_model_iter_next;
+  iface->iter_children =   btk_file_system_model_iter_children;
+  iface->iter_has_child =  btk_file_system_model_iter_has_child;
+  iface->iter_n_children = btk_file_system_model_iter_n_children;
+  iface->iter_nth_child =  btk_file_system_model_iter_nth_child;
+  iface->iter_parent =     btk_file_system_model_iter_parent;
+  iface->ref_node =        btk_file_system_model_ref_node;
+  iface->unref_node =      btk_file_system_model_unref_node;
 }
 
-/*** GtkTreeSortable ***/
+/*** BtkTreeSortable ***/
 
 typedef struct _SortData SortData;
 struct _SortData {
-  GtkFileSystemModel *    model;
-  GtkTreeIterCompareFunc  func;
+  BtkFileSystemModel *    model;
+  BtkTreeIterCompareFunc  func;
   gpointer                data;
   int                     order;        /* -1 to invert sort order or 1 to keep it */
 };
 
 /* returns FALSE if no sort necessary */
 static gboolean
-sort_data_init (SortData *data, GtkFileSystemModel *model)
+sort_data_init (SortData *data, BtkFileSystemModel *model)
 {
-  GtkTreeDataSortHeader *header;
+  BtkTreeDataSortHeader *header;
 
   if (model->files->len <= 2)
     return FALSE;
 
   switch (model->sort_column_id)
     {
-    case GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID:
+    case BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID:
       if (!model->default_sort_func)
         return FALSE;
       data->func = model->default_sort_func;
       data->data = model->default_sort_data;
       break;
-    case GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID:
+    case BTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID:
       return FALSE;
     default:
-      header = _gtk_tree_data_list_get_header (model->sort_list, model->sort_column_id);
+      header = _btk_tree_data_list_get_header (model->sort_list, model->sort_column_id);
       if (header == NULL)
         return FALSE;
       data->func = header->func;
@@ -753,7 +753,7 @@ sort_data_init (SortData *data, GtkFileSystemModel *model)
       break;
     }
 
-  data->order = model->sort_order == GTK_SORT_DESCENDING ? -1 : 1;
+  data->order = model->sort_order == BTK_SORT_DESCENDING ? -1 : 1;
   data->model = model;
   return TRUE;
 }
@@ -762,15 +762,15 @@ static int
 compare_array_element (gconstpointer a, gconstpointer b, gpointer user_data)
 {
   SortData *data = user_data;
-  GtkTreeIter itera, iterb;
+  BtkTreeIter itera, iterb;
 
   ITER_INIT_FROM_INDEX (data->model, &itera, node_index (data->model, a));
   ITER_INIT_FROM_INDEX (data->model, &iterb, node_index (data->model, b));
-  return data->func (GTK_TREE_MODEL (data->model), &itera, &iterb, data->data) * data->order;
+  return data->func (BTK_TREE_MODEL (data->model), &itera, &iterb, data->data) * data->order;
 }
 
 static void
-gtk_file_system_model_sort (GtkFileSystemModel *model)
+btk_file_system_model_sort (BtkFileSystemModel *model)
 {
   SortData data;
 
@@ -782,7 +782,7 @@ gtk_file_system_model_sort (GtkFileSystemModel *model)
 
   if (sort_data_init (&data, model))
     {
-      GtkTreePath *path;
+      BtkTreePath *path;
       guint i;
       guint r, n_visible_rows;
 
@@ -816,12 +816,12 @@ gtk_file_system_model_sort (GtkFileSystemModel *model)
               node->row = r;
             }
           g_assert (r == n_visible_rows);
-          path = gtk_tree_path_new ();
-          gtk_tree_model_rows_reordered (GTK_TREE_MODEL (model),
+          path = btk_tree_path_new ();
+          btk_tree_model_rows_reordered (BTK_TREE_MODEL (model),
                                          path,
                                          NULL,
                                          new_order);
-          gtk_tree_path_free (path);
+          btk_tree_path_free (path);
           g_free (new_order);
         }
     }
@@ -830,49 +830,49 @@ gtk_file_system_model_sort (GtkFileSystemModel *model)
 }
 
 static void
-gtk_file_system_model_sort_node (GtkFileSystemModel *model, guint node)
+btk_file_system_model_sort_node (BtkFileSystemModel *model, guint node)
 {
   /* FIXME: improve */
-  gtk_file_system_model_sort (model);
+  btk_file_system_model_sort (model);
 }
 
 static gboolean
-gtk_file_system_model_get_sort_column_id (GtkTreeSortable  *sortable,
+btk_file_system_model_get_sort_column_id (BtkTreeSortable  *sortable,
                                           gint             *sort_column_id,
-                                          GtkSortType      *order)
+                                          BtkSortType      *order)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (sortable);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (sortable);
 
   if (sort_column_id)
     *sort_column_id = model->sort_column_id;
   if (order)
     *order = model->sort_order;
 
-  if (model->sort_column_id == GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID ||
-      model->sort_column_id == GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID)
+  if (model->sort_column_id == BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID ||
+      model->sort_column_id == BTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID)
     return FALSE;
 
   return TRUE;
 }
 
 static void
-gtk_file_system_model_set_sort_column_id (GtkTreeSortable  *sortable,
+btk_file_system_model_set_sort_column_id (BtkTreeSortable  *sortable,
                                           gint              sort_column_id,
-                                          GtkSortType       order)
+                                          BtkSortType       order)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (sortable);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (sortable);
 
   if ((model->sort_column_id == sort_column_id) &&
       (model->sort_order == order))
     return;
 
-  if (sort_column_id != GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID)
+  if (sort_column_id != BTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID)
     {
-      if (sort_column_id != GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID)
+      if (sort_column_id != BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID)
 	{
-	  GtkTreeDataSortHeader *header = NULL;
+	  BtkTreeDataSortHeader *header = NULL;
 
-	  header = _gtk_tree_data_list_get_header (model->sort_list, 
+	  header = _btk_tree_data_list_get_header (model->sort_list, 
 						   sort_column_id);
 
 	  /* We want to make sure that we have a function */
@@ -889,35 +889,35 @@ gtk_file_system_model_set_sort_column_id (GtkTreeSortable  *sortable,
   model->sort_column_id = sort_column_id;
   model->sort_order = order;
 
-  gtk_tree_sortable_sort_column_changed (sortable);
+  btk_tree_sortable_sort_column_changed (sortable);
 
-  gtk_file_system_model_sort (model);
+  btk_file_system_model_sort (model);
 }
 
 static void
-gtk_file_system_model_set_sort_func (GtkTreeSortable        *sortable,
+btk_file_system_model_set_sort_func (BtkTreeSortable        *sortable,
                                      gint                    sort_column_id,
-                                     GtkTreeIterCompareFunc  func,
+                                     BtkTreeIterCompareFunc  func,
                                      gpointer                data,
                                      GDestroyNotify          destroy)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (sortable);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (sortable);
 
-  model->sort_list = _gtk_tree_data_list_set_header (model->sort_list, 
+  model->sort_list = _btk_tree_data_list_set_header (model->sort_list, 
                                                      sort_column_id, 
                                                      func, data, destroy);
 
   if (model->sort_column_id == sort_column_id)
-    gtk_file_system_model_sort (model);
+    btk_file_system_model_sort (model);
 }
 
 static void
-gtk_file_system_model_set_default_sort_func (GtkTreeSortable        *sortable,
-                                             GtkTreeIterCompareFunc  func,
+btk_file_system_model_set_default_sort_func (BtkTreeSortable        *sortable,
+                                             BtkTreeIterCompareFunc  func,
                                              gpointer                data,
                                              GDestroyNotify          destroy)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (sortable);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (sortable);
 
   if (model->default_sort_destroy)
     {
@@ -931,54 +931,54 @@ gtk_file_system_model_set_default_sort_func (GtkTreeSortable        *sortable,
   model->default_sort_data = data;
   model->default_sort_destroy = destroy;
 
-  if (model->sort_column_id == GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID)
-    gtk_file_system_model_sort (model);
+  if (model->sort_column_id == BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID)
+    btk_file_system_model_sort (model);
 }
 
 static gboolean
-gtk_file_system_model_has_default_sort_func (GtkTreeSortable *sortable)
+btk_file_system_model_has_default_sort_func (BtkTreeSortable *sortable)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (sortable);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (sortable);
 
   return (model->default_sort_func != NULL);
 }
 
 static void
-gtk_file_system_model_sortable_init (GtkTreeSortableIface *iface)
+btk_file_system_model_sortable_init (BtkTreeSortableIface *iface)
 {
-  iface->get_sort_column_id = gtk_file_system_model_get_sort_column_id;
-  iface->set_sort_column_id = gtk_file_system_model_set_sort_column_id;
-  iface->set_sort_func = gtk_file_system_model_set_sort_func;
-  iface->set_default_sort_func = gtk_file_system_model_set_default_sort_func;
-  iface->has_default_sort_func = gtk_file_system_model_has_default_sort_func;
+  iface->get_sort_column_id = btk_file_system_model_get_sort_column_id;
+  iface->set_sort_column_id = btk_file_system_model_set_sort_column_id;
+  iface->set_sort_func = btk_file_system_model_set_sort_func;
+  iface->set_default_sort_func = btk_file_system_model_set_default_sort_func;
+  iface->has_default_sort_func = btk_file_system_model_has_default_sort_func;
 }
 
-/*** GtkTreeDragSource ***/
+/*** BtkTreeDragSource ***/
 
 static gboolean
-drag_source_row_draggable (GtkTreeDragSource *drag_source,
-			   GtkTreePath       *path)
+drag_source_row_draggable (BtkTreeDragSource *drag_source,
+			   BtkTreePath       *path)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (drag_source);
-  GtkTreeIter iter;
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (drag_source);
+  BtkTreeIter iter;
 
-  if (!gtk_file_system_model_get_iter (GTK_TREE_MODEL (model), &iter, path))
+  if (!btk_file_system_model_get_iter (BTK_TREE_MODEL (model), &iter, path))
     return FALSE;
 
   return ITER_INDEX (&iter) != 0;
 }
 
 static gboolean
-drag_source_drag_data_get (GtkTreeDragSource *drag_source,
-			   GtkTreePath       *path,
-			   GtkSelectionData  *selection_data)
+drag_source_drag_data_get (BtkTreeDragSource *drag_source,
+			   BtkTreePath       *path,
+			   BtkSelectionData  *selection_data)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (drag_source);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (drag_source);
   FileModelNode *node;
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   char *uris[2]; 
 
-  if (!gtk_file_system_model_get_iter (GTK_TREE_MODEL (model), &iter, path))
+  if (!btk_file_system_model_get_iter (BTK_TREE_MODEL (model), &iter, path))
     return FALSE;
 
   node = get_node (model, ITER_INDEX (&iter));
@@ -987,21 +987,21 @@ drag_source_drag_data_get (GtkTreeDragSource *drag_source,
 
   uris[0] = g_file_get_uri (node->file);
   uris[1] = NULL;
-  gtk_selection_data_set_uris (selection_data, uris);
+  btk_selection_data_set_uris (selection_data, uris);
   g_free (uris[0]);
 
   return TRUE;
 }
 
 static void
-drag_source_iface_init (GtkTreeDragSourceIface *iface)
+drag_source_iface_init (BtkTreeDragSourceIface *iface)
 {
   iface->row_draggable = drag_source_row_draggable;
   iface->drag_data_get = drag_source_drag_data_get;
   iface->drag_data_delete = NULL;
 }
 
-/*** GtkFileSystemModel ***/
+/*** BtkFileSystemModel ***/
 
 /* Signal IDs */
 enum {
@@ -1013,18 +1013,18 @@ static guint file_system_model_signals[LAST_SIGNAL] = { 0 };
 
 
 
-G_DEFINE_TYPE_WITH_CODE (GtkFileSystemModel, _gtk_file_system_model, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_MODEL,
-						gtk_file_system_model_iface_init)
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_SORTABLE,
-						gtk_file_system_model_sortable_init)
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_TREE_DRAG_SOURCE,
+G_DEFINE_TYPE_WITH_CODE (BtkFileSystemModel, _btk_file_system_model, G_TYPE_OBJECT,
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_MODEL,
+						btk_file_system_model_iface_init)
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_SORTABLE,
+						btk_file_system_model_sortable_init)
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_TREE_DRAG_SOURCE,
 						drag_source_iface_init))
 
 static void
-gtk_file_system_model_dispose (GObject *object)
+btk_file_system_model_dispose (GObject *object)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (object);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (object);
 
   if (model->dir_thaw_source)
     {
@@ -1036,14 +1036,14 @@ gtk_file_system_model_dispose (GObject *object)
   if (model->dir_monitor)
     g_file_monitor_cancel (model->dir_monitor);
 
-  G_OBJECT_CLASS (_gtk_file_system_model_parent_class)->dispose (object);
+  G_OBJECT_CLASS (_btk_file_system_model_parent_class)->dispose (object);
 }
 
 
 static void
-gtk_file_system_model_finalize (GObject *object)
+btk_file_system_model_finalize (GObject *object)
 {
-  GtkFileSystemModel *model = GTK_FILE_SYSTEM_MODEL (object);
+  BtkFileSystemModel *model = BTK_FILE_SYSTEM_MODEL (object);
   guint i;
 
   for (i = 0; i < model->files->len; i++)
@@ -1074,40 +1074,40 @@ gtk_file_system_model_finalize (GObject *object)
 
   g_slice_free1 (sizeof (GType) * model->n_columns, model->column_types);
 
-  _gtk_tree_data_list_header_free (model->sort_list);
+  _btk_tree_data_list_header_free (model->sort_list);
   if (model->default_sort_destroy)
     model->default_sort_destroy (model->default_sort_data);
 
-  G_OBJECT_CLASS (_gtk_file_system_model_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_file_system_model_parent_class)->finalize (object);
 }
 
 static void
-_gtk_file_system_model_class_init (GtkFileSystemModelClass *class)
+_btk_file_system_model_class_init (BtkFileSystemModelClass *class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
-  gobject_class->finalize = gtk_file_system_model_finalize;
-  gobject_class->dispose = gtk_file_system_model_dispose;
+  bobject_class->finalize = btk_file_system_model_finalize;
+  bobject_class->dispose = btk_file_system_model_dispose;
 
   file_system_model_signals[FINISHED_LOADING] =
     g_signal_new (I_("finished-loading"),
-		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFileSystemModelClass, finished_loading),
+		  G_STRUCT_OFFSET (BtkFileSystemModelClass, finished_loading),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__POINTER,
+		  _btk_marshal_VOID__POINTER,
 		  G_TYPE_NONE, 1, G_TYPE_POINTER);
 }
 
 static void
-_gtk_file_system_model_init (GtkFileSystemModel *model)
+_btk_file_system_model_init (BtkFileSystemModel *model)
 {
   model->show_files = TRUE;
   model->show_folders = TRUE;
   model->show_hidden = FALSE;
   model->filter_folders = FALSE;
 
-  model->sort_column_id = GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID;
+  model->sort_column_id = BTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID;
 
   model->file_lookup = g_hash_table_new (g_file_hash, (GEqualFunc) g_file_equal);
   model->cancellable = g_cancellable_new ();
@@ -1116,7 +1116,7 @@ _gtk_file_system_model_init (GtkFileSystemModel *model)
 /*** API ***/
 
 static void
-gtk_file_system_model_closed_enumerator (GObject *object, GAsyncResult *res, gpointer data)
+btk_file_system_model_closed_enumerator (GObject *object, GAsyncResult *res, gpointer data)
 {
   g_file_enumerator_close_finish (G_FILE_ENUMERATOR (object), res, NULL);
 }
@@ -1124,7 +1124,7 @@ gtk_file_system_model_closed_enumerator (GObject *object, GAsyncResult *res, gpo
 static gboolean
 thaw_func (gpointer data)
 {
-  GtkFileSystemModel *model = data;
+  BtkFileSystemModel *model = data;
 
   thaw_updates (model);
   model->dir_thaw_source = 0;
@@ -1133,14 +1133,14 @@ thaw_func (gpointer data)
 }
 
 static void
-gtk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer data)
+btk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer data)
 {
   GFileEnumerator *enumerator = G_FILE_ENUMERATOR (object);
-  GtkFileSystemModel *model = data;
+  BtkFileSystemModel *model = data;
   GList *walk, *files;
   GError *error = NULL;
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
   files = g_file_enumerator_next_files_finish (enumerator, res, &error);
 
@@ -1149,7 +1149,7 @@ gtk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer da
       if (model->dir_thaw_source == 0)
         {
           freeze_updates (model);
-          model->dir_thaw_source = gdk_threads_add_timeout_full (IO_PRIORITY + 1,
+          model->dir_thaw_source = bdk_threads_add_timeout_full (IO_PRIORITY + 1,
                                                                  50,
                                                                  thaw_func,
                                                                  model,
@@ -1181,7 +1181,7 @@ gtk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer da
 					  g_file_is_native (model->dir) ? 50 * FILES_PER_QUERY : FILES_PER_QUERY,
 					  IO_PRIORITY,
 					  model->cancellable,
-					  gtk_file_system_model_got_files,
+					  btk_file_system_model_got_files,
 					  model);
     }
   else
@@ -1191,7 +1191,7 @@ gtk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer da
           g_file_enumerator_close_async (enumerator,
                                          IO_PRIORITY,
                                          model->cancellable,
-                                         gtk_file_system_model_closed_enumerator,
+                                         btk_file_system_model_closed_enumerator,
                                          NULL);
           if (model->dir_thaw_source != 0)
             {
@@ -1207,15 +1207,15 @@ gtk_file_system_model_got_files (GObject *object, GAsyncResult *res, gpointer da
         g_error_free (error);
     }
 
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
-gtk_file_system_model_query_done (GObject *     object,
+btk_file_system_model_query_done (GObject *     object,
                                   GAsyncResult *res,
                                   gpointer      data)
 {
-  GtkFileSystemModel *model = data; /* only a valid pointer if not cancelled */
+  BtkFileSystemModel *model = data; /* only a valid pointer if not cancelled */
   GFile *file = G_FILE (object);
   GFileInfo *info;
   guint id;
@@ -1224,24 +1224,24 @@ gtk_file_system_model_query_done (GObject *     object,
   if (info == NULL)
     return;
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
-  _gtk_file_system_model_update_file (model, file, info);
+  _btk_file_system_model_update_file (model, file, info);
 
   id = node_get_for_file (model, file);
-  gtk_file_system_model_sort_node (model, id);
+  btk_file_system_model_sort_node (model, id);
 
   g_object_unref (info);
 
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
-gtk_file_system_model_monitor_change (GFileMonitor *      monitor,
+btk_file_system_model_monitor_change (GFileMonitor *      monitor,
                                       GFile *             file,
                                       GFile *             other_file,
                                       GFileMonitorEvent   type,
-                                      GtkFileSystemModel *model)
+                                      BtkFileSystemModel *model)
 {
   switch (type)
     {
@@ -1254,13 +1254,13 @@ gtk_file_system_model_monitor_change (GFileMonitor *      monitor,
                                  G_FILE_QUERY_INFO_NONE,
                                  IO_PRIORITY,
                                  model->cancellable,
-                                 gtk_file_system_model_query_done,
+                                 btk_file_system_model_query_done,
                                  model);
         break;
       case G_FILE_MONITOR_EVENT_DELETED:
-	gdk_threads_enter ();
+	bdk_threads_enter ();
         remove_file (model, file);
-	gdk_threads_leave ();
+	bdk_threads_leave ();
         break;
       case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
         /* FIXME: use freeze/thaw with this somehow? */
@@ -1273,13 +1273,13 @@ gtk_file_system_model_monitor_change (GFileMonitor *      monitor,
 }
 
 static void
-gtk_file_system_model_got_enumerator (GObject *dir, GAsyncResult *res, gpointer data)
+btk_file_system_model_got_enumerator (GObject *dir, GAsyncResult *res, gpointer data)
 {
-  GtkFileSystemModel *model = data;
+  BtkFileSystemModel *model = data;
   GFileEnumerator *enumerator;
   GError *error = NULL;
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
   enumerator = g_file_enumerate_children_finish (G_FILE (dir), res, &error);
   if (enumerator == NULL)
@@ -1296,7 +1296,7 @@ gtk_file_system_model_got_enumerator (GObject *dir, GAsyncResult *res, gpointer 
                                           g_file_is_native (model->dir) ? 50 * FILES_PER_QUERY : FILES_PER_QUERY,
                                           IO_PRIORITY,
                                           model->cancellable,
-                                          gtk_file_system_model_got_files,
+                                          btk_file_system_model_got_files,
                                           model);
       g_object_unref (enumerator);
       model->dir_monitor = g_file_monitor_directory (model->dir,
@@ -1306,15 +1306,15 @@ gtk_file_system_model_got_enumerator (GObject *dir, GAsyncResult *res, gpointer 
       if (model->dir_monitor)
         g_signal_connect (model->dir_monitor,
                           "changed",
-                          G_CALLBACK (gtk_file_system_model_monitor_change),
+                          G_CALLBACK (btk_file_system_model_monitor_change),
                           model);
     }
 
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
-gtk_file_system_model_set_n_columns (GtkFileSystemModel *model,
+btk_file_system_model_set_n_columns (BtkFileSystemModel *model,
                                      gint                n_columns,
                                      va_list             args)
 {
@@ -1331,16 +1331,16 @@ gtk_file_system_model_set_n_columns (GtkFileSystemModel *model,
   for (i = 0; i < (guint) n_columns; i++)
     {
       GType type = va_arg (args, GType);
-      if (! _gtk_tree_data_list_check_type (type))
+      if (! _btk_tree_data_list_check_type (type))
 	{
-	  g_error ("%s: type %s cannot be a column type for GtkFileSystemModel\n", G_STRLOC, g_type_name (type));
+	  g_error ("%s: type %s cannot be a column type for BtkFileSystemModel\n", G_STRLOC, g_type_name (type));
           return; /* not reached */
 	}
 
       model->column_types[i] = type;
     }
 
-  model->sort_list = _gtk_tree_data_list_header_new (n_columns, model->column_types);
+  model->sort_list = _btk_tree_data_list_header_new (n_columns, model->column_types);
 
   model->files = g_array_sized_new (FALSE, FALSE, model->node_size, FILES_PER_QUERY);
   /* add editable node at start */
@@ -1349,7 +1349,7 @@ gtk_file_system_model_set_n_columns (GtkFileSystemModel *model,
 }
 
 static void
-gtk_file_system_model_set_directory (GtkFileSystemModel *model,
+btk_file_system_model_set_directory (BtkFileSystemModel *model,
                                      GFile *             dir,
 			             const gchar *       attributes)
 {
@@ -1363,62 +1363,62 @@ gtk_file_system_model_set_directory (GtkFileSystemModel *model,
                                    G_FILE_QUERY_INFO_NONE,
                                    IO_PRIORITY,
                                    model->cancellable,
-                                   gtk_file_system_model_got_enumerator,
+                                   btk_file_system_model_got_enumerator,
                                    model);
 
 }
 
-static GtkFileSystemModel *
-_gtk_file_system_model_new_valist (GtkFileSystemModelGetValue get_func,
+static BtkFileSystemModel *
+_btk_file_system_model_new_valist (BtkFileSystemModelGetValue get_func,
                                    gpointer            get_data,
                                    guint               n_columns,
                                    va_list             args)
 {
-  GtkFileSystemModel *model;
+  BtkFileSystemModel *model;
 
-  model = g_object_new (GTK_TYPE_FILE_SYSTEM_MODEL, NULL);
+  model = g_object_new (BTK_TYPE_FILE_SYSTEM_MODEL, NULL);
   model->get_func = get_func;
   model->get_data = get_data;
 
-  gtk_file_system_model_set_n_columns (model, n_columns, args);
+  btk_file_system_model_set_n_columns (model, n_columns, args);
 
   return model;
 }
 
 /**
- * _gtk_file_system_model_new:
+ * _btk_file_system_model_new:
  * @get_func: function to call for getting a value
  * @get_data: user data argument passed to @get_func
  * @n_columns: number of columns
  * @...: @n_columns #GType types for the columns
  *
- * Creates a new #GtkFileSystemModel object. You need to add files
- * to the list using _gtk_file_system_model_add_and_query_file()
- * or _gtk_file_system_model_update_file().
+ * Creates a new #BtkFileSystemModel object. You need to add files
+ * to the list using _btk_file_system_model_add_and_query_file()
+ * or _btk_file_system_model_update_file().
  *
- * Return value: the newly created #GtkFileSystemModel
+ * Return value: the newly created #BtkFileSystemModel
  **/
-GtkFileSystemModel *
-_gtk_file_system_model_new (GtkFileSystemModelGetValue get_func,
+BtkFileSystemModel *
+_btk_file_system_model_new (BtkFileSystemModelGetValue get_func,
                             gpointer            get_data,
                             guint               n_columns,
                             ...)
 {
-  GtkFileSystemModel *model;
+  BtkFileSystemModel *model;
   va_list args;
 
   g_return_val_if_fail (get_func != NULL, NULL);
   g_return_val_if_fail (n_columns > 0, NULL);
 
   va_start (args, n_columns);
-  model = _gtk_file_system_model_new_valist (get_func, get_data, n_columns, args);
+  model = _btk_file_system_model_new_valist (get_func, get_data, n_columns, args);
   va_end (args);
 
   return model;
 }
 
 /**
- * _gtk_file_system_model_new_for_directory:
+ * _btk_file_system_model_new_for_directory:
  * @directory: the directory to show.
  * @attributes: (allow-none): attributes to immediately load or %NULL for all
  * @get_func: function that the model should call to query data about a file
@@ -1426,24 +1426,24 @@ _gtk_file_system_model_new (GtkFileSystemModelGetValue get_func,
  * @n_columns: number of columns
  * @...: @n_columns #GType types for the columns
  *
- * Creates a new #GtkFileSystemModel object. The #GtkFileSystemModel
- * object wraps the given @directory as a #GtkTreeModel.
+ * Creates a new #BtkFileSystemModel object. The #BtkFileSystemModel
+ * object wraps the given @directory as a #BtkTreeModel.
  * The model will query the given directory with the given @attributes
  * and add all files inside the directory automatically. If supported,
  * it will also monitor the drectory and update the model's
  * contents to reflect changes, if the @directory supports monitoring.
  * 
- * Return value: the newly created #GtkFileSystemModel
+ * Return value: the newly created #BtkFileSystemModel
  **/
-GtkFileSystemModel *
-_gtk_file_system_model_new_for_directory (GFile *                    dir,
+BtkFileSystemModel *
+_btk_file_system_model_new_for_directory (GFile *                    dir,
                                           const gchar *              attributes,
-                                          GtkFileSystemModelGetValue get_func,
+                                          BtkFileSystemModelGetValue get_func,
                                           gpointer                   get_data,
                                           guint                      n_columns,
                                           ...)
 {
-  GtkFileSystemModel *model;
+  BtkFileSystemModel *model;
   va_list args;
 
   g_return_val_if_fail (G_IS_FILE (dir), NULL);
@@ -1451,16 +1451,16 @@ _gtk_file_system_model_new_for_directory (GFile *                    dir,
   g_return_val_if_fail (n_columns > 0, NULL);
 
   va_start (args, n_columns);
-  model = _gtk_file_system_model_new_valist (get_func, get_data, n_columns, args);
+  model = _btk_file_system_model_new_valist (get_func, get_data, n_columns, args);
   va_end (args);
 
-  gtk_file_system_model_set_directory (model, dir, attributes);
+  btk_file_system_model_set_directory (model, dir, attributes);
 
   return model;
 }
 
 static void
-gtk_file_system_model_refilter_all (GtkFileSystemModel *model)
+btk_file_system_model_refilter_all (BtkFileSystemModel *model)
 {
   guint i;
 
@@ -1481,101 +1481,101 @@ gtk_file_system_model_refilter_all (GtkFileSystemModel *model)
 }
 
 /**
- * _gtk_file_system_model_set_show_hidden:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_set_show_hidden:
+ * @model: a #BtkFileSystemModel
  * @show_hidden: whether hidden files should be displayed
  * 
- * Sets whether hidden files should be included in the #GtkTreeModel
+ * Sets whether hidden files should be included in the #BtkTreeModel
  * for display.
  **/
 void
-_gtk_file_system_model_set_show_hidden (GtkFileSystemModel *model,
+_btk_file_system_model_set_show_hidden (BtkFileSystemModel *model,
 					gboolean            show_hidden)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
 
   show_hidden = show_hidden != FALSE;
 
   if (show_hidden != model->show_hidden)
     {
       model->show_hidden = show_hidden;
-      gtk_file_system_model_refilter_all (model);
+      btk_file_system_model_refilter_all (model);
     }
 }
 
 /**
- * _gtk_file_system_model_set_show_folders:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_set_show_folders:
+ * @model: a #BtkFileSystemModel
  * @show_folders: whether folders should be displayed
  * 
- * Sets whether folders should be included in the #GtkTreeModel for
+ * Sets whether folders should be included in the #BtkTreeModel for
  * display.
  **/
 void
-_gtk_file_system_model_set_show_folders (GtkFileSystemModel *model,
+_btk_file_system_model_set_show_folders (BtkFileSystemModel *model,
 					 gboolean            show_folders)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
 
   show_folders = show_folders != FALSE;
 
   if (show_folders != model->show_folders)
     {
       model->show_folders = show_folders;
-      gtk_file_system_model_refilter_all (model);
+      btk_file_system_model_refilter_all (model);
     }
 }
 
 /**
- * _gtk_file_system_model_set_show_files:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_set_show_files:
+ * @model: a #BtkFileSystemModel
  * @show_files: whether files (as opposed to folders) should
  *              be displayed.
  * 
  * Sets whether files (as opposed to folders) should be included
- * in the #GtkTreeModel for display.
+ * in the #BtkTreeModel for display.
  **/
 void
-_gtk_file_system_model_set_show_files (GtkFileSystemModel *model,
+_btk_file_system_model_set_show_files (BtkFileSystemModel *model,
 				       gboolean            show_files)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
 
   show_files = show_files != FALSE;
 
   if (show_files != model->show_files)
     {
       model->show_files = show_files;
-      gtk_file_system_model_refilter_all (model);
+      btk_file_system_model_refilter_all (model);
     }
 }
 
 /**
- * _gtk_file_system_model_set_filter_folders:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_set_filter_folders:
+ * @model: a #BtkFileSystemModel
  * @filter_folders: whether the filter applies to folders
  * 
- * Sets whether the filter set by _gtk_file_system_model_set_filter()
+ * Sets whether the filter set by _btk_file_system_model_set_filter()
  * applies to folders. By default, it does not and folders are always
  * visible.
  **/
 void
-_gtk_file_system_model_set_filter_folders (GtkFileSystemModel *model,
+_btk_file_system_model_set_filter_folders (BtkFileSystemModel *model,
 					   gboolean            filter_folders)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
 
   filter_folders = filter_folders != FALSE;
 
   if (filter_folders != model->filter_folders)
     {
       model->filter_folders = filter_folders;
-      gtk_file_system_model_refilter_all (model);
+      btk_file_system_model_refilter_all (model);
     }
 }
 
 /**
- * _gtk_file_system_model_get_cancellable:
+ * _btk_file_system_model_get_cancellable:
  * @model: the model
  *
  * Gets the cancellable used by the @model. This is the cancellable used
@@ -1586,20 +1586,20 @@ _gtk_file_system_model_set_filter_folders (GtkFileSystemModel *model,
  * Returns: The cancellable used by @model
  **/
 GCancellable *
-_gtk_file_system_model_get_cancellable (GtkFileSystemModel *model)
+_btk_file_system_model_get_cancellable (BtkFileSystemModel *model)
 {
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), NULL);
 
   return model->cancellable;
 }
 
 /**
- * _gtk_file_system_model_iter_is_visible:
+ * _btk_file_system_model_iter_is_visible:
  * @model: the model
  * @iter: a valid iterator
  *
  * Checks if the iterator is visible. A visible iterator references
- * a row that is currently exposed using the #GtkTreeModel API. If
+ * a row that is currently exposed using the #BtkTreeModel API. If
  * the iterator is invisible, it references a file that is not shown
  * for some reason, such as being filtered out by the current filter or
  * being a hidden file.
@@ -1607,12 +1607,12 @@ _gtk_file_system_model_get_cancellable (GtkFileSystemModel *model)
  * Returns: %TRUE if the iterator is visible
  **/
 gboolean
-_gtk_file_system_model_iter_is_visible (GtkFileSystemModel *model,
-					GtkTreeIter        *iter)
+_btk_file_system_model_iter_is_visible (BtkFileSystemModel *model,
+					BtkTreeIter        *iter)
 {
   FileModelNode *node;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), FALSE);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
 
   node = get_node (model, ITER_INDEX (iter));
@@ -1620,7 +1620,7 @@ _gtk_file_system_model_iter_is_visible (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_iter_is_filtered_out:
+ * _btk_file_system_model_iter_is_filtered_out:
  * @model: the model
  * @iter: a valid iterator
  *
@@ -1633,12 +1633,12 @@ _gtk_file_system_model_iter_is_visible (GtkFileSystemModel *model,
  * filter would not have let the row pass.
  **/
 gboolean
-_gtk_file_system_model_iter_is_filtered_out (GtkFileSystemModel *model,
-					     GtkTreeIter        *iter)
+_btk_file_system_model_iter_is_filtered_out (BtkFileSystemModel *model,
+					     BtkTreeIter        *iter)
 {
   FileModelNode *node;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), FALSE);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
 
   node = get_node (model, ITER_INDEX (iter));
@@ -1646,9 +1646,9 @@ _gtk_file_system_model_iter_is_filtered_out (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_get_info:
- * @model: a #GtkFileSystemModel
- * @iter: a #GtkTreeIter pointing to a row of @model
+ * _btk_file_system_model_get_info:
+ * @model: a #BtkFileSystemModel
+ * @iter: a #BtkTreeIter pointing to a row of @model
  * 
  * Gets the #GFileInfo structure for a particular row
  * of @model.
@@ -1658,17 +1658,17 @@ _gtk_file_system_model_iter_is_filtered_out (GtkFileSystemModel *model,
  *   If you want to keep the information for later use,
  *   you must take a reference, since the structure may be
  *   freed on later changes to the file system.  If you have
- *   called _gtk_file_system_model_add_editable() and the @iter
+ *   called _btk_file_system_model_add_editable() and the @iter
  *   corresponds to the row that this function returned, the
  *   return value will be NULL.
  **/
 GFileInfo *
-_gtk_file_system_model_get_info (GtkFileSystemModel *model,
-				 GtkTreeIter        *iter)
+_btk_file_system_model_get_info (BtkFileSystemModel *model,
+				 BtkTreeIter        *iter)
 {
   FileModelNode *node;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), NULL);
   g_return_val_if_fail (iter != NULL, NULL);
 
   node = get_node (model, ITER_INDEX (iter));
@@ -1677,9 +1677,9 @@ _gtk_file_system_model_get_info (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_get_file:
- * @model: a #GtkFileSystemModel
- * @iter: a #GtkTreeIter pointing to a row of @model
+ * _btk_file_system_model_get_file:
+ * @model: a #BtkFileSystemModel
+ * @iter: a #BtkTreeIter pointing to a row of @model
  * 
  * Gets the file for a particular row in @model. 
  *
@@ -1689,28 +1689,28 @@ _gtk_file_system_model_get_info (GtkFileSystemModel *model,
  *   on later changes to the file system.
  **/
 GFile *
-_gtk_file_system_model_get_file (GtkFileSystemModel *model,
-				 GtkTreeIter        *iter)
+_btk_file_system_model_get_file (BtkFileSystemModel *model,
+				 BtkTreeIter        *iter)
 {
   FileModelNode *node;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), NULL);
 
   node = get_node (model, ITER_INDEX (iter));
   return node->file;
 }
 
 /**
- * _gtk_file_system_model_get_value:
- * @model: a #GtkFileSystemModel
- * @iter: a #GtkTreeIter pointing to a row of @model
+ * _btk_file_system_model_get_value:
+ * @model: a #BtkFileSystemModel
+ * @iter: a #BtkTreeIter pointing to a row of @model
  * @column: the column to get the value for
  *
  * Gets the value associated with the given row @iter and @column.
  * If no value is available yet and the default value should be used,
  * %NULL is returned.
  * This is a performance optimization for the calls 
- * gtk_tree_model_get() or gtk_tree_model_get_value(), which copy 
+ * btk_tree_model_get() or btk_tree_model_get_value(), which copy 
  * the value and spend a considerable amount of time in iterator 
  * lookups. Both of which are slow.
  *
@@ -1718,13 +1718,13 @@ _gtk_file_system_model_get_file (GtkFileSystemModel *model,
  *          if no value available yet.
  **/
 const GValue *
-_gtk_file_system_model_get_value (GtkFileSystemModel *model,
-                                  GtkTreeIter *       iter,
+_btk_file_system_model_get_value (BtkFileSystemModel *model,
+                                  BtkTreeIter *       iter,
                                   int                 column)
 {
   FileModelNode *node;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), NULL);
   g_return_val_if_fail (column >= 0 && (guint) column < model->n_columns, NULL);
 
   node = get_node (model, ITER_INDEX (iter));
@@ -1748,7 +1748,7 @@ _gtk_file_system_model_get_value (GtkFileSystemModel *model,
 }
 
 static guint
-node_get_for_file (GtkFileSystemModel *model,
+node_get_for_file (BtkFileSystemModel *model,
                    GFile *             file)
 {
   guint i;
@@ -1779,7 +1779,7 @@ node_get_for_file (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_get_iter_for_file:
+ * _btk_file_system_model_get_iter_for_file:
  * @model: the model
  * @iter: the iterator to be initialized
  * @file: the file to look up
@@ -1787,19 +1787,19 @@ node_get_for_file (GtkFileSystemModel *model,
  * Initializes @iter to point to the row used for @file, if @file is part 
  * of the model. Note that upon successful return, @iter may point to an 
  * invisible row in the @model. Use 
- * _gtk_file_system_model_iter_is_visible() to make sure it is visible to
+ * _btk_file_system_model_iter_is_visible() to make sure it is visible to
  * the tree view.
  *
  * Returns: %TRUE if file is part of the model and @iter was initialized
  **/
 gboolean
-_gtk_file_system_model_get_iter_for_file (GtkFileSystemModel *model,
-					  GtkTreeIter        *iter,
+_btk_file_system_model_get_iter_for_file (BtkFileSystemModel *model,
+					  BtkTreeIter        *iter,
 					  GFile *             file)
 {
   guint i;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model), FALSE);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (G_IS_FILE (file), FALSE);
 
@@ -1819,7 +1819,7 @@ _gtk_file_system_model_get_iter_for_file (GtkFileSystemModel *model,
  * mappings up or down when a node is added or removed, respectively.
  */
 static void
-adjust_file_lookup (GtkFileSystemModel *model, guint id, int increment)
+adjust_file_lookup (BtkFileSystemModel *model, guint id, int increment)
 {
   GHashTableIter iter;
   gpointer key;
@@ -1849,13 +1849,13 @@ adjust_file_lookup (GtkFileSystemModel *model, guint id, int increment)
  * If the model is frozen, the file will only show up after it is thawn.
  **/
 static void
-add_file (GtkFileSystemModel *model,
+add_file (BtkFileSystemModel *model,
 	  GFile              *file,
 	  GFileInfo          *info)
 {
   FileModelNode *node;
   
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (G_IS_FILE (file));
   g_return_if_fail (G_IS_FILE_INFO (info));
 
@@ -1871,7 +1871,7 @@ add_file (GtkFileSystemModel *model,
   if (!model->frozen)
     node_compute_visibility_and_filters (model, model->files->len -1);
 
-  gtk_file_system_model_sort_node (model, model->files->len -1);
+  btk_file_system_model_sort_node (model, model->files->len -1);
 }
 
 /**
@@ -1884,7 +1884,7 @@ add_file (GtkFileSystemModel *model,
  * @model, this function does nothing.
  **/
 static void
-remove_file (GtkFileSystemModel *model,
+remove_file (BtkFileSystemModel *model,
 	     GFile              *file)
 {
   FileModelNode *node;
@@ -1892,7 +1892,7 @@ remove_file (GtkFileSystemModel *model,
   guint id;
   guint row;
 
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (G_IS_FILE (file));
 
   id = node_get_for_file (model, file);
@@ -1921,7 +1921,7 @@ remove_file (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_update_file:
+ * _btk_file_system_model_update_file:
  * @model: the model
  * @file: the file
  * @info: the new file info
@@ -1931,7 +1931,7 @@ remove_file (GtkFileSystemModel *model,
  * @model, it will get added automatically.
  **/
 void
-_gtk_file_system_model_update_file (GtkFileSystemModel *model,
+_btk_file_system_model_update_file (BtkFileSystemModel *model,
                                     GFile              *file,
                                     GFileInfo          *info)
 {
@@ -1939,7 +1939,7 @@ _gtk_file_system_model_update_file (GtkFileSystemModel *model,
   guint i, id;
   GFileInfo *old_info;
 
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (G_IS_FILE (file));
   g_return_if_fail (G_IS_FILE_INFO (info));
 
@@ -1968,22 +1968,22 @@ _gtk_file_system_model_update_file (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_set_filter:
- * @mode: a #GtkFileSystemModel
+ * _btk_file_system_model_set_filter:
+ * @mode: a #BtkFileSystemModel
  * @filter: (allow-none): %NULL or filter to use
  * 
  * Sets a filter to be used for deciding if a row should be visible or not.
  * Whether this filter applies to directories can be toggled with
- * _gtk_file_system_model_set_filter_folders().
+ * _btk_file_system_model_set_filter_folders().
  **/
 void
-_gtk_file_system_model_set_filter (GtkFileSystemModel      *model,
-				   GtkFileFilter *          filter)
+_btk_file_system_model_set_filter (BtkFileSystemModel      *model,
+				   BtkFileFilter *          filter)
 {
-  GtkFileFilter *old_filter;
+  BtkFileFilter *old_filter;
 
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
-  g_return_if_fail (filter == NULL || GTK_IS_FILE_FILTER (filter));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (filter == NULL || BTK_IS_FILE_FILTER (filter));
   
   if (filter)
     g_object_ref (filter);
@@ -1994,12 +1994,12 @@ _gtk_file_system_model_set_filter (GtkFileSystemModel      *model,
   if (old_filter)
     g_object_unref (old_filter);
 
-  gtk_file_system_model_refilter_all (model);
+  btk_file_system_model_refilter_all (model);
 }
 
 /**
  * freeze_updates:
- * @model: a #GtkFileSystemModel
+ * @model: a #BtkFileSystemModel
  *
  * Freezes most updates on the model, so that performing multiple operations on
  * the files in the model do not cause any events.  Use thaw_updates() to resume
@@ -2007,25 +2007,25 @@ _gtk_file_system_model_set_filter (GtkFileSystemModel      *model,
  * freeze and thaw calls are balanced.
  **/
 static void
-freeze_updates (GtkFileSystemModel *model)
+freeze_updates (BtkFileSystemModel *model)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
 
   model->frozen++;
 }
 
 /**
  * thaw_updates:
- * @model: a #GtkFileSystemModel
+ * @model: a #BtkFileSystemModel
  *
  * Undoes the effect of a previous call to freeze_updates() 
  **/
 static void
-thaw_updates (GtkFileSystemModel *model)
+thaw_updates (BtkFileSystemModel *model)
 {
   gboolean stuff_added;
 
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (model->frozen > 0);
 
   model->frozen--;
@@ -2035,9 +2035,9 @@ thaw_updates (GtkFileSystemModel *model)
   stuff_added = get_node (model, model->files->len - 1)->frozen_add;
 
   if (model->filter_on_thaw)
-    gtk_file_system_model_refilter_all (model);
+    btk_file_system_model_refilter_all (model);
   if (model->sort_on_thaw)
-    gtk_file_system_model_sort (model);
+    btk_file_system_model_sort (model);
   if (stuff_added)
     {
       guint i;
@@ -2055,8 +2055,8 @@ thaw_updates (GtkFileSystemModel *model)
 }
 
 /**
- * _gtk_file_system_model_clear_cache:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_clear_cache:
+ * @model: a #BtkFileSystemModel
  * @column: the column to clear or -1 for all columns
  *
  * Clears the cached values in the model for the given @column. Use 
@@ -2066,14 +2066,14 @@ thaw_updates (GtkFileSystemModel *model)
  * invalidate the cached pixbufs.
  **/
 void
-_gtk_file_system_model_clear_cache (GtkFileSystemModel *model,
+_btk_file_system_model_clear_cache (BtkFileSystemModel *model,
                                     int                 column)
 {
   guint i;
   int start, end;
   gboolean changed;
 
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (column >= -1 && (guint) column < model->n_columns);
 
   if (column > -1)
@@ -2108,8 +2108,8 @@ _gtk_file_system_model_clear_cache (GtkFileSystemModel *model,
 }
 
 /**
- * _gtk_file_system_model_add_and_query_file:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_add_and_query_file:
+ * @model: a #BtkFileSystemModel
  * @file: the file to add
  * @attributes: attributes to query before adding the file
  *
@@ -2118,11 +2118,11 @@ _gtk_file_system_model_clear_cache (GtkFileSystemModel *model,
  * Upon failure, the @file is discarded.
  **/
 void
-_gtk_file_system_model_add_and_query_file (GtkFileSystemModel *model,
+_btk_file_system_model_add_and_query_file (BtkFileSystemModel *model,
                                            GFile *             file,
                                            const char *        attributes)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (G_IS_FILE (file));
   g_return_if_fail (attributes != NULL);
 
@@ -2131,24 +2131,24 @@ _gtk_file_system_model_add_and_query_file (GtkFileSystemModel *model,
                            G_FILE_QUERY_INFO_NONE,
                            IO_PRIORITY,
                            model->cancellable,
-                           gtk_file_system_model_query_done,
+                           btk_file_system_model_query_done,
                            model);
 }
 
 /**
- * _gtk_file_system_model_add_editable:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_add_editable:
+ * @model: a #BtkFileSystemModel
  * @iter: Location to return the iter corresponding to the editable row
  * 
  * Adds an “empty” row at the beginning of the model.  This does not refer to
  * any file, but is a temporary placeholder for a file name that the user will
  * type when a corresponding cell is made editable.  When your code is done
- * using this temporary row, call _gtk_file_system_model_remove_editable().
+ * using this temporary row, call _btk_file_system_model_remove_editable().
  **/
 void
-_gtk_file_system_model_add_editable (GtkFileSystemModel *model, GtkTreeIter *iter)
+_btk_file_system_model_add_editable (BtkFileSystemModel *model, BtkTreeIter *iter)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (!get_node (model, 0)->visible);
 
   node_set_visible_and_filtered_out (model, 0, TRUE, FALSE);
@@ -2161,17 +2161,17 @@ _gtk_file_system_model_add_editable (GtkFileSystemModel *model, GtkTreeIter *ite
 }
 
 /**
- * _gtk_file_system_model_remove_editable:
- * @model: a #GtkFileSystemModel
+ * _btk_file_system_model_remove_editable:
+ * @model: a #BtkFileSystemModel
  * 
  * Removes the “empty” row at the beginning of the model that was
- * created with _gtk_file_system_model_add_editable().  You should call
+ * created with _btk_file_system_model_add_editable().  You should call
  * this function when your code is finished editing this temporary row.
  **/
 void
-_gtk_file_system_model_remove_editable (GtkFileSystemModel *model)
+_btk_file_system_model_remove_editable (BtkFileSystemModel *model)
 {
-  g_return_if_fail (GTK_IS_FILE_SYSTEM_MODEL (model));
+  g_return_if_fail (BTK_IS_FILE_SYSTEM_MODEL (model));
   g_return_if_fail (get_node (model, 0)->visible);
 
   thaw_updates (model);

@@ -1,4 +1,4 @@
-/* GtkUnixPrint
+/* BtkUnixPrint
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,16 +16,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_UNIX_PRINT_H__
-#define __GTK_UNIX_PRINT_H__
+#ifndef __BTK_UNIX_PRINT_H__
+#define __BTK_UNIX_PRINT_H__
 
-#define __GTK_UNIX_PRINT_H_INSIDE__
+#define __BTK_UNIX_PRINT_H_INSIDE__
 
-#include <gtk/gtkpagesetupunixdialog.h>
-#include <gtk/gtkprinter.h>
-#include <gtk/gtkprintjob.h>
-#include <gtk/gtkprintunixdialog.h>
+#include <btk/btkpagesetupunixdialog.h>
+#include <btk/btkprinter.h>
+#include <btk/btkprintjob.h>
+#include <btk/btkprintunixdialog.h>
 
-#undef __GTK_UNIX_PRINT_H_INSIDE__
+#undef __BTK_UNIX_PRINT_H_INSIDE__
 
-#endif /* __GTK_UNIX_PRINT_H__ */
+#endif /* __BTK_UNIX_PRINT_H__ */

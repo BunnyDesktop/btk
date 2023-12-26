@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,48 +18,48 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_PANED_H__
-#define __GTK_PANED_H__
+#ifndef __BTK_PANED_H__
+#define __BTK_PANED_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
+#include <btk/btkcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PANED                  (gtk_paned_get_type ())
-#define GTK_PANED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PANED, GtkPaned))
-#define GTK_PANED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PANED, GtkPanedClass))
-#define GTK_IS_PANED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PANED))
-#define GTK_IS_PANED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PANED))
-#define GTK_PANED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PANED, GtkPanedClass))
+#define BTK_TYPE_PANED                  (btk_paned_get_type ())
+#define BTK_PANED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PANED, BtkPaned))
+#define BTK_PANED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PANED, BtkPanedClass))
+#define BTK_IS_PANED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PANED))
+#define BTK_IS_PANED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PANED))
+#define BTK_PANED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PANED, BtkPanedClass))
 
 
-typedef struct _GtkPaned        GtkPaned;
-typedef struct _GtkPanedClass   GtkPanedClass;
-typedef struct _GtkPanedPrivate GtkPanedPrivate;
+typedef struct _BtkPaned        BtkPaned;
+typedef struct _BtkPanedClass   BtkPanedClass;
+typedef struct _BtkPanedPrivate BtkPanedPrivate;
 
-struct _GtkPaned
+struct _BtkPaned
 {
-  GtkContainer container;
+  BtkContainer container;
 
-  GtkWidget *GSEAL (child1);
-  GtkWidget *GSEAL (child2);
+  BtkWidget *GSEAL (child1);
+  BtkWidget *GSEAL (child2);
 
-  GdkWindow *GSEAL (handle);
-  GdkGC *GSEAL (xor_gc);
-  GdkCursorType GSEAL (cursor_type);
+  BdkWindow *GSEAL (handle);
+  BdkGC *GSEAL (xor_gc);
+  BdkCursorType GSEAL (cursor_type);
 
   /*< private >*/
-  GdkRectangle GSEAL (handle_pos);
+  BdkRectangle GSEAL (handle_pos);
 
   gint GSEAL (child1_size);
   gint GSEAL (last_allocation);
@@ -76,69 +76,69 @@ struct _GtkPaned
   guint GSEAL (in_recursion) : 1;
   guint GSEAL (handle_prelit) : 1;
 
-  GtkWidget *GSEAL (last_child1_focus);
-  GtkWidget *GSEAL (last_child2_focus);
-  GtkPanedPrivate *GSEAL (priv);
+  BtkWidget *GSEAL (last_child1_focus);
+  BtkWidget *GSEAL (last_child2_focus);
+  BtkPanedPrivate *GSEAL (priv);
 
   gint GSEAL (drag_pos);
   gint GSEAL (original_position);
 };
 
-struct _GtkPanedClass
+struct _BtkPanedClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 
-  gboolean (* cycle_child_focus)   (GtkPaned      *paned,
+  gboolean (* cycle_child_focus)   (BtkPaned      *paned,
 				    gboolean       reverse);
-  gboolean (* toggle_handle_focus) (GtkPaned      *paned);
-  gboolean (* move_handle)         (GtkPaned      *paned,
-				    GtkScrollType  scroll);
-  gboolean (* cycle_handle_focus)  (GtkPaned      *paned,
+  gboolean (* toggle_handle_focus) (BtkPaned      *paned);
+  gboolean (* move_handle)         (BtkPaned      *paned,
+				    BtkScrollType  scroll);
+  gboolean (* cycle_handle_focus)  (BtkPaned      *paned,
 				    gboolean       reverse);
-  gboolean (* accept_position)     (GtkPaned	  *paned);
-  gboolean (* cancel_position)     (GtkPaned	  *paned);
+  gboolean (* accept_position)     (BtkPaned	  *paned);
+  gboolean (* cancel_position)     (BtkPaned	  *paned);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType       gtk_paned_get_type     (void) G_GNUC_CONST;
-void        gtk_paned_add1         (GtkPaned       *paned,
-                                    GtkWidget      *child);
-void        gtk_paned_add2         (GtkPaned       *paned,
-                                    GtkWidget      *child);
-void        gtk_paned_pack1        (GtkPaned       *paned,
-                                    GtkWidget      *child,
+GType       btk_paned_get_type     (void) G_GNUC_CONST;
+void        btk_paned_add1         (BtkPaned       *paned,
+                                    BtkWidget      *child);
+void        btk_paned_add2         (BtkPaned       *paned,
+                                    BtkWidget      *child);
+void        btk_paned_pack1        (BtkPaned       *paned,
+                                    BtkWidget      *child,
                                     gboolean        resize,
                                     gboolean        shrink);
-void        gtk_paned_pack2        (GtkPaned       *paned,
-                                    GtkWidget      *child,
+void        btk_paned_pack2        (BtkPaned       *paned,
+                                    BtkWidget      *child,
                                     gboolean        resize,
                                     gboolean        shrink);
 
-gint        gtk_paned_get_position (GtkPaned       *paned);
-void        gtk_paned_set_position (GtkPaned       *paned,
+gint        btk_paned_get_position (BtkPaned       *paned);
+void        btk_paned_set_position (BtkPaned       *paned,
                                     gint            position);
 
-GtkWidget * gtk_paned_get_child1   (GtkPaned       *paned);
-GtkWidget * gtk_paned_get_child2   (GtkPaned       *paned);
+BtkWidget * btk_paned_get_child1   (BtkPaned       *paned);
+BtkWidget * btk_paned_get_child2   (BtkPaned       *paned);
 
-GdkWindow * gtk_paned_get_handle_window (GtkPaned  *paned);
+BdkWindow * btk_paned_get_handle_window (BtkPaned  *paned);
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 /* Internal function */
-void    gtk_paned_compute_position (GtkPaned  *paned,
+void    btk_paned_compute_position (BtkPaned  *paned,
                                     gint       allocation,
                                     gint       child1_req,
                                     gint       child2_req);
-#define	gtk_paned_gutter_size(p,s)		(void) 0
-#define	gtk_paned_set_gutter_size(p,s)		(void) 0
-#endif /* GTK_DISABLE_DEPRECATED */
+#define	btk_paned_gutter_size(p,s)		(void) 0
+#define	btk_paned_set_gutter_size(p,s)		(void) 0
+#endif /* BTK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GTK_PANED_H__ */
+#endif /* __BTK_PANED_H__ */

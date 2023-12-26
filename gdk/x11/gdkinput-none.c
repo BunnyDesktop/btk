@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,40 +18,40 @@
  */
 
 #include "config.h"
-#include "gdkinputprivate.h"
-#include "gdkdisplay-x11.h"
-#include "gdkalias.h"
+#include "bdkinputprivate.h"
+#include "bdkdisplay-x11.h"
+#include "bdkalias.h"
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 void
-_gdk_input_init (GdkDisplay *display)
+_bdk_input_init (BdkDisplay *display)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   
-  _gdk_init_input_core (display);
+  _bdk_init_input_core (display);
   
   display_x11->input_devices = g_list_append (NULL, display->core_pointer);
   display->ignore_core_events = FALSE;
 }
 
 void 
-gdk_device_get_state (GdkDevice       *device,
-		      GdkWindow       *window,
+bdk_device_get_state (BdkDevice       *device,
+		      BdkWindow       *window,
 		      gdouble         *axes,
-		      GdkModifierType *mask)
+		      BdkModifierType *mask)
 {
   gint x_int, y_int;
 
   g_return_if_fail (device != NULL);
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  gdk_window_get_pointer (window, &x_int, &y_int, mask);
+  bdk_window_get_pointer (window, &x_int, &y_int, mask);
 
   if (axes)
     {
@@ -61,66 +61,66 @@ gdk_device_get_state (GdkDevice       *device,
 }
 
 gboolean
-_gdk_device_get_history (GdkDevice         *device,
-			 GdkWindow         *window,
+_bdk_device_get_history (BdkDevice         *device,
+			 BdkWindow         *window,
 			 guint32            start,
 			 guint32            stop,
-			 GdkTimeCoord    ***events,
+			 BdkTimeCoord    ***events,
 			 gint              *n_events)
 {
-  g_warning ("gdk_device_get_history() called for invalid device");
+  g_warning ("bdk_device_get_history() called for invalid device");
   return FALSE;
 }
 
 void
-_gdk_input_select_events (GdkWindow        *impl_window,
-			  GdkDevicePrivate *gdkdev)
+_bdk_input_select_events (BdkWindow        *impl_window,
+			  BdkDevicePrivate *bdkdev)
 {
 }
 
 gboolean
-_gdk_input_other_event (GdkEvent *event, 
+_bdk_input_other_event (BdkEvent *event, 
 			XEvent *xevent, 
-			GdkWindow *window)
+			BdkWindow *window)
 {
   return FALSE;
 }
 
 void
-_gdk_input_configure_event (XConfigureEvent *xevent,
-			    GdkWindow       *window)
+_bdk_input_configure_event (XConfigureEvent *xevent,
+			    BdkWindow       *window)
 {
 }
 
 void 
-_gdk_input_crossing_event (GdkWindow *window,
+_bdk_input_crossing_event (BdkWindow *window,
 			   gboolean enter)
 {
 }
 
 gint 
-_gdk_input_grab_pointer (GdkWindow *     window,
-			 GdkWindow      *native_window,
+_bdk_input_grab_pointer (BdkWindow *     window,
+			 BdkWindow      *native_window,
 			 gint            owner_events,
-			 GdkEventMask    event_mask,
-			 GdkWindow *     confine_to,
+			 BdkEventMask    event_mask,
+			 BdkWindow *     confine_to,
 			 guint32         time)
 {
   return Success;
 }
 
 void
-_gdk_input_ungrab_pointer (GdkDisplay *display,
+_bdk_input_ungrab_pointer (BdkDisplay *display,
 			   guint32     time)
 {
 }
 
 gboolean
-gdk_device_set_mode (GdkDevice   *device,
-		     GdkInputMode mode)
+bdk_device_set_mode (BdkDevice   *device,
+		     BdkInputMode mode)
 {
   return FALSE;
 }
 
-#define __GDK_INPUT_NONE_C__
-#include "gdkaliasdef.c"
+#define __BDK_INPUT_NONE_C__
+#include "bdkaliasdef.c"

@@ -1,4 +1,4 @@
-/* gdkwindow-quartz.c
+/* bdkwindow-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -21,39 +21,39 @@
 
 #include "config.h"
 
-#include "gdkfont.h"
+#include "bdkfont.h"
 
-GdkFont*
-gdk_font_load_for_display (GdkDisplay  *display,
+BdkFont*
+bdk_font_load_for_display (BdkDisplay  *display,
 			   const gchar *font_name)
 {
   /* FIXME: Implement */
   return NULL;
 }
 
-GdkFont*
-gdk_font_from_description_for_display (GdkDisplay           *display,
-				       PangoFontDescription *desc)
+BdkFont*
+bdk_font_from_description_for_display (BdkDisplay           *display,
+				       BangoFontDescription *desc)
 {
   /* FIXME: Implement */
   return NULL;
 }
 
-GdkFont *
-gdk_fontset_load_for_display (GdkDisplay  *display,
+BdkFont *
+bdk_fontset_load_for_display (BdkDisplay  *display,
 			      const gchar *fontset_name)
 {
   return NULL;
 }
 
-GdkFont*
-gdk_fontset_load (const gchar *fontset_name)
+BdkFont*
+bdk_fontset_load (const gchar *fontset_name)
 {
   return NULL;
 }
 
 gint
-gdk_text_width (GdkFont      *font,
+bdk_text_width (BdkFont      *font,
 		const gchar  *text,
 		gint          text_length)
 {
@@ -62,7 +62,7 @@ gdk_text_width (GdkFont      *font,
 }
 
 void
-gdk_text_extents (GdkFont     *font,
+bdk_text_extents (BdkFont     *font,
                   const gchar *text,
                   gint         text_length,
 		  gint        *lbearing,
@@ -75,8 +75,8 @@ gdk_text_extents (GdkFont     *font,
 }
 
 gint
-gdk_text_width_wc (GdkFont	  *font,
-		   const GdkWChar *text,
+bdk_text_width_wc (BdkFont	  *font,
+		   const BdkWChar *text,
 		   gint		   text_length)
 {
   /* FIXME: Implement */
@@ -85,8 +85,8 @@ gdk_text_width_wc (GdkFont	  *font,
 
 
 void
-gdk_text_extents_wc (GdkFont        *font,
-		     const GdkWChar *text,
+bdk_text_extents_wc (BdkFont        *font,
+		     const BdkWChar *text,
 		     gint            text_length,
 		     gint           *lbearing,
 		     gint           *rbearing,
@@ -98,13 +98,13 @@ gdk_text_extents_wc (GdkFont        *font,
 }
 
 void
-_gdk_font_destroy (GdkFont *font)
+_bdk_font_destroy (BdkFont *font)
 {
   /* FIXME: Implement */
 }
 
 gint
-_gdk_font_strlen (GdkFont     *font,
+_bdk_font_strlen (BdkFont     *font,
 		  const gchar *str)
 {
   /* FIXME: Implement */
@@ -112,22 +112,22 @@ _gdk_font_strlen (GdkFont     *font,
 }
 
 gint
-gdk_font_id (const GdkFont *font)
+bdk_font_id (const BdkFont *font)
 {
   /* FIXME: Implement */
   return 0;
 }
 
 gboolean
-gdk_font_equal (const GdkFont *fonta,
-                const GdkFont *fontb)
+bdk_font_equal (const BdkFont *fonta,
+                const BdkFont *fontb)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
-GdkDisplay* 
-gdk_font_get_display (GdkFont* font)
+BdkDisplay* 
+bdk_font_get_display (BdkFont* font)
 {
   /* FIXME: Implement */ 
   return NULL;

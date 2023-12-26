@@ -19,10 +19,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 #include <string.h>
 #include <stdlib.h>
@@ -32,14 +32,14 @@ int n_children = 0;
 
 GSList *sockets = NULL;
 
-GtkWidget *window;
-GtkWidget *box;
+BtkWidget *window;
+BtkWidget *box;
 
 typedef struct 
 {
-  GtkWidget *box;
-  GtkWidget *frame;
-  GtkWidget *socket;
+  BtkWidget *box;
+  BtkWidget *frame;
+  BtkWidget *socket;
 } Socket;
 
 extern guint32 create_child_plug (guint32  xid,
@@ -48,28 +48,28 @@ extern guint32 create_child_plug (guint32  xid,
 static void
 quit_cb (gpointer        callback_data,
 	 guint           callback_action,
-	 GtkWidget      *widget)
+	 BtkWidget      *widget)
 {
-  GtkWidget *message_dialog = gtk_message_dialog_new (GTK_WINDOW (window), 0,
-						      GTK_MESSAGE_QUESTION,
-						      GTK_BUTTONS_YES_NO,
+  BtkWidget *message_dialog = btk_message_dialog_new (BTK_WINDOW (window), 0,
+						      BTK_MESSAGE_QUESTION,
+						      BTK_BUTTONS_YES_NO,
 						      "Really Quit?");
-  gtk_dialog_set_default_response (GTK_DIALOG (message_dialog), GTK_RESPONSE_NO);
+  btk_dialog_set_default_response (BTK_DIALOG (message_dialog), BTK_RESPONSE_NO);
 
-  if (gtk_dialog_run (GTK_DIALOG (message_dialog)) == GTK_RESPONSE_YES)
-    gtk_widget_destroy (window);
+  if (btk_dialog_run (BTK_DIALOG (message_dialog)) == BTK_RESPONSE_YES)
+    btk_widget_destroy (window);
 
-  gtk_widget_destroy (message_dialog);
+  btk_widget_destroy (message_dialog);
 }
 
-static GtkItemFactoryEntry menu_items[] =
+static BtkItemFactoryEntry menu_items[] =
 {
   { "/_File",            NULL,         NULL,                  0, "<Branch>" },
   { "/File/_Quit",       "<control>Q", quit_cb,               0 },
 };
 
 static void
-socket_destroyed (GtkWidget *widget,
+socket_destroyed (BtkWidget *widget,
 		  Socket    *socket)
 {
   sockets = g_slist_remove (sockets, socket);
@@ -77,23 +77,23 @@ socket_destroyed (GtkWidget *widget,
 }
 
 static void
-plug_added (GtkWidget *widget,
+plug_added (BtkWidget *widget,
 	    Socket    *socket)
 {
   g_print ("Plug added to socket\n");
   
-  gtk_widget_show (socket->socket);
-  gtk_widget_hide (socket->frame);
+  btk_widget_show (socket->socket);
+  btk_widget_hide (socket->frame);
 }
 
 static gboolean
-plug_removed (GtkWidget *widget,
+plug_removed (BtkWidget *widget,
 	      Socket    *socket)
 {
   g_print ("Plug removed from socket\n");
   
-  gtk_widget_hide (socket->socket);
-  gtk_widget_show (socket->frame);
+  btk_widget_hide (socket->socket);
+  btk_widget_show (socket->frame);
   
   return TRUE;
 }
@@ -101,25 +101,25 @@ plug_removed (GtkWidget *widget,
 static Socket *
 create_socket (void)
 {
-  GtkWidget *label;
+  BtkWidget *label;
   
   Socket *socket = g_new (Socket, 1);
   
-  socket->box = gtk_vbox_new (FALSE, 0);
+  socket->box = btk_vbox_new (FALSE, 0);
 
-  socket->socket = gtk_socket_new ();
+  socket->socket = btk_socket_new ();
   
-  gtk_box_pack_start (GTK_BOX (socket->box), socket->socket, TRUE, TRUE, 0);
+  btk_box_pack_start (BTK_BOX (socket->box), socket->socket, TRUE, TRUE, 0);
   
-  socket->frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (socket->frame), GTK_SHADOW_IN);
-  gtk_box_pack_start (GTK_BOX (socket->box), socket->frame, TRUE, TRUE, 0);
-  gtk_widget_show (socket->frame);
+  socket->frame = btk_frame_new (NULL);
+  btk_frame_set_shadow_type (BTK_FRAME (socket->frame), BTK_SHADOW_IN);
+  btk_box_pack_start (BTK_BOX (socket->box), socket->frame, TRUE, TRUE, 0);
+  btk_widget_show (socket->frame);
   
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), "<span color=\"red\">Empty</span>");
-  gtk_container_add (GTK_CONTAINER (socket->frame), label);
-  gtk_widget_show (label);
+  label = btk_label_new (NULL);
+  btk_label_set_markup (BTK_LABEL (label), "<span color=\"red\">Empty</span>");
+  btk_container_add (BTK_CONTAINER (socket->frame), label);
+  btk_widget_show (label);
 
   sockets = g_slist_prepend (sockets, socket);
 
@@ -135,13 +135,13 @@ create_socket (void)
 }
 
 void
-steal (GtkWidget *window, GtkEntry *entry)
+steal (BtkWidget *window, BtkEntry *entry)
 {
   guint32 xid;
   const gchar *text;
   Socket *socket;
 
-  text = gtk_entry_get_text (entry);
+  text = btk_entry_get_text (entry);
 
   xid = strtol (text, NULL, 0);
   if (xid == 0)
@@ -151,26 +151,26 @@ steal (GtkWidget *window, GtkEntry *entry)
     }
 
   socket = create_socket ();
-  gtk_box_pack_start (GTK_BOX (box), socket->box, TRUE, TRUE, 0);
-  gtk_widget_show (socket->box);
+  btk_box_pack_start (BTK_BOX (box), socket->box, TRUE, TRUE, 0);
+  btk_widget_show (socket->box);
 
-  gtk_socket_steal (GTK_SOCKET (socket->socket), xid);
+  btk_socket_steal (BTK_SOCKET (socket->socket), xid);
 }
 
 void
-remove_child (GtkWidget *window)
+remove_child (BtkWidget *window)
 {
   if (sockets)
     {
       Socket *socket = sockets->data;
-      gtk_widget_destroy (socket->box);
+      btk_widget_destroy (socket->box);
     }
 }
 
 static gboolean
-child_read_watch (GIOChannel *channel, GIOCondition cond, gpointer data)
+child_read_watch (BUNNYIOChannel *channel, BUNNYIOCondition cond, gpointer data)
 {
-  GIOStatus status;
+  BUNNYIOStatus status;
   GError *error = NULL;
   char *line;
   gsize term;
@@ -189,10 +189,10 @@ child_read_watch (GIOChannel *channel, GIOCondition cond, gpointer data)
       else
 	{
 	  Socket *socket = create_socket ();
-	  gtk_box_pack_start (GTK_BOX (box), socket->box, TRUE, TRUE, 0);
-	  gtk_widget_show (socket->box);
+	  btk_box_pack_start (BTK_BOX (box), socket->box, TRUE, TRUE, 0);
+	  btk_widget_show (socket->box);
 	  
-	  gtk_socket_add_id (GTK_SOCKET (socket->socket), xid);
+	  btk_socket_add_id (BTK_SOCKET (socket->socket), xid);
 	}
       g_free (line);
       return TRUE;
@@ -213,22 +213,22 @@ child_read_watch (GIOChannel *channel, GIOCondition cond, gpointer data)
 }
 
 void
-add_child (GtkWidget *window,
+add_child (BtkWidget *window,
 	   gboolean   active)
 {
   Socket *socket;
   char *argv[3] = { "./testsocket_child", NULL, NULL };
   char buffer[20];
   int out_fd;
-  GIOChannel *channel;
+  BUNNYIOChannel *channel;
   GError *error = NULL;
 
   if (active)
     {
       socket = create_socket ();
-      gtk_box_pack_start (GTK_BOX (box), socket->box, TRUE, TRUE, 0);
-      gtk_widget_show (socket->box);
-      sprintf(buffer, "%#lx", (gulong) gtk_socket_get_id (GTK_SOCKET (socket->socket)));
+      btk_box_pack_start (BTK_BOX (box), socket->box, TRUE, TRUE, 0);
+      btk_widget_show (socket->box);
+      sprintf(buffer, "%#lx", (gulong) btk_socket_get_id (BTK_SOCKET (socket->socket)));
       argv[1] = buffer;
     }
   
@@ -253,52 +253,52 @@ add_child (GtkWidget *window,
 }
 
 void
-add_active_child (GtkWidget *window)
+add_active_child (BtkWidget *window)
 {
   add_child (window, TRUE);
 }
 
 void
-add_passive_child (GtkWidget *window)
+add_passive_child (BtkWidget *window)
 {
   add_child (window, FALSE);
 }
 
 void
-add_local_active_child (GtkWidget *window)
+add_local_active_child (BtkWidget *window)
 {
   Socket *socket;
 
   socket = create_socket ();
-  gtk_box_pack_start (GTK_BOX (box), socket->box, TRUE, TRUE, 0);
-  gtk_widget_show (socket->box);
+  btk_box_pack_start (BTK_BOX (box), socket->box, TRUE, TRUE, 0);
+  btk_widget_show (socket->box);
 
-  create_child_plug (gtk_socket_get_id (GTK_SOCKET (socket->socket)), TRUE);
+  create_child_plug (btk_socket_get_id (BTK_SOCKET (socket->socket)), TRUE);
 }
 
 void
-add_local_passive_child (GtkWidget *window)
+add_local_passive_child (BtkWidget *window)
 {
   Socket *socket;
-  GdkNativeWindow xid;
+  BdkNativeWindow xid;
 
   socket = create_socket ();
-  gtk_box_pack_start (GTK_BOX (box), socket->box, TRUE, TRUE, 0);
-  gtk_widget_show (socket->box);
+  btk_box_pack_start (BTK_BOX (box), socket->box, TRUE, TRUE, 0);
+  btk_widget_show (socket->box);
 
   xid = create_child_plug (0, TRUE);
-  gtk_socket_add_id (GTK_SOCKET (socket->socket), xid);
+  btk_socket_add_id (BTK_SOCKET (socket->socket), xid);
 }
 
 static const char *
 grab_string (int status)
 {
   switch (status) {
-  case GDK_GRAB_SUCCESS:          return "GrabSuccess";
-  case GDK_GRAB_ALREADY_GRABBED:  return "AlreadyGrabbed";
-  case GDK_GRAB_INVALID_TIME:     return "GrabInvalidTime";
-  case GDK_GRAB_NOT_VIEWABLE:     return "GrabNotViewable";
-  case GDK_GRAB_FROZEN:           return "GrabFrozen";
+  case BDK_GRAB_SUCCESS:          return "GrabSuccess";
+  case BDK_GRAB_ALREADY_GRABBED:  return "AlreadyGrabbed";
+  case BDK_GRAB_INVALID_TIME:     return "GrabInvalidTime";
+  case BDK_GRAB_NOT_VIEWABLE:     return "GrabNotViewable";
+  case BDK_GRAB_FROZEN:           return "GrabFrozen";
   default:
     {
       static char foo [255];
@@ -309,120 +309,120 @@ grab_string (int status)
 }
 
 static void
-grab_window_toggled (GtkToggleButton *button,
-		     GtkWidget       *widget)
+grab_window_toggled (BtkToggleButton *button,
+		     BtkWidget       *widget)
 {
 
-  if (gtk_toggle_button_get_active (button))
+  if (btk_toggle_button_get_active (button))
     {
       int status;
 
-      status = gdk_keyboard_grab (widget->window, FALSE, GDK_CURRENT_TIME);
+      status = bdk_keyboard_grab (widget->window, FALSE, BDK_CURRENT_TIME);
 
-      if (status != GDK_GRAB_SUCCESS)
+      if (status != BDK_GRAB_SUCCESS)
 	g_warning ("Could not grab keyboard!  (%s)", grab_string (status));
 
     } 
   else 
     {
-      gdk_keyboard_ungrab (GDK_CURRENT_TIME);
+      bdk_keyboard_ungrab (BDK_CURRENT_TIME);
     }
 }
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *button;
-  GtkWidget *hbox;
-  GtkWidget *vbox;
-  GtkWidget *entry;
-  GtkWidget *checkbutton;
-  GtkAccelGroup *accel_group;
-  GtkItemFactory *item_factory;
+  BtkWidget *button;
+  BtkWidget *hbox;
+  BtkWidget *vbox;
+  BtkWidget *entry;
+  BtkWidget *checkbutton;
+  BtkAccelGroup *accel_group;
+  BtkItemFactory *item_factory;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
-		    G_CALLBACK (gtk_main_quit), NULL);
+		    G_CALLBACK (btk_main_quit), NULL);
   
-  gtk_window_set_title (GTK_WINDOW (window), "Socket Test");
-  gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+  btk_window_set_title (BTK_WINDOW (window), "Socket Test");
+  btk_container_set_border_width (BTK_CONTAINER (window), 0);
 
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_add (BTK_CONTAINER (window), vbox);
 
-  accel_group = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
-  item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", accel_group);
+  accel_group = btk_accel_group_new ();
+  btk_window_add_accel_group (BTK_WINDOW (window), accel_group);
+  item_factory = btk_item_factory_new (BTK_TYPE_MENU_BAR, "<main>", accel_group);
 
   
-  gtk_item_factory_create_items (item_factory,
+  btk_item_factory_create_items (item_factory,
 				 G_N_ELEMENTS (menu_items), menu_items,
 				 NULL);
       
-  gtk_box_pack_start (GTK_BOX (vbox),
-		      gtk_item_factory_get_widget (item_factory, "<main>"),
+  btk_box_pack_start (BTK_BOX (vbox),
+		      btk_item_factory_get_widget (item_factory, "<main>"),
 		      FALSE, FALSE, 0);
 
-  button = gtk_button_new_with_label ("Add Active Child");
-  gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Add Active Child");
+  btk_box_pack_start (BTK_BOX(vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
 			    G_CALLBACK (add_active_child), vbox);
 
-  button = gtk_button_new_with_label ("Add Passive Child");
-  gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Add Passive Child");
+  btk_box_pack_start (BTK_BOX(vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
 			    G_CALLBACK (add_passive_child), vbox);
 
-  button = gtk_button_new_with_label ("Add Local Active Child");
-  gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Add Local Active Child");
+  btk_box_pack_start (BTK_BOX(vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
 			    G_CALLBACK (add_local_active_child), vbox);
 
-  button = gtk_button_new_with_label ("Add Local Passive Child");
-  gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Add Local Passive Child");
+  btk_box_pack_start (BTK_BOX(vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
 			    G_CALLBACK (add_local_passive_child), vbox);
 
-  button = gtk_button_new_with_label ("Remove Last Child");
-  gtk_box_pack_start (GTK_BOX(vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Remove Last Child");
+  btk_box_pack_start (BTK_BOX(vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
 			    G_CALLBACK (remove_child), vbox);
 
-  checkbutton = gtk_check_button_new_with_label ("Grab keyboard");
-  gtk_box_pack_start (GTK_BOX (vbox), checkbutton, FALSE, FALSE, 0);
+  checkbutton = btk_check_button_new_with_label ("Grab keyboard");
+  btk_box_pack_start (BTK_BOX (vbox), checkbutton, FALSE, FALSE, 0);
 
   g_signal_connect (checkbutton, "toggled",
 		    G_CALLBACK (grab_window_toggled),
 		    window);
 
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX(vbox), hbox, FALSE, FALSE, 0);
+  hbox = btk_hbox_new (FALSE, 0);
+  btk_box_pack_start (BTK_BOX(vbox), hbox, FALSE, FALSE, 0);
 
-  entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX(hbox), entry, FALSE, FALSE, 0);
+  entry = btk_entry_new ();
+  btk_box_pack_start (BTK_BOX(hbox), entry, FALSE, FALSE, 0);
 
-  button = gtk_button_new_with_label ("Steal");
-  gtk_box_pack_start (GTK_BOX(hbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Steal");
+  btk_box_pack_start (BTK_BOX(hbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (steal),
 		    entry);
 
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  hbox = btk_hbox_new (FALSE, 0);
+  btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
   box = hbox;
   
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
 
   if (n_children)
     {

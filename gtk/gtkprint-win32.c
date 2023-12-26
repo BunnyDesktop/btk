@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintoperation.c: Print Operation
+/* BTK - The GIMP Toolkit
+ * btkprintoperation.c: Print Operation
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -24,11 +24,11 @@
 #endif
 
 #include "config.h"
-#include "gtkprint-win32.h"
-#include "gtkalias.h"
+#include "btkprint-win32.h"
+#include "btkalias.h"
 
 void
-gtk_print_win32_devnames_free (GtkPrintWin32Devnames *devnames)
+btk_print_win32_devnames_free (BtkPrintWin32Devnames *devnames)
 {
   g_free (devnames->driver);
   g_free (devnames->device);
@@ -36,12 +36,12 @@ gtk_print_win32_devnames_free (GtkPrintWin32Devnames *devnames)
   g_free (devnames);
 }
 
-GtkPrintWin32Devnames *
-gtk_print_win32_devnames_from_win32 (HGLOBAL global)
+BtkPrintWin32Devnames *
+btk_print_win32_devnames_from_win32 (HGLOBAL global)
 {
   LPDEVNAMES win = GlobalLock (global);
   gunichar2 *data = (gunichar2 *)win;
-  GtkPrintWin32Devnames *devnames = g_new (GtkPrintWin32Devnames, 1);
+  BtkPrintWin32Devnames *devnames = g_new (BtkPrintWin32Devnames, 1);
   
   devnames->driver = g_utf16_to_utf8 (data + win->wDriverOffset, 
 				      -1, NULL, NULL, NULL);
@@ -57,7 +57,7 @@ gtk_print_win32_devnames_from_win32 (HGLOBAL global)
 }
 
 HGLOBAL 
-gtk_print_win32_devnames_to_win32 (const GtkPrintWin32Devnames *devnames)
+btk_print_win32_devnames_to_win32 (const BtkPrintWin32Devnames *devnames)
 {
   HGLOBAL global;
   LPDEVNAMES windevnames;
@@ -100,16 +100,16 @@ gtk_print_win32_devnames_to_win32 (const GtkPrintWin32Devnames *devnames)
 }
 
 HGLOBAL 
-gtk_print_win32_devnames_to_win32_from_printer_name (const char *printer_name)
+btk_print_win32_devnames_to_win32_from_printer_name (const char *printer_name)
 {
   HGLOBAL global;
-  GtkPrintWin32Devnames *devnames;
+  BtkPrintWin32Devnames *devnames;
 
-  devnames = gtk_print_win32_devnames_from_printer_name(printer_name);
+  devnames = btk_print_win32_devnames_from_printer_name(printer_name);
   if (devnames)
     {
-      global = gtk_print_win32_devnames_to_win32 (devnames);
-      gtk_print_win32_devnames_free (devnames);
+      global = btk_print_win32_devnames_to_win32 (devnames);
+      btk_print_win32_devnames_free (devnames);
     }
   else
     global = NULL;
@@ -122,12 +122,12 @@ gtk_print_win32_devnames_to_win32_from_printer_name (const char *printer_name)
  * can fail if the user has no right to read printer properties, so
  * this function can return NULL.
  */
-GtkPrintWin32Devnames *
-gtk_print_win32_devnames_from_printer_name (const char *printer_name)
+BtkPrintWin32Devnames *
+btk_print_win32_devnames_from_printer_name (const char *printer_name)
 {
   HANDLE hprinter;
   gunichar2* win32_printer_name;
-  GtkPrintWin32Devnames *devnames;
+  BtkPrintWin32Devnames *devnames;
 
   win32_printer_name = g_utf8_to_utf16 (printer_name, -1, NULL, NULL, NULL);
   if (OpenPrinterW (win32_printer_name, &hprinter, NULL))
@@ -138,7 +138,7 @@ gtk_print_win32_devnames_from_printer_name (const char *printer_name)
       GetPrinterW (hprinter, 2, NULL, 0, &needed);
       printer_info = (PRINTER_INFO_2W* )g_malloc ((gsize) needed);
       GetPrinterW (hprinter, 2, (LPBYTE) printer_info, needed, &needed);
-      devnames = g_new (GtkPrintWin32Devnames, 1);
+      devnames = g_new (BtkPrintWin32Devnames, 1);
       devnames->driver = g_utf16_to_utf8 (printer_info->pDriverName, -1, NULL, NULL, NULL);
       devnames->device = g_strdup (printer_name);
       devnames->output = g_utf16_to_utf8 (printer_info->pPortName, -1, NULL, NULL, NULL);
@@ -157,5 +157,5 @@ gtk_print_win32_devnames_from_printer_name (const char *printer_name)
 }
 
 
-#define __GTK_PRINT_WIN32_C__
-#include "gtkaliasdef.c"
+#define __BTK_PRINT_WIN32_C__
+#include "btkaliasdef.c"

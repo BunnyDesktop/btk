@@ -1,6 +1,6 @@
 #include "config.h"
-#include <glib.h>
-#include <glib/gstdio.h>
+#include <bunnylib.h>
+#include <bunnylib/gstdio.h>
 
 static gboolean
 file_exists (const char *filename)
@@ -13,6 +13,6 @@ file_exists (const char *filename)
 void
 pixbuf_init (void)
 {
-  if (file_exists ("../../gdk-pixbuf/libpixbufloader-pnm.la"))
-    g_setenv ("GDK_PIXBUF_MODULE_FILE", "../../gdk-pixbuf/gdk-pixbuf.loaders", TRUE);
+  if (file_exists ("../../bdk-pixbuf/libpixbufloader-pnm.la"))
+    g_setenv ("BDK_PIXBUF_MODULE_FILE", "../../bdk-pixbuf/bdk-pixbuf.loaders", TRUE);
 }

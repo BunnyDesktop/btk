@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,21 +18,21 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include "config.h"
 #include <stdio.h>
-#include "gtk/gtk.h"
+#include "btk/btk.h"
 
 /* Backing pixmap for drawing area */
 
-static GdkPixmap *pixmap = NULL;
+static BdkPixmap *pixmap = NULL;
 
 /* Information about cursor */
 
@@ -41,25 +41,25 @@ static gdouble cursor_x;
 static gdouble cursor_y;
 
 /* Unique ID of current device */
-static GdkDevice *current_device;
+static BdkDevice *current_device;
 
 /* Erase the old cursor, and/or draw a new one, if necessary */
 static void
-update_cursor (GtkWidget *widget,  gdouble x, gdouble y)
+update_cursor (BtkWidget *widget,  gdouble x, gdouble y)
 {
   static gint cursor_present = 0;
   gint state = !current_device->has_cursor && cursor_proximity;
 
   if (pixmap != NULL)
     {
-      cairo_t *cr = gdk_cairo_create (widget->window);
+      bairo_t *cr = bdk_bairo_create (widget->window);
 
       if (cursor_present && (cursor_present != state ||
 			     x != cursor_x || y != cursor_y))
 	{
-          gdk_cairo_set_source_pixmap (cr, pixmap, 0, 0);
-          cairo_rectangle (cr, cursor_x - 5, cursor_y - 5, 10, 10);
-          cairo_fill (cr);
+          bdk_bairo_set_source_pixmap (cr, pixmap, 0, 0);
+          bairo_rectangle (cr, cursor_x - 5, cursor_y - 5, 10, 10);
+          bairo_fill (cr);
 	}
 
       cursor_present = state;
@@ -68,50 +68,50 @@ update_cursor (GtkWidget *widget,  gdouble x, gdouble y)
 
       if (cursor_present)
 	{
-          cairo_set_source_rgb (cr, 0, 0, 0);
-          cairo_rectangle (cr, 
+          bairo_set_source_rgb (cr, 0, 0, 0);
+          bairo_rectangle (cr, 
                            cursor_x - 5, cursor_y -5,
 			   10, 10);
-          cairo_fill (cr);
+          bairo_fill (cr);
 	}
 
-      cairo_destroy (cr);
+      bairo_destroy (cr);
     }
 }
 
 /* Create a new backing pixmap of the appropriate size */
 static gint
-configure_event (GtkWidget *widget, GdkEventConfigure *event)
+configure_event (BtkWidget *widget, BdkEventConfigure *event)
 {
-  cairo_t *cr;
+  bairo_t *cr;
 
   if (pixmap)
     g_object_unref (pixmap);
-  pixmap = gdk_pixmap_new(widget->window,
+  pixmap = bdk_pixmap_new(widget->window,
 			  widget->allocation.width,
 			  widget->allocation.height,
 			  -1);
-  cr = gdk_cairo_create (pixmap);
+  cr = bdk_bairo_create (pixmap);
 
-  cairo_set_source_rgb (cr, 1, 1, 1);
-  cairo_paint (cr);
+  bairo_set_source_rgb (cr, 1, 1, 1);
+  bairo_paint (cr);
 
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 
   return TRUE;
 }
 
 /* Refill the screen from the backing pixmap */
 static gint
-expose_event (GtkWidget *widget, GdkEventExpose *event)
+expose_event (BtkWidget *widget, BdkEventExpose *event)
 {
-  cairo_t *cr = gdk_cairo_create (widget->window);
+  bairo_t *cr = bdk_bairo_create (widget->window);
 
-  gdk_cairo_set_source_pixmap (cr, pixmap, 0, 0);
-  gdk_cairo_rectangle (cr, &event->area);
-  cairo_fill (cr);
+  bdk_bairo_set_source_pixmap (cr, pixmap, 0, 0);
+  bdk_bairo_rectangle (cr, &event->area);
+  bairo_fill (cr);
 
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 
   return FALSE;
 }
@@ -119,26 +119,26 @@ expose_event (GtkWidget *widget, GdkEventExpose *event)
 /* Draw a rectangle on the screen, size depending on pressure,
    and color on the type of device */
 static void
-draw_brush (GtkWidget *widget, GdkInputSource source,
+draw_brush (BtkWidget *widget, BdkInputSource source,
 	    gdouble x, gdouble y, gdouble pressure)
 {
-  GdkColor color;
-  GdkRectangle update_rect;
-  cairo_t *cr;
+  BdkColor color;
+  BdkRectangle update_rect;
+  bairo_t *cr;
 
   switch (source)
     {
-    case GDK_SOURCE_MOUSE:
-      color = widget->style->dark[gtk_widget_get_state (widget)];
+    case BDK_SOURCE_MOUSE:
+      color = widget->style->dark[btk_widget_get_state (widget)];
       break;
-    case GDK_SOURCE_PEN:
+    case BDK_SOURCE_PEN:
       color.red = color.green = color.blue = 0;
       break;
-    case GDK_SOURCE_ERASER:
+    case BDK_SOURCE_ERASER:
       color.red = color.green = color.blue = 65535;
       break;
     default:
-      color = widget->style->light[gtk_widget_get_state (widget)];
+      color = widget->style->light[btk_widget_get_state (widget)];
     }
 
   update_rect.x = x - 10 * pressure;
@@ -146,22 +146,22 @@ draw_brush (GtkWidget *widget, GdkInputSource source,
   update_rect.width = 20 * pressure;
   update_rect.height = 20 * pressure;
 
-  cr = gdk_cairo_create (pixmap);
-  gdk_cairo_set_source_color (cr, &color);
-  gdk_cairo_rectangle (cr, &update_rect);
-  cairo_fill (cr);
-  cairo_destroy (cr);
+  cr = bdk_bairo_create (pixmap);
+  bdk_bairo_set_source_color (cr, &color);
+  bdk_bairo_rectangle (cr, &update_rect);
+  bairo_fill (cr);
+  bairo_destroy (cr);
 
-  gtk_widget_queue_draw_area (widget,
+  btk_widget_queue_draw_area (widget,
 			      update_rect.x, update_rect.y,
 			      update_rect.width, update_rect.height);
-  gdk_window_process_updates (widget->window, TRUE);
+  bdk_window_process_updates (widget->window, TRUE);
 }
 
 static guint32 motion_time;
 
 static void
-print_axes (GdkDevice *device, gdouble *axes)
+print_axes (BdkDevice *device, gdouble *axes)
 {
   int i;
   
@@ -177,7 +177,7 @@ print_axes (GdkDevice *device, gdouble *axes)
 }
 
 static gint
-button_press_event (GtkWidget *widget, GdkEventButton *event)
+button_press_event (BtkWidget *widget, BdkEventButton *event)
 {
   current_device = event->device;
   cursor_proximity = TRUE;
@@ -187,7 +187,7 @@ button_press_event (GtkWidget *widget, GdkEventButton *event)
       gdouble pressure = 0.5;
 
       print_axes (event->device, event->axes);
-      gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
+      bdk_event_get_axis ((BdkEvent *)event, BDK_AXIS_PRESSURE, &pressure);
       draw_brush (widget, event->device->source, event->x, event->y, pressure);
       
       motion_time = event->time;
@@ -199,7 +199,7 @@ button_press_event (GtkWidget *widget, GdkEventButton *event)
 }
 
 static gint
-key_press_event (GtkWidget *widget, GdkEventKey *event)
+key_press_event (BtkWidget *widget, BdkEventKey *event)
 {
   if ((event->keyval >= 0x20) && (event->keyval <= 0xFF))
     printf("I got a %c\n", event->keyval);
@@ -210,18 +210,18 @@ key_press_event (GtkWidget *widget, GdkEventKey *event)
 }
 
 static gint
-motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
+motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 {
-  GdkTimeCoord **events;
+  BdkTimeCoord **events;
   int n_events;
   int i;
 
   current_device = event->device;
   cursor_proximity = TRUE;
 
-  if (event->state & GDK_BUTTON1_MASK && pixmap != NULL)
+  if (event->state & BDK_BUTTON1_MASK && pixmap != NULL)
     {
-      if (gdk_device_get_history (event->device, event->window, 
+      if (bdk_device_get_history (event->device, event->window, 
 				  motion_time, event->time,
 				  &events, &n_events))
 	{
@@ -229,20 +229,20 @@ motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
 	    {
 	      double x = 0, y = 0, pressure = 0.5;
 
-	      gdk_device_get_axis (event->device, events[i]->axes, GDK_AXIS_X, &x);
-	      gdk_device_get_axis (event->device, events[i]->axes, GDK_AXIS_Y, &y);
-	      gdk_device_get_axis (event->device, events[i]->axes, GDK_AXIS_PRESSURE, &pressure);
+	      bdk_device_get_axis (event->device, events[i]->axes, BDK_AXIS_X, &x);
+	      bdk_device_get_axis (event->device, events[i]->axes, BDK_AXIS_Y, &y);
+	      bdk_device_get_axis (event->device, events[i]->axes, BDK_AXIS_PRESSURE, &pressure);
 	      draw_brush (widget,  event->device->source, x, y, pressure);
 
 	      print_axes (event->device, events[i]->axes);
 	    }
-	  gdk_device_free_history (events, n_events);
+	  bdk_device_free_history (events, n_events);
 	}
       else
 	{
 	  double pressure = 0.5;
 
-	  gdk_event_get_axis ((GdkEvent *)event, GDK_AXIS_PRESSURE, &pressure);
+	  bdk_event_get_axis ((BdkEvent *)event, BDK_AXIS_PRESSURE, &pressure);
 
 	  draw_brush (widget,  event->device->source, event->x, event->y, pressure);
 	}
@@ -250,7 +250,7 @@ motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
     }
 
   if (event->is_hint)
-    gdk_device_get_state (event->device, event->window, NULL, NULL);
+    bdk_device_get_state (event->device, event->window, NULL, NULL);
 
   print_axes (event->device, event->axes);
   update_cursor (widget, event->x, event->y);
@@ -262,7 +262,7 @@ motion_notify_event (GtkWidget *widget, GdkEventMotion *event)
    cursor */
 
 static gint
-proximity_out_event (GtkWidget *widget, GdkEventProximity *event)
+proximity_out_event (BtkWidget *widget, BdkEventProximity *event)
 {
   cursor_proximity = FALSE;
   update_cursor (widget, cursor_x, cursor_y);
@@ -270,7 +270,7 @@ proximity_out_event (GtkWidget *widget, GdkEventProximity *event)
 }
 
 static gint
-leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
+leave_notify_event (BtkWidget *widget, BdkEventCrossing *event)
 {
   cursor_proximity = FALSE;
   update_cursor (widget, cursor_x, cursor_y);
@@ -278,75 +278,75 @@ leave_notify_event (GtkWidget *widget, GdkEventCrossing *event)
 }
 
 void
-input_dialog_destroy (GtkWidget *w, gpointer data)
+input_dialog_destroy (BtkWidget *w, gpointer data)
 {
-  *((GtkWidget **)data) = NULL;
+  *((BtkWidget **)data) = NULL;
 }
 
 void
 create_input_dialog (void)
 {
-  static GtkWidget *inputd = NULL;
+  static BtkWidget *inputd = NULL;
 
   if (!inputd)
     {
-      inputd = gtk_input_dialog_new ();
+      inputd = btk_input_dialog_new ();
 
       g_signal_connect (inputd, "destroy",
 			G_CALLBACK (input_dialog_destroy), &inputd);
-      g_signal_connect_swapped (GTK_INPUT_DIALOG (inputd)->close_button,
+      g_signal_connect_swapped (BTK_INPUT_DIALOG (inputd)->close_button,
 			        "clicked",
-			        G_CALLBACK (gtk_widget_hide),
+			        G_CALLBACK (btk_widget_hide),
 			        inputd);
-      gtk_widget_hide (GTK_INPUT_DIALOG (inputd)->save_button);
+      btk_widget_hide (BTK_INPUT_DIALOG (inputd)->save_button);
 
-      gtk_widget_show (inputd);
+      btk_widget_show (inputd);
     }
   else
     {
-      if (!gtk_widget_get_mapped(inputd))
-	gtk_widget_show(inputd);
+      if (!btk_widget_get_mapped(inputd))
+	btk_widget_show(inputd);
       else
-	gdk_window_raise(inputd->window);
+	bdk_window_raise(inputd->window);
     }
 }
 
 void
 quit (void)
 {
-  gtk_main_quit ();
+  btk_main_quit ();
 }
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *window;
-  GtkWidget *drawing_area;
-  GtkWidget *vbox;
+  BtkWidget *window;
+  BtkWidget *drawing_area;
+  BtkWidget *vbox;
 
-  GtkWidget *button;
+  BtkWidget *button;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  current_device = gdk_device_get_core_pointer ();
+  current_device = bdk_device_get_core_pointer ();
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_widget_set_name (window, "Test Input");
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_widget_set_name (window, "Test Input");
 
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
-  gtk_widget_show (vbox);
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_add (BTK_CONTAINER (window), vbox);
+  btk_widget_show (vbox);
 
   g_signal_connect (window, "destroy",
 		    G_CALLBACK (quit), NULL);
 
   /* Create the drawing area */
 
-  drawing_area = gtk_drawing_area_new ();
-  gtk_widget_set_size_request (drawing_area, 200, 200);
-  gtk_box_pack_start (GTK_BOX (vbox), drawing_area, TRUE, TRUE, 0);
+  drawing_area = btk_drawing_area_new ();
+  btk_widget_set_size_request (drawing_area, 200, 200);
+  btk_box_pack_start (BTK_BOX (vbox), drawing_area, TRUE, TRUE, 0);
 
-  gtk_widget_show (drawing_area);
+  btk_widget_show (drawing_area);
 
   /* Signals used to handle backing pixmap */
 
@@ -369,40 +369,40 @@ main (int argc, char *argv[])
   g_signal_connect (drawing_area, "proximity_out_event",
 		    G_CALLBACK (proximity_out_event), NULL);
 
-  gtk_widget_set_events (drawing_area, GDK_EXPOSURE_MASK
-			 | GDK_LEAVE_NOTIFY_MASK
-			 | GDK_BUTTON_PRESS_MASK
-			 | GDK_KEY_PRESS_MASK
-			 | GDK_POINTER_MOTION_MASK
-			 | GDK_POINTER_MOTION_HINT_MASK
-			 | GDK_PROXIMITY_OUT_MASK);
+  btk_widget_set_events (drawing_area, BDK_EXPOSURE_MASK
+			 | BDK_LEAVE_NOTIFY_MASK
+			 | BDK_BUTTON_PRESS_MASK
+			 | BDK_KEY_PRESS_MASK
+			 | BDK_POINTER_MOTION_MASK
+			 | BDK_POINTER_MOTION_HINT_MASK
+			 | BDK_PROXIMITY_OUT_MASK);
 
   /* The following call enables tracking and processing of extension
      events for the drawing area */
-  gtk_widget_set_extension_events (drawing_area, GDK_EXTENSION_EVENTS_ALL);
+  btk_widget_set_extension_events (drawing_area, BDK_EXTENSION_EVENTS_ALL);
 
-  gtk_widget_set_can_focus (drawing_area, TRUE);
-  gtk_widget_grab_focus (drawing_area);
+  btk_widget_set_can_focus (drawing_area, TRUE);
+  btk_widget_grab_focus (drawing_area);
 
   /* .. And create some buttons */
-  button = gtk_button_new_with_label ("Input Dialog");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Input Dialog");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (create_input_dialog), NULL);
-  gtk_widget_show (button);
+  btk_widget_show (button);
 
-  button = gtk_button_new_with_label ("Quit");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Quit");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
+			    G_CALLBACK (btk_widget_destroy),
 			    window);
-  gtk_widget_show (button);
+  btk_widget_show (button);
 
-  gtk_widget_show (window);
+  btk_widget_show (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

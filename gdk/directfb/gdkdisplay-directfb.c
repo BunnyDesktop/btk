@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,83 +18,83 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include <glib.h>
-#include "gdk.h"
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
-#include "gdkscreen.h"
-#include "gdkdisplaymanager.h"
-#include "gdkalias.h"
+#include <bunnylib.h>
+#include "bdk.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
+#include "bdkscreen.h"
+#include "bdkdisplaymanager.h"
+#include "bdkalias.h"
 
 
-extern void _gdk_visual_init            (void);
-extern void _gdk_events_init            (void);
-extern void _gdk_input_init             (void);
-extern void _gdk_dnd_init               (void);
-extern void _gdk_windowing_window_init  (GdkScreen *screen);
-extern void _gdk_windowing_image_init   (void);
-extern void _gdk_directfb_keyboard_init (void);
+extern void _bdk_visual_init            (void);
+extern void _bdk_events_init            (void);
+extern void _bdk_input_init             (void);
+extern void _bdk_dnd_init               (void);
+extern void _bdk_windowing_window_init  (BdkScreen *screen);
+extern void _bdk_windowing_image_init   (void);
+extern void _bdk_directfb_keyboard_init (void);
 
-static gboolean   gdk_directfb_argb_font           = FALSE;
-static gint       gdk_directfb_glyph_surface_cache = 8;
+static gboolean   bdk_directfb_argb_font           = FALSE;
+static gint       bdk_directfb_glyph_surface_cache = 8;
 
 
-const GOptionEntry _gdk_windowing_args[] =
+const GOptionEntry _bdk_windowing_args[] =
   {
-    { "disable-aa-fonts",0,0,G_OPTION_ARG_INT,&gdk_directfb_monochrome_fonts,NULL,NULL    },
-    { "argb-font",0,0, G_OPTION_ARG_INT, &gdk_directfb_argb_font,NULL,NULL},
-    { "transparent-unfocused",0,0, G_OPTION_ARG_INT, &gdk_directfb_apply_focus_opacity,NULL,NULL },
-    { "glyph-surface-cache",0,0,G_OPTION_ARG_INT,&gdk_directfb_glyph_surface_cache,NULL,NULL },
-    { "enable-color-keying",0,0,G_OPTION_ARG_INT,&gdk_directfb_enable_color_keying,NULL,NULL },
+    { "disable-aa-fonts",0,0,G_OPTION_ARG_INT,&bdk_directfb_monochrome_fonts,NULL,NULL    },
+    { "argb-font",0,0, G_OPTION_ARG_INT, &bdk_directfb_argb_font,NULL,NULL},
+    { "transparent-unfocused",0,0, G_OPTION_ARG_INT, &bdk_directfb_apply_focus_opacity,NULL,NULL },
+    { "glyph-surface-cache",0,0,G_OPTION_ARG_INT,&bdk_directfb_glyph_surface_cache,NULL,NULL },
+    { "enable-color-keying",0,0,G_OPTION_ARG_INT,&bdk_directfb_enable_color_keying,NULL,NULL },
     { NULL }
   };
 
-/* Main entry point for gdk in 2.6 args are parsed
+/* Main entry point for bdk in 2.6 args are parsed
  */
-GdkDisplay *
-gdk_display_open (const gchar *display_name)
+BdkDisplay *
+bdk_display_open (const gchar *display_name)
 {
   IDirectFB             *directfb;
   IDirectFBDisplayLayer *layer;
   IDirectFBInputDevice  *keyboard;
   DFBResult              ret;
 
-  if (_gdk_display)
+  if (_bdk_display)
     {
-      return GDK_DISPLAY_OBJECT (_gdk_display); /* single display only */
+      return BDK_DISPLAY_OBJECT (_bdk_display); /* single display only */
     }
 
   ret = DirectFBInit (NULL, NULL);
   if (ret != DFB_OK)
     {
-      DirectFBError ("gdk_display_open: DirectFBInit", ret);
+      DirectFBError ("bdk_display_open: DirectFBInit", ret);
       return NULL;
     }
 
   ret = DirectFBCreate (&directfb);
   if (ret != DFB_OK)
     {
-      DirectFBError ("gdk_display_open: DirectFBCreate", ret);
+      DirectFBError ("bdk_display_open: DirectFBCreate", ret);
       return NULL;
     }
 
-  _gdk_display = g_object_new (GDK_TYPE_DISPLAY_DFB, NULL);
-  _gdk_display->directfb = directfb;
+  _bdk_display = g_object_new (BDK_TYPE_DISPLAY_DFB, NULL);
+  _bdk_display->directfb = directfb;
 
   ret = directfb->GetDisplayLayer (directfb, DLID_PRIMARY, &layer);
   if (ret != DFB_OK)
     {
-      DirectFBError ("gdk_display_open: GetDisplayLayer", ret);
+      DirectFBError ("bdk_display_open: GetDisplayLayer", ret);
       directfb->Release (directfb);
-      _gdk_display->directfb = NULL;
+      _bdk_display->directfb = NULL;
       return NULL;
     }
 
@@ -102,40 +102,40 @@ gdk_display_open (const gchar *display_name)
   ret = directfb->GetInputDevice (directfb, DIDID_KEYBOARD, &keyboard);
   if (ret != DFB_OK)
     {
-      DirectFBError ("gdk_display_open: GetInputDevice", ret);
+      DirectFBError ("bdk_display_open: GetInputDevice", ret);
       directfb->Release (directfb);
-      _gdk_display->directfb = NULL;
+      _bdk_display->directfb = NULL;
       return NULL;
     }
 
-  _gdk_display->layer    = layer;
-  _gdk_display->keyboard = keyboard;
+  _bdk_display->layer    = layer;
+  _bdk_display->keyboard = keyboard;
 
-  _gdk_directfb_keyboard_init ();
+  _bdk_directfb_keyboard_init ();
 
-  _gdk_screen = g_object_new (GDK_TYPE_SCREEN, NULL);
+  _bdk_screen = g_object_new (BDK_TYPE_SCREEN, NULL);
 
-  _gdk_visual_init ();
-  _gdk_windowing_window_init (_gdk_screen);
+  _bdk_visual_init ();
+  _bdk_windowing_window_init (_bdk_screen);
 
-  gdk_screen_set_default_colormap (_gdk_screen,
-                                   gdk_screen_get_system_colormap (_gdk_screen));
-  _gdk_windowing_image_init ();
+  bdk_screen_set_default_colormap (_bdk_screen,
+                                   bdk_screen_get_system_colormap (_bdk_screen));
+  _bdk_windowing_image_init ();
 
-  _gdk_events_init ();
-  _gdk_input_init ();
-  _gdk_dnd_init ();
+  _bdk_events_init ();
+  _bdk_input_init ();
+  _bdk_dnd_init ();
 
   layer->EnableCursor (layer, 1);
 
-  g_signal_emit_by_name (gdk_display_manager_get (),
-			 "display_opened", _gdk_display);
+  g_signal_emit_by_name (bdk_display_manager_get (),
+			 "display_opened", _bdk_display);
 
-  return GDK_DISPLAY_OBJECT (_gdk_display);
+  return BDK_DISPLAY_OBJECT (_bdk_display);
 }
 
 GType
-gdk_display_dfb_get_type (void)
+bdk_display_dfb_get_type (void)
 {
   static GType object_type = 0;
 
@@ -143,19 +143,19 @@ gdk_display_dfb_get_type (void)
     {
       const GTypeInfo object_info =
         {
-          sizeof (GdkDisplayDFBClass),
+          sizeof (BdkDisplayDFBClass),
           (GBaseInitFunc) NULL,
           (GBaseFinalizeFunc) NULL,
           (GClassInitFunc) NULL,
           NULL,                 /* class_finalize */
           NULL,                 /* class_data */
-          sizeof (GdkDisplayDFB),
+          sizeof (BdkDisplayDFB),
           0,                    /* n_preallocs */
           (GInstanceInitFunc) NULL,
         };
 
-      object_type = g_type_register_static (GDK_TYPE_DISPLAY,
-                                            "GdkDisplayDFB",
+      object_type = g_type_register_static (BDK_TYPE_DISPLAY,
+                                            "BdkDisplayDFB",
                                             &object_info, 0);
     }
 
@@ -163,7 +163,7 @@ gdk_display_dfb_get_type (void)
 }
 
 IDirectFBSurface *
-gdk_display_dfb_create_surface (GdkDisplayDFB *display, int format, int width, int height)
+bdk_display_dfb_create_surface (BdkDisplayDFB *display, int format, int width, int height)
 {
   DFBResult              ret;
   IDirectFBSurface      *temp;
@@ -175,7 +175,7 @@ gdk_display_dfb_create_surface (GdkDisplayDFB *display, int format, int width, i
   ret             = display->directfb->CreateSurface (display->directfb, &dsc, &temp);
   if (ret)
     {
-      DirectFBError ("gdk_display_dfb_create_surface ", ret);
+      DirectFBError ("bdk_display_dfb_create_surface ", ret);
       return NULL;
     }
   return temp;
@@ -188,53 +188,53 @@ gdk_display_dfb_create_surface (GdkDisplayDFB *display, int format, int width, i
  */
 
 void
-_gdk_windowing_set_default_display (GdkDisplay *display)
+_bdk_windowing_set_default_display (BdkDisplay *display)
 {
-  _gdk_display = GDK_DISPLAY_DFB (display);
+  _bdk_display = BDK_DISPLAY_DFB (display);
 }
 
 const gchar *
-gdk_display_get_name (GdkDisplay *display)
+bdk_display_get_name (BdkDisplay *display)
 {
-  return gdk_get_display_arg_name ();
+  return bdk_get_display_arg_name ();
 }
 
 int
-gdk_display_get_n_screens (GdkDisplay *display)
+bdk_display_get_n_screens (BdkDisplay *display)
 {
   return 1;
 }
 
-GdkScreen *
-gdk_display_get_screen (GdkDisplay *display,
+BdkScreen *
+bdk_display_get_screen (BdkDisplay *display,
 			gint        screen_num)
 {
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
-GdkScreen *
-gdk_display_get_default_screen (GdkDisplay *display)
+BdkScreen *
+bdk_display_get_default_screen (BdkDisplay *display)
 {
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
 gboolean
-gdk_display_supports_shapes (GdkDisplay *display)
+bdk_display_supports_shapes (BdkDisplay *display)
 {
   return FALSE;
 }
 
 gboolean
-gdk_display_supports_input_shapes (GdkDisplay *display)
+bdk_display_supports_input_shapes (BdkDisplay *display)
 {
   return FALSE;
 }
 
 
-GdkWindow *gdk_display_get_default_group (GdkDisplay *display)
+BdkWindow *bdk_display_get_default_group (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  return  _gdk_parent_root;
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
+  return  _bdk_parent_root;
 }
 
 
@@ -243,35 +243,35 @@ GdkWindow *gdk_display_get_default_group (GdkDisplay *display)
  */
 
 gboolean
-gdk_display_supports_selection_notification (GdkDisplay *display)
+bdk_display_supports_selection_notification (BdkDisplay *display)
 {
   return FALSE;
 }
 
-gboolean gdk_display_request_selection_notification  (GdkDisplay *display,
-                                                      GdkAtom     selection)
+gboolean bdk_display_request_selection_notification  (BdkDisplay *display,
+                                                      BdkAtom     selection)
 
 {
-  g_warning("gdk_display_request_selection_notification Unimplemented function \n");
+  g_warning("bdk_display_request_selection_notification Unimplemented function \n");
   return FALSE;
 }
 
 gboolean
-gdk_display_supports_clipboard_persistence (GdkDisplay *display)
+bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
-  g_warning("gdk_display_supports_clipboard_persistence Unimplemented function \n");
+  g_warning("bdk_display_supports_clipboard_persistence Unimplemented function \n");
   return FALSE;
 }
 
 void
-gdk_display_store_clipboard (GdkDisplay    *display,
-                             GdkWindow     *clipboard_window,
+bdk_display_store_clipboard (BdkDisplay    *display,
+                             BdkWindow     *clipboard_window,
                              guint32        time_,
-                             const GdkAtom *targets,
+                             const BdkAtom *targets,
                              gint           n_targets)
 {
 
-  g_warning("gdk_display_store_clipboard Unimplemented function \n");
+  g_warning("bdk_display_store_clipboard Unimplemented function \n");
 
 }
 
@@ -280,118 +280,118 @@ gdk_display_store_clipboard (GdkDisplay    *display,
  * Pointer
  */
 
-static gboolean _gdk_directfb_pointer_implicit_grab = FALSE;
+static gboolean _bdk_directfb_pointer_implicit_grab = FALSE;
 
-GdkGrabStatus
-gdk_directfb_pointer_grab (GdkWindow    *window,
+BdkGrabStatus
+bdk_directfb_pointer_grab (BdkWindow    *window,
                            gint          owner_events,
-                           GdkEventMask  event_mask,
-                           GdkWindow    *confine_to,
-                           GdkCursor    *cursor,
+                           BdkEventMask  event_mask,
+                           BdkWindow    *confine_to,
+                           BdkCursor    *cursor,
                            guint32       time,
                            gboolean      implicit_grab)
 {
-  GdkWindow             *toplevel;
-  GdkWindowImplDirectFB *impl;
+  BdkWindow             *toplevel;
+  BdkWindowImplDirectFB *impl;
 
-  if (_gdk_directfb_pointer_grab_window)
+  if (_bdk_directfb_pointer_grab_window)
     {
-      if (implicit_grab && !_gdk_directfb_pointer_implicit_grab)
-        return GDK_GRAB_ALREADY_GRABBED;
+      if (implicit_grab && !_bdk_directfb_pointer_implicit_grab)
+        return BDK_GRAB_ALREADY_GRABBED;
 
-      gdk_pointer_ungrab (time);
+      bdk_pointer_ungrab (time);
     }
 
-  toplevel = gdk_directfb_window_find_toplevel (window);
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (toplevel)->impl);
+  toplevel = bdk_directfb_window_find_toplevel (window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (toplevel)->impl);
 
   if (impl->window)
     {
       if (impl->window->GrabPointer (impl->window) == DFB_LOCKED)
-        return GDK_GRAB_ALREADY_GRABBED;
+        return BDK_GRAB_ALREADY_GRABBED;
     }
 
-  if (event_mask & GDK_BUTTON_MOTION_MASK)
-    event_mask |= (GDK_BUTTON1_MOTION_MASK |
-                   GDK_BUTTON2_MOTION_MASK |
-                   GDK_BUTTON3_MOTION_MASK);
+  if (event_mask & BDK_BUTTON_MOTION_MASK)
+    event_mask |= (BDK_BUTTON1_MOTION_MASK |
+                   BDK_BUTTON2_MOTION_MASK |
+                   BDK_BUTTON3_MOTION_MASK);
 
-  _gdk_directfb_pointer_implicit_grab     = implicit_grab;
-  _gdk_directfb_pointer_grab_window       = g_object_ref (window);
-  _gdk_directfb_pointer_grab_owner_events = owner_events;
+  _bdk_directfb_pointer_implicit_grab     = implicit_grab;
+  _bdk_directfb_pointer_grab_window       = g_object_ref (window);
+  _bdk_directfb_pointer_grab_owner_events = owner_events;
 
-  _gdk_directfb_pointer_grab_confine      = (confine_to ?
+  _bdk_directfb_pointer_grab_confine      = (confine_to ?
                                              g_object_ref (confine_to) : NULL);
-  _gdk_directfb_pointer_grab_events       = event_mask;
-  _gdk_directfb_pointer_grab_cursor       = (cursor ?
-                                             gdk_cursor_ref (cursor) : NULL);
+  _bdk_directfb_pointer_grab_events       = event_mask;
+  _bdk_directfb_pointer_grab_cursor       = (cursor ?
+                                             bdk_cursor_ref (cursor) : NULL);
 
 
-  gdk_directfb_window_send_crossing_events (NULL,
+  bdk_directfb_window_send_crossing_events (NULL,
                                             window,
-                                            GDK_CROSSING_GRAB);
+                                            BDK_CROSSING_GRAB);
 
-  return GDK_GRAB_SUCCESS;
+  return BDK_GRAB_SUCCESS;
 }
 
 void
-gdk_directfb_pointer_ungrab (guint32  time,
+bdk_directfb_pointer_ungrab (guint32  time,
                              gboolean implicit_grab)
 {
-  GdkWindow             *toplevel;
-  GdkWindow             *mousewin;
-  GdkWindow             *old_grab_window;
-  GdkWindowImplDirectFB *impl;
+  BdkWindow             *toplevel;
+  BdkWindow             *mousewin;
+  BdkWindow             *old_grab_window;
+  BdkWindowImplDirectFB *impl;
 
-  if (implicit_grab && !_gdk_directfb_pointer_implicit_grab)
+  if (implicit_grab && !_bdk_directfb_pointer_implicit_grab)
     return;
 
-  if (!_gdk_directfb_pointer_grab_window)
+  if (!_bdk_directfb_pointer_grab_window)
     return;
 
   toplevel =
-    gdk_directfb_window_find_toplevel (_gdk_directfb_pointer_grab_window);
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (toplevel)->impl);
+    bdk_directfb_window_find_toplevel (_bdk_directfb_pointer_grab_window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (toplevel)->impl);
 
   if (impl->window)
     impl->window->UngrabPointer (impl->window);
 
-  if (_gdk_directfb_pointer_grab_confine)
+  if (_bdk_directfb_pointer_grab_confine)
     {
-      g_object_unref (_gdk_directfb_pointer_grab_confine);
-      _gdk_directfb_pointer_grab_confine = NULL;
+      g_object_unref (_bdk_directfb_pointer_grab_confine);
+      _bdk_directfb_pointer_grab_confine = NULL;
     }
 
-  if (_gdk_directfb_pointer_grab_cursor)
+  if (_bdk_directfb_pointer_grab_cursor)
     {
-      gdk_cursor_unref (_gdk_directfb_pointer_grab_cursor);
-      _gdk_directfb_pointer_grab_cursor = NULL;
+      bdk_cursor_unref (_bdk_directfb_pointer_grab_cursor);
+      _bdk_directfb_pointer_grab_cursor = NULL;
     }
 
-  old_grab_window = _gdk_directfb_pointer_grab_window;
+  old_grab_window = _bdk_directfb_pointer_grab_window;
 
-  _gdk_directfb_pointer_grab_window   = NULL;
-  _gdk_directfb_pointer_implicit_grab = FALSE;
+  _bdk_directfb_pointer_grab_window   = NULL;
+  _bdk_directfb_pointer_implicit_grab = FALSE;
 
-  mousewin = gdk_window_at_pointer (NULL, NULL);
-  gdk_directfb_window_send_crossing_events (old_grab_window,
+  mousewin = bdk_window_at_pointer (NULL, NULL);
+  bdk_directfb_window_send_crossing_events (old_grab_window,
                                             mousewin,
-                                            GDK_CROSSING_UNGRAB);
+                                            BDK_CROSSING_UNGRAB);
   g_object_unref (old_grab_window);
 }
 
 void
-gdk_display_pointer_ungrab (GdkDisplay *display,
+bdk_display_pointer_ungrab (BdkDisplay *display,
                             guint32 time)
 {
-  GdkPointerGrabInfo *grab = _gdk_display_get_last_pointer_grab (display);
+  BdkPointerGrabInfo *grab = _bdk_display_get_last_pointer_grab (display);
 
   if (grab)
     {
       grab->serial_end = 0;
     }
 
-  _gdk_display_pointer_grab_update (display, 0);
+  _bdk_display_pointer_grab_update (display, 0);
 }
 
 
@@ -399,57 +399,57 @@ gdk_display_pointer_ungrab (GdkDisplay *display,
  * Keyboard
  */
 
-GdkGrabStatus
-gdk_directfb_keyboard_grab (GdkDisplay *display,
-                            GdkWindow  *window,
+BdkGrabStatus
+bdk_directfb_keyboard_grab (BdkDisplay *display,
+                            BdkWindow  *window,
                             gint        owner_events,
                             guint32     time)
 {
-  GdkWindow             *toplevel;
-  GdkWindowImplDirectFB *impl;
+  BdkWindow             *toplevel;
+  BdkWindowImplDirectFB *impl;
 
-  g_return_val_if_fail (GDK_IS_WINDOW (window), 0);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
 
-  if (_gdk_directfb_keyboard_grab_window)
-    gdk_keyboard_ungrab (time);
+  if (_bdk_directfb_keyboard_grab_window)
+    bdk_keyboard_ungrab (time);
 
-  toplevel = gdk_directfb_window_find_toplevel (window);
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (toplevel)->impl);
+  toplevel = bdk_directfb_window_find_toplevel (window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (toplevel)->impl);
 
   if (impl->window)
     {
       if (impl->window->GrabKeyboard (impl->window) == DFB_LOCKED)
-        return GDK_GRAB_ALREADY_GRABBED;
+        return BDK_GRAB_ALREADY_GRABBED;
     }
 
-  _gdk_directfb_keyboard_grab_window = g_object_ref (window);
-  _gdk_directfb_keyboard_grab_owner_events = owner_events;
-  return GDK_GRAB_SUCCESS;
+  _bdk_directfb_keyboard_grab_window = g_object_ref (window);
+  _bdk_directfb_keyboard_grab_owner_events = owner_events;
+  return BDK_GRAB_SUCCESS;
 }
 
 void
-gdk_directfb_keyboard_ungrab (GdkDisplay *display,
+bdk_directfb_keyboard_ungrab (BdkDisplay *display,
                               guint32     time)
 {
-  GdkWindow             *toplevel;
-  GdkWindowImplDirectFB *impl;
+  BdkWindow             *toplevel;
+  BdkWindowImplDirectFB *impl;
 
-  if (!_gdk_directfb_keyboard_grab_window)
+  if (!_bdk_directfb_keyboard_grab_window)
     return;
 
-  toplevel = gdk_directfb_window_find_toplevel (_gdk_directfb_keyboard_grab_window);
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (toplevel)->impl);
+  toplevel = bdk_directfb_window_find_toplevel (_bdk_directfb_keyboard_grab_window);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (toplevel)->impl);
 
   if (impl->window)
     impl->window->UngrabKeyboard (impl->window);
 
-  g_object_unref (_gdk_directfb_keyboard_grab_window);
-  _gdk_directfb_keyboard_grab_window = NULL;
+  g_object_unref (_bdk_directfb_keyboard_grab_window);
+  _bdk_directfb_keyboard_grab_window = NULL;
 }
 
 /*
  *--------------------------------------------------------------
- * gdk_keyboard_grab
+ * bdk_keyboard_grab
  *
  *   Grabs the keyboard to a specific window
  *
@@ -462,25 +462,25 @@ gdk_directfb_keyboard_ungrab (GdkDisplay *display,
  * Results:
  *
  * Side effects:
- *   requires a corresponding call to gdk_keyboard_ungrab
+ *   requires a corresponding call to bdk_keyboard_ungrab
  *
  *--------------------------------------------------------------
  */
 
-GdkGrabStatus
-gdk_display_keyboard_grab (GdkDisplay *display,
-                           GdkWindow  *window,
+BdkGrabStatus
+bdk_display_keyboard_grab (BdkDisplay *display,
+                           BdkWindow  *window,
                            gint        owner_events,
                            guint32     time)
 {
-  return gdk_directfb_keyboard_grab (display, window, owner_events, time);
+  return bdk_directfb_keyboard_grab (display, window, owner_events, time);
 }
 
 void
-gdk_display_keyboard_ungrab (GdkDisplay *display,
+bdk_display_keyboard_ungrab (BdkDisplay *display,
                              guint32     time)
 {
-  return gdk_directfb_keyboard_ungrab (display, time);
+  return bdk_directfb_keyboard_ungrab (display, time);
 }
 
 
@@ -489,17 +489,17 @@ gdk_display_keyboard_ungrab (GdkDisplay *display,
  */
 
 void
-gdk_display_beep (GdkDisplay *display)
+bdk_display_beep (BdkDisplay *display)
 {
 }
 
 void
-gdk_display_sync (GdkDisplay *display)
+bdk_display_sync (BdkDisplay *display)
 {
 }
 
 void
-gdk_display_flush (GdkDisplay *display)
+bdk_display_flush (BdkDisplay *display)
 {
 }
 
@@ -510,27 +510,27 @@ gdk_display_flush (GdkDisplay *display)
  */
 
 void
-gdk_notify_startup_complete (void)
+bdk_notify_startup_complete (void)
 {
 }
 
 /**
- * gdk_notify_startup_complete_with_id:
+ * bdk_notify_startup_complete_with_id:
  * @startup_id: a startup-notification identifier, for which notification
  *              process should be completed
  *
  * Indicates to the GUI environment that the application has finished
  * loading, using a given identifier.
  *
- * GTK+ will call this function automatically for #GtkWindow with custom
+ * BTK+ will call this function automatically for #BtkWindow with custom
  * startup-notification identifier unless
- * gtk_window_set_auto_startup_notification() is called to disable
+ * btk_window_set_auto_startup_notification() is called to disable
  * that feature.
  *
  * Since: 2.12
  **/
 void
-gdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const gchar* startup_id)
 {
 }
 
@@ -540,12 +540,12 @@ gdk_notify_startup_complete_with_id (const gchar* startup_id)
  */
 
 gboolean
-gdk_display_supports_composite (GdkDisplay *display)
+bdk_display_supports_composite (BdkDisplay *display)
 {
   return FALSE;
 }
 
 
-#define __GDK_DISPLAY_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_DISPLAY_X11_C__
+#include "bdkaliasdef.c"
 

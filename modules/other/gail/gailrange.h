@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,41 +17,41 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_RANGE_H__
-#define __GAIL_RANGE_H__
+#ifndef __BAIL_RANGE_H__
+#define __BAIL_RANGE_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_RANGE                          (gail_range_get_type ())
-#define GAIL_RANGE(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_RANGE, GailRange))
-#define GAIL_RANGE_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_RANGE, GailRangeClass))
-#define GAIL_IS_RANGE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_RANGE))
-#define GAIL_IS_RANGE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_RANGE))
-#define GAIL_RANGE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_RANGE, GailRangeClass))
+#define BAIL_TYPE_RANGE                          (bail_range_get_type ())
+#define BAIL_RANGE(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RANGE, BailRange))
+#define BAIL_RANGE_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RANGE, BailRangeClass))
+#define BAIL_IS_RANGE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RANGE))
+#define BAIL_IS_RANGE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RANGE))
+#define BAIL_RANGE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RANGE, BailRangeClass))
 
-typedef struct _GailRange		GailRange;
-typedef struct _GailRangeClass		GailRangeClass;
+typedef struct _BailRange		BailRange;
+typedef struct _BailRangeClass		BailRangeClass;
 
-struct _GailRange
+struct _BailRange
 {
-  GailWidget parent;
+  BailWidget parent;
 
-  AtkObject *adjustment;
+  BatkObject *adjustment;
   gchar     *activate_description;
   gchar     *activate_keybinding;
   guint     action_idle_handler;
 
 };
 
-GType gail_range_get_type (void);
+GType bail_range_get_type (void);
 
-struct _GailRangeClass
+struct _BailRangeClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_RANGE_H__ */
+#endif /* __BAIL_RANGE_H__ */

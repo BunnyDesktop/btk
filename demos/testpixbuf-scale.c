@@ -1,61 +1,61 @@
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-GdkInterpType interp_type = GDK_INTERP_BILINEAR;
+BdkInterpType interp_type = BDK_INTERP_BILINEAR;
 int overall_alpha = 255;
-GdkPixbuf *pixbuf;
-GtkWidget *darea;
+BdkPixbuf *pixbuf;
+BtkWidget *darea;
   
 void
-set_interp_type (GtkWidget *widget, gpointer data)
+set_interp_type (BtkWidget *widget, gpointer data)
 {
-  guint types[] = { GDK_INTERP_NEAREST,
-                    GDK_INTERP_BILINEAR,
-                    GDK_INTERP_TILES,
-                    GDK_INTERP_HYPER };
+  guint types[] = { BDK_INTERP_NEAREST,
+                    BDK_INTERP_BILINEAR,
+                    BDK_INTERP_TILES,
+                    BDK_INTERP_HYPER };
 
-  interp_type = types[gtk_combo_box_get_active (GTK_COMBO_BOX (widget))];
-  gtk_widget_queue_draw (darea);
+  interp_type = types[btk_combo_box_get_active (BTK_COMBO_BOX (widget))];
+  btk_widget_queue_draw (darea);
 }
 
 void
-overall_changed_cb (GtkAdjustment *adjustment, gpointer data)
+overall_changed_cb (BtkAdjustment *adjustment, gpointer data)
 {
   if (adjustment->value != overall_alpha)
     {
       overall_alpha = adjustment->value;
-      gtk_widget_queue_draw (darea);
+      btk_widget_queue_draw (darea);
     }
 }
 
 gboolean
-expose_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
+expose_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
 {
-  GdkPixbuf *dest;
-  cairo_t *cr;
+  BdkPixbuf *dest;
+  bairo_t *cr;
 
-  gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
+  bdk_window_set_back_pixmap (widget->window, NULL, FALSE);
   
-  dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, event->area.width, event->area.height);
+  dest = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, event->area.width, event->area.height);
 
-  gdk_pixbuf_composite_color (pixbuf, dest,
+  bdk_pixbuf_composite_color (pixbuf, dest,
 			      0, 0, event->area.width, event->area.height,
 			      -event->area.x, -event->area.y,
-			      (double) widget->allocation.width / gdk_pixbuf_get_width (pixbuf),
-			      (double) widget->allocation.height / gdk_pixbuf_get_height (pixbuf),
+			      (double) widget->allocation.width / bdk_pixbuf_get_width (pixbuf),
+			      (double) widget->allocation.height / bdk_pixbuf_get_height (pixbuf),
 			      interp_type, overall_alpha,
 			      event->area.x, event->area.y, 16, 0xaaaaaa, 0x555555);
 
-  cr = gdk_cairo_create (event->window);
+  cr = bdk_bairo_create (event->window);
 
-  gdk_cairo_set_source_pixbuf (cr, dest, 0, 0);
-  gdk_cairo_rectangle (cr, &event->area);
-  cairo_fill (cr);
+  bdk_bairo_set_source_pixbuf (cr, dest, 0, 0);
+  bdk_bairo_rectangle (cr, &event->area);
+  bairo_fill (cr);
 
-  cairo_destroy (cr);
+  bairo_destroy (cr);
   g_object_unref (dest);
   
   return TRUE;
@@ -66,18 +66,18 @@ extern void pixbuf_init();
 int
 main(int argc, char **argv)
 {
-	GtkWidget *window, *vbox;
-        GtkWidget *combo_box;
-	GtkWidget *alignment;
-	GtkWidget *hbox, *label, *hscale;
-	GtkAdjustment *adjustment;
-	GtkRequisition scratch_requisition;
+	BtkWidget *window, *vbox;
+        BtkWidget *combo_box;
+	BtkWidget *alignment;
+	BtkWidget *hbox, *label, *hscale;
+	BtkAdjustment *adjustment;
+	BtkRequisition scratch_requisition;
         const gchar *creator;
         GError *error;
         
 	pixbuf_init ();
 
-	gtk_init (&argc, &argv);
+	btk_init (&argc, &argv);
 
 	if (argc != 2) {
 		fprintf (stderr, "Usage: testpixbuf-scale FILE\n");
@@ -85,7 +85,7 @@ main(int argc, char **argv)
 	}
 
         error = NULL;
-	pixbuf = gdk_pixbuf_new_from_file (argv[1], &error);
+	pixbuf = bdk_pixbuf_new_from_file (argv[1], &error);
 	if (!pixbuf) {
 		fprintf (stderr, "Cannot load image: %s\n",
                          error->message);
@@ -93,66 +93,66 @@ main(int argc, char **argv)
 		exit(1);
 	}
 
-        creator = gdk_pixbuf_get_option (pixbuf, "tEXt::Software");
+        creator = bdk_pixbuf_get_option (pixbuf, "tEXt::Software");
         if (creator)
                 g_print ("%s was created by '%s'\n", argv[1], creator);
 
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 	g_signal_connect (window, "destroy",
-			  G_CALLBACK (gtk_main_quit), NULL);
+			  G_CALLBACK (btk_main_quit), NULL);
 	
-	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (window), vbox);
+	vbox = btk_vbox_new (FALSE, 0);
+	btk_container_add (BTK_CONTAINER (window), vbox);
 
-        combo_box = gtk_combo_box_text_new ();
+        combo_box = btk_combo_box_text_new ();
 
-        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), "NEAREST");
-        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), "BILINEAR");
-        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), "TILES");
-        gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo_box), "HYPER");
+        btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo_box), "NEAREST");
+        btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo_box), "BILINEAR");
+        btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo_box), "TILES");
+        btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo_box), "HYPER");
 
-        gtk_combo_box_set_active (GTK_COMBO_BOX (combo_box), 1);
+        btk_combo_box_set_active (BTK_COMBO_BOX (combo_box), 1);
 
         g_signal_connect (combo_box, "changed",
                           G_CALLBACK (set_interp_type),
                           NULL);
 	
-	alignment = gtk_alignment_new (0.0, 0.0, 0.0, 0.5);
-	gtk_box_pack_start (GTK_BOX (vbox), alignment, FALSE, FALSE, 0);
+	alignment = btk_alignment_new (0.0, 0.0, 0.0, 0.5);
+	btk_box_pack_start (BTK_BOX (vbox), alignment, FALSE, FALSE, 0);
 
-	hbox = gtk_hbox_new (FALSE, 4);
-	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+	hbox = btk_hbox_new (FALSE, 4);
+	btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-	label = gtk_label_new ("Overall Alpha:");
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	label = btk_label_new ("Overall Alpha:");
+	btk_box_pack_start (BTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-	adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (overall_alpha, 0, 255, 1, 10, 0));
+	adjustment = BTK_ADJUSTMENT (btk_adjustment_new (overall_alpha, 0, 255, 1, 10, 0));
 	g_signal_connect (adjustment, "value_changed",
 			  G_CALLBACK (overall_changed_cb), NULL);
 	
-	hscale = gtk_hscale_new (adjustment);
-	gtk_scale_set_digits (GTK_SCALE (hscale), 0);
-	gtk_box_pack_start (GTK_BOX (hbox), hscale, TRUE, TRUE, 0);
+	hscale = btk_hscale_new (adjustment);
+	btk_scale_set_digits (BTK_SCALE (hscale), 0);
+	btk_box_pack_start (BTK_BOX (hbox), hscale, TRUE, TRUE, 0);
 
-	gtk_container_add (GTK_CONTAINER (alignment), combo_box);
-	gtk_widget_show_all (vbox);
+	btk_container_add (BTK_CONTAINER (alignment), combo_box);
+	btk_widget_show_all (vbox);
 
 	/* Compute the size without the drawing area, so we know how big to make the default size */
-	gtk_widget_size_request (vbox, &scratch_requisition);
+	btk_widget_size_request (vbox, &scratch_requisition);
 
-	darea = gtk_drawing_area_new ();
-	gtk_box_pack_start (GTK_BOX (vbox), darea, TRUE, TRUE, 0);
+	darea = btk_drawing_area_new ();
+	btk_box_pack_start (BTK_BOX (vbox), darea, TRUE, TRUE, 0);
 
 	g_signal_connect (darea, "expose_event",
 			  G_CALLBACK (expose_cb), NULL);
 
-	gtk_window_set_default_size (GTK_WINDOW (window),
-				     gdk_pixbuf_get_width (pixbuf),
-				     scratch_requisition.height + gdk_pixbuf_get_height (pixbuf));
+	btk_window_set_default_size (BTK_WINDOW (window),
+				     bdk_pixbuf_get_width (pixbuf),
+				     scratch_requisition.height + bdk_pixbuf_get_height (pixbuf));
 	
-	gtk_widget_show_all (window);
+	btk_widget_show_all (window);
 
-	gtk_main ();
+	btk_main ();
 
 	return 0;
 }

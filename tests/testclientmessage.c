@@ -17,15 +17,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GdkAtom my_type;
-static GdkAtom random_type;
+static BdkAtom my_type;
+static BdkAtom random_type;
 
 static void
 send_known (void)
 {
-  GdkEvent *event = gdk_event_new (GDK_CLIENT_EVENT);
+  BdkEvent *event = bdk_event_new (BDK_CLIENT_EVENT);
   static int counter = 42;
   int i;
   
@@ -36,15 +36,15 @@ send_known (void)
   for (i = 1; i < 5; i++)
     event->client.data.l[i] = 0;
 
-  gdk_screen_broadcast_client_message (gdk_display_get_default_screen (gdk_display_get_default ()), event);
+  bdk_screen_broadcast_client_message (bdk_display_get_default_screen (bdk_display_get_default ()), event);
   
-  gdk_event_free (event);
+  bdk_event_free (event);
 }
 
 void
 send_random (void)
 {
-  GdkEvent *event = gdk_event_new (GDK_CLIENT_EVENT);
+  BdkEvent *event = bdk_event_new (BDK_CLIENT_EVENT);
   static int counter = 1;
   int i;
   
@@ -55,68 +55,68 @@ send_random (void)
   for (i = 1; i < 5; i++)
     event->client.data.l[i] = 0;
 
-  gdk_screen_broadcast_client_message (gdk_display_get_default_screen (gdk_display_get_default ()), event);
+  bdk_screen_broadcast_client_message (bdk_display_get_default_screen (bdk_display_get_default ()), event);
   
-  gdk_event_free (event);
+  bdk_event_free (event);
 }
 
-static GdkFilterReturn
-filter_func (GdkXEvent *xevent,
-	     GdkEvent  *event,
+static BdkFilterReturn
+filter_func (BdkXEvent *xevent,
+	     BdkEvent  *event,
 	     gpointer   data)
 {
   g_print ("Got matching client message!\n");
-  return GDK_FILTER_REMOVE;
+  return BDK_FILTER_REMOVE;
 }
 
 int
 main (int argc, char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *vbox;
-  GtkWidget *button;
+  BtkWidget *window;
+  BtkWidget *vbox;
+  BtkWidget *button;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  my_type = gdk_atom_intern ("GtkTestClientMessage", FALSE);
-  random_type = gdk_atom_intern (g_strdup_printf ("GtkTestClientMessage-%d",
+  my_type = bdk_atom_intern ("BtkTestClientMessage", FALSE);
+  random_type = bdk_atom_intern (g_strdup_printf ("BtkTestClientMessage-%d",
 						  g_rand_int_range (g_rand_new (), 1, 99)),
 				 FALSE);
 
-  g_print ("using random client message type %s\n", gdk_atom_name (random_type));
+  g_print ("using random client message type %s\n", bdk_atom_name (random_type));
 
-  window = g_object_connect (g_object_new (gtk_window_get_type (),
-					   "type", GTK_WINDOW_TOPLEVEL,
+  window = g_object_connect (g_object_new (btk_window_get_type (),
+					   "type", BTK_WINDOW_TOPLEVEL,
 					   "title", "testclientmessage",
 					   "border_width", 10,
 					   NULL),
-			     "signal::destroy", gtk_main_quit, NULL,
+			     "signal::destroy", btk_main_quit, NULL,
 			     NULL);
-  vbox = g_object_new (gtk_vbox_get_type (),
-		       "GtkWidget::parent", window,
-		       "GtkWidget::visible", TRUE,
+  vbox = g_object_new (btk_vbox_get_type (),
+		       "BtkWidget::parent", window,
+		       "BtkWidget::visible", TRUE,
 		       NULL);
-  button = g_object_connect (g_object_new (gtk_button_get_type (),
-					   "GtkButton::label", "send known client message",
-					   "GtkWidget::parent", vbox,
-					   "GtkWidget::visible", TRUE,
+  button = g_object_connect (g_object_new (btk_button_get_type (),
+					   "BtkButton::label", "send known client message",
+					   "BtkWidget::parent", vbox,
+					   "BtkWidget::visible", TRUE,
 					   NULL),
 			     "signal::clicked", send_known, NULL,
 			     NULL);
-  button = g_object_connect (g_object_new (gtk_button_get_type (),
-					   "GtkButton::label", "send random client message",
-					   "GtkWidget::parent", vbox,
-					   "GtkWidget::visible", TRUE,
+  button = g_object_connect (g_object_new (btk_button_get_type (),
+					   "BtkButton::label", "send random client message",
+					   "BtkWidget::parent", vbox,
+					   "BtkWidget::visible", TRUE,
 					   NULL),
 			     "signal::clicked", send_random, NULL,
 			     NULL);
-  gdk_display_add_client_message_filter (gdk_display_get_default (),
+  bdk_display_add_client_message_filter (bdk_display_get_default (),
 					 my_type,
 					 filter_func,
 					 NULL);
-  gtk_widget_show (window);
+  btk_widget_show (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

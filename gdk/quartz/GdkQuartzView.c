@@ -1,4 +1,4 @@
-/* GdkQuartzView.m
+/* BdkQuartzView.m
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -18,14 +18,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "GdkQuartzView.h"
-#include "gdkregion.h"
-#include "gdkregion-generic.h"
-#include "gdkwindow-quartz.h"
-#include "gdkprivate-quartz.h"
-#include "gdkquartz.h"
+#import "BdkQuartzView.h"
+#include "bdkrebunnyion.h"
+#include "bdkrebunnyion-generic.h"
+#include "bdkwindow-quartz.h"
+#include "bdkprivate-quartz.h"
+#include "bdkquartz.h"
 
-@implementation GdkQuartzView
+@implementation BdkQuartzView
 
 -(id)initWithFrame: (NSRect)frameRect
 {
@@ -40,25 +40,25 @@
 
 -(BOOL)acceptsFirstResponder
 {
-  GDK_NOTE (EVENTS, g_print ("acceptsFirstResponder\n"));
+  BDK_NOTE (EVENTS, g_print ("acceptsFirstResponder\n"));
   return YES;
 }
 
 -(BOOL)becomeFirstResponder
 {
-  GDK_NOTE (EVENTS, g_print ("becomeFirstResponder\n"));
+  BDK_NOTE (EVENTS, g_print ("becomeFirstResponder\n"));
   return YES;
 }
 
 -(BOOL)resignFirstResponder
 {
-  GDK_NOTE (EVENTS, g_print ("resignFirstResponder\n"));
+  BDK_NOTE (EVENTS, g_print ("resignFirstResponder\n"));
   return YES;
 }
 
 -(void) keyDown: (NSEvent *) theEvent
 {
-  GDK_NOTE (EVENTS, g_print ("keyDown\n"));
+  BDK_NOTE (EVENTS, g_print ("keyDown\n"));
   [self interpretKeyEvents: [NSArray arrayWithObject: theEvent]];
 }
 
@@ -68,20 +68,20 @@
 
 -(NSUInteger)characterIndexForPoint: (NSPoint)aPoint
 {
-  GDK_NOTE (EVENTS, g_print ("characterIndexForPoint\n"));
+  BDK_NOTE (EVENTS, g_print ("characterIndexForPoint\n"));
   return 0;
 }
 
 -(NSRect)firstRectForCharacterRange: (NSRange)aRange actualRange: (NSRangePointer)actualRange
 {
-  GDK_NOTE (EVENTS, g_print ("firstRectForCharacterRange\n"));
+  BDK_NOTE (EVENTS, g_print ("firstRectForCharacterRange\n"));
   gint ns_x, ns_y;
-  GdkRectangle *rect;
+  BdkRectangle *rect;
 
-  rect = g_object_get_data (G_OBJECT (gdk_window), GIC_CURSOR_RECT);
+  rect = g_object_get_data (G_OBJECT (bdk_window), GIC_CURSOR_RECT);
   if (rect)
     {
-      _gdk_quartz_window_gdk_xy_to_xy (rect->x, rect->y + rect->height,
+      _bdk_quartz_window_bdk_xy_to_xy (rect->x, rect->y + rect->height,
 				       &ns_x, &ns_y);
 
       return NSMakeRect (ns_x, ns_y, rect->width, rect->height);
@@ -94,49 +94,49 @@
 
 -(NSArray *)validAttributesForMarkedText
 {
-  GDK_NOTE (EVENTS, g_print ("validAttributesForMarkedText\n"));
+  BDK_NOTE (EVENTS, g_print ("validAttributesForMarkedText\n"));
   return [NSArray arrayWithObjects: NSUnderlineStyleAttributeName, nil];
 }
 
 -(NSAttributedString *)attributedSubstringForProposedRange: (NSRange)aRange actualRange: (NSRangePointer)actualRange
 {
-  GDK_NOTE (EVENTS, g_print ("attributedSubstringForProposedRange\n"));
+  BDK_NOTE (EVENTS, g_print ("attributedSubstringForProposedRange\n"));
   return nil;
 }
 
 -(BOOL)hasMarkedText
 {
-  GDK_NOTE (EVENTS, g_print ("hasMarkedText\n"));
+  BDK_NOTE (EVENTS, g_print ("hasMarkedText\n"));
   return markedRange.location != NSNotFound && markedRange.length != 0;
 }
 
 -(NSRange)markedRange
 {
-  GDK_NOTE (EVENTS, g_print ("markedRange\n"));
+  BDK_NOTE (EVENTS, g_print ("markedRange\n"));
   return markedRange;
 }
 
 -(NSRange)selectedRange
 {
-  GDK_NOTE (EVENTS, g_print ("selectedRange\n"));
+  BDK_NOTE (EVENTS, g_print ("selectedRange\n"));
   return selectedRange;
 }
 
 -(void)unmarkText
 {
-  GDK_NOTE (EVENTS, g_print ("unmarkText\n"));
+  BDK_NOTE (EVENTS, g_print ("unmarkText\n"));
   gchar *prev_str;
   markedRange = selectedRange = NSMakeRange (NSNotFound, 0);
 
-  prev_str = g_object_get_data (G_OBJECT (gdk_window), TIC_MARKED_TEXT);
+  prev_str = g_object_get_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT);
   if (prev_str)
     g_free (prev_str);
-  g_object_set_data (G_OBJECT (gdk_window), TIC_MARKED_TEXT, NULL);
+  g_object_set_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT, NULL);
 }
 
 -(void)setMarkedText: (id)aString selectedRange: (NSRange)newSelection replacementRange: (NSRange)replacementRange
 {
-  GDK_NOTE (EVENTS, g_print ("setMarkedText\n"));
+  BDK_NOTE (EVENTS, g_print ("setMarkedText\n"));
   const char *str;
   gchar *prev_str;
 
@@ -158,30 +158,30 @@
       str = [aString UTF8String];
     }
 
-  prev_str = g_object_get_data (G_OBJECT (gdk_window), TIC_MARKED_TEXT);
+  prev_str = g_object_get_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT);
   if (prev_str)
     g_free (prev_str);
-  g_object_set_data (G_OBJECT (gdk_window), TIC_MARKED_TEXT, g_strdup (str));
-  g_object_set_data (G_OBJECT (gdk_window), TIC_SELECTED_POS,
+  g_object_set_data (G_OBJECT (bdk_window), TIC_MARKED_TEXT, g_strdup (str));
+  g_object_set_data (G_OBJECT (bdk_window), TIC_SELECTED_POS,
 		     GUINT_TO_POINTER (selectedRange.location));
-  g_object_set_data (G_OBJECT (gdk_window), TIC_SELECTED_LEN,
+  g_object_set_data (G_OBJECT (bdk_window), TIC_SELECTED_LEN,
 		     GUINT_TO_POINTER (selectedRange.length));
 
-  GDK_NOTE (EVENTS, g_print ("setMarkedText: set %s (%p, nsview %p): %s\n",
-			     TIC_MARKED_TEXT, gdk_window, self,
+  BDK_NOTE (EVENTS, g_print ("setMarkedText: set %s (%p, nsview %p): %s\n",
+			     TIC_MARKED_TEXT, bdk_window, self,
 			     str ? str : "(empty)"));
 
   /* handle text input changes by mouse events */
-  if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (gdk_window),
+  if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (bdk_window),
                                             TIC_IN_KEY_DOWN)))
     {
-      _gdk_quartz_synthesize_null_key_event(gdk_window);
+      _bdk_quartz_synthesize_null_key_event(bdk_window);
     }
 }
 
 -(void)doCommandBySelector: (SEL)aSelector
 {
-  GDK_NOTE (EVENTS, g_print ("doCommandBySelector\n"));
+  BDK_NOTE (EVENTS, g_print ("doCommandBySelector\n"));
   if ([self respondsToSelector: aSelector])
     [self performSelector: aSelector];
 }
@@ -196,7 +196,7 @@
  * is supposed to support NSTextInputClient  */
 -(void)insertText: (id)aString
 {
-  GDK_NOTE (EVENTS, g_print ("insertText\n"));
+  BDK_NOTE (EVENTS, g_print ("insertText\n"));
   const char *str;
   NSString *string;
   gchar *prev_str;
@@ -225,335 +225,335 @@
       str = [string UTF8String];
    }
 
-  prev_str = g_object_get_data (G_OBJECT (gdk_window), TIC_INSERT_TEXT);
+  prev_str = g_object_get_data (G_OBJECT (bdk_window), TIC_INSERT_TEXT);
   if (prev_str)
     g_free (prev_str);
-  g_object_set_data (G_OBJECT (gdk_window), TIC_INSERT_TEXT, g_strdup (str));
-  GDK_NOTE (EVENTS, g_print ("insertText: set %s (%p, nsview %p): %s\n",
-			     TIC_INSERT_TEXT, gdk_window, self,
+  g_object_set_data (G_OBJECT (bdk_window), TIC_INSERT_TEXT, g_strdup (str));
+  BDK_NOTE (EVENTS, g_print ("insertText: set %s (%p, nsview %p): %s\n",
+			     TIC_INSERT_TEXT, bdk_window, self,
 			     str ? str : "(empty)"));
 
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_FILTERED));
 
   /* handle text input changes by mouse events */
-  if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (gdk_window),
+  if (!GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (bdk_window),
                                             TIC_IN_KEY_DOWN)))
     {
-      _gdk_quartz_synthesize_null_key_event(gdk_window);
+      _bdk_quartz_synthesize_null_key_event(bdk_window);
     }
 }
 
 -(void)deleteBackward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("deleteBackward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("deleteBackward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteForward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("deleteForward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("deleteForward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteToBeginningOfLine: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("deleteToBeginningOfLine\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("deleteToBeginningOfLine\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteToEndOfLine: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("deleteToEndOfLine\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("deleteToEndOfLine\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteWordBackward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("deleteWordBackward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("deleteWordBackward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)deleteWordForward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("deleteWordForward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("deleteWordForward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)insertBacktab: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("insertBacktab\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("insertBacktab\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)insertNewline: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("insertNewline\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY, GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
+  BDK_NOTE (EVENTS, g_print ("insertNewline\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY, GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)insertTab: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("insertTab\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("insertTab\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveBackward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveBackward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveBackward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveBackwardAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveBackwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveBackwardAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveDown: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveDown\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveDown\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveDownAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveDownAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveDownAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveForward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveForward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveForward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveForwardAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveForwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveForwardAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveLeft: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveLeft\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveLeft\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveLeftAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveLeftAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveLeftAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveRight: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveRight\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveRight\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveRightAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveRightAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveRightAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfDocument: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToBeginningOfDocument\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToBeginningOfDocument\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfDocumentAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToBeginningOfDocumentAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToBeginningOfDocumentAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfLine: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToBeginningOfLine\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToBeginningOfLine\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToBeginningOfLineAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToBeginningOfLineAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToBeginningOfLineAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfDocument: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToEndOfDocument\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToEndOfDocument\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfDocumentAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToEndOfDocumentAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToEndOfDocumentAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfLine: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToEndOfLine\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToEndOfLine\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveToEndOfLineAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveToEndOfLineAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveToEndOfLineAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveUp: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveUp\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveUp\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveUpAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveUpAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveUpAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordBackward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordBackward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordBackward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordBackwardAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordBackwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordBackwardAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordForward: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordForward\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordForward\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordForwardAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordForwardAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordForwardAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordLeft: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordLeft\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordLeft\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordLeftAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordLeftAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordLeftAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordRight: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordRight\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordRight\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)moveWordRightAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("moveWordRightAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("moveWordRightAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageDown: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("pageDown\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("pageDown\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageDownAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("pageDownAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("pageDownAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageUp: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("pageUp\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("pageUp\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)pageUpAndModifySelection: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("pageUpAndModifySelection\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("pageUpAndModifySelection\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)selectAll: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("selectAll\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("selectAll\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)selectLine: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("selectLine\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("selectLine\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)selectWord: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("selectWord\n"));
-  g_object_set_data (G_OBJECT (gdk_window), GIC_FILTER_KEY,
+  BDK_NOTE (EVENTS, g_print ("selectWord\n"));
+  g_object_set_data (G_OBJECT (bdk_window), GIC_FILTER_KEY,
 		     GUINT_TO_POINTER (GIC_FILTER_PASSTHRU));
 }
 
 -(void)noop: (id)sender
 {
-  GDK_NOTE (EVENTS, g_print ("noop\n"));
+  BDK_NOTE (EVENTS, g_print ("noop\n"));
 }
 
 /* --------------------------------------------------------------- */
@@ -569,14 +569,14 @@
   [super dealloc];
 }
 
--(void)setGdkWindow: (GdkWindow *)window
+-(void)setBdkWindow: (BdkWindow *)window
 {
-  gdk_window = window;
+  bdk_window = window;
 }
 
--(GdkWindow *)gdkWindow
+-(BdkWindow *)bdkWindow
 {
-  return gdk_window;
+  return bdk_window;
 }
 
 -(NSTrackingRectTag)trackingRect
@@ -591,36 +591,36 @@
 
 -(BOOL)isOpaque
 {
-  if (GDK_WINDOW_DESTROYED (gdk_window))
+  if (BDK_WINDOW_DESTROYED (bdk_window))
     return YES;
 
-  /* A view is opaque if its GdkWindow doesn't have the RGBA colormap */
-  return gdk_drawable_get_colormap (gdk_window) !=
-    gdk_screen_get_rgba_colormap (_gdk_screen);
+  /* A view is opaque if its BdkWindow doesn't have the RGBA colormap */
+  return bdk_drawable_get_colormap (bdk_window) !=
+    bdk_screen_get_rgba_colormap (_bdk_screen);
 }
 
 -(void)drawRect: (NSRect)rect
 {
-  GdkRectangle gdk_rect;
-  GdkWindowObject *private = GDK_WINDOW_OBJECT (gdk_window);
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkRectangle bdk_rect;
+  BdkWindowObject *private = BDK_WINDOW_OBJECT (bdk_window);
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
   const NSRect *drawn_rects;
   NSInteger count;
   int i;
-  GdkRegion *region;
+  BdkRebunnyion *rebunnyion;
 
-  if (GDK_WINDOW_DESTROYED (gdk_window))
+  if (BDK_WINDOW_DESTROYED (bdk_window))
     return;
 
-  if (! (private->event_mask & GDK_EXPOSURE_MASK))
+  if (! (private->event_mask & BDK_EXPOSURE_MASK))
     return;
 
   if (NSEqualRects (rect, NSZeroRect))
     return;
 
-  if (!GDK_WINDOW_IS_MAPPED (gdk_window))
+  if (!BDK_WINDOW_IS_MAPPED (bdk_window))
     {
-      /* If the window is not yet mapped, clip_region_with_children
+      /* If the window is not yet mapped, clip_rebunnyion_with_children
        * will be empty causing the usual code below to draw nothing.
        * To not see garbage on the screen, we draw an aesthetic color
        * here. The garbage would be visible if any widget enabled
@@ -637,31 +637,31 @@
       return;
     }
 
-  /* Clear our own bookkeeping of regions that need display */
-  if (impl->needs_display_region)
+  /* Clear our own bookkeeping of rebunnyions that need display */
+  if (impl->needs_display_rebunnyion)
     {
-      gdk_region_destroy (impl->needs_display_region);
-      impl->needs_display_region = NULL;
+      bdk_rebunnyion_destroy (impl->needs_display_rebunnyion);
+      impl->needs_display_rebunnyion = NULL;
     }
 
   [self getRectsBeingDrawn: &drawn_rects count: &count];
-  region = gdk_region_new ();
+  rebunnyion = bdk_rebunnyion_new ();
 
   for (i = 0; i < count; i++)
     {
-      gdk_rect.x = drawn_rects[i].origin.x;
-      gdk_rect.y = drawn_rects[i].origin.y;
-      gdk_rect.width = drawn_rects[i].size.width;
-      gdk_rect.height = drawn_rects[i].size.height;
+      bdk_rect.x = drawn_rects[i].origin.x;
+      bdk_rect.y = drawn_rects[i].origin.y;
+      bdk_rect.width = drawn_rects[i].size.width;
+      bdk_rect.height = drawn_rects[i].size.height;
 
-      gdk_region_union_with_rect (region, &gdk_rect);
+      bdk_rebunnyion_union_with_rect (rebunnyion, &bdk_rect);
     }
 
   impl->in_paint_rect_count++;
-  _gdk_window_process_updates_recurse (gdk_window, region);
+  _bdk_window_process_updates_recurse (bdk_window, rebunnyion);
   impl->in_paint_rect_count--;
 
-  gdk_region_destroy (region);
+  bdk_rebunnyion_destroy (rebunnyion);
 
   if (needsInvalidateShadow)
     {
@@ -680,8 +680,8 @@
  */
 -(void)updateTrackingRect
 {
-  GdkWindowObject *private = GDK_WINDOW_OBJECT (gdk_window);
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkWindowObject *private = BDK_WINDOW_OBJECT (bdk_window);
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
   NSRect rect;
 
   if (!impl || !impl->toplevel)

@@ -20,40 +20,40 @@
  * Based on nautilus-search-engine-tracker.h
  */
 
-#ifndef __GTK_SEARCH_ENGINE_TRACKER_H__
-#define __GTK_SEARCH_ENGINE_TRACKER_H__
+#ifndef __BTK_SEARCH_ENGINE_TRACKER_H__
+#define __BTK_SEARCH_ENGINE_TRACKER_H__
 
-#include "gtksearchengine.h"
+#include "btksearchengine.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SEARCH_ENGINE_TRACKER		(_gtk_search_engine_tracker_get_type ())
-#define GTK_SEARCH_ENGINE_TRACKER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SEARCH_ENGINE_TRACKER, GtkSearchEngineTracker))
-#define GTK_SEARCH_ENGINE_TRACKER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SEARCH_ENGINE_TRACKER, GtkSearchEngineTrackerClass))
-#define GTK_IS_SEARCH_ENGINE_TRACKER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SEARCH_ENGINE_TRACKER))
-#define GTK_IS_SEARCH_ENGINE_TRACKER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SEARCH_ENGINE_TRACKER))
-#define GTK_SEARCH_ENGINE_TRACKER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SEARCH_ENGINE_TRACKER, GtkSearchEngineTrackerClass))
+#define BTK_TYPE_SEARCH_ENGINE_TRACKER		(_btk_search_engine_tracker_get_type ())
+#define BTK_SEARCH_ENGINE_TRACKER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTracker))
+#define BTK_SEARCH_ENGINE_TRACKER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTrackerClass))
+#define BTK_IS_SEARCH_ENGINE_TRACKER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER))
+#define BTK_IS_SEARCH_ENGINE_TRACKER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE_TRACKER))
+#define BTK_SEARCH_ENGINE_TRACKER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTrackerClass))
 
-typedef struct _GtkSearchEngineTracker GtkSearchEngineTracker;
-typedef struct _GtkSearchEngineTrackerClass GtkSearchEngineTrackerClass;
-typedef struct _GtkSearchEngineTrackerPrivate GtkSearchEngineTrackerPrivate;
+typedef struct _BtkSearchEngineTracker BtkSearchEngineTracker;
+typedef struct _BtkSearchEngineTrackerClass BtkSearchEngineTrackerClass;
+typedef struct _BtkSearchEngineTrackerPrivate BtkSearchEngineTrackerPrivate;
 
-struct _GtkSearchEngineTracker 
+struct _BtkSearchEngineTracker 
 {
-  GtkSearchEngine parent;
+  BtkSearchEngine parent;
 
-  GtkSearchEngineTrackerPrivate *priv;
+  BtkSearchEngineTrackerPrivate *priv;
 };
 
-struct _GtkSearchEngineTrackerClass 
+struct _BtkSearchEngineTrackerClass 
 {
-  GtkSearchEngineClass parent_class;
+  BtkSearchEngineClass parent_class;
 };
 
-GType            _gtk_search_engine_tracker_get_type (void);
+GType            _btk_search_engine_tracker_get_type (void);
 
-GtkSearchEngine* _gtk_search_engine_tracker_new      (void);
+BtkSearchEngine* _btk_search_engine_tracker_new      (void);
 
 G_END_DECLS
 
-#endif /* __GTK_SEARCH_ENGINE_TRACKER_H__ */
+#endif /* __BTK_SEARCH_ENGINE_TRACKER_H__ */

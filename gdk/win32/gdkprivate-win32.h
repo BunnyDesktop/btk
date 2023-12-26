@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,14 +18,14 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_PRIVATE_WIN32_H__
-#define __GDK_PRIVATE_WIN32_H__
+#ifndef __BDK_PRIVATE_WIN32_H__
+#define __BDK_PRIVATE_WIN32_H__
 
 #ifndef WINVER
 #define WINVER 0x0500
@@ -35,12 +35,12 @@
 #define _WIN32_WINNT WINVER
 #endif
 
-#include <gdk/gdkprivate.h>
-#include <gdk/win32/gdkwindow-win32.h>
-#include <gdk/win32/gdkpixmap-win32.h>
-#include <gdk/win32/gdkwin32keys.h>
+#include <bdk/bdkprivate.h>
+#include <bdk/win32/bdkwindow-win32.h>
+#include <bdk/win32/bdkpixmap-win32.h>
+#include <bdk/win32/bdkwin32keys.h>
 
-#include "gdkinternals.h"
+#include "bdkinternals.h"
 
 #include "config.h"
 
@@ -102,39 +102,39 @@
 #endif
 
 
-/* Define some combinations of GdkDebugFlags */
-#define GDK_DEBUG_EVENTS_OR_COLORMAP (GDK_DEBUG_EVENTS|GDK_DEBUG_COLORMAP)
-#define GDK_DEBUG_EVENTS_OR_INPUT (GDK_DEBUG_EVENTS|GDK_DEBUG_INPUT)
-#define GDK_DEBUG_PIXMAP_OR_COLORMAP (GDK_DEBUG_PIXMAP|GDK_DEBUG_COLORMAP)
-#define GDK_DEBUG_MISC_OR_COLORMAP (GDK_DEBUG_MISC|GDK_DEBUG_COLORMAP)
-#define GDK_DEBUG_MISC_OR_EVENTS (GDK_DEBUG_MISC|GDK_DEBUG_EVENTS)
+/* Define some combinations of BdkDebugFlags */
+#define BDK_DEBUG_EVENTS_OR_COLORMAP (BDK_DEBUG_EVENTS|BDK_DEBUG_COLORMAP)
+#define BDK_DEBUG_EVENTS_OR_INPUT (BDK_DEBUG_EVENTS|BDK_DEBUG_INPUT)
+#define BDK_DEBUG_PIXMAP_OR_COLORMAP (BDK_DEBUG_PIXMAP|BDK_DEBUG_COLORMAP)
+#define BDK_DEBUG_MISC_OR_COLORMAP (BDK_DEBUG_MISC|BDK_DEBUG_COLORMAP)
+#define BDK_DEBUG_MISC_OR_EVENTS (BDK_DEBUG_MISC|BDK_DEBUG_EVENTS)
 
-#define GDK_TYPE_GC_WIN32              (_gdk_gc_win32_get_type ())
-#define GDK_GC_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_GC_WIN32, GdkGCWin32))
-#define GDK_GC_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_GC_WIN32, GdkGCWin32Class))
-#define GDK_IS_GC_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_GC_WIN32))
-#define GDK_IS_GC_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_GC_WIN32))
-#define GDK_GC_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_GC_WIN32, GdkGCWin32Class))
+#define BDK_TYPE_GC_WIN32              (_bdk_gc_win32_get_type ())
+#define BDK_GC_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_WIN32, BdkGCWin32))
+#define BDK_GC_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_WIN32, BdkGCWin32Class))
+#define BDK_IS_GC_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_WIN32))
+#define BDK_IS_GC_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_WIN32))
+#define BDK_GC_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_WIN32, BdkGCWin32Class))
 
-//#define GDK_WINDOW_SCREEN(win)         (_gdk_screen)
-GdkScreen *GDK_WINDOW_SCREEN(GObject *win);
+//#define BDK_WINDOW_SCREEN(win)         (_bdk_screen)
+BdkScreen *BDK_WINDOW_SCREEN(GObject *win);
 
-#define GDK_WINDOW_IS_WIN32(win)        (GDK_IS_WINDOW_IMPL_WIN32 (((GdkWindowObject *)win)->impl))
+#define BDK_WINDOW_IS_WIN32(win)        (BDK_IS_WINDOW_IMPL_WIN32 (((BdkWindowObject *)win)->impl))
 
-typedef struct _GdkColormapPrivateWin32 GdkColormapPrivateWin32;
-typedef struct _GdkCursorPrivate        GdkCursorPrivate;
-typedef struct _GdkWin32SingleFont      GdkWin32SingleFont;
-typedef struct _GdkFontPrivateWin32     GdkFontPrivateWin32;
-typedef struct _GdkGCWin32		GdkGCWin32;
-typedef struct _GdkGCWin32Class		GdkGCWin32Class;
+typedef struct _BdkColormapPrivateWin32 BdkColormapPrivateWin32;
+typedef struct _BdkCursorPrivate        BdkCursorPrivate;
+typedef struct _BdkWin32SingleFont      BdkWin32SingleFont;
+typedef struct _BdkFontPrivateWin32     BdkFontPrivateWin32;
+typedef struct _BdkGCWin32		BdkGCWin32;
+typedef struct _BdkGCWin32Class		BdkGCWin32Class;
 
-struct _GdkCursorPrivate
+struct _BdkCursorPrivate
 {
-  GdkCursor cursor;
+  BdkCursor cursor;
   HCURSOR hcursor;
 };
 
-struct _GdkWin32SingleFont
+struct _BdkWin32SingleFont
 {
   HFONT hfont;
   UINT charset;
@@ -142,65 +142,65 @@ struct _GdkWin32SingleFont
   FONTSIGNATURE fs;
 };
 
-#ifndef GDK_DISABLE_DEPRECATED
+#ifndef BDK_DISABLE_DEPRECATED
 
-struct _GdkFontPrivateWin32
+struct _BdkFontPrivateWin32
 {
-  GdkFontPrivate base;
-  GSList *fonts;		/* List of GdkWin32SingleFonts */
+  BdkFontPrivate base;
+  GSList *fonts;		/* List of BdkWin32SingleFonts */
   GSList *names;
 };
 
-#endif /* GDK_DISABLE_DEPRECATED */
+#endif /* BDK_DISABLE_DEPRECATED */
 
-struct _GdkVisualClass
+struct _BdkVisualClass
 {
   GObjectClass parent_class;
 };
 
 typedef enum {
-  GDK_WIN32_PE_STATIC,
-  GDK_WIN32_PE_AVAILABLE,
-  GDK_WIN32_PE_INUSE
-} GdkWin32PalEntryState;
+  BDK_WIN32_PE_STATIC,
+  BDK_WIN32_PE_AVAILABLE,
+  BDK_WIN32_PE_INUSE
+} BdkWin32PalEntryState;
 
-struct _GdkColormapPrivateWin32
+struct _BdkColormapPrivateWin32
 {
   HPALETTE hpal;
   gint current_size;		/* Current size of hpal */
-  GdkWin32PalEntryState *use;
+  BdkWin32PalEntryState *use;
   gint private_val;
 
   GHashTable *hash;
-  GdkColorInfo *info;
+  BdkColorInfo *info;
 };
 
-struct _GdkGCWin32
+struct _BdkGCWin32
 {
-  GdkGC parent_instance;
+  BdkGC parent_instance;
 
   /* A Windows Device Context (DC) is not equivalent to an X11
    * GC. We can use a DC only in the window for which it was
    * allocated, or (in the case of a memory DC) with the bitmap that
    * has been selected into it. Thus, we have to release and
-   * reallocate a DC each time the GdkGC is used to paint into a new
+   * reallocate a DC each time the BdkGC is used to paint into a new
    * window or pixmap. We thus keep all the necessary values in the
-   * GdkGCWin32 object.
+   * BdkGCWin32 object.
    */
 
   HRGN hcliprgn;
 
-  GdkGCValuesMask values_mask;
+  BdkGCValuesMask values_mask;
 
-  GdkFont *font;
+  BdkFont *font;
   gint rop2;
-  GdkSubwindowMode subwindow_mode;
+  BdkSubwindowMode subwindow_mode;
   gint graphics_exposures;
   gint pen_width;
   DWORD pen_style;
-  GdkLineStyle line_style;
-  GdkCapStyle cap_style;
-  GdkJoinStyle join_style;
+  BdkLineStyle line_style;
+  BdkCapStyle cap_style;
+  BdkJoinStyle join_style;
   DWORD *pen_dashes;		/* use for PS_USERSTYLE or step-by-step rendering */
   gint pen_num_dashes;
   gint pen_dash_offset;
@@ -213,54 +213,54 @@ struct _GdkGCWin32
   HPALETTE holdpal;
 };
 
-struct _GdkGCWin32Class
+struct _BdkGCWin32Class
 {
-  GdkGCClass parent_class;
+  BdkGCClass parent_class;
 };
 
-GType _gdk_gc_win32_get_type (void);
+GType _bdk_gc_win32_get_type (void);
 
-gulong _gdk_win32_get_next_tick (gulong suggested_tick);
+gulong _bdk_win32_get_next_tick (gulong suggested_tick);
 
-void _gdk_window_init_position     (GdkWindow *window);
-void _gdk_window_move_resize_child (GdkWindow *window,
+void _bdk_window_init_position     (BdkWindow *window);
+void _bdk_window_move_resize_child (BdkWindow *window,
 				    gint       x,
 				    gint       y,
 				    gint       width,
 				    gint       height);
 
-/* GdkWindowImpl methods */
-void _gdk_win32_window_scroll (GdkWindow *window,
+/* BdkWindowImpl methods */
+void _bdk_win32_window_scroll (BdkWindow *window,
 			       gint       dx,
 			       gint       dy);
-void _gdk_win32_window_move_region (GdkWindow       *window,
-				    const GdkRegion *region,
+void _bdk_win32_window_move_rebunnyion (BdkWindow       *window,
+				    const BdkRebunnyion *rebunnyion,
 				    gint             dx,
 				    gint             dy);
-void _gdk_win32_windowing_window_get_offsets (GdkWindow *window,
+void _bdk_win32_windowing_window_get_offsets (BdkWindow *window,
 					      gint      *x_offset,
 					      gint      *y_offset);
 
 
-void _gdk_win32_selection_init (void);
-void _gdk_win32_dnd_exit (void);
+void _bdk_win32_selection_init (void);
+void _bdk_win32_dnd_exit (void);
 
-void	 gdk_win32_handle_table_insert  (HANDLE   *handle,
+void	 bdk_win32_handle_table_insert  (HANDLE   *handle,
 					 gpointer data);
-void	 gdk_win32_handle_table_remove  (HANDLE handle);
+void	 bdk_win32_handle_table_remove  (HANDLE handle);
 
-GdkGC    *_gdk_win32_gc_new             (GdkDrawable        *drawable,
-					 GdkGCValues        *values,
-					 GdkGCValuesMask     values_mask);
+BdkGC    *_bdk_win32_gc_new             (BdkDrawable        *drawable,
+					 BdkGCValues        *values,
+					 BdkGCValuesMask     values_mask);
 
-GdkImage *_gdk_win32_get_image 		(GdkDrawable *drawable,
+BdkImage *_bdk_win32_get_image 		(BdkDrawable *drawable,
 					 gint         x,
 					 gint         y,
 					 gint         width,
 					 gint         height);
 
-GdkImage *_gdk_win32_copy_to_image      (GdkDrawable *drawable,
-					 GdkImage    *image,
+BdkImage *_bdk_win32_copy_to_image      (BdkDrawable *drawable,
+					 BdkImage    *image,
 					 gint         src_x,
 					 gint         src_y,
 					 gint         dest_x,
@@ -268,10 +268,10 @@ GdkImage *_gdk_win32_copy_to_image      (GdkDrawable *drawable,
 					 gint         width,
 					 gint         height);
 
-void      _gdk_win32_blit               (gboolean              use_fg_bg,
-					 GdkDrawableImplWin32 *drawable,
-					 GdkGC       	       *gc,
-					 GdkDrawable   	       *src,
+void      _bdk_win32_blit               (gboolean              use_fg_bg,
+					 BdkDrawableImplWin32 *drawable,
+					 BdkGC       	       *gc,
+					 BdkDrawable   	       *src,
 					 gint        	    	xsrc,
 					 gint        	    	ysrc,
 					 gint        	    	xdest,
@@ -279,89 +279,89 @@ void      _gdk_win32_blit               (gboolean              use_fg_bg,
 					 gint        	    	width,
 					 gint        	    	height);
 
-COLORREF  _gdk_win32_colormap_color     (GdkColormap *colormap,
+COLORREF  _bdk_win32_colormap_color     (BdkColormap *colormap,
 				         gulong       pixel);
 
-HRGN	  _gdk_win32_bitmap_to_hrgn     (GdkPixmap   *bitmap);
+HRGN	  _bdk_win32_bitmap_to_hrgn     (BdkPixmap   *bitmap);
 
-HRGN	  _gdk_win32_gdkregion_to_hrgn  (const GdkRegion *region,
+HRGN	  _bdk_win32_bdkrebunnyion_to_hrgn  (const BdkRebunnyion *rebunnyion,
 					 gint             x_origin,
 					 gint             y_origin);
 
-GdkRegion *_gdk_win32_hrgn_to_region    (HRGN hrgn);
+BdkRebunnyion *_bdk_win32_hrgn_to_rebunnyion    (HRGN hrgn);
 
-void	_gdk_win32_adjust_client_rect   (GdkWindow *window,
+void	_bdk_win32_adjust_client_rect   (BdkWindow *window,
 					 RECT      *RECT);
 
-void    _gdk_selection_property_delete (GdkWindow *);
+void    _bdk_selection_property_delete (BdkWindow *);
 
-void    _gdk_dropfiles_store (gchar *data);
+void    _bdk_dropfiles_store (gchar *data);
 
-void    _gdk_wchar_text_handle    (GdkFont       *font,
+void    _bdk_wchar_text_handle    (BdkFont       *font,
 				   const wchar_t *wcstr,
 				   int            wclen,
-				   void         (*handler)(GdkWin32SingleFont *,
+				   void         (*handler)(BdkWin32SingleFont *,
 							   const wchar_t *,
 							   int,
 							   void *),
 				   void          *arg);
 
-void       _gdk_push_modal_window   (GdkWindow *window);
-void       _gdk_remove_modal_window (GdkWindow *window);
-GdkWindow *_gdk_modal_current       (void);
-gboolean   _gdk_modal_blocked       (GdkWindow *window);
+void       _bdk_push_modal_window   (BdkWindow *window);
+void       _bdk_remove_modal_window (BdkWindow *window);
+BdkWindow *_bdk_modal_current       (void);
+gboolean   _bdk_modal_blocked       (BdkWindow *window);
 
 #ifdef G_ENABLE_DEBUG
-gchar *_gdk_win32_color_to_string      (const GdkColor *color);
-void   _gdk_win32_print_paletteentries (const PALETTEENTRY *pep,
+gchar *_bdk_win32_color_to_string      (const BdkColor *color);
+void   _bdk_win32_print_paletteentries (const PALETTEENTRY *pep,
 					const int           nentries);
-void   _gdk_win32_print_system_palette (void);
-void   _gdk_win32_print_hpalette       (HPALETTE     hpal);
-void   _gdk_win32_print_dc             (HDC          hdc);
+void   _bdk_win32_print_system_palette (void);
+void   _bdk_win32_print_hpalette       (HPALETTE     hpal);
+void   _bdk_win32_print_dc             (HDC          hdc);
 
-gchar *_gdk_win32_cap_style_to_string  (GdkCapStyle  cap_style);
-gchar *_gdk_win32_fill_style_to_string (GdkFill      fill);
-gchar *_gdk_win32_function_to_string   (GdkFunction  function);
-gchar *_gdk_win32_join_style_to_string (GdkJoinStyle join_style);
-gchar *_gdk_win32_line_style_to_string (GdkLineStyle line_style);
-gchar *_gdk_win32_drag_protocol_to_string (GdkDragProtocol protocol);
-gchar *_gdk_win32_gcvalues_mask_to_string (GdkGCValuesMask mask);
-gchar *_gdk_win32_window_state_to_string (GdkWindowState state);
-gchar *_gdk_win32_window_style_to_string (LONG style);
-gchar *_gdk_win32_window_exstyle_to_string (LONG style);
-gchar *_gdk_win32_window_pos_bits_to_string (UINT flags);
-gchar *_gdk_win32_drag_action_to_string (GdkDragAction actions);
-gchar *_gdk_win32_drawable_description (GdkDrawable *d);
+gchar *_bdk_win32_cap_style_to_string  (BdkCapStyle  cap_style);
+gchar *_bdk_win32_fill_style_to_string (BdkFill      fill);
+gchar *_bdk_win32_function_to_string   (BdkFunction  function);
+gchar *_bdk_win32_join_style_to_string (BdkJoinStyle join_style);
+gchar *_bdk_win32_line_style_to_string (BdkLineStyle line_style);
+gchar *_bdk_win32_drag_protocol_to_string (BdkDragProtocol protocol);
+gchar *_bdk_win32_gcvalues_mask_to_string (BdkGCValuesMask mask);
+gchar *_bdk_win32_window_state_to_string (BdkWindowState state);
+gchar *_bdk_win32_window_style_to_string (LONG style);
+gchar *_bdk_win32_window_exstyle_to_string (LONG style);
+gchar *_bdk_win32_window_pos_bits_to_string (UINT flags);
+gchar *_bdk_win32_drag_action_to_string (BdkDragAction actions);
+gchar *_bdk_win32_drawable_description (BdkDrawable *d);
 
-gchar *_gdk_win32_rop2_to_string       (int          rop2);
-gchar *_gdk_win32_lbstyle_to_string    (UINT         brush_style);
-gchar *_gdk_win32_pstype_to_string     (DWORD        pen_style);
-gchar *_gdk_win32_psstyle_to_string    (DWORD        pen_style);
-gchar *_gdk_win32_psendcap_to_string   (DWORD        pen_style);
-gchar *_gdk_win32_psjoin_to_string     (DWORD        pen_style);
-gchar *_gdk_win32_message_to_string    (UINT         msg);
-gchar *_gdk_win32_key_to_string        (LONG         lParam);
-gchar *_gdk_win32_cf_to_string         (UINT         format);
-gchar *_gdk_win32_data_to_string       (const guchar*data,
+gchar *_bdk_win32_rop2_to_string       (int          rop2);
+gchar *_bdk_win32_lbstyle_to_string    (UINT         brush_style);
+gchar *_bdk_win32_pstype_to_string     (DWORD        pen_style);
+gchar *_bdk_win32_psstyle_to_string    (DWORD        pen_style);
+gchar *_bdk_win32_psendcap_to_string   (DWORD        pen_style);
+gchar *_bdk_win32_psjoin_to_string     (DWORD        pen_style);
+gchar *_bdk_win32_message_to_string    (UINT         msg);
+gchar *_bdk_win32_key_to_string        (LONG         lParam);
+gchar *_bdk_win32_cf_to_string         (UINT         format);
+gchar *_bdk_win32_data_to_string       (const guchar*data,
 					int          nbytes);
-gchar *_gdk_win32_rect_to_string       (const RECT  *rect);
+gchar *_bdk_win32_rect_to_string       (const RECT  *rect);
 
-gchar *_gdk_win32_gdkrectangle_to_string (const GdkRectangle *rect);
-gchar *_gdk_win32_gdkregion_to_string    (const GdkRegion    *box);
+gchar *_bdk_win32_bdkrectangle_to_string (const BdkRectangle *rect);
+gchar *_bdk_win32_bdkrebunnyion_to_string    (const BdkRebunnyion    *box);
 
-void   _gdk_win32_print_event            (const GdkEvent     *event);
+void   _bdk_win32_print_event            (const BdkEvent     *event);
 
 #endif
 
-gchar  *_gdk_win32_last_error_string (void);
-void    _gdk_win32_api_failed        (const gchar *where,
+gchar  *_bdk_win32_last_error_string (void);
+void    _bdk_win32_api_failed        (const gchar *where,
 				     const gchar *api);
-void    _gdk_other_api_failed        (const gchar *where,
+void    _bdk_other_api_failed        (const gchar *where,
 				     const gchar *api);
 
-#define WIN32_API_FAILED(api) _gdk_win32_api_failed (G_STRLOC , api)
+#define WIN32_API_FAILED(api) _bdk_win32_api_failed (G_STRLOC , api)
 #define WIN32_GDI_FAILED(api) WIN32_API_FAILED (api)
-#define OTHER_API_FAILED(api) _gdk_other_api_failed (G_STRLOC, api)
+#define OTHER_API_FAILED(api) _bdk_other_api_failed (G_STRLOC, api)
  
 /* These two macros call a GDI or other Win32 API and if the return
  * value is zero or NULL, print a warning message. The majority of GDI
@@ -372,63 +372,63 @@ void    _gdk_other_api_failed        (const gchar *where,
 #define GDI_CALL(api, arglist) (api arglist ? 1 : (WIN32_GDI_FAILED (#api), 0))
 #define API_CALL(api, arglist) (api arglist ? 1 : (WIN32_API_FAILED (#api), 0))
  
-extern LRESULT CALLBACK _gdk_win32_window_procedure (HWND, UINT, WPARAM, LPARAM);
+extern LRESULT CALLBACK _bdk_win32_window_procedure (HWND, UINT, WPARAM, LPARAM);
 
-extern GdkWindow        *_gdk_root;
+extern BdkWindow        *_bdk_root;
 
-extern GdkDisplay       *_gdk_display;
-extern GdkScreen        *_gdk_screen;
+extern BdkDisplay       *_bdk_display;
+extern BdkScreen        *_bdk_screen;
 
-extern gint		 _gdk_num_monitors;
-typedef struct _GdkWin32Monitor GdkWin32Monitor;
-struct _GdkWin32Monitor
+extern gint		 _bdk_num_monitors;
+typedef struct _BdkWin32Monitor BdkWin32Monitor;
+struct _BdkWin32Monitor
 {
   gchar *name;
   gint width_mm, height_mm;
-  GdkRectangle rect;
+  BdkRectangle rect;
 };
-extern GdkWin32Monitor  *_gdk_monitors;
+extern BdkWin32Monitor  *_bdk_monitors;
 
 /* Offsets to add to Windows coordinates (which are relative to the
  * primary monitor's origin, and thus might be negative for monitors
- * to the left and/or above the primary monitor) to get GDK
+ * to the left and/or above the primary monitor) to get BDK
  * coordinates, which should be non-negative on the whole screen.
  */
-extern gint		 _gdk_offset_x, _gdk_offset_y;
+extern gint		 _bdk_offset_x, _bdk_offset_y;
 
-extern HDC		 _gdk_display_hdc;
-extern HINSTANCE	 _gdk_dll_hinstance;
-extern HINSTANCE	 _gdk_app_hmodule;
+extern HDC		 _bdk_display_hdc;
+extern HINSTANCE	 _bdk_dll_hinstance;
+extern HINSTANCE	 _bdk_app_hmodule;
 
-/* These are thread specific, but GDK/win32 works OK only when invoked
+/* These are thread specific, but BDK/win32 works OK only when invoked
  * from a single thread anyway.
  */
-extern HKL		 _gdk_input_locale;
-extern gboolean		 _gdk_input_locale_is_ime;
-extern UINT		 _gdk_input_codepage;
+extern HKL		 _bdk_input_locale;
+extern gboolean		 _bdk_input_locale_is_ime;
+extern UINT		 _bdk_input_codepage;
 
-extern guint		 _gdk_keymap_serial;
+extern guint		 _bdk_keymap_serial;
 
-/* GdkAtoms: properties, targets and types */
-extern GdkAtom		 _gdk_selection;
-extern GdkAtom		 _wm_transient_for;
-extern GdkAtom		 _targets;
-extern GdkAtom		 _delete;
-extern GdkAtom		 _save_targets;
-extern GdkAtom           _utf8_string;
-extern GdkAtom		 _text;
-extern GdkAtom		 _compound_text;
-extern GdkAtom		 _text_uri_list;
-extern GdkAtom		 _text_html;
-extern GdkAtom		 _image_png;
-extern GdkAtom		 _image_jpeg;
-extern GdkAtom		 _image_bmp;
-extern GdkAtom		 _image_gif;
+/* BdkAtoms: properties, targets and types */
+extern BdkAtom		 _bdk_selection;
+extern BdkAtom		 _wm_transient_for;
+extern BdkAtom		 _targets;
+extern BdkAtom		 _delete;
+extern BdkAtom		 _save_targets;
+extern BdkAtom           _utf8_string;
+extern BdkAtom		 _text;
+extern BdkAtom		 _compound_text;
+extern BdkAtom		 _text_uri_list;
+extern BdkAtom		 _text_html;
+extern BdkAtom		 _image_png;
+extern BdkAtom		 _image_jpeg;
+extern BdkAtom		 _image_bmp;
+extern BdkAtom		 _image_gif;
 
 /* DND selections */
-extern GdkAtom           _local_dnd;
-extern GdkAtom		 _gdk_win32_dropfiles;
-extern GdkAtom		 _gdk_ole2_dnd;
+extern BdkAtom           _local_dnd;
+extern BdkAtom		 _bdk_win32_dropfiles;
+extern BdkAtom		 _bdk_ole2_dnd;
 
 /* Clipboard formats */
 extern UINT		 _cf_png;
@@ -440,31 +440,31 @@ extern UINT		 _cf_text_html;
 
 /* OLE-based DND state */
 typedef enum {
-  GDK_WIN32_DND_NONE,
-  GDK_WIN32_DND_PENDING,
-  GDK_WIN32_DND_DROPPED,
-  GDK_WIN32_DND_FAILED,
-  GDK_WIN32_DND_DRAGGING,
-} GdkWin32DndState;
+  BDK_WIN32_DND_NONE,
+  BDK_WIN32_DND_PENDING,
+  BDK_WIN32_DND_DROPPED,
+  BDK_WIN32_DND_FAILED,
+  BDK_WIN32_DND_DRAGGING,
+} BdkWin32DndState;
 
-extern GdkWin32DndState  _dnd_target_state;
-extern GdkWin32DndState  _dnd_source_state;
+extern BdkWin32DndState  _dnd_target_state;
+extern BdkWin32DndState  _dnd_source_state;
 
-void _gdk_win32_dnd_do_dragdrop (void);
-void _gdk_win32_ole2_dnd_property_change (GdkAtom       type,
+void _bdk_win32_dnd_do_dragdrop (void);
+void _bdk_win32_ole2_dnd_property_change (BdkAtom       type,
 					  gint          format,
 					  const guchar *data,
 					  gint          nelements);
 
-void  _gdk_win32_begin_modal_call (void);
-void  _gdk_win32_end_modal_call (void);
+void  _bdk_win32_begin_modal_call (void);
+void  _bdk_win32_end_modal_call (void);
 
 
 /* Options */
-extern gboolean		 _gdk_input_ignore_wintab;
-extern gint		 _gdk_max_colors;
+extern gboolean		 _bdk_input_ignore_wintab;
+extern gint		 _bdk_max_colors;
 
-#define GDK_WIN32_COLORMAP_DATA(cmap) ((GdkColormapPrivateWin32 *) GDK_COLORMAP (cmap)->windowing_data)
+#define BDK_WIN32_COLORMAP_DATA(cmap) ((BdkColormapPrivateWin32 *) BDK_COLORMAP (cmap)->windowing_data)
 
 /* TRUE while a modal sizing, moving, or dnd operation is in progress */
 extern gboolean		_modal_operation_in_progress;
@@ -475,45 +475,45 @@ extern HWND		_modal_move_resize_window;
 extern gboolean		_ignore_destroy_clipboard;
 
 /* Mapping from registered clipboard format id (native) to
- * corresponding GdkAtom
+ * corresponding BdkAtom
  */
 extern GHashTable	*_format_atom_table;
 
 /* Hold the result of a delayed rendering */
 extern HGLOBAL		_delayed_rendering_data;
 
-HGLOBAL _gdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
-					     GdkAtom  target);
+HGLOBAL _bdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
+					     BdkAtom  target);
 
 /* Convert a pixbuf to an HICON (or HCURSOR).  Supports alpha under
  * Windows XP, thresholds alpha otherwise.
  */
-HICON _gdk_win32_pixbuf_to_hicon   (GdkPixbuf *pixbuf);
-HICON _gdk_win32_pixbuf_to_hcursor (GdkPixbuf *pixbuf,
+HICON _bdk_win32_pixbuf_to_hicon   (BdkPixbuf *pixbuf);
+HICON _bdk_win32_pixbuf_to_hcursor (BdkPixbuf *pixbuf,
 				    gint       x_hotspot,
 				    gint       y_hotspot);
-gboolean _gdk_win32_pixbuf_to_hicon_supports_alpha (void);
+gboolean _bdk_win32_pixbuf_to_hicon_supports_alpha (void);
 
-void _gdk_win32_append_event (GdkEvent *event);
-void _gdk_win32_emit_configure_event (GdkWindow *window);
-GdkWindow *_gdk_win32_find_window_for_mouse_event (GdkWindow* reported_window,
+void _bdk_win32_append_event (BdkEvent *event);
+void _bdk_win32_emit_configure_event (BdkWindow *window);
+BdkWindow *_bdk_win32_find_window_for_mouse_event (BdkWindow* reported_window,
 						   MSG*       msg);
 
-guint32    _gdk_win32_keymap_get_decimal_mark    (GdkWin32Keymap *keymap);
-gboolean   _gdk_win32_keymap_has_altgr           (GdkWin32Keymap *keymap);
-guint8     _gdk_win32_keymap_get_active_group    (GdkWin32Keymap *keymap);
-guint8     _gdk_win32_keymap_get_rshift_scancode (GdkWin32Keymap *keymap);
-void       _gdk_win32_keymap_set_active_layout   (GdkWin32Keymap *keymap,
+guint32    _bdk_win32_keymap_get_decimal_mark    (BdkWin32Keymap *keymap);
+gboolean   _bdk_win32_keymap_has_altgr           (BdkWin32Keymap *keymap);
+guint8     _bdk_win32_keymap_get_active_group    (BdkWin32Keymap *keymap);
+guint8     _bdk_win32_keymap_get_rshift_scancode (BdkWin32Keymap *keymap);
+void       _bdk_win32_keymap_set_active_layout   (BdkWin32Keymap *keymap,
                                                   HKL             hkl);
 
 /* Initialization */
-void _gdk_windowing_window_init (GdkScreen *screen);
-void _gdk_root_window_size_init (void);
-void _gdk_monitor_init(void);
-void _gdk_visual_init (void);
-void _gdk_dnd_init    (void);
-void _gdk_windowing_image_init  (void);
-void _gdk_events_init (void);
-void _gdk_input_init  (GdkDisplay *display);
+void _bdk_windowing_window_init (BdkScreen *screen);
+void _bdk_root_window_size_init (void);
+void _bdk_monitor_init(void);
+void _bdk_visual_init (void);
+void _bdk_dnd_init    (void);
+void _bdk_windowing_image_init  (void);
+void _bdk_events_init (void);
+void _bdk_input_init  (BdkDisplay *display);
 
-#endif /* __GDK_PRIVATE_WIN32_H__ */
+#endif /* __BDK_PRIVATE_WIN32_H__ */

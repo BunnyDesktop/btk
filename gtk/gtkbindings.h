@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkBindingSet: Keybinding manager for GtkObjects.
+ * BtkBindingSet: Keybinding manager for BtkObjects.
  * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -21,22 +21,22 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_BINDINGS_H__
-#define __GTK_BINDINGS_H__
+#ifndef __BTK_BINDINGS_H__
+#define __BTK_BINDINGS_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gdk/gdk.h>
-#include <gtk/gtkobject.h>
+#include <bdk/bdk.h>
+#include <btk/btkobject.h>
 
 
 G_BEGIN_DECLS
@@ -45,40 +45,40 @@ G_BEGIN_DECLS
 /* Binding sets
  */
 
-typedef struct _GtkBindingSet		GtkBindingSet;
-typedef struct _GtkBindingEntry		GtkBindingEntry;
-typedef struct _GtkBindingSignal	GtkBindingSignal;
-typedef struct _GtkBindingArg		GtkBindingArg;
+typedef struct _BtkBindingSet		BtkBindingSet;
+typedef struct _BtkBindingEntry		BtkBindingEntry;
+typedef struct _BtkBindingSignal	BtkBindingSignal;
+typedef struct _BtkBindingArg		BtkBindingArg;
 
-struct _GtkBindingSet
+struct _BtkBindingSet
 {
   gchar			*set_name;
   gint			 priority;
   GSList		*widget_path_pspecs;
   GSList		*widget_class_pspecs;
   GSList		*class_branch_pspecs;
-  GtkBindingEntry	*entries;
-  GtkBindingEntry	*current;
+  BtkBindingEntry	*entries;
+  BtkBindingEntry	*current;
   guint                  parsed : 1; /* From RC content */
 };
 
-struct _GtkBindingEntry
+struct _BtkBindingEntry
 {
   /* key portion
    */
   guint			 keyval;
-  GdkModifierType	 modifiers;
+  BdkModifierType	 modifiers;
   
-  GtkBindingSet		*binding_set;
+  BtkBindingSet		*binding_set;
   guint			destroyed : 1;
   guint			in_emission : 1;
   guint                 marks_unbound : 1;
-  GtkBindingEntry	*set_next;
-  GtkBindingEntry	*hash_next;
-  GtkBindingSignal	*signals;
+  BtkBindingEntry	*set_next;
+  BtkBindingEntry	*hash_next;
+  BtkBindingSignal	*signals;
 };
 
-struct _GtkBindingArg
+struct _BtkBindingArg
 {
   GType		 arg_type;
   union {
@@ -88,71 +88,71 @@ struct _GtkBindingArg
   } d;
 };
 
-struct _GtkBindingSignal
+struct _BtkBindingSignal
 {
-  GtkBindingSignal	*next;
+  BtkBindingSignal	*next;
   gchar 		*signal_name;
   guint			 n_args;
-  GtkBindingArg		*args;
+  BtkBindingArg		*args;
 };
 
 /* Application-level methods */
 
-GtkBindingSet*	gtk_binding_set_new	(const gchar	*set_name);
-GtkBindingSet*	gtk_binding_set_by_class(gpointer	 object_class);
-GtkBindingSet*	gtk_binding_set_find	(const gchar	*set_name);
-gboolean gtk_bindings_activate		(GtkObject	*object,
+BtkBindingSet*	btk_binding_set_new	(const gchar	*set_name);
+BtkBindingSet*	btk_binding_set_by_class(gpointer	 object_class);
+BtkBindingSet*	btk_binding_set_find	(const gchar	*set_name);
+gboolean btk_bindings_activate		(BtkObject	*object,
 					 guint		 keyval,
-					 GdkModifierType modifiers);
-gboolean gtk_bindings_activate_event    (GtkObject      *object,
-					 GdkEventKey    *event);
-gboolean gtk_binding_set_activate	(GtkBindingSet	*binding_set,
+					 BdkModifierType modifiers);
+gboolean btk_bindings_activate_event    (BtkObject      *object,
+					 BdkEventKey    *event);
+gboolean btk_binding_set_activate	(BtkBindingSet	*binding_set,
 					 guint		 keyval,
-					 GdkModifierType modifiers,
-					 GtkObject	*object);
+					 BdkModifierType modifiers,
+					 BtkObject	*object);
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define	 gtk_binding_entry_add		gtk_binding_entry_clear
-void	 gtk_binding_entry_clear	(GtkBindingSet	*binding_set,
+#ifndef BTK_DISABLE_DEPRECATED
+#define	 btk_binding_entry_add		btk_binding_entry_clear
+void	 btk_binding_entry_clear	(BtkBindingSet	*binding_set,
 					 guint		 keyval,
-					 GdkModifierType modifiers);
-guint	 gtk_binding_parse_binding      (GScanner       *scanner);
-#endif /* GTK_DISABLE_DEPRECATED */
+					 BdkModifierType modifiers);
+guint	 btk_binding_parse_binding      (GScanner       *scanner);
+#endif /* BTK_DISABLE_DEPRECATED */
 
-void	 gtk_binding_entry_skip         (GtkBindingSet  *binding_set,
+void	 btk_binding_entry_skip         (BtkBindingSet  *binding_set,
                                          guint           keyval,
-                                         GdkModifierType modifiers);
-void	 gtk_binding_entry_add_signal   (GtkBindingSet  *binding_set,
+                                         BdkModifierType modifiers);
+void	 btk_binding_entry_add_signal   (BtkBindingSet  *binding_set,
                                          guint           keyval,
-                                         GdkModifierType modifiers,
+                                         BdkModifierType modifiers,
                                          const gchar    *signal_name,
                                          guint           n_args,
                                          ...);
-void	 gtk_binding_entry_add_signall	(GtkBindingSet	*binding_set,
+void	 btk_binding_entry_add_signall	(BtkBindingSet	*binding_set,
 					 guint		 keyval,
-					 GdkModifierType modifiers,
+					 BdkModifierType modifiers,
 					 const gchar	*signal_name,
 					 GSList		*binding_args);
-void	 gtk_binding_entry_remove	(GtkBindingSet	*binding_set,
+void	 btk_binding_entry_remove	(BtkBindingSet	*binding_set,
 					 guint		 keyval,
-					 GdkModifierType modifiers);
+					 BdkModifierType modifiers);
 
-void	 gtk_binding_set_add_path	(GtkBindingSet	*binding_set,
-					 GtkPathType	 path_type,
+void	 btk_binding_set_add_path	(BtkBindingSet	*binding_set,
+					 BtkPathType	 path_type,
 					 const gchar	*path_pattern,
-					 GtkPathPriorityType priority);
+					 BtkPathPriorityType priority);
 
 
 /* Non-public methods */
 
-guint	 _gtk_binding_parse_binding     (GScanner       *scanner);
-void     _gtk_binding_reset_parsed      (void);
-void	 _gtk_binding_entry_add_signall (GtkBindingSet  *binding_set,
+guint	 _btk_binding_parse_binding     (GScanner       *scanner);
+void     _btk_binding_reset_parsed      (void);
+void	 _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
 					 guint		 keyval,
-					 GdkModifierType modifiers,
+					 BdkModifierType modifiers,
 					 const gchar	*signal_name,
 					 GSList		*binding_args);
 
 G_END_DECLS
 
-#endif /* __GTK_BINDINGS_H__ */
+#endif /* __BTK_BINDINGS_H__ */

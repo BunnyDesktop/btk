@@ -1,10 +1,10 @@
 Prerequisites
 =============
 
-BTK requires the following packages:
+BTK+ requires the following packages:
 
- - The BunnyLib, Bango, BdkPixbuf, BATK and bairo libraries.
-   BTK 2.24.33 requires at least BunnyLib 2.28.0,
+ - The GLib, Bango, BdkPixbuf, BATK and bairo libraries, available at the same
+   location as BTK+. BTK+ 2.24.33 requires at least GLib 2.28.0,
    Bango 1.20, BdkPixbuf 2.21.0, BATK 1.29.2 and bairo 1.6.0.
 
  - bobject-introspection 0.9.3 or newer.
@@ -12,9 +12,22 @@ BTK requires the following packages:
 Simple install procedure
 ========================
 
-  % gzip -cd btk-2.24.33.tar.gz | tar xvf - # unpack the sources
-  % cd btk-2.24.33			   # change to the toplevel directory
+  % gzip -cd btk+-2.24.33.tar.gz | tar xvf - # unpack the sources
+  % cd btk+-2.24.33			   # change to the toplevel directory
   % ./configure				   # run the `configure' script
-  % make				   # build BTK
+  % make				   # build BTK+
   [ Become root if necessary ]
-  % make install			   # install BTK
+  % make install			   # install BTK+
+
+The Details
+===========
+
+Complete information about installing BTK+ and related libraries can be found 
+in the file:
+
+ docs/reference/btk/html/btk-building.html
+
+Or online at:
+
+ http://developer.gnome.org/doc/API/2.0/btk/btk-building.html
+

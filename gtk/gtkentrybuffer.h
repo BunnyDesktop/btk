@@ -1,4 +1,4 @@
-/* gtkentrybuffer.h
+/* btkentrybuffer.h
  * Copyright (C) 2009  Stefan Walter <stef@memberwebs.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,117 +17,117 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_ENTRY_BUFFER_H__
-#define __GTK_ENTRY_BUFFER_H__
+#ifndef __BTK_ENTRY_BUFFER_H__
+#define __BTK_ENTRY_BUFFER_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 
 G_BEGIN_DECLS
 
 /* Maximum size of text buffer, in bytes */
-#define GTK_ENTRY_BUFFER_MAX_SIZE        G_MAXUSHORT
+#define BTK_ENTRY_BUFFER_MAX_SIZE        G_MAXUSHORT
 
-#define GTK_TYPE_ENTRY_BUFFER            (gtk_entry_buffer_get_type ())
-#define GTK_ENTRY_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY_BUFFER, GtkEntryBuffer))
-#define GTK_ENTRY_BUFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ENTRY_BUFFER, GtkEntryBufferClass))
-#define GTK_IS_ENTRY_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ENTRY_BUFFER))
-#define GTK_IS_ENTRY_BUFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ENTRY_BUFFER))
-#define GTK_ENTRY_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ENTRY_BUFFER, GtkEntryBufferClass))
+#define BTK_TYPE_ENTRY_BUFFER            (btk_entry_buffer_get_type ())
+#define BTK_ENTRY_BUFFER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY_BUFFER, BtkEntryBuffer))
+#define BTK_ENTRY_BUFFER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ENTRY_BUFFER, BtkEntryBufferClass))
+#define BTK_IS_ENTRY_BUFFER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ENTRY_BUFFER))
+#define BTK_IS_ENTRY_BUFFER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ENTRY_BUFFER))
+#define BTK_ENTRY_BUFFER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ENTRY_BUFFER, BtkEntryBufferClass))
 
-typedef struct _GtkEntryBuffer            GtkEntryBuffer;
-typedef struct _GtkEntryBufferClass       GtkEntryBufferClass;
-typedef struct _GtkEntryBufferPrivate     GtkEntryBufferPrivate;
+typedef struct _BtkEntryBuffer            BtkEntryBuffer;
+typedef struct _BtkEntryBufferClass       BtkEntryBufferClass;
+typedef struct _BtkEntryBufferPrivate     BtkEntryBufferPrivate;
 
-struct _GtkEntryBuffer
+struct _BtkEntryBuffer
 {
   GObject parent_instance;
 
   /*< private >*/
-  GtkEntryBufferPrivate *priv;
+  BtkEntryBufferPrivate *priv;
 };
 
-struct _GtkEntryBufferClass
+struct _BtkEntryBufferClass
 {
   GObjectClass parent_class;
 
   /* Signals */
 
-  void         (*inserted_text)          (GtkEntryBuffer *buffer,
+  void         (*inserted_text)          (BtkEntryBuffer *buffer,
                                           guint           position,
                                           const gchar    *chars,
                                           guint           n_chars);
 
-  void         (*deleted_text)           (GtkEntryBuffer *buffer,
+  void         (*deleted_text)           (BtkEntryBuffer *buffer,
                                           guint           position,
                                           guint           n_chars);
 
   /* Virtual Methods */
 
-  const gchar* (*get_text)               (GtkEntryBuffer *buffer,
+  const gchar* (*get_text)               (BtkEntryBuffer *buffer,
                                           gsize          *n_bytes);
 
-  guint        (*get_length)             (GtkEntryBuffer *buffer);
+  guint        (*get_length)             (BtkEntryBuffer *buffer);
 
-  guint        (*insert_text)            (GtkEntryBuffer *buffer,
+  guint        (*insert_text)            (BtkEntryBuffer *buffer,
                                           guint           position,
                                           const gchar    *chars,
                                           guint           n_chars);
 
-  guint        (*delete_text)            (GtkEntryBuffer *buffer,
+  guint        (*delete_text)            (BtkEntryBuffer *buffer,
                                           guint           position,
                                           guint           n_chars);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved0) (void);
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
+  void (*_btk_reserved0) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
 };
 
-GType                     gtk_entry_buffer_get_type               (void) G_GNUC_CONST;
+GType                     btk_entry_buffer_get_type               (void) G_GNUC_CONST;
 
-GtkEntryBuffer*           gtk_entry_buffer_new                    (const gchar     *initial_chars,
+BtkEntryBuffer*           btk_entry_buffer_new                    (const gchar     *initial_chars,
                                                                    gint             n_initial_chars);
 
-gsize                     gtk_entry_buffer_get_bytes              (GtkEntryBuffer  *buffer);
+gsize                     btk_entry_buffer_get_bytes              (BtkEntryBuffer  *buffer);
 
-guint                     gtk_entry_buffer_get_length             (GtkEntryBuffer  *buffer);
+guint                     btk_entry_buffer_get_length             (BtkEntryBuffer  *buffer);
 
-const gchar*              gtk_entry_buffer_get_text               (GtkEntryBuffer  *buffer);
+const gchar*              btk_entry_buffer_get_text               (BtkEntryBuffer  *buffer);
 
-void                      gtk_entry_buffer_set_text               (GtkEntryBuffer  *buffer,
+void                      btk_entry_buffer_set_text               (BtkEntryBuffer  *buffer,
                                                                    const gchar     *chars,
                                                                    gint             n_chars);
 
-void                      gtk_entry_buffer_set_max_length         (GtkEntryBuffer  *buffer,
+void                      btk_entry_buffer_set_max_length         (BtkEntryBuffer  *buffer,
                                                                    gint             max_length);
 
-gint                      gtk_entry_buffer_get_max_length         (GtkEntryBuffer  *buffer);
+gint                      btk_entry_buffer_get_max_length         (BtkEntryBuffer  *buffer);
 
-guint                     gtk_entry_buffer_insert_text            (GtkEntryBuffer  *buffer,
+guint                     btk_entry_buffer_insert_text            (BtkEntryBuffer  *buffer,
                                                                    guint            position,
                                                                    const gchar     *chars,
                                                                    gint             n_chars);
 
-guint                     gtk_entry_buffer_delete_text            (GtkEntryBuffer  *buffer,
+guint                     btk_entry_buffer_delete_text            (BtkEntryBuffer  *buffer,
                                                                    guint            position,
                                                                    gint             n_chars);
 
-void                      gtk_entry_buffer_emit_inserted_text     (GtkEntryBuffer  *buffer,
+void                      btk_entry_buffer_emit_inserted_text     (BtkEntryBuffer  *buffer,
                                                                    guint            position,
                                                                    const gchar     *chars,
                                                                    guint            n_chars);
 
-void                      gtk_entry_buffer_emit_deleted_text      (GtkEntryBuffer  *buffer,
+void                      btk_entry_buffer_emit_deleted_text      (BtkEntryBuffer  *buffer,
                                                                    guint            position,
                                                                    guint            n_chars);
 
 G_END_DECLS
 
-#endif /* __GTK_ENTRY_BUFFER_H__ */
+#endif /* __BTK_ENTRY_BUFFER_H__ */

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,50 +19,50 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailscrollbar.h"
+#include <btk/btk.h>
+#include "bailscrollbar.h"
 
-static void gail_scrollbar_class_init  (GailScrollbarClass *klass);
-static void gail_scrollbar_init        (GailScrollbar      *accessible);
-static void gail_scrollbar_initialize  (AtkObject           *accessible,
+static void bail_scrollbar_class_init  (BailScrollbarClass *klass);
+static void bail_scrollbar_init        (BailScrollbar      *accessible);
+static void bail_scrollbar_initialize  (BatkObject           *accessible,
                                         gpointer             data);
 
-static gint gail_scrollbar_get_index_in_parent (AtkObject *accessible);
+static gint bail_scrollbar_get_index_in_parent (BatkObject *accessible);
 
-G_DEFINE_TYPE (GailScrollbar, gail_scrollbar, GAIL_TYPE_RANGE)
+G_DEFINE_TYPE (BailScrollbar, bail_scrollbar, BAIL_TYPE_RANGE)
 
 static void	 
-gail_scrollbar_class_init (GailScrollbarClass *klass)
+bail_scrollbar_class_init (BailScrollbarClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_scrollbar_initialize;
-  class->get_index_in_parent = gail_scrollbar_get_index_in_parent;
+  class->initialize = bail_scrollbar_initialize;
+  class->get_index_in_parent = bail_scrollbar_get_index_in_parent;
 }
 
 static void
-gail_scrollbar_init (GailScrollbar      *accessible)
+bail_scrollbar_init (BailScrollbar      *accessible)
 {
 }
 
 static void
-gail_scrollbar_initialize (AtkObject *accessible,
+bail_scrollbar_initialize (BatkObject *accessible,
                            gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_scrollbar_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_scrollbar_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_SCROLL_BAR;
+  accessible->role = BATK_ROLE_SCROLL_BAR;
 }
 
 static gint
-gail_scrollbar_get_index_in_parent (AtkObject *accessible)
+bail_scrollbar_get_index_in_parent (BatkObject *accessible)
 {
-  GtkWidget *widget;
-  GtkScrolledWindow *scrolled_window;
+  BtkWidget *widget;
+  BtkScrolledWindow *scrolled_window;
   gint n_children;
   GList *children;
 
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
   {
@@ -71,24 +71,24 @@ gail_scrollbar_get_index_in_parent (AtkObject *accessible)
      */
     return -1;
   }
-  g_return_val_if_fail (GTK_IS_SCROLLBAR (widget), -1);
+  g_return_val_if_fail (BTK_IS_SCROLLBAR (widget), -1);
 
-  if (!GTK_IS_SCROLLED_WINDOW(widget->parent))
-    return ATK_OBJECT_CLASS (gail_scrollbar_parent_class)->get_index_in_parent (accessible);
+  if (!BTK_IS_SCROLLED_WINDOW(widget->parent))
+    return BATK_OBJECT_CLASS (bail_scrollbar_parent_class)->get_index_in_parent (accessible);
 
-  scrolled_window = GTK_SCROLLED_WINDOW (widget->parent);
-  children = gtk_container_get_children (GTK_CONTAINER (scrolled_window));
+  scrolled_window = BTK_SCROLLED_WINDOW (widget->parent);
+  children = btk_container_get_children (BTK_CONTAINER (scrolled_window));
   n_children = g_list_length (children);
   g_list_free (children);
 
-  if (GTK_IS_HSCROLLBAR (widget))
+  if (BTK_IS_HSCROLLBAR (widget))
   {
     if (!scrolled_window->hscrollbar_visible) 
     {
       n_children = -1;
     }
   }
-  else if (GTK_IS_VSCROLLBAR (widget))
+  else if (BTK_IS_VSCROLLBAR (widget))
   {
     if (!scrolled_window->vscrollbar_visible) 
     {

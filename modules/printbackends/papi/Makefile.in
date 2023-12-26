@@ -73,8 +73,8 @@ am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkglibexecdir = $(libexecdir)/@PACKAGE@
+pkbunnylibdir = $(libdir)/@PACKAGE@
+pkbunnylibexecdir = $(libexecdir)/@PACKAGE@
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -132,10 +132,10 @@ am__installdirs = "$(DESTDIR)$(backenddir)"
 LTLIBRARIES = $(backend_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) \
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(top_builddir)/btk/$(btktargetlib)
 libprintbackend_papi_la_DEPENDENCIES = $(am__DEPENDENCIES_2)
-am_libprintbackend_papi_la_OBJECTS = gtkprinterpapi.lo \
-	gtkprintbackendpapi.lo
+am_libprintbackend_papi_la_OBJECTS = btkprinterpapi.lo \
+	btkprintbackendpapi.lo
 libprintbackend_papi_la_OBJECTS =  \
 	$(am_libprintbackend_papi_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -161,8 +161,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/gtkprintbackendpapi.Plo \
-	./$(DEPDIR)/gtkprinterpapi.Plo
+am__depfiles_remade = ./$(DEPDIR)/btkprintbackendpapi.Plo \
+	./$(DEPDIR)/btkprinterpapi.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -216,16 +216,16 @@ AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AS = @AS@
-ATK_PREFIX = @ATK_PREFIX@
+BATK_PREFIX = @BATK_PREFIX@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE_DEPENDENCIES_CFLAGS = @BASE_DEPENDENCIES_CFLAGS@
 BASE_DEPENDENCIES_LIBS = @BASE_DEPENDENCIES_LIBS@
-CAIRO_BACKEND_CFLAGS = @CAIRO_BACKEND_CFLAGS@
-CAIRO_BACKEND_LIBS = @CAIRO_BACKEND_LIBS@
-CAIRO_PREFIX = @CAIRO_PREFIX@
+BAIRO_BACKEND_CFLAGS = @BAIRO_BACKEND_CFLAGS@
+BAIRO_BACKEND_LIBS = @BAIRO_BACKEND_LIBS@
+BAIRO_PREFIX = @BAIRO_PREFIX@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -262,52 +262,52 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXE_MANIFEST_ARCHITECTURE = @EXE_MANIFEST_ARCHITECTURE@
 FGREP = @FGREP@
-GAIL_INET_LIBS = @GAIL_INET_LIBS@
-GAIL_LT_CURRENT_MINUS_AGE = @GAIL_LT_CURRENT_MINUS_AGE@
-GAIL_LT_VERSION_INFO = @GAIL_LT_VERSION_INFO@
-GDK_DEP_CFLAGS = @GDK_DEP_CFLAGS@
-GDK_DEP_LIBS = @GDK_DEP_LIBS@
-GDK_EXTRA_CFLAGS = @GDK_EXTRA_CFLAGS@
-GDK_EXTRA_LIBS = @GDK_EXTRA_LIBS@
-GDK_PACKAGES = @GDK_PACKAGES@
-GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
-GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_WLIBS = @GDK_WLIBS@
+BAIL_INET_LIBS = @BAIL_INET_LIBS@
+BAIL_LT_CURRENT_MINUS_AGE = @BAIL_LT_CURRENT_MINUS_AGE@
+BAIL_LT_VERSION_INFO = @BAIL_LT_VERSION_INFO@
+BDK_DEP_CFLAGS = @BDK_DEP_CFLAGS@
+BDK_DEP_LIBS = @BDK_DEP_LIBS@
+BDK_EXTRA_CFLAGS = @BDK_EXTRA_CFLAGS@
+BDK_EXTRA_LIBS = @BDK_EXTRA_LIBS@
+BDK_PACKAGES = @BDK_PACKAGES@
+BDK_PIXBUF_CSOURCE = @BDK_PIXBUF_CSOURCE@
+BDK_PIXBUF_LIBS = @BDK_PIXBUF_LIBS@
+BDK_WLIBS = @BDK_WLIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_CFLAGS = @GLIB_CFLAGS@
-GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GLIB_LIBS = @GLIB_LIBS@
-GLIB_MKENUMS = @GLIB_MKENUMS@
-GLIB_PREFIX = @GLIB_PREFIX@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+BUNNYLIB_CFLAGS = @BUNNYLIB_CFLAGS@
+BUNNYLIB_COMPILE_RESOURCES = @BUNNYLIB_COMPILE_RESOURCES@
+BUNNYLIB_GENMARSHAL = @BUNNYLIB_GENMARSHAL@
+BUNNYLIB_LIBS = @BUNNYLIB_LIBS@
+BUNNYLIB_MKENUMS = @BUNNYLIB_MKENUMS@
+BUNNYLIB_PREFIX = @BUNNYLIB_PREFIX@
+BMODULE_CFLAGS = @BMODULE_CFLAGS@
+BMODULE_LIBS = @BMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GOBJECT_QUERY = @GOBJECT_QUERY@
+BOBJECT_QUERY = @BOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_CHECK = @GTKDOC_CHECK@
-GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
-GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
-GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
-GTKDOC_MKPDF = @GTKDOC_MKPDF@
-GTKDOC_REBASE = @GTKDOC_REBASE@
-GTK_API_VERSION = @GTK_API_VERSION@
-GTK_BINARY_AGE = @GTK_BINARY_AGE@
-GTK_BINARY_VERSION = @GTK_BINARY_VERSION@
-GTK_DEBUG_FLAGS = @GTK_DEBUG_FLAGS@
-GTK_DEP_CFLAGS = @GTK_DEP_CFLAGS@
-GTK_DEP_LIBS = @GTK_DEP_LIBS@
-GTK_EXTRA_CFLAGS = @GTK_EXTRA_CFLAGS@
-GTK_EXTRA_LIBS = @GTK_EXTRA_LIBS@
-GTK_INTERFACE_AGE = @GTK_INTERFACE_AGE@
-GTK_MAJOR_VERSION = @GTK_MAJOR_VERSION@
-GTK_MICRO_VERSION = @GTK_MICRO_VERSION@
-GTK_MINOR_VERSION = @GTK_MINOR_VERSION@
-GTK_PACKAGES = @GTK_PACKAGES@
-GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_VERSION = @GTK_VERSION@
-GTK_XIM_FLAGS = @GTK_XIM_FLAGS@
+BTKDOC_CHECK = @BTKDOC_CHECK@
+BTKDOC_CHECK_PATH = @BTKDOC_CHECK_PATH@
+BTKDOC_DEPS_CFLAGS = @BTKDOC_DEPS_CFLAGS@
+BTKDOC_DEPS_LIBS = @BTKDOC_DEPS_LIBS@
+BTKDOC_MKPDF = @BTKDOC_MKPDF@
+BTKDOC_REBASE = @BTKDOC_REBASE@
+BTK_API_VERSION = @BTK_API_VERSION@
+BTK_BINARY_AGE = @BTK_BINARY_AGE@
+BTK_BINARY_VERSION = @BTK_BINARY_VERSION@
+BTK_DEBUG_FLAGS = @BTK_DEBUG_FLAGS@
+BTK_DEP_CFLAGS = @BTK_DEP_CFLAGS@
+BTK_DEP_LIBS = @BTK_DEP_LIBS@
+BTK_EXTRA_CFLAGS = @BTK_EXTRA_CFLAGS@
+BTK_EXTRA_LIBS = @BTK_EXTRA_LIBS@
+BTK_INTERFACE_AGE = @BTK_INTERFACE_AGE@
+BTK_MAJOR_VERSION = @BTK_MAJOR_VERSION@
+BTK_MICRO_VERSION = @BTK_MICRO_VERSION@
+BTK_MINOR_VERSION = @BTK_MINOR_VERSION@
+BTK_PACKAGES = @BTK_PACKAGES@
+BTK_UPDATE_ICON_CACHE = @BTK_UPDATE_ICON_CACHE@
+BTK_VERSION = @BTK_VERSION@
+BTK_XIM_FLAGS = @BTK_XIM_FLAGS@
 HAVE_HTTP_AUTHSTRING = @HAVE_HTTP_AUTHSTRING@
 HTML_DIR = @HTML_DIR@
 INCLUDED_IMMODULE_DEFINE = @INCLUDED_IMMODULE_DEFINE@
@@ -363,7 +363,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_PREFIX = @PANGO_PREFIX@
+BANGO_PREFIX = @BANGO_PREFIX@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
@@ -416,9 +416,9 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
-gdktarget = @gdktarget@
-gdktargetlib = @gdktargetlib@
-gtktargetlib = @gtktargetlib@
+bdktarget = @bdktarget@
+bdktargetlib = @bdktargetlib@
+btktargetlib = @btktargetlib@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -451,27 +451,27 @@ top_srcdir = @top_srcdir@
 @OS_WIN32_TRUE@no_undefined = -no-undefined
 INCLUDES = \
 	-I$(top_srcdir) 				\
-	-I$(top_srcdir)/gtk				\
-	-I$(top_builddir)/gtk				\
-	-I$(top_srcdir)/gdk				\
-	-I$(top_builddir)/gdk				\
-	-DGTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
-	$(GTK_DEP_CFLAGS)				\
-	$(GTK_DEBUG_FLAGS)
+	-I$(top_srcdir)/btk				\
+	-I$(top_builddir)/btk				\
+	-I$(top_srcdir)/bdk				\
+	-I$(top_builddir)/bdk				\
+	-DBTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
+	$(BTK_DEP_CFLAGS)				\
+	$(BTK_DEBUG_FLAGS)
 
 LDADDS = \
-	$(GTK_DEP_LIBS)					\
-	$(top_builddir)/gtk/$(gtktargetlib)		
+	$(BTK_DEP_LIBS)					\
+	$(top_builddir)/btk/$(btktargetlib)		
 
-backenddir = $(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/printbackends
+backenddir = $(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/printbackends
 backend_LTLIBRARIES = libprintbackend-papi.la
 libprintbackend_papi_la_SOURCES = \
-	gtkprinterpapi.c		\
-	gtkprintbackendpapi.c
+	btkprinterpapi.c		\
+	btkprintbackendpapi.c
 
 noinst_HEADERS = \
-	gtkprinterpapi.h		\
-	gtkprintbackendpapi.h
+	btkprinterpapi.h		\
+	btkprintbackendpapi.h
 
 libprintbackend_papi_la_LDFLAGS = -avoid-version -module $(no_undefined)
 libprintbackend_papi_la_LIBADD = $(LDADDS) -lpapi
@@ -553,8 +553,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtkprintbackendpapi.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gtkprinterpapi.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/btkprintbackendpapi.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/btkprinterpapi.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -717,8 +717,8 @@ clean-am: clean-backendLTLIBRARIES clean-generic clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/gtkprintbackendpapi.Plo
-	-rm -f ./$(DEPDIR)/gtkprinterpapi.Plo
+		-rm -f ./$(DEPDIR)/btkprintbackendpapi.Plo
+	-rm -f ./$(DEPDIR)/btkprinterpapi.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -764,8 +764,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/gtkprintbackendpapi.Plo
-	-rm -f ./$(DEPDIR)/gtkprinterpapi.Plo
+		-rm -f ./$(DEPDIR)/btkprintbackendpapi.Plo
+	-rm -f ./$(DEPDIR)/btkprinterpapi.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

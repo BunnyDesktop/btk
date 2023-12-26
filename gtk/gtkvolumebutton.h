@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2007 Red Hat, Inc.
  *
  * Authors:
@@ -21,52 +21,52 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 2007.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2007.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_VOLUME_BUTTON_H__
-#define __GTK_VOLUME_BUTTON_H__
+#ifndef __BTK_VOLUME_BUTTON_H__
+#define __BTK_VOLUME_BUTTON_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkscalebutton.h>
+#include <btk/btkscalebutton.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_VOLUME_BUTTON                 (gtk_volume_button_get_type ())
-#define GTK_VOLUME_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_VOLUME_BUTTON, GtkVolumeButton))
-#define GTK_VOLUME_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_VOLUME_BUTTON, GtkVolumeButtonClass))
-#define GTK_IS_VOLUME_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_VOLUME_BUTTON))
-#define GTK_IS_VOLUME_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_VOLUME_BUTTON))
-#define GTK_VOLUME_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_VOLUME_BUTTON, GtkVolumeButtonClass))
+#define BTK_TYPE_VOLUME_BUTTON                 (btk_volume_button_get_type ())
+#define BTK_VOLUME_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButton))
+#define BTK_VOLUME_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButtonClass))
+#define BTK_IS_VOLUME_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VOLUME_BUTTON))
+#define BTK_IS_VOLUME_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VOLUME_BUTTON))
+#define BTK_VOLUME_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VOLUME_BUTTON, BtkVolumeButtonClass))
 
-typedef struct _GtkVolumeButton       GtkVolumeButton;
-typedef struct _GtkVolumeButtonClass  GtkVolumeButtonClass;
+typedef struct _BtkVolumeButton       BtkVolumeButton;
+typedef struct _BtkVolumeButtonClass  BtkVolumeButtonClass;
 
-struct _GtkVolumeButton
+struct _BtkVolumeButton
 {
-  GtkScaleButton  parent;
+  BtkScaleButton  parent;
 };
 
-struct _GtkVolumeButtonClass
+struct _BtkVolumeButtonClass
 {
-  GtkScaleButtonClass parent_class;
+  BtkScaleButtonClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType		gtk_volume_button_get_type	(void) G_GNUC_CONST;
-GtkWidget*	gtk_volume_button_new		(void);
+GType		btk_volume_button_get_type	(void) G_GNUC_CONST;
+BtkWidget*	btk_volume_button_new		(void);
 
 G_END_DECLS
 
-#endif /* __GTK_VOLUME_BUTTON_H__ */
+#endif /* __BTK_VOLUME_BUTTON_H__ */

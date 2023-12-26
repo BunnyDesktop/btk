@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-#include "gdk-win32.vs10.sourcefiles.filters"
+#include "bdk-win32.vs10.sourcefiles.filters"
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\..\config.h.win32"><Filter>Resource Files</Filter></CustomBuild>
-    <CustomBuild Include="..\..\..\gdk\gdkconfig.h.win32"><Filter>Resource Files</Filter></CustomBuild>
+    <CustomBuild Include="..\..\..\bdk\bdkconfig.h.win32"><Filter>Resource Files</Filter></CustomBuild>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,66 +17,66 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_MISC_H__
-#define __GAIL_MISC_H__
+#ifndef __BAIL_MISC_H__
+#define __BAIL_MISC_H__
 
-#include <glib-object.h>
-#include <gtk/gtk.h>
-#include <pango/pango.h>
+#include <bunnylib-object.h>
+#include <btk/btk.h>
+#include <bango/bango.h>
 
 G_BEGIN_DECLS
 
-AtkAttributeSet* gail_misc_add_attribute          (AtkAttributeSet   *attrib_set,
-                                                   AtkTextAttribute   attr,
+BatkAttributeSet* bail_misc_add_attribute          (BatkAttributeSet   *attrib_set,
+                                                   BatkTextAttribute   attr,
                                                    gchar             *value);
-AtkAttributeSet* gail_misc_layout_get_run_attributes
-                                                  (AtkAttributeSet   *attrib_set,
-                                                   PangoLayout       *layout,
+BatkAttributeSet* bail_misc_layout_get_run_attributes
+                                                  (BatkAttributeSet   *attrib_set,
+                                                   BangoLayout       *layout,
                                                    gchar             *text,
                                                    gint              offset,
                                                    gint              *start_offset,
                                                    gint              *end_offset);
 
-AtkAttributeSet* gail_misc_get_default_attributes (AtkAttributeSet   *attrib_set,
-                                                   PangoLayout       *layout,
-                                                   GtkWidget         *widget);
+BatkAttributeSet* bail_misc_get_default_attributes (BatkAttributeSet   *attrib_set,
+                                                   BangoLayout       *layout,
+                                                   BtkWidget         *widget);
 
-void             gail_misc_get_extents_from_pango_rectangle
-                                                  (GtkWidget         *widget,
-                                                   PangoRectangle    *char_rect,
+void             bail_misc_get_extents_from_bango_rectangle
+                                                  (BtkWidget         *widget,
+                                                   BangoRectangle    *char_rect,
                                                    gint              x_layout,
                                                    gint              y_layout,
                                                    gint              *x,
                     		                   gint              *y,
                                                    gint              *width,
                                                    gint              *height,
-                                                   AtkCoordType      coords);
+                                                   BatkCoordType      coords);
 
-gint             gail_misc_get_index_at_point_in_layout
-                                                  (GtkWidget         *widget,
-                                                   PangoLayout       *layout, 
+gint             bail_misc_get_index_at_point_in_layout
+                                                  (BtkWidget         *widget,
+                                                   BangoLayout       *layout, 
                                                    gint              x_layout,
                                                    gint              y_layout,
                                                    gint              x,
                                                    gint              y,
-                                                   AtkCoordType      coords);
+                                                   BatkCoordType      coords);
 
-void		 gail_misc_get_origins            (GtkWidget         *widget,
+void		 bail_misc_get_origins            (BtkWidget         *widget,
                                                    gint              *x_window,
 					           gint              *y_window,
 					           gint              *x_toplevel,
 					           gint              *y_toplevel);
 
-AtkAttributeSet* gail_misc_add_to_attr_set        (AtkAttributeSet   *attrib_set,
-			                           GtkTextAttributes *attrs,
-			                           AtkTextAttribute  attr);
+BatkAttributeSet* bail_misc_add_to_attr_set        (BatkAttributeSet   *attrib_set,
+			                           BtkTextAttributes *attrs,
+			                           BatkTextAttribute  attr);
 
-AtkAttributeSet* gail_misc_buffer_get_run_attributes
-                                                  (GtkTextBuffer     *buffer,
+BatkAttributeSet* bail_misc_buffer_get_run_attributes
+                                                  (BtkTextBuffer     *buffer,
                                                    gint              offset,
                                                    gint              *start_offset,
                                                    gint              *end_offset);
 
 G_END_DECLS
 
-#endif /*__GAIL_MISC_H__ */
+#endif /*__BAIL_MISC_H__ */

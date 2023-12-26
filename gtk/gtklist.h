@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,35 +18,35 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (__GTK_LIST_C__)
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_LIST_C__)
 
-#ifndef __GTK_LIST_H__
-#define __GTK_LIST_H__
+#ifndef __BTK_LIST_H__
+#define __BTK_LIST_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_LIST                  (gtk_list_get_type ())
-#define GTK_LIST(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_LIST, GtkList))
-#define GTK_LIST_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_LIST, GtkListClass))
-#define GTK_IS_LIST(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_LIST))
-#define GTK_IS_LIST_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_LIST))
-#define GTK_LIST_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_LIST, GtkListClass))
+#define BTK_TYPE_LIST                  (btk_list_get_type ())
+#define BTK_LIST(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LIST, BtkList))
+#define BTK_LIST_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LIST, BtkListClass))
+#define BTK_IS_LIST(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LIST))
+#define BTK_IS_LIST_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LIST))
+#define BTK_LIST_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LIST, BtkListClass))
 
 
-typedef struct _GtkList	      GtkList;
-typedef struct _GtkListClass  GtkListClass;
+typedef struct _BtkList	      BtkList;
+typedef struct _BtkListClass  BtkListClass;
 
-struct _GtkList
+struct _BtkList
 {
-  GtkContainer container;
+  BtkContainer container;
 
   GList *children;
   GList *selection;
@@ -54,85 +54,85 @@ struct _GtkList
   GList *undo_selection;
   GList *undo_unselection;
 
-  GtkWidget *last_focus_child;
-  GtkWidget *undo_focus_child;
+  BtkWidget *last_focus_child;
+  BtkWidget *undo_focus_child;
 
   guint htimer;
   guint vtimer;
 
   gint anchor;
   gint drag_pos;
-  GtkStateType anchor_state;
+  BtkStateType anchor_state;
 
   guint selection_mode : 2;
   guint drag_selection:1;
   guint add_mode:1;
 };
 
-struct _GtkListClass
+struct _BtkListClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 
-  void (* selection_changed) (GtkList	*list);
-  void (* select_child)	     (GtkList	*list,
-			      GtkWidget *child);
-  void (* unselect_child)    (GtkList	*list,
-			      GtkWidget *child);
+  void (* selection_changed) (BtkList	*list);
+  void (* select_child)	     (BtkList	*list,
+			      BtkWidget *child);
+  void (* unselect_child)    (BtkList	*list,
+			      BtkWidget *child);
 };
 
 
-GType      gtk_list_get_type		  (void) G_GNUC_CONST;
-GtkWidget* gtk_list_new			  (void);
-void	   gtk_list_insert_items	  (GtkList	    *list,
+GType      btk_list_get_type		  (void) G_GNUC_CONST;
+BtkWidget* btk_list_new			  (void);
+void	   btk_list_insert_items	  (BtkList	    *list,
 					   GList	    *items,
 					   gint		     position);
-void	   gtk_list_append_items	  (GtkList	    *list,
+void	   btk_list_append_items	  (BtkList	    *list,
 					   GList	    *items);
-void	   gtk_list_prepend_items	  (GtkList	    *list,
+void	   btk_list_prepend_items	  (BtkList	    *list,
 					   GList	    *items);
-void	   gtk_list_remove_items	  (GtkList	    *list,
+void	   btk_list_remove_items	  (BtkList	    *list,
 					   GList	    *items);
-void	   gtk_list_remove_items_no_unref (GtkList	    *list,
+void	   btk_list_remove_items_no_unref (BtkList	    *list,
 					   GList	    *items);
-void	   gtk_list_clear_items		  (GtkList	    *list,
+void	   btk_list_clear_items		  (BtkList	    *list,
 					   gint		     start,
 					   gint		     end);
-void	   gtk_list_select_item		  (GtkList	    *list,
+void	   btk_list_select_item		  (BtkList	    *list,
 					   gint		     item);
-void	   gtk_list_unselect_item	  (GtkList	    *list,
+void	   btk_list_unselect_item	  (BtkList	    *list,
 					   gint		     item);
-void	   gtk_list_select_child	  (GtkList	    *list,
-					   GtkWidget	    *child);
-void	   gtk_list_unselect_child	  (GtkList	    *list,
-					   GtkWidget	    *child);
-gint	   gtk_list_child_position	  (GtkList	    *list,
-					   GtkWidget	    *child);
-void	   gtk_list_set_selection_mode	  (GtkList	    *list,
-					   GtkSelectionMode  mode);
+void	   btk_list_select_child	  (BtkList	    *list,
+					   BtkWidget	    *child);
+void	   btk_list_unselect_child	  (BtkList	    *list,
+					   BtkWidget	    *child);
+gint	   btk_list_child_position	  (BtkList	    *list,
+					   BtkWidget	    *child);
+void	   btk_list_set_selection_mode	  (BtkList	    *list,
+					   BtkSelectionMode  mode);
 
-void       gtk_list_extend_selection      (GtkList          *list,
-					   GtkScrollType     scroll_type,
+void       btk_list_extend_selection      (BtkList          *list,
+					   BtkScrollType     scroll_type,
 					   gfloat            position,
 					   gboolean          auto_start_selection);
-void       gtk_list_start_selection       (GtkList          *list);
-void       gtk_list_end_selection         (GtkList          *list);
-void       gtk_list_select_all            (GtkList          *list);
-void       gtk_list_unselect_all          (GtkList          *list);
-void       gtk_list_scroll_horizontal     (GtkList          *list,
-					   GtkScrollType     scroll_type,
+void       btk_list_start_selection       (BtkList          *list);
+void       btk_list_end_selection         (BtkList          *list);
+void       btk_list_select_all            (BtkList          *list);
+void       btk_list_unselect_all          (BtkList          *list);
+void       btk_list_scroll_horizontal     (BtkList          *list,
+					   BtkScrollType     scroll_type,
 					   gfloat            position);
-void       gtk_list_scroll_vertical       (GtkList          *list,
-					   GtkScrollType     scroll_type,
+void       btk_list_scroll_vertical       (BtkList          *list,
+					   BtkScrollType     scroll_type,
 					   gfloat            position);
-void       gtk_list_toggle_add_mode       (GtkList          *list);
-void       gtk_list_toggle_focus_row      (GtkList          *list);
-void       gtk_list_toggle_row            (GtkList          *list,
-					   GtkWidget        *item);
-void       gtk_list_undo_selection        (GtkList          *list);
-void       gtk_list_end_drag_selection    (GtkList          *list);
+void       btk_list_toggle_add_mode       (BtkList          *list);
+void       btk_list_toggle_focus_row      (BtkList          *list);
+void       btk_list_toggle_row            (BtkList          *list,
+					   BtkWidget        *item);
+void       btk_list_undo_selection        (BtkList          *list);
+void       btk_list_end_drag_selection    (BtkList          *list);
 
 G_END_DECLS
 
-#endif /* __GTK_LIST_H__ */
+#endif /* __BTK_LIST_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

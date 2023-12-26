@@ -1,5 +1,5 @@
 /*
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 1998, 1999 Red Hat, Inc.
  * All rights reserved.
  *
@@ -22,17 +22,17 @@
 /*
  * Author: James Henstridge <james@daa.com.au>
  *
- * Modified by the GTK+ Team and others 2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 /**
- * SECTION:gtkaction
+ * SECTION:btkaction
  * @Short_description: An action which can be triggered by a menu or toolbar item
- * @Title: GtkAction
- * @See_also: #GtkActionGroup, #GtkUIManager
+ * @Title: BtkAction
+ * @See_also: #BtkActionGroup, #BtkUIManager
  *
  * Actions represent operations that the user can be perform, along with
  * some information how it should be presented in the interface. Each action
@@ -54,10 +54,10 @@
  *   <listitem><para>visible (shown/hidden)</para></listitem>
  *   <listitem><para>sensitive (enabled/disabled)</para></listitem>
  * </itemizedlist>
- * Apart from regular actions, there are <link linkend="GtkToggleAction">toggle
+ * Apart from regular actions, there are <link linkend="BtkToggleAction">toggle
  * actions</link>, which can be toggled between two states and <link
- * linkend="GtkRadioAction">radio actions</link>, of which only one in a group
- * can be in the "active" state. Other actions can be implemented as #GtkAction
+ * linkend="BtkRadioAction">radio actions</link>, of which only one in a group
+ * can be in the "active" state. Other actions can be implemented as #BtkAction
  * subclasses.
  *
  * Each action can have one or more proxy menu item, toolbar button or
@@ -69,30 +69,30 @@
 
 #include "config.h"
 
-#include "gtkaction.h"
-#include "gtkactiongroup.h"
-#include "gtkaccellabel.h"
-#include "gtkbutton.h"
-#include "gtkiconfactory.h"
-#include "gtkimage.h"
-#include "gtkimagemenuitem.h"
-#include "gtkintl.h"
-#include "gtklabel.h"
-#include "gtkmarshalers.h"
-#include "gtkmenuitem.h"
-#include "gtkstock.h"
-#include "gtktearoffmenuitem.h"
-#include "gtktoolbutton.h"
-#include "gtktoolbar.h"
-#include "gtkprivate.h"
-#include "gtkbuildable.h"
-#include "gtkactivatable.h"
-#include "gtkalias.h"
+#include "btkaction.h"
+#include "btkactiongroup.h"
+#include "btkaccellabel.h"
+#include "btkbutton.h"
+#include "btkiconfactory.h"
+#include "btkimage.h"
+#include "btkimagemenuitem.h"
+#include "btkintl.h"
+#include "btklabel.h"
+#include "btkmarshalers.h"
+#include "btkmenuitem.h"
+#include "btkstock.h"
+#include "btktearoffmenuitem.h"
+#include "btktoolbutton.h"
+#include "btktoolbar.h"
+#include "btkprivate.h"
+#include "btkbuildable.h"
+#include "btkactivatable.h"
+#include "btkalias.h"
 
 
-#define GTK_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_ACTION, GtkActionPrivate))
+#define BTK_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ACTION, BtkActionPrivate))
 
-struct _GtkActionPrivate 
+struct _BtkActionPrivate 
 {
   const gchar *name; /* interned */
   gchar *label;
@@ -117,11 +117,11 @@ struct _GtkActionPrivate
 
   /* accelerator */
   guint          accel_count;
-  GtkAccelGroup *accel_group;
+  BtkAccelGroup *accel_group;
   GClosure      *accel_closure;
   GQuark         accel_quark;
 
-  GtkActionGroup *action_group;
+  BtkActionGroup *action_group;
 
   /* list of proxy widgets */
   GSList *proxies;
@@ -154,34 +154,34 @@ enum
   PROP_ALWAYS_SHOW_IMAGE
 };
 
-/* GtkBuildable */
-static void gtk_action_buildable_init             (GtkBuildableIface *iface);
-static void gtk_action_buildable_set_name         (GtkBuildable *buildable,
+/* BtkBuildable */
+static void btk_action_buildable_init             (BtkBuildableIface *iface);
+static void btk_action_buildable_set_name         (BtkBuildable *buildable,
 						   const gchar  *name);
-static const gchar* gtk_action_buildable_get_name (GtkBuildable *buildable);
+static const gchar* btk_action_buildable_get_name (BtkBuildable *buildable);
 
-G_DEFINE_TYPE_WITH_CODE (GtkAction, gtk_action, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-						gtk_action_buildable_init))
+G_DEFINE_TYPE_WITH_CODE (BtkAction, btk_action, G_TYPE_OBJECT,
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+						btk_action_buildable_init))
 
-static void gtk_action_finalize     (GObject *object);
-static void gtk_action_set_property (GObject         *object,
+static void btk_action_finalize     (GObject *object);
+static void btk_action_set_property (GObject         *object,
 				     guint            prop_id,
 				     const GValue    *value,
 				     GParamSpec      *pspec);
-static void gtk_action_get_property (GObject         *object,
+static void btk_action_get_property (GObject         *object,
 				     guint            prop_id,
 				     GValue          *value,
 				     GParamSpec      *pspec);
-static void gtk_action_set_action_group (GtkAction	*action,
-					 GtkActionGroup *action_group);
+static void btk_action_set_action_group (BtkAction	*action,
+					 BtkActionGroup *action_group);
 
-static GtkWidget *create_menu_item    (GtkAction *action);
-static GtkWidget *create_tool_item    (GtkAction *action);
-static void       connect_proxy       (GtkAction *action,
-				       GtkWidget *proxy);
-static void       disconnect_proxy    (GtkAction *action,
-				       GtkWidget *proxy);
+static BtkWidget *create_menu_item    (BtkAction *action);
+static BtkWidget *create_tool_item    (BtkAction *action);
+static void       connect_proxy       (BtkAction *action,
+				       BtkWidget *proxy);
+static void       disconnect_proxy    (BtkAction *action,
+				       BtkWidget *proxy);
  
 static void       closure_accel_activate (GClosure     *closure,
 					  GValue       *return_value,
@@ -194,211 +194,211 @@ static guint         action_signals[LAST_SIGNAL] = { 0 };
 
 
 static void
-gtk_action_class_init (GtkActionClass *klass)
+btk_action_class_init (BtkActionClass *klass)
 {
-  GObjectClass *gobject_class;
+  GObjectClass *bobject_class;
 
-  gobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize     = gtk_action_finalize;
-  gobject_class->set_property = gtk_action_set_property;
-  gobject_class->get_property = gtk_action_get_property;
+  bobject_class->finalize     = btk_action_finalize;
+  bobject_class->set_property = btk_action_set_property;
+  bobject_class->get_property = btk_action_get_property;
 
   klass->activate = NULL;
 
   klass->create_menu_item  = create_menu_item;
   klass->create_tool_item  = create_tool_item;
   klass->create_menu       = NULL;
-  klass->menu_item_type    = GTK_TYPE_IMAGE_MENU_ITEM;
-  klass->toolbar_item_type = GTK_TYPE_TOOL_BUTTON;
+  klass->menu_item_type    = BTK_TYPE_IMAGE_MENU_ITEM;
+  klass->toolbar_item_type = BTK_TYPE_TOOL_BUTTON;
   klass->connect_proxy    = connect_proxy;
   klass->disconnect_proxy = disconnect_proxy;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_NAME,
 				   g_param_spec_string ("name",
 							P_("Name"),
 							P_("A unique name for the action."),
 							NULL,
-							GTK_PARAM_READWRITE | 
+							BTK_PARAM_READWRITE | 
 							G_PARAM_CONSTRUCT_ONLY));
 
   /**
-   * GtkAction:label:
+   * BtkAction:label:
    *
    * The label used for menu items and buttons that activate
-   * this action. If the label is %NULL, GTK+ uses the stock 
+   * this action. If the label is %NULL, BTK+ uses the stock 
    * label specified via the stock-id property.
    *
    * This is an appearance property and thus only applies if 
-   * #GtkActivatable:use-action-appearance is %TRUE.
+   * #BtkActivatable:use-action-appearance is %TRUE.
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_LABEL,
 				   g_param_spec_string ("label",
 							P_("Label"),
 							P_("The label used for menu items and buttons "
 							   "that activate this action."),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
   /**
-   * GtkAction:short-label:
+   * BtkAction:short-label:
    *
    * A shorter label that may be used on toolbar buttons.
    *
    * This is an appearance property and thus only applies if 
-   * #GtkActivatable:use-action-appearance is %TRUE.
+   * #BtkActivatable:use-action-appearance is %TRUE.
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_SHORT_LABEL,
 				   g_param_spec_string ("short-label",
 							P_("Short label"),
 							P_("A shorter label that may be used on toolbar buttons."),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_TOOLTIP,
 				   g_param_spec_string ("tooltip",
 							P_("Tooltip"),
 							P_("A tooltip for this action."),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
   /**
-   * GtkAction:stock-id:
+   * BtkAction:stock-id:
    *
    * The stock icon displayed in widgets representing this action.
    *
    * This is an appearance property and thus only applies if 
-   * #GtkActivatable:use-action-appearance is %TRUE.
+   * #BtkActivatable:use-action-appearance is %TRUE.
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_STOCK_ID,
 				   g_param_spec_string ("stock-id",
 							P_("Stock Icon"),
 							P_("The stock icon displayed in widgets representing "
 							   "this action."),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
   /**
-   * GtkAction:gicon:
+   * BtkAction:gicon:
    *
-   * The #GIcon displayed in the #GtkAction.
+   * The #GIcon displayed in the #BtkAction.
    *
-   * Note that the stock icon is preferred, if the #GtkAction:stock-id 
+   * Note that the stock icon is preferred, if the #BtkAction:stock-id 
    * property holds the id of an existing stock icon.
    *
    * This is an appearance property and thus only applies if 
-   * #GtkActivatable:use-action-appearance is %TRUE.
+   * #BtkActivatable:use-action-appearance is %TRUE.
    *
    * Since: 2.16
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_GICON,
 				   g_param_spec_object ("gicon",
 							P_("GIcon"),
 							P_("The GIcon being displayed"),
 							G_TYPE_ICON,
- 							GTK_PARAM_READWRITE));							
+ 							BTK_PARAM_READWRITE));							
   /**
-   * GtkAction:icon-name:
+   * BtkAction:icon-name:
    *
    * The name of the icon from the icon theme. 
    * 
-   * Note that the stock icon is preferred, if the #GtkAction:stock-id 
+   * Note that the stock icon is preferred, if the #BtkAction:stock-id 
    * property holds the id of an existing stock icon, and the #GIcon is
-   * preferred if the #GtkAction:gicon property is set. 
+   * preferred if the #BtkAction:gicon property is set. 
    *
    * This is an appearance property and thus only applies if 
-   * #GtkActivatable:use-action-appearance is %TRUE.
+   * #BtkActivatable:use-action-appearance is %TRUE.
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_ICON_NAME,
 				   g_param_spec_string ("icon-name",
 							P_("Icon Name"),
 							P_("The name of the icon from the icon theme"),
 							NULL,
- 							GTK_PARAM_READWRITE));
+ 							BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_VISIBLE_HORIZONTAL,
 				   g_param_spec_boolean ("visible-horizontal",
 							 P_("Visible when horizontal"),
 							 P_("Whether the toolbar item is visible when the toolbar "
 							    "is in a horizontal orientation."),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
   /**
-   * GtkAction:visible-overflown:
+   * BtkAction:visible-overflown:
    *
    * When %TRUE, toolitem proxies for this action are represented in the 
    * toolbar overflow menu.
    *
    * Since: 2.6
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_VISIBLE_OVERFLOWN,
 				   g_param_spec_boolean ("visible-overflown",
 							 P_("Visible when overflown"),
 							 P_("When TRUE, toolitem proxies for this action "
 							    "are represented in the toolbar overflow menu."),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_VISIBLE_VERTICAL,
 				   g_param_spec_boolean ("visible-vertical",
 							 P_("Visible when vertical"),
 							 P_("Whether the toolbar item is visible when the toolbar "
 							    "is in a vertical orientation."),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_IS_IMPORTANT,
 				   g_param_spec_boolean ("is-important",
 							 P_("Is important"),
 							 P_("Whether the action is considered important. "
 							    "When TRUE, toolitem proxies for this action "
-							    "show text in GTK_TOOLBAR_BOTH_HORIZ mode."),
+							    "show text in BTK_TOOLBAR_BOTH_HORIZ mode."),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_HIDE_IF_EMPTY,
 				   g_param_spec_boolean ("hide-if-empty",
 							 P_("Hide if empty"),
 							 P_("When TRUE, empty menu proxies for this action are hidden."),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_SENSITIVE,
 				   g_param_spec_boolean ("sensitive",
 							 P_("Sensitive"),
 							 P_("Whether the action is enabled."),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_VISIBLE,
 				   g_param_spec_boolean ("visible",
 							 P_("Visible"),
 							 P_("Whether the action is visible."),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_ACTION_GROUP,
 				   g_param_spec_object ("action-group",
 							 P_("Action Group"),
-							 P_("The GtkActionGroup this GtkAction is associated with, or NULL (for internal use)."),
-							 GTK_TYPE_ACTION_GROUP,
-							 GTK_PARAM_READWRITE));
+							 P_("The BtkActionGroup this BtkAction is associated with, or NULL (for internal use)."),
+							 BTK_TYPE_ACTION_GROUP,
+							 BTK_PARAM_READWRITE));
 
   /**
-   * GtkAction:always-show-image:
+   * BtkAction:always-show-image:
    *
-   * If %TRUE, the action's menu item proxies will ignore the #GtkSettings:gtk-menu-images 
+   * If %TRUE, the action's menu item proxies will ignore the #BtkSettings:btk-menu-images 
    * setting and always show their image, if available.
    *
    * Use this property if the menu item would be useless or hard to use
@@ -406,17 +406,17 @@ gtk_action_class_init (GtkActionClass *klass)
    *
    * Since: 2.20
    **/
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ALWAYS_SHOW_IMAGE,
                                    g_param_spec_boolean ("always-show-image",
                                                          P_("Always show image"),
                                                          P_("Whether the image will always be shown"),
                                                          FALSE,
-                                                         GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                                                         BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
   /**
-   * GtkAction::activate:
-   * @action: the #GtkAction
+   * BtkAction::activate:
+   * @action: the #BtkAction
    *
    * The "activate" signal is emitted when the action is activated.
    *
@@ -426,18 +426,18 @@ gtk_action_class_init (GtkActionClass *klass)
     g_signal_new (I_("activate"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkActionClass, activate),  NULL, NULL,
+		  G_STRUCT_OFFSET (BtkActionClass, activate),  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
-  g_type_class_add_private (gobject_class, sizeof (GtkActionPrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkActionPrivate));
 }
 
 
 static void
-gtk_action_init (GtkAction *action)
+btk_action_init (BtkAction *action)
 {
-  action->private_data = GTK_ACTION_GET_PRIVATE (action);
+  action->private_data = BTK_ACTION_GET_PRIVATE (action);
 
   action->private_data->name = NULL;
   action->private_data->label = NULL;
@@ -476,56 +476,56 @@ gtk_action_init (GtkAction *action)
 }
 
 static void
-gtk_action_buildable_init (GtkBuildableIface *iface)
+btk_action_buildable_init (BtkBuildableIface *iface)
 {
-  iface->set_name = gtk_action_buildable_set_name;
-  iface->get_name = gtk_action_buildable_get_name;
+  iface->set_name = btk_action_buildable_set_name;
+  iface->get_name = btk_action_buildable_get_name;
 }
 
 static void
-gtk_action_buildable_set_name (GtkBuildable *buildable,
+btk_action_buildable_set_name (BtkBuildable *buildable,
 			       const gchar  *name)
 {
-  GtkAction *action = GTK_ACTION (buildable);
+  BtkAction *action = BTK_ACTION (buildable);
 
   action->private_data->name = g_intern_string (name);
 }
 
 static const gchar *
-gtk_action_buildable_get_name (GtkBuildable *buildable)
+btk_action_buildable_get_name (BtkBuildable *buildable)
 {
-  GtkAction *action = GTK_ACTION (buildable);
+  BtkAction *action = BTK_ACTION (buildable);
 
   return action->private_data->name;
 }
 
 /**
- * gtk_action_new:
+ * btk_action_new:
  * @name: A unique name for the action
  * @label: (allow-none): the label displayed in menu items and on buttons, or %NULL
  * @tooltip: (allow-none): a tooltip for the action, or %NULL
  * @stock_id: the stock icon to display in widgets representing the
  *   action, or %NULL
  *
- * Creates a new #GtkAction object. To add the action to a
- * #GtkActionGroup and set the accelerator for the action,
- * call gtk_action_group_add_action_with_accel().
+ * Creates a new #BtkAction object. To add the action to a
+ * #BtkActionGroup and set the accelerator for the action,
+ * call btk_action_group_add_action_with_accel().
  * See <xref linkend="XML-UI"/> for information on allowed action
  * names.
  *
- * Return value: a new #GtkAction
+ * Return value: a new #BtkAction
  *
  * Since: 2.4
  */
-GtkAction *
-gtk_action_new (const gchar *name,
+BtkAction *
+btk_action_new (const gchar *name,
 		const gchar *label,
 		const gchar *tooltip,
 		const gchar *stock_id)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
-  return g_object_new (GTK_TYPE_ACTION,
+  return g_object_new (BTK_TYPE_ACTION,
                        "name", name,
 		       "label", label,
 		       "tooltip", tooltip,
@@ -534,10 +534,10 @@ gtk_action_new (const gchar *name,
 }
 
 static void
-gtk_action_finalize (GObject *object)
+btk_action_finalize (GObject *object)
 {
-  GtkAction *action;
-  action = GTK_ACTION (object);
+  BtkAction *action;
+  action = BTK_ACTION (object);
 
   g_free (action->private_data->label);
   g_free (action->private_data->short_label);
@@ -552,18 +552,18 @@ gtk_action_finalize (GObject *object)
   if (action->private_data->accel_group)
     g_object_unref (action->private_data->accel_group);
 
-  G_OBJECT_CLASS (gtk_action_parent_class)->finalize (object);  
+  G_OBJECT_CLASS (btk_action_parent_class)->finalize (object);  
 }
 
 static void
-gtk_action_set_property (GObject         *object,
+btk_action_set_property (GObject         *object,
 			 guint            prop_id,
 			 const GValue    *value,
 			 GParamSpec      *pspec)
 {
-  GtkAction *action;
+  BtkAction *action;
   
-  action = GTK_ACTION (object);
+  action = BTK_ACTION (object);
 
   switch (prop_id)
     {
@@ -571,49 +571,49 @@ gtk_action_set_property (GObject         *object,
       action->private_data->name = g_intern_string (g_value_get_string (value));
       break;
     case PROP_LABEL:
-      gtk_action_set_label (action, g_value_get_string (value));
+      btk_action_set_label (action, g_value_get_string (value));
       break;
     case PROP_SHORT_LABEL:
-      gtk_action_set_short_label (action, g_value_get_string (value));
+      btk_action_set_short_label (action, g_value_get_string (value));
       break;
     case PROP_TOOLTIP:
-      gtk_action_set_tooltip (action, g_value_get_string (value));
+      btk_action_set_tooltip (action, g_value_get_string (value));
       break;
     case PROP_STOCK_ID:
-      gtk_action_set_stock_id (action, g_value_get_string (value));
+      btk_action_set_stock_id (action, g_value_get_string (value));
       break;
     case PROP_GICON:
-      gtk_action_set_gicon (action, g_value_get_object (value));
+      btk_action_set_gicon (action, g_value_get_object (value));
       break;
     case PROP_ICON_NAME:
-      gtk_action_set_icon_name (action, g_value_get_string (value));
+      btk_action_set_icon_name (action, g_value_get_string (value));
       break;
     case PROP_VISIBLE_HORIZONTAL:
-      gtk_action_set_visible_horizontal (action, g_value_get_boolean (value));
+      btk_action_set_visible_horizontal (action, g_value_get_boolean (value));
       break;
     case PROP_VISIBLE_VERTICAL:
-      gtk_action_set_visible_vertical (action, g_value_get_boolean (value));
+      btk_action_set_visible_vertical (action, g_value_get_boolean (value));
       break;
     case PROP_VISIBLE_OVERFLOWN:
       action->private_data->visible_overflown = g_value_get_boolean (value);
       break;
     case PROP_IS_IMPORTANT:
-      gtk_action_set_is_important (action, g_value_get_boolean (value));
+      btk_action_set_is_important (action, g_value_get_boolean (value));
       break;
     case PROP_HIDE_IF_EMPTY:
       action->private_data->hide_if_empty = g_value_get_boolean (value);
       break;
     case PROP_SENSITIVE:
-      gtk_action_set_sensitive (action, g_value_get_boolean (value));
+      btk_action_set_sensitive (action, g_value_get_boolean (value));
       break;
     case PROP_VISIBLE:
-      gtk_action_set_visible (action, g_value_get_boolean (value));
+      btk_action_set_visible (action, g_value_get_boolean (value));
       break;
     case PROP_ACTION_GROUP:
-      gtk_action_set_action_group (action, g_value_get_object (value));
+      btk_action_set_action_group (action, g_value_get_object (value));
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      gtk_action_set_always_show_image (action, g_value_get_boolean (value));
+      btk_action_set_always_show_image (action, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -622,14 +622,14 @@ gtk_action_set_property (GObject         *object,
 }
 
 static void
-gtk_action_get_property (GObject    *object,
+btk_action_get_property (GObject    *object,
 			 guint       prop_id,
 			 GValue     *value,
 			 GParamSpec *pspec)
 {
-  GtkAction *action;
+  BtkAction *action;
 
-  action = GTK_ACTION (object);
+  action = BTK_ACTION (object);
 
   switch (prop_id)
     {
@@ -687,57 +687,57 @@ gtk_action_get_property (GObject    *object,
     }
 }
 
-static GtkWidget *
-create_menu_item (GtkAction *action)
+static BtkWidget *
+create_menu_item (BtkAction *action)
 {
   GType menu_item_type;
 
-  menu_item_type = GTK_ACTION_GET_CLASS (action)->menu_item_type;
+  menu_item_type = BTK_ACTION_GET_CLASS (action)->menu_item_type;
 
   return g_object_new (menu_item_type, NULL);
 }
 
-static GtkWidget *
-create_tool_item (GtkAction *action)
+static BtkWidget *
+create_tool_item (BtkAction *action)
 {
   GType toolbar_item_type;
 
-  toolbar_item_type = GTK_ACTION_GET_CLASS (action)->toolbar_item_type;
+  toolbar_item_type = BTK_ACTION_GET_CLASS (action)->toolbar_item_type;
 
   return g_object_new (toolbar_item_type, NULL);
 }
 
 static void
-remove_proxy (GtkAction *action,
-	      GtkWidget *proxy)
+remove_proxy (BtkAction *action,
+	      BtkWidget *proxy)
 {
   action->private_data->proxies = g_slist_remove (action->private_data->proxies, proxy);
 }
 
 static void
-connect_proxy (GtkAction *action,
-	       GtkWidget *proxy)
+connect_proxy (BtkAction *action,
+	       BtkWidget *proxy)
 {
   action->private_data->proxies = g_slist_prepend (action->private_data->proxies, proxy);
 
   if (action->private_data->action_group)
-    _gtk_action_group_emit_connect_proxy (action->private_data->action_group, action, proxy);
+    _btk_action_group_emit_connect_proxy (action->private_data->action_group, action, proxy);
 
 }
 
 static void
-disconnect_proxy (GtkAction *action,
-		  GtkWidget *proxy)
+disconnect_proxy (BtkAction *action,
+		  BtkWidget *proxy)
 {
   remove_proxy (action, proxy);
 
   if (action->private_data->action_group)
-    _gtk_action_group_emit_disconnect_proxy (action->private_data->action_group, action, proxy);
+    _btk_action_group_emit_disconnect_proxy (action->private_data->action_group, action, proxy);
 }
 
 /**
- * _gtk_action_sync_menu_visible:
- * @action: (allow-none): a #GtkAction, or %NULL to determine the action from @proxy
+ * _btk_action_sync_menu_visible:
+ * @action: (allow-none): a #BtkAction, or %NULL to determine the action from @proxy
  * @proxy: a proxy menu item
  * @empty: whether the submenu attached to @proxy is empty
  * 
@@ -751,59 +751,59 @@ disconnect_proxy (GtkAction *action,
  * </para></listitem>
  * </itemizedlist>
  * 
- * This function is used in the implementation of #GtkUIManager.
+ * This function is used in the implementation of #BtkUIManager.
  **/
 void
-_gtk_action_sync_menu_visible (GtkAction *action,
-			       GtkWidget *proxy,
+_btk_action_sync_menu_visible (BtkAction *action,
+			       BtkWidget *proxy,
 			       gboolean   empty)
 {
   gboolean visible = TRUE;
   gboolean hide_if_empty = TRUE;
 
-  g_return_if_fail (GTK_IS_MENU_ITEM (proxy));
-  g_return_if_fail (action == NULL || GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_MENU_ITEM (proxy));
+  g_return_if_fail (action == NULL || BTK_IS_ACTION (action));
 
   if (action == NULL)
-    action = gtk_activatable_get_related_action (GTK_ACTIVATABLE (proxy));
+    action = btk_activatable_get_related_action (BTK_ACTIVATABLE (proxy));
 
   if (action)
     {
-      /* a GtkMenu for a <popup/> doesn't have to have an action */
-      visible = gtk_action_is_visible (action);
+      /* a BtkMenu for a <popup/> doesn't have to have an action */
+      visible = btk_action_is_visible (action);
       hide_if_empty = action->private_data->hide_if_empty;
     }
 
   if (visible && !(empty && hide_if_empty))
-    gtk_widget_show (proxy);
+    btk_widget_show (proxy);
   else
-    gtk_widget_hide (proxy);
+    btk_widget_hide (proxy);
 }
 
 void
-_gtk_action_emit_activate (GtkAction *action)
+_btk_action_emit_activate (BtkAction *action)
 {
-  GtkActionGroup *group = action->private_data->action_group;
+  BtkActionGroup *group = action->private_data->action_group;
 
   if (group != NULL)
     {
       g_object_ref (action);
       g_object_ref (group);
-      _gtk_action_group_emit_pre_activate (group, action);
+      _btk_action_group_emit_pre_activate (group, action);
     }
 
   g_signal_emit (action, action_signals[ACTIVATE], 0);
 
   if (group != NULL)
     {
-      _gtk_action_group_emit_post_activate (group, action);
+      _btk_action_group_emit_post_activate (group, action);
       g_object_unref (group);
       g_object_unref (action);
     }
 }
 
 /**
- * gtk_action_activate:
+ * btk_action_activate:
  * @action: the action object
  *
  * Emits the "activate" signal on the specified action, if it isn't 
@@ -815,56 +815,56 @@ _gtk_action_emit_activate (GtkAction *action)
  * Since: 2.4
  */
 void
-gtk_action_activate (GtkAction *action)
+btk_action_activate (BtkAction *action)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
   
   if (action->private_data->activate_blocked)
     return;
 
-  if (gtk_action_is_sensitive (action))
-    _gtk_action_emit_activate (action);
+  if (btk_action_is_sensitive (action))
+    _btk_action_emit_activate (action);
 }
 
 /**
- * gtk_action_block_activate:
- * @action: a #GtkAction
+ * btk_action_block_activate:
+ * @action: a #BtkAction
  *
  * Disable activation signals from the action 
  *
  * This is needed when updating the state of your proxy
- * #GtkActivatable widget could result in calling gtk_action_activate(),
+ * #BtkActivatable widget could result in calling btk_action_activate(),
  * this is a convenience function to avoid recursing in those
  * cases (updating toggle state for instance).
  *
  * Since: 2.16
  */
 void
-gtk_action_block_activate (GtkAction *action)
+btk_action_block_activate (BtkAction *action)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   action->private_data->activate_blocked = TRUE;
 }
 
 /**
- * gtk_action_unblock_activate:
- * @action: a #GtkAction
+ * btk_action_unblock_activate:
+ * @action: a #BtkAction
  *
  * Reenable activation signals from the action 
  *
  * Since: 2.16
  */
 void
-gtk_action_unblock_activate (GtkAction *action)
+btk_action_unblock_activate (BtkAction *action)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   action->private_data->activate_blocked = FALSE;
 }
 
 /**
- * gtk_action_create_icon:
+ * btk_action_create_icon:
  * @action: the action object
  * @icon_size: (type int): the size of the icon that should be created.
  *
@@ -875,24 +875,24 @@ gtk_action_unblock_activate (GtkAction *action)
  *
  * Since: 2.4
  */
-GtkWidget *
-gtk_action_create_icon (GtkAction *action, GtkIconSize icon_size)
+BtkWidget *
+btk_action_create_icon (BtkAction *action, BtkIconSize icon_size)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   if (action->private_data->stock_id &&
-      gtk_icon_factory_lookup_default (action->private_data->stock_id))
-    return gtk_image_new_from_stock (action->private_data->stock_id, icon_size);
+      btk_icon_factory_lookup_default (action->private_data->stock_id))
+    return btk_image_new_from_stock (action->private_data->stock_id, icon_size);
   else if (action->private_data->gicon)
-    return gtk_image_new_from_gicon (action->private_data->gicon, icon_size);
+    return btk_image_new_from_gicon (action->private_data->gicon, icon_size);
   else if (action->private_data->icon_name)
-    return gtk_image_new_from_icon_name (action->private_data->icon_name, icon_size);
+    return btk_image_new_from_icon_name (action->private_data->icon_name, icon_size);
   else
     return NULL;
 }
 
 /**
- * gtk_action_create_menu_item:
+ * btk_action_create_menu_item:
  * @action: the action object
  *
  * Creates a menu item widget that proxies for the given action.
@@ -901,23 +901,23 @@ gtk_action_create_icon (GtkAction *action, GtkIconSize icon_size)
  *
  * Since: 2.4
  */
-GtkWidget *
-gtk_action_create_menu_item (GtkAction *action)
+BtkWidget *
+btk_action_create_menu_item (BtkAction *action)
 {
-  GtkWidget *menu_item;
+  BtkWidget *menu_item;
 
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
-  menu_item = GTK_ACTION_GET_CLASS (action)->create_menu_item (action);
+  menu_item = BTK_ACTION_GET_CLASS (action)->create_menu_item (action);
 
-  gtk_activatable_set_use_action_appearance (GTK_ACTIVATABLE (menu_item), TRUE);
-  gtk_activatable_set_related_action (GTK_ACTIVATABLE (menu_item), action);
+  btk_activatable_set_use_action_appearance (BTK_ACTIVATABLE (menu_item), TRUE);
+  btk_activatable_set_related_action (BTK_ACTIVATABLE (menu_item), action);
 
   return menu_item;
 }
 
 /**
- * gtk_action_create_tool_item:
+ * btk_action_create_tool_item:
  * @action: the action object
  *
  * Creates a toolbar item widget that proxies for the given action.
@@ -926,43 +926,43 @@ gtk_action_create_menu_item (GtkAction *action)
  *
  * Since: 2.4
  */
-GtkWidget *
-gtk_action_create_tool_item (GtkAction *action)
+BtkWidget *
+btk_action_create_tool_item (BtkAction *action)
 {
-  GtkWidget *button;
+  BtkWidget *button;
 
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
-  button = GTK_ACTION_GET_CLASS (action)->create_tool_item (action);
+  button = BTK_ACTION_GET_CLASS (action)->create_tool_item (action);
 
-  gtk_activatable_set_use_action_appearance (GTK_ACTIVATABLE (button), TRUE);
-  gtk_activatable_set_related_action (GTK_ACTIVATABLE (button), action);
+  btk_activatable_set_use_action_appearance (BTK_ACTIVATABLE (button), TRUE);
+  btk_activatable_set_related_action (BTK_ACTIVATABLE (button), action);
 
   return button;
 }
 
 void
-_gtk_action_add_to_proxy_list (GtkAction     *action,
-			       GtkWidget     *proxy)
+_btk_action_add_to_proxy_list (BtkAction     *action,
+			       BtkWidget     *proxy)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
-  g_return_if_fail (GTK_IS_WIDGET (proxy));
+  g_return_if_fail (BTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_WIDGET (proxy));
  
-  GTK_ACTION_GET_CLASS (action)->connect_proxy (action, proxy);
+  BTK_ACTION_GET_CLASS (action)->connect_proxy (action, proxy);
 }
 
 void
-_gtk_action_remove_from_proxy_list (GtkAction     *action,
-				    GtkWidget     *proxy)
+_btk_action_remove_from_proxy_list (BtkAction     *action,
+				    BtkWidget     *proxy)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
-  g_return_if_fail (GTK_IS_WIDGET (proxy));
+  g_return_if_fail (BTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_WIDGET (proxy));
 
-  GTK_ACTION_GET_CLASS (action)->disconnect_proxy (action, proxy);
+  BTK_ACTION_GET_CLASS (action)->disconnect_proxy (action, proxy);
 }
 
 /**
- * gtk_action_connect_proxy:
+ * btk_action_connect_proxy:
  * @action: the action object
  * @proxy: the proxy widget
  *
@@ -976,23 +976,23 @@ _gtk_action_remove_from_proxy_list (GtkAction     *action,
  *
  * Since: 2.4
  *
- * Deprecated: 2.16: Use gtk_activatable_set_related_action() instead.
+ * Deprecated: 2.16: Use btk_activatable_set_related_action() instead.
  */
 void
-gtk_action_connect_proxy (GtkAction *action,
-			  GtkWidget *proxy)
+btk_action_connect_proxy (BtkAction *action,
+			  BtkWidget *proxy)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
-  g_return_if_fail (GTK_IS_WIDGET (proxy));
-  g_return_if_fail (GTK_IS_ACTIVATABLE (proxy));
+  g_return_if_fail (BTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_WIDGET (proxy));
+  g_return_if_fail (BTK_IS_ACTIVATABLE (proxy));
 
-  gtk_activatable_set_use_action_appearance (GTK_ACTIVATABLE (proxy), TRUE);
+  btk_activatable_set_use_action_appearance (BTK_ACTIVATABLE (proxy), TRUE);
 
-  gtk_activatable_set_related_action (GTK_ACTIVATABLE (proxy), action);
+  btk_activatable_set_related_action (BTK_ACTIVATABLE (proxy), action);
 }
 
 /**
- * gtk_action_disconnect_proxy:
+ * btk_action_disconnect_proxy:
  * @action: the action object
  * @proxy: the proxy widget
  *
@@ -1001,85 +1001,85 @@ gtk_action_connect_proxy (GtkAction *action,
  *
  * Since: 2.4
  *
- * Deprecated: 2.16: Use gtk_activatable_set_related_action() instead.
+ * Deprecated: 2.16: Use btk_activatable_set_related_action() instead.
  */
 void
-gtk_action_disconnect_proxy (GtkAction *action,
-			     GtkWidget *proxy)
+btk_action_disconnect_proxy (BtkAction *action,
+			     BtkWidget *proxy)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
-  g_return_if_fail (GTK_IS_WIDGET (proxy));
+  g_return_if_fail (BTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_WIDGET (proxy));
 
-  gtk_activatable_set_related_action (GTK_ACTIVATABLE (proxy), NULL);
+  btk_activatable_set_related_action (BTK_ACTIVATABLE (proxy), NULL);
 }
 
 /**
- * gtk_action_get_proxies:
+ * btk_action_get_proxies:
  * @action: the action object
  * 
  * Returns the proxy widgets for an action.
- * See also gtk_widget_get_action().
+ * See also btk_widget_get_action().
  *
- * Return value: (element-type GtkWidget) (transfer none): a #GSList of proxy widgets. The list is owned by GTK+
+ * Return value: (element-type BtkWidget) (transfer none): a #GSList of proxy widgets. The list is owned by BTK+
  * and must not be modified.
  *
  * Since: 2.4
  **/
 GSList*
-gtk_action_get_proxies (GtkAction *action)
+btk_action_get_proxies (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->proxies;
 }
 
 
 /**
- * gtk_widget_get_action:
- * @widget: a #GtkWidget
+ * btk_widget_get_action:
+ * @widget: a #BtkWidget
  *
- * Returns the #GtkAction that @widget is a proxy for. 
- * See also gtk_action_get_proxies().
+ * Returns the #BtkAction that @widget is a proxy for. 
+ * See also btk_action_get_proxies().
  *
  * Returns: the action that a widget is a proxy for, or
  *  %NULL, if it is not attached to an action.
  *
  * Since: 2.10
  *
- * Deprecated: 2.16: Use gtk_activatable_get_related_action() instead.
+ * Deprecated: 2.16: Use btk_activatable_get_related_action() instead.
  */
-GtkAction*
-gtk_widget_get_action (GtkWidget *widget)
+BtkAction*
+btk_widget_get_action (BtkWidget *widget)
 {
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  if (GTK_IS_ACTIVATABLE (widget))
-    return gtk_activatable_get_related_action (GTK_ACTIVATABLE (widget));
+  if (BTK_IS_ACTIVATABLE (widget))
+    return btk_activatable_get_related_action (BTK_ACTIVATABLE (widget));
 
   return NULL;
 }
 
 /**
- * gtk_action_get_name:
+ * btk_action_get_name:
  * @action: the action object
  * 
  * Returns the name of the action.
  * 
- * Return value: the name of the action. The string belongs to GTK+ and should not
+ * Return value: the name of the action. The string belongs to BTK+ and should not
  *   be freed.
  *
  * Since: 2.4
  **/
 const gchar *
-gtk_action_get_name (GtkAction *action)
+btk_action_get_name (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->name;
 }
 
 /**
- * gtk_action_is_sensitive:
+ * btk_action_is_sensitive:
  * @action: the action object
  * 
  * Returns whether the action is effectively sensitive.
@@ -1090,23 +1090,23 @@ gtk_action_get_name (GtkAction *action)
  * Since: 2.4
  **/
 gboolean
-gtk_action_is_sensitive (GtkAction *action)
+btk_action_is_sensitive (BtkAction *action)
 {
-  GtkActionPrivate *priv;
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  BtkActionPrivate *priv;
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   priv = action->private_data;
   return priv->sensitive &&
     (priv->action_group == NULL ||
-     gtk_action_group_get_sensitive (priv->action_group));
+     btk_action_group_get_sensitive (priv->action_group));
 }
 
 /**
- * gtk_action_get_sensitive:
+ * btk_action_get_sensitive:
  * @action: the action object
  * 
  * Returns whether the action itself is sensitive. Note that this doesn't 
- * necessarily mean effective sensitivity. See gtk_action_is_sensitive() 
+ * necessarily mean effective sensitivity. See btk_action_is_sensitive() 
  * for that.
  *
  * Return value: %TRUE if the action itself is sensitive.
@@ -1114,30 +1114,30 @@ gtk_action_is_sensitive (GtkAction *action)
  * Since: 2.4
  **/
 gboolean
-gtk_action_get_sensitive (GtkAction *action)
+btk_action_get_sensitive (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   return action->private_data->sensitive;
 }
 
 /**
- * gtk_action_set_sensitive:
+ * btk_action_set_sensitive:
  * @action: the action object
  * @sensitive: %TRUE to make the action sensitive
  * 
  * Sets the ::sensitive property of the action to @sensitive. Note that 
  * this doesn't necessarily mean effective sensitivity. See 
- * gtk_action_is_sensitive() 
+ * btk_action_is_sensitive() 
  * for that.
  *
  * Since: 2.6
  **/
 void
-gtk_action_set_sensitive (GtkAction *action,
+btk_action_set_sensitive (BtkAction *action,
 			  gboolean   sensitive)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   sensitive = sensitive != FALSE;
   
@@ -1150,7 +1150,7 @@ gtk_action_set_sensitive (GtkAction *action,
 }
 
 /**
- * gtk_action_is_visible:
+ * btk_action_is_visible:
  * @action: the action object
  * 
  * Returns whether the action is effectively visible.
@@ -1161,23 +1161,23 @@ gtk_action_set_sensitive (GtkAction *action,
  * Since: 2.4
  **/
 gboolean
-gtk_action_is_visible (GtkAction *action)
+btk_action_is_visible (BtkAction *action)
 {
-  GtkActionPrivate *priv;
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  BtkActionPrivate *priv;
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   priv = action->private_data;
   return priv->visible &&
     (priv->action_group == NULL ||
-     gtk_action_group_get_visible (priv->action_group));
+     btk_action_group_get_visible (priv->action_group));
 }
 
 /**
- * gtk_action_get_visible:
+ * btk_action_get_visible:
  * @action: the action object
  * 
  * Returns whether the action itself is visible. Note that this doesn't 
- * necessarily mean effective visibility. See gtk_action_is_sensitive() 
+ * necessarily mean effective visibility. See btk_action_is_sensitive() 
  * for that.
  *
  * Return value: %TRUE if the action itself is visible.
@@ -1185,30 +1185,30 @@ gtk_action_is_visible (GtkAction *action)
  * Since: 2.4
  **/
 gboolean
-gtk_action_get_visible (GtkAction *action)
+btk_action_get_visible (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   return action->private_data->visible;
 }
 
 /**
- * gtk_action_set_visible:
+ * btk_action_set_visible:
  * @action: the action object
  * @visible: %TRUE to make the action visible
  * 
  * Sets the ::visible property of the action to @visible. Note that 
  * this doesn't necessarily mean effective visibility. See 
- * gtk_action_is_visible() 
+ * btk_action_is_visible() 
  * for that.
  *
  * Since: 2.6
  **/
 void
-gtk_action_set_visible (GtkAction *action,
+btk_action_set_visible (BtkAction *action,
 			gboolean   visible)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   visible = visible != FALSE;
   
@@ -1220,7 +1220,7 @@ gtk_action_set_visible (GtkAction *action,
     }
 }
 /**
- * gtk_action_set_is_important:
+ * btk_action_set_is_important:
  * @action: the action object
  * @is_important: %TRUE to make the action important
  *
@@ -1231,10 +1231,10 @@ gtk_action_set_visible (GtkAction *action,
  * Since: 2.16
  */
 void 
-gtk_action_set_is_important (GtkAction *action,
+btk_action_set_is_important (BtkAction *action,
 			     gboolean   is_important)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   is_important = is_important != FALSE;
   
@@ -1247,8 +1247,8 @@ gtk_action_set_is_important (GtkAction *action,
 }
 
 /**
- * gtk_action_get_is_important:
- * @action: a #GtkAction
+ * btk_action_get_is_important:
+ * @action: a #BtkAction
  *
  * Checks whether @action is important or not
  * 
@@ -1257,20 +1257,20 @@ gtk_action_set_is_important (GtkAction *action,
  * Since: 2.16
  */
 gboolean 
-gtk_action_get_is_important (GtkAction *action)
+btk_action_get_is_important (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   return action->private_data->is_important;
 }
 
 /**
- * gtk_action_set_always_show_image:
- * @action: a #GtkAction
+ * btk_action_set_always_show_image:
+ * @action: a #BtkAction
  * @always_show: %TRUE if menuitem proxies should always show their image
  *
  * Sets whether @action<!-- -->'s menu item proxies will ignore the
- * #GtkSettings:gtk-menu-images setting and always show their image, if available.
+ * #BtkSettings:btk-menu-images setting and always show their image, if available.
  *
  * Use this if the menu item would be useless or hard to use
  * without their image.
@@ -1278,12 +1278,12 @@ gtk_action_get_is_important (GtkAction *action)
  * Since: 2.20
  */
 void
-gtk_action_set_always_show_image (GtkAction *action,
+btk_action_set_always_show_image (BtkAction *action,
                                   gboolean   always_show)
 {
-  GtkActionPrivate *priv;
+  BtkActionPrivate *priv;
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   priv = action->private_data;
 
@@ -1298,11 +1298,11 @@ gtk_action_set_always_show_image (GtkAction *action,
 }
 
 /**
- * gtk_action_get_always_show_image:
- * @action: a #GtkAction
+ * btk_action_get_always_show_image:
+ * @action: a #BtkAction
  *
  * Returns whether @action<!-- -->'s menu item proxies will ignore the
- * #GtkSettings:gtk-menu-images setting and always show their image,
+ * #BtkSettings:btk-menu-images setting and always show their image,
  * if available.
  *
  * Returns: %TRUE if the menu item proxies will always show their image
@@ -1310,16 +1310,16 @@ gtk_action_set_always_show_image (GtkAction *action,
  * Since: 2.20
  */
 gboolean
-gtk_action_get_always_show_image  (GtkAction *action)
+btk_action_get_always_show_image  (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   return action->private_data->always_show_image;
 }
 
 /**
- * gtk_action_set_label:
- * @action: a #GtkAction
+ * btk_action_set_label:
+ * @action: a #BtkAction
  * @label: the label text to set
  *
  * Sets the label of @action.
@@ -1327,12 +1327,12 @@ gtk_action_get_always_show_image  (GtkAction *action)
  * Since: 2.16
  */
 void 
-gtk_action_set_label (GtkAction	  *action,
+btk_action_set_label (BtkAction	  *action,
 		      const gchar *label)
 {
   gchar *tmp;
   
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
   
   tmp = action->private_data->label;
   action->private_data->label = g_strdup (label);
@@ -1341,9 +1341,9 @@ gtk_action_set_label (GtkAction	  *action,
   /* if label is unset, then use the label from the stock item */
   if (!action->private_data->label_set && action->private_data->stock_id)
     {
-      GtkStockItem stock_item;
+      BtkStockItem stock_item;
       
-      if (gtk_stock_lookup (action->private_data->stock_id, &stock_item))
+      if (btk_stock_lookup (action->private_data->stock_id, &stock_item))
 	action->private_data->label = g_strdup (stock_item.label);
     }
 
@@ -1352,14 +1352,14 @@ gtk_action_set_label (GtkAction	  *action,
   /* if short_label is unset, set short_label=label */
   if (!action->private_data->short_label_set)
     {
-      gtk_action_set_short_label (action, action->private_data->label);
+      btk_action_set_short_label (action, action->private_data->label);
       action->private_data->short_label_set = FALSE;
     }
 }
 
 /**
- * gtk_action_get_label:
- * @action: a #GtkAction
+ * btk_action_get_label:
+ * @action: a #BtkAction
  *
  * Gets the label text of @action.
  *
@@ -1368,16 +1368,16 @@ gtk_action_set_label (GtkAction	  *action,
  * Since: 2.16
  */
 const gchar *
-gtk_action_get_label (GtkAction *action)
+btk_action_get_label (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->label;
 }
 
 /**
- * gtk_action_set_short_label:
- * @action: a #GtkAction
+ * btk_action_set_short_label:
+ * @action: a #BtkAction
  * @short_label: the label text to set
  *
  * Sets a shorter label text on @action.
@@ -1385,12 +1385,12 @@ gtk_action_get_label (GtkAction *action)
  * Since: 2.16
  */
 void 
-gtk_action_set_short_label (GtkAction   *action,
+btk_action_set_short_label (BtkAction   *action,
 			    const gchar *short_label)
 {
   gchar *tmp;
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   tmp = action->private_data->short_label;
   action->private_data->short_label = g_strdup (short_label);
@@ -1404,8 +1404,8 @@ gtk_action_set_short_label (GtkAction   *action,
 }
 
 /**
- * gtk_action_get_short_label:
- * @action: a #GtkAction
+ * btk_action_get_short_label:
+ * @action: a #BtkAction
  *
  * Gets the short label text of @action.
  *
@@ -1414,16 +1414,16 @@ gtk_action_set_short_label (GtkAction   *action,
  * Since: 2.16
  */
 const gchar *
-gtk_action_get_short_label (GtkAction *action)
+btk_action_get_short_label (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->short_label;
 }
 
 /**
- * gtk_action_set_visible_horizontal:
- * @action: a #GtkAction
+ * btk_action_set_visible_horizontal:
+ * @action: a #BtkAction
  * @visible_horizontal: whether the action is visible horizontally
  *
  * Sets whether @action is visible when horizontal
@@ -1431,12 +1431,12 @@ gtk_action_get_short_label (GtkAction *action)
  * Since: 2.16
  */
 void
-gtk_action_set_visible_horizontal (GtkAction *action,
+btk_action_set_visible_horizontal (BtkAction *action,
 				   gboolean   visible_horizontal)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   visible_horizontal = visible_horizontal != FALSE;
   
@@ -1449,8 +1449,8 @@ gtk_action_set_visible_horizontal (GtkAction *action,
 }
 
 /**
- * gtk_action_get_visible_horizontal:
- * @action: a #GtkAction
+ * btk_action_get_visible_horizontal:
+ * @action: a #BtkAction
  *
  * Checks whether @action is visible when horizontal
  * 
@@ -1459,16 +1459,16 @@ gtk_action_set_visible_horizontal (GtkAction *action,
  * Since: 2.16
  */
 gboolean 
-gtk_action_get_visible_horizontal (GtkAction *action)
+btk_action_get_visible_horizontal (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   return action->private_data->visible_horizontal;
 }
 
 /**
- * gtk_action_set_visible_vertical:
- * @action: a #GtkAction
+ * btk_action_set_visible_vertical:
+ * @action: a #BtkAction
  * @visible_vertical: whether the action is visible vertically
  *
  * Sets whether @action is visible when vertical 
@@ -1476,12 +1476,12 @@ gtk_action_get_visible_horizontal (GtkAction *action)
  * Since: 2.16
  */
 void 
-gtk_action_set_visible_vertical (GtkAction *action,
+btk_action_set_visible_vertical (BtkAction *action,
 				 gboolean   visible_vertical)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   visible_vertical = visible_vertical != FALSE;
   
@@ -1494,8 +1494,8 @@ gtk_action_set_visible_vertical (GtkAction *action,
 }
 
 /**
- * gtk_action_get_visible_vertical:
- * @action: a #GtkAction
+ * btk_action_get_visible_vertical:
+ * @action: a #BtkAction
  *
  * Checks whether @action is visible when horizontal
  * 
@@ -1504,16 +1504,16 @@ gtk_action_set_visible_vertical (GtkAction *action,
  * Since: 2.16
  */
 gboolean 
-gtk_action_get_visible_vertical (GtkAction *action)
+btk_action_get_visible_vertical (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), FALSE);
+  g_return_val_if_fail (BTK_IS_ACTION (action), FALSE);
 
   return action->private_data->visible_vertical;
 }
 
 /**
- * gtk_action_set_tooltip:
- * @action: a #GtkAction
+ * btk_action_set_tooltip:
+ * @action: a #BtkAction
  * @tooltip: the tooltip text
  *
  * Sets the tooltip text on @action
@@ -1521,12 +1521,12 @@ gtk_action_get_visible_vertical (GtkAction *action)
  * Since: 2.16
  */
 void 
-gtk_action_set_tooltip (GtkAction   *action,
+btk_action_set_tooltip (BtkAction   *action,
 			const gchar *tooltip)
 {
   gchar *tmp;
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   tmp = action->private_data->tooltip;
   action->private_data->tooltip = g_strdup (tooltip);
@@ -1536,8 +1536,8 @@ gtk_action_set_tooltip (GtkAction   *action,
 }
 
 /**
- * gtk_action_get_tooltip:
- * @action: a #GtkAction
+ * btk_action_get_tooltip:
+ * @action: a #BtkAction
  *
  * Gets the tooltip text of @action.
  *
@@ -1546,16 +1546,16 @@ gtk_action_set_tooltip (GtkAction   *action,
  * Since: 2.16
  */
 const gchar *
-gtk_action_get_tooltip (GtkAction *action)
+btk_action_get_tooltip (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->tooltip;
 }
 
 /**
- * gtk_action_set_stock_id:
- * @action: a #GtkAction
+ * btk_action_set_stock_id:
+ * @action: a #BtkAction
  * @stock_id: the stock id
  *
  * Sets the stock id on @action
@@ -1563,14 +1563,14 @@ gtk_action_get_tooltip (GtkAction *action)
  * Since: 2.16
  */
 void 
-gtk_action_set_stock_id (GtkAction   *action,
+btk_action_set_stock_id (BtkAction   *action,
 			 const gchar *stock_id)
 {
   gchar *tmp;
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   tmp = action->private_data->stock_id;
   action->private_data->stock_id = g_strdup (stock_id);
@@ -1581,21 +1581,21 @@ gtk_action_set_stock_id (GtkAction   *action,
   /* update label and short_label if appropriate */
   if (!action->private_data->label_set)
     {
-      GtkStockItem stock_item;
+      BtkStockItem stock_item;
       
       if (action->private_data->stock_id &&
-	  gtk_stock_lookup (action->private_data->stock_id, &stock_item))
-	gtk_action_set_label (action, stock_item.label);
+	  btk_stock_lookup (action->private_data->stock_id, &stock_item))
+	btk_action_set_label (action, stock_item.label);
       else 
-	gtk_action_set_label (action, NULL);
+	btk_action_set_label (action, NULL);
       
       action->private_data->label_set = FALSE;
     }
 }
 
 /**
- * gtk_action_get_stock_id:
- * @action: a #GtkAction
+ * btk_action_get_stock_id:
+ * @action: a #BtkAction
  *
  * Gets the stock id of @action.
  *
@@ -1604,16 +1604,16 @@ gtk_action_set_stock_id (GtkAction   *action,
  * Since: 2.16
  */
 const gchar *
-gtk_action_get_stock_id (GtkAction *action)
+btk_action_get_stock_id (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->stock_id;
 }
 
 /**
- * gtk_action_set_icon_name:
- * @action: a #GtkAction
+ * btk_action_set_icon_name:
+ * @action: a #BtkAction
  * @icon_name: the icon name to set
  *
  * Sets the icon name on @action
@@ -1621,12 +1621,12 @@ gtk_action_get_stock_id (GtkAction *action)
  * Since: 2.16
  */
 void 
-gtk_action_set_icon_name (GtkAction   *action,
+btk_action_set_icon_name (BtkAction   *action,
 			  const gchar *icon_name)
 {
   gchar *tmp;
 
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   tmp = action->private_data->icon_name;
   action->private_data->icon_name = g_strdup (icon_name);
@@ -1636,8 +1636,8 @@ gtk_action_set_icon_name (GtkAction   *action,
 }
 
 /**
- * gtk_action_get_icon_name:
- * @action: a #GtkAction
+ * btk_action_get_icon_name:
+ * @action: a #BtkAction
  *
  * Gets the icon name of @action.
  *
@@ -1646,16 +1646,16 @@ gtk_action_set_icon_name (GtkAction   *action,
  * Since: 2.16
  */
 const gchar *
-gtk_action_get_icon_name (GtkAction *action)
+btk_action_get_icon_name (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->icon_name;
 }
 
 /**
- * gtk_action_set_gicon:
- * @action: a #GtkAction
+ * btk_action_set_gicon:
+ * @action: a #BtkAction
  * @icon: the #GIcon to set
  *
  * Sets the icon of @action.
@@ -1663,10 +1663,10 @@ gtk_action_get_icon_name (GtkAction *action)
  * Since: 2.16
  */
 void
-gtk_action_set_gicon (GtkAction *action,
+btk_action_set_gicon (BtkAction *action,
                       GIcon     *icon)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   if (action->private_data->gicon)
     g_object_unref (action->private_data->gicon);
@@ -1680,8 +1680,8 @@ gtk_action_set_gicon (GtkAction *action,
 }
 
 /**
- * gtk_action_get_gicon:
- * @action: a #GtkAction
+ * btk_action_get_gicon:
+ * @action: a #BtkAction
  *
  * Gets the gicon of @action.
  *
@@ -1690,19 +1690,19 @@ gtk_action_set_gicon (GtkAction *action,
  * Since: 2.16
  */
 GIcon *
-gtk_action_get_gicon (GtkAction *action)
+btk_action_get_gicon (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->gicon;
 }
 
 /**
- * gtk_action_block_activate_from:
+ * btk_action_block_activate_from:
  * @action: the action object
  * @proxy: a proxy widget
  *
- * Disables calls to the gtk_action_activate()
+ * Disables calls to the btk_action_activate()
  * function by signals on the given proxy widget.  This is used to
  * break notification loops for things like check or radio actions.
  *
@@ -1714,25 +1714,25 @@ gtk_action_get_gicon (GtkAction *action)
  * action directly so this doesnt apply anymore.
  */
 void
-gtk_action_block_activate_from (GtkAction *action, 
-				GtkWidget *proxy)
+btk_action_block_activate_from (BtkAction *action, 
+				BtkWidget *proxy)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
   
-  g_signal_handlers_block_by_func (proxy, G_CALLBACK (gtk_action_activate),
+  g_signal_handlers_block_by_func (proxy, G_CALLBACK (btk_action_activate),
 				   action);
 
-  gtk_action_block_activate (action);
+  btk_action_block_activate (action);
 }
 
 /**
- * gtk_action_unblock_activate_from:
+ * btk_action_unblock_activate_from:
  * @action: the action object
  * @proxy: a proxy widget
  *
- * Re-enables calls to the gtk_action_activate()
+ * Re-enables calls to the btk_action_activate()
  * function by signals on the given proxy widget.  This undoes the
- * blocking done by gtk_action_block_activate_from().
+ * blocking done by btk_action_block_activate_from().
  *
  * This function is intended for use by action implementations.
  * 
@@ -1742,15 +1742,15 @@ gtk_action_block_activate_from (GtkAction *action,
  * action directly so this doesnt apply anymore.
  */
 void
-gtk_action_unblock_activate_from (GtkAction *action, 
-				  GtkWidget *proxy)
+btk_action_unblock_activate_from (BtkAction *action, 
+				  BtkWidget *proxy)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
-  g_signal_handlers_unblock_by_func (proxy, G_CALLBACK (gtk_action_activate),
+  g_signal_handlers_unblock_by_func (proxy, G_CALLBACK (btk_action_activate),
 				     action);
 
-  gtk_action_unblock_activate (action);
+  btk_action_unblock_activate (action);
 }
 
 static void
@@ -1761,9 +1761,9 @@ closure_accel_activate (GClosure     *closure,
                         gpointer      invocation_hint,
                         gpointer      marshal_data)
 {
-  if (gtk_action_is_sensitive (GTK_ACTION (closure->data)))
+  if (btk_action_is_sensitive (BTK_ACTION (closure->data)))
     {
-      _gtk_action_emit_activate (GTK_ACTION (closure->data));
+      _btk_action_emit_activate (BTK_ACTION (closure->data));
       
       /* we handled the accelerator */
       g_value_set_boolean (return_value, TRUE);
@@ -1771,11 +1771,11 @@ closure_accel_activate (GClosure     *closure,
 }
 
 static void
-gtk_action_set_action_group (GtkAction	    *action,
-			     GtkActionGroup *action_group)
+btk_action_set_action_group (BtkAction	    *action,
+			     BtkActionGroup *action_group)
 {
   if (action->private_data->action_group == NULL)
-    g_return_if_fail (GTK_IS_ACTION_GROUP (action_group));
+    g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
   else
     g_return_if_fail (action_group == NULL);
 
@@ -1783,7 +1783,7 @@ gtk_action_set_action_group (GtkAction	    *action,
 }
 
 /**
- * gtk_action_set_accel_path:
+ * btk_action_set_accel_path:
  * @action: the action object
  * @accel_path: the accelerator path
  *
@@ -1798,16 +1798,16 @@ gtk_action_set_action_group (GtkAction	    *action,
  * Since: 2.4
  */
 void
-gtk_action_set_accel_path (GtkAction   *action, 
+btk_action_set_accel_path (BtkAction   *action, 
 			   const gchar *accel_path)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   action->private_data->accel_quark = g_quark_from_string (accel_path);
 }
 
 /**
- * gtk_action_get_accel_path:
+ * btk_action_get_accel_path:
  * @action: the action object
  *
  * Returns the accel path for this action.  
@@ -1815,13 +1815,13 @@ gtk_action_set_accel_path (GtkAction   *action,
  * Since: 2.6
  *
  * Returns: the accel path for this action, or %NULL
- *   if none is set. The returned string is owned by GTK+ 
+ *   if none is set. The returned string is owned by BTK+ 
  *   and must not be freed or modified.
  */
 const gchar *
-gtk_action_get_accel_path (GtkAction *action)
+btk_action_get_accel_path (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   if (action->private_data->accel_quark)
     return g_quark_to_string (action->private_data->accel_quark);
@@ -1830,7 +1830,7 @@ gtk_action_get_accel_path (GtkAction *action)
 }
 
 /**
- * gtk_action_get_accel_closure:
+ * btk_action_get_accel_closure:
  * @action: the action object
  *
  * Returns the accel closure for this action.
@@ -1838,34 +1838,34 @@ gtk_action_get_accel_path (GtkAction *action)
  * Since: 2.8
  *
  * Returns: (transfer none): the accel closure for this action. The
- *          returned closure is owned by GTK+ and must not be unreffed
+ *          returned closure is owned by BTK+ and must not be unreffed
  *          or modified.
  */
 GClosure *
-gtk_action_get_accel_closure (GtkAction *action)
+btk_action_get_accel_closure (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
   return action->private_data->accel_closure;
 }
 
 
 /**
- * gtk_action_set_accel_group:
+ * btk_action_set_accel_group:
  * @action: the action object
- * @accel_group: (allow-none): a #GtkAccelGroup or %NULL
+ * @accel_group: (allow-none): a #BtkAccelGroup or %NULL
  *
- * Sets the #GtkAccelGroup in which the accelerator for this action
+ * Sets the #BtkAccelGroup in which the accelerator for this action
  * will be installed.
  *
  * Since: 2.4
  **/
 void
-gtk_action_set_accel_group (GtkAction     *action,
-			    GtkAccelGroup *accel_group)
+btk_action_set_accel_group (BtkAction     *action,
+			    BtkAccelGroup *accel_group)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
-  g_return_if_fail (accel_group == NULL || GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACTION (action));
+  g_return_if_fail (accel_group == NULL || BTK_IS_ACCEL_GROUP (accel_group));
   
   if (accel_group)
     g_object_ref (accel_group);
@@ -1876,24 +1876,24 @@ gtk_action_set_accel_group (GtkAction     *action,
 }
 
 /**
- * gtk_action_connect_accelerator:
- * @action: a #GtkAction
+ * btk_action_connect_accelerator:
+ * @action: a #BtkAction
  * 
  * Installs the accelerator for @action if @action has an
- * accel path and group. See gtk_action_set_accel_path() and 
- * gtk_action_set_accel_group()
+ * accel path and group. See btk_action_set_accel_path() and 
+ * btk_action_set_accel_group()
  *
  * Since multiple proxies may independently trigger the installation
  * of the accelerator, the @action counts the number of times this
  * function has been called and doesn't remove the accelerator until
- * gtk_action_disconnect_accelerator() has been called as many times.
+ * btk_action_disconnect_accelerator() has been called as many times.
  *
  * Since: 2.4
  **/
 void 
-gtk_action_connect_accelerator (GtkAction *action)
+btk_action_connect_accelerator (BtkAction *action)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   if (!action->private_data->accel_quark ||
       !action->private_data->accel_group)
@@ -1904,7 +1904,7 @@ gtk_action_connect_accelerator (GtkAction *action)
       const gchar *accel_path = 
 	g_quark_to_string (action->private_data->accel_quark);
       
-      gtk_accel_group_connect_by_path (action->private_data->accel_group,
+      btk_accel_group_connect_by_path (action->private_data->accel_group,
 				       accel_path,
 				       action->private_data->accel_closure);
     }
@@ -1913,17 +1913,17 @@ gtk_action_connect_accelerator (GtkAction *action)
 }
 
 /**
- * gtk_action_disconnect_accelerator:
- * @action: a #GtkAction
+ * btk_action_disconnect_accelerator:
+ * @action: a #BtkAction
  * 
- * Undoes the effect of one call to gtk_action_connect_accelerator().
+ * Undoes the effect of one call to btk_action_connect_accelerator().
  *
  * Since: 2.4
  **/
 void 
-gtk_action_disconnect_accelerator (GtkAction *action)
+btk_action_disconnect_accelerator (BtkAction *action)
 {
-  g_return_if_fail (GTK_IS_ACTION (action));
+  g_return_if_fail (BTK_IS_ACTION (action));
 
   if (!action->private_data->accel_quark ||
       !action->private_data->accel_group)
@@ -1932,15 +1932,15 @@ gtk_action_disconnect_accelerator (GtkAction *action)
   action->private_data->accel_count--;
 
   if (action->private_data->accel_count == 0)
-    gtk_accel_group_disconnect (action->private_data->accel_group,
+    btk_accel_group_disconnect (action->private_data->accel_group,
 				action->private_data->accel_closure);
 }
 
 /**
- * gtk_action_create_menu:
- * @action: a #GtkAction
+ * btk_action_create_menu:
+ * @action: a #BtkAction
  *
- * If @action provides a #GtkMenu widget as a submenu for the menu
+ * If @action provides a #BtkMenu widget as a submenu for the menu
  * item or the toolbar item it creates, this function returns an
  * instance of that menu.
  *
@@ -1949,16 +1949,16 @@ gtk_action_disconnect_accelerator (GtkAction *action)
  *
  * Since: 2.12
  */
-GtkWidget *
-gtk_action_create_menu (GtkAction *action)
+BtkWidget *
+btk_action_create_menu (BtkAction *action)
 {
-  g_return_val_if_fail (GTK_IS_ACTION (action), NULL);
+  g_return_val_if_fail (BTK_IS_ACTION (action), NULL);
 
-  if (GTK_ACTION_GET_CLASS (action)->create_menu)
-    return GTK_ACTION_GET_CLASS (action)->create_menu (action);
+  if (BTK_ACTION_GET_CLASS (action)->create_menu)
+    return BTK_ACTION_GET_CLASS (action)->create_menu (action);
 
   return NULL;
 }
 
-#define __GTK_ACTION_C__
-#include "gtkaliasdef.c"
+#define __BTK_ACTION_C__
+#include "btkaliasdef.c"

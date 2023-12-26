@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,31 +18,31 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gobject/gvaluecollector.h>
-#undef GDK_DISABLE_DEPRECATED
-#include "gtkgc.h"
-#include "gtkmarshalers.h"
-#undef GTK_DISABLE_DEPRECATED
-#include "gtkoptionmenu.h"
-#include "gtkrc.h"
-#include "gtkspinbutton.h"
-#include "gtkstyle.h"
-#include "gtkwidget.h"
-#include "gtkthemes.h"
-#include "gtkiconfactory.h"
-#include "gtksettings.h"	/* _gtk_settings_parse_convert() */
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include <bobject/gvaluecollector.h>
+#undef BDK_DISABLE_DEPRECATED
+#include "btkgc.h"
+#include "btkmarshalers.h"
+#undef BTK_DISABLE_DEPRECATED
+#include "btkoptionmenu.h"
+#include "btkrc.h"
+#include "btkspinbutton.h"
+#include "btkstyle.h"
+#include "btkwidget.h"
+#include "btkthemes.h"
+#include "btkiconfactory.h"
+#include "btksettings.h"	/* _btk_settings_parse_convert() */
+#include "btkintl.h"
+#include "btkalias.h"
 
 #define LIGHTNESS_MULT  1.3
 #define DARKNESS_MULT   0.7
@@ -54,271 +54,271 @@ typedef struct {
   GValue      value;
 } PropertyValue;
 
-#define GTK_STYLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_STYLE, GtkStylePrivate))
+#define BTK_STYLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_STYLE, BtkStylePrivate))
 
-typedef struct _GtkStylePrivate GtkStylePrivate;
+typedef struct _BtkStylePrivate BtkStylePrivate;
 
-struct _GtkStylePrivate {
+struct _BtkStylePrivate {
   GSList *color_hashes;
 };
 
 /* --- prototypes --- */
-static void	 gtk_style_finalize		(GObject	*object);
-static void	 gtk_style_realize		(GtkStyle	*style,
-						 GdkColormap	*colormap);
-static void      gtk_style_real_realize        (GtkStyle	*style);
-static void      gtk_style_real_unrealize      (GtkStyle	*style);
-static void      gtk_style_real_copy           (GtkStyle	*style,
-						GtkStyle	*src);
-static void      gtk_style_real_set_background (GtkStyle	*style,
-						GdkWindow	*window,
-						GtkStateType	 state_type);
-static GtkStyle *gtk_style_real_clone          (GtkStyle	*style);
-static void      gtk_style_real_init_from_rc   (GtkStyle	*style,
-                                                GtkRcStyle	*rc_style);
-static GdkPixbuf *gtk_default_render_icon      (GtkStyle            *style,
-                                                const GtkIconSource *source,
-                                                GtkTextDirection     direction,
-                                                GtkStateType         state,
-                                                GtkIconSize          size,
-                                                GtkWidget           *widget,
+static void	 btk_style_finalize		(GObject	*object);
+static void	 btk_style_realize		(BtkStyle	*style,
+						 BdkColormap	*colormap);
+static void      btk_style_real_realize        (BtkStyle	*style);
+static void      btk_style_real_unrealize      (BtkStyle	*style);
+static void      btk_style_real_copy           (BtkStyle	*style,
+						BtkStyle	*src);
+static void      btk_style_real_set_background (BtkStyle	*style,
+						BdkWindow	*window,
+						BtkStateType	 state_type);
+static BtkStyle *btk_style_real_clone          (BtkStyle	*style);
+static void      btk_style_real_init_from_rc   (BtkStyle	*style,
+                                                BtkRcStyle	*rc_style);
+static BdkPixbuf *btk_default_render_icon      (BtkStyle            *style,
+                                                const BtkIconSource *source,
+                                                BtkTextDirection     direction,
+                                                BtkStateType         state,
+                                                BtkIconSize          size,
+                                                BtkWidget           *widget,
                                                 const gchar         *detail);
-static void gtk_default_draw_hline      (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_hline      (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x1,
 					 gint             x2,
 					 gint             y);
-static void gtk_default_draw_vline      (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_vline      (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             y1,
 					 gint             y2,
 					 gint             x);
-static void gtk_default_draw_shadow     (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_shadow     (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_polygon    (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_polygon    (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
-					 GdkPoint        *points,
+					 BdkPoint        *points,
 					 gint             npoints,
 					 gboolean         fill);
-static void gtk_default_draw_arrow      (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_arrow      (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
-					 GtkArrowType     arrow_type,
+					 BtkArrowType     arrow_type,
 					 gboolean         fill,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_diamond    (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_diamond    (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_string     (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_string     (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 const gchar     *string);
-static void gtk_default_draw_box        (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_box        (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_flat_box   (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_flat_box   (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_check      (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_check      (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_option     (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_option     (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_tab        (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_tab        (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_shadow_gap (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_shadow_gap (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height,
-					 GtkPositionType  gap_side,
+					 BtkPositionType  gap_side,
 					 gint             gap_x,
 					 gint             gap_width);
-static void gtk_default_draw_box_gap    (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_box_gap    (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height,
-					 GtkPositionType  gap_side,
+					 BtkPositionType  gap_side,
 					 gint             gap_x,
 					 gint             gap_width);
-static void gtk_default_draw_extension  (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_extension  (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height,
-					 GtkPositionType  gap_side);
-static void gtk_default_draw_focus      (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+					 BtkPositionType  gap_side);
+static void btk_default_draw_focus      (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height);
-static void gtk_default_draw_slider     (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+static void btk_default_draw_slider     (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height,
-					 GtkOrientation   orientation);
-static void gtk_default_draw_handle     (GtkStyle        *style,
-					 GdkWindow       *window,
-					 GtkStateType     state_type,
-					 GtkShadowType    shadow_type,
-					 GdkRectangle    *area,
-					 GtkWidget       *widget,
+					 BtkOrientation   orientation);
+static void btk_default_draw_handle     (BtkStyle        *style,
+					 BdkWindow       *window,
+					 BtkStateType     state_type,
+					 BtkShadowType    shadow_type,
+					 BdkRectangle    *area,
+					 BtkWidget       *widget,
 					 const gchar     *detail,
 					 gint             x,
 					 gint             y,
 					 gint             width,
 					 gint             height,
-					 GtkOrientation   orientation);
-static void gtk_default_draw_expander   (GtkStyle        *style,
-                                         GdkWindow       *window,
-                                         GtkStateType     state_type,
-                                         GdkRectangle    *area,
-                                         GtkWidget       *widget,
+					 BtkOrientation   orientation);
+static void btk_default_draw_expander   (BtkStyle        *style,
+                                         BdkWindow       *window,
+                                         BtkStateType     state_type,
+                                         BdkRectangle    *area,
+                                         BtkWidget       *widget,
                                          const gchar     *detail,
                                          gint             x,
                                          gint             y,
-					 GtkExpanderStyle expander_style);
-static void gtk_default_draw_layout     (GtkStyle        *style,
-                                         GdkWindow       *window,
-                                         GtkStateType     state_type,
+					 BtkExpanderStyle expander_style);
+static void btk_default_draw_layout     (BtkStyle        *style,
+                                         BdkWindow       *window,
+                                         BtkStateType     state_type,
 					 gboolean         use_text,
-                                         GdkRectangle    *area,
-                                         GtkWidget       *widget,
+                                         BdkRectangle    *area,
+                                         BtkWidget       *widget,
                                          const gchar     *detail,
                                          gint             x,
                                          gint             y,
-                                         PangoLayout     *layout);
-static void gtk_default_draw_resize_grip (GtkStyle       *style,
-                                          GdkWindow      *window,
-                                          GtkStateType    state_type,
-                                          GdkRectangle   *area,
-                                          GtkWidget      *widget,
+                                         BangoLayout     *layout);
+static void btk_default_draw_resize_grip (BtkStyle       *style,
+                                          BdkWindow      *window,
+                                          BtkStateType    state_type,
+                                          BdkRectangle   *area,
+                                          BtkWidget      *widget,
                                           const gchar    *detail,
-                                          GdkWindowEdge   edge,
+                                          BdkWindowEdge   edge,
                                           gint            x,
                                           gint            y,
                                           gint            width,
                                           gint            height);
-static void gtk_default_draw_spinner     (GtkStyle       *style,
-					  GdkWindow      *window,
-					  GtkStateType    state_type,
-                                          GdkRectangle   *area,
-                                          GtkWidget      *widget,
+static void btk_default_draw_spinner     (BtkStyle       *style,
+					  BdkWindow      *window,
+					  BtkStateType    state_type,
+                                          BdkRectangle   *area,
+                                          BtkWidget      *widget,
                                           const gchar    *detail,
 					  guint           step,
 					  gint            x,
@@ -333,96 +333,96 @@ static void hls_to_rgb			(gdouble	 *h,
 					 gdouble	 *l,
 					 gdouble	 *s);
 
-static void style_unrealize_cursor_gcs (GtkStyle *style);
+static void style_unrealize_cursor_gcs (BtkStyle *style);
 
-static GdkFont *gtk_style_get_font_internal (GtkStyle *style);
+static BdkFont *btk_style_get_font_internal (BtkStyle *style);
 
 /*
  * Data for default check and radio buttons
  */
 
-static const GtkRequisition default_option_indicator_size = { 7, 13 };
-static const GtkBorder default_option_indicator_spacing = { 7, 5, 2, 2 };
+static const BtkRequisition default_option_indicator_size = { 7, 13 };
+static const BtkBorder default_option_indicator_spacing = { 7, 5, 2, 2 };
 
-#define GTK_GRAY		0xdcdc, 0xdada, 0xd5d5
-#define GTK_DARK_GRAY		0xc4c4, 0xc2c2, 0xbdbd
-#define GTK_LIGHT_GRAY		0xeeee, 0xebeb, 0xe7e7
-#define GTK_WHITE		0xffff, 0xffff, 0xffff
-#define GTK_BLUE		0x4b4b, 0x6969, 0x8383
-#define GTK_VERY_DARK_GRAY	0x9c9c, 0x9a9a, 0x9494
-#define GTK_BLACK		0x0000, 0x0000, 0x0000
-#define GTK_WEAK_GRAY		0x7530, 0x7530, 0x7530
+#define BTK_GRAY		0xdcdc, 0xdada, 0xd5d5
+#define BTK_DARK_GRAY		0xc4c4, 0xc2c2, 0xbdbd
+#define BTK_LIGHT_GRAY		0xeeee, 0xebeb, 0xe7e7
+#define BTK_WHITE		0xffff, 0xffff, 0xffff
+#define BTK_BLUE		0x4b4b, 0x6969, 0x8383
+#define BTK_VERY_DARK_GRAY	0x9c9c, 0x9a9a, 0x9494
+#define BTK_BLACK		0x0000, 0x0000, 0x0000
+#define BTK_WEAK_GRAY		0x7530, 0x7530, 0x7530
 
 /* --- variables --- */
-static const GdkColor gtk_default_normal_fg =      { 0, GTK_BLACK };
-static const GdkColor gtk_default_active_fg =      { 0, GTK_BLACK };
-static const GdkColor gtk_default_prelight_fg =    { 0, GTK_BLACK };
-static const GdkColor gtk_default_selected_fg =    { 0, GTK_WHITE };
-static const GdkColor gtk_default_insensitive_fg = { 0, GTK_WEAK_GRAY };
+static const BdkColor btk_default_normal_fg =      { 0, BTK_BLACK };
+static const BdkColor btk_default_active_fg =      { 0, BTK_BLACK };
+static const BdkColor btk_default_prelight_fg =    { 0, BTK_BLACK };
+static const BdkColor btk_default_selected_fg =    { 0, BTK_WHITE };
+static const BdkColor btk_default_insensitive_fg = { 0, BTK_WEAK_GRAY };
 
-static const GdkColor gtk_default_normal_bg =      { 0, GTK_GRAY };
-static const GdkColor gtk_default_active_bg =      { 0, GTK_DARK_GRAY };
-static const GdkColor gtk_default_prelight_bg =    { 0, GTK_LIGHT_GRAY };
-static const GdkColor gtk_default_selected_bg =    { 0, GTK_BLUE };
-static const GdkColor gtk_default_insensitive_bg = { 0, GTK_GRAY };
-static const GdkColor gtk_default_selected_base =  { 0, GTK_BLUE };
-static const GdkColor gtk_default_active_base =    { 0, GTK_VERY_DARK_GRAY };
+static const BdkColor btk_default_normal_bg =      { 0, BTK_GRAY };
+static const BdkColor btk_default_active_bg =      { 0, BTK_DARK_GRAY };
+static const BdkColor btk_default_prelight_bg =    { 0, BTK_LIGHT_GRAY };
+static const BdkColor btk_default_selected_bg =    { 0, BTK_BLUE };
+static const BdkColor btk_default_insensitive_bg = { 0, BTK_GRAY };
+static const BdkColor btk_default_selected_base =  { 0, BTK_BLUE };
+static const BdkColor btk_default_active_base =    { 0, BTK_VERY_DARK_GRAY };
 
 /* --- signals --- */
 static guint realize_signal = 0;
 static guint unrealize_signal = 0;
 
-G_DEFINE_TYPE (GtkStyle, gtk_style, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkStyle, btk_style, G_TYPE_OBJECT)
 
 /* --- functions --- */
 
 /**
- * _gtk_style_init_for_settings:
- * @style: a #GtkStyle
- * @settings: a #GtkSettings
+ * _btk_style_init_for_settings:
+ * @style: a #BtkStyle
+ * @settings: a #BtkSettings
  * 
  * Initializes the font description in @style according to the default
- * font name of @settings. This is called for gtk_style_new() with
+ * font name of @settings. This is called for btk_style_new() with
  * the settings for the default screen (if any); if we are creating
  * a style for a particular screen, we then call it again in a
  * location where we know the correct settings.
- * The reason for this is that gtk_rc_style_create_style() doesn't
+ * The reason for this is that btk_rc_style_create_style() doesn't
  * take the screen for an argument.
  **/
 void
-_gtk_style_init_for_settings (GtkStyle    *style,
-			      GtkSettings *settings)
+_btk_style_init_for_settings (BtkStyle    *style,
+			      BtkSettings *settings)
 {
-  const gchar *font_name = _gtk_rc_context_get_default_font_name (settings);
+  const gchar *font_name = _btk_rc_context_get_default_font_name (settings);
 
   if (style->font_desc)
-    pango_font_description_free (style->font_desc);
+    bango_font_description_free (style->font_desc);
   
-  style->font_desc = pango_font_description_from_string (font_name);
+  style->font_desc = bango_font_description_from_string (font_name);
       
-  if (!pango_font_description_get_family (style->font_desc))
+  if (!bango_font_description_get_family (style->font_desc))
     {
       g_warning ("Default font does not have a family set");
-      pango_font_description_set_family (style->font_desc, "Sans");
+      bango_font_description_set_family (style->font_desc, "Sans");
     }
-  if (pango_font_description_get_size (style->font_desc) <= 0)
+  if (bango_font_description_get_size (style->font_desc) <= 0)
     {
       g_warning ("Default font does not have a positive size");
-      pango_font_description_set_size (style->font_desc, 10 * PANGO_SCALE);
+      bango_font_description_set_size (style->font_desc, 10 * BANGO_SCALE);
     }
 }
 
 static void
-gtk_style_init (GtkStyle *style)
+btk_style_init (BtkStyle *style)
 {
   gint i;
   
-  GtkSettings *settings = gtk_settings_get_default ();
+  BtkSettings *settings = btk_settings_get_default ();
   
   if (settings)
-    _gtk_style_init_for_settings (style, settings);
+    _btk_style_init_for_settings (style, settings);
   else
-    style->font_desc = pango_font_description_from_string ("Sans 10");
+    style->font_desc = bango_font_description_from_string ("Sans 10");
   
   style->attach_count = 0;
   style->colormap = NULL;
@@ -439,17 +439,17 @@ gtk_style_init (GtkStyle *style)
   style->black_gc = NULL;
   style->white_gc = NULL;
   
-  style->fg[GTK_STATE_NORMAL] = gtk_default_normal_fg;
-  style->fg[GTK_STATE_ACTIVE] = gtk_default_active_fg;
-  style->fg[GTK_STATE_PRELIGHT] = gtk_default_prelight_fg;
-  style->fg[GTK_STATE_SELECTED] = gtk_default_selected_fg;
-  style->fg[GTK_STATE_INSENSITIVE] = gtk_default_insensitive_fg;
+  style->fg[BTK_STATE_NORMAL] = btk_default_normal_fg;
+  style->fg[BTK_STATE_ACTIVE] = btk_default_active_fg;
+  style->fg[BTK_STATE_PRELIGHT] = btk_default_prelight_fg;
+  style->fg[BTK_STATE_SELECTED] = btk_default_selected_fg;
+  style->fg[BTK_STATE_INSENSITIVE] = btk_default_insensitive_fg;
   
-  style->bg[GTK_STATE_NORMAL] = gtk_default_normal_bg;
-  style->bg[GTK_STATE_ACTIVE] = gtk_default_active_bg;
-  style->bg[GTK_STATE_PRELIGHT] = gtk_default_prelight_bg;
-  style->bg[GTK_STATE_SELECTED] = gtk_default_selected_bg;
-  style->bg[GTK_STATE_INSENSITIVE] = gtk_default_insensitive_bg;
+  style->bg[BTK_STATE_NORMAL] = btk_default_normal_bg;
+  style->bg[BTK_STATE_ACTIVE] = btk_default_active_bg;
+  style->bg[BTK_STATE_PRELIGHT] = btk_default_prelight_bg;
+  style->bg[BTK_STATE_SELECTED] = btk_default_selected_bg;
+  style->bg[BTK_STATE_INSENSITIVE] = btk_default_insensitive_bg;
   
   for (i = 0; i < 4; i++)
     {
@@ -457,12 +457,12 @@ gtk_style_init (GtkStyle *style)
       style->base[i] = style->white;
     }
 
-  style->base[GTK_STATE_SELECTED] = gtk_default_selected_base;
-  style->text[GTK_STATE_SELECTED] = style->white;
-  style->base[GTK_STATE_ACTIVE] = gtk_default_active_base;
-  style->text[GTK_STATE_ACTIVE] = style->white;
-  style->base[GTK_STATE_INSENSITIVE] = gtk_default_prelight_bg;
-  style->text[GTK_STATE_INSENSITIVE] = gtk_default_insensitive_fg;
+  style->base[BTK_STATE_SELECTED] = btk_default_selected_base;
+  style->text[BTK_STATE_SELECTED] = style->white;
+  style->base[BTK_STATE_ACTIVE] = btk_default_active_base;
+  style->text[BTK_STATE_ACTIVE] = style->white;
+  style->base[BTK_STATE_INSENSITIVE] = btk_default_prelight_bg;
+  style->text[BTK_STATE_INSENSITIVE] = btk_default_insensitive_fg;
   
   for (i = 0; i < 5; i++)
     style->bg_pixmap[i] = NULL;
@@ -488,47 +488,47 @@ gtk_style_init (GtkStyle *style)
 }
 
 static void
-gtk_style_class_init (GtkStyleClass *klass)
+btk_style_class_init (BtkStyleClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   
-  object_class->finalize = gtk_style_finalize;
+  object_class->finalize = btk_style_finalize;
 
-  klass->clone = gtk_style_real_clone;
-  klass->copy = gtk_style_real_copy;
-  klass->init_from_rc = gtk_style_real_init_from_rc;
-  klass->realize = gtk_style_real_realize;
-  klass->unrealize = gtk_style_real_unrealize;
-  klass->set_background = gtk_style_real_set_background;
-  klass->render_icon = gtk_default_render_icon;
+  klass->clone = btk_style_real_clone;
+  klass->copy = btk_style_real_copy;
+  klass->init_from_rc = btk_style_real_init_from_rc;
+  klass->realize = btk_style_real_realize;
+  klass->unrealize = btk_style_real_unrealize;
+  klass->set_background = btk_style_real_set_background;
+  klass->render_icon = btk_default_render_icon;
 
-  klass->draw_hline = gtk_default_draw_hline;
-  klass->draw_vline = gtk_default_draw_vline;
-  klass->draw_shadow = gtk_default_draw_shadow;
-  klass->draw_polygon = gtk_default_draw_polygon;
-  klass->draw_arrow = gtk_default_draw_arrow;
-  klass->draw_diamond = gtk_default_draw_diamond;
-  klass->draw_string = gtk_default_draw_string;
-  klass->draw_box = gtk_default_draw_box;
-  klass->draw_flat_box = gtk_default_draw_flat_box;
-  klass->draw_check = gtk_default_draw_check;
-  klass->draw_option = gtk_default_draw_option;
-  klass->draw_tab = gtk_default_draw_tab;
-  klass->draw_shadow_gap = gtk_default_draw_shadow_gap;
-  klass->draw_box_gap = gtk_default_draw_box_gap;
-  klass->draw_extension = gtk_default_draw_extension;
-  klass->draw_focus = gtk_default_draw_focus;
-  klass->draw_slider = gtk_default_draw_slider;
-  klass->draw_handle = gtk_default_draw_handle;
-  klass->draw_expander = gtk_default_draw_expander;
-  klass->draw_layout = gtk_default_draw_layout;
-  klass->draw_resize_grip = gtk_default_draw_resize_grip;
-  klass->draw_spinner = gtk_default_draw_spinner;
+  klass->draw_hline = btk_default_draw_hline;
+  klass->draw_vline = btk_default_draw_vline;
+  klass->draw_shadow = btk_default_draw_shadow;
+  klass->draw_polygon = btk_default_draw_polygon;
+  klass->draw_arrow = btk_default_draw_arrow;
+  klass->draw_diamond = btk_default_draw_diamond;
+  klass->draw_string = btk_default_draw_string;
+  klass->draw_box = btk_default_draw_box;
+  klass->draw_flat_box = btk_default_draw_flat_box;
+  klass->draw_check = btk_default_draw_check;
+  klass->draw_option = btk_default_draw_option;
+  klass->draw_tab = btk_default_draw_tab;
+  klass->draw_shadow_gap = btk_default_draw_shadow_gap;
+  klass->draw_box_gap = btk_default_draw_box_gap;
+  klass->draw_extension = btk_default_draw_extension;
+  klass->draw_focus = btk_default_draw_focus;
+  klass->draw_slider = btk_default_draw_slider;
+  klass->draw_handle = btk_default_draw_handle;
+  klass->draw_expander = btk_default_draw_expander;
+  klass->draw_layout = btk_default_draw_layout;
+  klass->draw_resize_grip = btk_default_draw_resize_grip;
+  klass->draw_spinner = btk_default_draw_spinner;
 
-  g_type_class_add_private (object_class, sizeof (GtkStylePrivate));
+  g_type_class_add_private (object_class, sizeof (BtkStylePrivate));
 
   /**
-   * GtkStyle::realize:
+   * BtkStyle::realize:
    * @style: the object which received the signal
    *
    * Emitted when the style has been initialized for a particular
@@ -541,17 +541,17 @@ gtk_style_class_init (GtkStyleClass *klass)
   realize_signal = g_signal_new (I_("realize"),
 				 G_TYPE_FROM_CLASS (object_class),
 				 G_SIGNAL_RUN_FIRST,
-				 G_STRUCT_OFFSET (GtkStyleClass, realize),
+				 G_STRUCT_OFFSET (BtkStyleClass, realize),
 				 NULL, NULL,
-				 _gtk_marshal_VOID__VOID,
+				 _btk_marshal_VOID__VOID,
 				 G_TYPE_NONE, 0);
   /**
-   * GtkStyle::unrealize:
+   * BtkStyle::unrealize:
    * @style: the object which received the signal
    *
    * Emitted when the aspects of the style specific to a particular colormap
    * and depth are being cleaned up. A connection to this signal can be useful
-   * if a widget wants to cache objects like a #GdkGC as object data on #GtkStyle.
+   * if a widget wants to cache objects like a #BdkGC as object data on #BtkStyle.
    * This signal provides a convenient place to free such cached objects.
    *
    * Since: 2.4
@@ -559,14 +559,14 @@ gtk_style_class_init (GtkStyleClass *klass)
   unrealize_signal = g_signal_new (I_("unrealize"),
 				   G_TYPE_FROM_CLASS (object_class),
 				   G_SIGNAL_RUN_FIRST,
-				   G_STRUCT_OFFSET (GtkStyleClass, unrealize),
+				   G_STRUCT_OFFSET (BtkStyleClass, unrealize),
 				   NULL, NULL,
-				   _gtk_marshal_VOID__VOID,
+				   _btk_marshal_VOID__VOID,
 				   G_TYPE_NONE, 0);
 }
 
 static void
-clear_property_cache (GtkStyle *style)
+clear_property_cache (BtkStyle *style)
 {
   if (style->property_cache)
     {
@@ -585,10 +585,10 @@ clear_property_cache (GtkStyle *style)
 }
 
 static void
-gtk_style_finalize (GObject *object)
+btk_style_finalize (GObject *object)
 {
-  GtkStyle *style = GTK_STYLE (object);
-  GtkStylePrivate *priv = GTK_STYLE_GET_PRIVATE (style);
+  BtkStyle *style = BTK_STYLE (object);
+  BtkStylePrivate *priv = BTK_STYLE_GET_PRIVATE (style);
 
   g_return_if_fail (style->attach_count == 0);
 
@@ -611,7 +611,7 @@ gtk_style_finalize (GObject *object)
 	  
           while (tmp_list)
             {
-              GTK_STYLE (tmp_list->data)->styles = style->styles->next;
+              BTK_STYLE (tmp_list->data)->styles = style->styles->next;
               tmp_list = tmp_list->next;
             }
           g_slist_free_1 (style->styles);
@@ -624,50 +624,50 @@ gtk_style_finalize (GObject *object)
   g_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
   g_slist_free (priv->color_hashes);
 
-  pango_font_description_free (style->font_desc);
+  bango_font_description_free (style->font_desc);
   
   if (style->private_font)
-    gdk_font_unref (style->private_font);
+    bdk_font_unref (style->private_font);
 
   if (style->private_font_desc)
-    pango_font_description_free (style->private_font_desc);
+    bango_font_description_free (style->private_font_desc);
 
   if (style->rc_style)
     g_object_unref (style->rc_style);
 
-  G_OBJECT_CLASS (gtk_style_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_style_parent_class)->finalize (object);
 }
 
 
 /**
- * gtk_style_copy:
- * @style: a #GtkStyle
+ * btk_style_copy:
+ * @style: a #BtkStyle
  *
- * Creates a copy of the passed in #GtkStyle object.
+ * Creates a copy of the passed in #BtkStyle object.
  *
  * Returns: (transfer full): a copy of @style
  */
-GtkStyle*
-gtk_style_copy (GtkStyle *style)
+BtkStyle*
+btk_style_copy (BtkStyle *style)
 {
-  GtkStyle *new_style;
+  BtkStyle *new_style;
   
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
   
-  new_style = GTK_STYLE_GET_CLASS (style)->clone (style);
-  GTK_STYLE_GET_CLASS (style)->copy (new_style, style);
+  new_style = BTK_STYLE_GET_CLASS (style)->clone (style);
+  BTK_STYLE_GET_CLASS (style)->copy (new_style, style);
 
   return new_style;
 }
 
-static GtkStyle*
-gtk_style_duplicate (GtkStyle *style)
+static BtkStyle*
+btk_style_duplicate (BtkStyle *style)
 {
-  GtkStyle *new_style;
+  BtkStyle *new_style;
   
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
   
-  new_style = gtk_style_copy (style);
+  new_style = btk_style_copy (style);
   
   /* All the styles in the list have the same 
    * style->styles pointer. When we insert a new 
@@ -681,25 +681,25 @@ gtk_style_duplicate (GtkStyle *style)
 }
 
 /**
- * gtk_style_new:
- * @returns: a new #GtkStyle.
+ * btk_style_new:
+ * @returns: a new #BtkStyle.
  *
- * Creates a new #GtkStyle.
+ * Creates a new #BtkStyle.
  **/
-GtkStyle*
-gtk_style_new (void)
+BtkStyle*
+btk_style_new (void)
 {
-  GtkStyle *style;
+  BtkStyle *style;
   
-  style = g_object_new (GTK_TYPE_STYLE, NULL);
+  style = g_object_new (BTK_TYPE_STYLE, NULL);
   
   return style;
 }
 
 /**
- * gtk_style_attach:
- * @style: a #GtkStyle.
- * @window: a #GdkWindow.
+ * btk_style_attach:
+ * @style: a #BtkStyle.
+ * @window: a #BdkWindow.
  *
  * Attaches a style to a window; this process allocates the
  * colors and creates the GC's for the style - it specializes
@@ -709,25 +709,25 @@ gtk_style_new (void)
  *
  * Since this function may return a new object, you have to use it
  * in the following way:
- * <literal>style = gtk_style_attach (style, window)</literal>
+ * <literal>style = btk_style_attach (style, window)</literal>
  *
- * Returns: Either @style, or a newly-created #GtkStyle.
+ * Returns: Either @style, or a newly-created #BtkStyle.
  *   If the style is newly created, the style parameter
  *   will be unref'ed, and the new style will have
  *   a reference count belonging to the caller.
  */
-GtkStyle*
-gtk_style_attach (GtkStyle  *style,
-                  GdkWindow *window)
+BtkStyle*
+btk_style_attach (BtkStyle  *style,
+                  BdkWindow *window)
 {
   GSList *styles;
-  GtkStyle *new_style = NULL;
-  GdkColormap *colormap;
+  BtkStyle *new_style = NULL;
+  BdkColormap *colormap;
   
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
   g_return_val_if_fail (window != NULL, NULL);
   
-  colormap = gdk_drawable_get_colormap (window);
+  colormap = bdk_drawable_get_colormap (window);
   
   if (!style->styles)
     style->styles = g_slist_append (NULL, style);
@@ -754,7 +754,7 @@ gtk_style_attach (GtkStyle  *style,
 	  
 	  if (new_style->attach_count == 0)
 	    {
-	      gtk_style_realize (new_style, colormap);
+	      btk_style_realize (new_style, colormap);
 	      break;
 	    }
 	  
@@ -765,14 +765,14 @@ gtk_style_attach (GtkStyle  *style,
   
   if (!new_style)
     {
-      new_style = gtk_style_duplicate (style);
-      if (gdk_colormap_get_screen (style->colormap) != gdk_colormap_get_screen (colormap) &&
+      new_style = btk_style_duplicate (style);
+      if (bdk_colormap_get_screen (style->colormap) != bdk_colormap_get_screen (colormap) &&
 	  new_style->private_font)
 	{
-	  gdk_font_unref (new_style->private_font);
+	  bdk_font_unref (new_style->private_font);
 	  new_style->private_font = NULL;
 	}
-      gtk_style_realize (new_style, colormap);
+      btk_style_realize (new_style, colormap);
     }
 
   /* A style gets a refcount from being attached */
@@ -792,17 +792,17 @@ gtk_style_attach (GtkStyle  *style,
 }
 
 /**
- * gtk_style_detach:
- * @style: a #GtkStyle
+ * btk_style_detach:
+ * @style: a #BtkStyle
  *
  * Detaches a style from a window. If the style is not attached
- * to any windows anymore, it is unrealized. See gtk_style_attach().
+ * to any windows anymore, it is unrealized. See btk_style_attach().
  * 
  */
 void
-gtk_style_detach (GtkStyle *style)
+btk_style_detach (BtkStyle *style)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
+  g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (style->attach_count > 0);
   
   style->attach_count -= 1;
@@ -817,11 +817,11 @@ gtk_style_detach (GtkStyle *style)
 	{
 	  if (style->private_font)
 	    {
-	      gdk_font_unref (style->private_font);
+	      bdk_font_unref (style->private_font);
 	      style->private_font = NULL;
 	    }
 	  
-	  pango_font_description_free (style->private_font_desc);
+	  bango_font_description_free (style->private_font_desc);
 	  style->private_font_desc = NULL;
 	}
 
@@ -830,47 +830,47 @@ gtk_style_detach (GtkStyle *style)
 }
 
 /**
- * gtk_style_ref:
- * @style: a #GtkStyle.
+ * btk_style_ref:
+ * @style: a #BtkStyle.
  * @returns: @style.
  *
  * Increase the reference count of @style.
  * 
  * Deprecated: 2.0: use g_object_ref() instead.
  */
-GtkStyle*
-gtk_style_ref (GtkStyle *style)
+BtkStyle*
+btk_style_ref (BtkStyle *style)
 {
-  return (GtkStyle *) g_object_ref (style);
+  return (BtkStyle *) g_object_ref (style);
 }
 
 /**
- * gtk_style_unref:
- * @style: a #GtkStyle.
+ * btk_style_unref:
+ * @style: a #BtkStyle.
  *
  * Decrease the reference count of @style.
  * 
  * Deprecated: 2.0: use g_object_unref() instead.
  */
 void
-gtk_style_unref (GtkStyle *style)
+btk_style_unref (BtkStyle *style)
 {
   g_object_unref (style);
 }
 
 static void
-gtk_style_realize (GtkStyle    *style,
-                   GdkColormap *colormap)
+btk_style_realize (BtkStyle    *style,
+                   BdkColormap *colormap)
 {
   style->colormap = g_object_ref (colormap);
-  style->depth = gdk_colormap_get_visual (colormap)->depth;
+  style->depth = bdk_colormap_get_visual (colormap)->depth;
 
   g_signal_emit (style, realize_signal, 0);
 }
 
 /**
- * gtk_style_lookup_icon_set:
- * @style: a #GtkStyle
+ * btk_style_lookup_icon_set:
+ * @style: a #BtkStyle
  * @stock_id: an icon name
  *
  * Looks up @stock_id in the icon factories associated with @style
@@ -879,19 +879,19 @@ gtk_style_realize (GtkStyle    *style,
  *
  * Return value: (transfer none): icon set of @stock_id
  */
-GtkIconSet*
-gtk_style_lookup_icon_set (GtkStyle   *style,
+BtkIconSet*
+btk_style_lookup_icon_set (BtkStyle   *style,
                            const char *stock_id)
 {
   GSList *iter;
 
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
   g_return_val_if_fail (stock_id != NULL, NULL);
   
   iter = style->icon_factories;
   while (iter != NULL)
     {
-      GtkIconSet *icon_set = gtk_icon_factory_lookup (GTK_ICON_FACTORY (iter->data),
+      BtkIconSet *icon_set = btk_icon_factory_lookup (BTK_ICON_FACTORY (iter->data),
 						      stock_id);
       if (icon_set)
         return icon_set;
@@ -899,19 +899,19 @@ gtk_style_lookup_icon_set (GtkStyle   *style,
       iter = g_slist_next (iter);
     }
 
-  return gtk_icon_factory_lookup_default (stock_id);
+  return btk_icon_factory_lookup_default (stock_id);
 }
 
 /**
- * gtk_style_lookup_color:
- * @style: a #GtkStyle
+ * btk_style_lookup_color:
+ * @style: a #BtkStyle
  * @color_name: the name of the logical color to look up
- * @color: (out): the #GdkColor to fill in
+ * @color: (out): the #BdkColor to fill in
  *
  * Looks up @color_name in the style's logical color mappings,
  * filling in @color and returning %TRUE if found, otherwise
  * returning %FALSE. Do not cache the found mapping, because
- * it depends on the #GtkStyle and might change when a theme
+ * it depends on the #BtkStyle and might change when a theme
  * switch occurs.
  *
  * Return value: %TRUE if the mapping was found.
@@ -919,23 +919,23 @@ gtk_style_lookup_icon_set (GtkStyle   *style,
  * Since: 2.10
  **/
 gboolean
-gtk_style_lookup_color (GtkStyle   *style,
+btk_style_lookup_color (BtkStyle   *style,
                         const char *color_name,
-                        GdkColor   *color)
+                        BdkColor   *color)
 {
-  GtkStylePrivate *priv;
+  BtkStylePrivate *priv;
   GSList *iter;
 
-  g_return_val_if_fail (GTK_IS_STYLE (style), FALSE);
+  g_return_val_if_fail (BTK_IS_STYLE (style), FALSE);
   g_return_val_if_fail (color_name != NULL, FALSE);
   g_return_val_if_fail (color != NULL, FALSE);
 
-  priv = GTK_STYLE_GET_PRIVATE (style);
+  priv = BTK_STYLE_GET_PRIVATE (style);
 
   for (iter = priv->color_hashes; iter != NULL; iter = iter->next)
     {
       GHashTable *hash    = iter->data;
-      GdkColor   *mapping = g_hash_table_lookup (hash, color_name);
+      BdkColor   *mapping = g_hash_table_lookup (hash, color_name);
 
       if (mapping)
         {
@@ -950,9 +950,9 @@ gtk_style_lookup_color (GtkStyle   *style,
 }
 
 /**
- * gtk_draw_hline:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_hline:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @x1: the starting x coordinate
  * @x2: the ending x coordinate
@@ -961,27 +961,27 @@ gtk_style_lookup_color (GtkStyle   *style,
  * Draws a horizontal line from (@x1, @y) to (@x2, @y) in @window
  * using the given style and state.
  * 
- * Deprecated: 2.0: Use gtk_paint_hline() instead.
+ * Deprecated: 2.0: Use btk_paint_hline() instead.
  **/
 void
-gtk_draw_hline (GtkStyle     *style,
-                GdkWindow    *window,
-                GtkStateType  state_type,
+btk_draw_hline (BtkStyle     *style,
+                BdkWindow    *window,
+                BtkStateType  state_type,
                 gint          x1,
                 gint          x2,
                 gint          y)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_hline != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_hline != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_hline (style, window, state_type, NULL, NULL, NULL, x1, x2, y);
+  BTK_STYLE_GET_CLASS (style)->draw_hline (style, window, state_type, NULL, NULL, NULL, x1, x2, y);
 }
 
 
 /**
- * gtk_draw_vline:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_vline:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @y1_: the starting y coordinate
  * @y2_: the ending y coordinate
@@ -990,26 +990,26 @@ gtk_draw_hline (GtkStyle     *style,
  * Draws a vertical line from (@x, @y1_) to (@x, @y2_) in @window
  * using the given style and state.
  * 
- * Deprecated: 2.0: Use gtk_paint_vline() instead.
+ * Deprecated: 2.0: Use btk_paint_vline() instead.
  **/
 void
-gtk_draw_vline (GtkStyle     *style,
-                GdkWindow    *window,
-                GtkStateType  state_type,
+btk_draw_vline (BtkStyle     *style,
+                BdkWindow    *window,
+                BtkStateType  state_type,
                 gint          y1_,
                 gint          y2_,
                 gint          x)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_vline != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_vline != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_vline (style, window, state_type, NULL, NULL, NULL, y1_, y2_, x);
+  BTK_STYLE_GET_CLASS (style)->draw_vline (style, window, state_type, NULL, NULL, NULL, y1_, y2_, x);
 }
 
 /**
- * gtk_draw_shadow:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_shadow:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @x: x origin of the rectangle
@@ -1020,57 +1020,57 @@ gtk_draw_vline (GtkStyle     *style,
  * Draws a shadow around the given rectangle in @window 
  * using the given style and state and shadow type.
  * 
- * Deprecated: 2.0: Use gtk_paint_shadow() instead.
+ * Deprecated: 2.0: Use btk_paint_shadow() instead.
  */
 void
-gtk_draw_shadow (GtkStyle      *style,
-                 GdkWindow     *window,
-                 GtkStateType   state_type,
-                 GtkShadowType  shadow_type,
+btk_draw_shadow (BtkStyle      *style,
+                 BdkWindow     *window,
+                 BtkStateType   state_type,
+                 BtkShadowType  shadow_type,
                  gint           x,
                  gint           y,
                  gint           width,
                  gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_shadow != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_shadow (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_shadow (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_polygon:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_polygon:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
- * @points: an array of #GdkPoint<!-- -->s
+ * @points: an array of #BdkPoint<!-- -->s
  * @npoints: length of @points
  * @fill: %TRUE if the polygon should be filled
  * 
  * Draws a polygon on @window with the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_polygon() instead.
+ * Deprecated: 2.0: Use btk_paint_polygon() instead.
  */ 
 void
-gtk_draw_polygon (GtkStyle      *style,
-                  GdkWindow     *window,
-                  GtkStateType   state_type,
-                  GtkShadowType  shadow_type,
-                  GdkPoint      *points,
+btk_draw_polygon (BtkStyle      *style,
+                  BdkWindow     *window,
+                  BtkStateType   state_type,
+                  BtkShadowType  shadow_type,
+                  BdkPoint      *points,
                   gint           npoints,
                   gboolean       fill)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_polygon != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_polygon != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_polygon (style, window, state_type, shadow_type, NULL, NULL, NULL, points, npoints, fill);
+  BTK_STYLE_GET_CLASS (style)->draw_polygon (style, window, state_type, shadow_type, NULL, NULL, NULL, points, npoints, fill);
 }
 
 /**
- * gtk_draw_arrow:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_arrow:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @arrow_type: the type of arrow to draw
@@ -1083,30 +1083,30 @@ gtk_draw_polygon (GtkStyle      *style,
  * Draws an arrow in the given rectangle on @window using the given 
  * parameters. @arrow_type determines the direction of the arrow.
  *
- * Deprecated: 2.0: Use gtk_paint_arrow() instead.
+ * Deprecated: 2.0: Use btk_paint_arrow() instead.
  */
 void
-gtk_draw_arrow (GtkStyle      *style,
-                GdkWindow     *window,
-                GtkStateType   state_type,
-                GtkShadowType  shadow_type,
-                GtkArrowType   arrow_type,
+btk_draw_arrow (BtkStyle      *style,
+                BdkWindow     *window,
+                BtkStateType   state_type,
+                BtkShadowType  shadow_type,
+                BtkArrowType   arrow_type,
                 gboolean       fill,
                 gint           x,
                 gint           y,
                 gint           width,
                 gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_arrow != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_arrow != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_arrow (style, window, state_type, shadow_type, NULL, NULL, NULL, arrow_type, fill, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_arrow (style, window, state_type, shadow_type, NULL, NULL, NULL, arrow_type, fill, x, y, width, height);
 }
 
 /**
- * gtk_draw_diamond:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_diamond:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @x: x origin of the rectangle to draw the diamond in
@@ -1117,28 +1117,28 @@ gtk_draw_arrow (GtkStyle      *style,
  * Draws a diamond in the given rectangle on @window using the given
  * parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_diamond() instead.
+ * Deprecated: 2.0: Use btk_paint_diamond() instead.
  */
 void
-gtk_draw_diamond (GtkStyle      *style,
-                  GdkWindow     *window,
-                  GtkStateType   state_type,
-                  GtkShadowType  shadow_type,
+btk_draw_diamond (BtkStyle      *style,
+                  BdkWindow     *window,
+                  BtkStateType   state_type,
+                  BtkShadowType  shadow_type,
                   gint           x,
                   gint           y,
                   gint           width,
                   gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_diamond != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_diamond != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_diamond (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_diamond (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_string:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_string:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @x: x origin
  * @y: y origin
@@ -1146,26 +1146,26 @@ gtk_draw_diamond (GtkStyle      *style,
  * 
  * Draws a text string on @window with the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_layout() instead.
+ * Deprecated: 2.0: Use btk_paint_layout() instead.
  */
 void
-gtk_draw_string (GtkStyle      *style,
-                 GdkWindow     *window,
-                 GtkStateType   state_type,
+btk_draw_string (BtkStyle      *style,
+                 BdkWindow     *window,
+                 BtkStateType   state_type,
                  gint           x,
                  gint           y,
                  const gchar   *string)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_string != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_string != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_string (style, window, state_type, NULL, NULL, NULL, x, y, string);
+  BTK_STYLE_GET_CLASS (style)->draw_string (style, window, state_type, NULL, NULL, NULL, x, y, string);
 }
 
 /**
- * gtk_draw_box:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_box:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @x: x origin of the box
@@ -1175,28 +1175,28 @@ gtk_draw_string (GtkStyle      *style,
  * 
  * Draws a box on @window with the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_box() instead.
+ * Deprecated: 2.0: Use btk_paint_box() instead.
  */
 void
-gtk_draw_box (GtkStyle      *style,
-              GdkWindow     *window,
-              GtkStateType   state_type,
-              GtkShadowType  shadow_type,
+btk_draw_box (BtkStyle      *style,
+              BdkWindow     *window,
+              BtkStateType   state_type,
+              BtkShadowType  shadow_type,
               gint           x,
               gint           y,
               gint           width,
               gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_box != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_box (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_box (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_flat_box:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_flat_box:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @x: x origin of the box
@@ -1206,28 +1206,28 @@ gtk_draw_box (GtkStyle      *style,
  * 
  * Draws a flat box on @window with the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_flat_box() instead.
+ * Deprecated: 2.0: Use btk_paint_flat_box() instead.
  */
 void
-gtk_draw_flat_box (GtkStyle      *style,
-                   GdkWindow     *window,
-                   GtkStateType   state_type,
-                   GtkShadowType  shadow_type,
+btk_draw_flat_box (BtkStyle      *style,
+                   BdkWindow     *window,
+                   BtkStateType   state_type,
+                   BtkShadowType  shadow_type,
                    gint           x,
                    gint           y,
                    gint           width,
                    gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_flat_box != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_flat_box != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_flat_box (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_flat_box (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_check:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_check:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @x: x origin of the rectangle to draw the check in
@@ -1238,28 +1238,28 @@ gtk_draw_flat_box (GtkStyle      *style,
  * Draws a check button indicator in the given rectangle on @window with 
  * the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_check() instead.
+ * Deprecated: 2.0: Use btk_paint_check() instead.
  */
 void
-gtk_draw_check (GtkStyle      *style,
-                GdkWindow     *window,
-                GtkStateType   state_type,
-                GtkShadowType  shadow_type,
+btk_draw_check (BtkStyle      *style,
+                BdkWindow     *window,
+                BtkStateType   state_type,
+                BtkShadowType  shadow_type,
                 gint           x,
                 gint           y,
                 gint           width,
                 gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_check != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_check != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_check (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_check (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_option:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_option:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @x: x origin of the rectangle to draw the option in
@@ -1270,28 +1270,28 @@ gtk_draw_check (GtkStyle      *style,
  * Draws a radio button indicator in the given rectangle on @window with 
  * the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_option() instead.
+ * Deprecated: 2.0: Use btk_paint_option() instead.
  */
 void
-gtk_draw_option (GtkStyle      *style,
-		 GdkWindow     *window,
-		 GtkStateType   state_type,
-		 GtkShadowType  shadow_type,
+btk_draw_option (BtkStyle      *style,
+		 BdkWindow     *window,
+		 BtkStateType   state_type,
+		 BtkShadowType  shadow_type,
 		 gint           x,
 		 gint           y,
 		 gint           width,
 		 gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_option != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_option != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_option (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_option (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_tab:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_tab:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @x: x origin of the rectangle to draw the tab in
@@ -1302,28 +1302,28 @@ gtk_draw_option (GtkStyle      *style,
  * Draws an option menu tab (i.e. the up and down pointing arrows)
  * in the given rectangle on @window using the given parameters.
  * 
- * Deprecated: 2.0: Use gtk_paint_tab() instead.
+ * Deprecated: 2.0: Use btk_paint_tab() instead.
  */ 
 void
-gtk_draw_tab (GtkStyle      *style,
-	      GdkWindow     *window,
-	      GtkStateType   state_type,
-	      GtkShadowType  shadow_type,
+btk_draw_tab (BtkStyle      *style,
+	      BdkWindow     *window,
+	      BtkStateType   state_type,
+	      BtkShadowType  shadow_type,
 	      gint           x,
 	      gint           y,
 	      gint           width,
 	      gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_tab != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_tab != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_tab (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_tab (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_shadow_gap:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_shadow_gap:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @x: x origin of the rectangle
@@ -1338,31 +1338,31 @@ gtk_draw_tab (GtkStyle      *style,
  * using the given style and state and shadow type, leaving a 
  * gap in one side.
  * 
- * Deprecated: 2.0: Use gtk_paint_shadow_gap() instead.
+ * Deprecated: 2.0: Use btk_paint_shadow_gap() instead.
 */
 void
-gtk_draw_shadow_gap (GtkStyle       *style,
-                     GdkWindow      *window,
-                     GtkStateType    state_type,
-                     GtkShadowType   shadow_type,
+btk_draw_shadow_gap (BtkStyle       *style,
+                     BdkWindow      *window,
+                     BtkStateType    state_type,
+                     BtkShadowType   shadow_type,
                      gint            x,
                      gint            y,
                      gint            width,
                      gint            height,
-                     GtkPositionType gap_side,
+                     BtkPositionType gap_side,
                      gint            gap_x,
                      gint            gap_width)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_shadow_gap != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow_gap != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_shadow_gap (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, gap_side, gap_x, gap_width);
+  BTK_STYLE_GET_CLASS (style)->draw_shadow_gap (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, gap_side, gap_x, gap_width);
 }
 
 /**
- * gtk_draw_box_gap:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_box_gap:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @x: x origin of the rectangle
@@ -1376,31 +1376,31 @@ gtk_draw_shadow_gap (GtkStyle       *style,
  * Draws a box in @window using the given style and state and shadow type, 
  * leaving a gap in one side.
  * 
- * Deprecated: 2.0: Use gtk_paint_box_gap() instead.
+ * Deprecated: 2.0: Use btk_paint_box_gap() instead.
  */
 void
-gtk_draw_box_gap (GtkStyle       *style,
-                  GdkWindow      *window,
-                  GtkStateType    state_type,
-                  GtkShadowType   shadow_type,
+btk_draw_box_gap (BtkStyle       *style,
+                  BdkWindow      *window,
+                  BtkStateType    state_type,
+                  BtkShadowType   shadow_type,
                   gint            x,
                   gint            y,
                   gint            width,
                   gint            height,
-                  GtkPositionType gap_side,
+                  BtkPositionType gap_side,
                   gint            gap_x,
                   gint            gap_width)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_box_gap != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box_gap != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_box_gap (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, gap_side, gap_x, gap_width);
+  BTK_STYLE_GET_CLASS (style)->draw_box_gap (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, gap_side, gap_x, gap_width);
 }
 
 /**
- * gtk_draw_extension: 
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_extension: 
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @x: x origin of the extension
@@ -1411,29 +1411,29 @@ gtk_draw_box_gap (GtkStyle       *style,
  * 
  * Draws an extension, i.e. a notebook tab.
  *
- * Deprecated: 2.0: Use gtk_paint_extension() instead.
+ * Deprecated: 2.0: Use btk_paint_extension() instead.
  **/
 void
-gtk_draw_extension (GtkStyle       *style,
-                    GdkWindow      *window,
-                    GtkStateType    state_type,
-                    GtkShadowType   shadow_type,
+btk_draw_extension (BtkStyle       *style,
+                    BdkWindow      *window,
+                    BtkStateType    state_type,
+                    BtkShadowType   shadow_type,
                     gint            x,
                     gint            y,
                     gint            width,
                     gint            height,
-                    GtkPositionType gap_side)
+                    BtkPositionType gap_side)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_extension != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_extension != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_extension (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, gap_side);
+  BTK_STYLE_GET_CLASS (style)->draw_extension (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, gap_side);
 }
 
 /**
- * gtk_draw_focus:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_focus:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @x: the x origin of the rectangle around which to draw a focus indicator
  * @y: the y origin of the rectangle around which to draw a focus indicator
  * @width: the width of the rectangle around which to draw a focus indicator
@@ -1442,26 +1442,26 @@ gtk_draw_extension (GtkStyle       *style,
  * Draws a focus indicator around the given rectangle on @window using the
  * given style.
  * 
- * Deprecated: 2.0: Use gtk_paint_focus() instead.
+ * Deprecated: 2.0: Use btk_paint_focus() instead.
  */
 void
-gtk_draw_focus (GtkStyle      *style,
-		GdkWindow     *window,
+btk_draw_focus (BtkStyle      *style,
+		BdkWindow     *window,
 		gint           x,
 		gint           y,
 		gint           width,
 		gint           height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_focus != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_focus != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_focus (style, window, GTK_STATE_NORMAL, NULL, NULL, NULL, x, y, width, height);
+  BTK_STYLE_GET_CLASS (style)->draw_focus (style, window, BTK_STATE_NORMAL, NULL, NULL, NULL, x, y, width, height);
 }
 
 /**
- * gtk_draw_slider:
- * @style: a #GtkStyle
-  @window: a #GdkWindow
+ * btk_draw_slider:
+ * @style: a #BtkStyle
+  @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: a shadow
  * @x: the x origin of the rectangle in which to draw a slider
@@ -1474,26 +1474,26 @@ gtk_draw_focus (GtkStyle      *style,
  * given style and orientation.
  */
 void 
-gtk_draw_slider (GtkStyle      *style,
-		 GdkWindow     *window,
-		 GtkStateType   state_type,
-		 GtkShadowType  shadow_type,
+btk_draw_slider (BtkStyle      *style,
+		 BdkWindow     *window,
+		 BtkStateType   state_type,
+		 BtkShadowType  shadow_type,
 		 gint           x,
 		 gint           y,
 		 gint           width,
 		 gint           height,
-		 GtkOrientation orientation)
+		 BtkOrientation orientation)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_slider != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_slider != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_slider (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, orientation);
+  BTK_STYLE_GET_CLASS (style)->draw_slider (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, orientation);
 }
 
 /**
- * gtk_draw_handle:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_handle:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @x: x origin of the handle
@@ -1502,60 +1502,60 @@ gtk_draw_slider (GtkStyle      *style,
  * @height: height of the handle
  * @orientation: the orientation of the handle
  * 
- * Draws a handle as used in #GtkHandleBox and #GtkPaned.
+ * Draws a handle as used in #BtkHandleBox and #BtkPaned.
  * 
- * Deprecated: 2.0: Use gtk_paint_handle() instead.
+ * Deprecated: 2.0: Use btk_paint_handle() instead.
  **/
 void 
-gtk_draw_handle (GtkStyle      *style,
-		 GdkWindow     *window,
-		 GtkStateType   state_type,
-		 GtkShadowType  shadow_type,
+btk_draw_handle (BtkStyle      *style,
+		 BdkWindow     *window,
+		 BtkStateType   state_type,
+		 BtkShadowType  shadow_type,
 		 gint           x,
 		 gint           y,
 		 gint           width,
 		 gint           height,
-		 GtkOrientation orientation)
+		 BtkOrientation orientation)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_handle != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_handle != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_handle (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, orientation);
+  BTK_STYLE_GET_CLASS (style)->draw_handle (style, window, state_type, shadow_type, NULL, NULL, NULL, x, y, width, height, orientation);
 }
 
 /**
- * gtk_draw_expander:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_expander:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @x: the x position to draw the expander at
  * @y: the y position to draw the expander at
  * @expander_style: the style to draw the expander in
  * 
- * Draws an expander as used in #GtkTreeView.
+ * Draws an expander as used in #BtkTreeView.
  * 
- * Deprecated: 2.0: Use gtk_paint_expander() instead.
+ * Deprecated: 2.0: Use btk_paint_expander() instead.
  **/
 void
-gtk_draw_expander (GtkStyle        *style,
-                   GdkWindow       *window,
-                   GtkStateType     state_type,
+btk_draw_expander (BtkStyle        *style,
+                   BdkWindow       *window,
+                   BtkStateType     state_type,
                    gint             x,
                    gint             y,
-		   GtkExpanderStyle expander_style)
+		   BtkExpanderStyle expander_style)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_expander != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_expander != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_expander (style, window, state_type,
+  BTK_STYLE_GET_CLASS (style)->draw_expander (style, window, state_type,
                                               NULL, NULL, NULL,
                                               x, y, expander_style);
 }
 
 /**
- * gtk_draw_layout:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_layout:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @use_text: whether to use the text or foreground
  *            graphics context of @style
@@ -1566,26 +1566,26 @@ gtk_draw_expander (GtkStyle        *style,
  * Draws a layout on @window using the given parameters.
  */
 void
-gtk_draw_layout (GtkStyle        *style,
-                 GdkWindow       *window,
-                 GtkStateType     state_type,
+btk_draw_layout (BtkStyle        *style,
+                 BdkWindow       *window,
+                 BtkStateType     state_type,
 		 gboolean         use_text,
                  gint             x,
                  gint             y,
-                 PangoLayout     *layout)
+                 BangoLayout     *layout)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_layout != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_layout != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->draw_layout (style, window, state_type, use_text,
+  BTK_STYLE_GET_CLASS (style)->draw_layout (style, window, state_type, use_text,
                                             NULL, NULL, NULL,
                                             x, y, layout);
 }
 
 /**
- * gtk_draw_resize_grip:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_draw_resize_grip:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @edge: the edge in which to draw the resize grip
  * @x: the x origin of the rectangle in which to draw the resize grip
@@ -1596,22 +1596,22 @@ gtk_draw_layout (GtkStyle        *style,
  * Draws a resize grip in the given rectangle on @window using the given
  * parameters. 
  * 
- * Deprecated: 2.0: Use gtk_paint_resize_grip() instead.
+ * Deprecated: 2.0: Use btk_paint_resize_grip() instead.
  */
 void
-gtk_draw_resize_grip (GtkStyle     *style,
-                      GdkWindow    *window,
-                      GtkStateType  state_type,
-                      GdkWindowEdge edge,
+btk_draw_resize_grip (BtkStyle     *style,
+                      BdkWindow    *window,
+                      BtkStateType  state_type,
+                      BdkWindowEdge edge,
                       gint          x,
                       gint          y,
                       gint          width,
                       gint          height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_resize_grip != NULL);
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_resize_grip != NULL);
 
-  GTK_STYLE_GET_CLASS (style)->draw_resize_grip (style, window, state_type,
+  BTK_STYLE_GET_CLASS (style)->draw_resize_grip (style, window, state_type,
                                                  NULL, NULL, NULL,
                                                  edge,
                                                  x, y, width, height);
@@ -1619,38 +1619,38 @@ gtk_draw_resize_grip (GtkStyle     *style,
 
 
 /**
- * gtk_style_set_background:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_style_set_background:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * 
  * Sets the background of @window to the background color or pixmap
  * specified by @style for the given state.
  */
 void
-gtk_style_set_background (GtkStyle    *style,
-                          GdkWindow   *window,
-                          GtkStateType state_type)
+btk_style_set_background (BtkStyle    *style,
+                          BdkWindow   *window,
+                          BtkStateType state_type)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
+  g_return_if_fail (BTK_IS_STYLE (style));
   g_return_if_fail (window != NULL);
   
-  GTK_STYLE_GET_CLASS (style)->set_background (style, window, state_type);
+  BTK_STYLE_GET_CLASS (style)->set_background (style, window, state_type);
 }
 
 /* Default functions */
-static GtkStyle *
-gtk_style_real_clone (GtkStyle *style)
+static BtkStyle *
+btk_style_real_clone (BtkStyle *style)
 {
   return g_object_new (G_OBJECT_TYPE (style), NULL);
 }
 
 static void
-gtk_style_real_copy (GtkStyle *style,
-		     GtkStyle *src)
+btk_style_real_copy (BtkStyle *style,
+		     BtkStyle *src)
 {
-  GtkStylePrivate *priv = GTK_STYLE_GET_PRIVATE (style);
-  GtkStylePrivate *src_priv = GTK_STYLE_GET_PRIVATE (src);
+  BtkStylePrivate *priv = BTK_STYLE_GET_PRIVATE (style);
+  BtkStylePrivate *src_priv = BTK_STYLE_GET_PRIVATE (src);
   gint i;
   
   for (i = 0; i < 5; i++)
@@ -1668,15 +1668,15 @@ gtk_style_real_copy (GtkStyle *style,
     }
 
   if (style->private_font)
-    gdk_font_unref (style->private_font);
+    bdk_font_unref (style->private_font);
   style->private_font = src->private_font;
   if (style->private_font)
-    gdk_font_ref (style->private_font);
+    bdk_font_ref (style->private_font);
 
   if (style->font_desc)
-    pango_font_description_free (style->font_desc);
+    bango_font_description_free (style->font_desc);
   if (src->font_desc)
-    style->font_desc = pango_font_description_copy (src->font_desc);
+    style->font_desc = bango_font_description_copy (src->font_desc);
   else
     style->font_desc = NULL;
   
@@ -1704,27 +1704,27 @@ gtk_style_real_copy (GtkStyle *style,
 }
 
 static void
-gtk_style_real_init_from_rc (GtkStyle   *style,
-			     GtkRcStyle *rc_style)
+btk_style_real_init_from_rc (BtkStyle   *style,
+			     BtkRcStyle *rc_style)
 {
-  GtkStylePrivate *priv = GTK_STYLE_GET_PRIVATE (style);
+  BtkStylePrivate *priv = BTK_STYLE_GET_PRIVATE (style);
   gint i;
 
   /* cache _should_ be still empty */
   clear_property_cache (style);
 
   if (rc_style->font_desc)
-    pango_font_description_merge (style->font_desc, rc_style->font_desc, TRUE);
+    bango_font_description_merge (style->font_desc, rc_style->font_desc, TRUE);
     
   for (i = 0; i < 5; i++)
     {
-      if (rc_style->color_flags[i] & GTK_RC_FG)
+      if (rc_style->color_flags[i] & BTK_RC_FG)
 	style->fg[i] = rc_style->fg[i];
-      if (rc_style->color_flags[i] & GTK_RC_BG)
+      if (rc_style->color_flags[i] & BTK_RC_BG)
 	style->bg[i] = rc_style->bg[i];
-      if (rc_style->color_flags[i] & GTK_RC_TEXT)
+      if (rc_style->color_flags[i] & BTK_RC_TEXT)
 	style->text[i] = rc_style->text[i];
-      if (rc_style->color_flags[i] & GTK_RC_BASE)
+      if (rc_style->color_flags[i] & BTK_RC_BASE)
 	style->base[i] = rc_style->base[i];
     }
 
@@ -1736,7 +1736,7 @@ gtk_style_real_init_from_rc (GtkStyle   *style,
   style->icon_factories = g_slist_copy (rc_style->icon_factories);
   g_slist_foreach (style->icon_factories, (GFunc) g_object_ref, NULL);
 
-  priv->color_hashes = g_slist_copy (_gtk_rc_style_get_color_hashes (rc_style));
+  priv->color_hashes = g_slist_copy (_btk_rc_style_get_color_hashes (rc_style));
   g_slist_foreach (priv->color_hashes, (GFunc) g_hash_table_ref, NULL);
 }
 
@@ -1754,9 +1754,9 @@ style_property_values_cmp (gconstpointer bsearch_node1,
 }
 
 /**
- * gtk_style_get_style_property:
- * @style: a #GtkStyle
- * @widget_type: the #GType of a descendant of #GtkWidget
+ * btk_style_get_style_property:
+ * @style: a #BtkStyle
+ * @widget_type: the #GType of a descendant of #BtkWidget
  * @property_name: the name of the style property to get
  * @value: a #GValue where the value of the property being
  *     queried will be stored
@@ -1767,18 +1767,18 @@ style_property_values_cmp (gconstpointer bsearch_node1,
  * Since: 2.16
  */
 void 
-gtk_style_get_style_property (GtkStyle     *style,
+btk_style_get_style_property (BtkStyle     *style,
                               GType        widget_type,
                               const gchar *property_name,
                               GValue      *value)
 {
-  GtkWidgetClass *klass;
+  BtkWidgetClass *klass;
   GParamSpec *pspec;
-  GtkRcPropertyParser parser;
+  BtkRcPropertyParser parser;
   const GValue *peek_value;
 
   klass = g_type_class_ref (widget_type);
-  pspec = gtk_widget_class_find_style_property (klass, property_name);
+  pspec = btk_widget_class_find_style_property (klass, property_name);
   g_type_class_unref (klass);
 
   if (!pspec)
@@ -1791,9 +1791,9 @@ gtk_style_get_style_property (GtkStyle     *style,
     }
 
   parser = g_param_spec_get_qdata (pspec,
-                                   g_quark_from_static_string ("gtk-rc-property-parser"));
+                                   g_quark_from_static_string ("btk-rc-property-parser"));
 
-  peek_value = _gtk_style_peek_property_value (style, widget_type, pspec, parser);
+  peek_value = _btk_style_peek_property_value (style, widget_type, pspec, parser);
 
   if (G_VALUE_TYPE (value) == G_PARAM_SPEC_VALUE_TYPE (pspec))
     g_value_copy (peek_value, value);
@@ -1807,29 +1807,29 @@ gtk_style_get_style_property (GtkStyle     *style,
 }
 
 /**
- * gtk_style_get_valist:
- * @style: a #GtkStyle
- * @widget_type: the #GType of a descendant of #GtkWidget
+ * btk_style_get_valist:
+ * @style: a #BtkStyle
+ * @widget_type: the #GType of a descendant of #BtkWidget
  * @first_property_name: the name of the first style property to get
  * @var_args: a <type>va_list</type> of pairs of property names and
  *     locations to return the property values, starting with the
  *     location for @first_property_name.
  *
- * Non-vararg variant of gtk_style_get().
+ * Non-vararg variant of btk_style_get().
  * Used primarily by language bindings.
  *
  * Since: 2.16
  */
 void 
-gtk_style_get_valist (GtkStyle    *style,
+btk_style_get_valist (BtkStyle    *style,
                       GType        widget_type,
                       const gchar *first_property_name,
                       va_list      var_args)
 {
   const char *property_name;
-  GtkWidgetClass *klass;
+  BtkWidgetClass *klass;
 
-  g_return_if_fail (GTK_IS_STYLE (style));
+  g_return_if_fail (BTK_IS_STYLE (style));
 
   klass = g_type_class_ref (widget_type);
 
@@ -1837,11 +1837,11 @@ gtk_style_get_valist (GtkStyle    *style,
   while (property_name)
     {
       GParamSpec *pspec;
-      GtkRcPropertyParser parser;
+      BtkRcPropertyParser parser;
       const GValue *peek_value;
       gchar *error;
 
-      pspec = gtk_widget_class_find_style_property (klass, property_name);
+      pspec = btk_widget_class_find_style_property (klass, property_name);
 
       if (!pspec)
         {
@@ -1853,9 +1853,9 @@ gtk_style_get_valist (GtkStyle    *style,
         }
 
       parser = g_param_spec_get_qdata (pspec,
-                                       g_quark_from_static_string ("gtk-rc-property-parser"));
+                                       g_quark_from_static_string ("btk-rc-property-parser"));
 
-      peek_value = _gtk_style_peek_property_value (style, widget_type, pspec, parser);
+      peek_value = _btk_style_peek_property_value (style, widget_type, pspec, parser);
       G_VALUE_LCOPY (peek_value, var_args, 0, &error);
       if (error)
         {
@@ -1871,9 +1871,9 @@ gtk_style_get_valist (GtkStyle    *style,
 }
 
 /**
- * gtk_style_get:
- * @style: a #GtkStyle
- * @widget_type: the #GType of a descendant of #GtkWidget
+ * btk_style_get:
+ * @style: a #BtkStyle
+ * @widget_type: the #GType of a descendant of #BtkWidget
  * @first_property_name: the name of the first style property to get
  * @Varargs: pairs of property names and locations to
  *   return the property values, starting with the location for
@@ -1885,7 +1885,7 @@ gtk_style_get_valist (GtkStyle    *style,
  * Since: 2.16
  */
 void
-gtk_style_get (GtkStyle    *style,
+btk_style_get (BtkStyle    *style,
                GType        widget_type,
                const gchar *first_property_name,
                ...)
@@ -1893,23 +1893,23 @@ gtk_style_get (GtkStyle    *style,
   va_list var_args;
 
   va_start (var_args, first_property_name);
-  gtk_style_get_valist (style, widget_type, first_property_name, var_args);
+  btk_style_get_valist (style, widget_type, first_property_name, var_args);
   va_end (var_args);
 }
 
 const GValue*
-_gtk_style_peek_property_value (GtkStyle           *style,
+_btk_style_peek_property_value (BtkStyle           *style,
 				GType               widget_type,
 				GParamSpec         *pspec,
-				GtkRcPropertyParser parser)
+				BtkRcPropertyParser parser)
 {
   PropertyValue *pcache, key = { 0, NULL, { 0, } };
-  const GtkRcProperty *rcprop = NULL;
+  const BtkRcProperty *rcprop = NULL;
   guint i;
 
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
-  g_return_val_if_fail (g_type_is_a (pspec->owner_type, GTK_TYPE_WIDGET), NULL);
+  g_return_val_if_fail (g_type_is_a (pspec->owner_type, BTK_TYPE_WIDGET), NULL);
   g_return_val_if_fail (g_type_is_a (widget_type, pspec->owner_type), NULL);
 
   key.widget_type = widget_type;
@@ -1946,7 +1946,7 @@ _gtk_style_peek_property_value (GtkStyle           *style,
 
       do
 	{
-	  rcprop = _gtk_rc_style_lookup_rc_property (style->rc_style,
+	  rcprop = _btk_rc_style_lookup_rc_property (style->rc_style,
 						     g_type_qname (widget_type),
 						     prop_quark);
 	  if (rcprop)
@@ -1957,13 +1957,13 @@ _gtk_style_peek_property_value (GtkStyle           *style,
     }
 
   /* when supplied by rc style, we need to convert */
-  if (rcprop && !_gtk_settings_parse_convert (parser, &rcprop->value,
+  if (rcprop && !_btk_settings_parse_convert (parser, &rcprop->value,
 					      pspec, &pcache->value))
     {
       gchar *contents = g_strdup_value_contents (&rcprop->value);
       
       g_message ("%s: failed to retrieve property `%s::%s' of type `%s' from rc file value \"%s\" of type `%s'",
-		 rcprop->origin ? rcprop->origin : "(for origin information, set GTK_DEBUG)",
+		 rcprop->origin ? rcprop->origin : "(for origin information, set BTK_DEBUG)",
 		 g_type_name (pspec->owner_type), pspec->name,
 		 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)),
 		 contents,
@@ -1979,33 +1979,33 @@ _gtk_style_peek_property_value (GtkStyle           *style,
   return &pcache->value;
 }
 
-static GdkPixmap *
-load_bg_image (GdkColormap *colormap,
-	       GdkColor    *bg_color,
+static BdkPixmap *
+load_bg_image (BdkColormap *colormap,
+	       BdkColor    *bg_color,
 	       const gchar *filename)
 {
   if (strcmp (filename, "<parent>") == 0)
-    return (GdkPixmap*) GDK_PARENT_RELATIVE;
+    return (BdkPixmap*) BDK_PARENT_RELATIVE;
   else
     {
-      return gdk_pixmap_colormap_create_from_xpm (NULL, colormap, NULL,
+      return bdk_pixmap_colormap_create_from_xpm (NULL, colormap, NULL,
 						  bg_color,
 						  filename);
     }
 }
 
 static void
-gtk_style_real_realize (GtkStyle *style)
+btk_style_real_realize (BtkStyle *style)
 {
-  GdkGCValues gc_values;
-  GdkGCValuesMask gc_values_mask;
+  BdkGCValues gc_values;
+  BdkGCValuesMask gc_values_mask;
   
   gint i;
 
   for (i = 0; i < 5; i++)
     {
-      _gtk_style_shade (&style->bg[i], &style->light[i], LIGHTNESS_MULT);
-      _gtk_style_shade (&style->bg[i], &style->dark[i], DARKNESS_MULT);
+      _btk_style_shade (&style->bg[i], &style->light[i], LIGHTNESS_MULT);
+      _btk_style_shade (&style->bg[i], &style->dark[i], DARKNESS_MULT);
 
       style->mid[i].red = (style->light[i].red + style->dark[i].red) / 2;
       style->mid[i].green = (style->light[i].green + style->dark[i].green) / 2;
@@ -2019,24 +2019,24 @@ gtk_style_real_realize (GtkStyle *style)
   style->black.red = 0x0000;
   style->black.green = 0x0000;
   style->black.blue = 0x0000;
-  gdk_colormap_alloc_color (style->colormap, &style->black, FALSE, TRUE);
+  bdk_colormap_alloc_color (style->colormap, &style->black, FALSE, TRUE);
 
   style->white.red = 0xffff;
   style->white.green = 0xffff;
   style->white.blue = 0xffff;
-  gdk_colormap_alloc_color (style->colormap, &style->white, FALSE, TRUE);
+  bdk_colormap_alloc_color (style->colormap, &style->white, FALSE, TRUE);
 
-  gc_values_mask = GDK_GC_FOREGROUND | GDK_GC_BACKGROUND;
+  gc_values_mask = BDK_GC_FOREGROUND | BDK_GC_BACKGROUND;
   
   gc_values.foreground = style->black;
   gc_values.background = style->white;
-  style->black_gc = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+  style->black_gc = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
   
   gc_values.foreground = style->white;
   gc_values.background = style->black;
-  style->white_gc = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+  style->white_gc = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
   
-  gc_values_mask = GDK_GC_FOREGROUND;
+  gc_values_mask = BDK_GC_FOREGROUND;
 
   for (i = 0; i < 5; i++)
     {
@@ -2045,77 +2045,77 @@ gtk_style_real_realize (GtkStyle *style)
 					     &style->bg[i],
 					     style->rc_style->bg_pixmap_name[i]);
       
-      if (!gdk_colormap_alloc_color (style->colormap, &style->fg[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->fg[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->fg[i].red, style->fg[i].green, style->fg[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->bg[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->bg[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->bg[i].red, style->bg[i].green, style->bg[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->light[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->light[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->light[i].red, style->light[i].green, style->light[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->dark[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->dark[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->dark[i].red, style->dark[i].green, style->dark[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->mid[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->mid[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->mid[i].red, style->mid[i].green, style->mid[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->text[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->text[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->text[i].red, style->text[i].green, style->text[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->base[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->base[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->base[i].red, style->base[i].green, style->base[i].blue);
-      if (!gdk_colormap_alloc_color (style->colormap, &style->text_aa[i], FALSE, TRUE))
+      if (!bdk_colormap_alloc_color (style->colormap, &style->text_aa[i], FALSE, TRUE))
         g_warning ("unable to allocate color: ( %d %d %d )",
                    style->text_aa[i].red, style->text_aa[i].green, style->text_aa[i].blue);
       
       gc_values.foreground = style->fg[i];
-      style->fg_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->fg_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
       
       gc_values.foreground = style->bg[i];
-      style->bg_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->bg_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
       
       gc_values.foreground = style->light[i];
-      style->light_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->light_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
       
       gc_values.foreground = style->dark[i];
-      style->dark_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->dark_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
       
       gc_values.foreground = style->mid[i];
-      style->mid_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->mid_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
       
       gc_values.foreground = style->text[i];
-      style->text_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->text_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
       
       gc_values.foreground = style->base[i];
-      style->base_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->base_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
 
       gc_values.foreground = style->text_aa[i];
-      style->text_aa_gc[i] = gtk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
+      style->text_aa_gc[i] = btk_gc_get (style->depth, style->colormap, &gc_values, gc_values_mask);
     }
 }
 
 static void
-gtk_style_real_unrealize (GtkStyle *style)
+btk_style_real_unrealize (BtkStyle *style)
 {
   int i;
 
-  gtk_gc_release (style->black_gc);
-  gtk_gc_release (style->white_gc);
+  btk_gc_release (style->black_gc);
+  btk_gc_release (style->white_gc);
       
   for (i = 0; i < 5; i++)
     {
-      gtk_gc_release (style->fg_gc[i]);
-      gtk_gc_release (style->bg_gc[i]);
-      gtk_gc_release (style->light_gc[i]);
-      gtk_gc_release (style->dark_gc[i]);
-      gtk_gc_release (style->mid_gc[i]);
-      gtk_gc_release (style->text_gc[i]);
-      gtk_gc_release (style->base_gc[i]);
-      gtk_gc_release (style->text_aa_gc[i]);
+      btk_gc_release (style->fg_gc[i]);
+      btk_gc_release (style->bg_gc[i]);
+      btk_gc_release (style->light_gc[i]);
+      btk_gc_release (style->dark_gc[i]);
+      btk_gc_release (style->mid_gc[i]);
+      btk_gc_release (style->text_gc[i]);
+      btk_gc_release (style->base_gc[i]);
+      btk_gc_release (style->text_aa_gc[i]);
 
-      if (style->bg_pixmap[i] &&  style->bg_pixmap[i] != (GdkPixmap*) GDK_PARENT_RELATIVE)
+      if (style->bg_pixmap[i] &&  style->bg_pixmap[i] != (BdkPixmap*) BDK_PARENT_RELATIVE)
 	{
 	  g_object_unref (style->bg_pixmap[i]);
 	  style->bg_pixmap[i] = NULL;
@@ -2123,29 +2123,29 @@ gtk_style_real_unrealize (GtkStyle *style)
       
     }
   
-  gdk_colormap_free_colors (style->colormap, style->fg, 5);
-  gdk_colormap_free_colors (style->colormap, style->bg, 5);
-  gdk_colormap_free_colors (style->colormap, style->light, 5);
-  gdk_colormap_free_colors (style->colormap, style->dark, 5);
-  gdk_colormap_free_colors (style->colormap, style->mid, 5);
-  gdk_colormap_free_colors (style->colormap, style->text, 5);
-  gdk_colormap_free_colors (style->colormap, style->base, 5);
-  gdk_colormap_free_colors (style->colormap, style->text_aa, 5);
+  bdk_colormap_free_colors (style->colormap, style->fg, 5);
+  bdk_colormap_free_colors (style->colormap, style->bg, 5);
+  bdk_colormap_free_colors (style->colormap, style->light, 5);
+  bdk_colormap_free_colors (style->colormap, style->dark, 5);
+  bdk_colormap_free_colors (style->colormap, style->mid, 5);
+  bdk_colormap_free_colors (style->colormap, style->text, 5);
+  bdk_colormap_free_colors (style->colormap, style->base, 5);
+  bdk_colormap_free_colors (style->colormap, style->text_aa, 5);
 
   style_unrealize_cursor_gcs (style);
 }
 
 static void
-gtk_style_real_set_background (GtkStyle    *style,
-			       GdkWindow   *window,
-			       GtkStateType state_type)
+btk_style_real_set_background (BtkStyle    *style,
+			       BdkWindow   *window,
+			       BtkStateType state_type)
 {
-  GdkPixmap *pixmap;
+  BdkPixmap *pixmap;
   gint parent_relative;
   
   if (style->bg_pixmap[state_type])
     {
-      if (style->bg_pixmap[state_type] == (GdkPixmap*) GDK_PARENT_RELATIVE)
+      if (style->bg_pixmap[state_type] == (BdkPixmap*) BDK_PARENT_RELATIVE)
         {
           pixmap = NULL;
           parent_relative = TRUE;
@@ -2156,20 +2156,20 @@ gtk_style_real_set_background (GtkStyle    *style,
           parent_relative = FALSE;
         }
       
-      gdk_window_set_back_pixmap (window, pixmap, parent_relative);
+      bdk_window_set_back_pixmap (window, pixmap, parent_relative);
     }
   else
-    gdk_window_set_background (window, &style->bg[state_type]);
+    bdk_window_set_background (window, &style->bg[state_type]);
 }
 
 /**
- * gtk_style_render_icon:
- * @style: a #GtkStyle
- * @source: the #GtkIconSource specifying the icon to render
+ * btk_style_render_icon:
+ * @style: a #BtkStyle
+ * @source: the #BtkIconSource specifying the icon to render
  * @direction: a text direction
  * @state: a state
  * @size: (type int) the size to render the icon at. A size of
- *     (GtkIconSize)-1 means render at the size of the source and
+ *     (BtkIconSize)-1 means render at the size of the source and
  *     don't scale.
  * @widget: (allow-none): the widget
  * @detail: (allow-none): a style detail
@@ -2178,24 +2178,24 @@ gtk_style_real_set_background (GtkStyle    *style,
  * according to the given parameters and returns the result in a
  * pixbuf.
  *
- * Return value: (transfer full): a newly-created #GdkPixbuf
+ * Return value: (transfer full): a newly-created #BdkPixbuf
  *     containing the rendered icon
  */
-GdkPixbuf *
-gtk_style_render_icon (GtkStyle            *style,
-                       const GtkIconSource *source,
-                       GtkTextDirection     direction,
-                       GtkStateType         state,
-                       GtkIconSize          size,
-                       GtkWidget           *widget,
+BdkPixbuf *
+btk_style_render_icon (BtkStyle            *style,
+                       const BtkIconSource *source,
+                       BtkTextDirection     direction,
+                       BtkStateType         state,
+                       BtkIconSize          size,
+                       BtkWidget           *widget,
                        const gchar         *detail)
 {
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
-  g_return_val_if_fail (GTK_STYLE_GET_CLASS (style)->render_icon != NULL, NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_STYLE_GET_CLASS (style)->render_icon != NULL, NULL);
   
-  pixbuf = GTK_STYLE_GET_CLASS (style)->render_icon (style, source, direction, state,
+  pixbuf = BTK_STYLE_GET_CLASS (style)->render_icon (style, source, direction, state,
                                                      size, widget, detail);
 
   g_return_val_if_fail (pixbuf != NULL, NULL);
@@ -2206,7 +2206,7 @@ gtk_style_render_icon (GtkStyle            *style,
 /* Default functions */
 
 /**
- * gtk_style_apply_default_background:
+ * btk_style_apply_default_background:
  * @style:
  * @window:
  * @set_bg:
@@ -2218,17 +2218,17 @@ gtk_style_render_icon (GtkStyle            *style,
  * @height:
  */
 void
-gtk_style_apply_default_background (GtkStyle          *style,
-                                    GdkWindow         *window,
+btk_style_apply_default_background (BtkStyle          *style,
+                                    BdkWindow         *window,
                                     gboolean           set_bg,
-                                    GtkStateType        state_type,
-                                    const GdkRectangle *area,
+                                    BtkStateType        state_type,
+                                    const BdkRectangle *area,
                                     gint                x,
                                     gint                y,
                                     gint                width,
                                     gint                height)
 {
-  GdkRectangle new_rect, old_rect;
+  BdkRectangle new_rect, old_rect;
   
   if (area)
     {
@@ -2237,7 +2237,7 @@ gtk_style_apply_default_background (GtkStyle          *style,
       old_rect.width = width;
       old_rect.height = height;
       
-      if (!gdk_rectangle_intersect (area, &old_rect, &new_rect))
+      if (!bdk_rectangle_intersect (area, &old_rect, &new_rect))
         return;
     }
   else
@@ -2249,111 +2249,111 @@ gtk_style_apply_default_background (GtkStyle          *style,
     }
   
   if (!style->bg_pixmap[state_type] ||
-      GDK_IS_PIXMAP (window) ||
-      (!set_bg && style->bg_pixmap[state_type] != (GdkPixmap*) GDK_PARENT_RELATIVE))
+      BDK_IS_PIXMAP (window) ||
+      (!set_bg && style->bg_pixmap[state_type] != (BdkPixmap*) BDK_PARENT_RELATIVE))
     {
-      GdkGC *gc = style->bg_gc[state_type];
+      BdkGC *gc = style->bg_gc[state_type];
       
       if (style->bg_pixmap[state_type])
         {
-          gdk_gc_set_fill (gc, GDK_TILED);
-          gdk_gc_set_tile (gc, style->bg_pixmap[state_type]);
+          bdk_gc_set_fill (gc, BDK_TILED);
+          bdk_gc_set_tile (gc, style->bg_pixmap[state_type]);
         }
       
-      gdk_draw_rectangle (window, gc, TRUE, 
+      bdk_draw_rectangle (window, gc, TRUE, 
                           new_rect.x, new_rect.y, new_rect.width, new_rect.height);
       if (style->bg_pixmap[state_type])
-        gdk_gc_set_fill (gc, GDK_SOLID);
+        bdk_gc_set_fill (gc, BDK_SOLID);
     }
   else
     {
       if (set_bg)
         {
-          if (style->bg_pixmap[state_type] == (GdkPixmap*) GDK_PARENT_RELATIVE)
-            gdk_window_set_back_pixmap (window, NULL, TRUE);
+          if (style->bg_pixmap[state_type] == (BdkPixmap*) BDK_PARENT_RELATIVE)
+            bdk_window_set_back_pixmap (window, NULL, TRUE);
           else
-            gdk_window_set_back_pixmap (window, style->bg_pixmap[state_type], FALSE);
+            bdk_window_set_back_pixmap (window, style->bg_pixmap[state_type], FALSE);
         }
       
-      gdk_window_clear_area (window, 
+      bdk_window_clear_area (window, 
                              new_rect.x, new_rect.y, 
                              new_rect.width, new_rect.height);
     }
 }
 
-static GdkPixbuf *
-scale_or_ref (GdkPixbuf *src,
+static BdkPixbuf *
+scale_or_ref (BdkPixbuf *src,
               gint       width,
               gint       height)
 {
-  if (width == gdk_pixbuf_get_width (src) &&
-      height == gdk_pixbuf_get_height (src))
+  if (width == bdk_pixbuf_get_width (src) &&
+      height == bdk_pixbuf_get_height (src))
     {
       return g_object_ref (src);
     }
   else
     {
-      return gdk_pixbuf_scale_simple (src,
+      return bdk_pixbuf_scale_simple (src,
                                       width, height,
-                                      GDK_INTERP_BILINEAR);
+                                      BDK_INTERP_BILINEAR);
     }
 }
 
 static gboolean
-lookup_icon_size (GtkStyle    *style,
-		  GtkWidget   *widget,
-		  GtkIconSize  size,
+lookup_icon_size (BtkStyle    *style,
+		  BtkWidget   *widget,
+		  BtkIconSize  size,
 		  gint        *width,
 		  gint        *height)
 {
-  GdkScreen *screen;
-  GtkSettings *settings;
+  BdkScreen *screen;
+  BtkSettings *settings;
 
-  if (widget && gtk_widget_has_screen (widget))
+  if (widget && btk_widget_has_screen (widget))
     {
-      screen = gtk_widget_get_screen (widget);
-      settings = gtk_settings_get_for_screen (screen);
+      screen = btk_widget_get_screen (widget);
+      settings = btk_settings_get_for_screen (screen);
     }
   else if (style && style->colormap)
     {
-      screen = gdk_colormap_get_screen (style->colormap);
-      settings = gtk_settings_get_for_screen (screen);
+      screen = bdk_colormap_get_screen (style->colormap);
+      settings = btk_settings_get_for_screen (screen);
     }
   else
     {
-      settings = gtk_settings_get_default ();
-      GTK_NOTE (MULTIHEAD,
-		g_warning ("Using the default screen for gtk_default_render_icon()"));
+      settings = btk_settings_get_default ();
+      BTK_NOTE (MULTIHEAD,
+		g_warning ("Using the default screen for btk_default_render_icon()"));
     }
 
-  return gtk_icon_size_lookup_for_settings (settings, size, width, height);
+  return btk_icon_size_lookup_for_settings (settings, size, width, height);
 }
 
-static GdkPixbuf *
-gtk_default_render_icon (GtkStyle            *style,
-                         const GtkIconSource *source,
-                         GtkTextDirection     direction,
-                         GtkStateType         state,
-                         GtkIconSize          size,
-                         GtkWidget           *widget,
+static BdkPixbuf *
+btk_default_render_icon (BtkStyle            *style,
+                         const BtkIconSource *source,
+                         BtkTextDirection     direction,
+                         BtkStateType         state,
+                         BtkIconSize          size,
+                         BtkWidget           *widget,
                          const gchar         *detail)
 {
   gint width = 1;
   gint height = 1;
-  GdkPixbuf *scaled;
-  GdkPixbuf *stated;
-  GdkPixbuf *base_pixbuf;
+  BdkPixbuf *scaled;
+  BdkPixbuf *stated;
+  BdkPixbuf *base_pixbuf;
 
   /* Oddly, style can be NULL in this function, because
-   * GtkIconSet can be used without a style and if so
+   * BtkIconSet can be used without a style and if so
    * it uses this function.
    */
 
-  base_pixbuf = gtk_icon_source_get_pixbuf (source);
+  base_pixbuf = btk_icon_source_get_pixbuf (source);
 
   g_return_val_if_fail (base_pixbuf != NULL, NULL);
 
-  if (size != (GtkIconSize) -1 && !lookup_icon_size(style, widget, size, &width, &height))
+  if (size != (BtkIconSize) -1 && !lookup_icon_size(style, widget, size, &width, &height))
     {
       g_warning (G_STRLOC ": invalid icon size '%d'", size);
       return NULL;
@@ -2362,28 +2362,28 @@ gtk_default_render_icon (GtkStyle            *style,
   /* If the size was wildcarded, and we're allowed to scale, then scale; otherwise,
    * leave it alone.
    */
-  if (size != (GtkIconSize)-1 && gtk_icon_source_get_size_wildcarded (source))
+  if (size != (BtkIconSize)-1 && btk_icon_source_get_size_wildcarded (source))
     scaled = scale_or_ref (base_pixbuf, width, height);
   else
     scaled = g_object_ref (base_pixbuf);
 
   /* If the state was wildcarded, then generate a state. */
-  if (gtk_icon_source_get_state_wildcarded (source))
+  if (btk_icon_source_get_state_wildcarded (source))
     {
-      if (state == GTK_STATE_INSENSITIVE)
+      if (state == BTK_STATE_INSENSITIVE)
         {
-          stated = gdk_pixbuf_copy (scaled);      
+          stated = bdk_pixbuf_copy (scaled);      
           
-          gdk_pixbuf_saturate_and_pixelate (scaled, stated,
+          bdk_pixbuf_saturate_and_pixelate (scaled, stated,
                                             0.8, TRUE);
           
           g_object_unref (scaled);
         }
-      else if (state == GTK_STATE_PRELIGHT)
+      else if (state == BTK_STATE_PRELIGHT)
         {
-          stated = gdk_pixbuf_copy (scaled);      
+          stated = bdk_pixbuf_copy (scaled);      
           
-          gdk_pixbuf_saturate_and_pixelate (scaled, stated,
+          bdk_pixbuf_saturate_and_pixelate (scaled, stated,
                                             1.2, FALSE);
           
           g_object_unref (scaled);
@@ -2400,24 +2400,24 @@ gtk_default_render_icon (GtkStyle            *style,
 }
 
 static void
-sanitize_size (GdkWindow *window,
+sanitize_size (BdkWindow *window,
 	       gint      *width,
 	       gint      *height)
 {
   if ((*width == -1) && (*height == -1))
-    gdk_drawable_get_size (window, width, height);
+    bdk_drawable_get_size (window, width, height);
   else if (*width == -1)
-    gdk_drawable_get_size (window, width, NULL);
+    bdk_drawable_get_size (window, width, NULL);
   else if (*height == -1)
-    gdk_drawable_get_size (window, NULL, height);
+    bdk_drawable_get_size (window, NULL, height);
 }
 
 static void
-gtk_default_draw_hline (GtkStyle     *style,
-                        GdkWindow    *window,
-                        GtkStateType  state_type,
-                        GdkRectangle  *area,
-                        GtkWidget     *widget,
+btk_default_draw_hline (BtkStyle     *style,
+                        BdkWindow    *window,
+                        BtkStateType  state_type,
+                        BdkRectangle  *area,
+                        BtkWidget     *widget,
                         const gchar   *detail,
                         gint          x1,
                         gint          x2,
@@ -2432,46 +2432,46 @@ gtk_default_draw_hline (GtkStyle     *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
     }
   
   if (detail && !strcmp (detail, "label"))
     {
-      if (state_type == GTK_STATE_INSENSITIVE)
-        gdk_draw_line (window, style->white_gc, x1 + 1, y + 1, x2 + 1, y + 1);   
-      gdk_draw_line (window, style->fg_gc[state_type], x1, y, x2, y);     
+      if (state_type == BTK_STATE_INSENSITIVE)
+        bdk_draw_line (window, style->white_gc, x1 + 1, y + 1, x2 + 1, y + 1);   
+      bdk_draw_line (window, style->fg_gc[state_type], x1, y, x2, y);     
     }
   else
     {
       for (i = 0; i < thickness_dark; i++)
         {
-          gdk_draw_line (window, style->dark_gc[state_type], x1, y + i, x2 - i - 1, y + i);
-          gdk_draw_line (window, style->light_gc[state_type], x2 - i, y + i, x2, y + i);
+          bdk_draw_line (window, style->dark_gc[state_type], x1, y + i, x2 - i - 1, y + i);
+          bdk_draw_line (window, style->light_gc[state_type], x2 - i, y + i, x2, y + i);
         }
       
       y += thickness_dark;
       for (i = 0; i < thickness_light; i++)
         {
-          gdk_draw_line (window, style->dark_gc[state_type], x1, y + i, x1 + thickness_light - i - 1, y + i);
-          gdk_draw_line (window, style->light_gc[state_type], x1 + thickness_light - i, y + i, x2, y + i);
+          bdk_draw_line (window, style->dark_gc[state_type], x1, y + i, x1 + thickness_light - i - 1, y + i);
+          bdk_draw_line (window, style->light_gc[state_type], x1 + thickness_light - i, y + i, x2, y + i);
         }
     }
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
     }
 }
 
 
 static void
-gtk_default_draw_vline (GtkStyle     *style,
-                        GdkWindow    *window,
-                        GtkStateType  state_type,
-                        GdkRectangle  *area,
-                        GtkWidget     *widget,
+btk_default_draw_vline (BtkStyle     *style,
+                        BdkWindow    *window,
+                        BtkStateType  state_type,
+                        BdkRectangle  *area,
+                        BtkWidget     *widget,
                         const gchar   *detail,
                         gint          y1,
                         gint          y2,
@@ -2486,39 +2486,39 @@ gtk_default_draw_vline (GtkStyle     *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
     }
   for (i = 0; i < thickness_dark; i++)
     { 
-      gdk_draw_line (window, style->dark_gc[state_type], x + i, y1, x + i, y2 - i - 1);
-      gdk_draw_line (window, style->light_gc[state_type], x + i, y2 - i, x + i, y2);
+      bdk_draw_line (window, style->dark_gc[state_type], x + i, y1, x + i, y2 - i - 1);
+      bdk_draw_line (window, style->light_gc[state_type], x + i, y2 - i, x + i, y2);
     }
   
   x += thickness_dark;
   for (i = 0; i < thickness_light; i++)
     {
-      gdk_draw_line (window, style->dark_gc[state_type], x + i, y1, x + i, y1 + thickness_light - i - 1);
-      gdk_draw_line (window, style->light_gc[state_type], x + i, y1 + thickness_light - i, x + i, y2);
+      bdk_draw_line (window, style->dark_gc[state_type], x + i, y1, x + i, y1 + thickness_light - i - 1);
+      bdk_draw_line (window, style->light_gc[state_type], x + i, y1 + thickness_light - i, x + i, y2);
     }
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
     }
 }
 
 static void
-draw_thin_shadow (GtkStyle      *style,
-		  GdkWindow     *window,
-		  GtkStateType   state,
-		  GdkRectangle  *area,
+draw_thin_shadow (BtkStyle      *style,
+		  BdkWindow     *window,
+		  BtkStateType   state,
+		  BdkRectangle  *area,
 		  gint           x,
 		  gint           y,
 		  gint           width,
 		  gint           height)
 {
-  GdkGC *gc1, *gc2;
+  BdkGC *gc1, *gc2;
 
   sanitize_size (window, &width, &height);
   
@@ -2527,33 +2527,33 @@ draw_thin_shadow (GtkStyle      *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
+      bdk_gc_set_clip_rectangle (gc1, area);
+      bdk_gc_set_clip_rectangle (gc2, area);
     }
   
-  gdk_draw_line (window, gc1,
+  bdk_draw_line (window, gc1,
 		 x, y + height - 1, x + width - 1, y + height - 1);
-  gdk_draw_line (window, gc1,
+  bdk_draw_line (window, gc1,
 		 x + width - 1, y,  x + width - 1, y + height - 1);
       
-  gdk_draw_line (window, gc2,
+  bdk_draw_line (window, gc2,
 		 x, y, x + width - 2, y);
-  gdk_draw_line (window, gc2,
+  bdk_draw_line (window, gc2,
 		 x, y, x, y + height - 2);
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
+      bdk_gc_set_clip_rectangle (gc1, NULL);
+      bdk_gc_set_clip_rectangle (gc2, NULL);
     }
 }
 
 static void
-draw_spinbutton_shadow (GtkStyle        *style,
-			GdkWindow       *window,
-			GtkStateType     state,
-			GtkTextDirection direction,
-			GdkRectangle    *area,
+draw_spinbutton_shadow (BtkStyle        *style,
+			BdkWindow       *window,
+			BtkStateType     state,
+			BtkTextDirection direction,
+			BdkRectangle    *area,
 			gint             x,
 			gint             y,
 			gint             width,
@@ -2563,61 +2563,61 @@ draw_spinbutton_shadow (GtkStyle        *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->black_gc, area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state], area);
-      gdk_gc_set_clip_rectangle (style->light_gc[state], area);
+      bdk_gc_set_clip_rectangle (style->black_gc, area);
+      bdk_gc_set_clip_rectangle (style->bg_gc[state], area);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state], area);
+      bdk_gc_set_clip_rectangle (style->light_gc[state], area);
     }
 
-  if (direction == GTK_TEXT_DIR_LTR)
+  if (direction == BTK_TEXT_DIR_LTR)
     {
-      gdk_draw_line (window, style->dark_gc[state],
+      bdk_draw_line (window, style->dark_gc[state],
 		     x, y, x + width - 1, y);
-      gdk_draw_line (window, style->black_gc,
+      bdk_draw_line (window, style->black_gc,
 		     x, y + 1, x + width - 2, y + 1);
-      gdk_draw_line (window, style->black_gc,
+      bdk_draw_line (window, style->black_gc,
 		     x + width - 2, y + 2, x + width - 2, y + height - 3);
-      gdk_draw_line (window, style->light_gc[state],
+      bdk_draw_line (window, style->light_gc[state],
 		     x + width - 1, y + 1, x + width - 1, y + height - 2);
-      gdk_draw_line (window, style->light_gc[state],
+      bdk_draw_line (window, style->light_gc[state],
 		     x, y + height - 1, x + width - 1, y + height - 1);
-      gdk_draw_line (window, style->bg_gc[state],
+      bdk_draw_line (window, style->bg_gc[state],
 		     x, y + height - 2, x + width - 2, y + height - 2);
-      gdk_draw_line (window, style->black_gc,
+      bdk_draw_line (window, style->black_gc,
 		     x, y + 2, x, y + height - 3);
     }
   else
     {
-      gdk_draw_line (window, style->dark_gc[state],
+      bdk_draw_line (window, style->dark_gc[state],
 		     x, y, x + width - 1, y);
-      gdk_draw_line (window, style->dark_gc[state],
+      bdk_draw_line (window, style->dark_gc[state],
 		     x, y + 1, x, y + height - 1);
-      gdk_draw_line (window, style->black_gc,
+      bdk_draw_line (window, style->black_gc,
 		     x + 1, y + 1, x + width - 1, y + 1);
-      gdk_draw_line (window, style->black_gc,
+      bdk_draw_line (window, style->black_gc,
 		     x + 1, y + 2, x + 1, y + height - 2);
-      gdk_draw_line (window, style->black_gc,
+      bdk_draw_line (window, style->black_gc,
 		     x + width - 1, y + 2, x + width - 1, y + height - 3);
-      gdk_draw_line (window, style->light_gc[state],
+      bdk_draw_line (window, style->light_gc[state],
 		     x + 1, y + height - 1, x + width - 1, y + height - 1);
-      gdk_draw_line (window, style->bg_gc[state],
+      bdk_draw_line (window, style->bg_gc[state],
 		     x + 2, y + height - 2, x + width - 1, y + height - 2);
     }
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->black_gc, NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state], NULL);
-      gdk_gc_set_clip_rectangle (style->light_gc[state], NULL);
+      bdk_gc_set_clip_rectangle (style->black_gc, NULL);
+      bdk_gc_set_clip_rectangle (style->bg_gc[state], NULL);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state], NULL);
+      bdk_gc_set_clip_rectangle (style->light_gc[state], NULL);
     }
 }
 
 static void
-draw_menu_shadow (GtkStyle        *style,
-		  GdkWindow       *window,
-		  GtkStateType     state,
-		  GdkRectangle    *area,
+draw_menu_shadow (BtkStyle        *style,
+		  BdkWindow       *window,
+		  BtkStateType     state,
+		  BdkRectangle    *area,
 		  gint             x,
 		  gint             y,
 		  gint             width,
@@ -2627,14 +2627,14 @@ draw_menu_shadow (GtkStyle        *style,
     {
       if (style->ythickness > 1)
 	{
-	  gdk_draw_line (window, style->dark_gc[state],
+	  bdk_draw_line (window, style->dark_gc[state],
 			 x + 1, y + height - 2, x + width - 2, y + height - 2);
-	  gdk_draw_line (window, style->black_gc,
+	  bdk_draw_line (window, style->black_gc,
 			 x, y + height - 1, x + width - 1, y + height - 1);
 	}
       else
 	{
-	  gdk_draw_line (window, style->dark_gc[state],
+	  bdk_draw_line (window, style->dark_gc[state],
 			 x + 1, y + height - 1, x + width - 1, y + height - 1);
 	}
     }
@@ -2643,15 +2643,15 @@ draw_menu_shadow (GtkStyle        *style,
     {
       if (style->xthickness > 1)
 	{
-	  gdk_draw_line (window, style->dark_gc[state],
+	  bdk_draw_line (window, style->dark_gc[state],
 			 x + width - 2, y + 1, x + width - 2, y + height - 2);
 	  
-	  gdk_draw_line (window, style->black_gc,
+	  bdk_draw_line (window, style->black_gc,
 			 x + width - 1, y, x + width - 1, y + height - 1);
 	}
       else
 	{
-	  gdk_draw_line (window, style->dark_gc[state],
+	  bdk_draw_line (window, style->dark_gc[state],
 			 x + width - 1, y + 1, x + width - 1, y + height - 1);
 	}
     }
@@ -2659,60 +2659,60 @@ draw_menu_shadow (GtkStyle        *style,
   /* Light around top and left */
   
   if (style->ythickness > 0)
-    gdk_draw_line (window, style->black_gc,
+    bdk_draw_line (window, style->black_gc,
 		   x, y, x + width - 2, y);
   if (style->xthickness > 0)
-    gdk_draw_line (window, style->black_gc,
+    bdk_draw_line (window, style->black_gc,
 		   x, y, x, y + height - 2);
   
   if (style->ythickness > 1)
-    gdk_draw_line (window, style->light_gc[state],
+    bdk_draw_line (window, style->light_gc[state],
 		   x + 1, y + 1, x + width - 3, y + 1);
   if (style->xthickness > 1)
-    gdk_draw_line (window, style->light_gc[state],
+    bdk_draw_line (window, style->light_gc[state],
 		   x + 1, y + 1, x + 1, y + height - 3);
 }
 
-static GtkTextDirection
-get_direction (GtkWidget *widget)
+static BtkTextDirection
+get_direction (BtkWidget *widget)
 {
-  GtkTextDirection dir;
+  BtkTextDirection dir;
   
   if (widget)
-    dir = gtk_widget_get_direction (widget);
+    dir = btk_widget_get_direction (widget);
   else
-    dir = GTK_TEXT_DIR_LTR;
+    dir = BTK_TEXT_DIR_LTR;
   
   return dir;
 }
 
 
 static void
-gtk_default_draw_shadow (GtkStyle      *style,
-                         GdkWindow     *window,
-                         GtkStateType   state_type,
-                         GtkShadowType  shadow_type,
-                         GdkRectangle  *area,
-                         GtkWidget     *widget,
+btk_default_draw_shadow (BtkStyle      *style,
+                         BdkWindow     *window,
+                         BtkStateType   state_type,
+                         BtkShadowType  shadow_type,
+                         BdkRectangle  *area,
+                         BtkWidget     *widget,
                          const gchar   *detail,
                          gint           x,
                          gint           y,
                          gint           width,
                          gint           height)
 {
-  GdkGC *gc1 = NULL;
-  GdkGC *gc2 = NULL;
+  BdkGC *gc1 = NULL;
+  BdkGC *gc2 = NULL;
   gint thickness_light;
   gint thickness_dark;
   gint i;
   
-  if (shadow_type == GTK_SHADOW_IN)
+  if (shadow_type == BTK_SHADOW_IN)
     {
       if (detail && strcmp (detail, "buttondefault") == 0)
 	{
 	  sanitize_size (window, &width, &height);
 
-	  gdk_draw_rectangle (window, style->black_gc, FALSE,
+	  bdk_draw_rectangle (window, style->black_gc, FALSE,
 			      x, y, width - 1, height - 1);
 	  
 	  return;
@@ -2723,7 +2723,7 @@ gtk_default_draw_shadow (GtkStyle      *style,
 			    x, y, width, height);
 	  return;
 	}
-      if (GTK_IS_SPIN_BUTTON (widget) &&
+      if (BTK_IS_SPIN_BUTTON (widget) &&
          detail && strcmp (detail, "spinbutton") == 0)
 	{
 	  draw_spinbutton_shadow (style, window, state_type, 
@@ -2733,7 +2733,7 @@ gtk_default_draw_shadow (GtkStyle      *style,
 	}
     }
 
-  if (shadow_type == GTK_SHADOW_OUT && detail && strcmp (detail, "menu") == 0)
+  if (shadow_type == BTK_SHADOW_OUT && detail && strcmp (detail, "menu") == 0)
     {
       draw_menu_shadow (style, window, state_type, area, x, y, width, height);
       return;
@@ -2743,15 +2743,15 @@ gtk_default_draw_shadow (GtkStyle      *style,
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
+    case BTK_SHADOW_NONE:
       return;
-    case GTK_SHADOW_IN:
-    case GTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_IN:
+    case BTK_SHADOW_ETCHED_IN:
       gc1 = style->light_gc[state_type];
       gc2 = style->dark_gc[state_type];
       break;
-    case GTK_SHADOW_OUT:
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_OUT:
+    case BTK_SHADOW_ETCHED_OUT:
       gc1 = style->dark_gc[state_type];
       gc2 = style->light_gc[state_type];
       break;
@@ -2759,70 +2759,70 @@ gtk_default_draw_shadow (GtkStyle      *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
-      if (shadow_type == GTK_SHADOW_IN || 
-          shadow_type == GTK_SHADOW_OUT)
+      bdk_gc_set_clip_rectangle (gc1, area);
+      bdk_gc_set_clip_rectangle (gc2, area);
+      if (shadow_type == BTK_SHADOW_IN || 
+          shadow_type == BTK_SHADOW_OUT)
         {
-          gdk_gc_set_clip_rectangle (style->black_gc, area);
-          gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
+          bdk_gc_set_clip_rectangle (style->black_gc, area);
+          bdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
         }
     }
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
+    case BTK_SHADOW_NONE:
       break;
       
-    case GTK_SHADOW_IN:
+    case BTK_SHADOW_IN:
       /* Light around right and bottom edge */
 
       if (style->ythickness > 0)
-        gdk_draw_line (window, gc1,
+        bdk_draw_line (window, gc1,
                        x, y + height - 1, x + width - 1, y + height - 1);
       if (style->xthickness > 0)
-        gdk_draw_line (window, gc1,
+        bdk_draw_line (window, gc1,
                        x + width - 1, y, x + width - 1, y + height - 1);
 
       if (style->ythickness > 1)
-        gdk_draw_line (window, style->bg_gc[state_type],
+        bdk_draw_line (window, style->bg_gc[state_type],
                        x + 1, y + height - 2, x + width - 2, y + height - 2);
       if (style->xthickness > 1)
-        gdk_draw_line (window, style->bg_gc[state_type],
+        bdk_draw_line (window, style->bg_gc[state_type],
                        x + width - 2, y + 1, x + width - 2, y + height - 2);
 
       /* Dark around left and top */
 
       if (style->ythickness > 1)
-        gdk_draw_line (window, style->black_gc,
+        bdk_draw_line (window, style->black_gc,
                        x + 1, y + 1, x + width - 2, y + 1);
       if (style->xthickness > 1)
-        gdk_draw_line (window, style->black_gc,
+        bdk_draw_line (window, style->black_gc,
                        x + 1, y + 1, x + 1, y + height - 2);
 
       if (style->ythickness > 0)
-        gdk_draw_line (window, gc2,
+        bdk_draw_line (window, gc2,
                        x, y, x + width - 1, y);
       if (style->xthickness > 0)
-        gdk_draw_line (window, gc2,
+        bdk_draw_line (window, gc2,
                        x, y, x, y + height - 1);
       break;
       
-    case GTK_SHADOW_OUT:
+    case BTK_SHADOW_OUT:
       /* Dark around right and bottom edge */
 
       if (style->ythickness > 0)
         {
           if (style->ythickness > 1)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x + 1, y + height - 2, x + width - 2, y + height - 2);
-              gdk_draw_line (window, style->black_gc,
+              bdk_draw_line (window, style->black_gc,
                              x, y + height - 1, x + width - 1, y + height - 1);
             }
           else
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x + 1, y + height - 1, x + width - 1, y + height - 1);
             }
         }
@@ -2831,15 +2831,15 @@ gtk_default_draw_shadow (GtkStyle      *style,
         {
           if (style->xthickness > 1)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x + width - 2, y + 1, x + width - 2, y + height - 2);
               
-              gdk_draw_line (window, style->black_gc,
+              bdk_draw_line (window, style->black_gc,
                              x + width - 1, y, x + width - 1, y + height - 1);
             }
           else
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x + width - 1, y + 1, x + width - 1, y + height - 1);
             }
         }
@@ -2847,22 +2847,22 @@ gtk_default_draw_shadow (GtkStyle      *style,
       /* Light around top and left */
 
       if (style->ythickness > 0)
-        gdk_draw_line (window, gc2,
+        bdk_draw_line (window, gc2,
                        x, y, x + width - 2, y);
       if (style->xthickness > 0)
-        gdk_draw_line (window, gc2,
+        bdk_draw_line (window, gc2,
                        x, y, x, y + height - 2);
 
       if (style->ythickness > 1)
-        gdk_draw_line (window, style->bg_gc[state_type],
+        bdk_draw_line (window, style->bg_gc[state_type],
                        x + 1, y + 1, x + width - 3, y + 1);
       if (style->xthickness > 1)
-        gdk_draw_line (window, style->bg_gc[state_type],
+        bdk_draw_line (window, style->bg_gc[state_type],
                        x + 1, y + 1, x + 1, y + height - 3);
       break;
       
-    case GTK_SHADOW_ETCHED_IN:
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_OUT:
       if (style->xthickness > 0)
         {
           if (style->xthickness > 1)
@@ -2872,12 +2872,12 @@ gtk_default_draw_shadow (GtkStyle      *style,
       
               for (i = 0; i < thickness_dark; i++)
                 {
-                  gdk_draw_line (window, gc1,
+                  bdk_draw_line (window, gc1,
                                  x + width - i - 1,
                                  y + i,
                                  x + width - i - 1,
                                  y + height - i - 1);
-                  gdk_draw_line (window, gc2,
+                  bdk_draw_line (window, gc2,
                                  x + i,
                                  y + i,
                                  x + i,
@@ -2886,12 +2886,12 @@ gtk_default_draw_shadow (GtkStyle      *style,
       
               for (i = 0; i < thickness_light; i++)
                 {
-                  gdk_draw_line (window, gc1,
+                  bdk_draw_line (window, gc1,
                                  x + thickness_dark + i,
                                  y + thickness_dark + i,
                                  x + thickness_dark + i,
                                  y + height - thickness_dark - i - 1);
-                  gdk_draw_line (window, gc2,
+                  bdk_draw_line (window, gc2,
                                  x + width - thickness_light - i - 1,
                                  y + thickness_dark + i,
                                  x + width - thickness_light - i - 1,
@@ -2900,10 +2900,10 @@ gtk_default_draw_shadow (GtkStyle      *style,
             }
           else
             {
-              gdk_draw_line (window, 
+              bdk_draw_line (window, 
                              style->dark_gc[state_type],
                              x, y, x, y + height);                         
-              gdk_draw_line (window, 
+              bdk_draw_line (window, 
                              style->dark_gc[state_type],
                              x + width, y, x + width, y + height);
             }
@@ -2918,13 +2918,13 @@ gtk_default_draw_shadow (GtkStyle      *style,
       
               for (i = 0; i < thickness_dark; i++)
                 {
-                  gdk_draw_line (window, gc1,
+                  bdk_draw_line (window, gc1,
                                  x + i,
                                  y + height - i - 1,
                                  x + width - i - 1,
                                  y + height - i - 1);
           
-                  gdk_draw_line (window, gc2,
+                  bdk_draw_line (window, gc2,
                                  x + i,
                                  y + i,
                                  x + width - i - 2,
@@ -2933,13 +2933,13 @@ gtk_default_draw_shadow (GtkStyle      *style,
       
               for (i = 0; i < thickness_light; i++)
                 {
-                  gdk_draw_line (window, gc1,
+                  bdk_draw_line (window, gc1,
                                  x + thickness_dark + i,
                                  y + thickness_dark + i,
                                  x + width - thickness_dark - i - 2,
                                  y + thickness_dark + i);
           
-                  gdk_draw_line (window, gc2,
+                  bdk_draw_line (window, gc2,
                                  x + thickness_dark + i,
                                  y + height - thickness_light - i - 1,
                                  x + width - thickness_light - 1,
@@ -2948,10 +2948,10 @@ gtk_default_draw_shadow (GtkStyle      *style,
             }
           else
             {
-              gdk_draw_line (window, 
+              bdk_draw_line (window, 
                              style->dark_gc[state_type],
                              x, y, x + width, y);
-              gdk_draw_line (window, 
+              bdk_draw_line (window, 
                              style->dark_gc[state_type],
                              x, y + height, x + width, y + height);
             }
@@ -2960,45 +2960,45 @@ gtk_default_draw_shadow (GtkStyle      *style,
       break;
     }
 
-  if (shadow_type == GTK_SHADOW_IN &&
-      GTK_IS_SPIN_BUTTON (widget) &&
+  if (shadow_type == BTK_SHADOW_IN &&
+      BTK_IS_SPIN_BUTTON (widget) &&
       detail && strcmp (detail, "entry") == 0)
     {
-      if (get_direction (widget) == GTK_TEXT_DIR_LTR)
+      if (get_direction (widget) == BTK_TEXT_DIR_LTR)
 	{
-	  gdk_draw_line (window,
+	  bdk_draw_line (window,
 			 style->base_gc[state_type],
 			 x + width - 1, y + 2,
 			 x + width - 1, y + height - 3);
-	  gdk_draw_line (window,
+	  bdk_draw_line (window,
 			 style->base_gc[state_type],
 			 x + width - 2, y + 2,
 			 x + width - 2, y + height - 3);
-	  gdk_draw_point (window,
+	  bdk_draw_point (window,
 			  style->black_gc,
 			  x + width - 1, y + 1);
-	  gdk_draw_point (window,
+	  bdk_draw_point (window,
 			  style->bg_gc[state_type],
 			  x + width - 1, y + height - 2);
 	}
       else
 	{
-	  gdk_draw_line (window,
+	  bdk_draw_line (window,
 			 style->base_gc[state_type],
 			 x, y + 2,
 			 x, y + height - 3);
-	  gdk_draw_line (window,
+	  bdk_draw_line (window,
 			 style->base_gc[state_type],
 			 x + 1, y + 2,
 			 x + 1, y + height - 3);
-	  gdk_draw_point (window,
+	  bdk_draw_point (window,
 			  style->black_gc,
 			  x, y + 1);
-	  gdk_draw_line (window,
+	  bdk_draw_line (window,
 			 style->bg_gc[state_type],
 			 x, y + height - 2,
 			 x + 1, y + height - 2);
-	  gdk_draw_point (window,
+	  bdk_draw_point (window,
 			  style->light_gc[state_type],
 			  x, y + height - 1);
 	}
@@ -3007,35 +3007,35 @@ gtk_default_draw_shadow (GtkStyle      *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
-      if (shadow_type == GTK_SHADOW_IN || 
-          shadow_type == GTK_SHADOW_OUT)
+      bdk_gc_set_clip_rectangle (gc1, NULL);
+      bdk_gc_set_clip_rectangle (gc2, NULL);
+      if (shadow_type == BTK_SHADOW_IN || 
+          shadow_type == BTK_SHADOW_OUT)
         {
-          gdk_gc_set_clip_rectangle (style->black_gc, NULL);
-          gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
+          bdk_gc_set_clip_rectangle (style->black_gc, NULL);
+          bdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
         }
     }
 }
 
 static void
-gtk_default_draw_polygon (GtkStyle      *style,
-                          GdkWindow     *window,
-                          GtkStateType   state_type,
-                          GtkShadowType  shadow_type,
-                          GdkRectangle  *area,
-                          GtkWidget     *widget,
+btk_default_draw_polygon (BtkStyle      *style,
+                          BdkWindow     *window,
+                          BtkStateType   state_type,
+                          BtkShadowType  shadow_type,
+                          BdkRectangle  *area,
+                          BtkWidget     *widget,
                           const gchar   *detail,
-                          GdkPoint      *points,
+                          BdkPoint      *points,
                           gint           npoints,
                           gboolean       fill)
 {
   static const gdouble pi_over_4 = G_PI_4;
   static const gdouble pi_3_over_4 = G_PI_4 * 3;
-  GdkGC *gc1;
-  GdkGC *gc2;
-  GdkGC *gc3;
-  GdkGC *gc4;
+  BdkGC *gc1;
+  BdkGC *gc2;
+  BdkGC *gc3;
+  BdkGC *gc4;
   gdouble angle;
   gint xadjust;
   gint yadjust;
@@ -3043,25 +3043,25 @@ gtk_default_draw_polygon (GtkStyle      *style,
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_IN:
+    case BTK_SHADOW_IN:
       gc1 = style->bg_gc[state_type];
       gc2 = style->dark_gc[state_type];
       gc3 = style->light_gc[state_type];
       gc4 = style->black_gc;
       break;
-    case GTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_IN:
       gc1 = style->light_gc[state_type];
       gc2 = style->dark_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_OUT:
+    case BTK_SHADOW_OUT:
       gc1 = style->dark_gc[state_type];
       gc2 = style->light_gc[state_type];
       gc3 = style->black_gc;
       gc4 = style->bg_gc[state_type];
       break;
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_ETCHED_OUT:
       gc1 = style->dark_gc[state_type];
       gc2 = style->light_gc[state_type];
       gc3 = style->light_gc[state_type];
@@ -3073,14 +3073,14 @@ gtk_default_draw_polygon (GtkStyle      *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
-      gdk_gc_set_clip_rectangle (gc3, area);
-      gdk_gc_set_clip_rectangle (gc4, area);
+      bdk_gc_set_clip_rectangle (gc1, area);
+      bdk_gc_set_clip_rectangle (gc2, area);
+      bdk_gc_set_clip_rectangle (gc3, area);
+      bdk_gc_set_clip_rectangle (gc4, area);
     }
   
   if (fill)
-    gdk_draw_polygon (window, style->bg_gc[state_type], TRUE, points, npoints);
+    bdk_draw_polygon (window, style->bg_gc[state_type], TRUE, points, npoints);
   
   npoints--;
   
@@ -3110,10 +3110,10 @@ gtk_default_draw_polygon (GtkStyle      *style,
               yadjust = 0;
             }
           
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          points[i].x-xadjust, points[i].y-yadjust,
                          points[i+1].x-xadjust, points[i+1].y-yadjust);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          points[i].x, points[i].y,
                          points[i+1].x, points[i+1].y);
         }
@@ -3130,10 +3130,10 @@ gtk_default_draw_polygon (GtkStyle      *style,
               yadjust = 0;
             }
           
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          points[i].x+xadjust, points[i].y+yadjust,
                          points[i+1].x+xadjust, points[i+1].y+yadjust);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          points[i].x, points[i].y,
                          points[i+1].x, points[i+1].y);
         }
@@ -3141,65 +3141,65 @@ gtk_default_draw_polygon (GtkStyle      *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
-      gdk_gc_set_clip_rectangle (gc3, NULL);
-      gdk_gc_set_clip_rectangle (gc4, NULL);
+      bdk_gc_set_clip_rectangle (gc1, NULL);
+      bdk_gc_set_clip_rectangle (gc2, NULL);
+      bdk_gc_set_clip_rectangle (gc3, NULL);
+      bdk_gc_set_clip_rectangle (gc4, NULL);
     }
 }
 
 static void
-draw_arrow (GdkWindow     *window,
-	    GdkColor      *color,
-	    GdkRectangle  *area,
-	    GtkArrowType   arrow_type,
+draw_arrow (BdkWindow     *window,
+	    BdkColor      *color,
+	    BdkRectangle  *area,
+	    BtkArrowType   arrow_type,
 	    gint           x,
 	    gint           y,
 	    gint           width,
 	    gint           height)
 {
-  cairo_t *cr = gdk_cairo_create (window);
-  gdk_cairo_set_source_color (cr, color);
+  bairo_t *cr = bdk_bairo_create (window);
+  bdk_bairo_set_source_color (cr, color);
   
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
     }
     
-  if (arrow_type == GTK_ARROW_DOWN)
+  if (arrow_type == BTK_ARROW_DOWN)
     {
-      cairo_move_to (cr, x,              y);
-      cairo_line_to (cr, x + width,      y);
-      cairo_line_to (cr, x + width / 2., y + height);
+      bairo_move_to (cr, x,              y);
+      bairo_line_to (cr, x + width,      y);
+      bairo_line_to (cr, x + width / 2., y + height);
     }
-  else if (arrow_type == GTK_ARROW_UP)
+  else if (arrow_type == BTK_ARROW_UP)
     {
-      cairo_move_to (cr, x,              y + height);
-      cairo_line_to (cr, x + width / 2., y);
-      cairo_line_to (cr, x + width,      y + height);
+      bairo_move_to (cr, x,              y + height);
+      bairo_line_to (cr, x + width / 2., y);
+      bairo_line_to (cr, x + width,      y + height);
     }
-  else if (arrow_type == GTK_ARROW_LEFT)
+  else if (arrow_type == BTK_ARROW_LEFT)
     {
-      cairo_move_to (cr, x + width,      y);
-      cairo_line_to (cr, x + width,      y + height);
-      cairo_line_to (cr, x,              y + height / 2.);
+      bairo_move_to (cr, x + width,      y);
+      bairo_line_to (cr, x + width,      y + height);
+      bairo_line_to (cr, x,              y + height / 2.);
     }
-  else if (arrow_type == GTK_ARROW_RIGHT)
+  else if (arrow_type == BTK_ARROW_RIGHT)
     {
-      cairo_move_to (cr, x,              y);
-      cairo_line_to (cr, x + width,      y + height / 2.);
-      cairo_line_to (cr, x,              y + height);
+      bairo_move_to (cr, x,              y);
+      bairo_line_to (cr, x + width,      y + height / 2.);
+      bairo_line_to (cr, x,              y + height);
     }
 
-  cairo_close_path (cr);
-  cairo_fill (cr);
+  bairo_close_path (cr);
+  bairo_fill (cr);
 
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 static void
-calculate_arrow_geometry (GtkArrowType  arrow_type,
+calculate_arrow_geometry (BtkArrowType  arrow_type,
 			  gint         *x,
 			  gint         *y,
 			  gint         *width,
@@ -3210,8 +3210,8 @@ calculate_arrow_geometry (GtkArrowType  arrow_type,
   
   switch (arrow_type)
     {
-    case GTK_ARROW_UP:
-    case GTK_ARROW_DOWN:
+    case BTK_ARROW_UP:
+    case BTK_ARROW_DOWN:
       w += (w % 2) - 1;
       h = (w / 2 + 1);
       
@@ -3221,7 +3221,7 @@ calculate_arrow_geometry (GtkArrowType  arrow_type,
 	  w = 2 * h - 1;
 	}
       
-      if (arrow_type == GTK_ARROW_DOWN)
+      if (arrow_type == BTK_ARROW_DOWN)
 	{
 	  if (*height % 2 == 1 || h % 2 == 0)
 	    *height += 1;
@@ -3233,8 +3233,8 @@ calculate_arrow_geometry (GtkArrowType  arrow_type,
 	}
       break;
 
-    case GTK_ARROW_RIGHT:
-    case GTK_ARROW_LEFT:
+    case BTK_ARROW_RIGHT:
+    case BTK_ARROW_LEFT:
       h += (h % 2) - 1;
       w = (h / 2 + 1);
       
@@ -3244,7 +3244,7 @@ calculate_arrow_geometry (GtkArrowType  arrow_type,
 	  h = 2 * w - 1;
 	}
       
-      if (arrow_type == GTK_ARROW_RIGHT)
+      if (arrow_type == BTK_ARROW_RIGHT)
 	{
 	  if (*width % 2 == 1 || w % 2 == 0)
 	    *width += 1;
@@ -3268,14 +3268,14 @@ calculate_arrow_geometry (GtkArrowType  arrow_type,
 }
 
 static void
-gtk_default_draw_arrow (GtkStyle      *style,
-			GdkWindow     *window,
-			GtkStateType   state,
-			GtkShadowType  shadow,
-			GdkRectangle  *area,
-			GtkWidget     *widget,
+btk_default_draw_arrow (BtkStyle      *style,
+			BdkWindow     *window,
+			BtkStateType   state,
+			BtkShadowType  shadow,
+			BdkRectangle  *area,
+			BtkWidget     *widget,
 			const gchar   *detail,
-			GtkArrowType   arrow_type,
+			BtkArrowType   arrow_type,
 			gboolean       fill,
 			gint           x,
 			gint           y,
@@ -3289,7 +3289,7 @@ gtk_default_draw_arrow (GtkStyle      *style,
   if (detail && strcmp (detail, "menu_scroll_arrow_up") == 0)
     y++;
 
-  if (state == GTK_STATE_INSENSITIVE)
+  if (state == BTK_STATE_INSENSITIVE)
     draw_arrow (window, &style->white, area, arrow_type,
 		x + 1, y + 1, width, height);
   draw_arrow (window, &style->fg[state], area, arrow_type,
@@ -3297,12 +3297,12 @@ gtk_default_draw_arrow (GtkStyle      *style,
 }
 
 static void
-gtk_default_draw_diamond (GtkStyle      *style,
-                          GdkWindow     *window,
-                          GtkStateType   state_type,
-                          GtkShadowType  shadow_type,
-                          GdkRectangle  *area,
-                          GtkWidget     *widget,
+btk_default_draw_diamond (BtkStyle      *style,
+                          BdkWindow     *window,
+                          BtkStateType   state_type,
+                          BtkShadowType  shadow_type,
+                          BdkRectangle  *area,
+                          BtkWidget     *widget,
                           const gchar   *detail,
                           gint           x,
                           gint           y,
@@ -3311,18 +3311,18 @@ gtk_default_draw_diamond (GtkStyle      *style,
 {
   gint half_width;
   gint half_height;
-  GdkGC *outer_nw = NULL;
-  GdkGC *outer_ne = NULL;
-  GdkGC *outer_sw = NULL;
-  GdkGC *outer_se = NULL;
-  GdkGC *middle_nw = NULL;
-  GdkGC *middle_ne = NULL;
-  GdkGC *middle_sw = NULL;
-  GdkGC *middle_se = NULL;
-  GdkGC *inner_nw = NULL;
-  GdkGC *inner_ne = NULL;
-  GdkGC *inner_sw = NULL;
-  GdkGC *inner_se = NULL;
+  BdkGC *outer_nw = NULL;
+  BdkGC *outer_ne = NULL;
+  BdkGC *outer_sw = NULL;
+  BdkGC *outer_se = NULL;
+  BdkGC *middle_nw = NULL;
+  BdkGC *middle_ne = NULL;
+  BdkGC *middle_sw = NULL;
+  BdkGC *middle_se = NULL;
+  BdkGC *inner_nw = NULL;
+  BdkGC *inner_ne = NULL;
+  BdkGC *inner_sw = NULL;
+  BdkGC *inner_se = NULL;
   
   sanitize_size (window, &width, &height);
   
@@ -3331,15 +3331,15 @@ gtk_default_draw_diamond (GtkStyle      *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->black_gc, area);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->black_gc, area);
     }
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_IN:
+    case BTK_SHADOW_IN:
       inner_sw = inner_se = style->bg_gc[state_type];
       middle_sw = middle_se = style->light_gc[state_type];
       outer_sw = outer_se = style->light_gc[state_type];
@@ -3348,7 +3348,7 @@ gtk_default_draw_diamond (GtkStyle      *style,
       outer_nw = outer_ne = style->dark_gc[state_type];
       break;
           
-    case GTK_SHADOW_OUT:
+    case BTK_SHADOW_OUT:
       inner_sw = inner_se = style->dark_gc[state_type];
       middle_sw = middle_se = style->dark_gc[state_type];
       outer_sw = outer_se = style->black_gc;
@@ -3357,7 +3357,7 @@ gtk_default_draw_diamond (GtkStyle      *style,
       outer_nw = outer_ne = style->light_gc[state_type];
       break;
 
-    case GTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_IN:
       inner_sw = inner_se = style->bg_gc[state_type];
       middle_sw = middle_se = style->dark_gc[state_type];
       outer_sw = outer_se = style->light_gc[state_type];
@@ -3366,7 +3366,7 @@ gtk_default_draw_diamond (GtkStyle      *style,
       outer_nw = outer_ne = style->dark_gc[state_type];
       break;
 
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_ETCHED_OUT:
       inner_sw = inner_se = style->bg_gc[state_type];
       middle_sw = middle_se = style->light_gc[state_type];
       outer_sw = outer_se = style->dark_gc[state_type];
@@ -3382,60 +3382,60 @@ gtk_default_draw_diamond (GtkStyle      *style,
 
   if (inner_sw)
     {
-      gdk_draw_line (window, inner_sw,
+      bdk_draw_line (window, inner_sw,
                      x + 2, y + half_height,
                      x + half_width, y + height - 2);
-      gdk_draw_line (window, inner_se,
+      bdk_draw_line (window, inner_se,
                      x + half_width, y + height - 2,
                      x + width - 2, y + half_height);
-      gdk_draw_line (window, middle_sw,
+      bdk_draw_line (window, middle_sw,
                      x + 1, y + half_height,
                      x + half_width, y + height - 1);
-      gdk_draw_line (window, middle_se,
+      bdk_draw_line (window, middle_se,
                      x + half_width, y + height - 1,
                      x + width - 1, y + half_height);
-      gdk_draw_line (window, outer_sw,
+      bdk_draw_line (window, outer_sw,
                      x, y + half_height,
                      x + half_width, y + height);
-      gdk_draw_line (window, outer_se,
+      bdk_draw_line (window, outer_se,
                      x + half_width, y + height,
                      x + width, y + half_height);
   
-      gdk_draw_line (window, inner_nw,
+      bdk_draw_line (window, inner_nw,
                      x + 2, y + half_height,
                      x + half_width, y + 2);
-      gdk_draw_line (window, inner_ne,
+      bdk_draw_line (window, inner_ne,
                      x + half_width, y + 2,
                      x + width - 2, y + half_height);
-      gdk_draw_line (window, middle_nw,
+      bdk_draw_line (window, middle_nw,
                      x + 1, y + half_height,
                      x + half_width, y + 1);
-      gdk_draw_line (window, middle_ne,
+      bdk_draw_line (window, middle_ne,
                      x + half_width, y + 1,
                      x + width - 1, y + half_height);
-      gdk_draw_line (window, outer_nw,
+      bdk_draw_line (window, outer_nw,
                      x, y + half_height,
                      x + half_width, y);
-      gdk_draw_line (window, outer_ne,
+      bdk_draw_line (window, outer_ne,
                      x + half_width, y,
                      x + width, y + half_height);
     }
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->black_gc, NULL);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->black_gc, NULL);
     }
 }
 
 static void
-gtk_default_draw_string (GtkStyle      *style,
-                         GdkWindow     *window,
-                         GtkStateType   state_type,
-                         GdkRectangle  *area,
-                         GtkWidget     *widget,
+btk_default_draw_string (BtkStyle      *style,
+                         BdkWindow     *window,
+                         BtkStateType   state_type,
+                         BdkRectangle  *area,
+                         BtkWidget     *widget,
                          const gchar   *detail,
                          gint           x,
                          gint           y,
@@ -3443,36 +3443,36 @@ gtk_default_draw_string (GtkStyle      *style,
 {
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->white_gc, area);
-      gdk_gc_set_clip_rectangle (style->fg_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->white_gc, area);
+      bdk_gc_set_clip_rectangle (style->fg_gc[state_type], area);
     }
 
-  if (state_type == GTK_STATE_INSENSITIVE)
-    gdk_draw_string (window,
-		     gtk_style_get_font_internal (style),
+  if (state_type == BTK_STATE_INSENSITIVE)
+    bdk_draw_string (window,
+		     btk_style_get_font_internal (style),
 		     style->white_gc, x + 1, y + 1, string);
 
-  gdk_draw_string (window,
-		   gtk_style_get_font_internal (style),
+  bdk_draw_string (window,
+		   btk_style_get_font_internal (style),
 		   style->fg_gc[state_type], x, y, string);
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->white_gc, NULL);
-      gdk_gc_set_clip_rectangle (style->fg_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->white_gc, NULL);
+      bdk_gc_set_clip_rectangle (style->fg_gc[state_type], NULL);
     }
 }
 
 static void
-option_menu_get_props (GtkWidget      *widget,
-		       GtkRequisition *indicator_size,
-		       GtkBorder      *indicator_spacing)
+option_menu_get_props (BtkWidget      *widget,
+		       BtkRequisition *indicator_size,
+		       BtkBorder      *indicator_spacing)
 {
-  GtkRequisition *tmp_size = NULL;
-  GtkBorder *tmp_spacing = NULL;
+  BtkRequisition *tmp_size = NULL;
+  BtkBorder *tmp_spacing = NULL;
   
-  if (GTK_IS_OPTION_MENU (widget))
-    gtk_widget_style_get (widget, 
+  if (BTK_IS_OPTION_MENU (widget))
+    btk_widget_style_get (widget, 
 			  "indicator-size", &tmp_size,
 			  "indicator-spacing", &tmp_spacing,
 			  NULL);
@@ -3480,7 +3480,7 @@ option_menu_get_props (GtkWidget      *widget,
   if (tmp_size)
     {
       *indicator_size = *tmp_size;
-      gtk_requisition_free (tmp_size);
+      btk_requisition_free (tmp_size);
     }
   else
     *indicator_size = default_option_indicator_size;
@@ -3488,19 +3488,19 @@ option_menu_get_props (GtkWidget      *widget,
   if (tmp_spacing)
     {
       *indicator_spacing = *tmp_spacing;
-      gtk_border_free (tmp_spacing);
+      btk_border_free (tmp_spacing);
     }
   else
     *indicator_spacing = default_option_indicator_spacing;
 }
 
 static void 
-gtk_default_draw_box (GtkStyle      *style,
-		      GdkWindow     *window,
-		      GtkStateType   state_type,
-		      GtkShadowType  shadow_type,
-		      GdkRectangle  *area,
-		      GtkWidget     *widget,
+btk_default_draw_box (BtkStyle      *style,
+		      BdkWindow     *window,
+		      BtkStateType   state_type,
+		      BtkShadowType  shadow_type,
+		      BdkRectangle  *area,
+		      BtkWidget     *widget,
 		      const gchar   *detail,
 		      gint           x,
 		      gint           y,
@@ -3511,7 +3511,7 @@ gtk_default_draw_box (GtkStyle      *style,
   
   sanitize_size (window, &width, &height);
 
-  if (GTK_IS_SPIN_BUTTON (widget) && detail)
+  if (BTK_IS_SPIN_BUTTON (widget) && detail)
     {
       if (strcmp (detail, "spinbutton_up") == 0)
 	{
@@ -3519,7 +3519,7 @@ gtk_default_draw_box (GtkStyle      *style,
 	  width -= 3;
 	  height -= 2;
 
-	  if (get_direction (widget) == GTK_TEXT_DIR_RTL)
+	  if (get_direction (widget) == BTK_TEXT_DIR_RTL)
 	    x += 2;
 	  else
 	    x += 1;
@@ -3531,7 +3531,7 @@ gtk_default_draw_box (GtkStyle      *style,
 	  width -= 3;
 	  height -= 2;
 
-	  if (get_direction (widget) == GTK_TEXT_DIR_RTL)
+	  if (get_direction (widget) == BTK_TEXT_DIR_RTL)
 	    x += 2;
 	  else
 	    x += 1;
@@ -3541,76 +3541,76 @@ gtk_default_draw_box (GtkStyle      *style,
     }
   
   if (!style->bg_pixmap[state_type] || 
-      GDK_IS_PIXMAP (window))
+      BDK_IS_PIXMAP (window))
     {
-      GdkGC *gc = style->bg_gc[state_type];
+      BdkGC *gc = style->bg_gc[state_type];
       
-      if (state_type == GTK_STATE_SELECTED && detail && strcmp (detail, "paned") == 0)
+      if (state_type == BTK_STATE_SELECTED && detail && strcmp (detail, "paned") == 0)
 	{
-	  if (widget && !gtk_widget_has_focus (widget))
-	    gc = style->base_gc[GTK_STATE_ACTIVE];
+	  if (widget && !btk_widget_has_focus (widget))
+	    gc = style->base_gc[BTK_STATE_ACTIVE];
 	}
 
       if (area)
-	gdk_gc_set_clip_rectangle (gc, area);
+	bdk_gc_set_clip_rectangle (gc, area);
 
-      gdk_draw_rectangle (window, gc, TRUE,
+      bdk_draw_rectangle (window, gc, TRUE,
                           x, y, width, height);
       if (area)
-	gdk_gc_set_clip_rectangle (gc, NULL);
+	bdk_gc_set_clip_rectangle (gc, NULL);
     }
   else
-    gtk_style_apply_default_background (style, window,
-                                        widget && gtk_widget_get_has_window (widget),
+    btk_style_apply_default_background (style, window,
+                                        widget && btk_widget_get_has_window (widget),
                                         state_type, area, x, y, width, height);
 
   if (is_spinbutton_box)
     {
-      GdkGC *upper_gc;
-      GdkGC *lower_gc;
+      BdkGC *upper_gc;
+      BdkGC *lower_gc;
       
       lower_gc = style->dark_gc[state_type];
-      if (shadow_type == GTK_SHADOW_OUT)
+      if (shadow_type == BTK_SHADOW_OUT)
 	upper_gc = style->light_gc[state_type];
       else
 	upper_gc = style->dark_gc[state_type];
 
       if (area)
 	{
-	  gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-	  gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
+	  bdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
+	  bdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
 	}
       
-      gdk_draw_line (window, upper_gc, x, y, x + width - 1, y);
-      gdk_draw_line (window, lower_gc, x, y + height - 1, x + width - 1, y + height - 1);
+      bdk_draw_line (window, upper_gc, x, y, x + width - 1, y);
+      bdk_draw_line (window, lower_gc, x, y + height - 1, x + width - 1, y + height - 1);
 
       if (area)
 	{
-	  gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-	  gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
+	  bdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
+	  bdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
 	}
       return;
     }
 
-  gtk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
+  btk_paint_shadow (style, window, state_type, shadow_type, area, widget, detail,
                     x, y, width, height);
 
   if (detail && strcmp (detail, "optionmenu") == 0)
     {
-      GtkRequisition indicator_size;
-      GtkBorder indicator_spacing;
+      BtkRequisition indicator_size;
+      BtkBorder indicator_spacing;
       gint vline_x;
 
       option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
       sanitize_size (window, &width, &height);
 
-      if (get_direction (widget) == GTK_TEXT_DIR_RTL)
+      if (get_direction (widget) == BTK_TEXT_DIR_RTL)
 	vline_x = x + indicator_size.width + indicator_spacing.left + indicator_spacing.right;
       else 
 	vline_x = x + width - (indicator_size.width + indicator_spacing.left + indicator_spacing.right) - style->xthickness;
 
-      gtk_paint_vline (style, window, state_type, area, widget,
+      btk_paint_vline (style, window, state_type, area, widget,
 		       detail,
 		       y + style->ythickness + 1,
 		       y + height - style->ythickness - 3,
@@ -3618,71 +3618,71 @@ gtk_default_draw_box (GtkStyle      *style,
     }
 }
 
-static GdkGC *
-get_darkened_gc (GdkWindow      *window,
-                 const GdkColor *color,
+static BdkGC *
+get_darkened_gc (BdkWindow      *window,
+                 const BdkColor *color,
                  gint            darken_count)
 {
-  GdkColor src = *color;
-  GdkColor shaded = *color;
-  GdkGC *gc;
+  BdkColor src = *color;
+  BdkColor shaded = *color;
+  BdkGC *gc;
   
-  gc = gdk_gc_new (window);
+  gc = bdk_gc_new (window);
 
   while (darken_count)
     {
-      _gtk_style_shade (&src, &shaded, 0.93);
+      _btk_style_shade (&src, &shaded, 0.93);
       src = shaded;
       --darken_count;
     }
    
-  gdk_gc_set_rgb_fg_color (gc, &shaded);
+  bdk_gc_set_rgb_fg_color (gc, &shaded);
 
   return gc;
 }
 
 static void 
-gtk_default_draw_flat_box (GtkStyle      *style,
-                           GdkWindow     *window,
-                           GtkStateType   state_type,
-                           GtkShadowType  shadow_type,
-                           GdkRectangle  *area,
-                           GtkWidget     *widget,
+btk_default_draw_flat_box (BtkStyle      *style,
+                           BdkWindow     *window,
+                           BtkStateType   state_type,
+                           BtkShadowType  shadow_type,
+                           BdkRectangle  *area,
+                           BtkWidget     *widget,
                            const gchar   *detail,
                            gint           x,
                            gint           y,
                            gint           width,
                            gint           height)
 {
-  GdkGC *gc1;
-  GdkGC *freeme = NULL;
+  BdkGC *gc1;
+  BdkGC *freeme = NULL;
   
   sanitize_size (window, &width, &height);
   
   if (detail)
     {
-      if (state_type == GTK_STATE_SELECTED)
+      if (state_type == BTK_STATE_SELECTED)
         {
           if (!strcmp ("text", detail))
-            gc1 = style->bg_gc[GTK_STATE_SELECTED];
+            gc1 = style->bg_gc[BTK_STATE_SELECTED];
           else if (!strcmp ("cell_even", detail) ||
                    !strcmp ("cell_odd", detail) ||
                    !strcmp ("cell_even_ruled", detail) ||
 		   !strcmp ("cell_even_ruled_sorted", detail))
             {
 	      /* This has to be really broken; alex made me do it. -jrb */
-	      if (widget && gtk_widget_has_focus (widget))
+	      if (widget && btk_widget_has_focus (widget))
 		gc1 = style->base_gc[state_type];
 	      else
-	        gc1 = style->base_gc[GTK_STATE_ACTIVE];
+	        gc1 = style->base_gc[BTK_STATE_ACTIVE];
             }
 	  else if (!strcmp ("cell_odd_ruled", detail) ||
 		   !strcmp ("cell_odd_ruled_sorted", detail))
 	    {
-	      if (widget && gtk_widget_has_focus (widget))
+	      if (widget && btk_widget_has_focus (widget))
 	        freeme = get_darkened_gc (window, &style->base[state_type], 1);
 	      else
-	        freeme = get_darkened_gc (window, &style->base[GTK_STATE_ACTIVE], 1);
+	        freeme = get_darkened_gc (window, &style->base[BTK_STATE_ACTIVE], 1);
 	      gc1 = freeme;
 	    }
           else
@@ -3693,7 +3693,7 @@ gtk_default_draw_flat_box (GtkStyle      *style,
       else
         {
           if (!strcmp ("viewportbin", detail))
-            gc1 = style->bg_gc[GTK_STATE_NORMAL];
+            gc1 = style->bg_gc[BTK_STATE_NORMAL];
           else if (!strcmp ("entry_bg", detail))
             gc1 = style->base_gc[state_type];
 
@@ -3706,9 +3706,9 @@ gtk_default_draw_flat_box (GtkStyle      *style,
                    !strcmp ("cell_odd", detail) ||
                    !strcmp ("cell_even_ruled", detail))
             {
-	      GdkColor *color = NULL;
+	      BdkColor *color = NULL;
 
-	      gtk_widget_style_get (widget,
+	      btk_widget_style_get (widget,
 		                    "even-row-color", &color,
 				    NULL);
 
@@ -3717,16 +3717,16 @@ gtk_default_draw_flat_box (GtkStyle      *style,
 		  freeme = get_darkened_gc (window, color, 0);
 		  gc1 = freeme;
 
-		  gdk_color_free (color);
+		  bdk_color_free (color);
 		}
 	      else
 	        gc1 = style->base_gc[state_type];
             }
 	  else if (!strcmp ("cell_odd_ruled", detail))
 	    {
-	      GdkColor *color = NULL;
+	      BdkColor *color = NULL;
 
-	      gtk_widget_style_get (widget,
+	      btk_widget_style_get (widget,
 		                    "odd-row-color", &color,
 				    NULL);
 
@@ -3735,18 +3735,18 @@ gtk_default_draw_flat_box (GtkStyle      *style,
 		  freeme = get_darkened_gc (window, color, 0);
 		  gc1 = freeme;
 
-		  gdk_color_free (color);
+		  bdk_color_free (color);
 		}
 	      else
 	        {
-		  gtk_widget_style_get (widget,
+		  btk_widget_style_get (widget,
 		                        "even-row-color", &color,
 					NULL);
 
 		  if (color)
 		    {
 		      freeme = get_darkened_gc (window, color, 1);
-		      gdk_color_free (color);
+		      bdk_color_free (color);
 		    }
 		  else
 		    freeme = get_darkened_gc (window, &style->base[state_type], 1);
@@ -3757,14 +3757,14 @@ gtk_default_draw_flat_box (GtkStyle      *style,
                    !strcmp ("cell_odd_sorted", detail) ||
                    !strcmp ("cell_even_ruled_sorted", detail))
             {
-	      GdkColor *color = NULL;
+	      BdkColor *color = NULL;
 
 	      if (!strcmp ("cell_odd_sorted", detail))
-	        gtk_widget_style_get (widget,
+	        btk_widget_style_get (widget,
 		                      "odd-row-color", &color,
 				      NULL);
 	      else
-	        gtk_widget_style_get (widget,
+	        btk_widget_style_get (widget,
 		                      "even-row-color", &color,
 				      NULL);
 
@@ -3773,7 +3773,7 @@ gtk_default_draw_flat_box (GtkStyle      *style,
 		  freeme = get_darkened_gc (window, color, 1);
 		  gc1 = freeme;
 
-		  gdk_color_free (color);
+		  bdk_color_free (color);
 		}
 	      else
 		{
@@ -3783,9 +3783,9 @@ gtk_default_draw_flat_box (GtkStyle      *style,
             }
           else if (!strcmp ("cell_odd_ruled_sorted", detail))
             {
-	      GdkColor *color = NULL;
+	      BdkColor *color = NULL;
 
-	      gtk_widget_style_get (widget,
+	      btk_widget_style_get (widget,
 		                    "odd-row-color", &color,
 				    NULL);
 
@@ -3794,18 +3794,18 @@ gtk_default_draw_flat_box (GtkStyle      *style,
 		  freeme = get_darkened_gc (window, color, 1);
 		  gc1 = freeme;
 
-		  gdk_color_free (color);
+		  bdk_color_free (color);
 		}
 	      else
 	        {
-		  gtk_widget_style_get (widget,
+		  btk_widget_style_get (widget,
 		                        "even-row-color", &color,
 					NULL);
 
 		  if (color)
 		    {
 		      freeme = get_darkened_gc (window, color, 2);
-		      gdk_color_free (color);
+		      bdk_color_free (color);
 		    }
 		  else
                     freeme = get_darkened_gc (window, &style->base[state_type], 2);
@@ -3820,24 +3820,24 @@ gtk_default_draw_flat_box (GtkStyle      *style,
     gc1 = style->bg_gc[state_type];
   
   if (!style->bg_pixmap[state_type] || gc1 != style->bg_gc[state_type] ||
-      GDK_IS_PIXMAP (window))
+      BDK_IS_PIXMAP (window))
     {
       if (area)
-	gdk_gc_set_clip_rectangle (gc1, area);
+	bdk_gc_set_clip_rectangle (gc1, area);
 
-      gdk_draw_rectangle (window, gc1, TRUE,
+      bdk_draw_rectangle (window, gc1, TRUE,
                           x, y, width, height);
 
       if (detail && !strcmp ("tooltip", detail))
-        gdk_draw_rectangle (window, style->black_gc, FALSE,
+        bdk_draw_rectangle (window, style->black_gc, FALSE,
                             x, y, width - 1, height - 1);
 
       if (area)
-	gdk_gc_set_clip_rectangle (gc1, NULL);
+	bdk_gc_set_clip_rectangle (gc1, NULL);
     }
   else
-    gtk_style_apply_default_background (style, window,
-                                        widget && gtk_widget_get_has_window (widget),
+    btk_style_apply_default_background (style, window,
+                                        widget && btk_widget_get_has_window (widget),
                                         state_type, area, x, y, width, height);
 
 
@@ -3846,19 +3846,19 @@ gtk_default_draw_flat_box (GtkStyle      *style,
 }
 
 static void 
-gtk_default_draw_check (GtkStyle      *style,
-			GdkWindow     *window,
-			GtkStateType   state_type,
-			GtkShadowType  shadow_type,
-			GdkRectangle  *area,
-			GtkWidget     *widget,
+btk_default_draw_check (BtkStyle      *style,
+			BdkWindow     *window,
+			BtkStateType   state_type,
+			BtkShadowType  shadow_type,
+			BdkRectangle  *area,
+			BtkWidget     *widget,
 			const gchar   *detail,
 			gint           x,
 			gint           y,
 			gint           width,
 			gint           height)
 {
-  cairo_t *cr = gdk_cairo_create (window);
+  bairo_t *cr = bdk_bairo_create (window);
   enum { BUTTON, MENU, CELL } type = BUTTON;
   int exterior_size;
   int interior_size;
@@ -3874,8 +3874,8 @@ gtk_default_draw_check (GtkStyle      *style,
       
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
     }
   
   exterior_size = MIN (width, height);
@@ -3899,17 +3899,17 @@ gtk_default_draw_check (GtkStyle      *style,
     case BUTTON:
     case CELL:
       if (type == BUTTON)
-	gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+	bdk_bairo_set_source_color (cr, &style->fg[state_type]);
       else
-	gdk_cairo_set_source_color (cr, &style->text[state_type]);
+	bdk_bairo_set_source_color (cr, &style->text[state_type]);
 	
-      cairo_set_line_width (cr, 1.0);
-      cairo_rectangle (cr, x + 0.5, y + 0.5, exterior_size - 1, exterior_size - 1);
-      cairo_stroke (cr);
+      bairo_set_line_width (cr, 1.0);
+      bairo_rectangle (cr, x + 0.5, y + 0.5, exterior_size - 1, exterior_size - 1);
+      bairo_stroke (cr);
 
-      gdk_cairo_set_source_color (cr, &style->base[state_type]);
-      cairo_rectangle (cr, x + 1, y + 1, exterior_size - 2, exterior_size - 2);
-      cairo_fill (cr);
+      bdk_bairo_set_source_color (cr, &style->base[state_type]);
+      bairo_rectangle (cr, x + 1, y + 1, exterior_size - 2, exterior_size - 2);
+      bairo_fill (cr);
       break;
 
     case MENU:
@@ -3920,70 +3920,70 @@ gtk_default_draw_check (GtkStyle      *style,
     {
     case BUTTON:
     case CELL:
-      gdk_cairo_set_source_color (cr, &style->text[state_type]);
+      bdk_bairo_set_source_color (cr, &style->text[state_type]);
       break;
     case MENU:
-      gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+      bdk_bairo_set_source_color (cr, &style->fg[state_type]);
       break;
     }
 
-  if (shadow_type == GTK_SHADOW_IN)
+  if (shadow_type == BTK_SHADOW_IN)
     {
-      cairo_translate (cr,
+      bairo_translate (cr,
 		       x + pad, y + pad);
       
-      cairo_scale (cr, interior_size / 7., interior_size / 7.);
+      bairo_scale (cr, interior_size / 7., interior_size / 7.);
       
-      cairo_move_to  (cr, 7.0, 0.0);
-      cairo_line_to  (cr, 7.5, 1.0);
-      cairo_curve_to (cr, 5.3, 2.0,
+      bairo_move_to  (cr, 7.0, 0.0);
+      bairo_line_to  (cr, 7.5, 1.0);
+      bairo_curve_to (cr, 5.3, 2.0,
 		      4.3, 4.0,
 		      3.5, 7.0);
-      cairo_curve_to (cr, 3.0, 5.7,
+      bairo_curve_to (cr, 3.0, 5.7,
 		      1.3, 4.7,
 		      0.0, 4.7);
-      cairo_line_to  (cr, 0.2, 3.5);
-      cairo_curve_to (cr, 1.1, 3.5,
+      bairo_line_to  (cr, 0.2, 3.5);
+      bairo_curve_to (cr, 1.1, 3.5,
 		      2.3, 4.3,
 		      3.0, 5.0);
-      cairo_curve_to (cr, 1.0, 3.9,
+      bairo_curve_to (cr, 1.0, 3.9,
 		      2.4, 4.1,
 		      3.2, 4.9);
-      cairo_curve_to (cr, 3.5, 3.1,
+      bairo_curve_to (cr, 3.5, 3.1,
 		      5.2, 2.0,
 		      7.0, 0.0);
       
-      cairo_fill (cr);
+      bairo_fill (cr);
     }
-  else if (shadow_type == GTK_SHADOW_ETCHED_IN) /* inconsistent */
+  else if (shadow_type == BTK_SHADOW_ETCHED_IN) /* inconsistent */
     {
       int line_thickness = MAX (1, (3 + interior_size * 2) / 7);
 
-      cairo_rectangle (cr,
+      bairo_rectangle (cr,
 		       x + pad,
 		       y + pad + (1 + interior_size - line_thickness) / 2,
 		       interior_size,
 		       line_thickness);
-      cairo_fill (cr);
+      bairo_fill (cr);
     }
   
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 static void 
-gtk_default_draw_option (GtkStyle      *style,
-			 GdkWindow     *window,
-			 GtkStateType   state_type,
-			 GtkShadowType  shadow_type,
-			 GdkRectangle  *area,
-			 GtkWidget     *widget,
+btk_default_draw_option (BtkStyle      *style,
+			 BdkWindow     *window,
+			 BtkStateType   state_type,
+			 BtkShadowType  shadow_type,
+			 BdkRectangle  *area,
+			 BtkWidget     *widget,
 			 const gchar   *detail,
 			 gint           x,
 			 gint           y,
 			 gint           width,
 			 gint           height)
 {
-  cairo_t *cr = gdk_cairo_create (window);
+  bairo_t *cr = bdk_bairo_create (window);
   enum { BUTTON, MENU, CELL } type = BUTTON;
   int exterior_size;
   
@@ -3997,8 +3997,8 @@ gtk_default_draw_option (GtkStyle      *style,
       
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
     }
   
   exterior_size = MIN (width, height);
@@ -4012,23 +4012,23 @@ gtk_default_draw_option (GtkStyle      *style,
     {
     case BUTTON:
     case CELL:
-      gdk_cairo_set_source_color (cr, &style->base[state_type]);
+      bdk_bairo_set_source_color (cr, &style->base[state_type]);
       
-      cairo_arc (cr,
+      bairo_arc (cr,
 		 x + exterior_size / 2.,
 		 y + exterior_size / 2.,
 		 (exterior_size - 1) / 2.,
 		 0, 2 * G_PI);
 
-      cairo_fill_preserve (cr);
+      bairo_fill_preserve (cr);
 
       if (type == BUTTON)
-	gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+	bdk_bairo_set_source_color (cr, &style->fg[state_type]);
       else
-	gdk_cairo_set_source_color (cr, &style->text[state_type]);
+	bdk_bairo_set_source_color (cr, &style->text[state_type]);
 	
-      cairo_set_line_width (cr, 1.);
-      cairo_stroke (cr);
+      bairo_set_line_width (cr, 1.);
+      bairo_stroke (cr);
       break;
 
     case MENU:
@@ -4038,16 +4038,16 @@ gtk_default_draw_option (GtkStyle      *style,
   switch (type)
     {
     case BUTTON:
-      gdk_cairo_set_source_color (cr, &style->text[state_type]);
+      bdk_bairo_set_source_color (cr, &style->text[state_type]);
       break;
     case CELL:
       break;
     case MENU:
-      gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+      bdk_bairo_set_source_color (cr, &style->fg[state_type]);
       break;
     }
 
-  if (shadow_type == GTK_SHADOW_IN)
+  if (shadow_type == BTK_SHADOW_IN)
     {
       int pad = style->xthickness + MAX (1, 2 * (exterior_size - 2 * style->xthickness) / 9);
       int interior_size = MAX (1, exterior_size - 2 * pad);
@@ -4058,14 +4058,14 @@ gtk_default_draw_option (GtkStyle      *style,
 	  pad = MAX (0, (exterior_size - interior_size) / 2);
 	}
 
-      cairo_arc (cr,
+      bairo_arc (cr,
 		 x + pad + interior_size / 2.,
 		 y + pad + interior_size / 2.,
 		 interior_size / 2.,
 		 0, 2 * G_PI);
-      cairo_fill (cr);
+      bairo_fill (cr);
     }
-  else if (shadow_type == GTK_SHADOW_ETCHED_IN) /* inconsistent */
+  else if (shadow_type == BTK_SHADOW_ETCHED_IN) /* inconsistent */
     {
       int pad = style->xthickness + MAX (1, (exterior_size - 2 * style->xthickness) / 9);
       int interior_size = MAX (1, exterior_size - 2 * pad);
@@ -4079,24 +4079,24 @@ gtk_default_draw_option (GtkStyle      *style,
 
       line_thickness = MAX (1, (3 + interior_size * 2) / 7);
 
-      cairo_rectangle (cr,
+      bairo_rectangle (cr,
 		       x + pad,
 		       y + pad + (interior_size - line_thickness) / 2.,
 		       interior_size,
 		       line_thickness);
-      cairo_fill (cr);
+      bairo_fill (cr);
     }
   
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 static void
-gtk_default_draw_tab (GtkStyle      *style,
-		      GdkWindow     *window,
-		      GtkStateType   state_type,
-		      GtkShadowType  shadow_type,
-		      GdkRectangle  *area,
-		      GtkWidget     *widget,
+btk_default_draw_tab (BtkStyle      *style,
+		      BdkWindow     *window,
+		      BtkStateType   state_type,
+		      BtkShadowType  shadow_type,
+		      BdkRectangle  *area,
+		      BtkWidget     *widget,
 		      const gchar   *detail,
 		      gint           x,
 		      gint           y,
@@ -4105,8 +4105,8 @@ gtk_default_draw_tab (GtkStyle      *style,
 {
 #define ARROW_SPACE 4
 
-  GtkRequisition indicator_size;
-  GtkBorder indicator_spacing;
+  BtkRequisition indicator_size;
+  BtkBorder indicator_spacing;
   gint arrow_height;
   
   option_menu_get_props (widget, &indicator_size, &indicator_spacing);
@@ -4117,73 +4117,73 @@ gtk_default_draw_tab (GtkStyle      *style,
   x += (width - indicator_size.width) / 2;
   y += (height - (2 * arrow_height + ARROW_SPACE)) / 2;
 
-  if (state_type == GTK_STATE_INSENSITIVE)
+  if (state_type == BTK_STATE_INSENSITIVE)
     {
       draw_arrow (window, &style->white, area,
-		  GTK_ARROW_UP, x + 1, y + 1,
+		  BTK_ARROW_UP, x + 1, y + 1,
 		  indicator_size.width, arrow_height);
       
       draw_arrow (window, &style->white, area,
-		  GTK_ARROW_DOWN, x + 1, y + arrow_height + ARROW_SPACE + 1,
+		  BTK_ARROW_DOWN, x + 1, y + arrow_height + ARROW_SPACE + 1,
 		  indicator_size.width, arrow_height);
     }
   
   draw_arrow (window, &style->fg[state_type], area,
-	      GTK_ARROW_UP, x, y,
+	      BTK_ARROW_UP, x, y,
 	      indicator_size.width, arrow_height);
   
   
   draw_arrow (window, &style->fg[state_type], area,
-	      GTK_ARROW_DOWN, x, y + arrow_height + ARROW_SPACE,
+	      BTK_ARROW_DOWN, x, y + arrow_height + ARROW_SPACE,
 	      indicator_size.width, arrow_height);
 }
 
 static void 
-gtk_default_draw_shadow_gap (GtkStyle       *style,
-                             GdkWindow      *window,
-                             GtkStateType    state_type,
-                             GtkShadowType   shadow_type,
-                             GdkRectangle   *area,
-                             GtkWidget      *widget,
+btk_default_draw_shadow_gap (BtkStyle       *style,
+                             BdkWindow      *window,
+                             BtkStateType    state_type,
+                             BtkShadowType   shadow_type,
+                             BdkRectangle   *area,
+                             BtkWidget      *widget,
                              const gchar    *detail,
                              gint            x,
                              gint            y,
                              gint            width,
                              gint            height,
-                             GtkPositionType gap_side,
+                             BtkPositionType gap_side,
                              gint            gap_x,
                              gint            gap_width)
 {
-  GdkGC *gc1 = NULL;
-  GdkGC *gc2 = NULL;
-  GdkGC *gc3 = NULL;
-  GdkGC *gc4 = NULL;
+  BdkGC *gc1 = NULL;
+  BdkGC *gc2 = NULL;
+  BdkGC *gc3 = NULL;
+  BdkGC *gc4 = NULL;
   
   sanitize_size (window, &width, &height);
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
+    case BTK_SHADOW_NONE:
       return;
-    case GTK_SHADOW_IN:
+    case BTK_SHADOW_IN:
       gc1 = style->dark_gc[state_type];
       gc2 = style->black_gc;
       gc3 = style->bg_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_IN:
       gc1 = style->dark_gc[state_type];
       gc2 = style->light_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_OUT:
+    case BTK_SHADOW_OUT:
       gc1 = style->light_gc[state_type];
       gc2 = style->bg_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->black_gc;
       break;
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_ETCHED_OUT:
       gc1 = style->light_gc[state_type];
       gc2 = style->dark_gc[state_type];
       gc3 = style->light_gc[state_type];
@@ -4192,150 +4192,150 @@ gtk_default_draw_shadow_gap (GtkStyle       *style,
     }
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
-      gdk_gc_set_clip_rectangle (gc3, area);
-      gdk_gc_set_clip_rectangle (gc4, area);
+      bdk_gc_set_clip_rectangle (gc1, area);
+      bdk_gc_set_clip_rectangle (gc2, area);
+      bdk_gc_set_clip_rectangle (gc3, area);
+      bdk_gc_set_clip_rectangle (gc4, area);
     }
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
-    case GTK_SHADOW_IN:
-    case GTK_SHADOW_OUT:
-    case GTK_SHADOW_ETCHED_IN:
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_NONE:
+    case BTK_SHADOW_IN:
+    case BTK_SHADOW_OUT:
+    case BTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_OUT:
       switch (gap_side)
         {
-        case GTK_POS_TOP:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_TOP:
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y, x + 1, y + height - 2);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + 1, y + height - 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 1, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x, y, x + gap_x - 1, y);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + 1, y + 1, x + gap_x - 1, y + 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + gap_x, y, x + gap_x, y);
             }
           if ((width - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x + gap_x + gap_width, y, x + width - 2, y);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + gap_x + gap_width, y + 1, x + width - 3, y + 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + gap_x + gap_width - 1, y, x + gap_x + gap_width - 1, y);
             }
           break;
-        case GTK_POS_BOTTOM:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_BOTTOM:
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 1, y);
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 2, y + 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + 1, y + height - 1);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y + 1, x + width - 2, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x, y + height - 1, x + gap_x - 1, y + height - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + 1, y + height - 2, x + gap_x - 1, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + gap_x, y + height - 1, x + gap_x, y + height - 1);
             }
           if ((width - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x + gap_x + gap_width, y + height - 1, x + width - 2, y + height - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + gap_x + gap_width, y + height - 2, x + width - 2, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + gap_x + gap_width - 1, y + height - 1, x + gap_x + gap_width - 1, y + height - 1);
             }
           break;
-        case GTK_POS_LEFT:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_LEFT:
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 1, y);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x, y + 1, x + width - 2, y + 1);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x, y + height - 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y + 1, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 1, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x, y, x, y + gap_x - 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + 1, y + 1, x + 1, y + gap_x - 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x, y + gap_x, x, y + gap_x);
             }
           if ((width - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x, y + gap_x + gap_width, x, y + height - 2);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + 1, y + gap_x + gap_width, x + 1, y + height - 2);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x, y + gap_x + gap_width - 1, x, y + gap_x + gap_width - 1);
             }
           break;
-        case GTK_POS_RIGHT:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_RIGHT:
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 1, y);
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 1, y + 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + 1, y + height - 2);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + 1, y + height - 2, x + width - 1, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x + width - 1, y, x + width - 1, y + gap_x - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 2, y + 1, x + width - 2, y + gap_x - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 1, y + gap_x, x + width - 1, y + gap_x);
             }
           if ((width - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x + width - 1, y + gap_x + gap_width, x + width - 1, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 2, y + gap_x + gap_width, x + width - 2, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 1, y + gap_x + gap_width - 1, x + width - 1, y + gap_x + gap_width - 1);
             }
           break;
@@ -4344,63 +4344,63 @@ gtk_default_draw_shadow_gap (GtkStyle       *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
-      gdk_gc_set_clip_rectangle (gc3, NULL);
-      gdk_gc_set_clip_rectangle (gc4, NULL);
+      bdk_gc_set_clip_rectangle (gc1, NULL);
+      bdk_gc_set_clip_rectangle (gc2, NULL);
+      bdk_gc_set_clip_rectangle (gc3, NULL);
+      bdk_gc_set_clip_rectangle (gc4, NULL);
     }
 }
 
 static void 
-gtk_default_draw_box_gap (GtkStyle       *style,
-                          GdkWindow      *window,
-                          GtkStateType    state_type,
-                          GtkShadowType   shadow_type,
-                          GdkRectangle   *area,
-                          GtkWidget      *widget,
+btk_default_draw_box_gap (BtkStyle       *style,
+                          BdkWindow      *window,
+                          BtkStateType    state_type,
+                          BtkShadowType   shadow_type,
+                          BdkRectangle   *area,
+                          BtkWidget      *widget,
                           const gchar    *detail,
                           gint            x,
                           gint            y,
                           gint            width,
                           gint            height,
-                          GtkPositionType gap_side,
+                          BtkPositionType gap_side,
                           gint            gap_x,
                           gint            gap_width)
 {
-  GdkGC *gc1 = NULL;
-  GdkGC *gc2 = NULL;
-  GdkGC *gc3 = NULL;
-  GdkGC *gc4 = NULL;
+  BdkGC *gc1 = NULL;
+  BdkGC *gc2 = NULL;
+  BdkGC *gc3 = NULL;
+  BdkGC *gc4 = NULL;
   
-  gtk_style_apply_default_background (style, window,
-                                      widget && gtk_widget_get_has_window (widget),
+  btk_style_apply_default_background (style, window,
+                                      widget && btk_widget_get_has_window (widget),
                                       state_type, area, x, y, width, height);
   
   sanitize_size (window, &width, &height);
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
+    case BTK_SHADOW_NONE:
       return;
-    case GTK_SHADOW_IN:
+    case BTK_SHADOW_IN:
       gc1 = style->dark_gc[state_type];
       gc2 = style->black_gc;
       gc3 = style->bg_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_IN:
       gc1 = style->dark_gc[state_type];
       gc2 = style->light_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_OUT:
+    case BTK_SHADOW_OUT:
       gc1 = style->light_gc[state_type];
       gc2 = style->bg_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->black_gc;
       break;
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_ETCHED_OUT:
       gc1 = style->light_gc[state_type];
       gc2 = style->dark_gc[state_type];
       gc3 = style->light_gc[state_type];
@@ -4410,150 +4410,150 @@ gtk_default_draw_box_gap (GtkStyle       *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
-      gdk_gc_set_clip_rectangle (gc3, area);
-      gdk_gc_set_clip_rectangle (gc4, area);
+      bdk_gc_set_clip_rectangle (gc1, area);
+      bdk_gc_set_clip_rectangle (gc2, area);
+      bdk_gc_set_clip_rectangle (gc3, area);
+      bdk_gc_set_clip_rectangle (gc4, area);
     }
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
-    case GTK_SHADOW_IN:
-    case GTK_SHADOW_OUT:
-    case GTK_SHADOW_ETCHED_IN:
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_NONE:
+    case BTK_SHADOW_IN:
+    case BTK_SHADOW_OUT:
+    case BTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_OUT:
       switch (gap_side)
         {
-        case GTK_POS_TOP:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_TOP:
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y, x + 1, y + height - 2);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + 1, y + height - 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 1, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x, y, x + gap_x - 1, y);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + 1, y + 1, x + gap_x - 1, y + 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + gap_x, y, x + gap_x, y);
             }
           if ((width - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x + gap_x + gap_width, y, x + width - 2, y);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + gap_x + gap_width, y + 1, x + width - 2, y + 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + gap_x + gap_width - 1, y, x + gap_x + gap_width - 1, y);
             }
           break;
-        case  GTK_POS_BOTTOM:
-          gdk_draw_line (window, gc1,
+        case  BTK_POS_BOTTOM:
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 1, y);
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 2, y + 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + 1, y + height - 1);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y + 1, x + width - 2, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x, y + height - 1, x + gap_x - 1, y + height - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + 1, y + height - 2, x + gap_x - 1, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + gap_x, y + height - 1, x + gap_x, y + height - 1);
             }
           if ((width - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x + gap_x + gap_width, y + height - 1, x + width - 2, y + height - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + gap_x + gap_width, y + height - 2, x + width - 2, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + gap_x + gap_width - 1, y + height - 1, x + gap_x + gap_width - 1, y + height - 1);
             }
           break;
-        case GTK_POS_LEFT:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_LEFT:
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 1, y);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x, y + 1, x + width - 2, y + 1);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x, y + height - 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y + 1, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 1, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x, y, x, y + gap_x - 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + 1, y + 1, x + 1, y + gap_x - 1);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x, y + gap_x, x, y + gap_x);
             }
           if ((height - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc1,
+              bdk_draw_line (window, gc1,
                              x, y + gap_x + gap_width, x, y + height - 2);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x + 1, y + gap_x + gap_width, x + 1, y + height - 2);
-              gdk_draw_line (window, gc2,
+              bdk_draw_line (window, gc2,
                              x, y + gap_x + gap_width - 1, x, y + gap_x + gap_width - 1);
             }
           break;
-        case GTK_POS_RIGHT:
-          gdk_draw_line (window, gc1,
+        case BTK_POS_RIGHT:
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 1, y);
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 1, y + 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + 1, y + height - 2);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + 1, y + height - 2, x + width - 1, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 1, y + height - 1);
           if (gap_x > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x + width - 1, y, x + width - 1, y + gap_x - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 2, y + 1, x + width - 2, y + gap_x - 1);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 1, y + gap_x, x + width - 1, y + gap_x);
             }
           if ((height - (gap_x + gap_width)) > 0)
             {
-              gdk_draw_line (window, gc4,
+              bdk_draw_line (window, gc4,
                              x + width - 1, y + gap_x + gap_width, x + width - 1, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 2, y + gap_x + gap_width, x + width - 2, y + height - 2);
-              gdk_draw_line (window, gc3,
+              bdk_draw_line (window, gc3,
                              x + width - 1, y + gap_x + gap_width - 1, x + width - 1, y + gap_x + gap_width - 1);
             }
           break;
@@ -4562,61 +4562,61 @@ gtk_default_draw_box_gap (GtkStyle       *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
-      gdk_gc_set_clip_rectangle (gc3, NULL);
-      gdk_gc_set_clip_rectangle (gc4, NULL);
+      bdk_gc_set_clip_rectangle (gc1, NULL);
+      bdk_gc_set_clip_rectangle (gc2, NULL);
+      bdk_gc_set_clip_rectangle (gc3, NULL);
+      bdk_gc_set_clip_rectangle (gc4, NULL);
     }
 }
 
 static void 
-gtk_default_draw_extension (GtkStyle       *style,
-                            GdkWindow      *window,
-                            GtkStateType    state_type,
-                            GtkShadowType   shadow_type,
-                            GdkRectangle   *area,
-                            GtkWidget      *widget,
+btk_default_draw_extension (BtkStyle       *style,
+                            BdkWindow      *window,
+                            BtkStateType    state_type,
+                            BtkShadowType   shadow_type,
+                            BdkRectangle   *area,
+                            BtkWidget      *widget,
                             const gchar    *detail,
                             gint            x,
                             gint            y,
                             gint            width,
                             gint            height,
-                            GtkPositionType gap_side)
+                            BtkPositionType gap_side)
 {
-  GdkGC *gc1 = NULL;
-  GdkGC *gc2 = NULL;
-  GdkGC *gc3 = NULL;
-  GdkGC *gc4 = NULL;
+  BdkGC *gc1 = NULL;
+  BdkGC *gc2 = NULL;
+  BdkGC *gc3 = NULL;
+  BdkGC *gc4 = NULL;
   
-  gtk_style_apply_default_background (style, window,
-                                      widget && gtk_widget_get_has_window (widget),
-                                      GTK_STATE_NORMAL, area, x, y, width, height);
+  btk_style_apply_default_background (style, window,
+                                      widget && btk_widget_get_has_window (widget),
+                                      BTK_STATE_NORMAL, area, x, y, width, height);
   
   sanitize_size (window, &width, &height);
   
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
+    case BTK_SHADOW_NONE:
       return;
-    case GTK_SHADOW_IN:
+    case BTK_SHADOW_IN:
       gc1 = style->dark_gc[state_type];
       gc2 = style->black_gc;
       gc3 = style->bg_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_IN:
       gc1 = style->dark_gc[state_type];
       gc2 = style->light_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->light_gc[state_type];
       break;
-    case GTK_SHADOW_OUT:
+    case BTK_SHADOW_OUT:
       gc1 = style->light_gc[state_type];
       gc2 = style->bg_gc[state_type];
       gc3 = style->dark_gc[state_type];
       gc4 = style->black_gc;
       break;
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_ETCHED_OUT:
       gc1 = style->light_gc[state_type];
       gc2 = style->dark_gc[state_type];
       gc3 = style->light_gc[state_type];
@@ -4626,107 +4626,107 @@ gtk_default_draw_extension (GtkStyle       *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, area);
-      gdk_gc_set_clip_rectangle (gc2, area);
-      gdk_gc_set_clip_rectangle (gc3, area);
-      gdk_gc_set_clip_rectangle (gc4, area);
+      bdk_gc_set_clip_rectangle (gc1, area);
+      bdk_gc_set_clip_rectangle (gc2, area);
+      bdk_gc_set_clip_rectangle (gc3, area);
+      bdk_gc_set_clip_rectangle (gc4, area);
     }
 
   switch (shadow_type)
     {
-    case GTK_SHADOW_NONE:
-    case GTK_SHADOW_IN:
-    case GTK_SHADOW_OUT:
-    case GTK_SHADOW_ETCHED_IN:
-    case GTK_SHADOW_ETCHED_OUT:
+    case BTK_SHADOW_NONE:
+    case BTK_SHADOW_IN:
+    case BTK_SHADOW_OUT:
+    case BTK_SHADOW_ETCHED_IN:
+    case BTK_SHADOW_ETCHED_OUT:
       switch (gap_side)
         {
-        case GTK_POS_TOP:
-          gtk_style_apply_default_background (style, window,
-                                              widget && gtk_widget_get_has_window (widget),
+        case BTK_POS_TOP:
+          btk_style_apply_default_background (style, window,
+                                              widget && btk_widget_get_has_window (widget),
                                               state_type, area,
                                               x + style->xthickness, 
                                               y, 
                                               width - (2 * style->xthickness), 
                                               height - (style->ythickness));
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y, x, y + height - 2);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y, x + 1, y + height - 2);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + 2, y + height - 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + 1, y + height - 1, x + width - 2, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y, x + width - 1, y + height - 2);
           break;
-        case GTK_POS_BOTTOM:
-          gtk_style_apply_default_background (style, window,
-                                              widget && gtk_widget_get_has_window (widget),
+        case BTK_POS_BOTTOM:
+          btk_style_apply_default_background (style, window,
+                                              widget && btk_widget_get_has_window (widget),
                                               state_type, area,
                                               x + style->xthickness, 
                                               y + style->ythickness, 
                                               width - (2 * style->xthickness), 
                                               height - (style->ythickness));
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x + 1, y, x + width - 2, y);
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y + 1, x, y + height - 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 2, y + 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + 1, y + height - 1);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y + 2, x + width - 2, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y + 1, x + width - 1, y + height - 1);
           break;
-        case GTK_POS_LEFT:
-          gtk_style_apply_default_background (style, window,
-                                              widget && gtk_widget_get_has_window (widget),
+        case BTK_POS_LEFT:
+          btk_style_apply_default_background (style, window,
+                                              widget && btk_widget_get_has_window (widget),
                                               state_type, area,
                                               x, 
                                               y + style->ythickness, 
                                               width - (style->xthickness), 
                                               height - (2 * style->ythickness));
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y, x + width - 2, y);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 2, y + 1);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x, y + height - 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + width - 2, y + 2, x + width - 2, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x, y + height - 1, x + width - 2, y + height - 1);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + width - 1, y + 1, x + width - 1, y + height - 2);
           break;
-        case GTK_POS_RIGHT:
-          gtk_style_apply_default_background (style, window,
-                                              widget && gtk_widget_get_has_window (widget),
+        case BTK_POS_RIGHT:
+          btk_style_apply_default_background (style, window,
+                                              widget && btk_widget_get_has_window (widget),
                                               state_type, area,
                                               x + style->xthickness, 
                                               y + style->ythickness, 
                                               width - (style->xthickness), 
                                               height - (2 * style->ythickness));
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x + 1, y, x + width - 1, y);
-          gdk_draw_line (window, gc1,
+          bdk_draw_line (window, gc1,
                          x, y + 1, x, y + height - 2);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + width - 1, y + 1);
-          gdk_draw_line (window, gc2,
+          bdk_draw_line (window, gc2,
                          x + 1, y + 1, x + 1, y + height - 2);
           
-          gdk_draw_line (window, gc3,
+          bdk_draw_line (window, gc3,
                          x + 2, y + height - 2, x + width - 1, y + height - 2);
-          gdk_draw_line (window, gc4,
+          bdk_draw_line (window, gc4,
                          x + 1, y + height - 1, x + width - 1, y + height - 1);
           break;
         }
@@ -4734,33 +4734,33 @@ gtk_default_draw_extension (GtkStyle       *style,
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (gc1, NULL);
-      gdk_gc_set_clip_rectangle (gc2, NULL);
-      gdk_gc_set_clip_rectangle (gc3, NULL);
-      gdk_gc_set_clip_rectangle (gc4, NULL);
+      bdk_gc_set_clip_rectangle (gc1, NULL);
+      bdk_gc_set_clip_rectangle (gc2, NULL);
+      bdk_gc_set_clip_rectangle (gc3, NULL);
+      bdk_gc_set_clip_rectangle (gc4, NULL);
     }
 }
 
 static void 
-gtk_default_draw_focus (GtkStyle      *style,
-			GdkWindow     *window,
-			GtkStateType   state_type,
-			GdkRectangle  *area,
-			GtkWidget     *widget,
+btk_default_draw_focus (BtkStyle      *style,
+			BdkWindow     *window,
+			BtkStateType   state_type,
+			BdkRectangle  *area,
+			BtkWidget     *widget,
 			const gchar   *detail,
 			gint           x,
 			gint           y,
 			gint           width,
 			gint           height)
 {
-  cairo_t *cr;
+  bairo_t *cr;
   gboolean free_dash_list = FALSE;
   gint line_width = 1;
   gint8 *dash_list = (gint8 *) "\1\1";
 
   if (widget)
     {
-      gtk_widget_style_get (widget,
+      btk_widget_style_get (widget,
 			    "focus-line-width", &line_width,
 			    "focus-line-pattern", (gchar *)&dash_list,
 			    NULL);
@@ -4779,16 +4779,16 @@ gtk_default_draw_focus (GtkStyle      *style,
 
   sanitize_size (window, &width, &height);
 
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
 
   if (detail && !strcmp (detail, "colorwheel_light"))
-    cairo_set_source_rgb (cr, 0., 0., 0.);
+    bairo_set_source_rgb (cr, 0., 0., 0.);
   else if (detail && !strcmp (detail, "colorwheel_dark"))
-    cairo_set_source_rgb (cr, 1., 1., 1.);
+    bairo_set_source_rgb (cr, 1., 1., 1.);
   else
-    gdk_cairo_set_source_color (cr, &style->fg[state_type]);
+    bdk_bairo_set_source_color (cr, &style->fg[state_type]);
 
-  cairo_set_line_width (cr, line_width);
+  bairo_set_line_width (cr, line_width);
 
   if (dash_list[0])
     {
@@ -4806,73 +4806,73 @@ gtk_default_draw_focus (GtkStyle      *style,
 
       /* The dash offset here aligns the pattern to integer pixels
        * by starting the dash at the right side of the left border
-       * Negative dash offsets in cairo don't work
+       * Negative dash offsets in bairo don't work
        * (https://bugs.freedesktop.org/show_bug.cgi?id=2729)
        */
       dash_offset = - line_width / 2.;
       while (dash_offset < 0)
 	dash_offset += total_length;
       
-      cairo_set_dash (cr, dashes, n_dashes, dash_offset);
+      bairo_set_dash (cr, dashes, n_dashes, dash_offset);
       g_free (dashes);
     }
 
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
     }
 
-  cairo_rectangle (cr,
+  bairo_rectangle (cr,
 		   x + line_width / 2.,
 		   y + line_width / 2.,
 		   width - line_width,
 		   height - line_width);
-  cairo_stroke (cr);
-  cairo_destroy (cr);
+  bairo_stroke (cr);
+  bairo_destroy (cr);
 
   if (free_dash_list)
     g_free (dash_list);
 }
 
 static void 
-gtk_default_draw_slider (GtkStyle      *style,
-                         GdkWindow     *window,
-                         GtkStateType   state_type,
-                         GtkShadowType  shadow_type,
-                         GdkRectangle  *area,
-                         GtkWidget     *widget,
+btk_default_draw_slider (BtkStyle      *style,
+                         BdkWindow     *window,
+                         BtkStateType   state_type,
+                         BtkShadowType  shadow_type,
+                         BdkRectangle  *area,
+                         BtkWidget     *widget,
                          const gchar   *detail,
                          gint           x,
                          gint           y,
                          gint           width,
                          gint           height,
-                         GtkOrientation orientation)
+                         BtkOrientation orientation)
 {
   sanitize_size (window, &width, &height);
   
-  gtk_paint_box (style, window, state_type, shadow_type,
+  btk_paint_box (style, window, state_type, shadow_type,
                  area, widget, detail, x, y, width, height);
 
   if (detail &&
       (strcmp ("hscale", detail) == 0 ||
        strcmp ("vscale", detail) == 0))
     {
-      if (orientation == GTK_ORIENTATION_HORIZONTAL)
-        gtk_paint_vline (style, window, state_type, area, widget, detail, 
+      if (orientation == BTK_ORIENTATION_HORIZONTAL)
+        btk_paint_vline (style, window, state_type, area, widget, detail, 
                          y + style->ythickness, 
                          y + height - style->ythickness - 1, x + width / 2);
       else
-        gtk_paint_hline (style, window, state_type, area, widget, detail, 
+        btk_paint_hline (style, window, state_type, area, widget, detail, 
                          x + style->xthickness, 
                          x + width - style->xthickness - 1, y + height / 2);
     }
 }
 
 static void
-draw_dot (GdkWindow    *window,
-	  GdkGC        *light_gc,
-	  GdkGC        *dark_gc,
+draw_dot (BdkWindow    *window,
+	  BdkGC        *light_gc,
+	  BdkGC        *dark_gc,
 	  gint          x,
 	  gint          y,
 	  gushort       size)
@@ -4881,45 +4881,45 @@ draw_dot (GdkWindow    *window,
 
   if (size == 2)
     {
-      gdk_draw_point (window, light_gc, x, y);
-      gdk_draw_point (window, light_gc, x+1, y+1);
+      bdk_draw_point (window, light_gc, x, y);
+      bdk_draw_point (window, light_gc, x+1, y+1);
     }
   else if (size == 3)
     {
-      gdk_draw_point (window, light_gc, x, y);
-      gdk_draw_point (window, light_gc, x+1, y);
-      gdk_draw_point (window, light_gc, x, y+1);
-      gdk_draw_point (window, dark_gc, x+1, y+2);
-      gdk_draw_point (window, dark_gc, x+2, y+1);
-      gdk_draw_point (window, dark_gc, x+2, y+2);
+      bdk_draw_point (window, light_gc, x, y);
+      bdk_draw_point (window, light_gc, x+1, y);
+      bdk_draw_point (window, light_gc, x, y+1);
+      bdk_draw_point (window, dark_gc, x+1, y+2);
+      bdk_draw_point (window, dark_gc, x+2, y+1);
+      bdk_draw_point (window, dark_gc, x+2, y+2);
     }
 }
 
 static void 
-gtk_default_draw_handle (GtkStyle      *style,
-			 GdkWindow     *window,
-			 GtkStateType   state_type,
-			 GtkShadowType  shadow_type,
-			 GdkRectangle  *area,
-			 GtkWidget     *widget,
+btk_default_draw_handle (BtkStyle      *style,
+			 BdkWindow     *window,
+			 BtkStateType   state_type,
+			 BtkShadowType  shadow_type,
+			 BdkRectangle  *area,
+			 BtkWidget     *widget,
 			 const gchar   *detail,
 			 gint           x,
 			 gint           y,
 			 gint           width,
 			 gint           height,
-			 GtkOrientation orientation)
+			 BtkOrientation orientation)
 {
   gint xx, yy;
   gint xthick, ythick;
-  GdkGC *light_gc, *dark_gc;
-  GdkGC *free_me = NULL;
-  GdkRectangle rect;
-  GdkRectangle dest;
+  BdkGC *light_gc, *dark_gc;
+  BdkGC *free_me = NULL;
+  BdkRectangle rect;
+  BdkRectangle dest;
   gint intersect;
   
   sanitize_size (window, &width, &height);
   
-  gtk_paint_box (style, window, state_type, shadow_type, area, widget, 
+  btk_paint_box (style, window, state_type, shadow_type, area, widget, 
                  detail, x, y, width, height);
   
   
@@ -4929,15 +4929,15 @@ gtk_default_draw_handle (GtkStyle      *style,
       xthick = 0;
       ythick = 0;
 
-      if (state_type == GTK_STATE_SELECTED && widget && !gtk_widget_has_focus (widget))
+      if (state_type == BTK_STATE_SELECTED && widget && !btk_widget_has_focus (widget))
 	{
-	  GdkColor unfocused_light;
+	  BdkColor unfocused_light;
 
-	  _gtk_style_shade (&style->base[GTK_STATE_ACTIVE], &unfocused_light,
+	  _btk_style_shade (&style->base[BTK_STATE_ACTIVE], &unfocused_light,
                             LIGHTNESS_MULT);
 
-	  light_gc = free_me = gdk_gc_new (window);
-	  gdk_gc_set_rgb_fg_color (light_gc, &unfocused_light);
+	  light_gc = free_me = bdk_gc_new (window);
+	  bdk_gc_set_rgb_fg_color (light_gc, &unfocused_light);
 	}
       else
 	light_gc = style->light_gc[state_type];
@@ -4959,7 +4959,7 @@ gtk_default_draw_handle (GtkStyle      *style,
   rect.height = height - (ythick * 2);
 
   if (area)
-    intersect = gdk_rectangle_intersect (area, &rect, &dest);
+    intersect = bdk_rectangle_intersect (area, &rect, &dest);
   else
     {
       intersect = TRUE;
@@ -4969,12 +4969,12 @@ gtk_default_draw_handle (GtkStyle      *style,
   if (!intersect)
     goto out;
 
-  gdk_gc_set_clip_rectangle (light_gc, &dest);
-  gdk_gc_set_clip_rectangle (dark_gc, &dest);
+  bdk_gc_set_clip_rectangle (light_gc, &dest);
+  bdk_gc_set_clip_rectangle (dark_gc, &dest);
 
   if (detail && !strcmp (detail, "paned"))
     {
-      if (orientation == GTK_ORIENTATION_HORIZONTAL)
+      if (orientation == BTK_ORIENTATION_HORIZONTAL)
 	for (xx = x + width/2 - 15; xx <= x + width/2 + 15; xx += 5)
 	  draw_dot (window, light_gc, dark_gc, xx, y + height/2 - 1, 3);
       else
@@ -4991,8 +4991,8 @@ gtk_default_draw_handle (GtkStyle      *style,
 	  }
     }
 
-  gdk_gc_set_clip_rectangle (light_gc, NULL);
-  gdk_gc_set_clip_rectangle (dark_gc, NULL);
+  bdk_gc_set_clip_rectangle (light_gc, NULL);
+  bdk_gc_set_clip_rectangle (dark_gc, NULL);
 
  out:
   if (free_me)
@@ -5000,15 +5000,15 @@ gtk_default_draw_handle (GtkStyle      *style,
 }
 
 static void
-gtk_default_draw_expander (GtkStyle        *style,
-                           GdkWindow       *window,
-                           GtkStateType     state_type,
-                           GdkRectangle    *area,
-                           GtkWidget       *widget,
+btk_default_draw_expander (BtkStyle        *style,
+                           BdkWindow       *window,
+                           BtkStateType     state_type,
+                           BdkRectangle    *area,
+                           BtkWidget       *widget,
                            const gchar     *detail,
                            gint             x,
                            gint             y,
-			   GtkExpanderStyle expander_style)
+			   BtkExpanderStyle expander_style)
 {
 #define DEFAULT_EXPANDER_SIZE 12
 
@@ -5023,19 +5023,19 @@ gtk_default_draw_expander (GtkStyle        *style,
   double x_double, y_double;
   gint degrees = 0;
 
-  cairo_t *cr = gdk_cairo_create (window);
+  bairo_t *cr = bdk_bairo_create (window);
   
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
     }
 
   if (widget &&
-      gtk_widget_class_find_style_property (GTK_WIDGET_GET_CLASS (widget),
+      btk_widget_class_find_style_property (BTK_WIDGET_GET_CLASS (widget),
 					    "expander-size"))
     {
-      gtk_widget_style_get (widget,
+      btk_widget_style_get (widget,
 			    "expander-size", &expander_size,
 			    NULL);
     }
@@ -5046,19 +5046,19 @@ gtk_default_draw_expander (GtkStyle        *style,
 
   switch (expander_style)
     {
-    case GTK_EXPANDER_COLLAPSED:
-      degrees = (get_direction (widget) == GTK_TEXT_DIR_RTL) ? 180 : 0;
+    case BTK_EXPANDER_COLLAPSED:
+      degrees = (get_direction (widget) == BTK_TEXT_DIR_RTL) ? 180 : 0;
       interp = 0.0;
       break;
-    case GTK_EXPANDER_SEMI_COLLAPSED:
-      degrees = (get_direction (widget) == GTK_TEXT_DIR_RTL) ? 150 : 30;
+    case BTK_EXPANDER_SEMI_COLLAPSED:
+      degrees = (get_direction (widget) == BTK_TEXT_DIR_RTL) ? 150 : 30;
       interp = 0.25;
       break;
-    case GTK_EXPANDER_SEMI_EXPANDED:
-      degrees = (get_direction (widget) == GTK_TEXT_DIR_RTL) ? 120 : 60;
+    case BTK_EXPANDER_SEMI_EXPANDED:
+      degrees = (get_direction (widget) == BTK_TEXT_DIR_RTL) ? 120 : 60;
       interp = 0.75;
       break;
-    case GTK_EXPANDER_EXPANDED:
+    case BTK_EXPANDER_EXPANDED:
       degrees = 90;
       interp = 1.0;
       break;
@@ -5105,32 +5105,32 @@ gtk_default_draw_expander (GtkStyle        *style,
   x_double = x_double_vert * (1 - interp) + x_double_horz * interp;
   y_double = y_double_vert * (1 - interp) + y_double_horz * interp;
   
-  cairo_translate (cr, x_double, y_double);
-  cairo_rotate (cr, degrees * G_PI / 180);
+  bairo_translate (cr, x_double, y_double);
+  bairo_rotate (cr, degrees * G_PI / 180);
 
-  cairo_move_to (cr, - radius / 2., - radius);
-  cairo_line_to (cr,   radius / 2.,   0);
-  cairo_line_to (cr, - radius / 2.,   radius);
-  cairo_close_path (cr);
+  bairo_move_to (cr, - radius / 2., - radius);
+  bairo_line_to (cr,   radius / 2.,   0);
+  bairo_line_to (cr, - radius / 2.,   radius);
+  bairo_close_path (cr);
   
-  cairo_set_line_width (cr, line_width);
+  bairo_set_line_width (cr, line_width);
 
-  if (state_type == GTK_STATE_PRELIGHT)
-    gdk_cairo_set_source_color (cr,
-				&style->fg[GTK_STATE_PRELIGHT]);
-  else if (state_type == GTK_STATE_ACTIVE)
-    gdk_cairo_set_source_color (cr,
-				&style->light[GTK_STATE_ACTIVE]);
+  if (state_type == BTK_STATE_PRELIGHT)
+    bdk_bairo_set_source_color (cr,
+				&style->fg[BTK_STATE_PRELIGHT]);
+  else if (state_type == BTK_STATE_ACTIVE)
+    bdk_bairo_set_source_color (cr,
+				&style->light[BTK_STATE_ACTIVE]);
   else
-    gdk_cairo_set_source_color (cr,
-				&style->base[GTK_STATE_NORMAL]);
+    bdk_bairo_set_source_color (cr,
+				&style->base[BTK_STATE_NORMAL]);
   
-  cairo_fill_preserve (cr);
+  bairo_fill_preserve (cr);
   
-  gdk_cairo_set_source_color (cr, &style->fg[state_type]);
-  cairo_stroke (cr);
+  bdk_bairo_set_source_color (cr, &style->fg[state_type]);
+  bairo_stroke (cr);
   
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 typedef struct _ByteRange ByteRange;
@@ -5153,28 +5153,28 @@ range_new (guint start,
   return br;
 }
 
-static PangoLayout*
-get_insensitive_layout (GdkDrawable *drawable,
-			PangoLayout *layout)
+static BangoLayout*
+get_insensitive_layout (BdkDrawable *drawable,
+			BangoLayout *layout)
 {
   GSList *embossed_ranges = NULL;
   GSList *stippled_ranges = NULL;
-  PangoLayoutIter *iter;
+  BangoLayoutIter *iter;
   GSList *tmp_list = NULL;
-  PangoLayout *new_layout;
-  PangoAttrList *attrs;
-  GdkBitmap *stipple = NULL;
+  BangoLayout *new_layout;
+  BangoAttrList *attrs;
+  BdkBitmap *stipple = NULL;
   
-  iter = pango_layout_get_iter (layout);
+  iter = bango_layout_get_iter (layout);
   
   do
     {
-      PangoLayoutRun *run;
-      PangoAttribute *attr;
+      BangoLayoutRun *run;
+      BangoAttribute *attr;
       gboolean need_stipple = FALSE;
       ByteRange *br;
       
-      run = pango_layout_iter_get_run_readonly (iter);
+      run = bango_layout_iter_get_run_readonly (iter);
 
       if (run)
         {
@@ -5185,8 +5185,8 @@ get_insensitive_layout (GdkDrawable *drawable,
               attr = tmp_list->data;
               switch (attr->klass->type)
                 {
-                case PANGO_ATTR_FOREGROUND:
-                case PANGO_ATTR_BACKGROUND:
+                case BANGO_ATTR_FOREGROUND:
+                case BANGO_ATTR_BACKGROUND:
                   need_stipple = TRUE;
                   break;
               
@@ -5208,34 +5208,34 @@ get_insensitive_layout (GdkDrawable *drawable,
             embossed_ranges = g_slist_prepend (embossed_ranges, br);
         }
     }
-  while (pango_layout_iter_next_run (iter));
+  while (bango_layout_iter_next_run (iter));
 
-  pango_layout_iter_free (iter);
+  bango_layout_iter_free (iter);
 
-  new_layout = pango_layout_copy (layout);
+  new_layout = bango_layout_copy (layout);
 
-  attrs = pango_layout_get_attributes (new_layout);
+  attrs = bango_layout_get_attributes (new_layout);
 
   if (attrs == NULL)
     {
       /* Create attr list if there wasn't one */
-      attrs = pango_attr_list_new ();
-      pango_layout_set_attributes (new_layout, attrs);
-      pango_attr_list_unref (attrs);
+      attrs = bango_attr_list_new ();
+      bango_layout_set_attributes (new_layout, attrs);
+      bango_attr_list_unref (attrs);
     }
   
   tmp_list = embossed_ranges;
   while (tmp_list != NULL)
     {
-      PangoAttribute *attr;
+      BangoAttribute *attr;
       ByteRange *br = tmp_list->data;
 
-      attr = gdk_pango_attr_embossed_new (TRUE);
+      attr = bdk_bango_attr_embossed_new (TRUE);
 
       attr->start_index = br->start;
       attr->end_index = br->end;
       
-      pango_attr_list_change (attrs, attr);
+      bango_attr_list_change (attrs, attr);
 
       g_free (br);
       
@@ -5247,7 +5247,7 @@ get_insensitive_layout (GdkDrawable *drawable,
   tmp_list = stippled_ranges;
   while (tmp_list != NULL)
     {
-      PangoAttribute *attr;
+      BangoAttribute *attr;
       ByteRange *br = tmp_list->data;
 
       if (stipple == NULL)
@@ -5258,17 +5258,17 @@ get_insensitive_layout (GdkDrawable *drawable,
             0x02, 0x01
           };
 
-          stipple = gdk_bitmap_create_from_data (drawable,
+          stipple = bdk_bitmap_create_from_data (drawable,
                                                  gray50_bits, gray50_width,
                                                  gray50_height);
         }
       
-      attr = gdk_pango_attr_stipple_new (stipple);
+      attr = bdk_bango_attr_stipple_new (stipple);
 
       attr->start_index = br->start;
       attr->end_index = br->end;
       
-      pango_attr_list_change (attrs, attr);
+      bango_attr_list_change (attrs, attr);
 
       g_free (br);
       
@@ -5284,70 +5284,70 @@ get_insensitive_layout (GdkDrawable *drawable,
 }
 
 static void
-gtk_default_draw_layout (GtkStyle        *style,
-                         GdkWindow       *window,
-                         GtkStateType     state_type,
+btk_default_draw_layout (BtkStyle        *style,
+                         BdkWindow       *window,
+                         BtkStateType     state_type,
 			 gboolean         use_text,
-                         GdkRectangle    *area,
-                         GtkWidget       *widget,
+                         BdkRectangle    *area,
+                         BtkWidget       *widget,
                          const gchar     *detail,
                          gint             x,
                          gint             y,
-                         PangoLayout     *layout)
+                         BangoLayout     *layout)
 {
-  GdkGC *gc;
+  BdkGC *gc;
 
   gc = use_text ? style->text_gc[state_type] : style->fg_gc[state_type];
   
   if (area)
-    gdk_gc_set_clip_rectangle (gc, area);
+    bdk_gc_set_clip_rectangle (gc, area);
 
-  if (state_type == GTK_STATE_INSENSITIVE)
+  if (state_type == BTK_STATE_INSENSITIVE)
     {
-      PangoLayout *ins;
+      BangoLayout *ins;
 
       ins = get_insensitive_layout (window, layout);
       
-      gdk_draw_layout (window, gc, x, y, ins);
+      bdk_draw_layout (window, gc, x, y, ins);
 
       g_object_unref (ins);
     }
   else
     {
-      gdk_draw_layout (window, gc, x, y, layout);
+      bdk_draw_layout (window, gc, x, y, layout);
     }
 
   if (area)
-    gdk_gc_set_clip_rectangle (gc, NULL);
+    bdk_gc_set_clip_rectangle (gc, NULL);
 }
 
 static void
-gtk_default_draw_resize_grip (GtkStyle       *style,
-                              GdkWindow      *window,
-                              GtkStateType    state_type,
-                              GdkRectangle   *area,
-                              GtkWidget      *widget,
+btk_default_draw_resize_grip (BtkStyle       *style,
+                              BdkWindow      *window,
+                              BtkStateType    state_type,
+                              BdkRectangle   *area,
+                              BtkWidget      *widget,
                               const gchar    *detail,
-                              GdkWindowEdge   edge,
+                              BdkWindowEdge   edge,
                               gint            x,
                               gint            y,
                               gint            width,
                               gint            height)
 {
-  GdkPoint points[4];
+  BdkPoint points[4];
   gint i, j, skip;
 
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], area);
+      bdk_gc_set_clip_rectangle (style->bg_gc[state_type], area);
     }
   
   skip = -1;
   switch (edge)
     {
-    case GDK_WINDOW_EDGE_NORTH_WEST:
+    case BDK_WINDOW_EDGE_NORTH_WEST:
       /* make it square */
       if (width < height)
 	height = width;
@@ -5355,11 +5355,11 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	width = height;
       skip = 2;
       break;
-    case GDK_WINDOW_EDGE_NORTH:
+    case BDK_WINDOW_EDGE_NORTH:
       if (width < height)
 	height = width;
       break;
-    case GDK_WINDOW_EDGE_NORTH_EAST:
+    case BDK_WINDOW_EDGE_NORTH_EAST:
       /* make it square, aligning to top right */
       if (width < height)
 	height = width;
@@ -5370,11 +5370,11 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	}
       skip = 3;
       break;
-    case GDK_WINDOW_EDGE_WEST:
+    case BDK_WINDOW_EDGE_WEST:
       if (height < width)
 	width = height;
       break;
-    case GDK_WINDOW_EDGE_EAST:
+    case BDK_WINDOW_EDGE_EAST:
       /* aligning to right */
       if (height < width)
 	{
@@ -5382,7 +5382,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	  width = height;
 	}
       break;
-    case GDK_WINDOW_EDGE_SOUTH_WEST:
+    case BDK_WINDOW_EDGE_SOUTH_WEST:
       /* make it square, aligning to bottom left */
       if (width < height)
 	{
@@ -5393,7 +5393,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	width = height;
       skip = 1;
       break;
-    case GDK_WINDOW_EDGE_SOUTH:
+    case BDK_WINDOW_EDGE_SOUTH:
       /* align to bottom */
       if (width < height)
 	{
@@ -5401,7 +5401,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	  height = width;
 	}
       break;
-    case GDK_WINDOW_EDGE_SOUTH_EAST:
+    case BDK_WINDOW_EDGE_SOUTH_EAST:
       /* make it square, aligning to bottom right */
       if (width < height)
 	{
@@ -5430,13 +5430,13 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	}
     }
   
-  gdk_draw_polygon (window, style->bg_gc[state_type], TRUE, 
+  bdk_draw_polygon (window, style->bg_gc[state_type], TRUE, 
 		    points, skip < 0 ? 4 : 3);
   
   switch (edge)
     {
-    case GDK_WINDOW_EDGE_WEST:
-    case GDK_WINDOW_EDGE_EAST:
+    case BDK_WINDOW_EDGE_WEST:
+    case BDK_WINDOW_EDGE_EAST:
       {
 	gint xi;
 
@@ -5444,13 +5444,13 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 
 	while (xi < x + width)
 	  {
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->light_gc[state_type],
 			   xi, y,
 			   xi, y + height);
 
 	    xi++;
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->dark_gc[state_type],
 			   xi, y,
 			   xi, y + height);
@@ -5459,8 +5459,8 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	  }
       }
       break;
-    case GDK_WINDOW_EDGE_NORTH:
-    case GDK_WINDOW_EDGE_SOUTH:
+    case BDK_WINDOW_EDGE_NORTH:
+    case BDK_WINDOW_EDGE_SOUTH:
       {
 	gint yi;
 
@@ -5468,13 +5468,13 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 
 	while (yi < y + height)
 	  {
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->light_gc[state_type],
 			   x, yi,
 			   x + width, yi);
 
 	    yi++;
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->dark_gc[state_type],
 			   x, yi,
 			   x + width, yi);
@@ -5483,7 +5483,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	  }
       }
       break;
-    case GDK_WINDOW_EDGE_NORTH_WEST:
+    case BDK_WINDOW_EDGE_NORTH_WEST:
       {
 	gint xi, yi;
 
@@ -5492,7 +5492,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 
 	while (xi > x + 3)
 	  {
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->dark_gc[state_type],
 			   xi, y,
 			   x, yi);
@@ -5500,7 +5500,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	    --xi;
 	    --yi;
 
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->dark_gc[state_type],
 			   xi, y,
 			   x, yi);
@@ -5508,7 +5508,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	    --xi;
 	    --yi;
 
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->light_gc[state_type],
 			   xi, y,
 			   x, yi);
@@ -5519,7 +5519,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	  }
       }
       break;
-    case GDK_WINDOW_EDGE_NORTH_EAST:
+    case BDK_WINDOW_EDGE_NORTH_EAST:
       {
         gint xi, yi;
 
@@ -5528,7 +5528,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 
         while (xi < (x + width - 3))
           {
-            gdk_draw_line (window,
+            bdk_draw_line (window,
                            style->light_gc[state_type],
                            xi, y,
                            x + width, yi);                           
@@ -5536,7 +5536,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
             ++xi;
             --yi;
             
-            gdk_draw_line (window,
+            bdk_draw_line (window,
                            style->dark_gc[state_type],
                            xi, y,
                            x + width, yi);                           
@@ -5544,7 +5544,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
             ++xi;
             --yi;
             
-            gdk_draw_line (window,
+            bdk_draw_line (window,
                            style->dark_gc[state_type],
                            xi, y,
                            x + width, yi);
@@ -5554,7 +5554,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
           }
       }
       break;
-    case GDK_WINDOW_EDGE_SOUTH_WEST:
+    case BDK_WINDOW_EDGE_SOUTH_WEST:
       {
 	gint xi, yi;
 
@@ -5563,7 +5563,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 
 	while (xi > x + 3)
 	  {
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->dark_gc[state_type],
 			   x, yi,
 			   xi, y + height);
@@ -5571,7 +5571,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	    --xi;
 	    ++yi;
 
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->dark_gc[state_type],
 			   x, yi,
 			   xi, y + height);
@@ -5579,7 +5579,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	    --xi;
 	    ++yi;
 
-	    gdk_draw_line (window,
+	    bdk_draw_line (window,
 			   style->light_gc[state_type],
 			   x, yi,
 			   xi, y + height);
@@ -5590,7 +5590,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 	  }
       }
       break;
-    case GDK_WINDOW_EDGE_SOUTH_EAST:
+    case BDK_WINDOW_EDGE_SOUTH_EAST:
       {
         gint xi, yi;
 
@@ -5599,7 +5599,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
 
         while (xi < (x + width - 3))
           {
-            gdk_draw_line (window,
+            bdk_draw_line (window,
                            style->light_gc[state_type],
                            xi, y + height,
                            x + width, yi);                           
@@ -5607,7 +5607,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
             ++xi;
             ++yi;
             
-            gdk_draw_line (window,
+            bdk_draw_line (window,
                            style->dark_gc[state_type],
                            xi, y + height,
                            x + width, yi);                           
@@ -5615,7 +5615,7 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
             ++xi;
             ++yi;
             
-            gdk_draw_line (window,
+            bdk_draw_line (window,
                            style->dark_gc[state_type],
                            xi, y + height,
                            x + width, yi);
@@ -5632,18 +5632,18 @@ gtk_default_draw_resize_grip (GtkStyle       *style,
   
   if (area)
     {
-      gdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
-      gdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->light_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->dark_gc[state_type], NULL);
+      bdk_gc_set_clip_rectangle (style->bg_gc[state_type], NULL);
     }
 }
 
 static void
-gtk_default_draw_spinner (GtkStyle     *style,
-                          GdkWindow    *window,
-                          GtkStateType  state_type,
-                          GdkRectangle *area,
-                          GtkWidget    *widget,
+btk_default_draw_spinner (BtkStyle     *style,
+                          BdkWindow    *window,
+                          BtkStateType  state_type,
+                          BdkRectangle *area,
+                          BtkWidget    *widget,
                           const gchar  *detail,
                           guint         step,
                           gint          x,
@@ -5651,8 +5651,8 @@ gtk_default_draw_spinner (GtkStyle     *style,
                           gint          width,
                           gint          height)
 {
-  GdkColor *color;
-  cairo_t *cr;
+  BdkColor *color;
+  bairo_t *cr;
   guint num_steps;
   gdouble dx, dy;
   gdouble radius;
@@ -5660,22 +5660,22 @@ gtk_default_draw_spinner (GtkStyle     *style,
   gint i;
   guint real_step;
 
-  gtk_style_get (style, GTK_TYPE_SPINNER,
+  btk_style_get (style, BTK_TYPE_SPINNER,
                  "num-steps", &num_steps,
                  NULL);
   real_step = step % num_steps;
 
-  /* get cairo context */
-  cr = gdk_cairo_create (window);
+  /* get bairo context */
+  cr = bdk_bairo_create (window);
 
-  /* set a clip region for the expose event */
-  cairo_rectangle (cr, x, y, width, height);
-  cairo_clip (cr);
+  /* set a clip rebunnyion for the expose event */
+  bairo_rectangle (cr, x, y, width, height);
+  bairo_clip (cr);
 
-  cairo_translate (cr, x, y);
+  bairo_translate (cr, x, y);
 
-  /* draw clip region */
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  /* draw clip rebunnyion */
+  bairo_set_operator (cr, BAIRO_OPERATOR_OVER);
 
   color = &style->fg[state_type];
   dx = width / 2;
@@ -5691,33 +5691,33 @@ gtk_default_draw_spinner (GtkStyle     *style,
       gdouble t = (gdouble) ((i + num_steps - real_step)
                              % num_steps) / num_steps;
 
-      cairo_save (cr);
+      bairo_save (cr);
 
-      cairo_set_source_rgba (cr,
+      bairo_set_source_rgba (cr,
                              color->red / 65535.,
                              color->green / 65535.,
                              color->blue / 65535.,
                              t);
 
-      cairo_set_line_width (cr, 2.0);
-      cairo_move_to (cr,
+      bairo_set_line_width (cr, 2.0);
+      bairo_move_to (cr,
                      dx + (radius - inset) * cos (i * G_PI / half),
                      dy + (radius - inset) * sin (i * G_PI / half));
-      cairo_line_to (cr,
+      bairo_line_to (cr,
                      dx + radius * cos (i * G_PI / half),
                      dy + radius * sin (i * G_PI / half));
-      cairo_stroke (cr);
+      bairo_stroke (cr);
 
-      cairo_restore (cr);
+      bairo_restore (cr);
     }
 
   /* free memory */
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 void
-_gtk_style_shade (const GdkColor *a,
-                  GdkColor       *b,
+_btk_style_shade (const BdkColor *a,
+                  BdkColor       *b,
                   gdouble         k)
 {
   gdouble red;
@@ -5901,9 +5901,9 @@ hls_to_rgb (gdouble *h,
 
 
 /**
- * gtk_paint_hline:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_hline:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none): rectangle to which the output is clipped, or %NULL if the
  *        output should not be clipped
@@ -5917,29 +5917,29 @@ hls_to_rgb (gdouble *h,
  * using the given style and state.
  **/ 
 void 
-gtk_paint_hline (GtkStyle           *style,
-                 GdkWindow          *window,
-                 GtkStateType        state_type,
-                 const GdkRectangle *area,
-                 GtkWidget          *widget,
+btk_paint_hline (BtkStyle           *style,
+                 BdkWindow          *window,
+                 BtkStateType        state_type,
+                 const BdkRectangle *area,
+                 BtkWidget          *widget,
                  const gchar        *detail,
                  gint                x1,
                  gint                x2,
                  gint                y)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_hline != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_hline != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_hline (style, window, state_type,
-                                           (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_hline (style, window, state_type,
+                                           (BdkRectangle *) area, widget, detail,
                                            x1, x2, y);
 }
 
 /**
- * gtk_paint_vline:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_vline:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none): rectangle to which the output is clipped, or %NULL if the
  *        output should not be clipped
@@ -5953,29 +5953,29 @@ gtk_paint_hline (GtkStyle           *style,
  * using the given style and state.
  */
 void
-gtk_paint_vline (GtkStyle           *style,
-                 GdkWindow          *window,
-                 GtkStateType        state_type,
-                 const GdkRectangle *area,
-                 GtkWidget          *widget,
+btk_paint_vline (BtkStyle           *style,
+                 BdkWindow          *window,
+                 BtkStateType        state_type,
+                 const BdkRectangle *area,
+                 BtkWidget          *widget,
                  const gchar        *detail,
                  gint                y1_,
                  gint                y2_,
                  gint                x)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_vline != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_vline != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_vline (style, window, state_type,
-                                           (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_vline (style, window, state_type,
+                                           (BdkRectangle *) area, widget, detail,
                                            y1_, y2_, x);
 }
 
 /**
- * gtk_paint_shadow:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_shadow:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @area: (allow-none): clip rectangle or %NULL if the
@@ -5991,68 +5991,68 @@ gtk_paint_vline (GtkStyle           *style,
  * using the given style and state and shadow type.
  */
 void
-gtk_paint_shadow (GtkStyle           *style,
-                  GdkWindow          *window,
-                  GtkStateType        state_type,
-                  GtkShadowType       shadow_type,
-                  const GdkRectangle *area,
-                  GtkWidget          *widget,
+btk_paint_shadow (BtkStyle           *style,
+                  BdkWindow          *window,
+                  BtkStateType        state_type,
+                  BtkShadowType       shadow_type,
+                  const BdkRectangle *area,
+                  BtkWidget          *widget,
                   const gchar        *detail,
                   gint                x,
                   gint                y,
                   gint                width,
                   gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_shadow != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_shadow (style, window, state_type, shadow_type,
-                                            (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_shadow (style, window, state_type, shadow_type,
+                                            (BdkRectangle *) area, widget, detail,
                                             x, y, width, height);
 }
 
 /**
- * gtk_paint_polygon:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_polygon:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
  *        output should not be clipped
  * @widget: (allow-none): the widget
  * @detail: (allow-none): a style detail
- * @points: an array of #GdkPoint<!-- -->s
+ * @points: an array of #BdkPoint<!-- -->s
  * @n_points: length of @points
  * @fill: %TRUE if the polygon should be filled
  *
  * Draws a polygon on @window with the given parameters.
  */ 
 void
-gtk_paint_polygon (GtkStyle           *style,
-                   GdkWindow          *window,
-                   GtkStateType        state_type,
-                   GtkShadowType       shadow_type,
-                   const GdkRectangle *area,
-                   GtkWidget          *widget,
+btk_paint_polygon (BtkStyle           *style,
+                   BdkWindow          *window,
+                   BtkStateType        state_type,
+                   BtkShadowType       shadow_type,
+                   const BdkRectangle *area,
+                   BtkWidget          *widget,
                    const gchar        *detail,
-                   const GdkPoint     *points,
+                   const BdkPoint     *points,
                    gint                n_points,
                    gboolean            fill)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_polygon != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_polygon != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_polygon (style, window, state_type, shadow_type,
-                                             (GdkRectangle *) area, widget, detail,
-                                             (GdkPoint *) points, n_points, fill);
+  BTK_STYLE_GET_CLASS (style)->draw_polygon (style, window, state_type, shadow_type,
+                                             (BdkRectangle *) area, widget, detail,
+                                             (BdkPoint *) points, n_points, fill);
 }
 
 /**
- * gtk_paint_arrow:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_arrow:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6070,33 +6070,33 @@ gtk_paint_polygon (GtkStyle           *style,
  * parameters. @arrow_type determines the direction of the arrow.
  */
 void
-gtk_paint_arrow (GtkStyle           *style,
-                 GdkWindow          *window,
-                 GtkStateType        state_type,
-                 GtkShadowType       shadow_type,
-                 const GdkRectangle *area,
-                 GtkWidget          *widget,
+btk_paint_arrow (BtkStyle           *style,
+                 BdkWindow          *window,
+                 BtkStateType        state_type,
+                 BtkShadowType       shadow_type,
+                 const BdkRectangle *area,
+                 BtkWidget          *widget,
                  const gchar        *detail,
-                 GtkArrowType        arrow_type,
+                 BtkArrowType        arrow_type,
                  gboolean            fill,
                  gint                x,
                  gint                y,
                  gint                width,
                  gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_arrow != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_arrow != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_arrow (style, window, state_type, shadow_type,
-                                           (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_arrow (style, window, state_type, shadow_type,
+                                           (BdkRectangle *) area, widget, detail,
                                            arrow_type, fill, x, y, width, height);
 }
 
 /**
- * gtk_paint_diamond:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_diamond:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6112,31 +6112,31 @@ gtk_paint_arrow (GtkStyle           *style,
  * parameters.
  */
 void
-gtk_paint_diamond (GtkStyle           *style,
-                   GdkWindow          *window,
-                   GtkStateType        state_type,
-                   GtkShadowType       shadow_type,
-                   const GdkRectangle *area,
-                   GtkWidget          *widget,
+btk_paint_diamond (BtkStyle           *style,
+                   BdkWindow          *window,
+                   BtkStateType        state_type,
+                   BtkShadowType       shadow_type,
+                   const BdkRectangle *area,
+                   BtkWidget          *widget,
                    const gchar        *detail,
                    gint                x,
                    gint                y,
                    gint                width,
                    gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_diamond != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_diamond != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_diamond (style, window, state_type, shadow_type,
-                                             (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_diamond (style, window, state_type, shadow_type,
+                                             (BdkRectangle *) area, widget, detail,
                                              x, y, width, height);
 }
 
 /**
- * gtk_paint_string:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_string:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none): clip rectangle, or %NULL if the
  *        output should not be clipped
@@ -6148,32 +6148,32 @@ gtk_paint_diamond (GtkStyle           *style,
  *
  * Draws a text string on @window with the given parameters.
  *
- * Deprecated: 2.0: Use gtk_paint_layout() instead.
+ * Deprecated: 2.0: Use btk_paint_layout() instead.
  */
 void
-gtk_paint_string (GtkStyle           *style,
-                  GdkWindow          *window,
-                  GtkStateType        state_type,
-                  const GdkRectangle *area,
-                  GtkWidget          *widget,
+btk_paint_string (BtkStyle           *style,
+                  BdkWindow          *window,
+                  BtkStateType        state_type,
+                  const BdkRectangle *area,
+                  BtkWidget          *widget,
                   const gchar        *detail,
                   gint                x,
                   gint                y,
                   const gchar        *string)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_string != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_string != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_string (style, window, state_type,
-                                            (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_string (style, window, state_type,
+                                            (BdkRectangle *) area, widget, detail,
                                             x, y, string);
 }
 
 /**
- * gtk_paint_box:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_box:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6188,31 +6188,31 @@ gtk_paint_string (GtkStyle           *style,
  * Draws a box on @window with the given parameters.
  */
 void
-gtk_paint_box (GtkStyle           *style,
-               GdkWindow          *window,
-               GtkStateType        state_type,
-               GtkShadowType       shadow_type,
-               const GdkRectangle *area,
-               GtkWidget          *widget,
+btk_paint_box (BtkStyle           *style,
+               BdkWindow          *window,
+               BtkStateType        state_type,
+               BtkShadowType       shadow_type,
+               const BdkRectangle *area,
+               BtkWidget          *widget,
                const gchar        *detail,
                gint                x,
                gint                y,
                gint                width,
                gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_box != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_box (style, window, state_type, shadow_type,
-                                         (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_box (style, window, state_type, shadow_type,
+                                         (BdkRectangle *) area, widget, detail,
                                          x, y, width, height);
 }
 
 /**
- * gtk_paint_flat_box:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_flat_box:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6227,31 +6227,31 @@ gtk_paint_box (GtkStyle           *style,
  * Draws a flat box on @window with the given parameters.
  */
 void
-gtk_paint_flat_box (GtkStyle           *style,
-                    GdkWindow          *window,
-                    GtkStateType        state_type,
-                    GtkShadowType       shadow_type,
-                    const GdkRectangle *area,
-                    GtkWidget          *widget,
+btk_paint_flat_box (BtkStyle           *style,
+                    BdkWindow          *window,
+                    BtkStateType        state_type,
+                    BtkShadowType       shadow_type,
+                    const BdkRectangle *area,
+                    BtkWidget          *widget,
                     const gchar        *detail,
                     gint                x,
                     gint                y,
                     gint                width,
                     gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_flat_box != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_flat_box != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_flat_box (style, window, state_type, shadow_type,
-                                              (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_flat_box (style, window, state_type, shadow_type,
+                                              (BdkRectangle *) area, widget, detail,
                                               x, y, width, height);
 }
 
 /**
- * gtk_paint_check:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_check:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6267,31 +6267,31 @@ gtk_paint_flat_box (GtkStyle           *style,
  * the given parameters.
  */
 void
-gtk_paint_check (GtkStyle           *style,
-                 GdkWindow          *window,
-                 GtkStateType        state_type,
-                 GtkShadowType       shadow_type,
-                 const GdkRectangle *area,
-                 GtkWidget          *widget,
+btk_paint_check (BtkStyle           *style,
+                 BdkWindow          *window,
+                 BtkStateType        state_type,
+                 BtkShadowType       shadow_type,
+                 const BdkRectangle *area,
+                 BtkWidget          *widget,
                  const gchar        *detail,
                  gint                x,
                  gint                y,
                  gint                width,
                  gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_check != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_check != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_check (style, window, state_type, shadow_type,
-                                           (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_check (style, window, state_type, shadow_type,
+                                           (BdkRectangle *) area, widget, detail,
                                            x, y, width, height);
 }
 
 /**
- * gtk_paint_option:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_option:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6307,31 +6307,31 @@ gtk_paint_check (GtkStyle           *style,
  * the given parameters.
  */
 void
-gtk_paint_option (GtkStyle           *style,
-                  GdkWindow          *window,
-                  GtkStateType        state_type,
-                  GtkShadowType       shadow_type,
-                  const GdkRectangle *area,
-                  GtkWidget          *widget,
+btk_paint_option (BtkStyle           *style,
+                  BdkWindow          *window,
+                  BtkStateType        state_type,
+                  BtkShadowType       shadow_type,
+                  const BdkRectangle *area,
+                  BtkWidget          *widget,
                   const gchar        *detail,
                   gint                x,
                   gint                y,
                   gint                width,
                   gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_option != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_option != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_option (style, window, state_type, shadow_type,
-                                            (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_option (style, window, state_type, shadow_type,
+                                            (BdkRectangle *) area, widget, detail,
                                             x, y, width, height);
 }
 
 /**
- * gtk_paint_tab:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_tab:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: the type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6347,31 +6347,31 @@ gtk_paint_option (GtkStyle           *style,
  * in the given rectangle on @window using the given parameters.
  */ 
 void
-gtk_paint_tab (GtkStyle           *style,
-               GdkWindow          *window,
-               GtkStateType        state_type,
-               GtkShadowType       shadow_type,
-               const GdkRectangle *area,
-               GtkWidget          *widget,
+btk_paint_tab (BtkStyle           *style,
+               BdkWindow          *window,
+               BtkStateType        state_type,
+               BtkShadowType       shadow_type,
+               const BdkRectangle *area,
+               BtkWidget          *widget,
                const gchar        *detail,
                gint                x,
                gint                y,
                gint                width,
                gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_tab != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_tab != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_tab (style, window, state_type, shadow_type,
-                                         (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_tab (style, window, state_type, shadow_type,
+                                         (BdkRectangle *) area, widget, detail,
                                          x, y, width, height);
 }
 
 /**
- * gtk_paint_shadow_gap:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_shadow_gap:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6391,35 +6391,35 @@ gtk_paint_tab (GtkStyle           *style,
  * gap in one side.
 */
 void
-gtk_paint_shadow_gap (GtkStyle           *style,
-                      GdkWindow          *window,
-                      GtkStateType        state_type,
-                      GtkShadowType       shadow_type,
-                      const GdkRectangle *area,
-                      GtkWidget          *widget,
+btk_paint_shadow_gap (BtkStyle           *style,
+                      BdkWindow          *window,
+                      BtkStateType        state_type,
+                      BtkShadowType       shadow_type,
+                      const BdkRectangle *area,
+                      BtkWidget          *widget,
                       const gchar        *detail,
                       gint                x,
                       gint                y,
                       gint                width,
                       gint                height,
-                      GtkPositionType     gap_side,
+                      BtkPositionType     gap_side,
                       gint                gap_x,
                       gint                gap_width)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_shadow_gap != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_shadow_gap != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_shadow_gap (style, window, state_type, shadow_type,
-                                                (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_shadow_gap (style, window, state_type, shadow_type,
+                                                (BdkRectangle *) area, widget, detail,
                                                 x, y, width, height, gap_side, gap_x, gap_width);
 }
 
 
 /**
- * gtk_paint_box_gap:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_box_gap:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6438,34 +6438,34 @@ gtk_paint_shadow_gap (GtkStyle           *style,
  * leaving a gap in one side.
  */
 void
-gtk_paint_box_gap (GtkStyle           *style,
-                   GdkWindow          *window,
-                   GtkStateType        state_type,
-                   GtkShadowType       shadow_type,
-                   const GdkRectangle *area,
-                   GtkWidget          *widget,
+btk_paint_box_gap (BtkStyle           *style,
+                   BdkWindow          *window,
+                   BtkStateType        state_type,
+                   BtkShadowType       shadow_type,
+                   const BdkRectangle *area,
+                   BtkWidget          *widget,
                    const gchar        *detail,
                    gint                x,
                    gint                y,
                    gint                width,
                    gint                height,
-                   GtkPositionType     gap_side,
+                   BtkPositionType     gap_side,
                    gint                gap_x,
                    gint                gap_width)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_box_gap != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_box_gap != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_box_gap (style, window, state_type, shadow_type,
-                                             (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_box_gap (style, window, state_type, shadow_type,
+                                             (BdkRectangle *) area, widget, detail,
                                              x, y, width, height, gap_side, gap_x, gap_width);
 }
 
 /**
- * gtk_paint_extension: 
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_extension: 
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6481,32 +6481,32 @@ gtk_paint_box_gap (GtkStyle           *style,
  * Draws an extension, i.e. a notebook tab.
  **/
 void
-gtk_paint_extension (GtkStyle           *style,
-                     GdkWindow          *window,
-                     GtkStateType        state_type,
-                     GtkShadowType       shadow_type,
-                     const GdkRectangle *area,
-                     GtkWidget          *widget,
+btk_paint_extension (BtkStyle           *style,
+                     BdkWindow          *window,
+                     BtkStateType        state_type,
+                     BtkShadowType       shadow_type,
+                     const BdkRectangle *area,
+                     BtkWidget          *widget,
                      const gchar        *detail,
                      gint                x,
                      gint                y,
                      gint                width,
                      gint                height,
-                     GtkPositionType     gap_side)
+                     BtkPositionType     gap_side)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_extension != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_extension != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_extension (style, window, state_type, shadow_type,
-                                               (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_extension (style, window, state_type, shadow_type,
+                                               (BdkRectangle *) area, widget, detail,
                                                x, y, width, height, gap_side);
 }
 
 /**
- * gtk_paint_focus:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_focus:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none):  clip rectangle, or %NULL if the
  *        output should not be clipped
@@ -6521,30 +6521,30 @@ gtk_paint_extension (GtkStyle           *style,
  * given style.
  */
 void
-gtk_paint_focus (GtkStyle           *style,
-                 GdkWindow          *window,
-		 GtkStateType        state_type,
-                 const GdkRectangle *area,
-                 GtkWidget          *widget,
+btk_paint_focus (BtkStyle           *style,
+                 BdkWindow          *window,
+		 BtkStateType        state_type,
+                 const BdkRectangle *area,
+                 BtkWidget          *widget,
                  const gchar        *detail,
                  gint                x,
                  gint                y,
                  gint                width,
                  gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_focus != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_focus != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_focus (style, window, state_type,
-                                           (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_focus (style, window, state_type,
+                                           (BdkRectangle *) area, widget, detail,
                                            x, y, width, height);
 }
 
 /**
- * gtk_paint_slider:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_slider:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: a shadow
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6561,32 +6561,32 @@ gtk_paint_focus (GtkStyle           *style,
  * given style and orientation.
  **/
 void
-gtk_paint_slider (GtkStyle           *style,
-                  GdkWindow          *window,
-                  GtkStateType        state_type,
-                  GtkShadowType       shadow_type,
-                  const GdkRectangle *area,
-                  GtkWidget          *widget,
+btk_paint_slider (BtkStyle           *style,
+                  BdkWindow          *window,
+                  BtkStateType        state_type,
+                  BtkShadowType       shadow_type,
+                  const BdkRectangle *area,
+                  BtkWidget          *widget,
                   const gchar        *detail,
                   gint                x,
                   gint                y,
                   gint                width,
                   gint                height,
-                  GtkOrientation      orientation)
+                  BtkOrientation      orientation)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_slider != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_slider != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_slider (style, window, state_type, shadow_type,
-                                            (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_slider (style, window, state_type, shadow_type,
+                                            (BdkRectangle *) area, widget, detail,
                                             x, y, width, height, orientation);
 }
 
 /**
- * gtk_paint_handle:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_handle:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @shadow_type: type of shadow to draw
  * @area: (allow-none): clip rectangle, or %NULL if the
@@ -6599,35 +6599,35 @@ gtk_paint_slider (GtkStyle           *style,
  * @height: height of the handle
  * @orientation: the orientation of the handle
  * 
- * Draws a handle as used in #GtkHandleBox and #GtkPaned.
+ * Draws a handle as used in #BtkHandleBox and #BtkPaned.
  **/
 void
-gtk_paint_handle (GtkStyle           *style,
-                  GdkWindow          *window,
-                  GtkStateType        state_type,
-                  GtkShadowType       shadow_type,
-                  const GdkRectangle *area,
-                  GtkWidget          *widget,
+btk_paint_handle (BtkStyle           *style,
+                  BdkWindow          *window,
+                  BtkStateType        state_type,
+                  BtkShadowType       shadow_type,
+                  const BdkRectangle *area,
+                  BtkWidget          *widget,
                   const gchar        *detail,
                   gint                x,
                   gint                y,
                   gint                width,
                   gint                height,
-                  GtkOrientation      orientation)
+                  BtkOrientation      orientation)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_handle != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_handle != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_handle (style, window, state_type, shadow_type,
-                                            (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_handle (style, window, state_type, shadow_type,
+                                            (BdkRectangle *) area, widget, detail,
                                             x, y, width, height, orientation);
 }
 
 /**
- * gtk_paint_expander:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_expander:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none): clip rectangle, or %NULL if the
  *        output should not be clipped
@@ -6639,7 +6639,7 @@ gtk_paint_handle (GtkStyle           *style,
  *   whether the expander is collapsed, expanded, or in an
  *   intermediate state.
  * 
- * Draws an expander as used in #GtkTreeView. @x and @y specify the
+ * Draws an expander as used in #BtkTreeView. @x and @y specify the
  * center the expander. The size of the expander is determined by the
  * "expander-size" style property of @widget.  (If widget is not
  * specified or doesn't have an "expander-size" property, an
@@ -6650,29 +6650,29 @@ gtk_paint_handle (GtkStyle           *style,
  * expanded position.
  **/
 void
-gtk_paint_expander (GtkStyle           *style,
-                    GdkWindow          *window,
-                    GtkStateType        state_type,
-                    const GdkRectangle *area,
-                    GtkWidget          *widget,
+btk_paint_expander (BtkStyle           *style,
+                    BdkWindow          *window,
+                    BtkStateType        state_type,
+                    const BdkRectangle *area,
+                    BtkWidget          *widget,
                     const gchar        *detail,
                     gint                x,
                     gint                y,
-		    GtkExpanderStyle    expander_style)
+		    BtkExpanderStyle    expander_style)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_expander != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_expander != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_expander (style, window, state_type,
-                                              (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_expander (style, window, state_type,
+                                              (BdkRectangle *) area, widget, detail,
                                               x, y, expander_style);
 }
 
 /**
- * gtk_paint_layout:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_layout:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @use_text: whether to use the text or foreground
  *            graphics context of @style
@@ -6687,30 +6687,30 @@ gtk_paint_expander (GtkStyle           *style,
  * Draws a layout on @window using the given parameters.
  **/
 void
-gtk_paint_layout (GtkStyle           *style,
-                  GdkWindow          *window,
-                  GtkStateType        state_type,
+btk_paint_layout (BtkStyle           *style,
+                  BdkWindow          *window,
+                  BtkStateType        state_type,
                   gboolean            use_text,
-                  const GdkRectangle *area,
-                  GtkWidget          *widget,
+                  const BdkRectangle *area,
+                  BtkWidget          *widget,
                   const gchar        *detail,
                   gint                x,
                   gint                y,
-                  PangoLayout        *layout)
+                  BangoLayout        *layout)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_layout != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_layout != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_layout (style, window, state_type, use_text,
-                                            (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_layout (style, window, state_type, use_text,
+                                            (BdkRectangle *) area, widget, detail,
                                             x, y, layout);
 }
 
 /**
- * gtk_paint_resize_grip:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_resize_grip:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none): clip rectangle, or %NULL if the
  *        output should not be clipped
@@ -6726,38 +6726,38 @@ gtk_paint_layout (GtkStyle           *style,
  * parameters. 
  */
 void
-gtk_paint_resize_grip (GtkStyle           *style,
-                       GdkWindow          *window,
-                       GtkStateType        state_type,
-                       const GdkRectangle *area,
-                       GtkWidget          *widget,
+btk_paint_resize_grip (BtkStyle           *style,
+                       BdkWindow          *window,
+                       BtkStateType        state_type,
+                       const BdkRectangle *area,
+                       BtkWidget          *widget,
                        const gchar        *detail,
-                       GdkWindowEdge       edge,
+                       BdkWindowEdge       edge,
                        gint                x,
                        gint                y,
                        gint                width,
                        gint                height)
 
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_resize_grip != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_resize_grip != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_resize_grip (style, window, state_type,
-                                                 (GdkRectangle *) area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_resize_grip (style, window, state_type,
+                                                 (BdkRectangle *) area, widget, detail,
                                                  edge, x, y, width, height);
 }
 
 /**
- * gtk_paint_spinner:
- * @style: a #GtkStyle
- * @window: a #GdkWindow
+ * btk_paint_spinner:
+ * @style: a #BtkStyle
+ * @window: a #BdkWindow
  * @state_type: a state
  * @area: (allow-none): clip rectangle, or %NULL if the
  *        output should not be clipped
  * @widget: (allow-none): the widget (may be %NULL)
  * @detail: (allow-none): a style detail (may be %NULL)
- * @step: the nth step, a value between 0 and #GtkSpinner:num-steps
+ * @step: the nth step, a value between 0 and #BtkSpinner:num-steps
  * @x: the x origin of the rectangle in which to draw the spinner
  * @y: the y origin of the rectangle in which to draw the spinner
  * @width: the width of the rectangle in which to draw the spinner
@@ -6768,11 +6768,11 @@ gtk_paint_resize_grip (GtkStyle           *style,
  * Since: 2.20
  */
 void
-gtk_paint_spinner (GtkStyle           *style,
-		   GdkWindow          *window,
-		   GtkStateType        state_type,
-                   const GdkRectangle *area,
-                   GtkWidget          *widget,
+btk_paint_spinner (BtkStyle           *style,
+		   BdkWindow          *window,
+		   BtkStateType        state_type,
+                   const BdkRectangle *area,
+                   BtkWidget          *widget,
                    const gchar        *detail,
 		   guint               step,
 		   gint                x,
@@ -6780,87 +6780,87 @@ gtk_paint_spinner (GtkStyle           *style,
 		   gint                width,
 		   gint                height)
 {
-  g_return_if_fail (GTK_IS_STYLE (style));
-  g_return_if_fail (GTK_STYLE_GET_CLASS (style)->draw_spinner != NULL);
-  g_return_if_fail (style->depth == gdk_drawable_get_depth (window));
+  g_return_if_fail (BTK_IS_STYLE (style));
+  g_return_if_fail (BTK_STYLE_GET_CLASS (style)->draw_spinner != NULL);
+  g_return_if_fail (style->depth == bdk_drawable_get_depth (window));
 
-  GTK_STYLE_GET_CLASS (style)->draw_spinner (style, window, state_type,
-                                             (GdkRectangle *)area, widget, detail,
+  BTK_STYLE_GET_CLASS (style)->draw_spinner (style, window, state_type,
+                                             (BdkRectangle *)area, widget, detail,
 					     step, x, y, width, height);
 }
 
 /**
- * gtk_border_new:
+ * btk_border_new:
  *
- * Allocates a new #GtkBorder structure and initializes its elements to zero.
+ * Allocates a new #BtkBorder structure and initializes its elements to zero.
  * 
- * Returns: a new empty #GtkBorder. The newly allocated #GtkBorder should be 
- *     freed with gtk_border_free()
+ * Returns: a new empty #BtkBorder. The newly allocated #BtkBorder should be 
+ *     freed with btk_border_free()
  *
  * Since: 2.14
  **/
-GtkBorder *
-gtk_border_new (void)
+BtkBorder *
+btk_border_new (void)
 {
-  return g_slice_new0 (GtkBorder);
+  return g_slice_new0 (BtkBorder);
 }
 
 /**
- * gtk_border_copy:
- * @border_: a #GtkBorder.
+ * btk_border_copy:
+ * @border_: a #BtkBorder.
  * @returns: a copy of @border_.
  *
- * Copies a #GtkBorder structure.
+ * Copies a #BtkBorder structure.
  **/
-GtkBorder *
-gtk_border_copy (const GtkBorder *border)
+BtkBorder *
+btk_border_copy (const BtkBorder *border)
 {
   g_return_val_if_fail (border != NULL, NULL);
 
-  return g_slice_dup (GtkBorder, border);
+  return g_slice_dup (BtkBorder, border);
 }
 
 /**
- * gtk_border_free:
- * @border_: a #GtkBorder.
+ * btk_border_free:
+ * @border_: a #BtkBorder.
  * 
- * Frees a #GtkBorder structure.
+ * Frees a #BtkBorder structure.
  **/
 void
-gtk_border_free (GtkBorder *border)
+btk_border_free (BtkBorder *border)
 {
-  g_slice_free (GtkBorder, border);
+  g_slice_free (BtkBorder, border);
 }
 
 GType
-gtk_border_get_type (void)
+btk_border_get_type (void)
 {
   static GType our_type = 0;
   
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (I_("GtkBorder"),
-					     (GBoxedCopyFunc) gtk_border_copy,
-					     (GBoxedFreeFunc) gtk_border_free);
+    our_type = g_boxed_type_register_static (I_("BtkBorder"),
+					     (GBoxedCopyFunc) btk_border_copy,
+					     (GBoxedFreeFunc) btk_border_free);
 
   return our_type;
 }
 
-static GdkFont *
-gtk_style_get_font_internal (GtkStyle *style)
+static BdkFont *
+btk_style_get_font_internal (BtkStyle *style)
 {
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
 
   if (style->private_font && style->private_font_desc)
     {
       if (!style->font_desc ||
-	  !pango_font_description_equal (style->private_font_desc, style->font_desc))
+	  !bango_font_description_equal (style->private_font_desc, style->font_desc))
 	{
-	  gdk_font_unref (style->private_font);
+	  bdk_font_unref (style->private_font);
 	  style->private_font = NULL;
 	  
 	  if (style->private_font_desc)
 	    {
-	      pango_font_description_free (style->private_font_desc);
+	      bango_font_description_free (style->private_font_desc);
 	      style->private_font_desc = NULL;
 	    }
 	}
@@ -6868,27 +6868,27 @@ gtk_style_get_font_internal (GtkStyle *style)
   
   if (!style->private_font)
     {
-      GdkDisplay *display;
+      BdkDisplay *display;
 
       if (style->colormap)
 	{
-	  display = gdk_screen_get_display (gdk_colormap_get_screen (style->colormap));
+	  display = bdk_screen_get_display (bdk_colormap_get_screen (style->colormap));
 	}
       else
 	{
-	  display = gdk_display_get_default ();
-	  GTK_NOTE (MULTIHEAD,
-		    g_warning ("gtk_style_get_font() should not be called on an unattached style"));
+	  display = bdk_display_get_default ();
+	  BTK_NOTE (MULTIHEAD,
+		    g_warning ("btk_style_get_font() should not be called on an unattached style"));
 	}
       
       if (style->font_desc)
 	{
-	  style->private_font = gdk_font_from_description_for_display (display, style->font_desc);
-	  style->private_font_desc = pango_font_description_copy (style->font_desc);
+	  style->private_font = bdk_font_from_description_for_display (display, style->font_desc);
+	  style->private_font_desc = bango_font_description_copy (style->font_desc);
 	}
 
       if (!style->private_font)
-	style->private_font = gdk_font_load_for_display (display, "fixed");
+	style->private_font = bdk_font_load_for_display (display, "fixed");
       
       if (!style->private_font) 
 	g_error ("Unable to load \"fixed\" font");
@@ -6898,57 +6898,57 @@ gtk_style_get_font_internal (GtkStyle *style)
 }
 
 /**
- * gtk_style_get_font:
- * @style: a #GtkStyle
+ * btk_style_get_font:
+ * @style: a #BtkStyle
  * 
- * Gets the #GdkFont to use for the given style. This is
+ * Gets the #BdkFont to use for the given style. This is
  * meant only as a replacement for direct access to @style->font
  * and should not be used in new code. New code should
  * use @style->font_desc instead.
  * 
- * Return value: the #GdkFont for the style. This font is owned
+ * Return value: the #BdkFont for the style. This font is owned
  *   by the style; if you want to keep around a copy, you must
- *   call gdk_font_ref().
+ *   call bdk_font_ref().
  **/
-GdkFont *
-gtk_style_get_font (GtkStyle *style)
+BdkFont *
+btk_style_get_font (BtkStyle *style)
 {
-  g_return_val_if_fail (GTK_IS_STYLE (style), NULL);
+  g_return_val_if_fail (BTK_IS_STYLE (style), NULL);
 
-  return gtk_style_get_font_internal (style);
+  return btk_style_get_font_internal (style);
 }
 
 /**
- * gtk_style_set_font:
- * @style: a #GtkStyle.
- * @font: (allow-none): a #GdkFont, or %NULL to use the #GdkFont corresponding
+ * btk_style_set_font:
+ * @style: a #BtkStyle.
+ * @font: (allow-none): a #BdkFont, or %NULL to use the #BdkFont corresponding
  *   to style->font_desc.
  * 
- * Sets the #GdkFont to use for a given style. This is
+ * Sets the #BdkFont to use for a given style. This is
  * meant only as a replacement for direct access to style->font
  * and should not be used in new code. New code should
  * use style->font_desc instead.
  **/
 void
-gtk_style_set_font (GtkStyle *style,
-		    GdkFont  *font)
+btk_style_set_font (BtkStyle *style,
+		    BdkFont  *font)
 {
-  GdkFont *old_font;
+  BdkFont *old_font;
 
-  g_return_if_fail (GTK_IS_STYLE (style));
+  g_return_if_fail (BTK_IS_STYLE (style));
 
   old_font = style->private_font;
 
   style->private_font = font;
   if (font)
-    gdk_font_ref (font);
+    bdk_font_ref (font);
 
   if (old_font)
-    gdk_font_unref (old_font);
+    bdk_font_unref (old_font);
 
   if (style->private_font_desc)
     {
-      pango_font_description_free (style->private_font_desc);
+      bango_font_description_free (style->private_font_desc);
       style->private_font_desc = NULL;
     }
 }
@@ -6958,73 +6958,73 @@ typedef struct _CursorInfo CursorInfo;
 struct _CursorInfo
 {
   GType for_type;
-  GdkGC *primary_gc;
-  GdkGC *secondary_gc;
+  BdkGC *primary_gc;
+  BdkGC *secondary_gc;
 };
 
 static void
-style_unrealize_cursor_gcs (GtkStyle *style)
+style_unrealize_cursor_gcs (BtkStyle *style)
 {
   CursorInfo *
   
-  cursor_info = g_object_get_data (G_OBJECT (style), "gtk-style-cursor-info");
+  cursor_info = g_object_get_data (G_OBJECT (style), "btk-style-cursor-info");
   if (cursor_info)
     {
       if (cursor_info->primary_gc)
-	gtk_gc_release (cursor_info->primary_gc);
+	btk_gc_release (cursor_info->primary_gc);
 
       if (cursor_info->secondary_gc)
-	gtk_gc_release (cursor_info->secondary_gc);
+	btk_gc_release (cursor_info->secondary_gc);
       
       g_free (cursor_info);
-      g_object_set_data (G_OBJECT (style), I_("gtk-style-cursor-info"), NULL);
+      g_object_set_data (G_OBJECT (style), I_("btk-style-cursor-info"), NULL);
     }
 }
 
-static GdkGC *
-make_cursor_gc (GtkWidget      *widget,
+static BdkGC *
+make_cursor_gc (BtkWidget      *widget,
 		const gchar    *property_name,
-		const GdkColor *fallback)
+		const BdkColor *fallback)
 {
-  GdkGCValues gc_values;
-  GdkGCValuesMask gc_values_mask;
-  GdkColor *cursor_color;
+  BdkGCValues gc_values;
+  BdkGCValuesMask gc_values_mask;
+  BdkColor *cursor_color;
 
-  gtk_widget_style_get (widget, property_name, &cursor_color, NULL);
+  btk_widget_style_get (widget, property_name, &cursor_color, NULL);
   
-  gc_values_mask = GDK_GC_FOREGROUND;
+  gc_values_mask = BDK_GC_FOREGROUND;
   if (cursor_color)
     {
       gc_values.foreground = *cursor_color;
-      gdk_color_free (cursor_color);
+      bdk_color_free (cursor_color);
     }
   else
     gc_values.foreground = *fallback;
   
-  gdk_rgb_find_color (widget->style->colormap, &gc_values.foreground);
-  return gtk_gc_get (widget->style->depth, widget->style->colormap, &gc_values, gc_values_mask);
+  bdk_rgb_find_color (widget->style->colormap, &gc_values.foreground);
+  return btk_gc_get (widget->style->depth, widget->style->colormap, &gc_values, gc_values_mask);
 }
 
-static GdkGC *
-get_insertion_cursor_gc (GtkWidget *widget,
+static BdkGC *
+get_insertion_cursor_gc (BtkWidget *widget,
 			 gboolean   is_primary)
 {
   CursorInfo *cursor_info;
 
-  cursor_info = g_object_get_data (G_OBJECT (widget->style), "gtk-style-cursor-info");
+  cursor_info = g_object_get_data (G_OBJECT (widget->style), "btk-style-cursor-info");
   if (!cursor_info)
     {
       cursor_info = g_new (CursorInfo, 1);
-      g_object_set_data (G_OBJECT (widget->style), I_("gtk-style-cursor-info"), cursor_info);
+      g_object_set_data (G_OBJECT (widget->style), I_("btk-style-cursor-info"), cursor_info);
       cursor_info->primary_gc = NULL;
       cursor_info->secondary_gc = NULL;
       cursor_info->for_type = G_TYPE_INVALID;
     }
 
-  /* We have to keep track of the type because gtk_widget_style_get()
+  /* We have to keep track of the type because btk_widget_style_get()
    * can return different results when called on the same property and
    * same style but for different widgets. :-(. That is,
-   * GtkEntry::cursor-color = "red" in a style will modify the cursor
+   * BtkEntry::cursor-color = "red" in a style will modify the cursor
    * color for entries but not for text view.
    */
   if (cursor_info->for_type != G_OBJECT_TYPE (widget))
@@ -7032,24 +7032,24 @@ get_insertion_cursor_gc (GtkWidget *widget,
       cursor_info->for_type = G_OBJECT_TYPE (widget);
       if (cursor_info->primary_gc)
 	{
-	  gtk_gc_release (cursor_info->primary_gc);
+	  btk_gc_release (cursor_info->primary_gc);
 	  cursor_info->primary_gc = NULL;
 	}
       if (cursor_info->secondary_gc)
 	{
-	  gtk_gc_release (cursor_info->secondary_gc);
+	  btk_gc_release (cursor_info->secondary_gc);
 	  cursor_info->secondary_gc = NULL;
 	}
     }
 
   /* Cursors in text widgets are drawn only in NORMAL state,
-   * so we can use text[GTK_STATE_NORMAL] as text color here */
+   * so we can use text[BTK_STATE_NORMAL] as text color here */
   if (is_primary)
     {
       if (!cursor_info->primary_gc)
 	cursor_info->primary_gc = make_cursor_gc (widget,
 						  "cursor-color",
-						  &widget->style->text[GTK_STATE_NORMAL]);
+						  &widget->style->text[BTK_STATE_NORMAL]);
 
       return cursor_info->primary_gc;
     }
@@ -7060,46 +7060,46 @@ get_insertion_cursor_gc (GtkWidget *widget,
 						    "secondary-cursor-color",
 						    /* text_aa is the average of text and base colors,
 						     * in usual black-on-white case it's grey. */
-						    &widget->style->text_aa[GTK_STATE_NORMAL]);
+						    &widget->style->text_aa[BTK_STATE_NORMAL]);
 
       return cursor_info->secondary_gc;
     }
 }
 
-GdkGC *
-_gtk_widget_get_cursor_gc (GtkWidget *widget)
+BdkGC *
+_btk_widget_get_cursor_gc (BtkWidget *widget)
 {
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-  g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (btk_widget_get_realized (widget), NULL);
   return get_insertion_cursor_gc (widget, TRUE);
 }
 
 void
-_gtk_widget_get_cursor_color (GtkWidget *widget,
-			      GdkColor  *color)
+_btk_widget_get_cursor_color (BtkWidget *widget,
+			      BdkColor  *color)
 {
-  GdkColor *style_color;
+  BdkColor *style_color;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (color != NULL);
 
-  gtk_widget_style_get (widget, "cursor-color", &style_color, NULL);
+  btk_widget_style_get (widget, "cursor-color", &style_color, NULL);
 
   if (style_color)
     {
       *color = *style_color;
-      gdk_color_free (style_color);
+      bdk_color_free (style_color);
     }
   else
-    *color = widget->style->text[GTK_STATE_NORMAL];
+    *color = widget->style->text[BTK_STATE_NORMAL];
 }
 
 static void
-draw_insertion_cursor (GtkWidget          *widget,
-		       GdkDrawable        *drawable,
-		       GdkGC              *gc,
-		       const GdkRectangle *location,
-		       GtkTextDirection    direction,
+draw_insertion_cursor (BtkWidget          *widget,
+		       BdkDrawable        *drawable,
+		       BdkGC              *gc,
+		       const BdkRectangle *location,
+		       BtkTextDirection    direction,
 		       gboolean            draw_arrow)
 {
   gint stem_width;
@@ -7110,48 +7110,48 @@ draw_insertion_cursor (GtkWidget          *widget,
   gint offset;
   
   /* When changing the shape or size of the cursor here,
-   * propagate the changes to gtktextview.c:text_window_invalidate_cursors().
+   * propagate the changes to btktextview.c:text_window_invalidate_cursors().
    */
 
-  gtk_widget_style_get (widget, "cursor-aspect-ratio", &cursor_aspect_ratio, NULL);
+  btk_widget_style_get (widget, "cursor-aspect-ratio", &cursor_aspect_ratio, NULL);
   
   stem_width = location->height * cursor_aspect_ratio + 1;
   arrow_width = stem_width + 1;
 
   /* put (stem_width % 2) on the proper side of the cursor */
-  if (direction == GTK_TEXT_DIR_LTR)
+  if (direction == BTK_TEXT_DIR_LTR)
     offset = stem_width / 2;
   else
     offset = stem_width - stem_width / 2;
   
   for (i = 0; i < stem_width; i++)
-    gdk_draw_line (drawable, gc,
+    bdk_draw_line (drawable, gc,
 		   location->x + i - offset, location->y,
 		   location->x + i - offset, location->y + location->height - 1);
 
   if (draw_arrow)
     {
-      if (direction == GTK_TEXT_DIR_RTL)
+      if (direction == BTK_TEXT_DIR_RTL)
         {
           x = location->x - offset - 1;
           y = location->y + location->height - arrow_width * 2 - arrow_width + 1;
   
           for (i = 0; i < arrow_width; i++)
             {
-              gdk_draw_line (drawable, gc,
+              bdk_draw_line (drawable, gc,
                              x, y + i + 1,
                              x, y + 2 * arrow_width - i - 1);
               x --;
             }
         }
-      else if (direction == GTK_TEXT_DIR_LTR)
+      else if (direction == BTK_TEXT_DIR_LTR)
         {
           x = location->x + stem_width - offset;
           y = location->y + location->height - arrow_width * 2 - arrow_width + 1;
   
           for (i = 0; i < arrow_width; i++) 
             {
-              gdk_draw_line (drawable, gc,
+              bdk_draw_line (drawable, gc,
                              x, y + i + 1,
                              x, y + 2 * arrow_width - i - 1);
               x++;
@@ -7161,15 +7161,15 @@ draw_insertion_cursor (GtkWidget          *widget,
 }
 
 /**
- * gtk_draw_insertion_cursor:
- * @widget:  a #GtkWidget
- * @drawable: a #GdkDrawable
+ * btk_draw_insertion_cursor:
+ * @widget:  a #BtkWidget
+ * @drawable: a #BdkDrawable
  * @area: (allow-none): rectangle to which the output is clipped, or %NULL if the
  *        output should not be clipped
  * @location: location where to draw the cursor (@location->width is ignored)
  * @is_primary: if the cursor should be the primary cursor color.
  * @direction: whether the cursor is left-to-right or
- *             right-to-left. Should never be #GTK_TEXT_DIR_NONE
+ *             right-to-left. Should never be #BTK_TEXT_DIR_NONE
  * @draw_arrow: %TRUE to draw a directional arrow on the
  *        cursor. Should be %FALSE unless the cursor is split.
  * 
@@ -7179,31 +7179,31 @@ draw_insertion_cursor (GtkWidget          *widget,
  * Since: 2.4
  **/
 void
-gtk_draw_insertion_cursor (GtkWidget          *widget,
-			   GdkDrawable        *drawable,
-			   const GdkRectangle *area,
-			   const GdkRectangle *location,
+btk_draw_insertion_cursor (BtkWidget          *widget,
+			   BdkDrawable        *drawable,
+			   const BdkRectangle *area,
+			   const BdkRectangle *location,
 			   gboolean            is_primary,
-			   GtkTextDirection    direction,
+			   BtkTextDirection    direction,
 			   gboolean            draw_arrow)
 {
-  GdkGC *gc;
+  BdkGC *gc;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GDK_IS_DRAWABLE (drawable));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
+  g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (location != NULL);
-  g_return_if_fail (direction != GTK_TEXT_DIR_NONE);
+  g_return_if_fail (direction != BTK_TEXT_DIR_NONE);
 
   gc = get_insertion_cursor_gc (widget, is_primary);
   if (area)
-    gdk_gc_set_clip_rectangle (gc, area);
+    bdk_gc_set_clip_rectangle (gc, area);
   
   draw_insertion_cursor (widget, drawable, gc,
 			 location, direction, draw_arrow);
   
   if (area)
-    gdk_gc_set_clip_rectangle (gc, NULL);
+    bdk_gc_set_clip_rectangle (gc, NULL);
 }
 
-#define __GTK_STYLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_STYLE_C__
+#include "btkaliasdef.c"

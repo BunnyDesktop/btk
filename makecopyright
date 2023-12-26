@@ -1,10 +1,10 @@
 #!/bin/sh
 
 
-copyright_glib ()
+copyright_bunnylib ()
 {
   cat << EOF
-/* GLIB - Library of useful routines for C programming
+/* BUNNYLIB - Library of useful routines for C programming
  * Copyright (C) 1995-1997  Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -25,10 +25,10 @@ copyright_glib ()
 EOF
 }
 
-copyright_gdk ()
+copyright_bdk ()
 {
   cat << EOF
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -49,10 +49,10 @@ copyright_gdk ()
 EOF
 }
 
-copyright_gtk ()
+copyright_btk ()
 {
   cat << EOF
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -76,7 +76,7 @@ EOF
 copyright_interp ()
 {
   cat << EOF
-/* GTK Interp - The GTK Interpreter
+/* BTK Interp - The BTK Interpreter
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -98,7 +98,7 @@ EOF
 }
 
 
-exclude_files="./glib/gconfig.h"
+exclude_files="./bunnylib/gconfig.h"
 
 for file in `find . -name "*.[ch]" -print`; do
   exclude=`echo $exclude_files | grep $file`

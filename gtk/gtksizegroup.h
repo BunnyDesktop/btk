@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtksizegroup.h:
+/* BTK - The GIMP Toolkit
+ * btksizegroup.h:
  * Copyright (C) 2000 Red Hat Software
  *
  * This library is free software; you can redistribute it and/or
@@ -18,29 +18,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_SIZE_GROUP_H__
-#define __GTK_SIZE_GROUP_H__
+#ifndef __BTK_SIZE_GROUP_H__
+#define __BTK_SIZE_GROUP_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SIZE_GROUP            (gtk_size_group_get_type ())
-#define GTK_SIZE_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SIZE_GROUP, GtkSizeGroup))
-#define GTK_SIZE_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SIZE_GROUP, GtkSizeGroupClass))
-#define GTK_IS_SIZE_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SIZE_GROUP))
-#define GTK_IS_SIZE_GROUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SIZE_GROUP))
-#define GTK_SIZE_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SIZE_GROUP, GtkSizeGroupClass))
+#define BTK_TYPE_SIZE_GROUP            (btk_size_group_get_type ())
+#define BTK_SIZE_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroup))
+#define BTK_SIZE_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
+#define BTK_IS_SIZE_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SIZE_GROUP))
+#define BTK_IS_SIZE_GROUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SIZE_GROUP))
+#define BTK_SIZE_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
 
 
-typedef struct _GtkSizeGroup       GtkSizeGroup;
-typedef struct _GtkSizeGroupClass  GtkSizeGroupClass;
+typedef struct _BtkSizeGroup       BtkSizeGroup;
+typedef struct _BtkSizeGroupClass  BtkSizeGroupClass;
 
-struct _GtkSizeGroup
+struct _BtkSizeGroup
 {
   GObject parent_instance;
 
@@ -53,59 +53,59 @@ struct _GtkSizeGroup
   guint GSEAL (have_height) : 1;
   guint GSEAL (ignore_hidden) : 1;
 
-  GtkRequisition GSEAL (requisition);
+  BtkRequisition GSEAL (requisition);
 };
 
-struct _GtkSizeGroupClass
+struct _BtkSizeGroupClass
 {
   GObjectClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 /**
- * GtkSizeGroupMode:
- * @GTK_SIZE_GROUP_NONE: group has no effect
- * @GTK_SIZE_GROUP_HORIZONTAL: group affects horizontal requisition
- * @GTK_SIZE_GROUP_VERTICAL: group affects vertical requisition
- * @GTK_SIZE_GROUP_BOTH: group affects both horizontal and vertical requisition
+ * BtkSizeGroupMode:
+ * @BTK_SIZE_GROUP_NONE: group has no effect
+ * @BTK_SIZE_GROUP_HORIZONTAL: group affects horizontal requisition
+ * @BTK_SIZE_GROUP_VERTICAL: group affects vertical requisition
+ * @BTK_SIZE_GROUP_BOTH: group affects both horizontal and vertical requisition
  *
  * The mode of the size group determines the directions in which the size
  * group affects the requested sizes of its component widgets.
  **/
 typedef enum {
-  GTK_SIZE_GROUP_NONE,
-  GTK_SIZE_GROUP_HORIZONTAL,
-  GTK_SIZE_GROUP_VERTICAL,
-  GTK_SIZE_GROUP_BOTH
-} GtkSizeGroupMode;
+  BTK_SIZE_GROUP_NONE,
+  BTK_SIZE_GROUP_HORIZONTAL,
+  BTK_SIZE_GROUP_VERTICAL,
+  BTK_SIZE_GROUP_BOTH
+} BtkSizeGroupMode;
 
-GType            gtk_size_group_get_type      (void) G_GNUC_CONST;
+GType            btk_size_group_get_type      (void) G_GNUC_CONST;
 
-GtkSizeGroup *   gtk_size_group_new           (GtkSizeGroupMode  mode);
-void             gtk_size_group_set_mode      (GtkSizeGroup     *size_group,
-					       GtkSizeGroupMode  mode);
-GtkSizeGroupMode gtk_size_group_get_mode      (GtkSizeGroup     *size_group);
-void             gtk_size_group_set_ignore_hidden (GtkSizeGroup *size_group,
+BtkSizeGroup *   btk_size_group_new           (BtkSizeGroupMode  mode);
+void             btk_size_group_set_mode      (BtkSizeGroup     *size_group,
+					       BtkSizeGroupMode  mode);
+BtkSizeGroupMode btk_size_group_get_mode      (BtkSizeGroup     *size_group);
+void             btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
 						   gboolean      ignore_hidden);
-gboolean         gtk_size_group_get_ignore_hidden (GtkSizeGroup *size_group);
-void             gtk_size_group_add_widget    (GtkSizeGroup     *size_group,
-					       GtkWidget        *widget);
-void             gtk_size_group_remove_widget (GtkSizeGroup     *size_group,
-					       GtkWidget        *widget);
-GSList *         gtk_size_group_get_widgets   (GtkSizeGroup     *size_group);
+gboolean         btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group);
+void             btk_size_group_add_widget    (BtkSizeGroup     *size_group,
+					       BtkWidget        *widget);
+void             btk_size_group_remove_widget (BtkSizeGroup     *size_group,
+					       BtkWidget        *widget);
+GSList *         btk_size_group_get_widgets   (BtkSizeGroup     *size_group);
 
 
-void _gtk_size_group_get_child_requisition (GtkWidget      *widget,
-					    GtkRequisition *requisition);
-void _gtk_size_group_compute_requisition   (GtkWidget      *widget,
-					    GtkRequisition *requisition);
-void _gtk_size_group_queue_resize          (GtkWidget      *widget);
+void _btk_size_group_get_child_requisition (BtkWidget      *widget,
+					    BtkRequisition *requisition);
+void _btk_size_group_compute_requisition   (BtkWidget      *widget,
+					    BtkRequisition *requisition);
+void _btk_size_group_queue_resize          (BtkWidget      *widget);
 
 G_END_DECLS
 
-#endif /* __GTK_SIZE_GROUP_H__ */
+#endif /* __BTK_SIZE_GROUP_H__ */

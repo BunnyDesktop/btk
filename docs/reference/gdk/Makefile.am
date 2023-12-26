@@ -4,31 +4,31 @@ include $(top_srcdir)/Makefile.decl
 AUTOMAKE_OPTIONS = 1.6
 
 # The name of the module.
-DOC_MODULE=gdk2
+DOC_MODULE=bdk2
 
 # The top-level SGML file.
-DOC_MAIN_SGML_FILE=gdk-docs.sgml
+DOC_MAIN_SGML_FILE=bdk-docs.sgml
 
-# Extra options to supply to gtkdoc-scan
-SCAN_OPTIONS=--deprecated-guards="GDK_ENABLE_BROKEN|GDK_DISABLE_DEPRECATED"
+# Extra options to supply to btkdoc-scan
+SCAN_OPTIONS=--deprecated-guards="BDK_ENABLE_BROKEN|BDK_DISABLE_DEPRECATED"
 
 # The directory containing the source code. Relative to $(srcdir)
-DOC_SOURCE_DIR=../../../gdk
+DOC_SOURCE_DIR=../../../bdk
 
 # Used for dependencies
-HFILE_GLOB=$(top_srcdir)/gdk/*.h $(top_srcdir)/gdk/x11/gdkx.h
-CFILE_GLOB=$(top_srcdir)/gdk/*.c
+HFILE_GLOB=$(top_srcdir)/bdk/*.h $(top_srcdir)/bdk/x11/bdkx.h
+CFILE_GLOB=$(top_srcdir)/bdk/*.c
 
 # Header files to ignore when scanning
 IGNORE_HFILES=			\
-	gdkalias.h		\
-	gdkintl.h		\
-	gdkmarshalers.h		\
-	gdkkeysyms.h		\
-	gdkinternals.h		\
-	gdkprivate.h		\
-	gdkpoly-generic.h	\
-	gdkregion-generic.h	\
+	bdkalias.h		\
+	bdkintl.h		\
+	bdkmarshalers.h		\
+	bdkkeysyms.h		\
+	bdkinternals.h		\
+	bdkprivate.h		\
+	bdkpoly-generic.h	\
+	bdkrebunnyion-generic.h	\
 	keyname-table.h		\
 	win32 			\
 	directfb		\
@@ -37,22 +37,22 @@ IGNORE_HFILES=			\
 
 # Extra files to add when scanning (relative to $srcdir)
 EXTRA_HFILES=			\
-	../../../gdk/x11/gdkx.h 
+	../../../bdk/x11/bdkx.h 
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
 INCLUDES = \
 	-I$(top_srcdir) 	\
 	-I$(top_builddir) 	\
-	-I$(top_builddir)/gdk 	\
-	$(GTK_DEBUG_FLAGS)	\
-	$(GDK_DEP_CFLAGS)
+	-I$(top_builddir)/bdk 	\
+	$(BTK_DEBUG_FLAGS)	\
+	$(BDK_DEP_CFLAGS)
 
-GTKDOC_LIBS = $(top_builddir)/gdk/$(gdktargetlib)
+BTKDOC_LIBS = $(top_builddir)/bdk/$(bdktargetlib)
 
 
-# Extra options to supply to gtkdoc-mkdb
-MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=gdk
+# Extra options to supply to btkdoc-mkdb
+MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=bdk
 
 # Extra SGML files that are included by DOC_MAIN_SGML_FILE
 content_files = 		\
@@ -141,14 +141,14 @@ HTML_IMAGES =				\
 	images/watch.png 		\
 	images/xterm.png 
 
-# Extra options to supply to gtkdoc-fixref
+# Extra options to supply to btkdoc-fixref
 FIXXREF_OPTIONS= \
-	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/gobject \
-	--extra-dir=$(GLIB_PREFIX)/share/gtk-doc/html/glib \
-	--extra-dir=$(CAIRO_PREFIX)/share/gtk-doc/html/cairo
+	--extra-dir=$(BUNNYLIB_PREFIX)/share/btk-doc/html/bobject \
+	--extra-dir=$(BUNNYLIB_PREFIX)/share/btk-doc/html/bunnylib \
+	--extra-dir=$(BAIRO_PREFIX)/share/btk-doc/html/bairo
 
 
-include $(top_srcdir)/gtk-doc.make
+include $(top_srcdir)/btk-doc.make
 
 # Other files to distribute
 EXTRA_DIST += version.xml.in

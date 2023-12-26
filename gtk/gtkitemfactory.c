@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkItemFactory: Flexible item factory with automatic rc handling
+ * BtkItemFactory: Flexible item factory with automatic rc handling
  * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -21,31 +21,31 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include	<config.h>
 
-#undef GTK_DISABLE_DEPRECATED
-#include	"gtkitemfactory.h"
-#include	"gtkoptionmenu.h"
-#include	"gtkmenubar.h"
-#include	"gtkmenu.h"
-#include	"gtkmenuitem.h"
-#include	"gtkradiomenuitem.h"
-#include	"gtkcheckmenuitem.h"
-#include	"gtkimagemenuitem.h"
-#include	"gtktearoffmenuitem.h"
-#include	"gtkaccelmap.h"
-#include	"gtkaccellabel.h"
-#include        "gdk/gdkkeysyms.h"
-#include	"gtkimage.h"
-#include	"gtkstock.h"
-#include	"gtkiconfactory.h"
-#include	"gtkintl.h"
+#undef BTK_DISABLE_DEPRECATED
+#include	"btkitemfactory.h"
+#include	"btkoptionmenu.h"
+#include	"btkmenubar.h"
+#include	"btkmenu.h"
+#include	"btkmenuitem.h"
+#include	"btkradiomenuitem.h"
+#include	"btkcheckmenuitem.h"
+#include	"btkimagemenuitem.h"
+#include	"btktearoffmenuitem.h"
+#include	"btkaccelmap.h"
+#include	"btkaccellabel.h"
+#include        "bdk/bdkkeysyms.h"
+#include	"btkimage.h"
+#include	"btkstock.h"
+#include	"btkiconfactory.h"
+#include	"btkintl.h"
 #include	<string.h>
 #include	<fcntl.h>
 #ifdef HAVE_UNISTD_H
@@ -53,7 +53,7 @@
 #endif
 #include	<stdio.h>
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 /* --- defines --- */
 #define		ITEM_FACTORY_STRING	((gchar*) item_factory_string)
@@ -61,11 +61,11 @@
 
 
 /* --- structures --- */
-typedef struct	_GtkIFCBData		GtkIFCBData;
-typedef struct  _GtkIFDumpData		GtkIFDumpData;
-struct _GtkIFCBData
+typedef struct	_BtkIFCBData		BtkIFCBData;
+typedef struct  _BtkIFDumpData		BtkIFDumpData;
+struct _BtkIFCBData
 {
-  GtkItemFactoryCallback  func;
+  BtkItemFactoryCallback  func;
   guint			  callback_type;
   gpointer		  func_data;
   guint			  callback_action;
@@ -73,12 +73,12 @@ struct _GtkIFCBData
 
 
 /* --- prototypes --- */
-static void	gtk_item_factory_destroy		(GtkObject	      *object);
-static void	gtk_item_factory_finalize		(GObject	      *object);
+static void	btk_item_factory_destroy		(BtkObject	      *object);
+static void	btk_item_factory_finalize		(GObject	      *object);
 
 
 /* --- static variables --- */
-static const gchar	 item_factory_string[] = "Gtk-<ItemFactory>";
+static const gchar	 item_factory_string[] = "Btk-<ItemFactory>";
 static GQuark		 quark_popup_data = 0;
 static GQuark		 quark_if_menu_pos = 0;
 static GQuark		 quark_item_factory = 0;
@@ -97,27 +97,27 @@ static GQuark		 quark_type_separator_item = 0;
 static GQuark		 quark_type_branch = 0;
 static GQuark		 quark_type_last_branch = 0;
 
-G_DEFINE_TYPE (GtkItemFactory, gtk_item_factory, GTK_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkItemFactory, btk_item_factory, BTK_TYPE_OBJECT)
 
 /* --- functions --- */
 static void
-gtk_item_factory_class_init (GtkItemFactoryClass  *class)
+btk_item_factory_class_init (BtkItemFactoryClass  *class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-  GtkObjectClass *object_class = GTK_OBJECT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
 
-  gobject_class->finalize = gtk_item_factory_finalize;
+  bobject_class->finalize = btk_item_factory_finalize;
 
-  object_class->destroy = gtk_item_factory_destroy;
+  object_class->destroy = btk_item_factory_destroy;
 
   class->item_ht = g_hash_table_new (g_str_hash, g_str_equal);
 
-  quark_popup_data		= g_quark_from_static_string ("GtkItemFactory-popup-data");
-  quark_if_menu_pos		= g_quark_from_static_string ("GtkItemFactory-menu-position");
-  quark_item_factory		= g_quark_from_static_string ("GtkItemFactory");
-  quark_item_path		= g_quark_from_static_string ("GtkItemFactory-path");
-  quark_action			= g_quark_from_static_string ("GtkItemFactory-action");
-  quark_accel_group		= g_quark_from_static_string ("GtkAccelGroup");
+  quark_popup_data		= g_quark_from_static_string ("BtkItemFactory-popup-data");
+  quark_if_menu_pos		= g_quark_from_static_string ("BtkItemFactory-menu-position");
+  quark_item_factory		= g_quark_from_static_string ("BtkItemFactory");
+  quark_item_path		= g_quark_from_static_string ("BtkItemFactory-path");
+  quark_action			= g_quark_from_static_string ("BtkItemFactory-action");
+  quark_accel_group		= g_quark_from_static_string ("BtkAccelGroup");
   quark_type_item		= g_quark_from_static_string ("<Item>");
   quark_type_title		= g_quark_from_static_string ("<Title>");
   quark_type_radio_item		= g_quark_from_static_string ("<RadioItem>");
@@ -132,7 +132,7 @@ gtk_item_factory_class_init (GtkItemFactoryClass  *class)
 }
 
 static void
-gtk_item_factory_init (GtkItemFactory	    *ifactory)
+btk_item_factory_init (BtkItemFactory	    *ifactory)
 {
   ifactory->path = NULL;
   ifactory->accel_group = NULL;
@@ -144,59 +144,59 @@ gtk_item_factory_init (GtkItemFactory	    *ifactory)
 }
 
 /**
- * gtk_item_factory_new:
+ * btk_item_factory_new:
  * @container_type: the kind of menu to create; can be
- *    #GTK_TYPE_MENU_BAR, #GTK_TYPE_MENU or #GTK_TYPE_OPTION_MENU
+ *    #BTK_TYPE_MENU_BAR, #BTK_TYPE_MENU or #BTK_TYPE_OPTION_MENU
  * @path: the factory path of the new item factory, a string of the form
  *    <literal>"&lt;name&gt;"</literal>
- * @accel_group: (allow-none): a #GtkAccelGroup to which the accelerators for the
+ * @accel_group: (allow-none): a #BtkAccelGroup to which the accelerators for the
  *    menu items will be added, or %NULL to create a new one
- * @returns: a new #GtkItemFactory
+ * @returns: a new #BtkItemFactory
  *
- * Creates a new #GtkItemFactory.
+ * Creates a new #BtkItemFactory.
  *
  * Beware that the returned object does not have a floating reference.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkItemFactory*
-gtk_item_factory_new (GType	     container_type,
+BtkItemFactory*
+btk_item_factory_new (GType	     container_type,
 		      const gchar   *path,
-		      GtkAccelGroup *accel_group)
+		      BtkAccelGroup *accel_group)
 {
-  GtkItemFactory *ifactory;
+  BtkItemFactory *ifactory;
 
   g_return_val_if_fail (path != NULL, NULL);
 
-  ifactory = g_object_new (GTK_TYPE_ITEM_FACTORY, NULL);
-  gtk_item_factory_construct (ifactory, container_type, path, accel_group);
+  ifactory = g_object_new (BTK_TYPE_ITEM_FACTORY, NULL);
+  btk_item_factory_construct (ifactory, container_type, path, accel_group);
 
   return ifactory;
 }
 
 static void
-gtk_item_factory_callback_marshal (GtkWidget *widget,
+btk_item_factory_callback_marshal (BtkWidget *widget,
 				   gpointer   func_data)
 {
-  GtkIFCBData *data;
+  BtkIFCBData *data;
 
   data = func_data;
 
   if (data->callback_type == 1)
     {
-      GtkItemFactoryCallback1 func1 = (GtkItemFactoryCallback1) data->func;
+      BtkItemFactoryCallback1 func1 = (BtkItemFactoryCallback1) data->func;
       func1 (data->func_data, data->callback_action, widget);
     }
   else if (data->callback_type == 2)
     {
-      GtkItemFactoryCallback2 func2 = (GtkItemFactoryCallback2) data->func;
+      BtkItemFactoryCallback2 func2 = (BtkItemFactoryCallback2) data->func;
       func2 (widget, data->func_data, data->callback_action);
     }
 }
 
 static void
-gtk_item_factory_item_remove_widget (GtkWidget		*widget,
-				     GtkItemFactoryItem *item)
+btk_item_factory_item_remove_widget (BtkWidget		*widget,
+				     BtkItemFactoryItem *item)
 {
   item->widgets = g_slist_remove (item->widgets, widget);
   g_object_set_qdata (G_OBJECT (widget), quark_item_factory, NULL);
@@ -204,7 +204,7 @@ gtk_item_factory_item_remove_widget (GtkWidget		*widget,
 }
 
 /**
- * gtk_item_factory_add_foreign:
+ * btk_item_factory_add_foreign:
  * @accel_widget:     widget to install an accelerator on 
  * @full_path:	      the full path for the @accel_widget 
  * @accel_group:      the accelerator group to install the accelerator in
@@ -215,36 +215,36 @@ gtk_item_factory_item_remove_widget (GtkWidget		*widget,
  * the ::activate signal to be emitted if the accelerator is activated.
  * 
  * This function can be used to make widgets participate in the accel
- * saving/restoring functionality provided by gtk_accel_map_save() and
- * gtk_accel_map_load(), even if they haven't been created by an item
+ * saving/restoring functionality provided by btk_accel_map_save() and
+ * btk_accel_map_load(), even if they haven't been created by an item
  * factory. 
  *
  * Deprecated: 2.4: The recommended API for this purpose are the functions 
- * gtk_menu_item_set_accel_path() and gtk_widget_set_accel_path(); don't 
- * use gtk_item_factory_add_foreign() in new code, since it is likely to
+ * btk_menu_item_set_accel_path() and btk_widget_set_accel_path(); don't 
+ * use btk_item_factory_add_foreign() in new code, since it is likely to
  * be removed in the future.
  */
 void
-gtk_item_factory_add_foreign (GtkWidget      *accel_widget,
+btk_item_factory_add_foreign (BtkWidget      *accel_widget,
 			      const gchar    *full_path,
-			      GtkAccelGroup  *accel_group,
+			      BtkAccelGroup  *accel_group,
 			      guint           keyval,
-			      GdkModifierType modifiers)
+			      BdkModifierType modifiers)
 {
-  GtkItemFactoryClass *class;
-  GtkItemFactoryItem *item;
+  BtkItemFactoryClass *class;
+  BtkItemFactoryItem *item;
 
-  g_return_if_fail (GTK_IS_WIDGET (accel_widget));
+  g_return_if_fail (BTK_IS_WIDGET (accel_widget));
   g_return_if_fail (full_path != NULL);
 
-  class = gtk_type_class (GTK_TYPE_ITEM_FACTORY);
+  class = btk_type_class (BTK_TYPE_ITEM_FACTORY);
 
-  keyval = keyval != GDK_VoidSymbol ? keyval : 0;
+  keyval = keyval != BDK_VoidSymbol ? keyval : 0;
 
   item = g_hash_table_lookup (class->item_ht, full_path);
   if (!item)
     {
-      item = g_slice_new (GtkItemFactoryItem);
+      item = g_slice_new (BtkItemFactoryItem);
 
       item->path = g_strdup (full_path);
       item->widgets = NULL;
@@ -255,13 +255,13 @@ gtk_item_factory_add_foreign (GtkWidget      *accel_widget,
   item->widgets = g_slist_prepend (item->widgets, accel_widget);
   g_signal_connect (accel_widget,
 		    "destroy",
-		    G_CALLBACK (gtk_item_factory_item_remove_widget),
+		    G_CALLBACK (btk_item_factory_item_remove_widget),
 		    item);
 
   /* set the item path for the widget
    */
   g_object_set_qdata (G_OBJECT (accel_widget), quark_item_path, item->path);
-  gtk_widget_set_name (accel_widget, item->path);
+  btk_widget_set_name (accel_widget, item->path);
   if (accel_group)
     {
       g_object_ref (accel_group);
@@ -279,8 +279,8 @@ gtk_item_factory_add_foreign (GtkWidget      *accel_widget,
     {
       if (accel_group)
 	{
-	  gtk_accel_map_add_entry (full_path, keyval, modifiers);
-	  gtk_widget_set_accel_path (accel_widget, full_path, accel_group);
+	  btk_accel_map_add_entry (full_path, keyval, modifiers);
+	  btk_widget_set_accel_path (accel_widget, full_path, accel_group);
 	}
     }
 }
@@ -288,43 +288,43 @@ gtk_item_factory_add_foreign (GtkWidget      *accel_widget,
 static void
 ifactory_cb_data_free (gpointer mem)
 {
-  g_slice_free (GtkIFCBData, mem);
+  g_slice_free (BtkIFCBData, mem);
 }
 
 static void
-gtk_item_factory_add_item (GtkItemFactory		*ifactory,
+btk_item_factory_add_item (BtkItemFactory		*ifactory,
 			   const gchar			*path,
 			   const gchar			*accelerator,
-			   GtkItemFactoryCallback	callback,
+			   BtkItemFactoryCallback	callback,
 			   guint			callback_action,
 			   gpointer			callback_data,
 			   guint			callback_type,
 			   gchar			*item_type,
-			   GtkWidget			*widget)
+			   BtkWidget			*widget)
 {
-  GtkItemFactoryClass *class;
-  GtkItemFactoryItem *item;
+  BtkItemFactoryClass *class;
+  BtkItemFactoryItem *item;
   gchar *fpath;
   guint keyval;
-  GdkModifierType mods;
+  BdkModifierType mods;
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (item_type != NULL);
 
-  class = GTK_ITEM_FACTORY_GET_CLASS (ifactory);
+  class = BTK_ITEM_FACTORY_GET_CLASS (ifactory);
 
   /* set accelerator group on menu widgets
    */
-  if (GTK_IS_MENU (widget))
-    gtk_menu_set_accel_group ((GtkMenu*) widget, ifactory->accel_group);
+  if (BTK_IS_MENU (widget))
+    btk_menu_set_accel_group ((BtkMenu*) widget, ifactory->accel_group);
 
   /* connect callback if necessary
    */
   if (callback)
     {
-      GtkIFCBData *data;
+      BtkIFCBData *data;
 
-      data = g_slice_new (GtkIFCBData);
+      data = g_slice_new (BtkIFCBData);
       data->func = callback;
       data->callback_type = callback_type;
       data->func_data = callback_data;
@@ -335,7 +335,7 @@ gtk_item_factory_add_item (GtkItemFactory		*ifactory,
 			 data);
       g_signal_connect (widget,
 			"activate",
-			G_CALLBACK (gtk_item_factory_callback_marshal),
+			G_CALLBACK (btk_item_factory_callback_marshal),
 			data);
     }
 
@@ -345,14 +345,14 @@ gtk_item_factory_add_item (GtkItemFactory		*ifactory,
   g_object_set_qdata (G_OBJECT (widget), quark_action, GUINT_TO_POINTER (callback_action));
   g_object_set_qdata (G_OBJECT (widget), quark_item_factory, ifactory);
   if (accelerator)
-    gtk_accelerator_parse (accelerator, &keyval, &mods);
+    btk_accelerator_parse (accelerator, &keyval, &mods);
   else
     {
       keyval = 0;
       mods = 0;
     }
   fpath = g_strconcat (ifactory->path, path, NULL);
-  gtk_item_factory_add_foreign (widget, fpath, ifactory->accel_group, keyval, mods);
+  btk_item_factory_add_foreign (widget, fpath, ifactory->accel_group, keyval, mods);
   item = g_hash_table_lookup (class->item_ht, fpath);
   g_free (fpath);
 
@@ -363,38 +363,38 @@ gtk_item_factory_add_item (GtkItemFactory		*ifactory,
 }
 
 /**
- * gtk_item_factory_construct:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_construct:
+ * @ifactory: a #BtkItemFactory
  * @container_type: the kind of menu to create; can be
- *    #GTK_TYPE_MENU_BAR, #GTK_TYPE_MENU or #GTK_TYPE_OPTION_MENU
+ *    #BTK_TYPE_MENU_BAR, #BTK_TYPE_MENU or #BTK_TYPE_OPTION_MENU
  * @path: the factory path of @ifactory, a string of the form 
  *    <literal>"&lt;name&gt;"</literal>
- * @accel_group: a #GtkAccelGroup to which the accelerators for the
+ * @accel_group: a #BtkAccelGroup to which the accelerators for the
  *    menu items will be added, or %NULL to create a new one
  * 
  * Initializes an item factory.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */  
 void
-gtk_item_factory_construct (GtkItemFactory	*ifactory,
+btk_item_factory_construct (BtkItemFactory	*ifactory,
 			    GType		 container_type,
 			    const gchar		*path,
-			    GtkAccelGroup	*accel_group)
+			    BtkAccelGroup	*accel_group)
 {
   guint len;
 
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (ifactory->accel_group == NULL);
   g_return_if_fail (path != NULL);
-  if (!g_type_is_a (container_type, GTK_TYPE_OPTION_MENU))
-    g_return_if_fail (g_type_is_a (container_type, GTK_TYPE_MENU_SHELL));
+  if (!g_type_is_a (container_type, BTK_TYPE_OPTION_MENU))
+    g_return_if_fail (g_type_is_a (container_type, BTK_TYPE_MENU_SHELL));
 
   len = strlen (path);
 
   if (path[0] != '<' && path[len - 1] != '>')
     {
-      g_warning ("GtkItemFactory: invalid factory path `%s'", path);
+      g_warning ("BtkItemFactory: invalid factory path `%s'", path);
       return;
     }
 
@@ -404,15 +404,15 @@ gtk_item_factory_construct (GtkItemFactory	*ifactory,
       g_object_ref (ifactory->accel_group);
     }
   else
-    ifactory->accel_group = gtk_accel_group_new ();
+    ifactory->accel_group = btk_accel_group_new ();
 
   ifactory->path = g_strdup (path);
   ifactory->widget = g_object_connect (g_object_new (container_type, NULL),
-				       "signal::destroy", gtk_widget_destroyed, &ifactory->widget,
+				       "signal::destroy", btk_widget_destroyed, &ifactory->widget,
 				       NULL);
   g_object_ref_sink (ifactory);
 
-  gtk_item_factory_add_item (ifactory,
+  btk_item_factory_add_item (ifactory,
 			     "", NULL,
 			     NULL, 0, NULL, 0,
 			     ITEM_FACTORY_STRING,
@@ -420,36 +420,36 @@ gtk_item_factory_construct (GtkItemFactory	*ifactory,
 }
 
 /**
- * gtk_item_factory_from_path:
+ * btk_item_factory_from_path:
  * @path: a string starting with a factory path of the form 
  *   <literal>"&lt;name&gt;"</literal>
- * @returns: (allow-none): the #GtkItemFactory created for the given factory path, or %NULL 
+ * @returns: (allow-none): the #BtkItemFactory created for the given factory path, or %NULL 
  *
  * Finds an item factory which has been constructed using the 
  * <literal>"&lt;name&gt;"</literal> prefix of @path as the @path argument 
- * for gtk_item_factory_new().
+ * for btk_item_factory_new().
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkItemFactory*
-gtk_item_factory_from_path (const gchar      *path)
+BtkItemFactory*
+btk_item_factory_from_path (const gchar      *path)
 {
-  GtkItemFactoryClass *class;
-  GtkItemFactoryItem *item;
+  BtkItemFactoryClass *class;
+  BtkItemFactoryItem *item;
   gchar *fname;
   guint i;
 
   g_return_val_if_fail (path != NULL, NULL);
   g_return_val_if_fail (path[0] == '<', NULL);
 
-  class = gtk_type_class (GTK_TYPE_ITEM_FACTORY);
+  class = btk_type_class (BTK_TYPE_ITEM_FACTORY);
 
   i = 0;
   while (path[i] && path[i] != '>')
     i++;
   if (path[i] != '>')
     {
-      g_warning ("gtk_item_factory_from_path(): invalid factory path \"%s\"",
+      g_warning ("btk_item_factory_from_path(): invalid factory path \"%s\"",
 		 path);
       return NULL;
     }
@@ -462,25 +462,25 @@ gtk_item_factory_from_path (const gchar      *path)
   g_free (fname);
 
   if (item && item->widgets)
-    return gtk_item_factory_from_widget (item->widgets->data);
+    return btk_item_factory_from_widget (item->widgets->data);
 
   return NULL;
 }
 
 static void
-gtk_item_factory_destroy (GtkObject *object)
+btk_item_factory_destroy (BtkObject *object)
 {
-  GtkItemFactory *ifactory = (GtkItemFactory*) object;
+  BtkItemFactory *ifactory = (BtkItemFactory*) object;
   GSList *slist;
 
   if (ifactory->widget)
     {
-      GtkObject *dobj;
+      BtkObject *dobj;
 
-      dobj = GTK_OBJECT (ifactory->widget);
+      dobj = BTK_OBJECT (ifactory->widget);
 
       g_object_ref_sink (dobj);
-      gtk_object_destroy (dobj);
+      btk_object_destroy (dobj);
       g_object_unref (dobj);
 
       ifactory->widget = NULL;
@@ -488,7 +488,7 @@ gtk_item_factory_destroy (GtkObject *object)
 
   for (slist = ifactory->items; slist; slist = slist->next)
     {
-      GtkItemFactoryItem *item = slist->data;
+      BtkItemFactoryItem *item = slist->data;
       GSList *link;
       
       for (link = item->widgets; link; link = link->next)
@@ -498,13 +498,13 @@ gtk_item_factory_destroy (GtkObject *object)
   g_slist_free (ifactory->items);
   ifactory->items = NULL;
 
-  GTK_OBJECT_CLASS (gtk_item_factory_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_item_factory_parent_class)->destroy (object);
 }
 
 static void
-gtk_item_factory_finalize (GObject *object)
+btk_item_factory_finalize (GObject *object)
 {
-  GtkItemFactory *ifactory = GTK_ITEM_FACTORY (object);
+  BtkItemFactory *ifactory = BTK_ITEM_FACTORY (object);
 
   if (ifactory->accel_group)
     g_object_unref (ifactory->accel_group);
@@ -515,31 +515,31 @@ gtk_item_factory_finalize (GObject *object)
   if (ifactory->translate_notify)
     ifactory->translate_notify (ifactory->translate_data);
   
-  G_OBJECT_CLASS (gtk_item_factory_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_item_factory_parent_class)->finalize (object);
 }
 
 /**
- * gtk_item_factory_from_widget:
+ * btk_item_factory_from_widget:
  * @widget: a widget
  * @returns: (allow-none): the item factory from which @widget was created, or %NULL
  *
  * Obtains the item factory from which a widget was created.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkItemFactory*
-gtk_item_factory_from_widget (GtkWidget	       *widget)
+BtkItemFactory*
+btk_item_factory_from_widget (BtkWidget	       *widget)
 {
-  GtkItemFactory *ifactory;
+  BtkItemFactory *ifactory;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
   ifactory = g_object_get_qdata (G_OBJECT (widget), quark_item_factory);
 
-  if (ifactory == NULL && GTK_IS_MENU_ITEM (widget) &&
-      GTK_MENU_ITEM (widget)->submenu != NULL) 
+  if (ifactory == NULL && BTK_IS_MENU_ITEM (widget) &&
+      BTK_MENU_ITEM (widget)->submenu != NULL) 
     {
-      GtkWidget *menu = GTK_MENU_ITEM (widget)->submenu;
+      BtkWidget *menu = BTK_MENU_ITEM (widget)->submenu;
       ifactory = g_object_get_qdata (G_OBJECT (menu), quark_item_factory);
     }
 
@@ -547,32 +547,32 @@ gtk_item_factory_from_widget (GtkWidget	       *widget)
 }
 
 /**
- * gtk_item_factory_path_from_widget:
+ * btk_item_factory_path_from_widget:
  * @widget: a widget
  * @returns: the full path to @widget if it has been created by an item
- *   factory, %NULL otherwise. This value is owned by GTK+ and must not be
+ *   factory, %NULL otherwise. This value is owned by BTK+ and must not be
  *   modified or freed.
  * 
  * If @widget has been created by an item factory, returns the full path
  * to it. (The full path of a widget is the concatenation of the factory 
- * path specified in gtk_item_factory_new() with the path specified in the 
- * #GtkItemFactoryEntry from which the widget was created.)
+ * path specified in btk_item_factory_new() with the path specified in the 
+ * #BtkItemFactoryEntry from which the widget was created.)
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 const gchar*
-gtk_item_factory_path_from_widget (GtkWidget	    *widget)
+btk_item_factory_path_from_widget (BtkWidget	    *widget)
 {
   gchar* path;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
   path = g_object_get_qdata (G_OBJECT (widget), quark_item_path);
 
-  if (path == NULL && GTK_IS_MENU_ITEM (widget) &&
-      GTK_MENU_ITEM (widget)->submenu != NULL) 
+  if (path == NULL && BTK_IS_MENU_ITEM (widget) &&
+      BTK_MENU_ITEM (widget)->submenu != NULL) 
     {
-      GtkWidget *menu = GTK_MENU_ITEM (widget)->submenu;
+      BtkWidget *menu = BTK_MENU_ITEM (widget)->submenu;
       path = g_object_get_qdata (G_OBJECT (menu), quark_item_path);
     }
 
@@ -580,49 +580,49 @@ gtk_item_factory_path_from_widget (GtkWidget	    *widget)
 }
 
 /**
- * gtk_item_factory_create_items:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_create_items:
+ * @ifactory: a #BtkItemFactory
  * @n_entries: the length of @entries
- * @entries: an array of #GtkItemFactoryEntry<!-- -->s whose @callback members
- *    must by of type #GtkItemFactoryCallback1
+ * @entries: an array of #BtkItemFactoryEntry<!-- -->s whose @callback members
+ *    must by of type #BtkItemFactoryCallback1
  * @callback_data: data passed to the callback functions of all entries
  *
  * Creates the menu items from the @entries.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_create_items (GtkItemFactory	   *ifactory,
+btk_item_factory_create_items (BtkItemFactory	   *ifactory,
 			       guint		    n_entries,
-			       GtkItemFactoryEntry *entries,
+			       BtkItemFactoryEntry *entries,
 			       gpointer		    callback_data)
 {
-  gtk_item_factory_create_items_ac (ifactory, n_entries, entries, callback_data, 1);
+  btk_item_factory_create_items_ac (ifactory, n_entries, entries, callback_data, 1);
 }
 
 /**
- * gtk_item_factory_create_items_ac:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_create_items_ac:
+ * @ifactory: a #BtkItemFactory
  * @n_entries: the length of @entries
- * @entries: an array of #GtkItemFactoryEntry<!-- -->s 
+ * @entries: an array of #BtkItemFactoryEntry<!-- -->s 
  * @callback_data: data passed to the callback functions of all entries
  * @callback_type: 1 if the callback functions in @entries are of type
- *    #GtkItemFactoryCallback1, 2 if they are of type #GtkItemFactoryCallback2 
+ *    #BtkItemFactoryCallback1, 2 if they are of type #BtkItemFactoryCallback2 
  *
  * Creates the menu items from the @entries.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_create_items_ac (GtkItemFactory      *ifactory,
+btk_item_factory_create_items_ac (BtkItemFactory      *ifactory,
 				  guint		       n_entries,
-				  GtkItemFactoryEntry *entries,
+				  BtkItemFactoryEntry *entries,
 				  gpointer	       callback_data,
 				  guint		       callback_type)
 {
   guint i;
 
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (callback_type >= 1 && callback_type <= 2);
 
   if (n_entries == 0)
@@ -631,12 +631,12 @@ gtk_item_factory_create_items_ac (GtkItemFactory      *ifactory,
   g_return_if_fail (entries != NULL);
 
   for (i = 0; i < n_entries; i++)
-    gtk_item_factory_create_item (ifactory, entries + i, callback_data, callback_type);
+    btk_item_factory_create_item (ifactory, entries + i, callback_data, callback_type);
 }
 
 /**
- * gtk_item_factory_get_widget:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_get_widget:
+ * @ifactory: a #BtkItemFactory
  * @path: the path to the widget
  * @returns: (allow-none): the widget for the given path, or %NULL if @path doesn't lead
  *   to a widget
@@ -645,21 +645,21 @@ gtk_item_factory_create_items_ac (GtkItemFactory      *ifactory,
  *
  * If the widget corresponding to @path is a menu item which opens a 
  * submenu, then the submenu is returned. If you are interested in the menu 
- * item, use gtk_item_factory_get_item() instead.
+ * item, use btk_item_factory_get_item() instead.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkWidget*
-gtk_item_factory_get_widget (GtkItemFactory *ifactory,
+BtkWidget*
+btk_item_factory_get_widget (BtkItemFactory *ifactory,
 			     const gchar    *path)
 {
-  GtkItemFactoryClass *class;
-  GtkItemFactoryItem *item;
+  BtkItemFactoryClass *class;
+  BtkItemFactoryItem *item;
 
-  g_return_val_if_fail (GTK_IS_ITEM_FACTORY (ifactory), NULL);
+  g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
-  class = GTK_ITEM_FACTORY_GET_CLASS (ifactory);
+  class = BTK_ITEM_FACTORY_GET_CLASS (ifactory);
 
   if (path[0] == '<')
     item = g_hash_table_lookup (class->item_ht, (gpointer) path);
@@ -678,7 +678,7 @@ gtk_item_factory_get_widget (GtkItemFactory *ifactory,
 
       for (slist = item->widgets; slist; slist = slist->next)
 	{
-	  if (gtk_item_factory_from_widget (slist->data) == ifactory)
+	  if (btk_item_factory_from_widget (slist->data) == ifactory)
 	    return slist->data;
 	}
     }
@@ -687,32 +687,32 @@ gtk_item_factory_get_widget (GtkItemFactory *ifactory,
 }
 
 /**
- * gtk_item_factory_get_widget_by_action:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_get_widget_by_action:
+ * @ifactory: a #BtkItemFactory
  * @action: an action as specified in the @callback_action field
- *   of #GtkItemFactoryEntry
+ *   of #BtkItemFactoryEntry
  * @returns: (allow-none): the widget which corresponds to the given action, or %NULL
  *   if no widget was found
  *
- * Obtains the widget which was constructed from the #GtkItemFactoryEntry
+ * Obtains the widget which was constructed from the #BtkItemFactoryEntry
  * with the given @action.
  *
  * If there are multiple items with the same action, the result is 
  * undefined.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkWidget*
-gtk_item_factory_get_widget_by_action (GtkItemFactory *ifactory,
+BtkWidget*
+btk_item_factory_get_widget_by_action (BtkItemFactory *ifactory,
 				       guint	       action)
 {
   GSList *slist;
 
-  g_return_val_if_fail (GTK_IS_ITEM_FACTORY (ifactory), NULL);
+  g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
 
   for (slist = ifactory->items; slist; slist = slist->next)
     {
-      GtkItemFactoryItem *item = slist->data;
+      BtkItemFactoryItem *item = slist->data;
       GSList *link;
 
       for (link = item->widgets; link; link = link->next)
@@ -725,8 +725,8 @@ gtk_item_factory_get_widget_by_action (GtkItemFactory *ifactory,
 }
 
 /** 
- * gtk_item_factory_get_item:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_get_item:
+ * @ifactory: a #BtkItemFactory
  * @path: the path to the menu item
  * @returns: (allow-none): the menu item for the given path, or %NULL if @path doesn't
  *   lead to a menu item
@@ -735,55 +735,55 @@ gtk_item_factory_get_widget_by_action (GtkItemFactory *ifactory,
  *
  * If the widget corresponding to @path is a menu item which opens a 
  * submenu, then the item is returned. If you are interested in the submenu, 
- * use gtk_item_factory_get_widget() instead.
+ * use btk_item_factory_get_widget() instead.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkWidget*
-gtk_item_factory_get_item (GtkItemFactory *ifactory,
+BtkWidget*
+btk_item_factory_get_item (BtkItemFactory *ifactory,
 			   const gchar    *path)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_val_if_fail (GTK_IS_ITEM_FACTORY (ifactory), NULL);
+  g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
-  widget = gtk_item_factory_get_widget (ifactory, path);
+  widget = btk_item_factory_get_widget (ifactory, path);
 
-  if (GTK_IS_MENU (widget))
-    widget = gtk_menu_get_attach_widget (GTK_MENU (widget));
+  if (BTK_IS_MENU (widget))
+    widget = btk_menu_get_attach_widget (BTK_MENU (widget));
 
-  return GTK_IS_ITEM (widget) ? widget : NULL;
+  return BTK_IS_ITEM (widget) ? widget : NULL;
 }
 
 
 /**
- * gtk_item_factory_get_item_by_action:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_get_item_by_action:
+ * @ifactory: a #BtkItemFactory
  * @action: an action as specified in the @callback_action field
- *   of #GtkItemFactoryEntry
+ *   of #BtkItemFactoryEntry
  * @returns: (allow-none): the menu item which corresponds to the given action, or %NULL
  *   if no menu item was found
  *
  * Obtains the menu item which was constructed from the first 
- * #GtkItemFactoryEntry with the given @action.
+ * #BtkItemFactoryEntry with the given @action.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-GtkWidget*
-gtk_item_factory_get_item_by_action (GtkItemFactory *ifactory,
+BtkWidget*
+btk_item_factory_get_item_by_action (BtkItemFactory *ifactory,
 				     guint	     action)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_val_if_fail (GTK_IS_ITEM_FACTORY (ifactory), NULL);
+  g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
 
-  widget = gtk_item_factory_get_widget_by_action (ifactory, action);
+  widget = btk_item_factory_get_widget_by_action (ifactory, action);
 
-  if (GTK_IS_MENU (widget))
-    widget = gtk_menu_get_attach_widget (GTK_MENU (widget));
+  if (BTK_IS_MENU (widget))
+    widget = btk_menu_get_attach_widget (BTK_MENU (widget));
 
-  return GTK_IS_ITEM (widget) ? widget : NULL;
+  return BTK_IS_ITEM (widget) ? widget : NULL;
 }
 
 static char *
@@ -841,7 +841,7 @@ item_factory_unescape_label (const char *label)
 }
 
 static gboolean
-gtk_item_factory_parse_path (GtkItemFactory *ifactory,
+btk_item_factory_parse_path (BtkItemFactory *ifactory,
 			     gchar          *str,
 			     gchar         **path,
 			     gchar         **parent_path,
@@ -875,7 +875,7 @@ gtk_item_factory_parse_path (GtkItemFactory *ifactory,
   p = item_factory_find_separator_r (*parent_path);
   if (!p)
     {
-      g_warning ("GtkItemFactory: invalid entry path `%s'", str);
+      g_warning ("BtkItemFactory: invalid entry path `%s'", str);
       return FALSE;
     }
   *p = 0;
@@ -897,27 +897,27 @@ gtk_item_factory_parse_path (GtkItemFactory *ifactory,
 }
 
 /**
- * gtk_item_factory_create_item:
- * @ifactory: a #GtkItemFactory
- * @entry: the #GtkItemFactoryEntry to create an item for
+ * btk_item_factory_create_item:
+ * @ifactory: a #BtkItemFactory
+ * @entry: the #BtkItemFactoryEntry to create an item for
  * @callback_data: data passed to the callback function of @entry
  * @callback_type: 1 if the callback function of @entry is of type
- *    #GtkItemFactoryCallback1, 2 if it is of type #GtkItemFactoryCallback2 
+ *    #BtkItemFactoryCallback1, 2 if it is of type #BtkItemFactoryCallback2 
  *
  * Creates an item for @entry.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
-			      GtkItemFactoryEntry    *entry,
+btk_item_factory_create_item (BtkItemFactory	     *ifactory,
+			      BtkItemFactoryEntry    *entry,
 			      gpointer		      callback_data,
 			      guint		      callback_type)
 {
-  GtkOptionMenu *option_menu = NULL;
-  GtkWidget *parent;
-  GtkWidget *widget;
-  GtkWidget *image;
+  BtkOptionMenu *option_menu = NULL;
+  BtkWidget *parent;
+  BtkWidget *widget;
+  BtkWidget *image;
   GSList *radio_group;
   gchar *name;
   gchar *parent_path;
@@ -926,9 +926,9 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
   guint type_id;
   GType type;
   gchar *item_type_path;
-  GtkStockItem stock_item;
+  BtkStockItem stock_item;
       
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (entry != NULL);
   g_return_if_fail (entry->path != NULL);
   g_return_if_fail (entry->path[0] == '/');
@@ -948,54 +948,54 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
 
   radio_group = NULL;
   if (type_id == quark_type_item)
-    type = GTK_TYPE_MENU_ITEM;
+    type = BTK_TYPE_MENU_ITEM;
   else if (type_id == quark_type_title)
-    type = GTK_TYPE_MENU_ITEM;
+    type = BTK_TYPE_MENU_ITEM;
   else if (type_id == quark_type_radio_item)
-    type = GTK_TYPE_RADIO_MENU_ITEM;
+    type = BTK_TYPE_RADIO_MENU_ITEM;
   else if (type_id == quark_type_check_item)
-    type = GTK_TYPE_CHECK_MENU_ITEM;
+    type = BTK_TYPE_CHECK_MENU_ITEM;
   else if (type_id == quark_type_image_item)
-    type = GTK_TYPE_IMAGE_MENU_ITEM;
+    type = BTK_TYPE_IMAGE_MENU_ITEM;
   else if (type_id == quark_type_stock_item)
-    type = GTK_TYPE_IMAGE_MENU_ITEM;
+    type = BTK_TYPE_IMAGE_MENU_ITEM;
   else if (type_id == quark_type_tearoff_item)
-    type = GTK_TYPE_TEAROFF_MENU_ITEM;
+    type = BTK_TYPE_TEAROFF_MENU_ITEM;
   else if (type_id == quark_type_toggle_item)
-    type = GTK_TYPE_CHECK_MENU_ITEM;
+    type = BTK_TYPE_CHECK_MENU_ITEM;
   else if (type_id == quark_type_separator_item)
-    type = GTK_TYPE_SEPARATOR_MENU_ITEM;
+    type = BTK_TYPE_SEPARATOR_MENU_ITEM;
   else if (type_id == quark_type_branch)
-    type = GTK_TYPE_MENU_ITEM;
+    type = BTK_TYPE_MENU_ITEM;
   else if (type_id == quark_type_last_branch)
-    type = GTK_TYPE_MENU_ITEM;
+    type = BTK_TYPE_MENU_ITEM;
   else
     {
-      GtkWidget *radio_link;
+      BtkWidget *radio_link;
 
-      radio_link = gtk_item_factory_get_widget (ifactory, item_type_path);
-      if (radio_link && GTK_IS_RADIO_MENU_ITEM (radio_link))
+      radio_link = btk_item_factory_get_widget (ifactory, item_type_path);
+      if (radio_link && BTK_IS_RADIO_MENU_ITEM (radio_link))
 	{
-	  type = GTK_TYPE_RADIO_MENU_ITEM;
-	  radio_group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (radio_link));
+	  type = BTK_TYPE_RADIO_MENU_ITEM;
+	  radio_group = btk_radio_menu_item_get_group (BTK_RADIO_MENU_ITEM (radio_link));
 	}
       else
 	{
-	  g_warning ("GtkItemFactory: entry path `%s' has invalid type `%s'",
+	  g_warning ("BtkItemFactory: entry path `%s' has invalid type `%s'",
 		     entry->path,
 		     item_type_path);
 	  return;
 	}
     }
 
-  if (!gtk_item_factory_parse_path (ifactory, entry->path, 
+  if (!btk_item_factory_parse_path (ifactory, entry->path, 
 				    &path, &parent_path, &name))
     return;
 
-  parent = gtk_item_factory_get_widget (ifactory, parent_path);
+  parent = btk_item_factory_get_widget (ifactory, parent_path);
   if (!parent)
     {
-      GtkItemFactoryEntry pentry;
+      BtkItemFactoryEntry pentry;
       gchar *ppath, *p;
 
       ppath = g_strdup (entry->path);
@@ -1008,30 +1008,30 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
       pentry.callback_action = 0;
       pentry.item_type = "<Branch>";
 
-      gtk_item_factory_create_item (ifactory, &pentry, NULL, 1);
+      btk_item_factory_create_item (ifactory, &pentry, NULL, 1);
       g_free (ppath);
 
-      parent = gtk_item_factory_get_widget (ifactory, parent_path);
+      parent = btk_item_factory_get_widget (ifactory, parent_path);
       g_return_if_fail (parent != NULL);
     }
 
-  if (GTK_IS_OPTION_MENU (parent))
+  if (BTK_IS_OPTION_MENU (parent))
     {
-      option_menu = GTK_OPTION_MENU (parent);
+      option_menu = BTK_OPTION_MENU (parent);
       if (!option_menu->menu)
 	{
-	  GtkWidget *menu = g_object_new (GTK_TYPE_MENU, NULL);
+	  BtkWidget *menu = g_object_new (BTK_TYPE_MENU, NULL);
 	  gchar *p = g_strconcat (ifactory->path, parent_path, NULL);
 
-	  gtk_menu_set_accel_path (GTK_MENU (menu), p);
+	  btk_menu_set_accel_path (BTK_MENU (menu), p);
 	  g_free (p);
-	  gtk_option_menu_set_menu (option_menu, menu);
+	  btk_option_menu_set_menu (option_menu, menu);
 	}
       parent = option_menu->menu;
     }
   g_free (parent_path);
 			      
-  g_return_if_fail (GTK_IS_CONTAINER (parent));
+  g_return_if_fail (BTK_IS_CONTAINER (parent));
 
   accelerator = entry->accelerator;
   
@@ -1042,41 +1042,41 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
 			   "parent", parent,
 			   NULL);
   if (option_menu && !option_menu->menu_item)
-    gtk_option_menu_set_history (option_menu, 0);
+    btk_option_menu_set_history (option_menu, 0);
 
-  if (GTK_IS_RADIO_MENU_ITEM (widget))
-    gtk_radio_menu_item_set_group (GTK_RADIO_MENU_ITEM (widget), radio_group);
+  if (BTK_IS_RADIO_MENU_ITEM (widget))
+    btk_radio_menu_item_set_group (BTK_RADIO_MENU_ITEM (widget), radio_group);
   if (type_id == quark_type_image_item)
     {
-      GdkPixbuf *pixbuf = NULL;
+      BdkPixbuf *pixbuf = NULL;
       image = NULL;
       if (entry->extra_data)
 	{
-	  pixbuf = gdk_pixbuf_new_from_inline (-1,
+	  pixbuf = bdk_pixbuf_new_from_inline (-1,
 					       entry->extra_data,
 					       FALSE,
 					       NULL);
 	  if (pixbuf)
-	    image = gtk_image_new_from_pixbuf (pixbuf);
+	    image = btk_image_new_from_pixbuf (pixbuf);
 	}
       if (image)
 	{
-	  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (widget), image);
-	  gtk_widget_show (image);
+	  btk_image_menu_item_set_image (BTK_IMAGE_MENU_ITEM (widget), image);
+	  btk_widget_show (image);
 	}
       if (pixbuf)
 	g_object_unref (pixbuf);
     }
   if (type_id == quark_type_stock_item)
     {
-      image = gtk_image_new_from_stock (entry->extra_data, GTK_ICON_SIZE_MENU);
-      gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (widget), image);
-      gtk_widget_show (image);
+      image = btk_image_new_from_stock (entry->extra_data, BTK_ICON_SIZE_MENU);
+      btk_image_menu_item_set_image (BTK_IMAGE_MENU_ITEM (widget), image);
+      btk_widget_show (image);
 
-      if (gtk_stock_lookup (entry->extra_data, &stock_item))
+      if (btk_stock_lookup (entry->extra_data, &stock_item))
 	{
 	  if (!accelerator)
-	    accelerator = gtk_accelerator_name (stock_item.keyval, stock_item.modifier);
+	    accelerator = btk_accelerator_name (stock_item.keyval, stock_item.modifier);
 	}
     }
 
@@ -1086,15 +1086,15 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
       type_id != quark_type_tearoff_item &&
       *name)
     {
-      GtkWidget *label;
+      BtkWidget *label;
       
-      label = g_object_new (GTK_TYPE_ACCEL_LABEL,
+      label = g_object_new (BTK_TYPE_ACCEL_LABEL,
 			      "visible", TRUE,
 			      "parent", widget,
 			      "accel-widget", widget,
 			      "xalign", 0.0,
 			      NULL);
-      gtk_label_set_text_with_mnemonic (GTK_LABEL (label), name);
+      btk_label_set_text_with_mnemonic (BTK_LABEL (label), name);
     }
   
   g_free (name);
@@ -1105,25 +1105,25 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
       gchar *p;
 
       if (entry->callback)
-	g_warning ("gtk_item_factory_create_item(): Can't specify a callback on a branch: \"%s\"",
+	g_warning ("btk_item_factory_create_item(): Can't specify a callback on a branch: \"%s\"",
 		   entry->path);
       if (type_id == quark_type_last_branch)
-	gtk_menu_item_set_right_justified (GTK_MENU_ITEM (widget), TRUE);
+	btk_menu_item_set_right_justified (BTK_MENU_ITEM (widget), TRUE);
       
       parent = widget;
-      widget = g_object_new (GTK_TYPE_MENU, NULL);
+      widget = g_object_new (BTK_TYPE_MENU, NULL);
       p = g_strconcat (ifactory->path, path, NULL);
-      gtk_menu_set_accel_path (GTK_MENU (widget), p);
+      btk_menu_set_accel_path (BTK_MENU (widget), p);
       g_free (p);
       
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (parent), widget);
+      btk_menu_item_set_submenu (BTK_MENU_ITEM (parent), widget);
     }	   
   
-  gtk_item_factory_add_item (ifactory,
+  btk_item_factory_add_item (ifactory,
 			     path, accelerator,
 			     (type_id == quark_type_branch ||
 			      type_id == quark_type_last_branch) ?
-			      (GtkItemFactoryCallback) NULL : entry->callback,
+			      (BtkItemFactoryCallback) NULL : entry->callback,
 			     entry->callback_action, callback_data,
 			     callback_type,
 			     item_type_path,
@@ -1134,17 +1134,17 @@ gtk_item_factory_create_item (GtkItemFactory	     *ifactory,
 }
 
 /**
- * gtk_item_factory_create_menu_entries:
+ * btk_item_factory_create_menu_entries:
  * @n_entries: the length of @entries
- * @entries: an array of #GtkMenuEntry<!-- -->s 
+ * @entries: an array of #BtkMenuEntry<!-- -->s 
  *
  * Creates the menu items from the @entries.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_create_menu_entries (guint              n_entries,
-				      GtkMenuEntry      *entries)
+btk_item_factory_create_menu_entries (guint              n_entries,
+				      BtkMenuEntry      *entries)
 {
   static GPatternSpec *pspec_separator = NULL;
   static GPatternSpec *pspec_check = NULL;
@@ -1162,16 +1162,16 @@ gtk_item_factory_create_menu_entries (guint              n_entries,
 
   for (i = 0; i < n_entries; i++)
     {
-      GtkItemFactory *ifactory;
-      GtkItemFactoryEntry entry;
+      BtkItemFactory *ifactory;
+      BtkItemFactoryEntry entry;
       gchar *path;
       gchar *cpath;
 
       path = entries[i].path;
-      ifactory = gtk_item_factory_from_path (path);
+      ifactory = btk_item_factory_from_path (path);
       if (!ifactory)
 	{
-	  g_warning ("gtk_item_factory_create_menu_entries(): "
+	  g_warning ("btk_item_factory_create_menu_entries(): "
 		     "entry[%u] refers to unknown item factory: \"%s\"",
 		     i, entries[i].path);
 	  continue;
@@ -1212,32 +1212,32 @@ gtk_item_factory_create_menu_entries (guint              n_entries,
 	  entry.path = cpath;
 	}
       
-      gtk_item_factory_create_item (ifactory, &entry, entries[i].callback_data, 2);
-      entries[i].widget = gtk_item_factory_get_widget (ifactory, entries[i].path);
+      btk_item_factory_create_item (ifactory, &entry, entries[i].callback_data, 2);
+      entries[i].widget = btk_item_factory_get_widget (ifactory, entries[i].path);
       g_free (cpath);
     }
 }
 
 /**
- * gtk_item_factories_path_delete:
+ * btk_item_factories_path_delete:
  * @ifactory_path: a factory path to prepend to @path. May be %NULL if @path
  *   starts with a factory path
  * @path: a path 
  * 
  * Deletes all widgets constructed from the specified path.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factories_path_delete (const gchar *ifactory_path,
+btk_item_factories_path_delete (const gchar *ifactory_path,
 				const gchar *path)
 {
-  GtkItemFactoryClass *class;
-  GtkItemFactoryItem *item;
+  BtkItemFactoryClass *class;
+  BtkItemFactoryItem *item;
 
   g_return_if_fail (path != NULL);
 
-  class = gtk_type_class (GTK_TYPE_ITEM_FACTORY);
+  class = btk_type_class (BTK_TYPE_ITEM_FACTORY);
 
   if (path[0] == '<')
     item = g_hash_table_lookup (class->item_ht, (gpointer) path);
@@ -1260,7 +1260,7 @@ gtk_item_factories_path_delete (const gchar *ifactory_path,
       widget_list = NULL;
       for (slist = item->widgets; slist; slist = slist->next)
 	{
-	  GtkWidget *widget;
+	  BtkWidget *widget;
 
 	  widget = slist->data;
 	  widget_list = g_slist_prepend (widget_list, widget);
@@ -1269,10 +1269,10 @@ gtk_item_factories_path_delete (const gchar *ifactory_path,
 
       for (slist = widget_list; slist; slist = slist->next)
 	{
-	  GtkWidget *widget;
+	  BtkWidget *widget;
 
 	  widget = slist->data;
-	  gtk_widget_destroy (widget);
+	  btk_widget_destroy (widget);
 	  g_object_unref (widget);
 	}
       g_slist_free (widget_list);
@@ -1280,63 +1280,63 @@ gtk_item_factories_path_delete (const gchar *ifactory_path,
 }
 
 /**
- * gtk_item_factory_delete_item:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_delete_item:
+ * @ifactory: a #BtkItemFactory
  * @path: a path
  *
  * Deletes the menu item which was created for @path by the given
  * item factory.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_delete_item (GtkItemFactory         *ifactory,
+btk_item_factory_delete_item (BtkItemFactory         *ifactory,
 			      const gchar            *path)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (path != NULL);
 
-  widget = gtk_item_factory_get_widget (ifactory, path);
+  widget = btk_item_factory_get_widget (ifactory, path);
 
   if (widget)
     {
-      if (GTK_IS_MENU (widget))
-	widget = gtk_menu_get_attach_widget (GTK_MENU (widget));
+      if (BTK_IS_MENU (widget))
+	widget = btk_menu_get_attach_widget (BTK_MENU (widget));
 
-      gtk_widget_destroy (widget);
+      btk_widget_destroy (widget);
     }
 }
 
 /**
- * gtk_item_factory_delete_entry:
- * @ifactory: a #GtkItemFactory
- * @entry: a #GtkItemFactoryEntry
+ * btk_item_factory_delete_entry:
+ * @ifactory: a #BtkItemFactory
+ * @entry: a #BtkItemFactoryEntry
  *
  * Deletes the menu item which was created from @entry by the given
  * item factory.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_delete_entry (GtkItemFactory         *ifactory,
-			       GtkItemFactoryEntry    *entry)
+btk_item_factory_delete_entry (BtkItemFactory         *ifactory,
+			       BtkItemFactoryEntry    *entry)
 {
   gchar *path;
   gchar *parent_path;
   gchar *name;
 
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (entry != NULL);
   g_return_if_fail (entry->path != NULL);
   g_return_if_fail (entry->path[0] == '/');
 
-  if (!gtk_item_factory_parse_path (ifactory, entry->path, 
+  if (!btk_item_factory_parse_path (ifactory, entry->path, 
 				    &path, &parent_path, &name))
     return;
   
-  gtk_item_factory_delete_item (ifactory, path);
+  btk_item_factory_delete_item (ifactory, path);
 
   g_free (path);
   g_free (parent_path);
@@ -1344,29 +1344,29 @@ gtk_item_factory_delete_entry (GtkItemFactory         *ifactory,
 }
 
 /**
- * gtk_item_factory_delete_entries:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_delete_entries:
+ * @ifactory: a #BtkItemFactory
  * @n_entries: the length of @entries
- * @entries: an array of #GtkItemFactoryEntry<!-- -->s 
+ * @entries: an array of #BtkItemFactoryEntry<!-- -->s 
  *
  * Deletes the menu items which were created from the @entries by the given
  * item factory.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_delete_entries (GtkItemFactory         *ifactory,
+btk_item_factory_delete_entries (BtkItemFactory         *ifactory,
 				 guint                   n_entries,
-				 GtkItemFactoryEntry    *entries)
+				 BtkItemFactoryEntry    *entries)
 {
   guint i;
 
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   if (n_entries > 0)
     g_return_if_fail (entries != NULL);
 
   for (i = 0; i < n_entries; i++)
-    gtk_item_factory_delete_entry (ifactory, entries + i);
+    btk_item_factory_delete_entry (ifactory, entries + i);
 }
 
 typedef struct
@@ -1376,7 +1376,7 @@ typedef struct
 } MenuPos;
 
 static void
-gtk_item_factory_menu_pos (GtkMenu  *menu,
+btk_item_factory_menu_pos (BtkMenu  *menu,
 			   gint     *x,
 			   gint     *y,
                            gboolean *push_in,
@@ -1389,26 +1389,26 @@ gtk_item_factory_menu_pos (GtkMenu  *menu,
 }
 
 /**
- * gtk_item_factory_popup_data_from_widget:
+ * btk_item_factory_popup_data_from_widget:
  * @widget: a widget
  * @returns: @popup_data associated with the item factory from
  *   which @widget was created, or %NULL if @widget wasn't created
  *   by an item factory
  *
  * Obtains the @popup_data which was passed to 
- * gtk_item_factory_popup_with_data(). This data is available until the menu
+ * btk_item_factory_popup_with_data(). This data is available until the menu
  * is popped down again.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 gpointer
-gtk_item_factory_popup_data_from_widget (GtkWidget *widget)
+btk_item_factory_popup_data_from_widget (BtkWidget *widget)
 {
-  GtkItemFactory *ifactory;
+  BtkItemFactory *ifactory;
   
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  ifactory = gtk_item_factory_from_widget (widget);
+  ifactory = btk_item_factory_from_widget (widget);
   if (ifactory)
     return g_object_get_qdata (G_OBJECT (ifactory), quark_popup_data);
 
@@ -1416,27 +1416,27 @@ gtk_item_factory_popup_data_from_widget (GtkWidget *widget)
 }
 
 /**
- * gtk_item_factory_popup_data:
- * @ifactory: a #GtkItemFactory
+ * btk_item_factory_popup_data:
+ * @ifactory: a #BtkItemFactory
  * @returns: @popup_data associated with @ifactory
  *
  * Obtains the @popup_data which was passed to 
- * gtk_item_factory_popup_with_data(). This data is available until the menu
+ * btk_item_factory_popup_with_data(). This data is available until the menu
  * is popped down again.
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 gpointer
-gtk_item_factory_popup_data (GtkItemFactory *ifactory)
+btk_item_factory_popup_data (BtkItemFactory *ifactory)
 {
-  g_return_val_if_fail (GTK_IS_ITEM_FACTORY (ifactory), NULL);
+  g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
 
   return g_object_get_qdata (G_OBJECT (ifactory), quark_popup_data);
 }
 
 static void
-ifactory_delete_popup_data (GtkObject	   *object,
-			    GtkItemFactory *ifactory)
+ifactory_delete_popup_data (BtkObject	   *object,
+			    BtkItemFactory *ifactory)
 {
   g_signal_handlers_disconnect_by_func (object,
 					ifactory_delete_popup_data,
@@ -1445,8 +1445,8 @@ ifactory_delete_popup_data (GtkObject	   *object,
 }
 
 /**
- * gtk_item_factory_popup:
- * @ifactory: a #GtkItemFactory of type #GTK_TYPE_MENU (see gtk_item_factory_new())
+ * btk_item_factory_popup:
+ * @ifactory: a #BtkItemFactory of type #BTK_TYPE_MENU (see btk_item_factory_new())
  * @x: the x position 
  * @y: the y position
  * @mouse_button: the mouse button which was pressed to initiate the popup
@@ -1461,26 +1461,26 @@ ifactory_delete_popup_data (GtkObject	   *object,
  *
  * The @time_ parameter should be the time stamp of the event that
  * initiated the popup. If such an event is not available, use
- * gtk_get_current_event_time() instead.
+ * btk_get_current_event_time() instead.
  *
  * The operation of the @mouse_button and the @time_ parameter is the same
- * as the @button and @activation_time parameters for gtk_menu_popup().
+ * as the @button and @activation_time parameters for btk_menu_popup().
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_popup (GtkItemFactory		*ifactory,
+btk_item_factory_popup (BtkItemFactory		*ifactory,
 			guint			 x,
 			guint			 y,
 			guint			 mouse_button,
 			guint32			 time)
 {
-  gtk_item_factory_popup_with_data (ifactory, NULL, NULL, x, y, mouse_button, time);
+  btk_item_factory_popup_with_data (ifactory, NULL, NULL, x, y, mouse_button, time);
 }
 
 /**
- * gtk_item_factory_popup_with_data:
- * @ifactory: a #GtkItemFactory of type #GTK_TYPE_MENU (see gtk_item_factory_new())
+ * btk_item_factory_popup_with_data:
+ * @ifactory: a #BtkItemFactory of type #BTK_TYPE_MENU (see btk_item_factory_new())
  * @popup_data: data available for callbacks while the menu is posted
  * @destroy: a #GDestroyNotify function to be called on @popup_data when
  *  the menu is unposted
@@ -1491,7 +1491,7 @@ gtk_item_factory_popup (GtkItemFactory		*ifactory,
  *
  * Pops up the menu constructed from the item factory at (@x, @y). Callbacks
  * can access the @popup_data while the menu is posted via 
- * gtk_item_factory_popup_data() and gtk_item_factory_popup_data_from_widget().
+ * btk_item_factory_popup_data() and btk_item_factory_popup_data_from_widget().
  *
  * The @mouse_button parameter should be the mouse button pressed to initiate
  * the menu popup. If the menu popup was initiated by something other than
@@ -1500,15 +1500,15 @@ gtk_item_factory_popup (GtkItemFactory		*ifactory,
  *
  * The @time_ parameter should be the time stamp of the event that
  * initiated the popup. If such an event is not available, use
- * gtk_get_current_event_time() instead.
+ * btk_get_current_event_time() instead.
  *
  * The operation of the @mouse_button and the @time_ parameters is the same
- * as the @button and @activation_time parameters for gtk_menu_popup().
+ * as the @button and @activation_time parameters for btk_menu_popup().
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-gtk_item_factory_popup_with_data (GtkItemFactory	*ifactory,
+btk_item_factory_popup_with_data (BtkItemFactory	*ifactory,
 				  gpointer		 popup_data,
 				  GDestroyNotify         destroy,
 				  guint			 x,
@@ -1518,8 +1518,8 @@ gtk_item_factory_popup_with_data (GtkItemFactory	*ifactory,
 {
   MenuPos *mpos;
 
-  g_return_if_fail (GTK_IS_ITEM_FACTORY (ifactory));
-  g_return_if_fail (GTK_IS_MENU (ifactory->widget));
+  g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
+  g_return_if_fail (BTK_IS_MENU (ifactory->widget));
   
   mpos = g_object_get_qdata (G_OBJECT (ifactory->widget), quark_if_menu_pos);
   
@@ -1547,16 +1547,16 @@ gtk_item_factory_popup_with_data (GtkItemFactory	*ifactory,
 			ifactory);
     }
   
-  gtk_menu_popup (GTK_MENU (ifactory->widget),
+  btk_menu_popup (BTK_MENU (ifactory->widget),
 		  NULL, NULL,
-		  gtk_item_factory_menu_pos, mpos,
+		  btk_item_factory_menu_pos, mpos,
 		  mouse_button, time);
 }
 
 /**
- * gtk_item_factory_set_translate_func:
- * @ifactory: a #GtkItemFactory
- * @func: the #GtkTranslateFunc function to be used to translate path elements 
+ * btk_item_factory_set_translate_func:
+ * @ifactory: a #BtkItemFactory
+ * @func: the #BtkTranslateFunc function to be used to translate path elements 
  * @data: data to pass to @func and @notify
  * @notify: a #GDestroyNotify function to be called when @ifactory is 
  *   destroyed and when the translation function is changed again
@@ -1564,11 +1564,11 @@ gtk_item_factory_popup_with_data (GtkItemFactory	*ifactory,
  * Sets a function to be used for translating the path elements before they
  * are displayed. 
  *
- * Deprecated: 2.4: Use #GtkUIManager instead.
+ * Deprecated: 2.4: Use #BtkUIManager instead.
  */ 
 void
-gtk_item_factory_set_translate_func (GtkItemFactory    *ifactory,
-				     GtkTranslateFunc   func,
+btk_item_factory_set_translate_func (BtkItemFactory    *ifactory,
+				     BtkTranslateFunc   func,
 				     gpointer           data,
 				     GDestroyNotify     notify)
 {
@@ -1582,5 +1582,5 @@ gtk_item_factory_set_translate_func (GtkItemFactory    *ifactory,
   ifactory->translate_notify = notify;
 }
 
-#define __GTK_ITEM_FACTORY_C__
-#include "gtkaliasdef.c"
+#define __BTK_ITEM_FACTORY_C__
+#include "btkaliasdef.c"

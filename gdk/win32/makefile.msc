@@ -1,4 +1,4 @@
-## Makefile for building the GDK DLL with Microsoft C
+## Makefile for building the BDK DLL with Microsoft C
 ## Use: nmake -f makefile.msc
 
 ################################################################
@@ -6,7 +6,7 @@
 # Nothing much configurable below
 
 TOP = ../../..
-!INCLUDE $(TOP)/glib/build/win32/make.msc
+!INCLUDE $(TOP)/bunnylib/build/win32/make.msc
 
 # Location of the Wintab toolkit. Downloadable from http://www.pointing.com.
 # definition should possibly go to build/win32/module.def, too.
@@ -14,63 +14,63 @@ TOP = ../../..
 WTKIT = $(TOP)\wtkit126
 !ENDIF
 
-GTK_VER=2.0
+BTK_VER=2.0
 
 DEFINES = \
-	-DHAVE_CONFIG_H -DINSIDE_GDK_WIN32 -DGDK_VERSION=\"$(GTK_VER)\" \
-	-DGDK_COMPILATION -DG_LOG_DOMAIN=\"Gdk\"
+	-DHAVE_CONFIG_H -DINSIDE_BDK_WIN32 -DBDK_VERSION=\"$(BTK_VER)\" \
+	-DBDK_COMPILATION -DG_LOG_DOMAIN=\"Bdk\"
 
 INCLUDES = -FImsvc_recommended_pragmas.h \
-	-I. -I.. -I..\.. $(GLIB_CFLAGS) $(GDK_PIXBUF_CFLAGS) \
-	$(PANGO_CFLAGS) $(CAIRO_CFLAGS) \
-	-I$(WTKIT)\include -I$(GLIB) \
+	-I. -I.. -I..\.. $(BUNNYLIB_CFLAGS) $(BDK_PIXBUF_CFLAGS) \
+	$(BANGO_CFLAGS) $(BAIRO_CFLAGS) \
+	-I$(WTKIT)\include -I$(BUNNYLIB) \
 
 all: \
 	..\..\config.h	\
-	..\gdkconfig.h \
-	gdk-win32.lib \
-	gdk.res
+	..\bdkconfig.h \
+	bdk-win32.lib \
+	bdk.res
 
-gdk_win32_OBJECTS = \
-	gdkapplaunchcontext-win32.obj \
-	gdkcolor-win32.obj \
-	gdkcursor-win32.obj \
-	gdkdnd-win32.obj \
-	gdkdisplay-win32.obj \
-	gdkdrawable-win32.obj \
-	gdkevents-win32.obj \
-	gdkfont-win32.obj \
-	gdkgc-win32.obj \
-	gdkgeometry-win32.obj \
-	gdkglobals-win32.obj \
-	gdkim-win32.obj \
-	gdkimage-win32.obj \
-	gdkinput.obj \
-	gdkinput-win32.obj \
-	gdkkeys-win32.obj \
-	gdkmain-win32.obj \
-	gdkpixmap-win32.obj \
-	gdkproperty-win32.obj \
-#	gdkregion-win32.obj \
-	gdkscreen-win32.obj \
-	gdkselection-win32.obj \
-	gdkspawn-win32.obj \
-	gdktestutils-win32.obj \
-	gdkvisual-win32.obj \
-	gdkwin32id.obj \
-	gdkwindow-win32.obj
+bdk_win32_OBJECTS = \
+	bdkapplaunchcontext-win32.obj \
+	bdkcolor-win32.obj \
+	bdkcursor-win32.obj \
+	bdkdnd-win32.obj \
+	bdkdisplay-win32.obj \
+	bdkdrawable-win32.obj \
+	bdkevents-win32.obj \
+	bdkfont-win32.obj \
+	bdkgc-win32.obj \
+	bdkgeometry-win32.obj \
+	bdkglobals-win32.obj \
+	bdkim-win32.obj \
+	bdkimage-win32.obj \
+	bdkinput.obj \
+	bdkinput-win32.obj \
+	bdkkeys-win32.obj \
+	bdkmain-win32.obj \
+	bdkpixmap-win32.obj \
+	bdkproperty-win32.obj \
+#	bdkrebunnyion-win32.obj \
+	bdkscreen-win32.obj \
+	bdkselection-win32.obj \
+	bdkspawn-win32.obj \
+	bdktestutils-win32.obj \
+	bdkvisual-win32.obj \
+	bdkwin32id.obj \
+	bdkwindow-win32.obj
 
 ..\..\config.h : ..\..\config.h.win32
 	copy ..\..\config.h.win32 ..\..\config.h
 
-..\gdkconfig.h : ..\gdkconfig.h.win32
-	copy ..\gdkconfig.h.win32 ..\gdkconfig.h
+..\bdkconfig.h : ..\bdkconfig.h.win32
+	copy ..\bdkconfig.h.win32 ..\bdkconfig.h
 
-gdk.res : rc\gdk.rc
-	rc -DBUILDNUMBER=0 -r -fo gdk.res rc\gdk.rc
+bdk.res : rc\bdk.rc
+	rc -DBUILDNUMBER=0 -r -fo bdk.res rc\bdk.rc
 
-gdk-win32.lib : $(gdk_win32_OBJECTS)
-	lib -out:gdk-win32.lib $(gdk_win32_OBJECTS)
+bdk-win32.lib : $(bdk_win32_OBJECTS)
+	lib -out:bdk-win32.lib $(bdk_win32_OBJECTS)
 
 clean::
 	del *.obj

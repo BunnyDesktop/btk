@@ -1,20 +1,20 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gdk-win32", "gdk-win32.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bdk-win32", "bdk-win32.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gdk", "gdk.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bdk", "bdk.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtk", "gtk.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "btk", "btk.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtk-demo", "gtk-demo.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "btk-demo", "btk-demo.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gailutil", "gailutil.vcxproj", "{B3B6558A-01C8-4C72-9BDE-84ABB1AE67DF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bailutil", "bailutil.vcxproj", "{B3B6558A-01C8-4C72-9BDE-84ABB1AE67DF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libwimp", "libwimp.vcxproj", "{7660FB4E-2AE6-483E-8813-0974CBE6F97F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtk-update-icon-cache", "gtk-update-icon-cache.vcxproj", "{FAB0AD6F-AEBF-4AF8-A1CC-6890A9090945}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "btk-update-icon-cache", "btk-update-icon-cache.vcxproj", "{FAB0AD6F-AEBF-4AF8-A1CC-6890A9090945}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gtk-install", "gtk-install.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE8073FB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "btk-install", "btk-install.vcxproj", "{FC5AADB5-95CD-4BF0-BA8B-0C16FE8073FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,6 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-   <ClCompile Include="..\..\..\gtk\updateiconcache.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\btk\updateiconcache.c"><Filter>Source Files</Filter></ClCompile>
   </ItemGroup>
 </Project>

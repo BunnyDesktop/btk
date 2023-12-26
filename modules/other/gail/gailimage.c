@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,61 +20,61 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailimage.h"
+#include <btk/btk.h>
+#include "bailimage.h"
 
-static void      gail_image_class_init         (GailImageClass *klass);
-static void      gail_image_init               (GailImage      *image);
-static void      gail_image_initialize         (AtkObject       *accessible,
+static void      bail_image_class_init         (BailImageClass *klass);
+static void      bail_image_init               (BailImage      *image);
+static void      bail_image_initialize         (BatkObject       *accessible,
                                                 gpointer        data);
-static const gchar* gail_image_get_name  (AtkObject     *accessible);
+static const gchar* bail_image_get_name  (BatkObject     *accessible);
 
 
-static void      atk_image_interface_init      (AtkImageIface  *iface);
+static void      batk_image_interface_init      (BatkImageIface  *iface);
 
 static const gchar *
-                 gail_image_get_image_description (AtkImage     *image);
-static void	 gail_image_get_image_position    (AtkImage     *image,
+                 bail_image_get_image_description (BatkImage     *image);
+static void	 bail_image_get_image_position    (BatkImage     *image,
                                                    gint         *x,
                                                    gint         *y,
-                                                   AtkCoordType coord_type);
-static void      gail_image_get_image_size     (AtkImage        *image,
+                                                   BatkCoordType coord_type);
+static void      bail_image_get_image_size     (BatkImage        *image,
                                                 gint            *width,
                                                 gint            *height);
-static gboolean  gail_image_set_image_description (AtkImage     *image,
+static gboolean  bail_image_set_image_description (BatkImage     *image,
                                                 const gchar     *description);
-static void      gail_image_finalize           (GObject         *object);
+static void      bail_image_finalize           (GObject         *object);
 
-G_DEFINE_TYPE_WITH_CODE (GailImage, gail_image, GAIL_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_IMAGE, atk_image_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailImage, bail_image, BAIL_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_IMAGE, batk_image_interface_init))
 
 static void
-gail_image_class_init (GailImageClass *klass)
+bail_image_class_init (BailImageClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gail_image_finalize;
-  class->initialize = gail_image_initialize;
-  class->get_name = gail_image_get_name;
+  bobject_class->finalize = bail_image_finalize;
+  class->initialize = bail_image_initialize;
+  class->get_name = bail_image_get_name;
 }
 
 static void
-gail_image_init (GailImage *image)
+bail_image_init (BailImage *image)
 {
   image->image_description = NULL;
 }
 
 static void
-gail_image_initialize (AtkObject *accessible,
+bail_image_initialize (BatkObject *accessible,
                        gpointer data)
 {
-  ATK_OBJECT_CLASS (gail_image_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_image_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_ICON;
+  accessible->role = BATK_ROLE_ICON;
 }
 
-/* Copied from gtktoolbar.c, keep in sync */
+/* Copied from btktoolbar.c, keep in sync */
 static gchar *
 elide_underscores (const gchar *original)
 {
@@ -119,37 +119,37 @@ elide_underscores (const gchar *original)
 }
 
 static const gchar*
-gail_image_get_name (AtkObject *accessible)
+bail_image_get_name (BatkObject *accessible)
 {
-  GtkWidget* widget;
-  GtkImage *image;
-  GailImage *image_accessible;
-  GtkStockItem stock_item;
+  BtkWidget* widget;
+  BtkImage *image;
+  BailImage *image_accessible;
+  BtkStockItem stock_item;
   const gchar *name;
 
-  name = ATK_OBJECT_CLASS (gail_image_parent_class)->get_name (accessible);
+  name = BATK_OBJECT_CLASS (bail_image_parent_class)->get_name (accessible);
   if (name)
     return name;
 
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  widget = BTK_ACCESSIBLE (accessible)->widget;
   /*
    * State is defunct
    */
   if (widget == NULL)
     return NULL;
 
-  g_return_val_if_fail (GTK_IS_IMAGE (widget), NULL);
-  image = GTK_IMAGE (widget);
-  image_accessible = GAIL_IMAGE (accessible);
+  g_return_val_if_fail (BTK_IS_IMAGE (widget), NULL);
+  image = BTK_IMAGE (widget);
+  image_accessible = BAIL_IMAGE (accessible);
 
   g_free (image_accessible->stock_name);
   image_accessible->stock_name = NULL;
 
-  if (image->storage_type != GTK_IMAGE_STOCK ||
+  if (image->storage_type != BTK_IMAGE_STOCK ||
       image->data.stock.stock_id == NULL)
     return NULL;
 
-  if (!gtk_stock_lookup (image->data.stock.stock_id, &stock_item))
+  if (!btk_stock_lookup (image->data.stock.stock_id, &stock_item))
     return NULL;
 
   image_accessible->stock_name = elide_underscores (stock_item.label);
@@ -157,41 +157,41 @@ gail_image_get_name (AtkObject *accessible)
 }
 
 static void
-atk_image_interface_init (AtkImageIface *iface)
+batk_image_interface_init (BatkImageIface *iface)
 {
-  iface->get_image_description = gail_image_get_image_description;
-  iface->get_image_position = gail_image_get_image_position;
-  iface->get_image_size = gail_image_get_image_size;
-  iface->set_image_description = gail_image_set_image_description;
+  iface->get_image_description = bail_image_get_image_description;
+  iface->get_image_position = bail_image_get_image_position;
+  iface->get_image_size = bail_image_get_image_size;
+  iface->set_image_description = bail_image_set_image_description;
 }
 
 static const gchar *
-gail_image_get_image_description (AtkImage     *image)
+bail_image_get_image_description (BatkImage     *image)
 {
-  GailImage* aimage = GAIL_IMAGE (image);
+  BailImage* aimage = BAIL_IMAGE (image);
 
   return aimage->image_description;
 }
 
 static void
-gail_image_get_image_position (AtkImage     *image,
+bail_image_get_image_position (BatkImage     *image,
                                gint         *x,
                                gint         *y,
-                               AtkCoordType coord_type)
+                               BatkCoordType coord_type)
 {
-  atk_component_get_position (ATK_COMPONENT (image), x, y, coord_type);
+  batk_component_get_position (BATK_COMPONENT (image), x, y, coord_type);
 }
 
 static void
-gail_image_get_image_size (AtkImage *image, 
+bail_image_get_image_size (BatkImage *image, 
                            gint     *width,
                            gint     *height)
 {
-  GtkWidget* widget;
-  GtkImage *gtk_image;
-  GtkImageType image_type;
+  BtkWidget* widget;
+  BtkImage *btk_image;
+  BtkImageType image_type;
 
-  widget = GTK_ACCESSIBLE (image)->widget;
+  widget = BTK_ACCESSIBLE (image)->widget;
   if (widget == 0)
   {
     /* State is defunct */
@@ -200,54 +200,54 @@ gail_image_get_image_size (AtkImage *image,
     return;
   }
 
-  gtk_image = GTK_IMAGE(widget);
+  btk_image = BTK_IMAGE(widget);
 
-  image_type = gtk_image_get_storage_type(gtk_image);
+  image_type = btk_image_get_storage_type(btk_image);
  
   switch(image_type) {
-    case GTK_IMAGE_PIXMAP:
+    case BTK_IMAGE_PIXMAP:
     {	
-      GdkPixmap *pixmap;
-      gtk_image_get_pixmap(gtk_image, &pixmap, NULL);
-      gdk_pixmap_get_size (pixmap, width, height);
+      BdkPixmap *pixmap;
+      btk_image_get_pixmap(btk_image, &pixmap, NULL);
+      bdk_pixmap_get_size (pixmap, width, height);
       break;
     }
-    case GTK_IMAGE_PIXBUF:
+    case BTK_IMAGE_PIXBUF:
     {
-      GdkPixbuf *pixbuf;
-      pixbuf = gtk_image_get_pixbuf(gtk_image);
-      *height = gdk_pixbuf_get_height(pixbuf);
-      *width = gdk_pixbuf_get_width(pixbuf);
+      BdkPixbuf *pixbuf;
+      pixbuf = btk_image_get_pixbuf(btk_image);
+      *height = bdk_pixbuf_get_height(pixbuf);
+      *width = bdk_pixbuf_get_width(pixbuf);
       break;
     }
-    case GTK_IMAGE_IMAGE:
+    case BTK_IMAGE_IMAGE:
     {
-      GdkImage *gdk_image;
-      gtk_image_get_image(gtk_image, &gdk_image, NULL);
-      *height = gdk_image->height;
-      *width = gdk_image->width;
+      BdkImage *bdk_image;
+      btk_image_get_image(btk_image, &bdk_image, NULL);
+      *height = bdk_image->height;
+      *width = bdk_image->width;
       break;
     }
-    case GTK_IMAGE_STOCK:
-    case GTK_IMAGE_ICON_SET:
-    case GTK_IMAGE_ICON_NAME:
-    case GTK_IMAGE_GICON:
+    case BTK_IMAGE_STOCK:
+    case BTK_IMAGE_ICON_SET:
+    case BTK_IMAGE_ICON_NAME:
+    case BTK_IMAGE_GICON:
     {
-      GtkIconSize size;
-      GtkSettings *settings;
+      BtkIconSize size;
+      BtkSettings *settings;
 
-      settings = gtk_settings_get_for_screen (gtk_widget_get_screen (widget));
+      settings = btk_settings_get_for_screen (btk_widget_get_screen (widget));
 
-      g_object_get (gtk_image, "icon-size", &size, NULL);
-      gtk_icon_size_lookup_for_settings (settings, size, width, height);
+      g_object_get (btk_image, "icon-size", &size, NULL);
+      btk_icon_size_lookup_for_settings (settings, size, width, height);
       break;
     }
-    case GTK_IMAGE_ANIMATION:
+    case BTK_IMAGE_ANIMATION:
     {
-      GdkPixbufAnimation *animation;
-      animation = gtk_image_get_animation(gtk_image);
-      *height = gdk_pixbuf_animation_get_height(animation);
-      *width = gdk_pixbuf_animation_get_width(animation);
+      BdkPixbufAnimation *animation;
+      animation = btk_image_get_animation(btk_image);
+      *height = bdk_pixbuf_animation_get_height(animation);
+      *width = bdk_pixbuf_animation_get_width(animation);
       break;
     }
     default:
@@ -260,10 +260,10 @@ gail_image_get_image_size (AtkImage *image,
 }
 
 static gboolean
-gail_image_set_image_description (AtkImage     *image,
+bail_image_set_image_description (BatkImage     *image,
                                   const gchar  *description)
 {
-  GailImage* aimage = GAIL_IMAGE (image);
+  BailImage* aimage = BAIL_IMAGE (image);
 
   g_free (aimage->image_description);
   aimage->image_description = g_strdup (description);
@@ -271,12 +271,12 @@ gail_image_set_image_description (AtkImage     *image,
 }
 
 static void
-gail_image_finalize (GObject      *object)
+bail_image_finalize (GObject      *object)
 {
-  GailImage *aimage = GAIL_IMAGE (object);
+  BailImage *aimage = BAIL_IMAGE (object);
 
   g_free (aimage->image_description);
   g_free (aimage->stock_name);
 
-  G_OBJECT_CLASS (gail_image_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_image_parent_class)->finalize (object);
 }

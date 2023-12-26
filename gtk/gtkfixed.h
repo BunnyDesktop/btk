@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,73 +18,73 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_FIXED_H__
-#define __GTK_FIXED_H__
+#ifndef __BTK_FIXED_H__
+#define __BTK_FIXED_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
+#include <btk/btkcontainer.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FIXED                  (gtk_fixed_get_type ())
-#define GTK_FIXED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FIXED, GtkFixed))
-#define GTK_FIXED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FIXED, GtkFixedClass))
-#define GTK_IS_FIXED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FIXED))
-#define GTK_IS_FIXED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FIXED))
-#define GTK_FIXED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FIXED, GtkFixedClass))
+#define BTK_TYPE_FIXED                  (btk_fixed_get_type ())
+#define BTK_FIXED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FIXED, BtkFixed))
+#define BTK_FIXED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FIXED, BtkFixedClass))
+#define BTK_IS_FIXED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FIXED))
+#define BTK_IS_FIXED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FIXED))
+#define BTK_FIXED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FIXED, BtkFixedClass))
 
 
-typedef struct _GtkFixed        GtkFixed;
-typedef struct _GtkFixedClass   GtkFixedClass;
-typedef struct _GtkFixedChild   GtkFixedChild;
+typedef struct _BtkFixed        BtkFixed;
+typedef struct _BtkFixedClass   BtkFixedClass;
+typedef struct _BtkFixedChild   BtkFixedChild;
 
-struct _GtkFixed
+struct _BtkFixed
 {
-  GtkContainer container;
+  BtkContainer container;
 
   GList *GSEAL (children);
 };
 
-struct _GtkFixedClass
+struct _BtkFixedClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 };
 
-struct _GtkFixedChild
+struct _BtkFixedChild
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   gint x;
   gint y;
 };
 
 
-GType      gtk_fixed_get_type          (void) G_GNUC_CONST;
-GtkWidget* gtk_fixed_new               (void);
-void       gtk_fixed_put               (GtkFixed       *fixed,
-                                        GtkWidget      *widget,
+GType      btk_fixed_get_type          (void) G_GNUC_CONST;
+BtkWidget* btk_fixed_new               (void);
+void       btk_fixed_put               (BtkFixed       *fixed,
+                                        BtkWidget      *widget,
                                         gint            x,
                                         gint            y);
-void       gtk_fixed_move              (GtkFixed       *fixed,
-                                        GtkWidget      *widget,
+void       btk_fixed_move              (BtkFixed       *fixed,
+                                        BtkWidget      *widget,
                                         gint            x,
                                         gint            y);
-#ifndef GTK_DISABLE_DEPRECATED
-void       gtk_fixed_set_has_window    (GtkFixed       *fixed,
+#ifndef BTK_DISABLE_DEPRECATED
+void       btk_fixed_set_has_window    (BtkFixed       *fixed,
 					gboolean        has_window);
-gboolean   gtk_fixed_get_has_window    (GtkFixed       *fixed);
+gboolean   btk_fixed_get_has_window    (BtkFixed       *fixed);
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_FIXED_H__ */
+#endif /* __BTK_FIXED_H__ */

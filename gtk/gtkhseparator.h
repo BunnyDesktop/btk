@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,51 +18,51 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_HSEPARATOR_H__
-#define __GTK_HSEPARATOR_H__
+#ifndef __BTK_HSEPARATOR_H__
+#define __BTK_HSEPARATOR_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkseparator.h>
+#include <btk/btkseparator.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_HSEPARATOR                  (gtk_hseparator_get_type ())
-#define GTK_HSEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HSEPARATOR, GtkHSeparator))
-#define GTK_HSEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HSEPARATOR, GtkHSeparatorClass))
-#define GTK_IS_HSEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HSEPARATOR))
-#define GTK_IS_HSEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HSEPARATOR))
-#define GTK_HSEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HSEPARATOR, GtkHSeparatorClass))
+#define BTK_TYPE_HSEPARATOR                  (btk_hseparator_get_type ())
+#define BTK_HSEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparator))
+#define BTK_HSEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSEPARATOR, BtkHSeparatorClass))
+#define BTK_IS_HSEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSEPARATOR))
+#define BTK_IS_HSEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSEPARATOR))
+#define BTK_HSEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSEPARATOR, BtkHSeparatorClass))
 
 
-typedef struct _GtkHSeparator       GtkHSeparator;
-typedef struct _GtkHSeparatorClass  GtkHSeparatorClass;
+typedef struct _BtkHSeparator       BtkHSeparator;
+typedef struct _BtkHSeparatorClass  BtkHSeparatorClass;
 
-struct _GtkHSeparator
+struct _BtkHSeparator
 {
-  GtkSeparator separator;
+  BtkSeparator separator;
 };
 
-struct _GtkHSeparatorClass
+struct _BtkHSeparatorClass
 {
-  GtkSeparatorClass parent_class;
+  BtkSeparatorClass parent_class;
 };
 
 
-GType      gtk_hseparator_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_hseparator_new      (void);
+GType      btk_hseparator_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_hseparator_new      (void);
 
 
 G_END_DECLS
 
-#endif /* __GTK_HSEPARATOR_H__ */
+#endif /* __BTK_HSEPARATOR_H__ */

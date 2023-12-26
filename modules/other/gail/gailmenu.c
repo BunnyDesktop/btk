@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,64 +19,64 @@
 
 #include "config.h"
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include "gailmenu.h"
+#include "bailmenu.h"
 
-static void gail_menu_class_init (GailMenuClass *klass);
-static void gail_menu_init       (GailMenu      *accessible);
+static void bail_menu_class_init (BailMenuClass *klass);
+static void bail_menu_init       (BailMenu      *accessible);
 
-static void	  gail_menu_real_initialize     (AtkObject *obj,
+static void	  bail_menu_real_initialize     (BatkObject *obj,
                                                  gpointer  data);
 
-static AtkObject* gail_menu_get_parent          (AtkObject *accessible);
-static gint       gail_menu_get_index_in_parent (AtkObject *accessible);
+static BatkObject* bail_menu_get_parent          (BatkObject *accessible);
+static gint       bail_menu_get_index_in_parent (BatkObject *accessible);
 
-G_DEFINE_TYPE (GailMenu, gail_menu, GAIL_TYPE_MENU_SHELL)
+G_DEFINE_TYPE (BailMenu, bail_menu, BAIL_TYPE_MENU_SHELL)
 
 static void
-gail_menu_class_init (GailMenuClass *klass)
+bail_menu_class_init (BailMenuClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->get_parent = gail_menu_get_parent;
-  class->get_index_in_parent = gail_menu_get_index_in_parent;
-  class->initialize = gail_menu_real_initialize;
+  class->get_parent = bail_menu_get_parent;
+  class->get_index_in_parent = bail_menu_get_index_in_parent;
+  class->initialize = bail_menu_real_initialize;
 }
 
 static void
-gail_menu_init (GailMenu *accessible)
+bail_menu_init (BailMenu *accessible)
 {
 }
 
 static void
-gail_menu_real_initialize (AtkObject *obj,
+bail_menu_real_initialize (BatkObject *obj,
                            gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_menu_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_menu_parent_class)->initialize (obj, data);
 
-  obj->role = ATK_ROLE_MENU;
+  obj->role = BATK_ROLE_MENU;
 
-  g_object_set_data (G_OBJECT (obj), "atk-component-layer",
-		     GINT_TO_POINTER (ATK_LAYER_POPUP));
+  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+		     GINT_TO_POINTER (BATK_LAYER_POPUP));
 }
 
-static AtkObject*
-gail_menu_get_parent (AtkObject *accessible)
+static BatkObject*
+bail_menu_get_parent (BatkObject *accessible)
 {
-  AtkObject *parent;
+  BatkObject *parent;
 
   parent = accessible->accessible_parent;
 
   if (parent != NULL)
     {
-      g_return_val_if_fail (ATK_IS_OBJECT (parent), NULL);
+      g_return_val_if_fail (BATK_IS_OBJECT (parent), NULL);
     }
   else
     {
-      GtkWidget *widget, *parent_widget;
+      BtkWidget *widget, *parent_widget;
 
-      widget = GTK_ACCESSIBLE (accessible)->widget;
+      widget = BTK_ACCESSIBLE (accessible)->widget;
       if (widget == NULL)
         {
           /*
@@ -84,32 +84,32 @@ gail_menu_get_parent (AtkObject *accessible)
            */
           return NULL;
         }
-      g_return_val_if_fail (GTK_IS_MENU (widget), NULL);
+      g_return_val_if_fail (BTK_IS_MENU (widget), NULL);
 
       /*
        * If the menu is attached to a menu item or a button (Gnome Menu)
        * report the menu item as parent.
        */
-      parent_widget = gtk_menu_get_attach_widget (GTK_MENU (widget));
+      parent_widget = btk_menu_get_attach_widget (BTK_MENU (widget));
 
-      if (!GTK_IS_MENU_ITEM (parent_widget) && !GTK_IS_BUTTON (parent_widget) && !GTK_IS_COMBO_BOX (parent_widget) && !GTK_IS_OPTION_MENU (parent_widget))
+      if (!BTK_IS_MENU_ITEM (parent_widget) && !BTK_IS_BUTTON (parent_widget) && !BTK_IS_COMBO_BOX (parent_widget) && !BTK_IS_OPTION_MENU (parent_widget))
         parent_widget = widget->parent;
 
       if (parent_widget == NULL)
         return NULL;
 
-      parent = gtk_widget_get_accessible (parent_widget);
-      atk_object_set_parent (accessible, parent);
+      parent = btk_widget_get_accessible (parent_widget);
+      batk_object_set_parent (accessible, parent);
     }
   return parent;
 }
 
 static gint
-gail_menu_get_index_in_parent (AtkObject *accessible)
+bail_menu_get_index_in_parent (BatkObject *accessible)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
     {
@@ -118,11 +118,11 @@ gail_menu_get_index_in_parent (AtkObject *accessible)
        */
       return -1;
     }
-  g_return_val_if_fail (GTK_IS_MENU (widget), -1);
+  g_return_val_if_fail (BTK_IS_MENU (widget), -1);
 
-  if (gtk_menu_get_attach_widget (GTK_MENU (widget)))
+  if (btk_menu_get_attach_widget (BTK_MENU (widget)))
     {
       return 0;
     }
-  return ATK_OBJECT_CLASS (gail_menu_parent_class)->get_index_in_parent (accessible);
+  return BATK_OBJECT_CLASS (bail_menu_parent_class)->get_index_in_parent (accessible);
 }

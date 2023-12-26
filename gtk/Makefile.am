@@ -1,137 +1,137 @@
-# Makefile.am for gtk+/gtk
+# Makefile.am for btk+/btk
 include $(top_srcdir)/Makefile.decl
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = \
 	--warn-all \
-	--add-include-path=../gdk
+	--add-include-path=../bdk
 INTROSPECTION_COMPILER_ARGS = \
 	--includedir=$(srcdir) \
     --includedir=. \
-    --includedir=../gdk
+    --includedir=../bdk
 
 if USE_QUARTZ
-GTK_PRINT_PREVIEW_COMMAND="open -b com.apple.Preview %f"
+BTK_PRINT_PREVIEW_COMMAND="open -b com.apple.Preview %f"
 else
-GTK_PRINT_PREVIEW_COMMAND="evince --unlink-tempfile --preview --print-settings %s %f"
+BTK_PRINT_PREVIEW_COMMAND="evince --unlink-tempfile --preview --print-settings %s %f"
 endif
 
 SUBDIRS = theme-bits . tests
 DIST_SUBDIRS=theme-bits tests
 
 if HAVE_PAPI_CUPS
-GTK_PRINT_BACKENDS=file,papi,cups
+BTK_PRINT_BACKENDS=file,papi,cups
 else
 if HAVE_CUPS
-GTK_PRINT_BACKENDS=file,cups
+BTK_PRINT_BACKENDS=file,cups
 else
 if HAVE_PAPI
-GTK_PRINT_BACKENDS=file,papi
+BTK_PRINT_BACKENDS=file,papi
 else
-GTK_PRINT_BACKENDS=file,lpr
+BTK_PRINT_BACKENDS=file,lpr
 endif
 endif
 endif
 
-GTK_BASE_CFLAGS_DEFINES =				\
-	-DGTK_VERSION=\"$(GTK_VERSION)\"		\
-	-DGTK_BINARY_VERSION=\"$(GTK_BINARY_VERSION)\"	\
-	-DGTK_COMPILATION				\
-	-DGTK_DISABLE_DEPRECATED			\
-	-DGTK_FILE_SYSTEM_ENABLE_UNSUPPORTED		\
-	-DGTK_PRINT_BACKEND_ENABLE_UNSUPPORTED
+BTK_BASE_CFLAGS_DEFINES =				\
+	-DBTK_VERSION=\"$(BTK_VERSION)\"		\
+	-DBTK_BINARY_VERSION=\"$(BTK_BINARY_VERSION)\"	\
+	-DBTK_COMPILATION				\
+	-DBTK_DISABLE_DEPRECATED			\
+	-DBTK_FILE_SYSTEM_ENABLE_UNSUPPORTED		\
+	-DBTK_PRINT_BACKEND_ENABLE_UNSUPPORTED
 
-GTK_PLAT_CFLAGS_DEFINES =				\
-	-DGTK_LIBDIR=\"$(libdir)\"			\
-	-DGTK_DATADIR=\"$(datadir)\"			\
-	-DGTK_DATA_PREFIX=\"$(prefix)\"			\
-	-DGTK_SYSCONFDIR=\"$(sysconfdir)\"		\
-	-DGTK_HOST=\"$(host)\"				\
-	-DGTK_PRINT_BACKENDS=\"$(GTK_PRINT_BACKENDS)\"	\
-	-DGTK_PRINT_PREVIEW_COMMAND=\"$(GTK_PRINT_PREVIEW_COMMAND)\"
+BTK_PLAT_CFLAGS_DEFINES =				\
+	-DBTK_LIBDIR=\"$(libdir)\"			\
+	-DBTK_DATADIR=\"$(datadir)\"			\
+	-DBTK_DATA_PREFIX=\"$(prefix)\"			\
+	-DBTK_SYSCONFDIR=\"$(sysconfdir)\"		\
+	-DBTK_HOST=\"$(host)\"				\
+	-DBTK_PRINT_BACKENDS=\"$(BTK_PRINT_BACKENDS)\"	\
+	-DBTK_PRINT_PREVIEW_COMMAND=\"$(BTK_PRINT_PREVIEW_COMMAND)\"
 
 INCLUDES =						\
-	$(GTK_BASE_CFLAGS_DEFINES)			\
-	$(GTK_PLAT_CFLAGS_DEFINES)			\
-	-DG_LOG_DOMAIN=\"Gtk\"				\
+	$(BTK_BASE_CFLAGS_DEFINES)			\
+	$(BTK_PLAT_CFLAGS_DEFINES)			\
+	-DG_LOG_DOMAIN=\"Btk\"				\
 	-I$(top_builddir)				\
-	-I$(top_builddir)/gtk				\
-	-I$(top_srcdir) -I../gdk			\
-	-I$(top_srcdir)/gdk				\
-	$(GMODULE_CFLAGS)				\
-	$(GTK_DEBUG_FLAGS)				\
-	$(GTK_DEP_CFLAGS)				\
+	-I$(top_builddir)/btk				\
+	-I$(top_srcdir) -I../bdk			\
+	-I$(top_srcdir)/bdk				\
+	$(BMODULE_CFLAGS)				\
+	$(BTK_DEBUG_FLAGS)				\
+	$(BTK_DEP_CFLAGS)				\
 	$(INCLUDED_IMMODULE_DEFINE)
 
-gtarget=$(gdktarget)
+gtarget=$(bdktarget)
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
 if OS_WIN32
-gtk_def = gtk.def
-gtk_win32_symbols = -export-symbols gtk.def
+btk_def = btk.def
+btk_win32_symbols = -export-symbols btk.def
 
-gtk_win32_res = gtk-win32-res.o
-gtk_win32_res_ldflag = -Wl,gtk-win32-res.o
+btk_win32_res = btk-win32-res.o
+btk_win32_res_ldflag = -Wl,btk-win32-res.o
 
-gtk-win32-res.o : gtk-win32.rc
-	$(WINDRES) gtk-win32.rc $@
+btk-win32-res.o : btk-win32.rc
+	$(WINDRES) btk-win32.rc $@
 
-install-def-file: gtk.def
+install-def-file: btk.def
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL) gtk.def $(DESTDIR)$(libdir)/gtk-win32-2.0.def
+	$(INSTALL) btk.def $(DESTDIR)$(libdir)/btk-win32-2.0.def
 uninstall-def-file:
-	-rm $(DESTDIR)$(libdir)/gtk-win32-2.0.def
+	-rm $(DESTDIR)$(libdir)/btk-win32-2.0.def
 else
 install-def-file:
 uninstall-def-file:
 endif
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gtk-win32-$(GTK_API_VERSION).lib
+noinst_DATA = btk-win32-$(BTK_API_VERSION).lib
 
-gtk-win32-$(GTK_API_VERSION).lib: libgtk-win32-$(GTK_API_VERSION).la gtk.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgtk-win32-$(GTK_API_VERSION)-@LT_CURRENT_MINUS_AGE@.dll -def:gtk.def -out:$@
+btk-win32-$(BTK_API_VERSION).lib: libbtk-win32-$(BTK_API_VERSION).la btk.def
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libbtk-win32-$(BTK_API_VERSION)-@LT_CURRENT_MINUS_AGE@.dll -def:btk.def -out:$@
 
 install-ms-lib:
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL) gtk-win32-$(GTK_API_VERSION).lib $(DESTDIR)$(libdir)
+	$(INSTALL) btk-win32-$(BTK_API_VERSION).lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gtk-win32-$(GTK_API_VERSION).lib
+	-rm $(DESTDIR)$(libdir)/btk-win32-$(BTK_API_VERSION).lib
 else
 install-ms-lib:
 uninstall-ms-lib:
 endif
 
-# gtk.def has to be put in builddir and should not be included in a source
+# btk.def has to be put in builddir and should not be included in a source
 # tarball because it differs in 32-bit and 64-bit Windows builds.
-gtk.def: gtk.symbols
-	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gtk.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > gtk.def
+btk.def: btk.symbols
+	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/btk.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > btk.def
 
-gtkalias.h: gtk.symbols
-	  $(PERL) $(srcdir)/makegtkalias.pl < $(srcdir)/gtk.symbols > gtkalias.h
-gtkaliasdef.c: gtk.symbols
-	  $(PERL) $(srcdir)/makegtkalias.pl -def < $(srcdir)/gtk.symbols > gtkaliasdef.c
+btkalias.h: btk.symbols
+	  $(PERL) $(srcdir)/makebtkalias.pl < $(srcdir)/btk.symbols > btkalias.h
+btkaliasdef.c: btk.symbols
+	  $(PERL) $(srcdir)/makebtkalias.pl -def < $(srcdir)/btk.symbols > btkaliasdef.c
 
 check-aliases:
 	@$(TESTS_ENVIRONMENT) $(srcdir)/aliasfilescheck.sh
 
 .PHONY: check-aliases
 
-TESTS_ENVIRONMENT = srcdir="$(srcdir)" gtk_all_c_sources="$(gtk_all_c_sources)"
+TESTS_ENVIRONMENT = srcdir="$(srcdir)" btk_all_c_sources="$(btk_all_c_sources)"
 TESTS = aliasfilescheck.sh
 if OS_LINUX
 TESTS += abicheck.sh pltcheck.sh
 endif
 
-libgtkincludedir = $(includedir)/gtk-2.0/gtk
+libbtkincludedir = $(includedir)/btk-2.0/btk
 libadd =								\
-	$(top_builddir)/gdk/$(gdktargetlib)				\
-	$(GMODULE_LIBS) \
-	$(GTK_DEP_LIBS)
+	$(top_builddir)/bdk/$(bdktargetlib)				\
+	$(BMODULE_LIBS) \
+	$(BTK_DEP_LIBS)
 deps =
 
 # libtool stuff: set version and export symbols for resolving
@@ -140,7 +140,7 @@ deps =
 libtool_opts =							\
   -version-info $(LT_VERSION_INFO)				\
   -export-dynamic $(no_undefined) $(LIBTOOL_EXPORT_OPTIONS)	\
-  -rpath $(libdir) $(libgtk_target_ldflags)
+  -rpath $(libdir) $(libbtk_target_ldflags)
 
 
 included-modules:
@@ -160,622 +160,622 @@ endif
 # setup source file variables
 #
 
-# GTK+ header files for public installation (non-generated, or generated
+# BTK+ header files for public installation (non-generated, or generated
 # by configure)
-gtk_public_h_sources =          \
-	gtk.h			\
-	gtkaboutdialog.h	\
-	gtkaccelgroup.h		\
-	gtkaccellabel.h		\
-	gtkaccelmap.h		\
-	gtkaccessible.h		\
-	gtkaction.h		\
-	gtkactiongroup.h	\
-	gtkactivatable.h	\
-	gtkadjustment.h		\
-	gtkalignment.h		\
-	gtkarrow.h		\
-	gtkaspectframe.h	\
-	gtkassistant.h		\
-	gtkbbox.h		\
-	gtkbin.h		\
-	gtkbindings.h		\
-	gtkbox.h		\
-	gtkbuilder.h		\
-	gtkbuildable.h		\
-	gtkbutton.h		\
-	gtkcalendar.h		\
-	gtkcelleditable.h	\
-	gtkcelllayout.h		\
-	gtkcellrenderer.h	\
-	gtkcellrendereraccel.h	\
-	gtkcellrenderercombo.h	\
-	gtkcellrendererpixbuf.h	\
-	gtkcellrendererprogress.h \
-	gtkcellrendererspin.h   \
-	gtkcellrendererspinner.h\
-	gtkcellrenderertext.h	\
-	gtkcellrenderertoggle.h	\
-	gtkcellview.h		\
-	gtkcheckbutton.h	\
-	gtkcheckmenuitem.h	\
-	gtkclipboard.h		\
-	gtkcolorbutton.h	\
-	gtkcolorsel.h		\
-	gtkcolorseldialog.h	\
-	gtkcombobox.h		\
-	gtkcomboboxentry.h	\
-	gtkcomboboxtext.h	\
-	gtkcontainer.h		\
-	gtkdebug.h              \
-	gtkdialog.h		\
-	gtkdnd.h		\
-	gtkdrawingarea.h	\
-	gtkeditable.h           \
-	gtkentry.h		\
-	gtkentrybuffer.h	\
-	gtkentrycompletion.h	\
-	gtkenums.h		\
-	gtkeventbox.h		\
-	gtkexpander.h		\
-	gtkfilechooser.h        \
-	gtkfilechooserbutton.h  \
-	gtkfilechooserdialog.h  \
-	gtkfilechooserwidget.h  \
-	gtkfilefilter.h		\
-	gtkfixed.h		\
-	gtkfontbutton.h		\
-	gtkfontsel.h		\
-	gtkframe.h		\
-	gtkgc.h			\
-	gtkhandlebox.h		\
-	gtkhbbox.h		\
-	gtkhbox.h		\
-	gtkhpaned.h		\
-	gtkhruler.h		\
-	gtkhscale.h		\
-	gtkhscrollbar.h		\
-	gtkhseparator.h		\
-	gtkhsv.h		\
-	gtkiconfactory.h	\
-	gtkicontheme.h		\
-	gtkiconview.h		\
-	gtkimage.h		\
-	gtkimagemenuitem.h	\
-	gtkimcontext.h		\
-	gtkimcontextsimple.h	\
-	gtkimmodule.h		\
-	gtkimmulticontext.h	\
-	gtkinfobar.h		\
-	gtkinvisible.h		\
-	gtkitem.h		\
-	gtklabel.h		\
-	gtklayout.h             \
-	gtklinkbutton.h		\
-	gtkliststore.h		\
-	gtkmain.h		\
-	gtkmenu.h		\
-	gtkmenubar.h		\
-	gtkmenuitem.h		\
-	gtkmenushell.h		\
-	gtkmenutoolbutton.h	\
-	gtkmessagedialog.h	\
-	gtkmisc.h		\
-	gtkmodules.h		\
-	gtkmountoperation.h     \
-	gtknotebook.h		\
-	gtkobject.h		\
-	gtkoffscreenwindow.h	\
-	gtkorientable.h		\
-	gtkpagesetup.h		\
-	gtkpaned.h		\
-	gtkpapersize.h		\
-	gtkplug.h		\
-	gtkprintcontext.h	\
-	gtkprintoperation.h	\
-	gtkprintoperationpreview.h	\
-	gtkprintsettings.h	\
-	gtkprivate.h		\
-	gtkprogressbar.h	\
-	gtkradioaction.h	\
-	gtkradiobutton.h	\
-	gtkradiomenuitem.h	\
-	gtkradiotoolbutton.h	\
-	gtkrange.h		\
-	gtkrc.h			\
-	gtkrecentaction.h	\
-	gtkrecentchooser.h 	\
-	gtkrecentchooserdialog.h \
-	gtkrecentchoosermenu.h 	\
-	gtkrecentchooserwidget.h \
-	gtkrecentfilter.h 	\
-	gtkrecentmanager.h 	\
-	gtkruler.h		\
-	gtkscale.h		\
-	gtkscalebutton.h	\
-	gtkscrollbar.h		\
-	gtkscrolledwindow.h	\
-	gtkselection.h		\
-	gtkseparator.h		\
-	gtkseparatormenuitem.h	\
-	gtkseparatortoolitem.h	\
-	gtkshow.h		\
-	gtksettings.h		\
-	gtksizegroup.h		\
-	gtksocket.h		\
-	gtkspinbutton.h		\
-	gtkspinner.h		\
-	gtkstatusbar.h		\
-	gtkstatusicon.h		\
-	gtkstock.h		\
-	gtkstyle.h		\
-	gtktable.h		\
-	gtktearoffmenuitem.h    \
-	gtktestutils.h		\
-	gtktextbuffer.h		\
-	gtktextbufferrichtext.h	\
-	gtktextchild.h		\
-	gtktextdisplay.h	\
-	gtktextiter.h		\
-	gtktextmark.h		\
-	gtktexttag.h		\
-	gtktexttagtable.h	\
-	gtktextview.h		\
-	gtktoggleaction.h	\
-	gtktogglebutton.h	\
-	gtktoggletoolbutton.h	\
-	gtktoolbar.h		\
-	gtktoolbutton.h		\
-	gtktoolitem.h		\
-	gtktoolitemgroup.h	\
-	gtktoolpalette.h	\
-	gtktoolshell.h		\
-	gtktooltip.h		\
-	gtktreednd.h		\
-	gtktreemodel.h		\
-	gtktreemodelfilter.h	\
-	gtktreemodelsort.h	\
-	gtktreeselection.h	\
-	gtktreesortable.h	\
-	gtktreestore.h		\
-	gtktreeview.h		\
-	gtktreeviewcolumn.h	\
-	gtktypeutils.h		\
-	gtkuimanager.h		\
-	gtkvbbox.h		\
-	gtkvbox.h		\
-	gtkviewport.h		\
-	gtkvolumebutton.h	\
-	gtkvpaned.h		\
-	gtkvruler.h		\
-	gtkvscale.h		\
-	gtkvscrollbar.h		\
-	gtkvseparator.h		\
-	gtkwidget.h		\
-	gtkwindow.h
+btk_public_h_sources =          \
+	btk.h			\
+	btkaboutdialog.h	\
+	btkaccelgroup.h		\
+	btkaccellabel.h		\
+	btkaccelmap.h		\
+	btkaccessible.h		\
+	btkaction.h		\
+	btkactiongroup.h	\
+	btkactivatable.h	\
+	btkadjustment.h		\
+	btkalignment.h		\
+	btkarrow.h		\
+	btkaspectframe.h	\
+	btkassistant.h		\
+	btkbbox.h		\
+	btkbin.h		\
+	btkbindings.h		\
+	btkbox.h		\
+	btkbuilder.h		\
+	btkbuildable.h		\
+	btkbutton.h		\
+	btkcalendar.h		\
+	btkcelleditable.h	\
+	btkcelllayout.h		\
+	btkcellrenderer.h	\
+	btkcellrendereraccel.h	\
+	btkcellrenderercombo.h	\
+	btkcellrendererpixbuf.h	\
+	btkcellrendererprogress.h \
+	btkcellrendererspin.h   \
+	btkcellrendererspinner.h\
+	btkcellrenderertext.h	\
+	btkcellrenderertoggle.h	\
+	btkcellview.h		\
+	btkcheckbutton.h	\
+	btkcheckmenuitem.h	\
+	btkclipboard.h		\
+	btkcolorbutton.h	\
+	btkcolorsel.h		\
+	btkcolorseldialog.h	\
+	btkcombobox.h		\
+	btkcomboboxentry.h	\
+	btkcomboboxtext.h	\
+	btkcontainer.h		\
+	btkdebug.h              \
+	btkdialog.h		\
+	btkdnd.h		\
+	btkdrawingarea.h	\
+	btkeditable.h           \
+	btkentry.h		\
+	btkentrybuffer.h	\
+	btkentrycompletion.h	\
+	btkenums.h		\
+	btkeventbox.h		\
+	btkexpander.h		\
+	btkfilechooser.h        \
+	btkfilechooserbutton.h  \
+	btkfilechooserdialog.h  \
+	btkfilechooserwidget.h  \
+	btkfilefilter.h		\
+	btkfixed.h		\
+	btkfontbutton.h		\
+	btkfontsel.h		\
+	btkframe.h		\
+	btkgc.h			\
+	btkhandlebox.h		\
+	btkhbbox.h		\
+	btkhbox.h		\
+	btkhpaned.h		\
+	btkhruler.h		\
+	btkhscale.h		\
+	btkhscrollbar.h		\
+	btkhseparator.h		\
+	btkhsv.h		\
+	btkiconfactory.h	\
+	btkicontheme.h		\
+	btkiconview.h		\
+	btkimage.h		\
+	btkimagemenuitem.h	\
+	btkimcontext.h		\
+	btkimcontextsimple.h	\
+	btkimmodule.h		\
+	btkimmulticontext.h	\
+	btkinfobar.h		\
+	btkinvisible.h		\
+	btkitem.h		\
+	btklabel.h		\
+	btklayout.h             \
+	btklinkbutton.h		\
+	btkliststore.h		\
+	btkmain.h		\
+	btkmenu.h		\
+	btkmenubar.h		\
+	btkmenuitem.h		\
+	btkmenushell.h		\
+	btkmenutoolbutton.h	\
+	btkmessagedialog.h	\
+	btkmisc.h		\
+	btkmodules.h		\
+	btkmountoperation.h     \
+	btknotebook.h		\
+	btkobject.h		\
+	btkoffscreenwindow.h	\
+	btkorientable.h		\
+	btkpagesetup.h		\
+	btkpaned.h		\
+	btkpapersize.h		\
+	btkplug.h		\
+	btkprintcontext.h	\
+	btkprintoperation.h	\
+	btkprintoperationpreview.h	\
+	btkprintsettings.h	\
+	btkprivate.h		\
+	btkprogressbar.h	\
+	btkradioaction.h	\
+	btkradiobutton.h	\
+	btkradiomenuitem.h	\
+	btkradiotoolbutton.h	\
+	btkrange.h		\
+	btkrc.h			\
+	btkrecentaction.h	\
+	btkrecentchooser.h 	\
+	btkrecentchooserdialog.h \
+	btkrecentchoosermenu.h 	\
+	btkrecentchooserwidget.h \
+	btkrecentfilter.h 	\
+	btkrecentmanager.h 	\
+	btkruler.h		\
+	btkscale.h		\
+	btkscalebutton.h	\
+	btkscrollbar.h		\
+	btkscrolledwindow.h	\
+	btkselection.h		\
+	btkseparator.h		\
+	btkseparatormenuitem.h	\
+	btkseparatortoolitem.h	\
+	btkshow.h		\
+	btksettings.h		\
+	btksizegroup.h		\
+	btksocket.h		\
+	btkspinbutton.h		\
+	btkspinner.h		\
+	btkstatusbar.h		\
+	btkstatusicon.h		\
+	btkstock.h		\
+	btkstyle.h		\
+	btktable.h		\
+	btktearoffmenuitem.h    \
+	btktestutils.h		\
+	btktextbuffer.h		\
+	btktextbufferrichtext.h	\
+	btktextchild.h		\
+	btktextdisplay.h	\
+	btktextiter.h		\
+	btktextmark.h		\
+	btktexttag.h		\
+	btktexttagtable.h	\
+	btktextview.h		\
+	btktoggleaction.h	\
+	btktogglebutton.h	\
+	btktoggletoolbutton.h	\
+	btktoolbar.h		\
+	btktoolbutton.h		\
+	btktoolitem.h		\
+	btktoolitemgroup.h	\
+	btktoolpalette.h	\
+	btktoolshell.h		\
+	btktooltip.h		\
+	btktreednd.h		\
+	btktreemodel.h		\
+	btktreemodelfilter.h	\
+	btktreemodelsort.h	\
+	btktreeselection.h	\
+	btktreesortable.h	\
+	btktreestore.h		\
+	btktreeview.h		\
+	btktreeviewcolumn.h	\
+	btktypeutils.h		\
+	btkuimanager.h		\
+	btkvbbox.h		\
+	btkvbox.h		\
+	btkviewport.h		\
+	btkvolumebutton.h	\
+	btkvpaned.h		\
+	btkvruler.h		\
+	btkvscale.h		\
+	btkvscrollbar.h		\
+	btkvseparator.h		\
+	btkwidget.h		\
+	btkwindow.h
 
 if OS_UNIX
-gtk_unix_print_public_h_sources =    \
-	gtkpagesetupunixdialog.h	\
-	gtkprintunixdialog.h		\
-	gtkprinter.h			\
-	gtkprintjob.h			\
-	gtkunixprint.h
+btk_unix_print_public_h_sources =    \
+	btkpagesetupunixdialog.h	\
+	btkprintunixdialog.h		\
+	btkprinter.h			\
+	btkprintjob.h			\
+	btkunixprint.h
 endif
 
 # Installed header files without compatibility guarantees
-# that are not included in gtk/gtk.h
-gtk_semi_private_h_sources =    \
-	gtktextlayout.h
+# that are not included in btk/btk.h
+btk_semi_private_h_sources =    \
+	btktextlayout.h
 
-# GTK+ header files that don't get installed
-gtk_private_h_sources =		\
-	gtkquery.h		\
-	gtksearchengine.h	\
-	gtksearchenginesimple.h	\
-	gtkdndcursors.h		\
-	gtkentryprivate.h	\
-	gtkbuilderprivate.h 	\
-	gtkcustompaperunixdialog.h\
-	gtkfilechooserdefault.h	\
-	gtkfilechooserembed.h	\
-	gtkfilechooserentry.h	\
-	gtkfilechooserprivate.h	\
-	gtkfilechoosersettings.h \
-	gtkfilechooserutils.h	\
-	gtkfilesystem.h		\
-	gtkfilesystemmodel.h	\
-	gtkiconcache.h		\
-	gtkimcontextsimpleseqs.h   \
-	gtkintl.h		\
-	gtkkeyhash.h		\
-	gtkmnemonichash.h	\
-	gtkmountoperationprivate.h \
-	gtkpango.h		\
-	gtkpathbar.h		\
-	gtkplugprivate.h	\
-	gtkprintoperation-private.h\
-	gtkprintutils.h		\
-	gtkrbtree.h		\
-	gtkrecentchooserdefault.h \
-	gtkrecentchooserprivate.h \
-	gtkrecentchooserutils.h \
-	gtksocketprivate.h	\
-	gtktextbtree.h		\
-	gtktextbufferserialize.h\
-	gtktextchildprivate.h	\
-	gtktextiterprivate.h	\
-	gtktextmarkprivate.h	\
-	gtktextsegment.h	\
-	gtktexttagprivate.h	\
-	gtktexttypes.h		\
-	gtktextutil.h		\
-	gtkthemes.h		\
-	gtktoggleactionprivate.h\
-	gtktoolpaletteprivate.h	\
-	gtktreedatalist.h	\
-	gtktreeprivate.h	\
-	gtkwindow-decorate.h	\
-	$(gtk_clipboard_dnd_h_sources)
+# BTK+ header files that don't get installed
+btk_private_h_sources =		\
+	btkquery.h		\
+	btksearchengine.h	\
+	btksearchenginesimple.h	\
+	btkdndcursors.h		\
+	btkentryprivate.h	\
+	btkbuilderprivate.h 	\
+	btkcustompaperunixdialog.h\
+	btkfilechooserdefault.h	\
+	btkfilechooserembed.h	\
+	btkfilechooserentry.h	\
+	btkfilechooserprivate.h	\
+	btkfilechoosersettings.h \
+	btkfilechooserutils.h	\
+	btkfilesystem.h		\
+	btkfilesystemmodel.h	\
+	btkiconcache.h		\
+	btkimcontextsimpleseqs.h   \
+	btkintl.h		\
+	btkkeyhash.h		\
+	btkmnemonichash.h	\
+	btkmountoperationprivate.h \
+	btkbango.h		\
+	btkpathbar.h		\
+	btkplugprivate.h	\
+	btkprintoperation-private.h\
+	btkprintutils.h		\
+	btkrbtree.h		\
+	btkrecentchooserdefault.h \
+	btkrecentchooserprivate.h \
+	btkrecentchooserutils.h \
+	btksocketprivate.h	\
+	btktextbtree.h		\
+	btktextbufferserialize.h\
+	btktextchildprivate.h	\
+	btktextiterprivate.h	\
+	btktextmarkprivate.h	\
+	btktextsegment.h	\
+	btktexttagprivate.h	\
+	btktexttypes.h		\
+	btktextutil.h		\
+	btkthemes.h		\
+	btktoggleactionprivate.h\
+	btktoolpaletteprivate.h	\
+	btktreedatalist.h	\
+	btktreeprivate.h	\
+	btkwindow-decorate.h	\
+	$(btk_clipboard_dnd_h_sources)
 
-# GTK+ C sources to build the library from
-gtk_base_c_sources =            \
-	gtkquery.c		\
-	gtksearchengine.c	\
-	gtksearchenginesimple.c	\
+# BTK+ C sources to build the library from
+btk_base_c_sources =            \
+	btkquery.c		\
+	btksearchengine.c	\
+	btksearchenginesimple.c	\
 	fnmatch.c		\
-	gtkaboutdialog.c	\
-	gtkaccelgroup.c		\
-	gtkaccellabel.c		\
-	gtkaccelmap.c		\
-	gtkaccessible.c		\
-	gtkaction.c		\
-	gtkactiongroup.c	\
-	gtkactivatable.c	\
-	gtkadjustment.c		\
-	gtkalignment.c		\
-	gtkarrow.c		\
-	gtkaspectframe.c	\
-	gtkassistant.c		\
-	gtkbbox.c		\
-	gtkbin.c		\
-	gtkbindings.c		\
-	gtkbox.c		\
-	gtkbuildable.c		\
-	gtkbuilder.c		\
-	gtkbuilderparser.c	\
-	gtkbutton.c		\
-	gtkcalendar.c		\
-	gtkcelleditable.c	\
-	gtkcelllayout.c		\
-	gtkcellrenderer.c	\
-	gtkcellrendereraccel.c	\
-	gtkcellrenderercombo.c	\
-	gtkcellrendererpixbuf.c	\
-	gtkcellrendererprogress.c \
-	gtkcellrendererspin.c   \
-	gtkcellrendererspinner.c\
-	gtkcellrenderertext.c	\
-	gtkcellrenderertoggle.c	\
-	gtkcellview.c		\
-	gtkcheckbutton.c	\
-	gtkcheckmenuitem.c	\
-	gtkcolorbutton.c	\
-	gtkcolorsel.c		\
-	gtkcolorseldialog.c	\
-	gtkcombobox.c		\
-	gtkcomboboxentry.c	\
-	gtkcomboboxtext.c 	\
-	gtkcontainer.c		\
-	gtkdialog.c		\
-	gtkdrawingarea.c	\
-	gtkeditable.c           \
-	gtkentry.c		\
-	gtkentrybuffer.c	\
-	gtkentrycompletion.c	\
-	gtkeventbox.c		\
-	gtkexpander.c		\
-	gtkfilechooser.c	\
-	gtkfilechooserbutton.c	\
-	gtkfilechooserdefault.c	\
-	gtkfilechooserdialog.c	\
-	gtkfilechooserembed.c	\
-	gtkfilechooserentry.c	\
-	gtkfilechoosersettings.c \
-	gtkfilechooserutils.c	\
-	gtkfilechooserwidget.c	\
-	gtkfilefilter.c		\
-	gtkfilesystem.c		\
-	gtkfilesystemmodel.c	\
-	gtkfixed.c		\
-	gtkfontbutton.c         \
-	gtkfontsel.c            \
-	gtkframe.c		\
-	gtkgc.c			\
-	gtkhandlebox.c		\
-	gtkhbbox.c		\
-	gtkhbox.c		\
-	gtkhpaned.c		\
-	gtkhruler.c		\
-	gtkhscale.c		\
-	gtkhscrollbar.c		\
-	gtkhseparator.c		\
-	gtkhsv.c		\
-	gtkiconcache.c		\
-	gtkiconcachevalidator.c	\
-	gtkiconfactory.c	\
-	gtkicontheme.c		\
-	gtkiconview.c		\
-	gtkimage.c		\
-	gtkimagemenuitem.c	\
-	gtkimcontext.c		\
-	gtkimcontextsimple.c	\
-	gtkimmodule.c		\
-	gtkimmulticontext.c	\
-	gtkinfobar.c		\
-	gtkinputdialog.c	\
-	gtkinvisible.c		\
-	gtkitem.c		\
-	gtkkeyhash.c		\
-	gtklabel.c		\
-	gtklayout.c		\
-	gtklinkbutton.c		\
-	gtkliststore.c		\
-	gtkmain.c		\
-	gtkmarshal.c		\
-	gtkmarshalers.c		\
-	gtkmenu.c		\
-	gtkmenubar.c		\
-	gtkmenuitem.c		\
-	gtkmenushell.c		\
-	gtkmenutoolbutton.c	\
-	gtkmessagedialog.c	\
-	gtkmisc.c		\
-	gtkmnemonichash.c	\
-	gtkmodules.c		\
-	gtkmountoperation.c     \
-	gtknotebook.c		\
-	gtkobject.c		\
-	gtkoffscreenwindow.c	\
-	gtkorientable.c		\
-	gtkpagesetup.c		\
-	gtkpaned.c		\
-	gtkpango.c		\
-	gtkpapersize.c		\
-	gtkpathbar.c		\
-	gtkplug.c		\
-	gtkprintcontext.c	\
-	gtkprintoperation.c	\
-	gtkprintoperationpreview.c	\
-	gtkprintsettings.c	\
-	gtkprintutils.c		\
-	gtkprogressbar.c	\
-	gtkradioaction.c	\
-	gtkradiobutton.c	\
-	gtkradiomenuitem.c	\
-	gtkradiotoolbutton.c	\
-	gtkrange.c		\
-	gtkrbtree.c 		\
-	gtkrc.c			\
-	gtkrecentaction.c	\
-	gtkrecentchooserdefault.c \
-	gtkrecentchooserdialog.c \
-	gtkrecentchoosermenu.c 	\
-	gtkrecentchooserwidget.c \
-	gtkrecentchooserutils.c \
-	gtkrecentchooser.c 	\
-	gtkrecentfilter.c 	\
-	gtkrecentmanager.c 	\
-	gtkruler.c		\
-	gtkscale.c		\
-	gtkscalebutton.c	\
-	gtkscrollbar.c		\
-	gtkscrolledwindow.c	\
-	gtkselection.c		\
-	gtkseparator.c		\
-	gtkseparatormenuitem.c	\
-	gtkseparatortoolitem.c	\
-	gtksettings.c		\
-	gtksizegroup.c		\
-	gtkshow.c		\
-	gtksocket.c		\
-	gtkspinbutton.c		\
-	gtkspinner.c		\
-	gtkstatusbar.c		\
-	gtkstatusicon.c		\
-	gtkstock.c		\
-	gtkstyle.c		\
-	gtktable.c		\
-	gtktearoffmenuitem.c    \
-	gtktestutils.c		\
-	gtktextbtree.c		\
-	gtktextbuffer.c		\
-	gtktextbufferrichtext.c	\
-	gtktextbufferserialize.c\
-	gtktextchild.c		\
-	gtktextdisplay.c	\
-	gtktextiter.c		\
-	gtktextlayout.c		\
-	gtktextmark.c		\
-	gtktextsegment.c	\
-	gtktexttag.c		\
-	gtktexttagtable.c	\
-	gtktexttypes.c		\
-	gtktextutil.c		\
-	gtktextview.c		\
-	gtkthemes.c		\
-	gtktoggleaction.c	\
-	gtktogglebutton.c	\
-	gtktoggletoolbutton.c	\
-	gtktoolbar.c		\
-	gtktoolbutton.c		\
-	gtktoolitem.c		\
-	gtktoolitemgroup.c		\
-	gtktoolpalette.c	\
-	gtktoolshell.c		\
-	gtktooltip.c		\
-	gtktreedatalist.c	\
-	gtktreednd.c		\
-	gtktreemodel.c		\
-	gtktreemodelfilter.c	\
-	gtktreemodelsort.c	\
-	gtktreeselection.c	\
-	gtktreesortable.c	\
-	gtktreestore.c		\
-	gtktreeview.c		\
-	gtktreeviewcolumn.c	\
-	gtktypebuiltins.c	\
-	gtktypeutils.c		\
-	gtkuimanager.c		\
-	gtkvbbox.c		\
-	gtkvbox.c		\
-	gtkvolumebutton.c	\
-	gtkviewport.c		\
-	gtkvpaned.c		\
-	gtkvruler.c		\
-	gtkvscale.c		\
-	gtkvscrollbar.c		\
-	gtkvseparator.c		\
-	gtkwidget.c		\
-	gtkwindow-decorate.c    \
-	gtkwindow.c		\
-	$(gtk_clipboard_dnd_c_sources)
+	btkaboutdialog.c	\
+	btkaccelgroup.c		\
+	btkaccellabel.c		\
+	btkaccelmap.c		\
+	btkaccessible.c		\
+	btkaction.c		\
+	btkactiongroup.c	\
+	btkactivatable.c	\
+	btkadjustment.c		\
+	btkalignment.c		\
+	btkarrow.c		\
+	btkaspectframe.c	\
+	btkassistant.c		\
+	btkbbox.c		\
+	btkbin.c		\
+	btkbindings.c		\
+	btkbox.c		\
+	btkbuildable.c		\
+	btkbuilder.c		\
+	btkbuilderparser.c	\
+	btkbutton.c		\
+	btkcalendar.c		\
+	btkcelleditable.c	\
+	btkcelllayout.c		\
+	btkcellrenderer.c	\
+	btkcellrendereraccel.c	\
+	btkcellrenderercombo.c	\
+	btkcellrendererpixbuf.c	\
+	btkcellrendererprogress.c \
+	btkcellrendererspin.c   \
+	btkcellrendererspinner.c\
+	btkcellrenderertext.c	\
+	btkcellrenderertoggle.c	\
+	btkcellview.c		\
+	btkcheckbutton.c	\
+	btkcheckmenuitem.c	\
+	btkcolorbutton.c	\
+	btkcolorsel.c		\
+	btkcolorseldialog.c	\
+	btkcombobox.c		\
+	btkcomboboxentry.c	\
+	btkcomboboxtext.c 	\
+	btkcontainer.c		\
+	btkdialog.c		\
+	btkdrawingarea.c	\
+	btkeditable.c           \
+	btkentry.c		\
+	btkentrybuffer.c	\
+	btkentrycompletion.c	\
+	btkeventbox.c		\
+	btkexpander.c		\
+	btkfilechooser.c	\
+	btkfilechooserbutton.c	\
+	btkfilechooserdefault.c	\
+	btkfilechooserdialog.c	\
+	btkfilechooserembed.c	\
+	btkfilechooserentry.c	\
+	btkfilechoosersettings.c \
+	btkfilechooserutils.c	\
+	btkfilechooserwidget.c	\
+	btkfilefilter.c		\
+	btkfilesystem.c		\
+	btkfilesystemmodel.c	\
+	btkfixed.c		\
+	btkfontbutton.c         \
+	btkfontsel.c            \
+	btkframe.c		\
+	btkgc.c			\
+	btkhandlebox.c		\
+	btkhbbox.c		\
+	btkhbox.c		\
+	btkhpaned.c		\
+	btkhruler.c		\
+	btkhscale.c		\
+	btkhscrollbar.c		\
+	btkhseparator.c		\
+	btkhsv.c		\
+	btkiconcache.c		\
+	btkiconcachevalidator.c	\
+	btkiconfactory.c	\
+	btkicontheme.c		\
+	btkiconview.c		\
+	btkimage.c		\
+	btkimagemenuitem.c	\
+	btkimcontext.c		\
+	btkimcontextsimple.c	\
+	btkimmodule.c		\
+	btkimmulticontext.c	\
+	btkinfobar.c		\
+	btkinputdialog.c	\
+	btkinvisible.c		\
+	btkitem.c		\
+	btkkeyhash.c		\
+	btklabel.c		\
+	btklayout.c		\
+	btklinkbutton.c		\
+	btkliststore.c		\
+	btkmain.c		\
+	btkmarshal.c		\
+	btkmarshalers.c		\
+	btkmenu.c		\
+	btkmenubar.c		\
+	btkmenuitem.c		\
+	btkmenushell.c		\
+	btkmenutoolbutton.c	\
+	btkmessagedialog.c	\
+	btkmisc.c		\
+	btkmnemonichash.c	\
+	btkmodules.c		\
+	btkmountoperation.c     \
+	btknotebook.c		\
+	btkobject.c		\
+	btkoffscreenwindow.c	\
+	btkorientable.c		\
+	btkpagesetup.c		\
+	btkpaned.c		\
+	btkbango.c		\
+	btkpapersize.c		\
+	btkpathbar.c		\
+	btkplug.c		\
+	btkprintcontext.c	\
+	btkprintoperation.c	\
+	btkprintoperationpreview.c	\
+	btkprintsettings.c	\
+	btkprintutils.c		\
+	btkprogressbar.c	\
+	btkradioaction.c	\
+	btkradiobutton.c	\
+	btkradiomenuitem.c	\
+	btkradiotoolbutton.c	\
+	btkrange.c		\
+	btkrbtree.c 		\
+	btkrc.c			\
+	btkrecentaction.c	\
+	btkrecentchooserdefault.c \
+	btkrecentchooserdialog.c \
+	btkrecentchoosermenu.c 	\
+	btkrecentchooserwidget.c \
+	btkrecentchooserutils.c \
+	btkrecentchooser.c 	\
+	btkrecentfilter.c 	\
+	btkrecentmanager.c 	\
+	btkruler.c		\
+	btkscale.c		\
+	btkscalebutton.c	\
+	btkscrollbar.c		\
+	btkscrolledwindow.c	\
+	btkselection.c		\
+	btkseparator.c		\
+	btkseparatormenuitem.c	\
+	btkseparatortoolitem.c	\
+	btksettings.c		\
+	btksizegroup.c		\
+	btkshow.c		\
+	btksocket.c		\
+	btkspinbutton.c		\
+	btkspinner.c		\
+	btkstatusbar.c		\
+	btkstatusicon.c		\
+	btkstock.c		\
+	btkstyle.c		\
+	btktable.c		\
+	btktearoffmenuitem.c    \
+	btktestutils.c		\
+	btktextbtree.c		\
+	btktextbuffer.c		\
+	btktextbufferrichtext.c	\
+	btktextbufferserialize.c\
+	btktextchild.c		\
+	btktextdisplay.c	\
+	btktextiter.c		\
+	btktextlayout.c		\
+	btktextmark.c		\
+	btktextsegment.c	\
+	btktexttag.c		\
+	btktexttagtable.c	\
+	btktexttypes.c		\
+	btktextutil.c		\
+	btktextview.c		\
+	btkthemes.c		\
+	btktoggleaction.c	\
+	btktogglebutton.c	\
+	btktoggletoolbutton.c	\
+	btktoolbar.c		\
+	btktoolbutton.c		\
+	btktoolitem.c		\
+	btktoolitemgroup.c		\
+	btktoolpalette.c	\
+	btktoolshell.c		\
+	btktooltip.c		\
+	btktreedatalist.c	\
+	btktreednd.c		\
+	btktreemodel.c		\
+	btktreemodelfilter.c	\
+	btktreemodelsort.c	\
+	btktreeselection.c	\
+	btktreesortable.c	\
+	btktreestore.c		\
+	btktreeview.c		\
+	btktreeviewcolumn.c	\
+	btktypebuiltins.c	\
+	btktypeutils.c		\
+	btkuimanager.c		\
+	btkvbbox.c		\
+	btkvbox.c		\
+	btkvolumebutton.c	\
+	btkviewport.c		\
+	btkvpaned.c		\
+	btkvruler.c		\
+	btkvscale.c		\
+	btkvscrollbar.c		\
+	btkvseparator.c		\
+	btkwidget.c		\
+	btkwindow-decorate.c    \
+	btkwindow.c		\
+	$(btk_clipboard_dnd_c_sources)
 
 # Broken
-gtk_public_h_sources += \
-	gtktext.h		\
-	gtktree.h		\
-	gtktreeitem.h
-gtk_base_c_sources += \
-	gtktext.c		\
-	gtktree.c		\
-	gtktreeitem.c
+btk_public_h_sources += \
+	btktext.h		\
+	btktree.h		\
+	btktreeitem.h
+btk_base_c_sources += \
+	btktext.c		\
+	btktree.c		\
+	btktreeitem.c
 
 # Deprecated
-gtk_public_h_sources += \
-	gtkclist.h		\
-	gtkcombo.h		\
-	gtkctree.h		\
-	gtkcurve.h		\
-	gtkfilesel.h		\
-	gtkgamma.h		\
-	gtkinputdialog.h	\
-	gtkitemfactory.h	\
-	gtklist.h		\
-	gtklistitem.h		\
-	gtkoldeditable.h	\
-	gtkoptionmenu.h		\
-	gtkpixmap.h		\
-	gtkpreview.h		\
-	gtkprogress.h		\
-	gtksignal.h		\
-	gtktipsquery.h		\
-	gtktooltips.h
-gtk_base_c_sources += \
-	gtkclist.c		\
-	gtkcombo.c		\
-	gtkctree.c		\
-	gtkcurve.c		\
-	gtkfilesel.c		\
-	gtkgamma.c		\
-	gtkitemfactory.c	\
-	gtklist.c		\
-	gtklistitem.c		\
-	gtkoldeditable.c	\
-	gtkoptionmenu.c		\
-	gtkpixmap.c		\
-	gtkpreview.c		\
-	gtkprogress.c		\
-	gtksignal.c		\
-	gtktipsquery.c		\
-	gtktooltips.c
+btk_public_h_sources += \
+	btkclist.h		\
+	btkcombo.h		\
+	btkctree.h		\
+	btkcurve.h		\
+	btkfilesel.h		\
+	btkgamma.h		\
+	btkinputdialog.h	\
+	btkitemfactory.h	\
+	btklist.h		\
+	btklistitem.h		\
+	btkoldeditable.h	\
+	btkoptionmenu.h		\
+	btkpixmap.h		\
+	btkpreview.h		\
+	btkprogress.h		\
+	btksignal.h		\
+	btktipsquery.h		\
+	btktooltips.h
+btk_base_c_sources += \
+	btkclist.c		\
+	btkcombo.c		\
+	btkctree.c		\
+	btkcurve.c		\
+	btkfilesel.c		\
+	btkgamma.c		\
+	btkitemfactory.c	\
+	btklist.c		\
+	btklistitem.c		\
+	btkoldeditable.c	\
+	btkoptionmenu.c		\
+	btkpixmap.c		\
+	btkpreview.c		\
+	btkprogress.c		\
+	btksignal.c		\
+	btktipsquery.c		\
+	btktooltips.c
 
-gtk_c_sources = $(gtk_base_c_sources)
-gtk_all_c_sources = $(gtk_base_c_sources)
+btk_c_sources = $(btk_base_c_sources)
+btk_all_c_sources = $(btk_base_c_sources)
 
-gtk_os_unix_c_sources = \
-	gtkcustompaperunixdialog.c	\
-	gtkpagesetupunixdialog.c	\
-	gtkprinter.c			\
-	gtkprinteroption.c		\
-	gtkprinteroptionset.c		\
-	gtkprinteroptionwidget.c	\
-	gtkprintjob.c			\
-	gtkprintoperation-unix.c	\
-	gtkprintunixdialog.c		\
-        gtkprintbackend.c		\
-	gtksearchenginebeagle.c		\
-	gtksearchenginetracker.c
-gtk_all_c_sources += $(gtk_os_unix_c_sources)
+btk_os_unix_c_sources = \
+	btkcustompaperunixdialog.c	\
+	btkpagesetupunixdialog.c	\
+	btkprinter.c			\
+	btkprinteroption.c		\
+	btkprinteroptionset.c		\
+	btkprinteroptionwidget.c	\
+	btkprintjob.c			\
+	btkprintoperation-unix.c	\
+	btkprintunixdialog.c		\
+        btkprintbackend.c		\
+	btksearchenginebeagle.c		\
+	btksearchenginetracker.c
+btk_all_c_sources += $(btk_os_unix_c_sources)
 if OS_UNIX
-gtk_private_h_sources += \
-	gtkiconcachevalidator.h		\
-	gtkprintbackend.h		\
-	gtkprinter-private.h		\
-	gtkprinteroption.h		\
-	gtkprinteroptionset.h		\
-	gtkprinteroptionwidget.h	\
-	gtksearchenginebeagle.h		\
-	gtksearchenginetracker.h
-gtk_c_sources += $(gtk_os_unix_c_sources)
+btk_private_h_sources += \
+	btkiconcachevalidator.h		\
+	btkprintbackend.h		\
+	btkprinter-private.h		\
+	btkprinteroption.h		\
+	btkprinteroptionset.h		\
+	btkprinteroptionwidget.h	\
+	btksearchenginebeagle.h		\
+	btksearchenginetracker.h
+btk_c_sources += $(btk_os_unix_c_sources)
 endif
 
-gtk_os_win32_c_sources = \
-	gtkprint-win32.c		\
-	gtkprintoperation-win32.c
-gtk_all_c_sources += $(gtk_os_win32_c_sources)
+btk_os_win32_c_sources = \
+	btkprint-win32.c		\
+	btkprintoperation-win32.c
+btk_all_c_sources += $(btk_os_win32_c_sources)
 if OS_WIN32
-gtk_private_h_sources += gtkprint-win32.h
-gtk_c_sources += $(gtk_os_win32_c_sources)
+btk_private_h_sources += btkprint-win32.h
+btk_c_sources += $(btk_os_win32_c_sources)
 endif
 
-gtk_use_x11_c_sources = \
-	gtkplug-x11.c   \
-	gtksocket-x11.c \
-	gtkxembed.c     \
-	gtktrayicon-x11.c \
-	gtkmountoperation-x11.c
-gtk_use_win32_c_sources = \
-	gtkplug-win32.c   \
-	gtksocket-win32.c \
-	gtkwin32embed.c   \
-	gtkwin32embedwidget.c \
-	gtkmountoperation-stub.c
-gtk_use_quartz_c_sources =	\
-	gtksearchenginequartz.c	\
-	gtkplug-stub.c		\
-	gtksocket-stub.c	\
-	gtkmountoperation-stub.c
-gtk_use_stub_c_sources = \
-	gtkplug-stub.c   \
-	gtksocket-stub.c \
-	gtkmountoperation-stub.c
-gtk_all_c_sources += $(gtk_use_x11_c_sources) $(gtk_use_win32_c_sources) $(gtk_use_stub_c_sources)
+btk_use_x11_c_sources = \
+	btkplug-x11.c   \
+	btksocket-x11.c \
+	btkxembed.c     \
+	btktrayicon-x11.c \
+	btkmountoperation-x11.c
+btk_use_win32_c_sources = \
+	btkplug-win32.c   \
+	btksocket-win32.c \
+	btkwin32embed.c   \
+	btkwin32embedwidget.c \
+	btkmountoperation-stub.c
+btk_use_quartz_c_sources =	\
+	btksearchenginequartz.c	\
+	btkplug-stub.c		\
+	btksocket-stub.c	\
+	btkmountoperation-stub.c
+btk_use_stub_c_sources = \
+	btkplug-stub.c   \
+	btksocket-stub.c \
+	btkmountoperation-stub.c
+btk_all_c_sources += $(btk_use_x11_c_sources) $(btk_use_win32_c_sources) $(btk_use_stub_c_sources)
 if USE_X11
-gtk_private_h_sources += gtkxembed.h gtktrayicon.h xembed.h
-gtk_c_sources += $(gtk_use_x11_c_sources)
+btk_private_h_sources += btkxembed.h btktrayicon.h xembed.h
+btk_c_sources += $(btk_use_x11_c_sources)
 else
 if USE_WIN32
-gtk_private_h_sources += gtkwin32embed.h gtkwin32embedwidget.h
-gtk_c_sources += $(gtk_use_win32_c_sources)
+btk_private_h_sources += btkwin32embed.h btkwin32embedwidget.h
+btk_c_sources += $(btk_use_win32_c_sources)
 else
 if USE_QUARTZ
-libgtk_quartz_2_0_la_CFLAGS = "-xobjective-c"
-gtk_private_h_sources += gtksearchenginequartz.h
-gtk_c_sources += $(gtk_use_quartz_c_sources)
+libbtk_quartz_2_0_la_CFLAGS = "-xobjective-c"
+btk_private_h_sources += btksearchenginequartz.h
+btk_c_sources += $(btk_use_quartz_c_sources)
 else
-gtk_c_sources += $(gtk_use_stub_c_sources)
+btk_c_sources += $(btk_use_stub_c_sources)
 endif
 endif
 endif
 
 if USE_QUARTZ
-gtk_clipboard_dnd_c_sources = gtkclipboard-quartz.c gtkdnd-quartz.c gtkquartz.c
-gtk_clipboard_dnd_h_sources = gtkquartz.h
+btk_clipboard_dnd_c_sources = btkclipboard-quartz.c btkdnd-quartz.c btkquartz.c
+btk_clipboard_dnd_h_sources = btkquartz.h
 else
-gtk_clipboard_dnd_c_sources = gtkclipboard.c gtkdnd.c
+btk_clipboard_dnd_c_sources = btkclipboard.c btkdnd.c
 endif
-EXTRA_DIST += gtkquartz.h
+EXTRA_DIST += btkquartz.h
 
 # we use our own built_sources variable rules to avoid automake's
 # BUILT_SOURCES oddities
@@ -784,51 +784,51 @@ EXTRA_DIST += gtkquartz.h
 # content
 
 # built sources that get installed with the header files
-gtk_built_public_sources =			\
-	gtkmarshal.h				\
-	gtktypebuiltins.h
+btk_built_public_sources =			\
+	btkmarshal.h				\
+	btktypebuiltins.h
 
 # built headers that don't get installed
-gtk_built_private_headers =			\
-	gtkalias.h				\
-	gtkmarshalers.h				\
-	gtkbuiltincache.h
+btk_built_private_headers =			\
+	btkalias.h				\
+	btkmarshalers.h				\
+	btkbuiltincache.h
 
-gtk_built_sources =				\
-	gtkaliasdef.c				\
-	gtktypebuiltins.c			\
-	gtktypefuncs.c				\
-	gtkmarshalers.c				\
-	gtkmarshal.c				\
-	${gtk_built_private_headers}		\
-	${gtk_built_public_sources}
+btk_built_sources =				\
+	btkaliasdef.c				\
+	btktypebuiltins.c			\
+	btktypefuncs.c				\
+	btkmarshalers.c				\
+	btkmarshal.c				\
+	${btk_built_private_headers}		\
+	${btk_built_public_sources}
 
 stamp_files =					\
-	stamp-gtkmarshalers.h			\
-	stamp-gtkmarshal.h			\
-	stamp-gtktypebuiltins.h			\
+	stamp-btkmarshalers.h			\
+	stamp-btkmarshal.h			\
+	stamp-btktypebuiltins.h			\
 	stamp-icons
 
 # non-header sources (headers should be specified in the above variables)
 # that don't serve as direct make target sources, i.e. they don't have
 # their own .lo rules and don't get publically installed
-gtk_extra_sources =				\
+btk_extra_sources =				\
 	paper_names.c				\
 	paper_names_offsets.c			\
 	gen-paper-names.c			\
-	gtkstatusicon-quartz.c                  \
-	gtk.symbols				\
-	gtkversion.h.in				\
-	gtkmarshalers.list			\
-	gtkmarshal.list
+	btkstatusicon-quartz.c                  \
+	btk.symbols				\
+	btkversion.h.in				\
+	btkmarshalers.list			\
+	btkmarshal.list
 
 #
-# setup GTK+ sources and their dependencies
+# setup BTK+ sources and their dependencies
 #
-MAINTAINERCLEANFILES = $(gtk_built_sources) $(stamp_files) $(GENERATED_ICONS) stock-icons/icon-theme.cache
+MAINTAINERCLEANFILES = $(btk_built_sources) $(stamp_files) $(GENERATED_ICONS) stock-icons/icon-theme.cache
 EXTRA_HEADERS =
-EXTRA_DIST += $(gtk_private_h_sources) $(gtk_extra_sources)
-EXTRA_DIST += $(gtk_built_sources)
+EXTRA_DIST += $(btk_private_h_sources) $(btk_extra_sources)
+EXTRA_DIST += $(btk_built_sources)
 EXTRA_DIST += $(STOCK_ICONS)
 
 #
@@ -836,145 +836,145 @@ EXTRA_DIST += $(STOCK_ICONS)
 #
 # setup autogeneration dependencies
 gen_sources = xgen-gdef xgen-gtbh xgen-gtic xgen-gmh xgen-gmc xgen-gmlh xgen-gmlc xgen-gtfsrc.c xgen-gtf
-CLEANFILES = $(gen_sources) $(gtk_def)
+CLEANFILES = $(gen_sources) $(btk_def)
 
-BUILT_SOURCES = $(gtk_built_sources)
+BUILT_SOURCES = $(btk_built_sources)
 
 # all autogenerated files need to be generated in the srcdir,
 # so old versions get remade and are not confused with newer
 # versions in the build dir. thus a development setup requires
 # srcdir to be writable, passing --disable-rebuilds to
 # ../configure will supress all autogeneration rules.
-gtkmarshalers.h: stamp-gtkmarshalers.h
+btkmarshalers.h: stamp-btkmarshalers.h
 	@true
-stamp-gtkmarshalers.h: @REBUILD@ gtkmarshalers.list
-	$(GLIB_GENMARSHAL) --prefix=_gtk_marshal $(srcdir)/gtkmarshalers.list --header >> xgen-gmlh \
-	&& (cmp -s xgen-gmlh gtkmarshalers.h || cp xgen-gmlh gtkmarshalers.h) \
+stamp-btkmarshalers.h: @REBUILD@ btkmarshalers.list
+	$(BUNNYLIB_GENMARSHAL) --prefix=_btk_marshal $(srcdir)/btkmarshalers.list --header >> xgen-gmlh \
+	&& (cmp -s xgen-gmlh btkmarshalers.h || cp xgen-gmlh btkmarshalers.h) \
 	&& rm -f xgen-gmlh \
 	&& echo timestamp > $(@F)	
-gtkmarshalers.c: @REBUILD@ gtkmarshalers.list
-	(echo "#include \"gtkmarshalers.h\""; \
-	 echo "#include \"gtkalias.h\""; \
-	 $(GLIB_GENMARSHAL) --prefix=_gtk_marshal $(srcdir)/gtkmarshalers.list --body) >> xgen-gmlc \
-	&& cp xgen-gmlc gtkmarshalers.c \
+btkmarshalers.c: @REBUILD@ btkmarshalers.list
+	(echo "#include \"btkmarshalers.h\""; \
+	 echo "#include \"btkalias.h\""; \
+	 $(BUNNYLIB_GENMARSHAL) --prefix=_btk_marshal $(srcdir)/btkmarshalers.list --body) >> xgen-gmlc \
+	&& cp xgen-gmlc btkmarshalers.c \
 	&& rm -f xgen-gmlc
 
-gtkmarshal.h: stamp-gtkmarshal.h
+btkmarshal.h: stamp-btkmarshal.h
 	@true
-stamp-gtkmarshal.h: @REBUILD@ gtkmarshal.list
-	echo "#ifndef GTK_DISABLE_DEPRECATED" > xgen-gmh					\
-        && $(GLIB_GENMARSHAL) --prefix=gtk_marshal $(srcdir)/gtkmarshal.list --header >> xgen-gmh \
-	&& echo "#endif /* GTK_DISABLE_DEPRECATED */" >> xgen-gmh \
-	&& (cmp -s xgen-gmh gtkmarshal.h || cp xgen-gmh gtkmarshal.h) \
+stamp-btkmarshal.h: @REBUILD@ btkmarshal.list
+	echo "#ifndef BTK_DISABLE_DEPRECATED" > xgen-gmh					\
+        && $(BUNNYLIB_GENMARSHAL) --prefix=btk_marshal $(srcdir)/btkmarshal.list --header >> xgen-gmh \
+	&& echo "#endif /* BTK_DISABLE_DEPRECATED */" >> xgen-gmh \
+	&& (cmp -s xgen-gmh btkmarshal.h || cp xgen-gmh btkmarshal.h) \
 	&& rm -f xgen-gmh \
 	&& echo timestamp > $(@F)
-gtkmarshal.c: @REBUILD@ gtkmarshal.list
-	(echo "#include \"gtkmarshal.h\""; \
-	 echo "#include \"gtkalias.h\""; \
-	 $(GLIB_GENMARSHAL) --prefix=gtk_marshal $(srcdir)/gtkmarshal.list --body; \
-	 echo "#define __gtk_marshal_MARSHAL_C__"; \
-	 echo "#include \"gtkaliasdef.c\"") >> xgen-gmc \
-	&& cp xgen-gmc gtkmarshal.c \
+btkmarshal.c: @REBUILD@ btkmarshal.list
+	(echo "#include \"btkmarshal.h\""; \
+	 echo "#include \"btkalias.h\""; \
+	 $(BUNNYLIB_GENMARSHAL) --prefix=btk_marshal $(srcdir)/btkmarshal.list --body; \
+	 echo "#define __btk_marshal_MARSHAL_C__"; \
+	 echo "#include \"btkaliasdef.c\"") >> xgen-gmc \
+	&& cp xgen-gmc btkmarshal.c \
 	&& rm -f xgen-gmc
 
-gtktypebuiltins.h: stamp-gtktypebuiltins.h
+btktypebuiltins.h: stamp-btktypebuiltins.h
 	@true
-stamp-gtktypebuiltins.h: @REBUILD@ $(gtk_public_h_sources) gtktypebuiltins.h.template
-	( cd $(srcdir) && $(GLIB_MKENUMS) --template gtktypebuiltins.h.template \
-		$(gtk_public_h_sources) ) >> xgen-gtbh \
-	&& (cmp -s xgen-gtbh gtktypebuiltins.h || cp xgen-gtbh gtktypebuiltins.h ) \
+stamp-btktypebuiltins.h: @REBUILD@ $(btk_public_h_sources) btktypebuiltins.h.template
+	( cd $(srcdir) && $(BUNNYLIB_MKENUMS) --template btktypebuiltins.h.template \
+		$(btk_public_h_sources) ) >> xgen-gtbh \
+	&& (cmp -s xgen-gtbh btktypebuiltins.h || cp xgen-gtbh btktypebuiltins.h ) \
 	&& rm -f xgen-gtbh \
 	&& echo timestamp > $(@F)
-gtktypebuiltins.c: @REBUILD@ $(gtk_public_h_sources) gtktypebuiltins.c.template
-	( cd $(srcdir) && $(GLIB_MKENUMS) --template gtktypebuiltins.c.template \
-		$(gtk_public_h_sources) ) > xgen-gtbc \
-	&& cp xgen-gtbc gtktypebuiltins.c  \
+btktypebuiltins.c: @REBUILD@ $(btk_public_h_sources) btktypebuiltins.c.template
+	( cd $(srcdir) && $(BUNNYLIB_MKENUMS) --template btktypebuiltins.c.template \
+		$(btk_public_h_sources) ) > xgen-gtbc \
+	&& cp xgen-gtbc btktypebuiltins.c  \
 	&& rm -f xgen-gtbc
 
-gtktypefuncs.c: @REBUILD@ $(top_srcdir)/gtk/*.h $(top_srcdir)/gdk/*.h Makefile
-	echo '#include <gtk/gtk.h>' > xgen-gtfsrc.c && \
-	  ${CPP} $(DEFS) $(INCLUDES) -DGTK_ENABLE_BROKEN $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-gtfsrc.c | \
+btktypefuncs.c: @REBUILD@ $(top_srcdir)/btk/*.h $(top_srcdir)/bdk/*.h Makefile
+	echo '#include <btk/btk.h>' > xgen-gtfsrc.c && \
+	  ${CPP} $(DEFS) $(INCLUDES) -DBTK_ENABLE_BROKEN $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) xgen-gtfsrc.c | \
 	  grep '^GType\s*g[td]k_[a-zA-Z0-9_]*_get_type\s*(void)' | \
 	  grep -o '\bg[td]k_[a-zA-Z0-9_]*_get_type\b' | \
 	  sed '{ s/^/*tp++ = /; s/$$/();/; }' | \
 	  sort > xgen-gtf \
 	&& cp xgen-gtf $@ && rm -f xgen-gtf
-gtktestutils.c: gtktypefuncs.c
+btktestutils.c: btktypefuncs.c
 
 # target platform:
-lib_LTLIBRARIES = $(gtktargetlib)
+lib_LTLIBRARIES = $(btktargetlib)
 
-gtkincludedir = $(includedir)/gtk-2.0/gtk
-gtkinclude_HEADERS = $(gtk_public_h_sources) $(gtk_semi_private_h_sources) $(gtk_built_public_sources) gtkversion.h
+btkincludedir = $(includedir)/btk-2.0/btk
+btkinclude_HEADERS = $(btk_public_h_sources) $(btk_semi_private_h_sources) $(btk_built_public_sources) btkversion.h
 
-gtkunixprintincludedir = $(includedir)/gtk-unix-print-2.0/gtk
-gtkunixprintinclude_HEADERS = $(gtk_unix_print_public_h_sources)
+btkunixprintincludedir = $(includedir)/btk-unix-print-2.0/btk
+btkunixprintinclude_HEADERS = $(btk_unix_print_public_h_sources)
 
-libgtk_x11_2_0_la_SOURCES = $(gtk_c_sources)
-libgtk_win32_2_0_la_SOURCES = $(gtk_c_sources)
-libgtk_quartz_2_0_la_SOURCES = $(gtk_c_sources)
-libgtk_directfb_2_0_la_SOURCES = $(gtk_c_sources)
+libbtk_x11_2_0_la_SOURCES = $(btk_c_sources)
+libbtk_win32_2_0_la_SOURCES = $(btk_c_sources)
+libbtk_quartz_2_0_la_SOURCES = $(btk_c_sources)
+libbtk_directfb_2_0_la_SOURCES = $(btk_c_sources)
 
-libgtk_x11_2_0_la_LDFLAGS = $(libtool_opts)
-libgtk_win32_2_0_la_LDFLAGS = $(libtool_opts) -Wl,-luuid
-libgtk_quartz_2_0_la_LDFLAGS = $(libtool_opts)
-libgtk_directfb_2_0_la_LDFLAGS = $(libtool_opts)
+libbtk_x11_2_0_la_LDFLAGS = $(libtool_opts)
+libbtk_win32_2_0_la_LDFLAGS = $(libtool_opts) -Wl,-luuid
+libbtk_quartz_2_0_la_LDFLAGS = $(libtool_opts)
+libbtk_directfb_2_0_la_LDFLAGS = $(libtool_opts)
 
-libgtk_x11_2_0_la_LIBADD = $(libadd)
-libgtk_win32_2_0_la_LIBADD = $(libadd) -lole32 -lgdi32 -lcomdlg32 -lwinspool -lcomctl32
-libgtk_quartz_2_0_la_LIBADD = $(libadd)
-libgtk_directfb_2_0_la_LIBADD = $(libadd)
+libbtk_x11_2_0_la_LIBADD = $(libadd)
+libbtk_win32_2_0_la_LIBADD = $(libadd) -lole32 -lgdi32 -lcomdlg32 -lwinspool -lcomctl32
+libbtk_quartz_2_0_la_LIBADD = $(libadd)
+libbtk_directfb_2_0_la_LIBADD = $(libadd)
 
-libgtk_x11_2_0_la_DEPENDENCIES = $(deps)
-libgtk_win32_2_0_la_DEPENDENCIES = $(gtk_def) $(gtk_win32_res) $(deps)
-libgtk_quartz_2_0_la_DEPENDENCIES = $(deps)
-libgtk_directfb_2_0_la_DEPENDENCIES = $(deps)
+libbtk_x11_2_0_la_DEPENDENCIES = $(deps)
+libbtk_win32_2_0_la_DEPENDENCIES = $(btk_def) $(btk_win32_res) $(deps)
+libbtk_quartz_2_0_la_DEPENDENCIES = $(deps)
+libbtk_directfb_2_0_la_DEPENDENCIES = $(deps)
 
 if USE_WIN32
-libgtk_target_ldflags = $(gtk_win32_res_ldflag) $(gtk_win32_symbols)
+libbtk_target_ldflags = $(btk_win32_res_ldflag) $(btk_win32_symbols)
 endif
-EXTRA_LTLIBRARIES = libgtk-x11-2.0.la libgtk-win32-2.0.la libgtk-quartz-2.0.la libgtk-directfb-2.0.la
+EXTRA_LTLIBRARIES = libbtk-x11-2.0.la libbtk-win32-2.0.la libbtk-quartz-2.0.la libbtk-directfb-2.0.la
 
 install-exec-hook: 
 if DISABLE_EXPLICIT_DEPS
-	$(SHELL) $(top_srcdir)/sanitize-la.sh $(DESTDIR)$(libdir)/$(gtktargetlib)
+	$(SHELL) $(top_srcdir)/sanitize-la.sh $(DESTDIR)$(libdir)/$(btktargetlib)
 endif
 
 if USE_QUARTZ
 install-mac-key-theme:
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Mac/gtk-2.0-key
-	$(INSTALL_DATA) $(srcdir)/gtkrc.key.mac $(DESTDIR)$(datadir)/themes/Mac/gtk-2.0-key/gtkrc
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Mac/btk-2.0-key
+	$(INSTALL_DATA) $(srcdir)/btkrc.key.mac $(DESTDIR)$(datadir)/themes/Mac/btk-2.0-key/btkrc
 uninstall-mac-key-theme:
-	rm -f $(DESTDIR)$(datadir)/themes/Mac/gtk-2.0-key/gtkrc
+	rm -f $(DESTDIR)$(datadir)/themes/Mac/btk-2.0-key/btkrc
 else
 install-mac-key-theme:
 uninstall-mac-key-theme:
 endif
 
 # -------------- MSVC Projects ----------------
-MSVCPROJS = gtk
+MSVCPROJS = btk
 
-gtk_FILES = $(gtk_base_c_sources) $(gtk_os_win32_c_sources) $(gtk_use_win32_c_sources)
-gtk_EXCLUDES = gtkdummy
+btk_FILES = $(btk_base_c_sources) $(btk_os_win32_c_sources) $(btk_use_win32_c_sources)
+btk_EXCLUDES = btkdummy
 
-gtk_HEADERS_DIR = $(libgtkincludedir)
-gtk_HEADERS_INST = $(gtkinclude_HEADERS)
-gtk_HEADERS_EXCLUDES = gtkdummy
+btk_HEADERS_DIR = $(libbtkincludedir)
+btk_HEADERS_INST = $(btkinclude_HEADERS)
+btk_HEADERS_EXCLUDES = btkdummy
 
 include $(top_srcdir)/build/Makefile.msvcproj
 
 if HAVE_INTROSPECTION
 # Introspection Items for MSVC
-MSVC_INTROSPECT_GIRS = Gtk-2.0.gir
+MSVC_INTROSPECT_GIRS = Btk-2.0.gir
 
-GTK_MSVC_GIR_CFLAGS =				\
-	$(GTK_BASE_CFLAGS_DEFINES)				\
-	-DGTK_LIBDIR=\\\"/dummy/lib\\\"				\
-	-DGTK_DATADIR=\\\"/dummy/share\\\"			\
-	-DGTK_DATA_PREFIX=\\\"/dummy\\\"			\
-	-DGTK_SYSCONFDIR=\\\"/dummy/etc\\\"			\
-	-DGTK_HOST=\\\"'$$$$(AT_PLAT)'-pc-vs'$$$$(VSVER)'\\\"	\
-	-DGTK_PRINT_BACKENDS=\\\"file\\\"			\
+BTK_MSVC_GIR_CFLAGS =				\
+	$(BTK_BASE_CFLAGS_DEFINES)				\
+	-DBTK_LIBDIR=\\\"/dummy/lib\\\"				\
+	-DBTK_DATADIR=\\\"/dummy/share\\\"			\
+	-DBTK_DATA_PREFIX=\\\"/dummy\\\"			\
+	-DBTK_SYSCONFDIR=\\\"/dummy/etc\\\"			\
+	-DBTK_HOST=\\\"'$$$$(AT_PLAT)'-pc-vs'$$$$(VSVER)'\\\"	\
+	-DBTK_PRINT_BACKENDS=\\\"file\\\"			\
 	-DINCLUDE_IM_am_et			\
 	-DINCLUDE_IM_cedilla			\
 	-DINCLUDE_IM_cyrillic_translit		\
@@ -986,30 +986,30 @@ GTK_MSVC_GIR_CFLAGS =				\
 	-DINCLUDE_IM_ti_er			\
 	-DINCLUDE_IM_ti_et			\
 	-DINCLUDE_IM_viqr			\
-	-UGDK_DISABLE_DEPRECATED		\
-	-UGTK_DISABLE_DEPRECATED		\
-	-DGTK_TEXT_USE_INTERNAL_UNSUPPORTED_API	\
-	-I../.. -I../../gtk -I../../gdk
+	-UBDK_DISABLE_DEPRECATED		\
+	-UBTK_DISABLE_DEPRECATED		\
+	-DBTK_TEXT_USE_INTERNAL_UNSUPPORTED_API	\
+	-I../.. -I../../btk -I../../bdk
 
 INTROSPECTION_INTERMEDIATE_ITEMS = \
-	$(top_builddir)/build/win32/Gtk-2.0.gir.msvc.introspect		\
-	$(top_builddir)/build/win32/Gtk_2_0_gir_list
+	$(top_builddir)/build/win32/Btk-2.0.gir.msvc.introspect		\
+	$(top_builddir)/build/win32/Btk_2_0_gir_list
 
-Gtk_2_0_gir_MSVC_FILES =		\
-	$(gtkinclude_HEADERS)		\
-	$(gtk_base_c_sources)		\
-	$(gtk_os_win32_c_sources)	\
-	$(gtk_use_win32_c_sources)	\
-	gtktypebuiltins.h		\
-	gtktypebuiltins.c
+Btk_2_0_gir_MSVC_FILES =		\
+	$(btkinclude_HEADERS)		\
+	$(btk_base_c_sources)		\
+	$(btk_os_win32_c_sources)	\
+	$(btk_use_win32_c_sources)	\
+	btktypebuiltins.h		\
+	btktypebuiltins.c
 
-Gtk_2_0_gir_MSVC_EXPORT_PACKAGES = $(Gtk_2_0_gir_EXPORT_PACKAGES)
-Gtk_2_0_gir_MSVC_INCLUDE_GIRS = Atk-1.0
-Gtk_2_0_gir_MSVC_LIBS = gtk-win32-2.0 gdk-win32-2.0
-Gtk_2_0_gir_MSVC_CFLAGS = $(GTK_MSVC_GIR_CFLAGS)
-Gtk_2_0_gir_MSVC_SCANNERFLAGS =	\
+Btk_2_0_gir_MSVC_EXPORT_PACKAGES = $(Btk_2_0_gir_EXPORT_PACKAGES)
+Btk_2_0_gir_MSVC_INCLUDE_GIRS = Batk-1.0
+Btk_2_0_gir_MSVC_LIBS = btk-win32-2.0 bdk-win32-2.0
+Btk_2_0_gir_MSVC_CFLAGS = $(BTK_MSVC_GIR_CFLAGS)
+Btk_2_0_gir_MSVC_SCANNERFLAGS =	\
 	--warn-all	\
-	--include-uninstalled='./vs$$$$(VSVER)/$$$$(CFG)/$$$$(PLAT)/bin/Gdk-2.0.gir'
+	--include-uninstalled='./vs$$$$(VSVER)/$$$$(CFG)/$$$$(PLAT)/bin/Bdk-2.0.gir'
 
 include $(top_srcdir)/build/Makefile.msvc-introspection
 
@@ -1019,23 +1019,23 @@ INTROSPECTION_INTERMEDIATE_ITEMS =
 endif
 
 dist-hook:	\
-	$(top_builddir)/build/win32/vs9/gtk.vcproj	\
-	$(top_builddir)/build/win32/vs9/gtk.headers	\
+	$(top_builddir)/build/win32/vs9/btk.vcproj	\
+	$(top_builddir)/build/win32/vs9/btk.headers	\
 	$(INTROSPECTION_INTERMEDIATE_ITEMS)
 
-# Install a RC file for the default GTK+ theme, and key themes
+# Install a RC file for the default BTK+ theme, and key themes
 install-data-local: install-ms-lib install-def-file install-mac-key-theme
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Raleigh/gtk-2.0
-	$(INSTALL_DATA) $(srcdir)/gtkrc.default $(DESTDIR)$(datadir)/themes/Raleigh/gtk-2.0/gtkrc
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Default/gtk-2.0-key
-	$(INSTALL_DATA) $(srcdir)/gtkrc.key.default $(DESTDIR)$(datadir)/themes/Default/gtk-2.0-key/gtkrc
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Emacs/gtk-2.0-key
-	$(INSTALL_DATA) $(srcdir)/gtkrc.key.emacs $(DESTDIR)$(datadir)/themes/Emacs/gtk-2.0-key/gtkrc
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Raleigh/btk-2.0
+	$(INSTALL_DATA) $(srcdir)/btkrc.default $(DESTDIR)$(datadir)/themes/Raleigh/btk-2.0/btkrc
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Default/btk-2.0-key
+	$(INSTALL_DATA) $(srcdir)/btkrc.key.default $(DESTDIR)$(datadir)/themes/Default/btk-2.0-key/btkrc
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/themes/Emacs/btk-2.0-key
+	$(INSTALL_DATA) $(srcdir)/btkrc.key.emacs $(DESTDIR)$(datadir)/themes/Emacs/btk-2.0-key/btkrc
 
 uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-mac-key-theme
-	rm -f $(DESTDIR)$(datadir)/themes/Raleigh/gtk-2.0/gtkrc
-	rm -f $(DESTDIR)$(datadir)/themes/Default/gtk-2.0-key/gtkrc
-	rm -f $(DESTDIR)$(datadir)/themes/Emacs/gtk-2.0-key/gtkrc
+	rm -f $(DESTDIR)$(datadir)/themes/Raleigh/btk-2.0/btkrc
+	rm -f $(DESTDIR)$(datadir)/themes/Default/btk-2.0-key/btkrc
+	rm -f $(DESTDIR)$(datadir)/themes/Emacs/btk-2.0-key/btkrc
 
 # if srcdir!=builddir, clean out maintainer-clean files from builddir
 # this allows dist to pass.
@@ -1044,42 +1044,42 @@ distclean-local:
 	  rm -f $(MAINTAINERCLEANFILES); \
 	fi
 
-DEPS = $(gtktargetlib) $(top_builddir)/gdk/$(gdktargetlib)
+DEPS = $(btktargetlib) $(top_builddir)/bdk/$(bdktargetlib)
 
 TEST_DEPS = $(DEPS) immodules.cache
 
 LDADDS =								\
-	$(gtktargetlib)							\
-	$(top_builddir)/gdk/$(gdktargetlib)                             \
-	$(GTK_DEP_LIBS)
+	$(btktargetlib)							\
+	$(top_builddir)/bdk/$(bdktargetlib)                             \
+	$(BTK_DEP_LIBS)
 
 if HAVE_INTROSPECTION
 introspection_files = \
-    $(gtkinclude_HEADERS) \
-    $(gtk_all_c_sources) \
-    gtktypebuiltins.h \
-    gtktypebuiltins.c
+    $(btkinclude_HEADERS) \
+    $(btk_all_c_sources) \
+    btktypebuiltins.h \
+    btktypebuiltins.c
 
-Gtk-2.0.gir: $(INTROSPECTION_SCANNER) $(gtktargetlib) $(top_builddir)/gdk/Gdk-2.0.gir Makefile
-Gtk_2_0_gir_SCANNERFLAGS = --include-uninstalled=$(top_builddir)/gdk/Gdk-2.0.gir
+Btk-2.0.gir: $(INTROSPECTION_SCANNER) $(btktargetlib) $(top_builddir)/bdk/Bdk-2.0.gir Makefile
+Btk_2_0_gir_SCANNERFLAGS = --include-uninstalled=$(top_builddir)/bdk/Bdk-2.0.gir
 if USE_X11
-Gtk_2_0_gir_SCANNERFLAGS += --add-include-path=$(top_builddir)/gdk/x11
+Btk_2_0_gir_SCANNERFLAGS += --add-include-path=$(top_builddir)/bdk/x11
 endif
-Gtk_2_0_gir_INCLUDES = Atk-1.0
-Gtk_2_0_gir_CFLAGS = \
+Btk_2_0_gir_INCLUDES = Batk-1.0
+Btk_2_0_gir_CFLAGS = \
 		$(INCLUDES) \
-		-UGDK_DISABLE_DEPRECATED \
-		-UGTK_DISABLE_DEPRECATED \
-		-DGTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
-Gtk_2_0_gir_LIBS = $(gtktargetlib)
-Gtk_2_0_gir_FILES = $(introspection_files)
-Gtk_2_0_gir_EXPORT_PACKAGES = gtk+-2.0
-INTROSPECTION_GIRS += Gtk-2.0.gir
+		-UBDK_DISABLE_DEPRECATED \
+		-UBTK_DISABLE_DEPRECATED \
+		-DBTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
+Btk_2_0_gir_LIBS = $(btktargetlib)
+Btk_2_0_gir_FILES = $(introspection_files)
+Btk_2_0_gir_EXPORT_PACKAGES = btk+-2.0
+INTROSPECTION_GIRS += Btk-2.0.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibsdir = $(libdir)/girepository-1.0
+typelibsdir = $(libdir)/birepository-1.0
 typelibs_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelibs_DATA)
@@ -1089,28 +1089,28 @@ endif
 # Installed tools
 #
 bin_PROGRAMS = \
-	gtk-query-immodules-2.0 \
-	gtk-update-icon-cache
+	btk-query-immodules-2.0 \
+	btk-update-icon-cache
 
-bin_SCRIPTS = gtk-builder-convert
+bin_SCRIPTS = btk-builder-convert
 
 if OS_WIN32
 
 # Workaround for UAC silliness: programs with "update" in their name
 # are believed to be installers and require elevated privileges to be
 # used... Embed a manifest file into executable to tell Windows that
-# gtk-update-icon-cache.exe doesn't require any special privileges.
+# btk-update-icon-cache.exe doesn't require any special privileges.
 
-GTK_UPDATE_ICON_CACHE_MANIFEST = gtk-update-icon-cache.exe.manifest
-GTK_UPDATE_ICON_CACHE_RC = gtk-update-icon-cache.rc
-GTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT = gtk-update-icon-cache_manifest.o
+BTK_UPDATE_ICON_CACHE_MANIFEST = btk-update-icon-cache.exe.manifest
+BTK_UPDATE_ICON_CACHE_RC = btk-update-icon-cache.rc
+BTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT = btk-update-icon-cache_manifest.o
 
-$(GTK_UPDATE_ICON_CACHE_MANIFEST):
+$(BTK_UPDATE_ICON_CACHE_MANIFEST):
 	(echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' ; \
 	 echo '<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">' ; \
 	 echo '  <assemblyIdentity version="1.0.0.0"' ; \
 	 echo '     processorArchitecture="'$(EXE_MANIFEST_ARCHITECTURE)'"' ; \
-	 echo '     name="gtk-update-icon-cache.exe"' ; \
+	 echo '     name="btk-update-icon-cache.exe"' ; \
 	 echo '     type="win32"/>' ; \
 	 echo '  <!-- Identify the application security requirements. -->' ; \
 	 echo '  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">' ; \
@@ -1124,21 +1124,21 @@ $(GTK_UPDATE_ICON_CACHE_MANIFEST):
 	 echo '  </trustInfo>' ; \
 	 echo '</assembly>' ) >$@
 
-$(GTK_UPDATE_ICON_CACHE_RC):
-	(echo -e '#include <winbase.h>\nCREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST '$(GTK_UPDATE_ICON_CACHE_MANIFEST)) >$@
+$(BTK_UPDATE_ICON_CACHE_RC):
+	(echo -e '#include <winbase.h>\nCREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST '$(BTK_UPDATE_ICON_CACHE_MANIFEST)) >$@
 
-$(GTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT): $(GTK_UPDATE_ICON_CACHE_RC) $(GTK_UPDATE_ICON_CACHE_MANIFEST)
+$(BTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT): $(BTK_UPDATE_ICON_CACHE_RC) $(BTK_UPDATE_ICON_CACHE_MANIFEST)
 	$(WINDRES) --input $< --output $@ --output-format=coff
 
 endif
 
-gtk_query_immodules_2_0_DEPENDENCIES = $(DEPS)
-gtk_query_immodules_2_0_LDADD = $(LDADDS) $(GMODULE_LIBS)
-gtk_query_immodules_2_0_SOURCES = queryimmodules.c
+btk_query_immodules_2_0_DEPENDENCIES = $(DEPS)
+btk_query_immodules_2_0_LDADD = $(LDADDS) $(BMODULE_LIBS)
+btk_query_immodules_2_0_SOURCES = queryimmodules.c
 
-gtk_update_icon_cache_DEPENDENCIES = $(GTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT)
-gtk_update_icon_cache_LDADD = $(GDK_PIXBUF_LIBS) $(GTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT)
-gtk_update_icon_cache_SOURCES = updateiconcache.c 
+btk_update_icon_cache_DEPENDENCIES = $(BTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT)
+btk_update_icon_cache_LDADD = $(BDK_PIXBUF_LIBS) $(BTK_UPDATE_ICON_CACHE_MANIFEST_OBJECT)
+btk_update_icon_cache_SOURCES = updateiconcache.c 
 
 .PHONY: files test test-debug
 
@@ -1197,24 +1197,24 @@ STOCK_ICONS = \
 	stock-icons/16/go-previous-ltr.png		\
 	stock-icons/16/go-top.png			\
 	stock-icons/16/go-up.png			\
-	stock-icons/16/gtk-caps-lock-warning.png	\
-	stock-icons/16/gtk-color-picker.png		\
-	stock-icons/16/gtk-connect.png			\
-	stock-icons/16/gtk-convert.png			\
-	stock-icons/16/gtk-disconnect.png		\
-	stock-icons/16/gtk-edit.png			\
-	stock-icons/16/gtk-font.png			\
-	stock-icons/16/gtk-index.png			\
-	stock-icons/16/gtk-orientation-landscape.png	\
-	stock-icons/16/gtk-orientation-portrait.png	\
-	stock-icons/16/gtk-orientation-reverse-landscape.png \
-	stock-icons/16/gtk-orientation-reverse-portrait.png \
-	stock-icons/16/gtk-page-setup.png		\
-	stock-icons/16/gtk-preferences.png		\
-	stock-icons/16/gtk-select-color.png		\
-	stock-icons/16/gtk-select-font.png		\
-	stock-icons/16/gtk-undelete-ltr.png		\
-	stock-icons/16/gtk-undelete-rtl.png		\
+	stock-icons/16/btk-caps-lock-warning.png	\
+	stock-icons/16/btk-color-picker.png		\
+	stock-icons/16/btk-connect.png			\
+	stock-icons/16/btk-convert.png			\
+	stock-icons/16/btk-disconnect.png		\
+	stock-icons/16/btk-edit.png			\
+	stock-icons/16/btk-font.png			\
+	stock-icons/16/btk-index.png			\
+	stock-icons/16/btk-orientation-landscape.png	\
+	stock-icons/16/btk-orientation-portrait.png	\
+	stock-icons/16/btk-orientation-reverse-landscape.png \
+	stock-icons/16/btk-orientation-reverse-portrait.png \
+	stock-icons/16/btk-page-setup.png		\
+	stock-icons/16/btk-preferences.png		\
+	stock-icons/16/btk-select-color.png		\
+	stock-icons/16/btk-select-font.png		\
+	stock-icons/16/btk-undelete-ltr.png		\
+	stock-icons/16/btk-undelete-rtl.png		\
 	stock-icons/16/help-about.png			\
 	stock-icons/16/help-contents.png		\
 	stock-icons/16/image-missing.png		\
@@ -1251,11 +1251,11 @@ STOCK_ICONS = \
 	stock-icons/16/zoom-original.png		\
 	stock-icons/16/zoom-out.png			\
 	\
-	stock-icons/20/gtk-apply.png			\
-	stock-icons/20/gtk-cancel.png			\
-	stock-icons/20/gtk-no.png			\
-	stock-icons/20/gtk-ok.png			\
-	stock-icons/20/gtk-yes.png			\
+	stock-icons/20/btk-apply.png			\
+	stock-icons/20/btk-cancel.png			\
+	stock-icons/20/btk-no.png			\
+	stock-icons/20/btk-ok.png			\
+	stock-icons/20/btk-yes.png			\
 	stock-icons/20/window-close.png			\
 	\
 	stock-icons/24/application-exit.png		\
@@ -1310,24 +1310,24 @@ STOCK_ICONS = \
 	stock-icons/24/go-previous-ltr.png		\
 	stock-icons/24/go-top.png			\
 	stock-icons/24/go-up.png			\
-	stock-icons/24/gtk-caps-lock-warning.png	\
-	stock-icons/24/gtk-color-picker.png		\
-	stock-icons/24/gtk-connect.png			\
-	stock-icons/24/gtk-convert.png			\
-	stock-icons/24/gtk-disconnect.png		\
-	stock-icons/24/gtk-edit.png			\
-	stock-icons/24/gtk-font.png			\
-	stock-icons/24/gtk-index.png			\
-	stock-icons/24/gtk-orientation-landscape.png	\
-	stock-icons/24/gtk-orientation-portrait.png	\
-	stock-icons/24/gtk-orientation-reverse-landscape.png \
-	stock-icons/24/gtk-orientation-reverse-portrait.png \
-	stock-icons/24/gtk-page-setup.png		\
-	stock-icons/24/gtk-preferences.png		\
-	stock-icons/24/gtk-select-color.png		\
-	stock-icons/24/gtk-select-font.png		\
-	stock-icons/24/gtk-undelete-ltr.png		\
-	stock-icons/24/gtk-undelete-rtl.png		\
+	stock-icons/24/btk-caps-lock-warning.png	\
+	stock-icons/24/btk-color-picker.png		\
+	stock-icons/24/btk-connect.png			\
+	stock-icons/24/btk-convert.png			\
+	stock-icons/24/btk-disconnect.png		\
+	stock-icons/24/btk-edit.png			\
+	stock-icons/24/btk-font.png			\
+	stock-icons/24/btk-index.png			\
+	stock-icons/24/btk-orientation-landscape.png	\
+	stock-icons/24/btk-orientation-portrait.png	\
+	stock-icons/24/btk-orientation-reverse-landscape.png \
+	stock-icons/24/btk-orientation-reverse-portrait.png \
+	stock-icons/24/btk-page-setup.png		\
+	stock-icons/24/btk-preferences.png		\
+	stock-icons/24/btk-select-color.png		\
+	stock-icons/24/btk-select-font.png		\
+	stock-icons/24/btk-undelete-ltr.png		\
+	stock-icons/24/btk-undelete-rtl.png		\
 	stock-icons/24/help-about.png			\
 	stock-icons/24/help-contents.png		\
 	stock-icons/24/image-missing.png		\
@@ -1364,8 +1364,8 @@ STOCK_ICONS = \
 	stock-icons/24/zoom-original.png		\
 	stock-icons/24/zoom-out.png			\
 	\
-	stock-icons/32/gtk-dnd-multiple.png		\
-	stock-icons/32/gtk-dnd.png			\
+	stock-icons/32/btk-dnd-multiple.png		\
+	stock-icons/32/btk-dnd.png			\
 	\
 	stock-icons/48/dialog-error.png			\
 	stock-icons/48/dialog-information.png		\
@@ -1441,18 +1441,18 @@ stamp-icons: $(STOCK_ICONS)
 	&& touch stamp-icons
 
 if CROSS_COMPILING
-gtk_update_icon_cache_program = $(GTK_UPDATE_ICON_CACHE)
+btk_update_icon_cache_program = $(BTK_UPDATE_ICON_CACHE)
 else
-gtk_update_icon_cache_program =							\
-	   ./gtk-update-icon-cache
+btk_update_icon_cache_program =							\
+	   ./btk-update-icon-cache
 endif
 
-gtkbuiltincache.h: @REBUILD@ stamp-icons
-	$(MAKE) $(AM_MAKEFLAGS) gtk-update-icon-cache$(EXEEXT)
-	$(gtk_update_icon_cache_program) --force --ignore-theme-index		\
+btkbuiltincache.h: @REBUILD@ stamp-icons
+	$(MAKE) $(AM_MAKEFLAGS) btk-update-icon-cache$(EXEEXT)
+	$(btk_update_icon_cache_program) --force --ignore-theme-index		\
 	   --include-image-data							\
-	   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
-	mv gtkbuiltincache.h.tmp gtkbuiltincache.h
+	   --source builtin_icons stock-icons > btkbuiltincache.h.tmp &&        \
+	mv btkbuiltincache.h.tmp btkbuiltincache.h
 
 EXTRA_DIST +=                   \
 	$(STOCK_ICONS)		\
@@ -1463,27 +1463,27 @@ EXTRA_DIST +=                   \
 	tree_minus.xbm          \
 	tree_minus.xpm		\
 	tree_plus.xpm		\
-	gtk-builder-convert	\
-	gtk-win32.rc		\
-	gtk-win32.rc.in		\
-	gtkwin32embed.h		\
-	gtkwin32embedwidget.h	\
-	gtkwin32embedwidget.c	\
-	gtkprint-win32.h	\
-	gtkprint-win32.c	\
-	gtksearchenginequartz.h \
-	gtkrc.default		\
-	gtkrc.key.default	\
-	gtkrc.key.emacs		\
-	gtkrc.key.mac		\
+	btk-builder-convert	\
+	btk-win32.rc		\
+	btk-win32.rc.in		\
+	btkwin32embed.h		\
+	btkwin32embedwidget.h	\
+	btkwin32embedwidget.c	\
+	btkprint-win32.h	\
+	btkprint-win32.c	\
+	btksearchenginequartz.h \
+	btkrc.default		\
+	btkrc.key.default	\
+	btkrc.key.emacs		\
+	btkrc.key.mac		\
 	makefile.msc		\
 	makefile.msc.in		\
-	makegtkalias.pl		\
+	makebtkalias.pl		\
 	aliasfilescheck.sh	\
 	abicheck.sh		\
 	pltcheck.sh		\
-	gtktypebuiltins.c.template      \
-	gtktypebuiltins.h.template
+	btktypebuiltins.c.template      \
+	btktypebuiltins.h.template
 
 
 install-data-local:

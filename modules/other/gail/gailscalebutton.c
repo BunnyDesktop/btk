@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2008 Jan Arne Petersen
  *
  * This library is free software; you can redistribute it and/or
@@ -19,103 +19,103 @@
 
 #include <config.h>
 
-#include <gtk/gtk.h>
-#include "gailscalebutton.h"
-#include "gailadjustment.h"
-#include "gail-private-macros.h"
+#include <btk/btk.h>
+#include "bailscalebutton.h"
+#include "bailadjustment.h"
+#include "bail-private-macros.h"
 
 #include <string.h>
 
-static void gail_scale_button_class_init (GailScaleButtonClass *klass);
-static void gail_scale_button_init       (GailScaleButton      *button);
+static void bail_scale_button_class_init (BailScaleButtonClass *klass);
+static void bail_scale_button_init       (BailScaleButton      *button);
 
-/* GailWidget */
-static void gail_scale_button_notify_gtk (GObject    *obj,
+/* BailWidget */
+static void bail_scale_button_notify_btk (GObject    *obj,
                                           GParamSpec *pspec);
 
-/* AtkObject */
-static void gail_scale_button_initialize (AtkObject *obj,
+/* BatkObject */
+static void bail_scale_button_initialize (BatkObject *obj,
                                           gpointer   data);
 
-/* AtkAction */
-static void                  atk_action_interface_init        (AtkActionIface *iface);
-static gboolean              gail_scale_button_do_action      (AtkAction      *action,
+/* BatkAction */
+static void                  batk_action_interface_init        (BatkActionIface *iface);
+static gboolean              bail_scale_button_do_action      (BatkAction      *action,
                                                                gint           i);
-static gint                  gail_scale_button_get_n_actions  (AtkAction      *action);
-static const gchar*          gail_scale_button_get_description(AtkAction      *action,
+static gint                  bail_scale_button_get_n_actions  (BatkAction      *action);
+static const gchar*          bail_scale_button_get_description(BatkAction      *action,
                                                                gint           i);
-static const gchar*          gail_scale_button_action_get_name(AtkAction      *action,
+static const gchar*          bail_scale_button_action_get_name(BatkAction      *action,
                                                                gint           i);
-static const gchar*          gail_scale_button_get_keybinding (AtkAction      *action,
+static const gchar*          bail_scale_button_get_keybinding (BatkAction      *action,
                                                                gint           i);
-static gboolean              gail_scale_button_set_description(AtkAction      *action,
+static gboolean              bail_scale_button_set_description(BatkAction      *action,
                                                                gint           i,
                                                                const gchar    *desc);
 
-/* AtkValue */
-static void	atk_value_interface_init	        (AtkValueIface  *iface);
-static void	gail_scale_button_get_current_value     (AtkValue       *obj,
+/* BatkValue */
+static void	batk_value_interface_init	        (BatkValueIface  *iface);
+static void	bail_scale_button_get_current_value     (BatkValue       *obj,
                                                          GValue         *value);
-static void	gail_scale_button_get_maximum_value     (AtkValue       *obj,
+static void	bail_scale_button_get_maximum_value     (BatkValue       *obj,
                                                          GValue         *value);
-static void	gail_scale_button_get_minimum_value     (AtkValue       *obj,
+static void	bail_scale_button_get_minimum_value     (BatkValue       *obj,
                                                          GValue         *value);
-static void	gail_scale_button_get_minimum_increment (AtkValue       *obj,
+static void	bail_scale_button_get_minimum_increment (BatkValue       *obj,
                                                          GValue         *value);
-static gboolean	gail_scale_button_set_current_value     (AtkValue       *obj,
+static gboolean	bail_scale_button_set_current_value     (BatkValue       *obj,
                                                          const GValue   *value);
 
-G_DEFINE_TYPE_WITH_CODE (GailScaleButton, gail_scale_button, GAIL_TYPE_BUTTON,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init));
+G_DEFINE_TYPE_WITH_CODE (BailScaleButton, bail_scale_button, BAIL_TYPE_BUTTON,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init));
 
 static void
-gail_scale_button_class_init (GailScaleButtonClass *klass)
+bail_scale_button_class_init (BailScaleButtonClass *klass)
 {
-  AtkObjectClass *atk_object_class = ATK_OBJECT_CLASS (klass);
-  GailWidgetClass *widget_class = GAIL_WIDGET_CLASS (klass);
+  BatkObjectClass *batk_object_class = BATK_OBJECT_CLASS (klass);
+  BailWidgetClass *widget_class = BAIL_WIDGET_CLASS (klass);
 
-  atk_object_class->initialize = gail_scale_button_initialize;
+  batk_object_class->initialize = bail_scale_button_initialize;
 
-  widget_class->notify_gtk = gail_scale_button_notify_gtk;
+  widget_class->notify_btk = bail_scale_button_notify_btk;
 }
 
 static void
-gail_scale_button_init (GailScaleButton *button)
+bail_scale_button_init (BailScaleButton *button)
 {
 }
 
 static void
-gail_scale_button_initialize (AtkObject *obj,
+bail_scale_button_initialize (BatkObject *obj,
                               gpointer   data)
 {
-  ATK_OBJECT_CLASS (gail_scale_button_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_scale_button_parent_class)->initialize (obj, data);
 
-  obj->role = ATK_ROLE_SLIDER;
+  obj->role = BATK_ROLE_SLIDER;
 }
 
 static void
-atk_action_interface_init (AtkActionIface *iface)
+batk_action_interface_init (BatkActionIface *iface)
 {
-  iface->do_action = gail_scale_button_do_action;
-  iface->get_n_actions = gail_scale_button_get_n_actions;
-  iface->get_description = gail_scale_button_get_description;
-  iface->get_keybinding = gail_scale_button_get_keybinding;
-  iface->get_name = gail_scale_button_action_get_name;
-  iface->set_description = gail_scale_button_set_description;
+  iface->do_action = bail_scale_button_do_action;
+  iface->get_n_actions = bail_scale_button_get_n_actions;
+  iface->get_description = bail_scale_button_get_description;
+  iface->get_keybinding = bail_scale_button_get_keybinding;
+  iface->get_name = bail_scale_button_action_get_name;
+  iface->set_description = bail_scale_button_set_description;
 }
 
 static gboolean
-gail_scale_button_do_action(AtkAction *action,
+bail_scale_button_do_action(BatkAction *action,
                             gint       i)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (action)->widget;
+  widget = BTK_ACCESSIBLE (action)->widget;
   if (widget == NULL)
     return FALSE;
 
-  if (!gtk_widget_is_sensitive (widget) || !gtk_widget_get_visible (widget))
+  if (!btk_widget_is_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
   switch (i) {
@@ -131,20 +131,20 @@ gail_scale_button_do_action(AtkAction *action,
 }
 
 static gint
-gail_scale_button_get_n_actions (AtkAction *action)
+bail_scale_button_get_n_actions (BatkAction *action)
 {
   return 2;
 }
 
 static const gchar*
-gail_scale_button_get_description (AtkAction *action,
+bail_scale_button_get_description (BatkAction *action,
                                    gint       i)
 {
   return NULL;
 }
 
 static const gchar*
-gail_scale_button_action_get_name (AtkAction *action,
+bail_scale_button_action_get_name (BatkAction *action,
                                    gint       i)
 {
   switch (i) {
@@ -158,14 +158,14 @@ gail_scale_button_action_get_name (AtkAction *action,
 }
 
 static const gchar*
-gail_scale_button_get_keybinding (AtkAction *action,
+bail_scale_button_get_keybinding (BatkAction *action,
                                   gint       i)
 {
   return NULL;
 }
 
 static gboolean
-gail_scale_button_set_description (AtkAction   *action,
+bail_scale_button_set_description (BatkAction   *action,
                                    gint         i,
                                    const gchar *desc)
 {
@@ -174,117 +174,117 @@ gail_scale_button_set_description (AtkAction   *action,
 
 
 static void
-atk_value_interface_init (AtkValueIface *iface)
+batk_value_interface_init (BatkValueIface *iface)
 {
-  iface->get_current_value = gail_scale_button_get_current_value;
-  iface->get_maximum_value = gail_scale_button_get_maximum_value;
-  iface->get_minimum_value = gail_scale_button_get_minimum_value;
-  iface->get_minimum_increment = gail_scale_button_get_minimum_increment;
-  iface->set_current_value = gail_scale_button_set_current_value;
+  iface->get_current_value = bail_scale_button_get_current_value;
+  iface->get_maximum_value = bail_scale_button_get_maximum_value;
+  iface->get_minimum_value = bail_scale_button_get_minimum_value;
+  iface->get_minimum_increment = bail_scale_button_get_minimum_increment;
+  iface->set_current_value = bail_scale_button_set_current_value;
 }
 
 static void
-gail_scale_button_get_current_value (AtkValue *obj,
+bail_scale_button_get_current_value (BatkValue *obj,
                                      GValue   *value)
 {
-  GtkScaleButton *gtk_scale_button;
+  BtkScaleButton *btk_scale_button;
 
-  g_return_if_fail (GAIL_IS_SCALE_BUTTON (obj));
+  g_return_if_fail (BAIL_IS_SCALE_BUTTON (obj));
 
-  gtk_scale_button = GTK_SCALE_BUTTON (GTK_ACCESSIBLE (obj)->widget);
+  btk_scale_button = BTK_SCALE_BUTTON (BTK_ACCESSIBLE (obj)->widget);
 
   g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
-                      gtk_scale_button_get_value (gtk_scale_button));
+                      btk_scale_button_get_value (btk_scale_button));
 }
 
 static void
-gail_scale_button_get_maximum_value (AtkValue *obj,
+bail_scale_button_get_maximum_value (BatkValue *obj,
                                      GValue   *value)
 {
-  GtkWidget *gtk_widget;
-  GtkAdjustment *adj;
+  BtkWidget *btk_widget;
+  BtkAdjustment *adj;
 
-  g_return_if_fail (GAIL_IS_SCALE_BUTTON (obj));
+  g_return_if_fail (BAIL_IS_SCALE_BUTTON (obj));
 
-  gtk_widget = GTK_ACCESSIBLE (obj)->widget;
-  if (gtk_widget == NULL)
+  btk_widget = BTK_ACCESSIBLE (obj)->widget;
+  if (btk_widget == NULL)
     return;
 
-  adj = gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (gtk_widget));
+  adj = btk_scale_button_get_adjustment (BTK_SCALE_BUTTON (btk_widget));
   if (adj != NULL)
     g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
                         adj->upper);
 }
 
 static void
-gail_scale_button_get_minimum_value (AtkValue *obj,
+bail_scale_button_get_minimum_value (BatkValue *obj,
                                      GValue   *value)
 {
-  GtkWidget *gtk_widget;
-  GtkAdjustment *adj;
+  BtkWidget *btk_widget;
+  BtkAdjustment *adj;
 
-  g_return_if_fail (GAIL_IS_SCALE_BUTTON (obj));
+  g_return_if_fail (BAIL_IS_SCALE_BUTTON (obj));
 
-  gtk_widget = GTK_ACCESSIBLE (obj)->widget;
-  if (gtk_widget == NULL)
+  btk_widget = BTK_ACCESSIBLE (obj)->widget;
+  if (btk_widget == NULL)
     return;
 
-  adj = gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (gtk_widget));
+  adj = btk_scale_button_get_adjustment (BTK_SCALE_BUTTON (btk_widget));
   if (adj != NULL)
     g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
                         adj->lower);
 }
 
 static void
-gail_scale_button_get_minimum_increment (AtkValue *obj,
+bail_scale_button_get_minimum_increment (BatkValue *obj,
                                          GValue   *value)
 {
-  GtkWidget *gtk_widget;
-  GtkAdjustment *adj;
+  BtkWidget *btk_widget;
+  BtkAdjustment *adj;
 
-  g_return_if_fail (GAIL_IS_SCALE_BUTTON (obj));
+  g_return_if_fail (BAIL_IS_SCALE_BUTTON (obj));
 
-  gtk_widget = GTK_ACCESSIBLE (obj)->widget;
-  if (gtk_widget == NULL)
+  btk_widget = BTK_ACCESSIBLE (obj)->widget;
+  if (btk_widget == NULL)
     return;
 
-  adj = gtk_scale_button_get_adjustment (GTK_SCALE_BUTTON (gtk_widget));
+  adj = btk_scale_button_get_adjustment (BTK_SCALE_BUTTON (btk_widget));
   if (adj != NULL)
     g_value_set_double (g_value_init (value, G_TYPE_DOUBLE),
                         adj->step_increment);
 }
 
 static gboolean
-gail_scale_button_set_current_value (AtkValue     *obj,
+bail_scale_button_set_current_value (BatkValue     *obj,
                                      const GValue *value)
 {
-  GtkWidget *gtk_widget;
+  BtkWidget *btk_widget;
 
-  g_return_val_if_fail (GAIL_IS_SCALE_BUTTON (obj), FALSE);
+  g_return_val_if_fail (BAIL_IS_SCALE_BUTTON (obj), FALSE);
 
-  gtk_widget = GTK_ACCESSIBLE (obj)->widget;
-  if (gtk_widget == NULL)
+  btk_widget = BTK_ACCESSIBLE (obj)->widget;
+  if (btk_widget == NULL)
     return FALSE;
 
   if (G_VALUE_HOLDS_DOUBLE (value))
     {
-      gtk_scale_button_set_value (GTK_SCALE_BUTTON (gtk_widget), g_value_get_double (value));
+      btk_scale_button_set_value (BTK_SCALE_BUTTON (btk_widget), g_value_get_double (value));
       return TRUE;
     }
   return FALSE;
 }
 
 static void
-gail_scale_button_notify_gtk (GObject    *obj,
+bail_scale_button_notify_btk (GObject    *obj,
                               GParamSpec *pspec)
 {
-  GtkScaleButton *gtk_scale_button;
-  GailScaleButton *scale_button;
+  BtkScaleButton *btk_scale_button;
+  BailScaleButton *scale_button;
 
-  g_return_if_fail (GTK_IS_SCALE_BUTTON (obj));
+  g_return_if_fail (BTK_IS_SCALE_BUTTON (obj));
 
-  gtk_scale_button = GTK_SCALE_BUTTON (obj);
-  scale_button = GAIL_SCALE_BUTTON (gtk_widget_get_accessible (GTK_WIDGET (gtk_scale_button)));
+  btk_scale_button = BTK_SCALE_BUTTON (obj);
+  scale_button = BAIL_SCALE_BUTTON (btk_widget_get_accessible (BTK_WIDGET (btk_scale_button)));
 
   if (strcmp (pspec->name, "value") == 0)
     {
@@ -292,7 +292,7 @@ gail_scale_button_notify_gtk (GObject    *obj,
     }
   else
     {
-      GAIL_WIDGET_CLASS (gail_scale_button_parent_class)->notify_gtk (obj, pspec);
+      BAIL_WIDGET_CLASS (bail_scale_button_parent_class)->notify_btk (obj, pspec);
     }
 }
 

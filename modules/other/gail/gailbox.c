@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The GNOME Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,56 +19,56 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailbox.h"
+#include <btk/btk.h>
+#include "bailbox.h"
 
-static void         gail_box_class_init            (GailBoxClass  *klass);
-static void         gail_box_init                  (GailBox       *box);
-static void         gail_box_initialize            (AtkObject     *accessible,
+static void         bail_box_class_init            (BailBoxClass  *klass);
+static void         bail_box_init                  (BailBox       *box);
+static void         bail_box_initialize            (BatkObject     *accessible,
                                                     gpointer       data);
-static AtkStateSet* gail_box_ref_state_set         (AtkObject     *accessible);
+static BatkStateSet* bail_box_ref_state_set         (BatkObject     *accessible);
 
-G_DEFINE_TYPE (GailBox, gail_box, GAIL_TYPE_CONTAINER)
+G_DEFINE_TYPE (BailBox, bail_box, BAIL_TYPE_CONTAINER)
 
 static void
-gail_box_class_init (GailBoxClass *klass)
+bail_box_class_init (BailBoxClass *klass)
 {
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_box_initialize;
-  class->ref_state_set = gail_box_ref_state_set;
+  class->initialize = bail_box_initialize;
+  class->ref_state_set = bail_box_ref_state_set;
 }
 
 static void
-gail_box_init (GailBox *box)
+bail_box_init (BailBox *box)
 {
 }
 
 static void
-gail_box_initialize (AtkObject *accessible,
+bail_box_initialize (BatkObject *accessible,
                      gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_box_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_box_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_FILLER;
+  accessible->role = BATK_ROLE_FILLER;
 }
 
-static AtkStateSet*
-gail_box_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_box_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkWidget *widget;
+  BatkStateSet *state_set;
+  BtkWidget *widget;
 
-  state_set = ATK_OBJECT_CLASS (gail_box_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_box_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
     return state_set;
 
-  if (GTK_IS_VBOX (widget) || GTK_IS_VBUTTON_BOX (widget))
-    atk_state_set_add_state (state_set, ATK_STATE_VERTICAL);
-  else if (GTK_IS_HBOX (widget) || GTK_IS_HBUTTON_BOX (widget))
-    atk_state_set_add_state (state_set, ATK_STATE_HORIZONTAL);
+  if (BTK_IS_VBOX (widget) || BTK_IS_VBUTTON_BOX (widget))
+    batk_state_set_add_state (state_set, BATK_STATE_VERTICAL);
+  else if (BTK_IS_HBOX (widget) || BTK_IS_HBUTTON_BOX (widget))
+    batk_state_set_add_state (state_set, BATK_STATE_HORIZONTAL);
 
   return state_set;
 }

@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackendcups.h: Default implementation of GtkPrintBackend for the Common Unix Print System (CUPS)
+/* BTK - The GIMP Toolkit
+ * btkprintbackendcups.h: Default implementation of BtkPrintBackend for the Common Unix Print System (CUPS)
  * Copyright (C) 2006, 2007 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,25 +18,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_BACKEND_CUPS_H__
-#define __GTK_PRINT_BACKEND_CUPS_H__
+#ifndef __BTK_PRINT_BACKEND_CUPS_H__
+#define __BTK_PRINT_BACKEND_CUPS_H__
 
-#include <glib-object.h>
-#include "gtkprintbackend.h"
+#include <bunnylib-object.h>
+#include "btkprintbackend.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_BACKEND_CUPS             (gtk_print_backend_cups_get_type ())
-#define GTK_PRINT_BACKEND_CUPS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_BACKEND_CUPS, GtkPrintBackendCups))
-#define GTK_IS_PRINT_BACKEND_CUPS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_BACKEND_CUPS))
+#define BTK_TYPE_PRINT_BACKEND_CUPS             (btk_print_backend_cups_get_type ())
+#define BTK_PRINT_BACKEND_CUPS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCups))
+#define BTK_IS_PRINT_BACKEND_CUPS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_CUPS))
 
-typedef struct _GtkPrintBackendCups      GtkPrintBackendCups;
+typedef struct _BtkPrintBackendCups      BtkPrintBackendCups;
 
-GtkPrintBackend *gtk_print_backend_cups_new      (void);
-GType          gtk_print_backend_cups_get_type (void) G_GNUC_CONST;
+BtkPrintBackend *btk_print_backend_cups_new      (void);
+GType          btk_print_backend_cups_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_BACKEND_CUPS_H__ */
+#endif /* __BTK_PRINT_BACKEND_CUPS_H__ */
 
 

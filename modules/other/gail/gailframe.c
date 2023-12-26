@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,47 +20,47 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailframe.h"
+#include <btk/btk.h>
+#include "bailframe.h"
 
-static void                  gail_frame_class_init       (GailFrameClass  *klass);
-static void                  gail_frame_init             (GailFrame       *frame);
-static void                  gail_frame_initialize       (AtkObject       *accessible,
+static void                  bail_frame_class_init       (BailFrameClass  *klass);
+static void                  bail_frame_init             (BailFrame       *frame);
+static void                  bail_frame_initialize       (BatkObject       *accessible,
                                                           gpointer         data);
-static const gchar*          gail_frame_get_name         (AtkObject       *obj);
+static const gchar*          bail_frame_get_name         (BatkObject       *obj);
 
-G_DEFINE_TYPE (GailFrame, gail_frame, GAIL_TYPE_CONTAINER)
+G_DEFINE_TYPE (BailFrame, bail_frame, BAIL_TYPE_CONTAINER)
 
 static void
-gail_frame_class_init (GailFrameClass *klass)
+bail_frame_class_init (BailFrameClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_frame_initialize;
-  class->get_name = gail_frame_get_name;
+  class->initialize = bail_frame_initialize;
+  class->get_name = bail_frame_get_name;
 }
 
 static void
-gail_frame_init (GailFrame       *frame)
+bail_frame_init (BailFrame       *frame)
 {
 }
 
 static void
-gail_frame_initialize (AtkObject *accessible,
+bail_frame_initialize (BatkObject *accessible,
                        gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_frame_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_frame_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_PANEL;
+  accessible->role = BATK_ROLE_PANEL;
 }
 
 static const gchar*
-gail_frame_get_name (AtkObject *obj)
+bail_frame_get_name (BatkObject *obj)
 {
   const gchar *name;
-  g_return_val_if_fail (GAIL_IS_FRAME (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_FRAME (obj), NULL);
 
-  name = ATK_OBJECT_CLASS (gail_frame_parent_class)->get_name (obj);
+  name = BATK_OBJECT_CLASS (bail_frame_parent_class)->get_name (obj);
   if (name != NULL)
   {
     return name;
@@ -70,9 +70,9 @@ gail_frame_get_name (AtkObject *obj)
     /*
      * Get the text on the label
      */
-    GtkWidget *widget;
+    BtkWidget *widget;
 
-    widget = GTK_ACCESSIBLE (obj)->widget;
+    widget = BTK_ACCESSIBLE (obj)->widget;
     if (widget == NULL)
     {
       /*
@@ -80,6 +80,6 @@ gail_frame_get_name (AtkObject *obj)
        */
       return NULL;
     }
-    return gtk_frame_get_label (GTK_FRAME (widget));
+    return btk_frame_get_label (BTK_FRAME (widget));
   }
 }

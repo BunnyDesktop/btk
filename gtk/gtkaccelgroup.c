@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1998, 2001 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -18,39 +18,39 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <string.h>
 #include <stdlib.h>
 
-#include "gtkaccelgroup.h"
-#include "gtkaccellabel.h" /* For _gtk_accel_label_class_get_accelerator_label */
-#include "gtkaccelmap.h"
-#include "gtkintl.h"
-#include "gtkmain.h"		/* For _gtk_boolean_handled_accumulator */
-#include "gdk/gdkkeysyms.h"
-#include "gtkmarshalers.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkaccelgroup.h"
+#include "btkaccellabel.h" /* For _btk_accel_label_class_get_accelerator_label */
+#include "btkaccelmap.h"
+#include "btkintl.h"
+#include "btkmain.h"		/* For _btk_boolean_handled_accumulator */
+#include "bdk/bdkkeysyms.h"
+#include "btkmarshalers.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkaccelgroup
- * @Short_description: Groups of global keyboard accelerators for an entire GtkWindow
+ * SECTION:btkaccelgroup
+ * @Short_description: Groups of global keyboard accelerators for an entire BtkWindow
  * @Title: Accelerator Groups
- * @See_also:gtk_window_add_accel_group(), gtk_accel_map_change_entry(),
- * gtk_item_factory_new(), gtk_label_new_with_mnemonic()
+ * @See_also:btk_window_add_accel_group(), btk_accel_map_change_entry(),
+ * btk_item_factory_new(), btk_label_new_with_mnemonic()
  * 
- * A #GtkAccelGroup represents a group of keyboard accelerators,
- * typically attached to a toplevel #GtkWindow (with
- * gtk_window_add_accel_group()). Usually you won't need to create a
- * #GtkAccelGroup directly; instead, when using #GtkItemFactory, GTK+
+ * A #BtkAccelGroup represents a group of keyboard accelerators,
+ * typically attached to a toplevel #BtkWindow (with
+ * btk_window_add_accel_group()). Usually you won't need to create a
+ * #BtkAccelGroup directly; instead, when using #BtkItemFactory, BTK+
  * automatically sets up the accelerators for your menus in the item
- * factory's #GtkAccelGroup.
+ * factory's #BtkAccelGroup.
  * 
  * 
  * Note that <firstterm>accelerators</firstterm> are different from
@@ -59,14 +59,14 @@
  * shortcut for. For example "Ctrl+Q" might appear alongside the "Quit"
  * menu item. Mnemonics are shortcuts for GUI elements such as text
  * entries or buttons; they appear as underlined characters. See
- * gtk_label_new_with_mnemonic(). Menu items can have both accelerators
+ * btk_label_new_with_mnemonic(). Menu items can have both accelerators
  * and mnemonics, of course.
  */
 
 
 /* --- prototypes --- */
-static void gtk_accel_group_finalize     (GObject    *object);
-static void gtk_accel_group_get_property (GObject    *object,
+static void btk_accel_group_finalize     (GObject    *object);
+static void btk_accel_group_get_property (GObject    *object,
                                           guint       param_id,
                                           GValue     *value,
                                           GParamSpec *pspec);
@@ -78,12 +78,12 @@ static void accel_closure_invalidate     (gpointer    data,
 static guint  signal_accel_activate      = 0;
 static guint  signal_accel_changed       = 0;
 static guint  quark_acceleratable_groups = 0;
-static guint  default_accel_mod_mask     = (GDK_SHIFT_MASK   |
-                                            GDK_CONTROL_MASK |
-                                            GDK_MOD1_MASK    |
-                                            GDK_SUPER_MASK   |
-                                            GDK_HYPER_MASK   |
-                                            GDK_META_MASK);
+static guint  default_accel_mod_mask     = (BDK_SHIFT_MASK   |
+                                            BDK_CONTROL_MASK |
+                                            BDK_MOD1_MASK    |
+                                            BDK_SUPER_MASK   |
+                                            BDK_HYPER_MASK   |
+                                            BDK_META_MASK);
 
 
 enum {
@@ -92,18 +92,18 @@ enum {
   PROP_MODIFIER_MASK,
 };
 
-G_DEFINE_TYPE (GtkAccelGroup, gtk_accel_group, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkAccelGroup, btk_accel_group, G_TYPE_OBJECT)
 
 /* --- functions --- */
 static void
-gtk_accel_group_class_init (GtkAccelGroupClass *class)
+btk_accel_group_class_init (BtkAccelGroupClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  quark_acceleratable_groups = g_quark_from_static_string ("gtk-acceleratable-accel-groups");
+  quark_acceleratable_groups = g_quark_from_static_string ("btk-acceleratable-accel-groups");
 
-  object_class->finalize = gtk_accel_group_finalize;
-  object_class->get_property = gtk_accel_group_get_property;
+  object_class->finalize = btk_accel_group_finalize;
+  object_class->get_property = btk_accel_group_get_property;
 
   class->accel_changed = NULL;
 
@@ -120,19 +120,19 @@ gtk_accel_group_class_init (GtkAccelGroupClass *class)
                                    g_param_spec_flags ("modifier-mask",
                                                        "Modifier Mask",
                                                        "Modifier Mask",
-                                                       GDK_TYPE_MODIFIER_TYPE,
+                                                       BDK_TYPE_MODIFIER_TYPE,
                                                        default_accel_mod_mask,
                                                        G_PARAM_READABLE));
 
   /**
-   * GtkAccelGroup::accel-activate:
-   * @accel_group: the #GtkAccelGroup which received the signal
+   * BtkAccelGroup::accel-activate:
+   * @accel_group: the #BtkAccelGroup which received the signal
    * @acceleratable: the object on which the accelerator was activated
    * @keyval: the accelerator keyval
    * @modifier: the modifier combination of the accelerator
    *
    * The accel-activate signal is an implementation detail of
-   * #GtkAccelGroup and not meant to be used by applications.
+   * #BtkAccelGroup and not meant to be used by applications.
    * 
    * Returns: %TRUE if the accelerator was activated
    */
@@ -141,23 +141,23 @@ gtk_accel_group_class_init (GtkAccelGroupClass *class)
 		  G_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_DETAILED,
 		  0,
-		  _gtk_boolean_handled_accumulator, NULL,
-		  _gtk_marshal_BOOLEAN__OBJECT_UINT_FLAGS,
+		  _btk_boolean_handled_accumulator, NULL,
+		  _btk_marshal_BOOLEAN__OBJECT_UINT_FLAGS,
 		  G_TYPE_BOOLEAN, 3,
 		  G_TYPE_OBJECT,
 		  G_TYPE_UINT,
-		  GDK_TYPE_MODIFIER_TYPE);
+		  BDK_TYPE_MODIFIER_TYPE);
   /**
-   * GtkAccelGroup::accel-changed:
-   * @accel_group: the #GtkAccelGroup which received the signal
+   * BtkAccelGroup::accel-changed:
+   * @accel_group: the #BtkAccelGroup which received the signal
    * @keyval: the accelerator keyval
    * @modifier: the modifier combination of the accelerator
    * @accel_closure: the #GClosure of the accelerator
    *
-   * The accel-changed signal is emitted when a #GtkAccelGroupEntry
+   * The accel-changed signal is emitted when a #BtkAccelGroupEntry
    * is added to or removed from the accel group. 
    *
-   * Widgets like #GtkAccelLabel which display an associated 
+   * Widgets like #BtkAccelLabel which display an associated 
    * accelerator should connect to this signal, and rebuild 
    * their visual representation if the @accel_closure is theirs.
    */
@@ -165,30 +165,30 @@ gtk_accel_group_class_init (GtkAccelGroupClass *class)
     g_signal_new (I_("accel-changed"),
 		  G_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_DETAILED,
-		  G_STRUCT_OFFSET (GtkAccelGroupClass, accel_changed),
+		  G_STRUCT_OFFSET (BtkAccelGroupClass, accel_changed),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__UINT_FLAGS_BOXED,
+		  _btk_marshal_VOID__UINT_FLAGS_BOXED,
 		  G_TYPE_NONE, 3,
 		  G_TYPE_UINT,
-		  GDK_TYPE_MODIFIER_TYPE,
+		  BDK_TYPE_MODIFIER_TYPE,
 		  G_TYPE_CLOSURE);
 }
 
 static void
-gtk_accel_group_finalize (GObject *object)
+btk_accel_group_finalize (GObject *object)
 {
-  GtkAccelGroup *accel_group = GTK_ACCEL_GROUP (object);
+  BtkAccelGroup *accel_group = BTK_ACCEL_GROUP (object);
   guint i;
   
   for (i = 0; i < accel_group->n_accels; i++)
     {
-      GtkAccelGroupEntry *entry = &accel_group->priv_accels[i];
+      BtkAccelGroupEntry *entry = &accel_group->priv_accels[i];
 
       if (entry->accel_path_quark)
 	{
 	  const gchar *accel_path = g_quark_to_string (entry->accel_path_quark);
 
-	  _gtk_accel_map_remove_group (accel_path, accel_group);
+	  _btk_accel_map_remove_group (accel_path, accel_group);
 	}
       g_closure_remove_invalidate_notifier (entry->closure, accel_group, accel_closure_invalidate);
 
@@ -198,16 +198,16 @@ gtk_accel_group_finalize (GObject *object)
 
   g_free (accel_group->priv_accels);
 
-  G_OBJECT_CLASS (gtk_accel_group_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_accel_group_parent_class)->finalize (object);
 }
 
 static void
-gtk_accel_group_get_property (GObject    *object,
+btk_accel_group_get_property (GObject    *object,
                               guint       param_id,
                               GValue     *value,
                               GParamSpec *pspec)
 {
-  GtkAccelGroup *accel_group = GTK_ACCEL_GROUP (object);
+  BtkAccelGroup *accel_group = BTK_ACCEL_GROUP (object);
 
   switch (param_id)
     {
@@ -224,33 +224,33 @@ gtk_accel_group_get_property (GObject    *object,
 }
 
 static void
-gtk_accel_group_init (GtkAccelGroup *accel_group)
+btk_accel_group_init (BtkAccelGroup *accel_group)
 {
   accel_group->lock_count = 0;
-  accel_group->modifier_mask = gtk_accelerator_get_default_mod_mask ();
+  accel_group->modifier_mask = btk_accelerator_get_default_mod_mask ();
   accel_group->acceleratables = NULL;
   accel_group->n_accels = 0;
   accel_group->priv_accels = NULL;
 }
 
 /**
- * gtk_accel_group_new:
- * @returns: a new #GtkAccelGroup object
+ * btk_accel_group_new:
+ * @returns: a new #BtkAccelGroup object
  * 
- * Creates a new #GtkAccelGroup. 
+ * Creates a new #BtkAccelGroup. 
  */
-GtkAccelGroup*
-gtk_accel_group_new (void)
+BtkAccelGroup*
+btk_accel_group_new (void)
 {
-  return g_object_new (GTK_TYPE_ACCEL_GROUP, NULL);
+  return g_object_new (BTK_TYPE_ACCEL_GROUP, NULL);
 }
 
 /**
- * gtk_accel_group_get_is_locked:
- * @accel_group: a #GtkAccelGroup
+ * btk_accel_group_get_is_locked:
+ * @accel_group: a #BtkAccelGroup
  *
- * Locks are added and removed using gtk_accel_group_lock() and
- * gtk_accel_group_unlock().
+ * Locks are added and removed using btk_accel_group_lock() and
+ * btk_accel_group_unlock().
  *
  * Returns: %TRUE if there are 1 or more locks on the @accel_group,
  * %FALSE otherwise.
@@ -258,28 +258,28 @@ gtk_accel_group_new (void)
  * Since: 2.14
  */
 gboolean
-gtk_accel_group_get_is_locked (GtkAccelGroup *accel_group)
+btk_accel_group_get_is_locked (BtkAccelGroup *accel_group)
 {
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), FALSE);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), FALSE);
 
   return accel_group->lock_count > 0;
 }
 
 /**
- * gtk_accel_group_get_modifier_mask:
- * @accel_group: a #GtkAccelGroup
+ * btk_accel_group_get_modifier_mask:
+ * @accel_group: a #BtkAccelGroup
  *
- * Gets a #GdkModifierType representing the mask for this
- * @accel_group. For example, #GDK_CONTROL_MASK, #GDK_SHIFT_MASK, etc.
+ * Gets a #BdkModifierType representing the mask for this
+ * @accel_group. For example, #BDK_CONTROL_MASK, #BDK_SHIFT_MASK, etc.
  *
  * Returns: the modifier mask for this accel group.
  *
  * Since: 2.14
  */
-GdkModifierType
-gtk_accel_group_get_modifier_mask (GtkAccelGroup *accel_group)
+BdkModifierType
+btk_accel_group_get_modifier_mask (BtkAccelGroup *accel_group)
 {
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), 0);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), 0);
 
   return accel_group->modifier_mask;
 }
@@ -292,7 +292,7 @@ accel_group_weak_ref_detach (GSList  *free_list,
   
   for (slist = free_list; slist; slist = slist->next)
     {
-      GtkAccelGroup *accel_group;
+      BtkAccelGroup *accel_group;
       
       accel_group = slist->data;
       accel_group->acceleratables = g_slist_remove (accel_group->acceleratables, stale_object);
@@ -303,12 +303,12 @@ accel_group_weak_ref_detach (GSList  *free_list,
 }
 
 void
-_gtk_accel_group_attach (GtkAccelGroup *accel_group,
+_btk_accel_group_attach (BtkAccelGroup *accel_group,
 			 GObject       *object)
 {
   GSList *slist;
   
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (g_slist_find (accel_group->acceleratables, object) == NULL);
   
@@ -327,12 +327,12 @@ _gtk_accel_group_attach (GtkAccelGroup *accel_group,
 }
 
 void
-_gtk_accel_group_detach (GtkAccelGroup *accel_group,
+_btk_accel_group_detach (BtkAccelGroup *accel_group,
 			 GObject       *object)
 {
   GSList *slist;
   
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (g_slist_find (accel_group->acceleratables, object) != NULL);
   
@@ -351,15 +351,15 @@ _gtk_accel_group_detach (GtkAccelGroup *accel_group,
 }
 
 /**
- * gtk_accel_groups_from_object:
- * @object:        a #GObject, usually a #GtkWindow
+ * btk_accel_groups_from_object:
+ * @object:        a #GObject, usually a #BtkWindow
  *
  * Gets a list of all accel groups which are attached to @object.
  *
- * Returns: (element-type GtkAccelGroup) (transfer none): a list of all accel groups which are attached to @object
+ * Returns: (element-type BtkAccelGroup) (transfer none): a list of all accel groups which are attached to @object
  */
 GSList*
-gtk_accel_groups_from_object (GObject *object)
+btk_accel_groups_from_object (GObject *object)
 {
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   
@@ -367,26 +367,26 @@ gtk_accel_groups_from_object (GObject *object)
 }
 
 /**
- * gtk_accel_group_find:
- * @accel_group: a #GtkAccelGroup
+ * btk_accel_group_find:
+ * @accel_group: a #BtkAccelGroup
  * @find_func: a function to filter the entries of @accel_group with
  * @data: data to pass to @find_func
  * @returns: (transfer none): the key of the first entry passing
- *    @find_func. The key is owned by GTK+ and must not be freed.
+ *    @find_func. The key is owned by BTK+ and must not be freed.
  *
  * Finds the first entry in an accelerator group for which 
- * @find_func returns %TRUE and returns its #GtkAccelKey.
+ * @find_func returns %TRUE and returns its #BtkAccelKey.
  *
  */
-GtkAccelKey*
-gtk_accel_group_find (GtkAccelGroup        *accel_group,
-		      GtkAccelGroupFindFunc find_func,
+BtkAccelKey*
+btk_accel_group_find (BtkAccelGroup        *accel_group,
+		      BtkAccelGroupFindFunc find_func,
 		      gpointer              data)
 {
-  GtkAccelKey *key = NULL;
+  BtkAccelKey *key = NULL;
   guint i;
 
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), NULL);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), NULL);
   g_return_val_if_fail (find_func != NULL, NULL);
 
   g_object_ref (accel_group);
@@ -404,23 +404,23 @@ gtk_accel_group_find (GtkAccelGroup        *accel_group,
 }
 
 /**
- * gtk_accel_group_lock:
- * @accel_group: a #GtkAccelGroup
+ * btk_accel_group_lock:
+ * @accel_group: a #BtkAccelGroup
  * 
  * Locks the given accelerator group.
  *
  * Locking an acelerator group prevents the accelerators contained
  * within it to be changed during runtime. Refer to
- * gtk_accel_map_change_entry() about runtime accelerator changes.
+ * btk_accel_map_change_entry() about runtime accelerator changes.
  *
  * If called more than once, @accel_group remains locked until
- * gtk_accel_group_unlock() has been called an equivalent number
+ * btk_accel_group_unlock() has been called an equivalent number
  * of times.
  */
 void
-gtk_accel_group_lock (GtkAccelGroup *accel_group)
+btk_accel_group_lock (BtkAccelGroup *accel_group)
 {
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   
   accel_group->lock_count += 1;
 
@@ -431,15 +431,15 @@ gtk_accel_group_lock (GtkAccelGroup *accel_group)
 }
 
 /**
- * gtk_accel_group_unlock:
- * @accel_group: a #GtkAccelGroup
+ * btk_accel_group_unlock:
+ * @accel_group: a #BtkAccelGroup
  * 
- * Undoes the last call to gtk_accel_group_lock() on this @accel_group.
+ * Undoes the last call to btk_accel_group_lock() on this @accel_group.
  */
 void
-gtk_accel_group_unlock (GtkAccelGroup *accel_group)
+btk_accel_group_unlock (BtkAccelGroup *accel_group)
 {
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (accel_group->lock_count > 0);
 
   accel_group->lock_count -= 1;
@@ -454,17 +454,17 @@ static void
 accel_closure_invalidate (gpointer  data,
 			  GClosure *closure)
 {
-  GtkAccelGroup *accel_group = GTK_ACCEL_GROUP (data);
+  BtkAccelGroup *accel_group = BTK_ACCEL_GROUP (data);
 
-  gtk_accel_group_disconnect (accel_group, closure);
+  btk_accel_group_disconnect (accel_group, closure);
 }
 
 static int
 bsearch_compare_accels (const void *d1,
 			const void *d2)
 {
-  const GtkAccelGroupEntry *entry1 = d1;
-  const GtkAccelGroupEntry *entry2 = d2;
+  const BtkAccelGroupEntry *entry1 = d1;
+  const BtkAccelGroupEntry *entry2 = d2;
 
   if (entry1->key.accel_key == entry2->key.accel_key)
     return entry1->key.accel_mods < entry2->key.accel_mods ? -1 : entry1->key.accel_mods > entry2->key.accel_mods;
@@ -473,15 +473,15 @@ bsearch_compare_accels (const void *d1,
 }
 
 static void
-quick_accel_add (GtkAccelGroup  *accel_group,
+quick_accel_add (BtkAccelGroup  *accel_group,
 		 guint           accel_key,
-		 GdkModifierType accel_mods,
-		 GtkAccelFlags   accel_flags,
+		 BdkModifierType accel_mods,
+		 BtkAccelFlags   accel_flags,
 		 GClosure       *closure,
 		 GQuark          path_quark)
 {
   guint pos, i = accel_group->n_accels++;
-  GtkAccelGroupEntry key;
+  BtkAccelGroupEntry key;
 
   /* find position */
   key.key.accel_key = accel_key;
@@ -491,7 +491,7 @@ quick_accel_add (GtkAccelGroup  *accel_group,
       break;
 
   /* insert at position, ref closure */
-  accel_group->priv_accels = g_renew (GtkAccelGroupEntry, accel_group->priv_accels, accel_group->n_accels);
+  accel_group->priv_accels = g_renew (BtkAccelGroupEntry, accel_group->priv_accels, accel_group->n_accels);
   g_memmove (accel_group->priv_accels + pos + 1, accel_group->priv_accels + pos,
 	     (i - pos) * sizeof (accel_group->priv_accels[0]));
   accel_group->priv_accels[pos].key.accel_key = accel_key;
@@ -506,12 +506,12 @@ quick_accel_add (GtkAccelGroup  *accel_group,
 
   /* get accel path notification */
   if (path_quark)
-    _gtk_accel_map_add_group (g_quark_to_string (path_quark), accel_group);
+    _btk_accel_map_add_group (g_quark_to_string (path_quark), accel_group);
 
   /* connect and notify changed */
   if (accel_key)
     {
-      gchar *accel_name = gtk_accelerator_name (accel_key, accel_mods);
+      gchar *accel_name = btk_accelerator_name (accel_key, accel_mods);
       GQuark accel_quark = g_quark_from_string (accel_name);
 
       g_free (accel_name);
@@ -525,19 +525,19 @@ quick_accel_add (GtkAccelGroup  *accel_group,
 }
 
 static void
-quick_accel_remove (GtkAccelGroup      *accel_group,
+quick_accel_remove (BtkAccelGroup      *accel_group,
                     guint               pos)
 {
   GQuark accel_quark = 0;
-  GtkAccelGroupEntry *entry = accel_group->priv_accels + pos;
+  BtkAccelGroupEntry *entry = accel_group->priv_accels + pos;
   guint accel_key = entry->key.accel_key;
-  GdkModifierType accel_mods = entry->key.accel_mods;
+  BdkModifierType accel_mods = entry->key.accel_mods;
   GClosure *closure = entry->closure;
 
   /* quark for notification */
   if (accel_key)
     {
-      gchar *accel_name = gtk_accelerator_name (accel_key, accel_mods);
+      gchar *accel_name = btk_accelerator_name (accel_key, accel_mods);
 
       accel_quark = g_quark_from_string (accel_name);
       g_free (accel_name);
@@ -552,7 +552,7 @@ quick_accel_remove (GtkAccelGroup      *accel_group,
 					  closure, NULL, NULL);
   /* clean up accel path notification */
   if (entry->accel_path_quark)
-    _gtk_accel_map_remove_group (g_quark_to_string (entry->accel_path_quark), accel_group);
+    _btk_accel_map_remove_group (g_quark_to_string (entry->accel_path_quark), accel_group);
 
   /* physically remove */
   accel_group->n_accels -= 1;
@@ -567,14 +567,14 @@ quick_accel_remove (GtkAccelGroup      *accel_group,
   g_closure_unref (closure);
 }
 
-static GtkAccelGroupEntry*
-quick_accel_find (GtkAccelGroup  *accel_group,
+static BtkAccelGroupEntry*
+quick_accel_find (BtkAccelGroup  *accel_group,
 		  guint           accel_key,
-		  GdkModifierType accel_mods,
+		  BdkModifierType accel_mods,
 		  guint		 *count_p)
 {
-  GtkAccelGroupEntry *entry;
-  GtkAccelGroupEntry key;
+  BtkAccelGroupEntry *entry;
+  BtkAccelGroupEntry key;
 
   *count_p = 0;
 
@@ -603,7 +603,7 @@ quick_accel_find (GtkAccelGroup  *accel_group,
 }
 
 /**
- * gtk_accel_group_connect:
+ * btk_accel_group_connect:
  * @accel_group:      the accelerator group to install an accelerator in
  * @accel_key:        key value of the accelerator
  * @accel_mods:       modifier combination of the accelerator
@@ -611,103 +611,103 @@ quick_accel_find (GtkAccelGroup  *accel_group,
  * @closure:          closure to be executed upon accelerator activation
  *
  * Installs an accelerator in this group. When @accel_group is being activated
- * in response to a call to gtk_accel_groups_activate(), @closure will be
- * invoked if the @accel_key and @accel_mods from gtk_accel_groups_activate()
+ * in response to a call to btk_accel_groups_activate(), @closure will be
+ * invoked if the @accel_key and @accel_mods from btk_accel_groups_activate()
  * match those of this connection.
  *
- * The signature used for the @closure is that of #GtkAccelGroupActivate.
+ * The signature used for the @closure is that of #BtkAccelGroupActivate.
  * 
  * Note that, due to implementation details, a single closure can only be
  * connected to one accelerator group.
  */
 void
-gtk_accel_group_connect (GtkAccelGroup	*accel_group,
+btk_accel_group_connect (BtkAccelGroup	*accel_group,
 			 guint		 accel_key,
-			 GdkModifierType accel_mods,
-			 GtkAccelFlags	 accel_flags,
+			 BdkModifierType accel_mods,
+			 BtkAccelFlags	 accel_flags,
 			 GClosure	*closure)
 {
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (closure != NULL);
   g_return_if_fail (accel_key > 0);
-  g_return_if_fail (gtk_accel_group_from_accel_closure (closure) == NULL);
+  g_return_if_fail (btk_accel_group_from_accel_closure (closure) == NULL);
 
   g_object_ref (accel_group);
   if (!closure->is_invalid)
     quick_accel_add (accel_group,
-		     gdk_keyval_to_lower (accel_key),
+		     bdk_keyval_to_lower (accel_key),
 		     accel_mods, accel_flags, closure, 0);
   g_object_unref (accel_group);
 }
 
 /**
- * gtk_accel_group_connect_by_path:
+ * btk_accel_group_connect_by_path:
  * @accel_group:      the accelerator group to install an accelerator in
  * @accel_path:       path used for determining key and modifiers.
  * @closure:          closure to be executed upon accelerator activation
  *
  * Installs an accelerator in this group, using an accelerator path to look
- * up the appropriate key and modifiers (see gtk_accel_map_add_entry()).
+ * up the appropriate key and modifiers (see btk_accel_map_add_entry()).
  * When @accel_group is being activated in response to a call to
- * gtk_accel_groups_activate(), @closure will be invoked if the @accel_key and
- * @accel_mods from gtk_accel_groups_activate() match the key and modifiers
+ * btk_accel_groups_activate(), @closure will be invoked if the @accel_key and
+ * @accel_mods from btk_accel_groups_activate() match the key and modifiers
  * for the path.
  *
- * The signature used for the @closure is that of #GtkAccelGroupActivate.
+ * The signature used for the @closure is that of #BtkAccelGroupActivate.
  * 
  * Note that @accel_path string will be stored in a #GQuark. Therefore, if you
  * pass a static string, you can save some memory by interning it first with 
  * g_intern_static_string().
  */
 void
-gtk_accel_group_connect_by_path (GtkAccelGroup	*accel_group,
+btk_accel_group_connect_by_path (BtkAccelGroup	*accel_group,
 				 const gchar    *accel_path,
 				 GClosure	*closure)
 {
   guint accel_key = 0;
-  GdkModifierType accel_mods = 0;
-  GtkAccelKey key;
+  BdkModifierType accel_mods = 0;
+  BtkAccelKey key;
 
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
   g_return_if_fail (closure != NULL);
-  g_return_if_fail (_gtk_accel_path_is_valid (accel_path));
+  g_return_if_fail (_btk_accel_path_is_valid (accel_path));
 
   if (closure->is_invalid)
     return;
 
   g_object_ref (accel_group);
 
-  if (gtk_accel_map_lookup_entry (accel_path, &key))
+  if (btk_accel_map_lookup_entry (accel_path, &key))
     {
-      accel_key = gdk_keyval_to_lower (key.accel_key);
+      accel_key = bdk_keyval_to_lower (key.accel_key);
       accel_mods = key.accel_mods;
     }
 
-  quick_accel_add (accel_group, accel_key, accel_mods, GTK_ACCEL_VISIBLE, closure,
+  quick_accel_add (accel_group, accel_key, accel_mods, BTK_ACCEL_VISIBLE, closure,
 		   g_quark_from_string (accel_path));
 
   g_object_unref (accel_group);
 }
 
 /**
- * gtk_accel_group_disconnect:
+ * btk_accel_group_disconnect:
  * @accel_group: the accelerator group to remove an accelerator from
  * @closure: (allow-none):     the closure to remove from this accelerator group, or %NULL
  *               to remove all closures
  * @returns:     %TRUE if the closure was found and got disconnected
  *
  * Removes an accelerator previously installed through
- * gtk_accel_group_connect().
+ * btk_accel_group_connect().
  *
  * Since 2.20 @closure can be %NULL.
  */
 gboolean
-gtk_accel_group_disconnect (GtkAccelGroup *accel_group,
+btk_accel_group_disconnect (BtkAccelGroup *accel_group,
 			    GClosure      *closure)
 {
   guint i;
 
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), FALSE);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), FALSE);
 
   for (i = 0; i < accel_group->n_accels; i++)
     if (accel_group->priv_accels[i].closure == closure || !closure)
@@ -721,7 +721,7 @@ gtk_accel_group_disconnect (GtkAccelGroup *accel_group,
 }
 
 /**
- * gtk_accel_group_disconnect_key:
+ * btk_accel_group_disconnect_key:
  * @accel_group:      the accelerator group to install an accelerator in
  * @accel_key:        key value of the accelerator
  * @accel_mods:       modifier combination of the accelerator
@@ -729,23 +729,23 @@ gtk_accel_group_disconnect (GtkAccelGroup *accel_group,
  *                    removed, %FALSE otherwise
  *
  * Removes an accelerator previously installed through
- * gtk_accel_group_connect().
+ * btk_accel_group_connect().
  */
 gboolean
-gtk_accel_group_disconnect_key (GtkAccelGroup  *accel_group,
+btk_accel_group_disconnect_key (BtkAccelGroup  *accel_group,
 				guint	        accel_key,
-				GdkModifierType accel_mods)
+				BdkModifierType accel_mods)
 {
-  GtkAccelGroupEntry *entries;
+  BtkAccelGroupEntry *entries;
   GSList *slist, *clist = NULL;
   gboolean removed_one = FALSE;
   guint n;
 
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), FALSE);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), FALSE);
 
   g_object_ref (accel_group);
   
-  accel_key = gdk_keyval_to_lower (accel_key);
+  accel_key = bdk_keyval_to_lower (accel_key);
   entries = quick_accel_find (accel_group, accel_key, accel_mods, &n);
   while (n--)
     {
@@ -758,7 +758,7 @@ gtk_accel_group_disconnect_key (GtkAccelGroup  *accel_group,
     {
       GClosure *closure = slist->data;
 
-      removed_one |= gtk_accel_group_disconnect (accel_group, closure);
+      removed_one |= btk_accel_group_disconnect (accel_group, closure);
       g_closure_unref (closure);
     }
   g_slist_free (clist);
@@ -769,13 +769,13 @@ gtk_accel_group_disconnect_key (GtkAccelGroup  *accel_group,
 }
 
 void
-_gtk_accel_group_reconnect (GtkAccelGroup *accel_group,
+_btk_accel_group_reconnect (BtkAccelGroup *accel_group,
 			    GQuark         accel_path_quark)
 {
   GSList *slist, *clist = NULL;
   guint i;
 
-  g_return_if_fail (GTK_IS_ACCEL_GROUP (accel_group));
+  g_return_if_fail (BTK_IS_ACCEL_GROUP (accel_group));
 
   g_object_ref (accel_group);
 
@@ -791,8 +791,8 @@ _gtk_accel_group_reconnect (GtkAccelGroup *accel_group,
     {
       GClosure *closure = slist->data;
 
-      gtk_accel_group_disconnect (accel_group, closure);
-      gtk_accel_group_connect_by_path (accel_group, g_quark_to_string (accel_path_quark), closure);
+      btk_accel_group_disconnect (accel_group, closure);
+      btk_accel_group_connect_by_path (accel_group, g_quark_to_string (accel_path_quark), closure);
       g_closure_unref (closure);
     }
   g_slist_free (clist);
@@ -801,28 +801,28 @@ _gtk_accel_group_reconnect (GtkAccelGroup *accel_group,
 }
 
 /**
- * gtk_accel_group_query:
+ * btk_accel_group_query:
  * @accel_group:      the accelerator group to query
  * @accel_key:        key value of the accelerator
  * @accel_mods:       modifier combination of the accelerator
  * @n_entries: (allow-none):        location to return the number of entries found, or %NULL
- * @returns: (allow-none):          an array of @n_entries #GtkAccelGroupEntry elements, or %NULL. The array is owned by GTK+ and must not be freed. 
+ * @returns: (allow-none):          an array of @n_entries #BtkAccelGroupEntry elements, or %NULL. The array is owned by BTK+ and must not be freed. 
  *
  * Queries an accelerator group for all entries matching @accel_key and 
  * @accel_mods.
  */
-GtkAccelGroupEntry*
-gtk_accel_group_query (GtkAccelGroup  *accel_group,
+BtkAccelGroupEntry*
+btk_accel_group_query (BtkAccelGroup  *accel_group,
 		       guint           accel_key,
-		       GdkModifierType accel_mods,
+		       BdkModifierType accel_mods,
 		       guint          *n_entries)
 {
-  GtkAccelGroupEntry *entries;
+  BtkAccelGroupEntry *entries;
   guint n;
 
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), NULL);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), NULL);
 
-  entries = quick_accel_find (accel_group, gdk_keyval_to_lower (accel_key), accel_mods, &n);
+  entries = quick_accel_find (accel_group, bdk_keyval_to_lower (accel_key), accel_mods, &n);
 
   if (n_entries)
     *n_entries = entries ? n : 0;
@@ -831,16 +831,16 @@ gtk_accel_group_query (GtkAccelGroup  *accel_group,
 }
 
 /**
- * gtk_accel_group_from_accel_closure:
+ * btk_accel_group_from_accel_closure:
  * @closure: a #GClosure
- * @returns: (transfer none): the #GtkAccelGroup to which @closure
+ * @returns: (transfer none): the #BtkAccelGroup to which @closure
  *     is connected, or %NULL.
  *
- * Finds the #GtkAccelGroup to which @closure is connected; 
- * see gtk_accel_group_connect().
+ * Finds the #BtkAccelGroup to which @closure is connected; 
+ * see btk_accel_group_connect().
  */
-GtkAccelGroup*
-gtk_accel_group_from_accel_closure (GClosure *closure)
+BtkAccelGroup*
+btk_accel_group_from_accel_closure (GClosure *closure)
 {
   guint i;
 
@@ -861,10 +861,10 @@ gtk_accel_group_from_accel_closure (GClosure *closure)
 }
 
 /**
- * gtk_accel_group_activate:
- * @accel_group:   a #GtkAccelGroup
+ * btk_accel_group_activate:
+ * @accel_group:   a #BtkAccelGroup
  * @accel_quark:   the quark for the accelerator name
- * @acceleratable: the #GObject, usually a #GtkWindow, on which
+ * @acceleratable: the #GObject, usually a #BtkWindow, on which
  *                 to activate the accelerator.
  * @accel_key:     accelerator keyval from a key event
  * @accel_mods:    keyboard state mask from a key event
@@ -876,15 +876,15 @@ gtk_accel_group_from_accel_closure (GClosure *closure)
  * Returns: %TRUE if an accelerator was activated and handled this keypress
  */
 gboolean
-gtk_accel_group_activate (GtkAccelGroup   *accel_group,
+btk_accel_group_activate (BtkAccelGroup   *accel_group,
                           GQuark	   accel_quark,
                           GObject	  *acceleratable,
                           guint	           accel_key,
-                          GdkModifierType  accel_mods)
+                          BdkModifierType  accel_mods)
 {
   gboolean was_handled;
 
-  g_return_val_if_fail (GTK_IS_ACCEL_GROUP (accel_group), FALSE);
+  g_return_val_if_fail (BTK_IS_ACCEL_GROUP (accel_group), FALSE);
   g_return_val_if_fail (G_IS_OBJECT (acceleratable), FALSE);
   
   was_handled = FALSE;
@@ -895,37 +895,37 @@ gtk_accel_group_activate (GtkAccelGroup   *accel_group,
 }
 
 /**
- * gtk_accel_groups_activate:
- * @object:        the #GObject, usually a #GtkWindow, on which
+ * btk_accel_groups_activate:
+ * @object:        the #GObject, usually a #BtkWindow, on which
  *                 to activate the accelerator.
  * @accel_key:     accelerator keyval from a key event
  * @accel_mods:    keyboard state mask from a key event
  * 
- * Finds the first accelerator in any #GtkAccelGroup attached
+ * Finds the first accelerator in any #BtkAccelGroup attached
  * to @object that matches @accel_key and @accel_mods, and
  * activates that accelerator.
  *
  * Returns: %TRUE if an accelerator was activated and handled this keypress
  */
 gboolean
-gtk_accel_groups_activate (GObject	  *object,
+btk_accel_groups_activate (GObject	  *object,
 			   guint	   accel_key,
-			   GdkModifierType accel_mods)
+			   BdkModifierType accel_mods)
 {
   g_return_val_if_fail (G_IS_OBJECT (object), FALSE);
   
-  if (gtk_accelerator_valid (accel_key, accel_mods))
+  if (btk_accelerator_valid (accel_key, accel_mods))
     {
       gchar *accel_name;
       GQuark accel_quark;
       GSList *slist;
 
-      accel_name = gtk_accelerator_name (accel_key, (accel_mods & gtk_accelerator_get_default_mod_mask ()));
+      accel_name = btk_accelerator_name (accel_key, (accel_mods & btk_accelerator_get_default_mod_mask ()));
       accel_quark = g_quark_from_string (accel_name);
       g_free (accel_name);
       
-      for (slist = gtk_accel_groups_from_object (object); slist; slist = slist->next)
-	if (gtk_accel_group_activate (slist->data, accel_quark, object, accel_key, accel_mods))
+      for (slist = btk_accel_groups_from_object (object); slist; slist = slist->next)
+	if (btk_accel_group_activate (slist->data, accel_quark, object, accel_key, accel_mods))
 	  return TRUE;
     }
   
@@ -933,43 +933,43 @@ gtk_accel_groups_activate (GObject	  *object,
 }
 
 /**
- * gtk_accelerator_valid:
- * @keyval:    a GDK keyval
+ * btk_accelerator_valid:
+ * @keyval:    a BDK keyval
  * @modifiers: modifier mask
  * @returns:   %TRUE if the accelerator is valid
  * 
  * Determines whether a given keyval and modifier mask constitute
- * a valid keyboard accelerator. For example, the #GDK_a keyval
- * plus #GDK_CONTROL_MASK is valid - this is a "Ctrl+a" accelerator.
- * But, you can't, for instance, use the #GDK_Control_L keyval
+ * a valid keyboard accelerator. For example, the #BDK_a keyval
+ * plus #BDK_CONTROL_MASK is valid - this is a "Ctrl+a" accelerator.
+ * But, you can't, for instance, use the #BDK_Control_L keyval
  * as an accelerator.
  */
 gboolean
-gtk_accelerator_valid (guint		  keyval,
-		       GdkModifierType	  modifiers)
+btk_accelerator_valid (guint		  keyval,
+		       BdkModifierType	  modifiers)
 {
   static const guint invalid_accelerator_vals[] = {
-    GDK_Shift_L, GDK_Shift_R, GDK_Shift_Lock, GDK_Caps_Lock, GDK_ISO_Lock,
-    GDK_Control_L, GDK_Control_R, GDK_Meta_L, GDK_Meta_R,
-    GDK_Alt_L, GDK_Alt_R, GDK_Super_L, GDK_Super_R, GDK_Hyper_L, GDK_Hyper_R,
-    GDK_ISO_Level3_Shift, GDK_ISO_Next_Group, GDK_ISO_Prev_Group,
-    GDK_ISO_First_Group, GDK_ISO_Last_Group,
-    GDK_Mode_switch, GDK_Num_Lock, GDK_Multi_key,
-    GDK_Scroll_Lock, GDK_Sys_Req, 
-    GDK_Tab, GDK_ISO_Left_Tab, GDK_KP_Tab,
-    GDK_First_Virtual_Screen, GDK_Prev_Virtual_Screen,
-    GDK_Next_Virtual_Screen, GDK_Last_Virtual_Screen,
-    GDK_Terminate_Server, GDK_AudibleBell_Enable,
+    BDK_Shift_L, BDK_Shift_R, BDK_Shift_Lock, BDK_Caps_Lock, BDK_ISO_Lock,
+    BDK_Control_L, BDK_Control_R, BDK_Meta_L, BDK_Meta_R,
+    BDK_Alt_L, BDK_Alt_R, BDK_Super_L, BDK_Super_R, BDK_Hyper_L, BDK_Hyper_R,
+    BDK_ISO_Level3_Shift, BDK_ISO_Next_Group, BDK_ISO_Prev_Group,
+    BDK_ISO_First_Group, BDK_ISO_Last_Group,
+    BDK_Mode_switch, BDK_Num_Lock, BDK_Multi_key,
+    BDK_Scroll_Lock, BDK_Sys_Req, 
+    BDK_Tab, BDK_ISO_Left_Tab, BDK_KP_Tab,
+    BDK_First_Virtual_Screen, BDK_Prev_Virtual_Screen,
+    BDK_Next_Virtual_Screen, BDK_Last_Virtual_Screen,
+    BDK_Terminate_Server, BDK_AudibleBell_Enable,
     0
   };
   static const guint invalid_unmodified_vals[] = {
-    GDK_Up, GDK_Down, GDK_Left, GDK_Right,
-    GDK_KP_Up, GDK_KP_Down, GDK_KP_Left, GDK_KP_Right,
+    BDK_Up, BDK_Down, BDK_Left, BDK_Right,
+    BDK_KP_Up, BDK_KP_Down, BDK_KP_Left, BDK_KP_Right,
     0
   };
   const guint *ac_val;
 
-  modifiers &= GDK_MODIFIER_MASK;
+  modifiers &= BDK_MODIFIER_MASK;
     
   if (keyval <= 0xFF)
     return keyval >= 0x20;
@@ -1137,7 +1137,7 @@ is_primary (const gchar *string)
 }
 
 /**
- * gtk_accelerator_parse:
+ * btk_accelerator_parse:
  * @accelerator:      string representing an accelerator
  * @accelerator_key: (out) (allow-none): return location for accelerator keyval
  * @accelerator_mods: (out) (allow-none): return location for accelerator modifier mask
@@ -1147,7 +1147,7 @@ is_primary (const gchar *string)
  * "&lt;Release&gt;z" (the last one is for key release).
  * The parser is fairly liberal and allows lower or upper case,
  * and also abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;".
- * Key names are parsed using gdk_keyval_from_name(). For character keys the
+ * Key names are parsed using bdk_keyval_from_name(). For character keys the
  * name is not the symbol, but the lowercase name, e.g. one would use
  * "&lt;Ctrl&gt;minus" instead of "&lt;Ctrl&gt;-".
  *
@@ -1155,12 +1155,12 @@ is_primary (const gchar *string)
  * be set to 0 (zero).
  */
 void
-gtk_accelerator_parse (const gchar     *accelerator,
+btk_accelerator_parse (const gchar     *accelerator,
 		       guint           *accelerator_key,
-		       GdkModifierType *accelerator_mods)
+		       BdkModifierType *accelerator_mods)
 {
   guint keyval;
-  GdkModifierType mods;
+  BdkModifierType mods;
   gint len;
   
   if (accelerator_key)
@@ -1180,43 +1180,43 @@ gtk_accelerator_parse (const gchar     *accelerator,
 	    {
 	      accelerator += 9;
 	      len -= 9;
-	      mods |= GDK_RELEASE_MASK;
+	      mods |= BDK_RELEASE_MASK;
 	    }
 	  else if (len >= 9 && is_primary (accelerator))
 	    {
 	      accelerator += 9;
 	      len -= 9;
-	      mods |= GTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL;
+	      mods |= BTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL;
 	    }
 	  else if (len >= 9 && is_control (accelerator))
 	    {
 	      accelerator += 9;
 	      len -= 9;
-	      mods |= GDK_CONTROL_MASK;
+	      mods |= BDK_CONTROL_MASK;
 	    }
 	  else if (len >= 7 && is_shift (accelerator))
 	    {
 	      accelerator += 7;
 	      len -= 7;
-	      mods |= GDK_SHIFT_MASK;
+	      mods |= BDK_SHIFT_MASK;
 	    }
 	  else if (len >= 6 && is_shft (accelerator))
 	    {
 	      accelerator += 6;
 	      len -= 6;
-	      mods |= GDK_SHIFT_MASK;
+	      mods |= BDK_SHIFT_MASK;
 	    }
 	  else if (len >= 6 && is_ctrl (accelerator))
 	    {
 	      accelerator += 6;
 	      len -= 6;
-	      mods |= GDK_CONTROL_MASK;
+	      mods |= BDK_CONTROL_MASK;
 	    }
 	  else if (len >= 6 && is_modx (accelerator))
 	    {
 	      static const guint mod_vals[] = {
-		GDK_MOD1_MASK, GDK_MOD2_MASK, GDK_MOD3_MASK,
-		GDK_MOD4_MASK, GDK_MOD5_MASK
+		BDK_MOD1_MASK, BDK_MOD2_MASK, BDK_MOD3_MASK,
+		BDK_MOD4_MASK, BDK_MOD5_MASK
 	      };
 
 	      len -= 6;
@@ -1228,31 +1228,31 @@ gtk_accelerator_parse (const gchar     *accelerator,
 	    {
 	      accelerator += 5;
 	      len -= 5;
-	      mods |= GDK_CONTROL_MASK;
+	      mods |= BDK_CONTROL_MASK;
 	    }
 	  else if (len >= 5 && is_alt (accelerator))
 	    {
 	      accelerator += 5;
 	      len -= 5;
-	      mods |= GDK_MOD1_MASK;
+	      mods |= BDK_MOD1_MASK;
 	    }
           else if (len >= 6 && is_meta (accelerator))
 	    {
 	      accelerator += 6;
 	      len -= 6;
-	      mods |= GDK_META_MASK;
+	      mods |= BDK_META_MASK;
 	    }
           else if (len >= 7 && is_hyper (accelerator))
 	    {
 	      accelerator += 7;
 	      len -= 7;
-	      mods |= GDK_HYPER_MASK;
+	      mods |= BDK_HYPER_MASK;
 	    }
           else if (len >= 7 && is_super (accelerator))
 	    {
 	      accelerator += 7;
 	      len -= 7;
-	      mods |= GDK_SUPER_MASK;
+	      mods |= BDK_SUPER_MASK;
 	    }
 	  else
 	    {
@@ -1269,36 +1269,36 @@ gtk_accelerator_parse (const gchar     *accelerator,
 	}
       else
 	{
-	  keyval = gdk_keyval_from_name (accelerator);
+	  keyval = bdk_keyval_from_name (accelerator);
 	  accelerator += len;
 	  len -= len;
 	}
     }
   
   if (accelerator_key)
-    *accelerator_key = gdk_keyval_to_lower (keyval);
+    *accelerator_key = bdk_keyval_to_lower (keyval);
   if (accelerator_mods)
     *accelerator_mods = mods;
 }
 
 /**
- * gtk_accelerator_name:
+ * btk_accelerator_name:
  * @accelerator_key:  accelerator keyval
  * @accelerator_mods: accelerator modifier mask
  * 
  * Converts an accelerator keyval and modifier mask
- * into a string parseable by gtk_accelerator_parse().
- * For example, if you pass in #GDK_q and #GDK_CONTROL_MASK,
+ * into a string parseable by btk_accelerator_parse().
+ * For example, if you pass in #BDK_q and #BDK_CONTROL_MASK,
  * this function returns "&lt;Control&gt;q". 
  *
  * If you need to display accelerators in the user interface,
- * see gtk_accelerator_get_label().
+ * see btk_accelerator_get_label().
  *
  * Returns: a newly-allocated accelerator name
  */
 gchar*
-gtk_accelerator_name (guint           accelerator_key,
-		      GdkModifierType accelerator_mods)
+btk_accelerator_name (guint           accelerator_key,
+		      BdkModifierType accelerator_mods)
 {
   static const gchar text_release[] = "<Release>";
   static const gchar text_primary[] = "<Primary>";
@@ -1312,46 +1312,46 @@ gtk_accelerator_name (guint           accelerator_key,
   static const gchar text_meta[] = "<Meta>";
   static const gchar text_super[] = "<Super>";
   static const gchar text_hyper[] = "<Hyper>";
-  GdkModifierType saved_mods;
+  BdkModifierType saved_mods;
   guint l;
   gchar *keyval_name;
   gchar *accelerator;
 
-  accelerator_mods &= GDK_MODIFIER_MASK;
+  accelerator_mods &= BDK_MODIFIER_MASK;
 
-  keyval_name = gdk_keyval_name (gdk_keyval_to_lower (accelerator_key));
+  keyval_name = bdk_keyval_name (bdk_keyval_to_lower (accelerator_key));
   if (!keyval_name)
     keyval_name = "";
 
   saved_mods = accelerator_mods;
   l = 0;
-  if (accelerator_mods & GDK_RELEASE_MASK)
+  if (accelerator_mods & BDK_RELEASE_MASK)
     l += sizeof (text_release) - 1;
-  if (accelerator_mods & GTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL)
+  if (accelerator_mods & BTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL)
     {
       l += sizeof (text_primary) - 1;
-      accelerator_mods &= ~GTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL; /* consume the default accel */
+      accelerator_mods &= ~BTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL; /* consume the default accel */
     }
-  if (accelerator_mods & GDK_SHIFT_MASK)
+  if (accelerator_mods & BDK_SHIFT_MASK)
     l += sizeof (text_shift) - 1;
-  if (accelerator_mods & GDK_CONTROL_MASK)
+  if (accelerator_mods & BDK_CONTROL_MASK)
     l += sizeof (text_control) - 1;
-  if (accelerator_mods & GDK_MOD1_MASK)
+  if (accelerator_mods & BDK_MOD1_MASK)
     l += sizeof (text_mod1) - 1;
-  if (accelerator_mods & GDK_MOD2_MASK)
+  if (accelerator_mods & BDK_MOD2_MASK)
     l += sizeof (text_mod2) - 1;
-  if (accelerator_mods & GDK_MOD3_MASK)
+  if (accelerator_mods & BDK_MOD3_MASK)
     l += sizeof (text_mod3) - 1;
-  if (accelerator_mods & GDK_MOD4_MASK)
+  if (accelerator_mods & BDK_MOD4_MASK)
     l += sizeof (text_mod4) - 1;
-  if (accelerator_mods & GDK_MOD5_MASK)
+  if (accelerator_mods & BDK_MOD5_MASK)
     l += sizeof (text_mod5) - 1;
   l += strlen (keyval_name);
-  if (accelerator_mods & GDK_META_MASK)
+  if (accelerator_mods & BDK_META_MASK)
     l += sizeof (text_meta) - 1;
-  if (accelerator_mods & GDK_HYPER_MASK)
+  if (accelerator_mods & BDK_HYPER_MASK)
     l += sizeof (text_hyper) - 1;
-  if (accelerator_mods & GDK_SUPER_MASK)
+  if (accelerator_mods & BDK_SUPER_MASK)
     l += sizeof (text_super) - 1;
 
   accelerator = g_new (gchar, l + 1);
@@ -1359,63 +1359,63 @@ gtk_accelerator_name (guint           accelerator_key,
   accelerator_mods = saved_mods;
   l = 0;
   accelerator[l] = 0;
-  if (accelerator_mods & GDK_RELEASE_MASK)
+  if (accelerator_mods & BDK_RELEASE_MASK)
     {
       strcpy (accelerator + l, text_release);
       l += sizeof (text_release) - 1;
     }
-  if (accelerator_mods & GTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL)
+  if (accelerator_mods & BTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL)
     {
       strcpy (accelerator + l, text_primary);
       l += sizeof (text_primary) - 1;
-      accelerator_mods &= ~GTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL; /* consume the default accel */
+      accelerator_mods &= ~BTK_DEFAULT_ACCEL_MOD_MASK_VIRTUAL; /* consume the default accel */
     }
-  if (accelerator_mods & GDK_SHIFT_MASK)
+  if (accelerator_mods & BDK_SHIFT_MASK)
     {
       strcpy (accelerator + l, text_shift);
       l += sizeof (text_shift) - 1;
     }
-  if (accelerator_mods & GDK_CONTROL_MASK)
+  if (accelerator_mods & BDK_CONTROL_MASK)
     {
       strcpy (accelerator + l, text_control);
       l += sizeof (text_control) - 1;
     }
-  if (accelerator_mods & GDK_MOD1_MASK)
+  if (accelerator_mods & BDK_MOD1_MASK)
     {
       strcpy (accelerator + l, text_mod1);
       l += sizeof (text_mod1) - 1;
     }
-  if (accelerator_mods & GDK_MOD2_MASK)
+  if (accelerator_mods & BDK_MOD2_MASK)
     {
       strcpy (accelerator + l, text_mod2);
       l += sizeof (text_mod2) - 1;
     }
-  if (accelerator_mods & GDK_MOD3_MASK)
+  if (accelerator_mods & BDK_MOD3_MASK)
     {
       strcpy (accelerator + l, text_mod3);
       l += sizeof (text_mod3) - 1;
     }
-  if (accelerator_mods & GDK_MOD4_MASK)
+  if (accelerator_mods & BDK_MOD4_MASK)
     {
       strcpy (accelerator + l, text_mod4);
       l += sizeof (text_mod4) - 1;
     }
-  if (accelerator_mods & GDK_MOD5_MASK)
+  if (accelerator_mods & BDK_MOD5_MASK)
     {
       strcpy (accelerator + l, text_mod5);
       l += sizeof (text_mod5) - 1;
     }
-  if (accelerator_mods & GDK_META_MASK)
+  if (accelerator_mods & BDK_META_MASK)
     {
       strcpy (accelerator + l, text_meta);
       l += sizeof (text_meta) - 1;
     }
-  if (accelerator_mods & GDK_HYPER_MASK)
+  if (accelerator_mods & BDK_HYPER_MASK)
     {
       strcpy (accelerator + l, text_hyper);
       l += sizeof (text_hyper) - 1;
     }
-  if (accelerator_mods & GDK_SUPER_MASK)
+  if (accelerator_mods & BDK_SUPER_MASK)
     {
       strcpy (accelerator + l, text_super);
       l += sizeof (text_super) - 1;
@@ -1426,7 +1426,7 @@ gtk_accelerator_name (guint           accelerator_key,
 }
 
 /**
- * gtk_accelerator_get_label:
+ * btk_accelerator_get_label:
  * @accelerator_key:  accelerator keyval
  * @accelerator_mods: accelerator modifier mask
  * 
@@ -1438,31 +1438,31 @@ gtk_accelerator_name (guint           accelerator_key,
  * Since: 2.6
  */
 gchar*
-gtk_accelerator_get_label (guint           accelerator_key,
-			   GdkModifierType accelerator_mods)
+btk_accelerator_get_label (guint           accelerator_key,
+			   BdkModifierType accelerator_mods)
 {
-  GtkAccelLabelClass *klass;
+  BtkAccelLabelClass *klass;
   gchar *label;
 
-  klass = g_type_class_ref (GTK_TYPE_ACCEL_LABEL);
-  label = _gtk_accel_label_class_get_accelerator_label (klass, 
+  klass = g_type_class_ref (BTK_TYPE_ACCEL_LABEL);
+  label = _btk_accel_label_class_get_accelerator_label (klass, 
 							accelerator_key, 
 							accelerator_mods);
-  g_type_class_unref (klass); /* klass is kept alive since gtk uses static types */
+  g_type_class_unref (klass); /* klass is kept alive since btk uses static types */
 
   return label;
 }  
 
 /**
- * gtk_accelerator_set_default_mod_mask:
+ * btk_accelerator_set_default_mod_mask:
  * @default_mod_mask: accelerator modifier mask
  *
  * Sets the modifiers that will be considered significant for keyboard
- * accelerators. The default mod mask is #GDK_CONTROL_MASK |
- * #GDK_SHIFT_MASK | #GDK_MOD1_MASK | #GDK_SUPER_MASK | 
- * #GDK_HYPER_MASK | #GDK_META_MASK, that is, Control, Shift, Alt, 
+ * accelerators. The default mod mask is #BDK_CONTROL_MASK |
+ * #BDK_SHIFT_MASK | #BDK_MOD1_MASK | #BDK_SUPER_MASK | 
+ * #BDK_HYPER_MASK | #BDK_META_MASK, that is, Control, Shift, Alt, 
  * Super, Hyper and Meta. Other modifiers will by default be ignored 
- * by #GtkAccelGroup.
+ * by #BtkAccelGroup.
  * You must include at least the three modifiers Control, Shift
  * and Alt in any value you pass to this function.
  *
@@ -1470,23 +1470,23 @@ gtk_accelerator_get_label (guint           accelerator_key,
  * before using any accelerator groups.
  */
 void
-gtk_accelerator_set_default_mod_mask (GdkModifierType default_mod_mask)
+btk_accelerator_set_default_mod_mask (BdkModifierType default_mod_mask)
 {
-  default_accel_mod_mask = (default_mod_mask & GDK_MODIFIER_MASK) |
-    (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK);
+  default_accel_mod_mask = (default_mod_mask & BDK_MODIFIER_MASK) |
+    (BDK_CONTROL_MASK | BDK_SHIFT_MASK | BDK_MOD1_MASK);
 }
 
 /**
- * gtk_accelerator_get_default_mod_mask:
+ * btk_accelerator_get_default_mod_mask:
  * @returns: the default accelerator modifier mask
  *
- * Gets the value set by gtk_accelerator_set_default_mod_mask().
+ * Gets the value set by btk_accelerator_set_default_mod_mask().
  */
 guint
-gtk_accelerator_get_default_mod_mask (void)
+btk_accelerator_get_default_mod_mask (void)
 {
   return default_accel_mod_mask;
 }
 
-#define __GTK_ACCEL_GROUP_C__
-#include "gtkaliasdef.c"
+#define __BTK_ACCEL_GROUP_C__
+#include "btkaliasdef.c"

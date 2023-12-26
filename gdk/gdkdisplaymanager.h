@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,50 +18,50 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_DISPLAY_MANAGER_H__
-#define __GDK_DISPLAY_MANAGER_H__
+#ifndef __BDK_DISPLAY_MANAGER_H__
+#define __BDK_DISPLAY_MANAGER_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
-#include <gdk/gdkdisplay.h>
+#include <bdk/bdktypes.h>
+#include <bdk/bdkdisplay.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GdkDisplayManager      GdkDisplayManager;
-typedef struct _GdkDisplayManagerClass GdkDisplayManagerClass;
+typedef struct _BdkDisplayManager      BdkDisplayManager;
+typedef struct _BdkDisplayManagerClass BdkDisplayManagerClass;
 
-#define GDK_TYPE_DISPLAY_MANAGER              (gdk_display_manager_get_type ())
-#define GDK_DISPLAY_MANAGER(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DISPLAY_MANAGER, GdkDisplayManager))
-#define GDK_DISPLAY_MANAGER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DISPLAY_MANAGER, GdkDisplayManagerClass))
-#define GDK_IS_DISPLAY_MANAGER(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DISPLAY_MANAGER))
-#define GDK_IS_DISPLAY_MANAGER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DISPLAY_MANAGER))
-#define GDK_DISPLAY_MANAGER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DISPLAY_MANAGER, GdkDisplayManagerClass))
+#define BDK_TYPE_DISPLAY_MANAGER              (bdk_display_manager_get_type ())
+#define BDK_DISPLAY_MANAGER(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManager))
+#define BDK_DISPLAY_MANAGER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
+#define BDK_IS_DISPLAY_MANAGER(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_MANAGER))
+#define BDK_IS_DISPLAY_MANAGER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_MANAGER))
+#define BDK_DISPLAY_MANAGER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
 
-struct _GdkDisplayManagerClass
+struct _BdkDisplayManagerClass
 {
   GObjectClass parent_class;
 
-  void (*display_opened) (GdkDisplayManager *display_manager,
-			  GdkDisplay *display);
+  void (*display_opened) (BdkDisplayManager *display_manager,
+			  BdkDisplay *display);
 };
 
-GType gdk_display_manager_get_type (void) G_GNUC_CONST;
+GType bdk_display_manager_get_type (void) G_GNUC_CONST;
 
-GdkDisplayManager *gdk_display_manager_get                 (void);
-GdkDisplay *       gdk_display_manager_get_default_display (GdkDisplayManager *display_manager);
-void               gdk_display_manager_set_default_display (GdkDisplayManager *display_manager,
-							    GdkDisplay        *display);
-GSList     *       gdk_display_manager_list_displays       (GdkDisplayManager *display_manager);
+BdkDisplayManager *bdk_display_manager_get                 (void);
+BdkDisplay *       bdk_display_manager_get_default_display (BdkDisplayManager *display_manager);
+void               bdk_display_manager_set_default_display (BdkDisplayManager *display_manager,
+							    BdkDisplay        *display);
+GSList     *       bdk_display_manager_list_displays       (BdkDisplayManager *display_manager);
 
 G_END_DECLS
 
-#endif /* __GDK_DISPLAY_MANAGER_H__ */
+#endif /* __BDK_DISPLAY_MANAGER_H__ */

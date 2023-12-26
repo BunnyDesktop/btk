@@ -1,4 +1,4 @@
-/* GdkQuartzWindow.m
+/* BdkQuartzWindow.m
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -18,11 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "GdkQuartzWindow.h"
-#include "gdkwindow-quartz.h"
-#include "gdkprivate-quartz.h"
+#import "BdkQuartzWindow.h"
+#include "bdkwindow-quartz.h"
+#include "bdkprivate-quartz.h"
 
-@implementation GdkQuartzWindow
+@implementation BdkQuartzWindow
 
 - (void)windowWillClose:(NSNotification*)notification
 {
@@ -34,60 +34,60 @@
 
 -(BOOL)windowShouldClose:(id)sender
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkEvent *event;
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkEvent *event;
 
-  event = gdk_event_new (GDK_DELETE);
+  event = bdk_event_new (BDK_DELETE);
 
   event->any.window = g_object_ref (window);
   event->any.send_event = FALSE;
 
-  _gdk_event_queue_append (gdk_display_get_default (), event);
+  _bdk_event_queue_append (bdk_display_get_default (), event);
 
   return NO;
 }
 
 -(void)windowWillMiniaturize:(NSNotification *)aNotification
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
+  BdkWindow *window = [[self contentView] bdkWindow];
 
-  _gdk_quartz_window_detach_from_parent (window);
+  _bdk_quartz_window_detach_from_parent (window);
 }
 
 -(void)windowDidMiniaturize:(NSNotification *)aNotification
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
+  BdkWindow *window = [[self contentView] bdkWindow];
 
-  gdk_synthesize_window_state (window, 0, 
-			       GDK_WINDOW_STATE_ICONIFIED);
+  bdk_synthesize_window_state (window, 0, 
+			       BDK_WINDOW_STATE_ICONIFIED);
 }
 
 -(void)windowDidDeminiaturize:(NSNotification *)aNotification
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
+  BdkWindow *window = [[self contentView] bdkWindow];
 
-  _gdk_quartz_window_attach_to_parent (window);
+  _bdk_quartz_window_attach_to_parent (window);
 
-  gdk_synthesize_window_state (window, GDK_WINDOW_STATE_ICONIFIED, 0);
+  bdk_synthesize_window_state (window, BDK_WINDOW_STATE_ICONIFIED, 0);
 }
 
 -(void)windowDidBecomeKey:(NSNotification *)aNotification
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
+  BdkWindow *window = [[self contentView] bdkWindow];
 
-  _gdk_quartz_events_update_focus_window (window, TRUE);
+  _bdk_quartz_events_update_focus_window (window, TRUE);
 }
 
 -(void)windowDidResignKey:(NSNotification *)aNotification
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
+  BdkWindow *window = [[self contentView] bdkWindow];
 
-  _gdk_quartz_events_update_focus_window (window, FALSE);
+  _bdk_quartz_events_update_focus_window (window, FALSE);
 }
 
 -(void)windowDidBecomeMain:(NSNotification *)aNotification
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
+  BdkWindow *window = [[self contentView] bdkWindow];
 
   if (![self isVisible])
     {
@@ -99,15 +99,15 @@
       return;
     }
 
-  _gdk_quartz_window_did_become_main (window);
+  _bdk_quartz_window_did_become_main (window);
 }
 
 -(void)windowDidResignMain:(NSNotification *)aNotification
 {
-  GdkWindow *window;
+  BdkWindow *window;
 
-  window = [[self contentView] gdkWindow];
-  _gdk_quartz_window_did_resign_main (window);
+  window = [[self contentView] bdkWindow];
+  _bdk_quartz_window_did_resign_main (window);
 }
 
 /* Used in combination with NSLeftMouseUp in sendEvent to keep track
@@ -126,7 +126,7 @@
     {
       double time = ((double)[event timestamp]) * 1000.0;
 
-      _gdk_quartz_events_break_all_grabs (time);
+      _bdk_quartz_events_break_all_grabs (time);
       inManualMove = NO;
       inManualResize = NO;
       inMove = NO;
@@ -152,9 +152,9 @@
 
 -(void)checkSendEnterNotify
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
 
   /* When a new window has been created, and the mouse
    * is in the window area, we will not receive an NSMouseEntered
@@ -192,28 +192,28 @@
 -(void)handleDidMoveResize
 {
   NSRect content_rect = [self contentRectForFrameRect:[self frame]];
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkEvent *event;
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkEvent *event;
 
   private->width = content_rect.size.width;
   private->height = content_rect.size.height;
 
-  _gdk_quartz_window_update_position (window);
+  _bdk_quartz_window_update_position (window);
 
   [[self contentView] setFrame:NSMakeRect (0, 0, private->width, private->height)];
 
-  _gdk_window_update_size (window);
+  _bdk_window_update_size (window);
 
   /* Synthesize a configure event */
-  event = gdk_event_new (GDK_CONFIGURE);
+  event = bdk_event_new (BDK_CONFIGURE);
   event->configure.window = g_object_ref (window);
   event->configure.x = private->x;
   event->configure.y = private->y;
   event->configure.width = private->width;
   event->configure.height = private->height;
 
-  _gdk_event_queue_append (gdk_display_get_default (), event);
+  _bdk_event_queue_append (bdk_display_get_default (), event);
 
   [self checkSendEnterNotify];
 }
@@ -245,28 +245,28 @@
 
 -(BOOL)canBecomeMainWindow
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
 
   switch (impl->type_hint)
     {
-    case GDK_WINDOW_TYPE_HINT_NORMAL:
-    case GDK_WINDOW_TYPE_HINT_DIALOG:
+    case BDK_WINDOW_TYPE_HINT_NORMAL:
+    case BDK_WINDOW_TYPE_HINT_DIALOG:
       return YES;
       
-    case GDK_WINDOW_TYPE_HINT_MENU:
-    case GDK_WINDOW_TYPE_HINT_TOOLBAR:
-    case GDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
-    case GDK_WINDOW_TYPE_HINT_UTILITY:
-    case GDK_WINDOW_TYPE_HINT_DOCK:
-    case GDK_WINDOW_TYPE_HINT_DESKTOP:
-    case GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU:
-    case GDK_WINDOW_TYPE_HINT_POPUP_MENU:
-    case GDK_WINDOW_TYPE_HINT_TOOLTIP:
-    case GDK_WINDOW_TYPE_HINT_NOTIFICATION:
-    case GDK_WINDOW_TYPE_HINT_COMBO:
-    case GDK_WINDOW_TYPE_HINT_DND:
+    case BDK_WINDOW_TYPE_HINT_MENU:
+    case BDK_WINDOW_TYPE_HINT_TOOLBAR:
+    case BDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
+    case BDK_WINDOW_TYPE_HINT_UTILITY:
+    case BDK_WINDOW_TYPE_HINT_DOCK:
+    case BDK_WINDOW_TYPE_HINT_DESKTOP:
+    case BDK_WINDOW_TYPE_HINT_DROPDOWN_MENU:
+    case BDK_WINDOW_TYPE_HINT_POPUP_MENU:
+    case BDK_WINDOW_TYPE_HINT_TOOLTIP:
+    case BDK_WINDOW_TYPE_HINT_NOTIFICATION:
+    case BDK_WINDOW_TYPE_HINT_COMBO:
+    case BDK_WINDOW_TYPE_HINT_DND:
       return NO;
     }
   
@@ -275,9 +275,9 @@
 
 -(BOOL)canBecomeKeyWindow
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
 
   if (!private->accept_focus)
     return NO;
@@ -285,27 +285,27 @@
   /* Popup windows should not be able to get focused in the window
    * manager sense, it's only handled through grabs.
    */
-  if (private->window_type == GDK_WINDOW_TEMP)
+  if (private->window_type == BDK_WINDOW_TEMP)
     return NO;
 
   switch (impl->type_hint)
     {
-    case GDK_WINDOW_TYPE_HINT_NORMAL:
-    case GDK_WINDOW_TYPE_HINT_DIALOG:
-    case GDK_WINDOW_TYPE_HINT_MENU:
-    case GDK_WINDOW_TYPE_HINT_TOOLBAR:
-    case GDK_WINDOW_TYPE_HINT_UTILITY:
-    case GDK_WINDOW_TYPE_HINT_DOCK:
-    case GDK_WINDOW_TYPE_HINT_DESKTOP:
-    case GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU:
-    case GDK_WINDOW_TYPE_HINT_POPUP_MENU:
-    case GDK_WINDOW_TYPE_HINT_COMBO:
+    case BDK_WINDOW_TYPE_HINT_NORMAL:
+    case BDK_WINDOW_TYPE_HINT_DIALOG:
+    case BDK_WINDOW_TYPE_HINT_MENU:
+    case BDK_WINDOW_TYPE_HINT_TOOLBAR:
+    case BDK_WINDOW_TYPE_HINT_UTILITY:
+    case BDK_WINDOW_TYPE_HINT_DOCK:
+    case BDK_WINDOW_TYPE_HINT_DESKTOP:
+    case BDK_WINDOW_TYPE_HINT_DROPDOWN_MENU:
+    case BDK_WINDOW_TYPE_HINT_POPUP_MENU:
+    case BDK_WINDOW_TYPE_HINT_COMBO:
       return YES;
       
-    case GDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
-    case GDK_WINDOW_TYPE_HINT_TOOLTIP:
-    case GDK_WINDOW_TYPE_HINT_NOTIFICATION:
-    case GDK_WINDOW_TYPE_HINT_DND:
+    case BDK_WINDOW_TYPE_HINT_SPLASHSCREEN:
+    case BDK_WINDOW_TYPE_HINT_TOOLTIP:
+    case BDK_WINDOW_TYPE_HINT_NOTIFICATION:
+    case BDK_WINDOW_TYPE_HINT_DND:
       return NO;
     }
   
@@ -314,9 +314,9 @@
 
 - (void)showAndMakeKey:(BOOL)makeKey
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
 
   inShowOrHide = YES;
 
@@ -332,9 +332,9 @@
 
 - (void)hide
 {
-  GdkWindow *window = [[self contentView] gdkWindow];
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkWindowImplQuartz *impl = GDK_WINDOW_IMPL_QUARTZ (private->impl);
+  BdkWindow *window = [[self contentView] bdkWindow];
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkWindowImplQuartz *impl = BDK_WINDOW_IMPL_QUARTZ (private->impl);
 
   inShowOrHide = YES;
   [impl->toplevel orderOut:nil];
@@ -420,7 +420,7 @@
 
   [self setFrame:newFrame display:YES];
 
-  /* Let the resizing be handled by GTK+. */
+  /* Let the resizing be handled by BTK+. */
   if (g_main_context_pending (NULL))
     g_main_context_iteration (NULL, FALSE);
 
@@ -449,50 +449,50 @@
 
 
 
-static GdkDragContext *current_context = NULL;
+static BdkDragContext *current_context = NULL;
 
-static GdkDragAction
+static BdkDragAction
 drag_operation_to_drag_action (NSDragOperation operation)
 {
-  GdkDragAction result = 0;
+  BdkDragAction result = 0;
 
-  /* GDK and Quartz drag operations do not map 1:1.
+  /* BDK and Quartz drag operations do not map 1:1.
    * This mapping represents about the best that we
    * can come up.
    *
-   * Note that NSDragOperationPrivate and GDK_ACTION_PRIVATE
-   * have almost opposite meanings: the GDK one means that the
+   * Note that NSDragOperationPrivate and BDK_ACTION_PRIVATE
+   * have almost opposite meanings: the BDK one means that the
    * destination is solely responsible for the action; the Quartz
    * one means that the source and destination will agree
    * privately on the action. NSOperationGeneric is close in meaning
-   * to GDK_ACTION_PRIVATE but there is a problem: it will be
+   * to BDK_ACTION_PRIVATE but there is a problem: it will be
    * sent for any ordinary drag, and likely not understood
    * by any intra-widget drag (since the source & dest are the
    * same).
    */
 
   if (operation & NSDragOperationGeneric)
-    result |= GDK_ACTION_MOVE;
+    result |= BDK_ACTION_MOVE;
   if (operation & NSDragOperationCopy)
-    result |= GDK_ACTION_COPY;
+    result |= BDK_ACTION_COPY;
   if (operation & NSDragOperationMove)
-    result |= GDK_ACTION_MOVE;
+    result |= BDK_ACTION_MOVE;
   if (operation & NSDragOperationLink)
-    result |= GDK_ACTION_LINK;
+    result |= BDK_ACTION_LINK;
 
   return result;
 }
 
 static NSDragOperation
-drag_action_to_drag_operation (GdkDragAction action)
+drag_action_to_drag_operation (BdkDragAction action)
 {
   NSDragOperation result = 0;
 
-  if (action & GDK_ACTION_COPY)
+  if (action & BDK_ACTION_COPY)
     result |= NSDragOperationCopy;
-  if (action & GDK_ACTION_LINK)
+  if (action & BDK_ACTION_LINK)
     result |= NSDragOperationLink;
-  if (action & GDK_ACTION_MOVE)
+  if (action & BDK_ACTION_MOVE)
     result |= NSDragOperationMove;
 
   return result;
@@ -503,28 +503,28 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 {
   g_assert (current_context != NULL);
 
-  GDK_DRAG_CONTEXT_PRIVATE (current_context)->dragging_info = sender;
+  BDK_DRAG_CONTEXT_PRIVATE (current_context)->dragging_info = sender;
   current_context->suggested_action = drag_operation_to_drag_action ([sender draggingSourceOperationMask]);
   current_context->actions = current_context->suggested_action;
 }
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
 {
-  GdkEvent event;
+  BdkEvent event;
 
   if (current_context)
     g_object_unref (current_context);
   
-  current_context = gdk_drag_context_new ();
+  current_context = bdk_drag_context_new ();
   update_context_from_dragging_info (sender);
 
-  event.dnd.type = GDK_DRAG_ENTER;
-  event.dnd.window = g_object_ref ([[self contentView] gdkWindow]);
+  event.dnd.type = BDK_DRAG_ENTER;
+  event.dnd.window = g_object_ref ([[self contentView] bdkWindow]);
   event.dnd.send_event = FALSE;
   event.dnd.context = current_context;
-  event.dnd.time = GDK_CURRENT_TIME;
+  event.dnd.time = BDK_CURRENT_TIME;
 
-  (*_gdk_event_func) (&event, _gdk_event_data);
+  (*_bdk_event_func) (&event, _bdk_event_data);
 
   return NSDragOperationNone;
 }
@@ -532,8 +532,8 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 - (void)draggingEnded:(id <NSDraggingInfo>)sender
 {
   /* leave a note for the source about what action was taken */
-  if (_gdk_quartz_drag_source_context && current_context)
-   _gdk_quartz_drag_source_context->action = current_context->action;
+  if (_bdk_quartz_drag_source_context && current_context)
+   _bdk_quartz_drag_source_context->action = current_context->action;
 
   if (current_context)
     g_object_unref (current_context);
@@ -542,15 +542,15 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 
 - (void)draggingExited:(id <NSDraggingInfo>)sender
 {
-  GdkEvent event;
+  BdkEvent event;
   
-  event.dnd.type = GDK_DRAG_LEAVE;
-  event.dnd.window = g_object_ref ([[self contentView] gdkWindow]);
+  event.dnd.type = BDK_DRAG_LEAVE;
+  event.dnd.window = g_object_ref ([[self contentView] bdkWindow]);
   event.dnd.send_event = FALSE;
   event.dnd.context = current_context;
-  event.dnd.time = GDK_CURRENT_TIME;
+  event.dnd.time = BDK_CURRENT_TIME;
 
-  (*_gdk_event_func) (&event, _gdk_event_data);
+  (*_bdk_event_func) (&event, _bdk_event_data);
   
   g_object_unref (current_context);
   current_context = NULL;
@@ -560,21 +560,21 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 {
   NSPoint point = [sender draggingLocation];
   NSPoint screen_point = [self convertBaseToScreen:point];
-  GdkEvent event;
+  BdkEvent event;
   int gx, gy;
 
   update_context_from_dragging_info (sender);
-  _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, &gx, &gy);
+  _bdk_quartz_window_nspoint_to_bdk_xy (screen_point, &gx, &gy);
 
-  event.dnd.type = GDK_DRAG_MOTION;
-  event.dnd.window = g_object_ref ([[self contentView] gdkWindow]);
+  event.dnd.type = BDK_DRAG_MOTION;
+  event.dnd.window = g_object_ref ([[self contentView] bdkWindow]);
   event.dnd.send_event = FALSE;
   event.dnd.context = current_context;
-  event.dnd.time = GDK_CURRENT_TIME;
+  event.dnd.time = BDK_CURRENT_TIME;
   event.dnd.x_root = gx;
   event.dnd.y_root = gy;
 
-  (*_gdk_event_func) (&event, _gdk_event_data);
+  (*_bdk_event_func) (&event, _bdk_event_data);
 
   g_object_unref (event.dnd.window);
 
@@ -585,21 +585,21 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 {
   NSPoint point = [sender draggingLocation];
   NSPoint screen_point = [self convertBaseToScreen:point];
-  GdkEvent event;
+  BdkEvent event;
   int gy, gx;
 
   update_context_from_dragging_info (sender);
-  _gdk_quartz_window_nspoint_to_gdk_xy (screen_point, &gx, &gy);
+  _bdk_quartz_window_nspoint_to_bdk_xy (screen_point, &gx, &gy);
 
-  event.dnd.type = GDK_DROP_START;
-  event.dnd.window = g_object_ref ([[self contentView] gdkWindow]);
+  event.dnd.type = BDK_DROP_START;
+  event.dnd.window = g_object_ref ([[self contentView] bdkWindow]);
   event.dnd.send_event = FALSE;
   event.dnd.context = current_context;
-  event.dnd.time = GDK_CURRENT_TIME;
+  event.dnd.time = BDK_CURRENT_TIME;
   event.dnd.x_root = gx;
   event.dnd.y_root = gy;
 
-  (*_gdk_event_func) (&event, _gdk_event_data);
+  (*_bdk_event_func) (&event, _bdk_event_data);
 
   g_object_unref (event.dnd.window);
 
@@ -616,17 +616,17 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 
 - (void)draggedImage:(NSImage *)anImage endedAt:(NSPoint)aPoint operation:(NSDragOperation)operation
 {
-  GdkEvent event;
-  GdkScreen *screen;
+  BdkEvent event;
+  BdkScreen *screen;
 
-  g_assert (_gdk_quartz_drag_source_context != NULL);
+  g_assert (_bdk_quartz_drag_source_context != NULL);
 
-  event.dnd.type = GDK_DROP_FINISHED;
-  event.dnd.window = g_object_ref ([[self contentView] gdkWindow]);
+  event.dnd.type = BDK_DROP_FINISHED;
+  event.dnd.window = g_object_ref ([[self contentView] bdkWindow]);
   event.dnd.send_event = FALSE;
-  event.dnd.context = _gdk_quartz_drag_source_context;
+  event.dnd.context = _bdk_quartz_drag_source_context;
 
-  screen = gdk_window_get_screen (event.dnd.window);
+  screen = bdk_window_get_screen (event.dnd.window);
 
   if (screen)
     {
@@ -635,30 +635,30 @@ update_context_from_dragging_info (id <NSDraggingInfo> sender)
 
       event.dnd.context->dest_window = NULL;
 
-      windows = gdk_screen_get_toplevel_windows (screen);
-      _gdk_quartz_window_nspoint_to_gdk_xy (aPoint, &gx, &gy);
+      windows = bdk_screen_get_toplevel_windows (screen);
+      _bdk_quartz_window_nspoint_to_bdk_xy (aPoint, &gx, &gy);
 
       for (list = windows; list; list = list->next) 
         {
-          GdkWindow* win = (GdkWindow*) list->data;
+          BdkWindow* win = (BdkWindow*) list->data;
           gint wx, wy;
           gint ww, wh;
 
-          gdk_window_get_root_origin (win, &wx, &wy);
-          ww = gdk_window_get_width (win);
-          wh = gdk_window_get_height (win);
+          bdk_window_get_root_origin (win, &wx, &wy);
+          ww = bdk_window_get_width (win);
+          wh = bdk_window_get_height (win);
 
           if (gx > wx && gy > wy && gx <= wx + ww && gy <= wy + wh)
             event.dnd.context->dest_window = win;
         }
     }
 
-  (*_gdk_event_func) (&event, _gdk_event_data);
+  (*_bdk_event_func) (&event, _bdk_event_data);
 
   g_object_unref (event.dnd.window);
 
-  g_object_unref (_gdk_quartz_drag_source_context);
-  _gdk_quartz_drag_source_context = NULL;
+  g_object_unref (_bdk_quartz_drag_source_context);
+  _bdk_quartz_drag_source_context = NULL;
 }
 
 @end

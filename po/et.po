@@ -1,9 +1,9 @@
-# GTK+ eesti keele tõlge.
-# Estonian translation of GTK+.
+# BTK+ eesti keele tõlge.
+# Estonian translation of BTK+.
 #
 # Copyright (C) 1999-2007 Free Software Foundation, Inc.
 # Copyright (C) 2007-2010 The GNOME Project.
-# This file is distributed under the same license as the gtk package.
+# This file is distributed under the same license as the btk package.
 #
 # Lauris Kaplinski <lauris ariman ee>, 1999.
 # Tõivo Leedjärv <toivo linux ee>, 2002-2004.
@@ -13,8 +13,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GTK+ 2.22\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk%"
+"Project-Id-Version: BTK+ 2.22\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btk%"
 "2b&component=general\n"
 "POT-Creation-Date: 2010-08-31 19:09+0000\n"
 "PO-Revision-Date: 2010-08-24 14:57+0300\n"
@@ -27,12 +27,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, c-format
-msgid "Error parsing option --gdk-debug"
-msgstr "Viga võtme --gdk-debug parsimisel"
+msgid "Error parsing option --bdk-debug"
+msgstr "Viga võtme --bdk-debug parsimisel"
 
 #, c-format
-msgid "Error parsing option --gdk-no-debug"
-msgstr "Viga võtme --gdk-no-debug parsimisel"
+msgid "Error parsing option --bdk-no-debug"
+msgstr "Viga võtme --bdk-no-debug parsimisel"
 
 #. Description of --class=CLASS in --help output
 msgid "Program class as used by the window manager"
@@ -66,22 +66,22 @@ msgstr "Kasutatav X'i ekraan"
 msgid "SCREEN"
 msgstr "EKRAAN"
 
-#. Description of --gdk-debug=FLAGS in --help output
-#| msgid "GTK+ debugging flags to set"
-msgid "GDK debugging flags to set"
-msgstr "GDK silumislipud, mida seada"
+#. Description of --bdk-debug=FLAGS in --help output
+#| msgid "BTK+ debugging flags to set"
+msgid "BDK debugging flags to set"
+msgstr "BDK silumislipud, mida seada"
 
-#. Placeholder in --gdk-debug=FLAGS in --help output
-#. Placeholder in --gdk-no-debug=FLAGS in --help output
-#. Placeholder in --gtk-debug=FLAGS in --help output
-#. Placeholder in --gtk-no-debug=FLAGS in --help output
+#. Placeholder in --bdk-debug=FLAGS in --help output
+#. Placeholder in --bdk-no-debug=FLAGS in --help output
+#. Placeholder in --btk-debug=FLAGS in --help output
+#. Placeholder in --btk-no-debug=FLAGS in --help output
 msgid "FLAGS"
 msgstr "LIPUD"
 
-#. Description of --gdk-no-debug=FLAGS in --help output
-#| msgid "GTK+ debugging flags to unset"
-msgid "GDK debugging flags to unset"
-msgstr "GDK silumislipud, mida maha võtta"
+#. Description of --bdk-no-debug=FLAGS in --help output
+#| msgid "BTK+ debugging flags to unset"
+msgid "BDK debugging flags to unset"
+msgstr "BDK silumislipud, mida maha võtta"
 
 msgctxt "keyboard label"
 msgid "BackSpace"
@@ -448,7 +448,7 @@ msgid "%d"
 msgstr "%d"
 
 #. Translators: This dictates how the year is displayed in
-#. * gtkcalendar widget.  See strftime() manual for the format.
+#. * btkcalendar widget.  See strftime() manual for the format.
 #. * Use only ASCII in the translation.
 #. *
 #. * Also look for the msgid "2000".
@@ -470,7 +470,7 @@ msgstr "Välja lülitatud"
 
 #. This label is displayed in a treeview cell displaying
 #. * an accelerator key combination that is not valid according
-#. * to gtk_accelerator_valid().
+#. * to btk_accelerator_valid().
 #.
 msgctxt "Accelerator"
 msgid "Invalid"
@@ -1030,7 +1030,7 @@ msgstr "Nimi on liiga pikk"
 msgid "Couldn't convert filename"
 msgstr "Failinime pole võimalik teisendada"
 
-#. The pointers we return for a GtkFileSystemVolume are opaque tokens; they are
+#. The pointers we return for a BtkFileSystemVolume are opaque tokens; they are
 #. * really pointers to GDrive, GVolume or GMount objects.  We need an extra
 #. * token for the fake "File System" volume.  So, we'll return a pointer to
 #. * this particular string.
@@ -1191,11 +1191,11 @@ msgstr "Kopeeri URL"
 msgid "Invalid URI"
 msgstr "Vigane URI"
 
-#. Description of --gtk-module=MODULES in --help output
-msgid "Load additional GTK+ modules"
-msgstr "Täiendavate GTK+ moodulite laadimine"
+#. Description of --btk-module=MODULES in --help output
+msgid "Load additional BTK+ modules"
+msgstr "Täiendavate BTK+ moodulite laadimine"
 
-#. Placeholder in --gtk-module=MODULES in --help output
+#. Placeholder in --btk-module=MODULES in --help output
 msgid "MODULES"
 msgstr "MOODULID"
 
@@ -1203,13 +1203,13 @@ msgstr "MOODULID"
 msgid "Make all warnings fatal"
 msgstr "Kõikide hoiatuste muutmine fataalseks"
 
-#. Description of --gtk-debug=FLAGS in --help output
-msgid "GTK+ debugging flags to set"
-msgstr "GTK+ silumislipud, mida seada"
+#. Description of --btk-debug=FLAGS in --help output
+msgid "BTK+ debugging flags to set"
+msgstr "BTK+ silumislipud, mida seada"
 
-#. Description of --gtk-no-debug=FLAGS in --help output
-msgid "GTK+ debugging flags to unset"
-msgstr "GTK+ silumislipud, mida maha võtta"
+#. Description of --btk-no-debug=FLAGS in --help output
+msgid "BTK+ debugging flags to unset"
+msgstr "BTK+ silumislipud, mida maha võtta"
 
 #. Translate to default:RTL if you want your widgets
 #. * to be RTL, otherwise translate to default:LTR.
@@ -1223,11 +1223,11 @@ msgstr "default:LTR"
 msgid "Cannot open display: %s"
 msgstr "Kuva pole võimalik avada: %s"
 
-msgid "GTK+ Options"
-msgstr "GTK+ võtmed"
+msgid "BTK+ Options"
+msgstr "BTK+ võtmed"
 
-msgid "Show GTK+ Options"
-msgstr "GTK+ võtmete näitamine"
+msgid "Show BTK+ Options"
+msgstr "BTK+ võtmete näitamine"
 
 msgid "Co_nnect"
 msgstr "Ü_hendu"
@@ -1525,7 +1525,7 @@ msgid "General"
 msgstr "Üldine"
 
 #. Translators: These strings name the possible arrangements of
-#. * multiple pages on a sheet when printing (same as in gtkprintbackendcups.c)
+#. * multiple pages on a sheet when printing (same as in btkprintbackendcups.c)
 #.
 #. Translators: These strings name the possible arrangements of
 #. * multiple pages on a sheet when printing
@@ -1806,7 +1806,7 @@ msgstr "Edenemisnäidik"
 msgid "Provides visual indication of progress"
 msgstr "Edenemise visuaalne kajastus"
 
-#. KEEP IN SYNC with gtkiconfactory.c stock icons, when appropriate
+#. KEEP IN SYNC with btkiconfactory.c stock icons, when appropriate
 msgctxt "Stock label"
 msgid "Information"
 msgstr "Teave"
@@ -1884,7 +1884,7 @@ msgstr "_Hülga"
 
 msgctxt "Stock label"
 msgid "_Disconnect"
-msgstr "Katkesta ühen_dus"
+msgstr "Kbatkesta ühen_dus"
 
 msgctxt "Stock label"
 msgid "_Execute"
@@ -2302,10 +2302,10 @@ msgid "Serialized data is malformed"
 msgstr "Serialiseeritud andmed on vääralt vormindatud"
 
 msgid ""
-"Serialized data is malformed. First section isn't GTKTEXTBUFFERCONTENTS-0001"
+"Serialized data is malformed. First section isn't BTKTEXTBUFFERCONTENTS-0001"
 msgstr ""
 "Serialiseeritud andmed pole korrektselt vormindatud. Esimene sektsioon pole "
-"GTKTEXTBUFFERCONTENTS-0001"
+"BTKTEXTBUFFERCONTENTS-0001"
 
 msgid "LRM _Left-to-right mark"
 msgstr "LRM _Vasakult-paremale märk"

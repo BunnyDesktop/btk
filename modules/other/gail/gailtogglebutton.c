@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,124 +20,124 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailtogglebutton.h"
+#include <btk/btk.h>
+#include "bailtogglebutton.h"
 
-static void      gail_toggle_button_class_init        (GailToggleButtonClass *klass);
+static void      bail_toggle_button_class_init        (BailToggleButtonClass *klass);
 
-static void      gail_toggle_button_init              (GailToggleButton      *button);
+static void      bail_toggle_button_init              (BailToggleButton      *button);
 
-static void      gail_toggle_button_toggled_gtk       (GtkWidget             *widget);
+static void      bail_toggle_button_toggled_btk       (BtkWidget             *widget);
 
-static void      gail_toggle_button_real_notify_gtk   (GObject               *obj,
+static void      bail_toggle_button_real_notify_btk   (GObject               *obj,
                                                        GParamSpec            *pspec);
 
-static void      gail_toggle_button_real_initialize   (AtkObject             *obj,
+static void      bail_toggle_button_real_initialize   (BatkObject             *obj,
                                                        gpointer              data);
 
-static AtkStateSet* gail_toggle_button_ref_state_set  (AtkObject             *accessible);
+static BatkStateSet* bail_toggle_button_ref_state_set  (BatkObject             *accessible);
 
-G_DEFINE_TYPE (GailToggleButton, gail_toggle_button, GAIL_TYPE_BUTTON)
+G_DEFINE_TYPE (BailToggleButton, bail_toggle_button, BAIL_TYPE_BUTTON)
 
 static void
-gail_toggle_button_class_init (GailToggleButtonClass *klass)
+bail_toggle_button_class_init (BailToggleButtonClass *klass)
 {
-  GailWidgetClass *widget_class;
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BailWidgetClass *widget_class;
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  widget_class = (GailWidgetClass*)klass;
-  widget_class->notify_gtk = gail_toggle_button_real_notify_gtk;
+  widget_class = (BailWidgetClass*)klass;
+  widget_class->notify_btk = bail_toggle_button_real_notify_btk;
 
-  class->ref_state_set = gail_toggle_button_ref_state_set;
-  class->initialize = gail_toggle_button_real_initialize;
+  class->ref_state_set = bail_toggle_button_ref_state_set;
+  class->initialize = bail_toggle_button_real_initialize;
 }
 
 static void
-gail_toggle_button_init (GailToggleButton *button)
+bail_toggle_button_init (BailToggleButton *button)
 {
 }
 
 static void
-gail_toggle_button_real_initialize (AtkObject *obj,
+bail_toggle_button_real_initialize (BatkObject *obj,
                                     gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_toggle_button_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_toggle_button_parent_class)->initialize (obj, data);
 
   g_signal_connect (data,
                     "toggled",
-                    G_CALLBACK (gail_toggle_button_toggled_gtk),
+                    G_CALLBACK (bail_toggle_button_toggled_btk),
                     NULL);
 
-  if (GTK_IS_CHECK_BUTTON (data))
-    obj->role = ATK_ROLE_CHECK_BOX;
+  if (BTK_IS_CHECK_BUTTON (data))
+    obj->role = BATK_ROLE_CHECK_BOX;
   else
-    obj->role = ATK_ROLE_TOGGLE_BUTTON;
+    obj->role = BATK_ROLE_TOGGLE_BUTTON;
 }
 
 static void
-gail_toggle_button_toggled_gtk (GtkWidget       *widget)
+bail_toggle_button_toggled_btk (BtkWidget       *widget)
 {
-  AtkObject *accessible;
-  GtkToggleButton *toggle_button;
+  BatkObject *accessible;
+  BtkToggleButton *toggle_button;
 
-  toggle_button = GTK_TOGGLE_BUTTON (widget);
+  toggle_button = BTK_TOGGLE_BUTTON (widget);
 
-  accessible = gtk_widget_get_accessible (widget);
-  atk_object_notify_state_change (accessible, ATK_STATE_CHECKED, 
+  accessible = btk_widget_get_accessible (widget);
+  batk_object_notify_state_change (accessible, BATK_STATE_CHECKED, 
                                   toggle_button->active);
 } 
 
-static AtkStateSet*
-gail_toggle_button_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_toggle_button_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkToggleButton *toggle_button;
-  GtkWidget *widget;
+  BatkStateSet *state_set;
+  BtkToggleButton *toggle_button;
+  BtkWidget *widget;
 
-  state_set = ATK_OBJECT_CLASS (gail_toggle_button_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_toggle_button_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
  
   if (widget == NULL)
     return state_set;
 
-  toggle_button = GTK_TOGGLE_BUTTON (widget);
+  toggle_button = BTK_TOGGLE_BUTTON (widget);
 
-  if (gtk_toggle_button_get_active (toggle_button))
-    atk_state_set_add_state (state_set, ATK_STATE_CHECKED);
+  if (btk_toggle_button_get_active (toggle_button))
+    batk_state_set_add_state (state_set, BATK_STATE_CHECKED);
 
-  if (gtk_toggle_button_get_inconsistent (toggle_button))
+  if (btk_toggle_button_get_inconsistent (toggle_button))
     {
-      atk_state_set_remove_state (state_set, ATK_STATE_ENABLED);
-      atk_state_set_add_state (state_set, ATK_STATE_INDETERMINATE);
+      batk_state_set_remove_state (state_set, BATK_STATE_ENABLED);
+      batk_state_set_add_state (state_set, BATK_STATE_INDETERMINATE);
     }
  
   return state_set;
 }
 
 static void
-gail_toggle_button_real_notify_gtk (GObject           *obj,
+bail_toggle_button_real_notify_btk (GObject           *obj,
                                     GParamSpec        *pspec)
 {
-  GtkToggleButton *toggle_button = GTK_TOGGLE_BUTTON (obj);
-  AtkObject *atk_obj;
+  BtkToggleButton *toggle_button = BTK_TOGGLE_BUTTON (obj);
+  BatkObject *batk_obj;
   gboolean sensitive;
   gboolean inconsistent;
 
-  atk_obj = gtk_widget_get_accessible (GTK_WIDGET (toggle_button));
-  sensitive = gtk_widget_get_sensitive (GTK_WIDGET (toggle_button));
-  inconsistent = gtk_toggle_button_get_inconsistent (toggle_button);
+  batk_obj = btk_widget_get_accessible (BTK_WIDGET (toggle_button));
+  sensitive = btk_widget_get_sensitive (BTK_WIDGET (toggle_button));
+  inconsistent = btk_toggle_button_get_inconsistent (toggle_button);
 
   if (strcmp (pspec->name, "inconsistent") == 0)
     {
-      atk_object_notify_state_change (atk_obj, ATK_STATE_INDETERMINATE, inconsistent);
-      atk_object_notify_state_change (atk_obj, ATK_STATE_ENABLED, (sensitive && !inconsistent));
+      batk_object_notify_state_change (batk_obj, BATK_STATE_INDETERMINATE, inconsistent);
+      batk_object_notify_state_change (batk_obj, BATK_STATE_ENABLED, (sensitive && !inconsistent));
     }
   else if (strcmp (pspec->name, "sensitive") == 0)
     {
-      /* Need to override gailwidget behavior of notifying for ENABLED */
-      atk_object_notify_state_change (atk_obj, ATK_STATE_SENSITIVE, sensitive);
-      atk_object_notify_state_change (atk_obj, ATK_STATE_ENABLED, (sensitive && !inconsistent));
+      /* Need to override bailwidget behavior of notifying for ENABLED */
+      batk_object_notify_state_change (batk_obj, BATK_STATE_SENSITIVE, sensitive);
+      batk_object_notify_state_change (batk_obj, BATK_STATE_ENABLED, (sensitive && !inconsistent));
     }
   else
-    GAIL_WIDGET_CLASS (gail_toggle_button_parent_class)->notify_gtk (obj, pspec);
+    BAIL_WIDGET_CLASS (bail_toggle_button_parent_class)->notify_btk (obj, pspec);
 }

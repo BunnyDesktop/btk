@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1997 David Mosberger
  *
  * This library is free software; you can redistribute it and/or
@@ -18,65 +18,65 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_GAMMA_CURVE_H__
-#define __GTK_GAMMA_CURVE_H__
+#ifndef __BTK_GAMMA_CURVE_H__
+#define __BTK_GAMMA_CURVE_H__
 
 
-#include <gtk/gtkvbox.h>
+#include <btk/btkvbox.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_GAMMA_CURVE            (gtk_gamma_curve_get_type ())
-#define GTK_GAMMA_CURVE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_GAMMA_CURVE, GtkGammaCurve))
-#define GTK_GAMMA_CURVE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_GAMMA_CURVE, GtkGammaCurveClass))
-#define GTK_IS_GAMMA_CURVE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_GAMMA_CURVE))
-#define GTK_IS_GAMMA_CURVE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_GAMMA_CURVE))
-#define GTK_GAMMA_CURVE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_GAMMA_CURVE, GtkGammaCurveClass))
+#define BTK_TYPE_GAMMA_CURVE            (btk_gamma_curve_get_type ())
+#define BTK_GAMMA_CURVE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurve))
+#define BTK_GAMMA_CURVE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_GAMMA_CURVE, BtkGammaCurveClass))
+#define BTK_IS_GAMMA_CURVE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_GAMMA_CURVE))
+#define BTK_IS_GAMMA_CURVE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_GAMMA_CURVE))
+#define BTK_GAMMA_CURVE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_GAMMA_CURVE, BtkGammaCurveClass))
 
-typedef struct _GtkGammaCurve		GtkGammaCurve;
-typedef struct _GtkGammaCurveClass	GtkGammaCurveClass;
+typedef struct _BtkGammaCurve		BtkGammaCurve;
+typedef struct _BtkGammaCurveClass	BtkGammaCurveClass;
 
 
-struct _GtkGammaCurve
+struct _BtkGammaCurve
 {
-  GtkVBox vbox;
+  BtkVBox vbox;
 
-  GtkWidget *GSEAL (table);
-  GtkWidget *GSEAL (curve);
-  GtkWidget *GSEAL (button[5]);	/* spline, linear, free, gamma, reset */
+  BtkWidget *GSEAL (table);
+  BtkWidget *GSEAL (curve);
+  BtkWidget *GSEAL (button[5]);	/* spline, linear, free, gamma, reset */
 
   gfloat GSEAL (gamma);
-  GtkWidget *GSEAL (gamma_dialog);
-  GtkWidget *GSEAL (gamma_text);
+  BtkWidget *GSEAL (gamma_dialog);
+  BtkWidget *GSEAL (gamma_text);
 };
 
-struct _GtkGammaCurveClass
+struct _BtkGammaCurveClass
 {
-  GtkVBoxClass parent_class;
+  BtkVBoxClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_gamma_curve_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_gamma_curve_new      (void);
+GType      btk_gamma_curve_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_gamma_curve_new      (void);
 
 
 G_END_DECLS
 
-#endif /* __GTK_GAMMA_CURVE_H__ */
+#endif /* __BTK_GAMMA_CURVE_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

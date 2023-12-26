@@ -3,124 +3,124 @@
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
 <para role="gallery">
-  <link linkend="GtkAccelLabel">
+  <link linkend="BtkAccelLabel">
     <inlinegraphic fileref="accel-label.png" format="PNG"></inlinegraphic>
   </link> 
-  <link linkend="GtkButton">
+  <link linkend="BtkButton">
     <inlinegraphic fileref="button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkCheckButton">
+  <link linkend="BtkCheckButton">
     <inlinegraphic fileref="check-button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkColorButton">
+  <link linkend="BtkColorButton">
     <inlinegraphic fileref="color-button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkComboBox">
+  <link linkend="BtkComboBox">
     <inlinegraphic fileref="combo-box.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkComboBoxEntry">
+  <link linkend="BtkComboBoxEntry">
     <inlinegraphic fileref="combo-box-entry.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkEntry">
+  <link linkend="BtkEntry">
     <inlinegraphic fileref="entry.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkFileChooserButton">
+  <link linkend="BtkFileChooserButton">
     <inlinegraphic fileref="file-button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkFontButton">
+  <link linkend="BtkFontButton">
     <inlinegraphic fileref="font-button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkFrame">
+  <link linkend="BtkFrame">
     <inlinegraphic fileref="frame.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkIconView">
+  <link linkend="BtkIconView">
     <inlinegraphic fileref="icon-view.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkImage">
+  <link linkend="BtkImage">
     <inlinegraphic fileref="image.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkSpinner">
+  <link linkend="BtkSpinner">
     <inlinegraphic fileref="spinner.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkLabel">
+  <link linkend="BtkLabel">
     <inlinegraphic fileref="label.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkLinkButton">
+  <link linkend="BtkLinkButton">
     <inlinegraphic fileref="link-button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkMenuBar">
+  <link linkend="BtkMenuBar">
     <inlinegraphic fileref="menubar.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkNotebook">
+  <link linkend="BtkNotebook">
     <inlinegraphic fileref="notebook.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkPaned">
+  <link linkend="BtkPaned">
     <inlinegraphic fileref="panes.png" format="PNG"></inlinegraphic>
   </link> 
-  <link linkend="GtkVolumeButton">
+  <link linkend="BtkVolumeButton">
     <inlinegraphic fileref="volumebutton.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkPageSetupUnixDialog">
+  <link linkend="BtkPageSetupUnixDialog">
     <inlinegraphic fileref="pagesetupdialog.png" format="PNG"></inlinegraphic>
   </link> 
-  <link linkend="GtkPrintUnixDialog">
+  <link linkend="BtkPrintUnixDialog">
     <inlinegraphic fileref="printdialog.png" format="PNG"></inlinegraphic>
   </link> 
-  <link linkend="GtkProgressBar">
+  <link linkend="BtkProgressBar">
     <inlinegraphic fileref="progressbar.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkRadioButton">
+  <link linkend="BtkRadioButton">
     <inlinegraphic fileref="radio-group.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkRecentChooserDialog">
+  <link linkend="BtkRecentChooserDialog">
     <inlinegraphic fileref="recentchooserdialog.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkScale">
+  <link linkend="BtkScale">
     <inlinegraphic fileref="scales.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkScrolledWindow">
+  <link linkend="BtkScrolledWindow">
     <inlinegraphic fileref="scrolledwindow.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkSeparator">
+  <link linkend="BtkSeparator">
     <inlinegraphic fileref="separator.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkSpinButton">
+  <link linkend="BtkSpinButton">
     <inlinegraphic fileref="spinbutton.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkStatusbar">
+  <link linkend="BtkStatusbar">
     <inlinegraphic fileref="statusbar.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkTextView">
+  <link linkend="BtkTextView">
     <inlinegraphic fileref="multiline-text.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkToggleButton">
+  <link linkend="BtkToggleButton">
     <inlinegraphic fileref="toggle-button.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkToolbar">
+  <link linkend="BtkToolbar">
     <inlinegraphic fileref="toolbar.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkToolPalette">
+  <link linkend="BtkToolPalette">
     <inlinegraphic fileref="toolpalette.png" format="PNG"></inlinegraphic>
   </link> 
-  <link linkend="GtkTreeView">
+  <link linkend="BtkTreeView">
     <inlinegraphic fileref="list-and-tree.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkWindow">
+  <link linkend="BtkWindow">
     <inlinegraphic fileref="window.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkMessageDialog">
+  <link linkend="BtkMessageDialog">
     <inlinegraphic fileref="messagedialog.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkAssistant">
+  <link linkend="BtkAssistant">
     <inlinegraphic fileref="assistant.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkFontSelectionDialog">
+  <link linkend="BtkFontSelectionDialog">
     <inlinegraphic fileref="fontsel.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkColorSelectionDialog">
+  <link linkend="BtkColorSelectionDialog">
     <inlinegraphic fileref="colorsel.png" format="PNG"></inlinegraphic>
   </link>
-  <link linkend="GtkFileChooserDialog">
+  <link linkend="BtkFileChooserDialog">
     <inlinegraphic fileref="filechooser.png" format="PNG"></inlinegraphic>
   </link>
 </para>

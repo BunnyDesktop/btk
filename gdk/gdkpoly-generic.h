@@ -152,7 +152,7 @@ typedef struct {
 
 /*
  *     These are the data structures needed to scan
- *     convert regions.  Two different scan conversion
+ *     convert rebunnyions.  Two different scan conversion
  *     methods are available -- the even-odd method, and
  *     the winding number method.
  *     The even-odd rule states that a point is inside

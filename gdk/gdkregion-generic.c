@@ -1,4 +1,4 @@
-/* $TOG: Region.c /main/31 1998/02/06 17:50:22 kaleb $ */
+/* $TOG: Rebunnyion.c /main/31 1998/02/06 17:50:22 kaleb $ */
 /************************************************************************
 
 Copyright 1987, 1988, 1998  The Open Group
@@ -41,12 +41,12 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ************************************************************************/
-/* $XFree86: xc/lib/X11/Region.c,v 1.5 1999/05/09 10:50:01 dawes Exp $ */
+/* $XFree86: xc/lib/X11/Rebunnyion.c,v 1.5 1999/05/09 10:50:01 dawes Exp $ */
 /*
- * The functions in this file implement the Region abstraction, similar to one
- * used in the X11 sample server. A Region is simply an area, as the name
+ * The functions in this file implement the Rebunnyion abstraction, similar to one
+ * used in the X11 sample server. A Rebunnyion is simply an area, as the name
  * implies, and is implemented as a "y-x-banded" array of rectangles. To
- * explain: Each Region is made up of a certain number of rectangles sorted
+ * explain: Each Rebunnyion is made up of a certain number of rectangles sorted
  * by y coordinate first, and then by x coordinate.
  *
  * Furthermore, the rectangles are banded such that every rectangle with a
@@ -71,46 +71,46 @@ SOFTWARE.
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
-#include <gdkregion.h>
-#include "gdkregion-generic.h"
-#include "gdkalias.h"
+#include <bdkrebunnyion.h>
+#include "bdkrebunnyion-generic.h"
+#include "bdkalias.h"
 
-typedef void (* overlapFunc)    (GdkRegion    *pReg,
-                                 GdkRegionBox *r1,
-                                 GdkRegionBox *r1End,
-                                 GdkRegionBox *r2,
-                                 GdkRegionBox *r2End,
+typedef void (* overlapFunc)    (BdkRebunnyion    *pReg,
+                                 BdkRebunnyionBox *r1,
+                                 BdkRebunnyionBox *r1End,
+                                 BdkRebunnyionBox *r2,
+                                 BdkRebunnyionBox *r2End,
                                  gint          y1,
                                  gint          y2);
-typedef void (* nonOverlapFunc) (GdkRegion    *pReg,
-                                 GdkRegionBox *r,
-                                 GdkRegionBox *rEnd,
+typedef void (* nonOverlapFunc) (BdkRebunnyion    *pReg,
+                                 BdkRebunnyionBox *r,
+                                 BdkRebunnyionBox *rEnd,
                                  gint          y1,
                                  gint          y2);
 
-static void miRegionCopy (GdkRegion       *dstrgn,
-			  const GdkRegion *rgn);
-static void miRegionOp   (GdkRegion       *newReg,
-			  GdkRegion       *reg1,
-			  const GdkRegion *reg2,
+static void miRebunnyionCopy (BdkRebunnyion       *dstrgn,
+			  const BdkRebunnyion *rgn);
+static void miRebunnyionOp   (BdkRebunnyion       *newReg,
+			  BdkRebunnyion       *reg1,
+			  const BdkRebunnyion *reg2,
 			  overlapFunc      overlapFn,
 			  nonOverlapFunc   nonOverlap1Fn,
 			  nonOverlapFunc   nonOverlap2Fn);
-static void miSetExtents (GdkRegion       *pReg);
+static void miSetExtents (BdkRebunnyion       *pReg);
 
 /**
- * gdk_region_new:
+ * bdk_rebunnyion_new:
  *
- * Creates a new empty #GdkRegion.
+ * Creates a new empty #BdkRebunnyion.
  *
- * Returns: a new empty #GdkRegion
+ * Returns: a new empty #BdkRebunnyion
  */
-GdkRegion *
-gdk_region_new (void)
+BdkRebunnyion *
+bdk_rebunnyion_new (void)
 {
-  GdkRegion *temp;
+  BdkRebunnyion *temp;
 
-  temp = g_slice_new (GdkRegion);
+  temp = g_slice_new (BdkRebunnyion);
 
   temp->numRects = 0;
   temp->rects = &temp->extents;
@@ -123,16 +123,16 @@ gdk_region_new (void)
   return temp;
 }
 
-GdkRegion *
-_gdk_region_new_from_yxbanded_rects (GdkRectangle *rects,
+BdkRebunnyion *
+_bdk_rebunnyion_new_from_yxbanded_rects (BdkRectangle *rects,
 				     int num_rects)
 {
-  GdkRegion *temp;
+  BdkRebunnyion *temp;
   int i;
 
-  temp = g_slice_new (GdkRegion);
+  temp = g_slice_new (BdkRebunnyion);
 
-  temp->rects = g_new (GdkRegionBox, num_rects);
+  temp->rects = g_new (BdkRebunnyionBox, num_rects);
   temp->size = num_rects;
   temp->numRects = num_rects;
   for (i = 0; i < num_rects; i++)
@@ -149,24 +149,24 @@ _gdk_region_new_from_yxbanded_rects (GdkRectangle *rects,
 
 
 /**
- * gdk_region_rectangle:
- * @rectangle: a #GdkRectangle
+ * bdk_rebunnyion_rectangle:
+ * @rectangle: a #BdkRectangle
  * 
- * Creates a new region containing the area @rectangle.
+ * Creates a new rebunnyion containing the area @rectangle.
  * 
- * Return value: a new region
+ * Return value: a new rebunnyion
  **/
-GdkRegion *
-gdk_region_rectangle (const GdkRectangle *rectangle)
+BdkRebunnyion *
+bdk_rebunnyion_rectangle (const BdkRectangle *rectangle)
 {
-  GdkRegion *temp;
+  BdkRebunnyion *temp;
 
   g_return_val_if_fail (rectangle != NULL, NULL);
 
   if (rectangle->width <= 0 || rectangle->height <= 0)
-    return gdk_region_new();
+    return bdk_rebunnyion_new();
 
-  temp = g_slice_new (GdkRegion);
+  temp = g_slice_new (BdkRebunnyion);
 
   temp->numRects = 1;
   temp->rects = &temp->extents;
@@ -180,76 +180,76 @@ gdk_region_rectangle (const GdkRectangle *rectangle)
 }
 
 /**
- * gdk_region_copy:
- * @region: a #GdkRegion
+ * bdk_rebunnyion_copy:
+ * @rebunnyion: a #BdkRebunnyion
  * 
- * Copies @region, creating an identical new region.
+ * Copies @rebunnyion, creating an identical new rebunnyion.
  * 
- * Return value: a new region identical to @region
+ * Return value: a new rebunnyion identical to @rebunnyion
  **/
-GdkRegion *
-gdk_region_copy (const GdkRegion *region)
+BdkRebunnyion *
+bdk_rebunnyion_copy (const BdkRebunnyion *rebunnyion)
 {
-  GdkRegion *temp;
+  BdkRebunnyion *temp;
 
-  g_return_val_if_fail (region != NULL, NULL);
+  g_return_val_if_fail (rebunnyion != NULL, NULL);
 
-  temp = gdk_region_new ();
+  temp = bdk_rebunnyion_new ();
 
-  miRegionCopy (temp, region);
+  miRebunnyionCopy (temp, rebunnyion);
 
   return temp;
 }
 
 /**
- * gdk_region_get_clipbox:
- * @region: a #GdkRegion
+ * bdk_rebunnyion_get_clipbox:
+ * @rebunnyion: a #BdkRebunnyion
  * @rectangle: return location for the clipbox
  *
- * Obtains the smallest rectangle which includes the entire #GdkRegion.
+ * Obtains the smallest rectangle which includes the entire #BdkRebunnyion.
  *
  */
 void
-gdk_region_get_clipbox (const GdkRegion *region,
-			GdkRectangle    *rectangle)
+bdk_rebunnyion_get_clipbox (const BdkRebunnyion *rebunnyion,
+			BdkRectangle    *rectangle)
 {
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
   g_return_if_fail (rectangle != NULL);
   
-  rectangle->x = region->extents.x1;
-  rectangle->y = region->extents.y1;
-  rectangle->width = region->extents.x2 - region->extents.x1;
-  rectangle->height = region->extents.y2 - region->extents.y1;
+  rectangle->x = rebunnyion->extents.x1;
+  rectangle->y = rebunnyion->extents.y1;
+  rectangle->width = rebunnyion->extents.x2 - rebunnyion->extents.x1;
+  rectangle->height = rebunnyion->extents.y2 - rebunnyion->extents.y1;
 }
 
 
 /**
- * gdk_region_get_rectangles:
- * @region: a #GdkRegion
+ * bdk_rebunnyion_get_rectangles:
+ * @rebunnyion: a #BdkRebunnyion
  * @rectangles: (array length=n_rectangles) (transfer container): return location for an array of rectangles
  * @n_rectangles: length of returned array
  *
- * Obtains the area covered by the region as a list of rectangles.
+ * Obtains the area covered by the rebunnyion as a list of rectangles.
  * The array returned in @rectangles must be freed with g_free().
  **/
 void
-gdk_region_get_rectangles (const GdkRegion  *region,
-                           GdkRectangle    **rectangles,
+bdk_rebunnyion_get_rectangles (const BdkRebunnyion  *rebunnyion,
+                           BdkRectangle    **rectangles,
                            gint             *n_rectangles)
 {
   gint i;
   
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
   g_return_if_fail (rectangles != NULL);
   g_return_if_fail (n_rectangles != NULL);
   
-  *n_rectangles = region->numRects;
-  *rectangles = g_new (GdkRectangle, region->numRects);
+  *n_rectangles = rebunnyion->numRects;
+  *rectangles = g_new (BdkRectangle, rebunnyion->numRects);
 
-  for (i = 0; i < region->numRects; i++)
+  for (i = 0; i < rebunnyion->numRects; i++)
     {
-      GdkRegionBox rect;
-      rect = region->rects[i];
+      BdkRebunnyionBox rect;
+      rect = rebunnyion->rects[i];
       (*rectangles)[i].x = rect.x1;
       (*rectangles)[i].y = rect.y1;
       (*rectangles)[i].width = rect.x2 - rect.x1;
@@ -258,41 +258,41 @@ gdk_region_get_rectangles (const GdkRegion  *region,
 }
 
 /**
- * gdk_region_union_with_rect:
- * @region: a #GdkRegion.
- * @rect: a #GdkRectangle.
+ * bdk_rebunnyion_union_with_rect:
+ * @rebunnyion: a #BdkRebunnyion.
+ * @rect: a #BdkRectangle.
  * 
- * Sets the area of @region to the union of the areas of @region and
+ * Sets the area of @rebunnyion to the union of the areas of @rebunnyion and
  * @rect. The resulting area is the set of pixels contained in
- * either @region or @rect.
+ * either @rebunnyion or @rect.
  **/
 void
-gdk_region_union_with_rect (GdkRegion          *region,
-			    const GdkRectangle *rect)
+bdk_rebunnyion_union_with_rect (BdkRebunnyion          *rebunnyion,
+			    const BdkRectangle *rect)
 {
-  GdkRegion tmp_region;
+  BdkRebunnyion tmp_rebunnyion;
 
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
   g_return_if_fail (rect != NULL);
 
   if (rect->width <= 0 || rect->height <= 0)
     return;
     
-  tmp_region.rects = &tmp_region.extents;
-  tmp_region.numRects = 1;
-  tmp_region.extents.x1 = rect->x;
-  tmp_region.extents.y1 = rect->y;
-  tmp_region.extents.x2 = rect->x + rect->width;
-  tmp_region.extents.y2 = rect->y + rect->height;
-  tmp_region.size = 1;
+  tmp_rebunnyion.rects = &tmp_rebunnyion.extents;
+  tmp_rebunnyion.numRects = 1;
+  tmp_rebunnyion.extents.x1 = rect->x;
+  tmp_rebunnyion.extents.y1 = rect->y;
+  tmp_rebunnyion.extents.x2 = rect->x + rect->width;
+  tmp_rebunnyion.extents.y2 = rect->y + rect->height;
+  tmp_rebunnyion.size = 1;
 
-  gdk_region_union (region, &tmp_region);
+  bdk_rebunnyion_union (rebunnyion, &tmp_rebunnyion);
 }
 
 /*-
  *-----------------------------------------------------------------------
  * miSetExtents --
- *	Reset the extents of a region to what they should be. Called by
+ *	Reset the extents of a rebunnyion to what they should be. Called by
  *	miSubtract and miIntersect b/c they can't figure it out along the
  *	way or do so easily, as miUnion can.
  *
@@ -300,14 +300,14 @@ gdk_region_union_with_rect (GdkRegion          *region,
  *	None.
  *
  * Side Effects:
- *	The region's 'extents' structure is overwritten.
+ *	The rebunnyion's 'extents' structure is overwritten.
  *
  *-----------------------------------------------------------------------
  */
 static void
-miSetExtents (GdkRegion *pReg)
+miSetExtents (BdkRebunnyion *pReg)
 {
-  GdkRegionBox *pBox, *pBoxEnd, *pExtents;
+  BdkRebunnyionBox *pBox, *pBoxEnd, *pExtents;
 
   if (pReg->numRects == 0)
     {
@@ -323,8 +323,8 @@ miSetExtents (GdkRegion *pReg)
   pBoxEnd = &pBox[pReg->numRects - 1];
 
     /*
-     * Since pBox is the first rectangle in the region, it must have the
-     * smallest y1 and since pBoxEnd is the last rectangle in the region,
+     * Since pBox is the first rectangle in the rebunnyion, it must have the
+     * smallest y1 and since pBoxEnd is the last rectangle in the rebunnyion,
      * it must have the largest y2, because of banding. Initialize x1 and
      * x2 from  pBox and pBoxEnd, resp., as good things to initialize them
      * to...
@@ -351,42 +351,42 @@ miSetExtents (GdkRegion *pReg)
 }
 
 /**
- * gdk_region_destroy:
- * @region: a #GdkRegion
+ * bdk_rebunnyion_destroy:
+ * @rebunnyion: a #BdkRebunnyion
  *
- * Destroys a #GdkRegion.
+ * Destroys a #BdkRebunnyion.
  */
 void
-gdk_region_destroy (GdkRegion *region)
+bdk_rebunnyion_destroy (BdkRebunnyion *rebunnyion)
 {
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
 
-  if (region->rects != &region->extents)
-    g_free (region->rects);
-  g_slice_free (GdkRegion, region);
+  if (rebunnyion->rects != &rebunnyion->extents)
+    g_free (rebunnyion->rects);
+  g_slice_free (BdkRebunnyion, rebunnyion);
 }
 
 
 /**
- * gdk_region_offset:
- * @region: a #GdkRegion
- * @dx: the distance to move the region horizontally
- * @dy: the distance to move the region vertically
+ * bdk_rebunnyion_offset:
+ * @rebunnyion: a #BdkRebunnyion
+ * @dx: the distance to move the rebunnyion horizontally
+ * @dy: the distance to move the rebunnyion vertically
  *
- * Moves a region the specified distance.
+ * Moves a rebunnyion the specified distance.
  */
 void
-gdk_region_offset (GdkRegion *region,
+bdk_rebunnyion_offset (BdkRebunnyion *rebunnyion,
 		   gint       x,
 		   gint       y)
 {
   int nbox;
-  GdkRegionBox *pbox;
+  BdkRebunnyionBox *pbox;
 
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
 
-  pbox = region->rects;
-  nbox = region->numRects;
+  pbox = rebunnyion->rects;
+  nbox = rebunnyion->numRects;
 
   while(nbox--)
     {
@@ -396,118 +396,118 @@ gdk_region_offset (GdkRegion *region,
       pbox->y2 += y;
       pbox++;
     }
-  if (region->rects != &region->extents)
+  if (rebunnyion->rects != &rebunnyion->extents)
     {
-      region->extents.x1 += x;
-      region->extents.x2 += x;
-      region->extents.y1 += y;
-      region->extents.y2 += y;
+      rebunnyion->extents.x1 += x;
+      rebunnyion->extents.x2 += x;
+      rebunnyion->extents.y1 += y;
+      rebunnyion->extents.y2 += y;
     }
 }
 
 /* 
    Utility procedure Compress:
-   Replace r by the region r', where 
+   Replace r by the rebunnyion r', where 
      p in r' iff (Quantifer m <= dx) (p + m in r), and
      Quantifier is Exists if grow is TRUE, For all if grow is FALSE, and
      (x,y) + m = (x+m,y) if xdir is TRUE; (x,y+m) if xdir is FALSE.
 
-   Thus, if xdir is TRUE and grow is FALSE, r is replaced by the region
+   Thus, if xdir is TRUE and grow is FALSE, r is replaced by the rebunnyion
    of all points p such that p and the next dx points on the same
    horizontal scan line are all in r.  We do this using by noting
    that p is the head of a run of length 2^i + k iff p is the head
    of a run of length 2^i and p+2^i is the head of a run of length
-   k. Thus, the loop invariant: s contains the region corresponding
-   to the runs of length shift.  r contains the region corresponding
+   k. Thus, the loop invariant: s contains the rebunnyion corresponding
+   to the runs of length shift.  r contains the rebunnyion corresponding
    to the runs of length 1 + dxo & (shift-1), where dxo is the original
    value of dx.  dx = dxo & ~(shift-1).  As parameters, s and t are
-   scratch regions, so that we don't have to allocate them on every
+   scratch rebunnyions, so that we don't have to allocate them on every
    call.
 */
 
-#define ZOpRegion(a,b) if (grow) gdk_region_union (a, b); \
-			 else gdk_region_intersect (a,b)
-#define ZShiftRegion(a,b) if (xdir) gdk_region_offset (a,b,0); \
-			  else gdk_region_offset (a,0,b)
+#define ZOpRebunnyion(a,b) if (grow) bdk_rebunnyion_union (a, b); \
+			 else bdk_rebunnyion_intersect (a,b)
+#define ZShiftRebunnyion(a,b) if (xdir) bdk_rebunnyion_offset (a,b,0); \
+			  else bdk_rebunnyion_offset (a,0,b)
 
 static void
-Compress(GdkRegion *r,
-	 GdkRegion *s,
-	 GdkRegion *t,
+Compress(BdkRebunnyion *r,
+	 BdkRebunnyion *s,
+	 BdkRebunnyion *t,
 	 guint      dx,
 	 int        xdir,
 	 int        grow)
 {
   guint shift = 1;
 
-  miRegionCopy (s, r);
+  miRebunnyionCopy (s, r);
   while (dx)
     {
       if (dx & shift)
 	{
-	  ZShiftRegion(r, -(int)shift);
-	  ZOpRegion(r, s);
+	  ZShiftRebunnyion(r, -(int)shift);
+	  ZOpRebunnyion(r, s);
 	  dx -= shift;
 	  if (!dx) break;
         }
-      miRegionCopy (t, s);
-      ZShiftRegion(s, -(int)shift);
-      ZOpRegion(s, t);
+      miRebunnyionCopy (t, s);
+      ZShiftRebunnyion(s, -(int)shift);
+      ZOpRebunnyion(s, t);
       shift <<= 1;
     }
 }
 
-#undef ZOpRegion
-#undef ZShiftRegion
-#undef ZCopyRegion
+#undef ZOpRebunnyion
+#undef ZShiftRebunnyion
+#undef ZCopyRebunnyion
 
 /**
- * gdk_region_shrink:
- * @region: a #GdkRegion
- * @dx: the number of pixels to shrink the region horizontally
- * @dy: the number of pixels to shrink the region vertically
+ * bdk_rebunnyion_shrink:
+ * @rebunnyion: a #BdkRebunnyion
+ * @dx: the number of pixels to shrink the rebunnyion horizontally
+ * @dy: the number of pixels to shrink the rebunnyion vertically
  *
- * Resizes a region by the specified amount.
- * Positive values shrink the region. Negative values expand it.
+ * Resizes a rebunnyion by the specified amount.
+ * Positive values shrink the rebunnyion. Negative values expand it.
  *
  * Deprecated: 2.22: There is no replacement for this function.
  */
 void
-gdk_region_shrink (GdkRegion *region,
+bdk_rebunnyion_shrink (BdkRebunnyion *rebunnyion,
 		   int        dx,
 		   int        dy)
 {
-  GdkRegion *s, *t;
+  BdkRebunnyion *s, *t;
   int grow;
 
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
 
   if (!dx && !dy)
     return;
 
-  s = gdk_region_new ();
-  t = gdk_region_new ();
+  s = bdk_rebunnyion_new ();
+  t = bdk_rebunnyion_new ();
 
   grow = (dx < 0);
   if (grow)
     dx = -dx;
   if (dx)
-     Compress(region, s, t, (unsigned) 2*dx, TRUE, grow);
+     Compress(rebunnyion, s, t, (unsigned) 2*dx, TRUE, grow);
      
   grow = (dy < 0);
   if (grow)
     dy = -dy;
   if (dy)
-     Compress(region, s, t, (unsigned) 2*dy, FALSE, grow);
+     Compress(rebunnyion, s, t, (unsigned) 2*dy, FALSE, grow);
   
-  gdk_region_offset (region, dx, dy);
-  gdk_region_destroy (s);
-  gdk_region_destroy (t);
+  bdk_rebunnyion_offset (rebunnyion, dx, dy);
+  bdk_rebunnyion_destroy (s);
+  bdk_rebunnyion_destroy (t);
 }
 
 
 /*======================================================================
- *	    Region Intersection
+ *	    Rebunnyion Intersection
  *====================================================================*/
 /*-
  *-----------------------------------------------------------------------
@@ -518,23 +518,23 @@ gdk_region_shrink (GdkRegion *region,
  *	None.
  *
  * Side Effects:
- *	Rectangles may be added to the region.
+ *	Rectangles may be added to the rebunnyion.
  *
  *-----------------------------------------------------------------------
  */
 /* static void*/
 static void
-miIntersectO (GdkRegion    *pReg,
-	      GdkRegionBox *r1,
-	      GdkRegionBox *r1End,
-	      GdkRegionBox *r2,
-	      GdkRegionBox *r2End,
+miIntersectO (BdkRebunnyion    *pReg,
+	      BdkRebunnyionBox *r1,
+	      BdkRebunnyionBox *r1End,
+	      BdkRebunnyionBox *r2,
+	      BdkRebunnyionBox *r2End,
 	      gint          y1,
 	      gint          y2)
 {
   int  	x1;
   int  	x2;
-  GdkRegionBox *pNextRect;
+  BdkRebunnyionBox *pNextRect;
 
   pNextRect = &pReg->rects[pReg->numRects];
 
@@ -545,9 +545,9 @@ miIntersectO (GdkRegion    *pReg,
 
       /*
        * If there's any overlap between the two rectangles, add that
-       * overlap to the new region.
+       * overlap to the new rebunnyion.
        * There's no need to check for subsumption because the only way
-       * such a need could arise is if some region has two rectangles
+       * such a need could arise is if some rebunnyion has two rectangles
        * right next to each other. Since that should never happen...
        */
       if (x1 < x2)
@@ -567,7 +567,7 @@ miIntersectO (GdkRegion    *pReg,
       /*
        * Need to advance the pointers. Shift the one that extends
        * to the right the least, since the other still has a chance to
-       * overlap with that region's next rectangle, if you see what I mean.
+       * overlap with that rebunnyion's next rectangle, if you see what I mean.
        */
       if (r1->x2 < r2->x2)
 	{
@@ -586,17 +586,17 @@ miIntersectO (GdkRegion    *pReg,
 }
 
 /**
- * gdk_region_intersect:
- * @source1: a #GdkRegion
- * @source2: another #GdkRegion
+ * bdk_rebunnyion_intersect:
+ * @source1: a #BdkRebunnyion
+ * @source2: another #BdkRebunnyion
  *
  * Sets the area of @source1 to the intersection of the areas of @source1
  * and @source2. The resulting area is the set of pixels contained in
  * both @source1 and @source2.
  **/
 void
-gdk_region_intersect (GdkRegion       *source1,
-		      const GdkRegion *source2)
+bdk_rebunnyion_intersect (BdkRebunnyion       *source1,
+		      const BdkRebunnyion *source2)
 {
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
@@ -606,12 +606,12 @@ gdk_region_intersect (GdkRegion       *source1,
       (!EXTENTCHECK(&source1->extents, &source2->extents)))
     source1->numRects = 0;
   else
-    miRegionOp (source1, source1, source2,
+    miRebunnyionOp (source1, source1, source2,
     		miIntersectO, (nonOverlapFunc) NULL, (nonOverlapFunc) NULL);
     
   /*
-   * Can't alter source1's extents before miRegionOp depends on the
-   * extents of the regions being unchanged. Besides, this way there's
+   * Can't alter source1's extents before miRebunnyionOp depends on the
+   * extents of the rebunnyions being unchanged. Besides, this way there's
    * no checking against rectangles that will be nuked due to
    * coalescing, so we have to examine fewer rectangles.
    */
@@ -619,8 +619,8 @@ gdk_region_intersect (GdkRegion       *source1,
 }
 
 static void
-miRegionCopy (GdkRegion       *dstrgn,
-	      const GdkRegion *rgn)
+miRebunnyionCopy (BdkRebunnyion       *dstrgn,
+	      const BdkRebunnyion *rgn)
 {
   if (dstrgn != rgn) /*  don't want to copy to itself */
     {  
@@ -629,27 +629,27 @@ miRegionCopy (GdkRegion       *dstrgn,
 	  if (dstrgn->rects != &dstrgn->extents)
 	    g_free (dstrgn->rects);
 
-	  dstrgn->rects = g_new (GdkRegionBox, rgn->numRects);
+	  dstrgn->rects = g_new (BdkRebunnyionBox, rgn->numRects);
 	  dstrgn->size = rgn->numRects;
 	}
 
       dstrgn->numRects = rgn->numRects;
       dstrgn->extents = rgn->extents;
 
-      memcpy (dstrgn->rects, rgn->rects, rgn->numRects * sizeof (GdkRegionBox));
+      memcpy (dstrgn->rects, rgn->rects, rgn->numRects * sizeof (BdkRebunnyionBox));
     }
 }
 
 
 /*======================================================================
- *	    Generic Region Operator
+ *	    Generic Rebunnyion Operator
  *====================================================================*/
 
 /*-
  *-----------------------------------------------------------------------
  * miCoalesce --
  *	Attempt to merge the boxes in the current band with those in the
- *	previous one. Used only by miRegionOp.
+ *	previous one. Used only by miRebunnyionOp.
  *
  * Results:
  *	The new index for the previous band.
@@ -664,13 +664,13 @@ miRegionCopy (GdkRegion       *dstrgn,
  */
 /* static int*/
 static int
-miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
+miCoalesce (BdkRebunnyion *pReg,         /* Rebunnyion to coalesce */
 	    gint       prevStart,    /* Index of start of previous band */
 	    gint       curStart)     /* Index of start of current band */
 {
-  GdkRegionBox *pPrevBox;   	/* Current box in previous band */
-  GdkRegionBox *pCurBox;    	/* Current box in current band */
-  GdkRegionBox *pRegEnd;    	/* End of region */
+  BdkRebunnyionBox *pPrevBox;   	/* Current box in previous band */
+  BdkRebunnyionBox *pCurBox;    	/* Current box in current band */
+  BdkRebunnyionBox *pRegEnd;    	/* End of rebunnyion */
   int	    	curNumRects;	/* Number of rectangles in current
 				 * band */
   int	    	prevNumRects;	/* Number of rectangles in previous
@@ -684,8 +684,8 @@ miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
 
     /*
      * Figure out how many rectangles are in the current band. Have to do
-     * this because multiple bands could have been added in miRegionOp
-     * at the end when one region has been exhausted.
+     * this because multiple bands could have been added in miRebunnyionOp
+     * at the end when one rebunnyion has been exhausted.
      */
   pCurBox = &pReg->rects[curStart];
   bandY1 = pCurBox->y1;
@@ -761,12 +761,12 @@ miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
 	while (curNumRects != 0);
 
 	/*
-	 * If only one band was added to the region, we have to backup
+	 * If only one band was added to the rebunnyion, we have to backup
 	 * curStart to the start of the previous band.
 	 *
-	 * If more than one band was added to the region, copy the
+	 * If more than one band was added to the rebunnyion, copy the
 	 * other bands down. The assumption here is that the other bands
-	 * came from the same region as the current one and no further
+	 * came from the same rebunnyion as the current one and no further
 	 * coalescing can be done on them since it's all been done
 	 * already... curStart is already in the right place.
 	 */
@@ -790,57 +790,57 @@ miCoalesce (GdkRegion *pReg,         /* Region to coalesce */
 
 /*-
  *-----------------------------------------------------------------------
- * miRegionOp --
- *	Apply an operation to two regions. Called by miUnion, miInverse,
+ * miRebunnyionOp --
+ *	Apply an operation to two rebunnyions. Called by miUnion, miInverse,
  *	miSubtract, miIntersect...
  *
  * Results:
  *	None.
  *
  * Side Effects:
- *	The new region is overwritten.
+ *	The new rebunnyion is overwritten.
  *
  * Notes:
- *	The idea behind this function is to view the two regions as sets.
+ *	The idea behind this function is to view the two rebunnyions as sets.
  *	Together they cover a rectangle of area that this function divides
- *	into horizontal bands where points are covered only by one region
+ *	into horizontal bands where points are covered only by one rebunnyion
  *	or by both. For the first case, the nonOverlapFunc is called with
  *	each the band and the band's upper and lower extents. For the
  *	second, the overlapFunc is called to process the entire band. It
  *	is responsible for clipping the rectangles in the band, though
  *	this function provides the boundaries.
- *	At the end of each band, the new region is coalesced, if possible,
- *	to reduce the number of rectangles in the region.
+ *	At the end of each band, the new rebunnyion is coalesced, if possible,
+ *	to reduce the number of rectangles in the rebunnyion.
  *
  *-----------------------------------------------------------------------
  */
 /* static void*/
 static void
-miRegionOp(GdkRegion       *newReg,
-	   GdkRegion       *reg1,
-	   const GdkRegion *reg2,
+miRebunnyionOp(BdkRebunnyion       *newReg,
+	   BdkRebunnyion       *reg1,
+	   const BdkRebunnyion *reg2,
 	   overlapFunc      overlapFn,          /* Function to call for over-
 						 * lapping bands */
 	   nonOverlapFunc   nonOverlap1Fn,	/* Function to call for non-
-						 * overlapping bands in region
+						 * overlapping bands in rebunnyion
 						 * 1 */
 	   nonOverlapFunc   nonOverlap2Fn)	/* Function to call for non-
-						 * overlapping bands in region
+						 * overlapping bands in rebunnyion
 						 * 2 */
 {
-    GdkRegionBox *r1; 	    	    	/* Pointer into first region */
-    GdkRegionBox *r2; 	    	    	/* Pointer into 2d region */
-    GdkRegionBox *r1End;    	    	/* End of 1st region */
-    GdkRegionBox *r2End;    	    	/* End of 2d region */
+    BdkRebunnyionBox *r1; 	    	    	/* Pointer into first rebunnyion */
+    BdkRebunnyionBox *r2; 	    	    	/* Pointer into 2d rebunnyion */
+    BdkRebunnyionBox *r1End;    	    	/* End of 1st rebunnyion */
+    BdkRebunnyionBox *r2End;    	    	/* End of 2d rebunnyion */
     int    	  ybot;	    	    	/* Bottom of intersection */
     int  	  ytop;	    	    	/* Top of intersection */
-    GdkRegionBox *oldRects;   	    	/* Old rects for newReg */
+    BdkRebunnyionBox *oldRects;   	    	/* Old rects for newReg */
     int	    	  prevBand;   	    	/* Index of start of
 					 * previous band in newReg */
     int	  	  curBand;    	    	/* Index of start of current
 					 * band in newReg */
-    GdkRegionBox *r1BandEnd;  	    	/* End of current band in r1 */
-    GdkRegionBox *r2BandEnd;  	    	/* End of current band in r2 */
+    BdkRebunnyionBox *r1BandEnd;  	    	/* End of current band in r1 */
+    BdkRebunnyionBox *r2BandEnd;  	    	/* End of current band in r2 */
     int     	  top;	    	    	/* Top of non-overlapping
 					 * band */
     int     	  bot;	    	    	/* Bottom of non-overlapping
@@ -849,8 +849,8 @@ miRegionOp(GdkRegion       *newReg,
     /*
      * Initialization:
      *	set r1, r2, r1End and r2End appropriately, preserve the important
-     * parts of the destination region until the end in case it's one of
-     * the two source regions, then mark the "new" region empty, allocating
+     * parts of the destination rebunnyion until the end in case it's one of
+     * the two source rebunnyions, then mark the "new" rebunnyion empty, allocating
      * another array of rectangles for it to use.
      */
     r1 = reg1->rects;
@@ -860,30 +860,30 @@ miRegionOp(GdkRegion       *newReg,
     
     oldRects = newReg->rects;
     
-    EMPTY_REGION(newReg);
+    EMPTY_REBUNNYION(newReg);
 
     /*
-     * Allocate a reasonable number of rectangles for the new region. The idea
+     * Allocate a reasonable number of rectangles for the new rebunnyion. The idea
      * is to allocate enough so the individual functions don't need to
      * reallocate and copy the array, which is time consuming, yet we don't
      * have to worry about using too much memory. I hope to be able to
      * nuke the Xrealloc() at the end of this function eventually.
      */
     newReg->size = MAX (reg1->numRects, reg2->numRects) * 2;
-    newReg->rects = g_new (GdkRegionBox, newReg->size);
+    newReg->rects = g_new (BdkRebunnyionBox, newReg->size);
     
     /*
      * Initialize ybot and ytop.
      * In the upcoming loop, ybot and ytop serve different functions depending
      * on whether the band being handled is an overlapping or non-overlapping
      * band.
-     * 	In the case of a non-overlapping band (only one of the regions
+     * 	In the case of a non-overlapping band (only one of the rebunnyions
      * has points in the band), ybot is the bottom of the most recent
      * intersection and thus clips the top of the rectangles in that band.
-     * ytop is the top of the next intersection between the two regions and
+     * ytop is the top of the next intersection between the two rebunnyions and
      * serves to clip the bottom of the rectangles in the current band.
-     *	For an overlapping band (where the two regions intersect), ytop clips
-     * the top of the rectangles of both regions and ybot clips the bottoms.
+     *	For an overlapping band (where the two rebunnyions intersect), ytop clips
+     * the top of the rectangles of both rebunnyions and ybot clips the bottoms.
      */
     if (reg1->extents.y1 < reg2->extents.y1)
       ybot = reg1->extents.y1;
@@ -896,7 +896,7 @@ miRegionOp(GdkRegion       *newReg,
      * In the beginning, there is no previous band, so prevBand == curBand
      * (curBand is set later on, of course, but the first band will always
      * start at index 0). prevBand and curBand must be indices because of
-     * the possible expansion, and resultant moving, of the new region's
+     * the possible expansion, and resultant moving, of the new rebunnyion's
      * array of rectangles.
      */
     prevBand = 0;
@@ -907,10 +907,10 @@ miRegionOp(GdkRegion       *newReg,
 
 	/*
 	 * This algorithm proceeds one source-band (as opposed to a
-	 * destination band, which is determined by where the two regions
+	 * destination band, which is determined by where the two rebunnyions
 	 * intersect) at a time. r1BandEnd and r2BandEnd serve to mark the
 	 * rectangle after the last one in the current band for their
-	 * respective regions.
+	 * respective rebunnyions.
 	 */
 	r1BandEnd = r1;
 	while ((r1BandEnd != r1End) && (r1BandEnd->y1 == r1->y1))
@@ -928,7 +928,7 @@ miRegionOp(GdkRegion       *newReg,
 	 * First handle the band that doesn't intersect, if any.
 	 *
 	 * Note that attention is restricted to one band in the
-	 * non-intersecting region at once, so if a region has n
+	 * non-intersecting rebunnyion at once, so if a rebunnyion has n
 	 * bands between the current position and the next place it overlaps
 	 * the other, this entire loop will be passed through n times.
 	 */
@@ -962,7 +962,7 @@ miRegionOp(GdkRegion       *newReg,
 	  }
 
 	/*
-	 * If any rectangles got added to the region, try and coalesce them
+	 * If any rectangles got added to the rebunnyion, try and coalesce them
 	 * with rectangles from the previous band. Note we could just do
 	 * this test in miCoalesce, but some machines incur a not
 	 * inconsiderable cost for function calls, so...
@@ -991,7 +991,7 @@ miRegionOp(GdkRegion       *newReg,
 
 	/*
 	 * If we've finished with a band (y2 == ybot) we skip forward
-	 * in the region to the next band.
+	 * in the rebunnyion to the next band.
 	 */
 	if (r1->y2 == ybot)
 	  {
@@ -1004,7 +1004,7 @@ miRegionOp(GdkRegion       *newReg,
       } while ((r1 != r1End) && (r2 != r2End));
 
     /*
-     * Deal with whichever region still has rectangles left.
+     * Deal with whichever rebunnyion still has rectangles left.
      */
     curBand = newReg->numRects;
     if (r1 != r1End)
@@ -1045,25 +1045,25 @@ miRegionOp(GdkRegion       *newReg,
     }
 
     /*
-     * A bit of cleanup. To keep regions from growing without bound,
+     * A bit of cleanup. To keep rebunnyions from growing without bound,
      * we shrink the array of rectangles to match the new number of
-     * rectangles in the region. This never goes to 0, however...
+     * rectangles in the rebunnyion. This never goes to 0, however...
      *
      * Only do this stuff if the number of rectangles allocated is more than
-     * twice the number of rectangles in the region (a simple optimization...).
+     * twice the number of rectangles in the rebunnyion (a simple optimization...).
      */
     if (newReg->numRects < (newReg->size >> 1))
       {
-	if (REGION_NOT_EMPTY (newReg))
+	if (REBUNNYION_NOT_EMPTY (newReg))
 	  {
 	    newReg->size = newReg->numRects;
-	    newReg->rects = g_renew (GdkRegionBox, newReg->rects, newReg->size);
+	    newReg->rects = g_renew (BdkRebunnyionBox, newReg->rects, newReg->size);
 	  }
 	else
 	  {
 	    /*
 	     * No point in doing the extra work involved in an Xrealloc if
-	     * the region is empty
+	     * the rebunnyion is empty
 	     */
 	    newReg->size = 1;
 	    g_free (newReg->rects);
@@ -1077,14 +1077,14 @@ miRegionOp(GdkRegion       *newReg,
 
 
 /*======================================================================
- *	    Region Union
+ *	    Rebunnyion Union
  *====================================================================*/
 
 /*-
  *-----------------------------------------------------------------------
  * miUnionNonO --
  *	Handle a non-overlapping band for the union operation. Just
- *	Adds the rectangles into the region. Doesn't have to check for
+ *	Adds the rectangles into the rebunnyion. Doesn't have to check for
  *	subsumption or anything.
  *
  * Results:
@@ -1097,13 +1097,13 @@ miRegionOp(GdkRegion       *newReg,
  *-----------------------------------------------------------------------
  */
 static void
-miUnionNonO (GdkRegion    *pReg,
-	     GdkRegionBox *r,
-	     GdkRegionBox *rEnd,
+miUnionNonO (BdkRebunnyion    *pReg,
+	     BdkRebunnyionBox *r,
+	     BdkRebunnyionBox *rEnd,
 	     gint          y1,
 	     gint          y2)
 {
-  GdkRegionBox *pNextRect;
+  BdkRebunnyionBox *pNextRect;
 
   pNextRect = &pReg->rects[pReg->numRects];
 
@@ -1130,7 +1130,7 @@ miUnionNonO (GdkRegion    *pReg,
  *-----------------------------------------------------------------------
  * miUnionO --
  *	Handle an overlapping band for the union operation. Picks the
- *	left-most rectangle each time and merges it into the region.
+ *	left-most rectangle each time and merges it into the rebunnyion.
  *
  * Results:
  *	None.
@@ -1144,15 +1144,15 @@ miUnionNonO (GdkRegion    *pReg,
 
 /* static void*/
 static void
-miUnionO (GdkRegion *pReg,
-	  GdkRegionBox *r1,
-	  GdkRegionBox *r1End,
-	  GdkRegionBox *r2,
-	  GdkRegionBox *r2End,
+miUnionO (BdkRebunnyion *pReg,
+	  BdkRebunnyionBox *r1,
+	  BdkRebunnyionBox *r1End,
+	  BdkRebunnyionBox *r2,
+	  BdkRebunnyionBox *r2End,
 	  gint          y1,
 	  gint          y2)
 {
-  GdkRegionBox *	pNextRect;
+  BdkRebunnyionBox *	pNextRect;
     
   pNextRect = &pReg->rects[pReg->numRects];
 
@@ -1208,17 +1208,17 @@ miUnionO (GdkRegion *pReg,
 }
 
 /**
- * gdk_region_union:
- * @source1:  a #GdkRegion
- * @source2: a #GdkRegion 
+ * bdk_rebunnyion_union:
+ * @source1:  a #BdkRebunnyion
+ * @source2: a #BdkRebunnyion 
  * 
  * Sets the area of @source1 to the union of the areas of @source1 and
  * @source2. The resulting area is the set of pixels contained in
  * either @source1 or @source2.
  **/
 void
-gdk_region_union (GdkRegion       *source1,
-		  const GdkRegion *source2)
+bdk_rebunnyion_union (BdkRebunnyion       *source1,
+		  const BdkRebunnyion *source2)
 {
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
@@ -1236,7 +1236,7 @@ gdk_region_union (GdkRegion       *source1,
    */
   if (!(source1->numRects))
     {
-      miRegionCopy (source1, source2);
+      miRebunnyionCopy (source1, source2);
       return;
     }
   
@@ -1259,11 +1259,11 @@ gdk_region_union (GdkRegion       *source1,
       (source2->extents.x2 >= source1->extents.x2) &&
       (source2->extents.y2 >= source1->extents.y2))
     {
-      miRegionCopy(source1, source2);
+      miRebunnyionCopy(source1, source2);
       return;
     }
 
-  miRegionOp (source1, source1, source2, miUnionO, 
+  miRebunnyionOp (source1, source1, source2, miUnionO, 
 	      miUnionNonO, miUnionNonO);
 
   source1->extents.x1 = MIN (source1->extents.x1, source2->extents.x1);
@@ -1274,14 +1274,14 @@ gdk_region_union (GdkRegion       *source1,
 
 
 /*======================================================================
- * 	    	  Region Subtraction
+ * 	    	  Rebunnyion Subtraction
  *====================================================================*/
 
 /*-
  *-----------------------------------------------------------------------
  * miSubtractNonO --
  *	Deal with non-overlapping band for subtraction. Any parts from
- *	region 2 we discard. Anything from region 1 we add to the region.
+ *	rebunnyion 2 we discard. Anything from rebunnyion 1 we add to the rebunnyion.
  *
  * Results:
  *	None.
@@ -1293,13 +1293,13 @@ gdk_region_union (GdkRegion       *source1,
  */
 /* static void*/
 static void
-miSubtractNonO1 (GdkRegion    *pReg,
-		 GdkRegionBox *r,
-		 GdkRegionBox *rEnd,
+miSubtractNonO1 (BdkRebunnyion    *pReg,
+		 BdkRebunnyionBox *r,
+		 BdkRebunnyionBox *rEnd,
 		 gint          y1,
 		 gint          y2)
 {
-  GdkRegionBox *	pNextRect;
+  BdkRebunnyionBox *	pNextRect;
 	
   pNextRect = &pReg->rects[pReg->numRects];
 	
@@ -1338,15 +1338,15 @@ miSubtractNonO1 (GdkRegion    *pReg,
  */
 /* static void*/
 static void
-miSubtractO (GdkRegion    *pReg,
-	     GdkRegionBox *r1,
-	     GdkRegionBox *r1End,
-	     GdkRegionBox *r2,
-	     GdkRegionBox *r2End,
+miSubtractO (BdkRebunnyion    *pReg,
+	     BdkRebunnyionBox *r1,
+	     BdkRebunnyionBox *r1End,
+	     BdkRebunnyionBox *r2,
+	     BdkRebunnyionBox *r2End,
 	     gint          y1,
 	     gint          y2)
 {
-  GdkRegionBox *	pNextRect;
+  BdkRebunnyionBox *	pNextRect;
   int  	x1;
     
   x1 = r1->x1;
@@ -1392,7 +1392,7 @@ miSubtractO (GdkRegion    *pReg,
 	{
 	  /*
 	   * Left part of subtrahend covers part of minuend: add uncovered
-	   * part of minuend to region and skip to next subtrahend.
+	   * part of minuend to rebunnyion and skip to next subtrahend.
 	   */
 	  g_assert(x1<r2->x1);
 	  MEMCHECK(pReg, pNextRect, pReg->rects);
@@ -1446,7 +1446,7 @@ miSubtractO (GdkRegion    *pReg,
     }
 
   /*
-     * Add remaining minuend rectangles to region.
+     * Add remaining minuend rectangles to rebunnyion.
      */
   while (r1 != r1End)
     {
@@ -1470,16 +1470,16 @@ miSubtractO (GdkRegion    *pReg,
 }
 
 /**
- * gdk_region_subtract:
- * @source1: a #GdkRegion
- * @source2: another #GdkRegion
+ * bdk_rebunnyion_subtract:
+ * @source1: a #BdkRebunnyion
+ * @source2: another #BdkRebunnyion
  *
  * Subtracts the area of @source2 from the area @source1. The resulting
  * area is the set of pixels contained in @source1 but not in @source2.
  **/
 void
-gdk_region_subtract (GdkRegion       *source1,
-		     const GdkRegion *source2)
+bdk_rebunnyion_subtract (BdkRebunnyion       *source1,
+		     const BdkRebunnyion *source2)
 {
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
@@ -1489,12 +1489,12 @@ gdk_region_subtract (GdkRegion       *source1,
       (!EXTENTCHECK(&source1->extents, &source2->extents)))
     return;
  
-  miRegionOp (source1, source1, source2, miSubtractO,
+  miRebunnyionOp (source1, source1, source2, miSubtractO,
 	      miSubtractNonO1, (nonOverlapFunc) NULL);
 
   /*
-   * Can't alter source1's extents before we call miRegionOp because miRegionOp
-   * depends on the extents of those regions being the unaltered. Besides, this
+   * Can't alter source1's extents before we call miRebunnyionOp because miRebunnyionOp
+   * depends on the extents of those rebunnyions being the unaltered. Besides, this
    * way there's no checking against rectangles that will be nuked
    * due to coalescing, so we have to examine fewer rectangles.
    */
@@ -1502,171 +1502,171 @@ gdk_region_subtract (GdkRegion       *source1,
 }
 
 /**
- * gdk_region_xor:
- * @source1: a #GdkRegion
- * @source2: another #GdkRegion
+ * bdk_rebunnyion_xor:
+ * @source1: a #BdkRebunnyion
+ * @source2: another #BdkRebunnyion
  *
  * Sets the area of @source1 to the exclusive-OR of the areas of @source1
  * and @source2. The resulting area is the set of pixels contained in one
  * or the other of the two sources but not in both.
  **/
 void
-gdk_region_xor (GdkRegion       *source1,
-		const GdkRegion *source2)
+bdk_rebunnyion_xor (BdkRebunnyion       *source1,
+		const BdkRebunnyion *source2)
 {
-  GdkRegion *trb;
+  BdkRebunnyion *trb;
 
   g_return_if_fail (source1 != NULL);
   g_return_if_fail (source2 != NULL);
 
-  trb = gdk_region_copy (source2);
+  trb = bdk_rebunnyion_copy (source2);
 
-  gdk_region_subtract (trb, source1);
-  gdk_region_subtract (source1, source2);
+  bdk_rebunnyion_subtract (trb, source1);
+  bdk_rebunnyion_subtract (source1, source2);
 
-  gdk_region_union (source1, trb);
+  bdk_rebunnyion_union (source1, trb);
   
-  gdk_region_destroy (trb);
+  bdk_rebunnyion_destroy (trb);
 }
 
 /**
- * gdk_region_empty: 
- * @region: a #GdkRegion
+ * bdk_rebunnyion_empty: 
+ * @rebunnyion: a #BdkRebunnyion
  *
- * Finds out if the #GdkRegion is empty.
+ * Finds out if the #BdkRebunnyion is empty.
  *
- * Returns: %TRUE if @region is empty.
+ * Returns: %TRUE if @rebunnyion is empty.
  */
 gboolean
-gdk_region_empty (const GdkRegion *region)
+bdk_rebunnyion_empty (const BdkRebunnyion *rebunnyion)
 {
-  g_return_val_if_fail (region != NULL, FALSE);
+  g_return_val_if_fail (rebunnyion != NULL, FALSE);
   
-  if (region->numRects == 0)
+  if (rebunnyion->numRects == 0)
     return TRUE;
   else
     return FALSE;
 }
 
 /**
- * gdk_region_equal:
- * @region1: a #GdkRegion
- * @region2: a #GdkRegion
+ * bdk_rebunnyion_equal:
+ * @rebunnyion1: a #BdkRebunnyion
+ * @rebunnyion2: a #BdkRebunnyion
  *
- * Finds out if the two regions are the same.
+ * Finds out if the two rebunnyions are the same.
  *
- * Returns: %TRUE if @region1 and @region2 are equal.
+ * Returns: %TRUE if @rebunnyion1 and @rebunnyion2 are equal.
  */
 gboolean
-gdk_region_equal (const GdkRegion *region1,
-		  const GdkRegion *region2)
+bdk_rebunnyion_equal (const BdkRebunnyion *rebunnyion1,
+		  const BdkRebunnyion *rebunnyion2)
 {
   int i;
 
-  g_return_val_if_fail (region1 != NULL, FALSE);
-  g_return_val_if_fail (region2 != NULL, FALSE);
+  g_return_val_if_fail (rebunnyion1 != NULL, FALSE);
+  g_return_val_if_fail (rebunnyion2 != NULL, FALSE);
 
-  if (region1->numRects != region2->numRects) return FALSE;
-  else if (region1->numRects == 0) return TRUE;
-  else if (region1->extents.x1 != region2->extents.x1) return FALSE;
-  else if (region1->extents.x2 != region2->extents.x2) return FALSE;
-  else if (region1->extents.y1 != region2->extents.y1) return FALSE;
-  else if (region1->extents.y2 != region2->extents.y2) return FALSE;
+  if (rebunnyion1->numRects != rebunnyion2->numRects) return FALSE;
+  else if (rebunnyion1->numRects == 0) return TRUE;
+  else if (rebunnyion1->extents.x1 != rebunnyion2->extents.x1) return FALSE;
+  else if (rebunnyion1->extents.x2 != rebunnyion2->extents.x2) return FALSE;
+  else if (rebunnyion1->extents.y1 != rebunnyion2->extents.y1) return FALSE;
+  else if (rebunnyion1->extents.y2 != rebunnyion2->extents.y2) return FALSE;
   else
-    for(i = 0; i < region1->numRects; i++ )
+    for(i = 0; i < rebunnyion1->numRects; i++ )
       {
-	if (region1->rects[i].x1 != region2->rects[i].x1) return FALSE;
-	else if (region1->rects[i].x2 != region2->rects[i].x2) return FALSE;
-	else if (region1->rects[i].y1 != region2->rects[i].y1) return FALSE;
-	else if (region1->rects[i].y2 != region2->rects[i].y2) return FALSE;
+	if (rebunnyion1->rects[i].x1 != rebunnyion2->rects[i].x1) return FALSE;
+	else if (rebunnyion1->rects[i].x2 != rebunnyion2->rects[i].x2) return FALSE;
+	else if (rebunnyion1->rects[i].y1 != rebunnyion2->rects[i].y1) return FALSE;
+	else if (rebunnyion1->rects[i].y2 != rebunnyion2->rects[i].y2) return FALSE;
       }
   return TRUE;
 }
 
 /**
- * gdk_region_rect_equal:
- * @region: a #GdkRegion
- * @rectangle: a #GdkRectangle
+ * bdk_rebunnyion_rect_equal:
+ * @rebunnyion: a #BdkRebunnyion
+ * @rectangle: a #BdkRectangle
  *
- * Finds out if a regions is the same as a rectangle.
+ * Finds out if a rebunnyions is the same as a rectangle.
  *
- * Returns: %TRUE if @region and @rectangle are equal.
+ * Returns: %TRUE if @rebunnyion and @rectangle are equal.
  *
  * Since: 2.18
  *
- * Deprecated: 2.22: Use gdk_region_new_rect() and gdk_region_equal() to 
+ * Deprecated: 2.22: Use bdk_rebunnyion_new_rect() and bdk_rebunnyion_equal() to 
  *             achieve the same effect.
  */
 gboolean
-gdk_region_rect_equal (const GdkRegion    *region,
-		       const GdkRectangle *rectangle)
+bdk_rebunnyion_rect_equal (const BdkRebunnyion    *rebunnyion,
+		       const BdkRectangle *rectangle)
 {
-  g_return_val_if_fail (region != NULL, FALSE);
+  g_return_val_if_fail (rebunnyion != NULL, FALSE);
   g_return_val_if_fail (rectangle != NULL, FALSE);
 
-  if (region->numRects != 1) return FALSE;
-  else if (region->extents.x1 != rectangle->x) return FALSE;
-  else if (region->extents.y1 != rectangle->y) return FALSE;
-  else if (region->extents.x2 != rectangle->x + rectangle->width) return FALSE;
-  else if (region->extents.y2 != rectangle->y + rectangle->height) return FALSE;
+  if (rebunnyion->numRects != 1) return FALSE;
+  else if (rebunnyion->extents.x1 != rectangle->x) return FALSE;
+  else if (rebunnyion->extents.y1 != rectangle->y) return FALSE;
+  else if (rebunnyion->extents.x2 != rectangle->x + rectangle->width) return FALSE;
+  else if (rebunnyion->extents.y2 != rectangle->y + rectangle->height) return FALSE;
   return TRUE;
 }
 
 /**
- * gdk_region_point_in:
- * @region: a #GdkRegion
+ * bdk_rebunnyion_point_in:
+ * @rebunnyion: a #BdkRebunnyion
  * @x: the x coordinate of a point
  * @y: the y coordinate of a point
  *
- * Finds out if a point is in a region.
+ * Finds out if a point is in a rebunnyion.
  *
- * Returns: %TRUE if the point is in @region.
+ * Returns: %TRUE if the point is in @rebunnyion.
  */
 gboolean
-gdk_region_point_in (const GdkRegion *region,
+bdk_rebunnyion_point_in (const BdkRebunnyion *rebunnyion,
 		     int              x,
 		     int              y)
 {
   int i;
 
-  g_return_val_if_fail (region != NULL, FALSE);
+  g_return_val_if_fail (rebunnyion != NULL, FALSE);
 
-  if (region->numRects == 0)
+  if (rebunnyion->numRects == 0)
     return FALSE;
-  if (!INBOX(region->extents, x, y))
+  if (!INBOX(rebunnyion->extents, x, y))
     return FALSE;
-  for (i = 0; i < region->numRects; i++)
+  for (i = 0; i < rebunnyion->numRects; i++)
     {
-      if (INBOX (region->rects[i], x, y))
+      if (INBOX (rebunnyion->rects[i], x, y))
 	return TRUE;
     }
   return FALSE;
 }
 
 /**
- * gdk_region_rect_in: 
- * @region: a #GdkRegion.
- * @rectangle: a #GdkRectangle.
+ * bdk_rebunnyion_rect_in: 
+ * @rebunnyion: a #BdkRebunnyion.
+ * @rectangle: a #BdkRectangle.
  *
- * Tests whether a rectangle is within a region.
+ * Tests whether a rectangle is within a rebunnyion.
  *
- * Returns: %GDK_OVERLAP_RECTANGLE_IN, %GDK_OVERLAP_RECTANGLE_OUT, or
- *   %GDK_OVERLAP_RECTANGLE_PART, depending on whether the rectangle is inside,
- *   outside, or partly inside the #GdkRegion, respectively.
+ * Returns: %BDK_OVERLAP_RECTANGLE_IN, %BDK_OVERLAP_RECTANGLE_OUT, or
+ *   %BDK_OVERLAP_RECTANGLE_PART, depending on whether the rectangle is inside,
+ *   outside, or partly inside the #BdkRebunnyion, respectively.
  */
-GdkOverlapType
-gdk_region_rect_in (const GdkRegion    *region,
-		    const GdkRectangle *rectangle)
+BdkOverlapType
+bdk_rebunnyion_rect_in (const BdkRebunnyion    *rebunnyion,
+		    const BdkRectangle *rectangle)
 {
-  GdkRegionBox *pbox;
-  GdkRegionBox *pboxEnd;
-  GdkRegionBox  rect;
-  GdkRegionBox *prect = &rect;
+  BdkRebunnyionBox *pbox;
+  BdkRebunnyionBox *pboxEnd;
+  BdkRebunnyionBox  rect;
+  BdkRebunnyionBox *prect = &rect;
   gboolean      partIn, partOut;
   gint rx, ry;
 
-  g_return_val_if_fail (region != NULL, GDK_OVERLAP_RECTANGLE_OUT);
-  g_return_val_if_fail (rectangle != NULL, GDK_OVERLAP_RECTANGLE_OUT);
+  g_return_val_if_fail (rebunnyion != NULL, BDK_OVERLAP_RECTANGLE_OUT);
+  g_return_val_if_fail (rectangle != NULL, BDK_OVERLAP_RECTANGLE_OUT);
 
   rx = rectangle->x;
   ry = rectangle->y;
@@ -1677,14 +1677,14 @@ gdk_region_rect_in (const GdkRegion    *region,
   prect->y2 = ry + rectangle->height;
     
     /* this is (just) a useful optimization */
-  if ((region->numRects == 0) || !EXTENTCHECK (&region->extents, prect))
-    return GDK_OVERLAP_RECTANGLE_OUT;
+  if ((rebunnyion->numRects == 0) || !EXTENTCHECK (&rebunnyion->extents, prect))
+    return BDK_OVERLAP_RECTANGLE_OUT;
 
   partOut = FALSE;
   partIn = FALSE;
 
     /* can stop when both partOut and partIn are TRUE, or we reach prect->y2 */
-  for (pbox = region->rects, pboxEnd = pbox + region->numRects;
+  for (pbox = rebunnyion->rects, pboxEnd = pbox + rebunnyion->numRects;
        pbox < pboxEnd;
        pbox++)
     {
@@ -1740,24 +1740,24 @@ gdk_region_rect_in (const GdkRegion    *region,
 
   return (partIn ?
 	     ((ry < prect->y2) ?
-	      GDK_OVERLAP_RECTANGLE_PART : GDK_OVERLAP_RECTANGLE_IN) : 
-	  GDK_OVERLAP_RECTANGLE_OUT);
+	      BDK_OVERLAP_RECTANGLE_PART : BDK_OVERLAP_RECTANGLE_IN) : 
+	  BDK_OVERLAP_RECTANGLE_OUT);
 }
 
 
 static void
-gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
-					     const GdkSpan *spans,
+bdk_rebunnyion_unsorted_spans_intersect_foreach (BdkRebunnyion     *rebunnyion,
+					     const BdkSpan *spans,
 					     int            n_spans,
-					     GdkSpanFunc    function,
+					     BdkSpanFunc    function,
 					     gpointer       data)
 {
   gint i, left, right, y;
   gint clipped_left, clipped_right;
-  GdkRegionBox *pbox;
-  GdkRegionBox *pboxEnd;
+  BdkRebunnyionBox *pbox;
+  BdkRebunnyionBox *pboxEnd;
 
-  if (!region->numRects)
+  if (!rebunnyion->numRects)
     return;
 
   for (i=0;i<n_spans;i++)
@@ -1766,14 +1766,14 @@ gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
       left = spans[i].x;
       right = left + spans[i].width; /* right is not in the span! */
     
-      if (! ((region->extents.y1 <= y) &&
-	     (region->extents.y2 > y) &&
-	     (region->extents.x1 < right) &&
-	     (region->extents.x2 > left)) ) 
+      if (! ((rebunnyion->extents.y1 <= y) &&
+	     (rebunnyion->extents.y2 > y) &&
+	     (rebunnyion->extents.x1 < right) &&
+	     (rebunnyion->extents.x2 > left)) ) 
 	continue;
 
       /* can stop when we passed y */
-      for (pbox = region->rects, pboxEnd = pbox + region->numRects;
+      for (pbox = rebunnyion->rects, pboxEnd = pbox + rebunnyion->numRects;
 	   pbox < pboxEnd;
 	   pbox++)
 	{
@@ -1785,7 +1785,7 @@ gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
 	  
 	  if ((right > pbox->x1) && (left < pbox->x2)) 
 	    {
-              GdkSpan out_span;
+              BdkSpan out_span;
 
 	      clipped_left = MAX (left, pbox->x1);
 	      clipped_right = MIN (right, pbox->x2);
@@ -1800,39 +1800,39 @@ gdk_region_unsorted_spans_intersect_foreach (GdkRegion     *region,
 }
 
 /**
- * gdk_region_spans_intersect_foreach:
- * @region: a #GdkRegion
- * @spans: an array of #GdkSpans
+ * bdk_rebunnyion_spans_intersect_foreach:
+ * @rebunnyion: a #BdkRebunnyion
+ * @spans: an array of #BdkSpans
  * @n_spans: the length of @spans
  * @sorted: %TRUE if @spans is sorted wrt. the y coordinate
  * @function: function to call on each span in the intersection
  * @data: data to pass to @function
  *
- * Calls a function on each span in the intersection of @region and @spans.
+ * Calls a function on each span in the intersection of @rebunnyion and @spans.
  *
  * Deprecated: 2.22: There is no replacement.
  */
 void
-gdk_region_spans_intersect_foreach (GdkRegion     *region,
-				    const GdkSpan *spans,
+bdk_rebunnyion_spans_intersect_foreach (BdkRebunnyion     *rebunnyion,
+				    const BdkSpan *spans,
 				    int            n_spans,
 				    gboolean       sorted,
-				    GdkSpanFunc    function,
+				    BdkSpanFunc    function,
 				    gpointer       data)
 {
   gint left, right, y;
   gint clipped_left, clipped_right;
-  GdkRegionBox *pbox;
-  GdkRegionBox *pboxEnd;
-  const GdkSpan *span, *tmpspan;
-  const GdkSpan *end_span;
+  BdkRebunnyionBox *pbox;
+  BdkRebunnyionBox *pboxEnd;
+  const BdkSpan *span, *tmpspan;
+  const BdkSpan *end_span;
 
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (rebunnyion != NULL);
   g_return_if_fail (spans != NULL);
 
   if (!sorted)
     {
-      gdk_region_unsorted_spans_intersect_foreach (region,
+      bdk_rebunnyion_unsorted_spans_intersect_foreach (rebunnyion,
 						   spans,
 						   n_spans,
 						   function,
@@ -1840,7 +1840,7 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
       return;
     }
   
-  if ((!region->numRects) || (n_spans == 0))
+  if ((!rebunnyion->numRects) || (n_spans == 0))
     return;
 
   /* The main method here is to step along the
@@ -1851,8 +1851,8 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
 
   span = spans;
   end_span = spans + n_spans;
-  pbox = region->rects;
-  pboxEnd = pbox + region->numRects;
+  pbox = rebunnyion->rects;
+  pboxEnd = pbox + rebunnyion->numRects;
   while (pbox < pboxEnd)
     {
       while ((pbox->y2 < span->y) || (span->y < pbox->y1))
@@ -1884,7 +1884,7 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
 	  
 	  if ((right > pbox->x1) && (left < pbox->x2))
 	    {
-              GdkSpan out_span;
+              BdkSpan out_span;
 
 	      clipped_left = MAX (left, pbox->x1);
 	      clipped_right = MIN (right, pbox->x2);
@@ -1905,5 +1905,5 @@ gdk_region_spans_intersect_foreach (GdkRegion     *region,
     }
 }
 
-#define __GDK_REGION_GENERIC_C__
-#include "gdkaliasdef.c"
+#define __BDK_REBUNNYION_GENERIC_C__
+#include "bdkaliasdef.c"

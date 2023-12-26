@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat Software
  * Copyright (C) 2000 SuSE Linux Ltd
  *
@@ -29,37 +29,37 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
 
-#include "gtk/gtkimmodule.h"
-#include "gtk/gtkintl.h"
+#include "btk/btkimmodule.h"
+#include "btk/btkintl.h"
 
 GType type_am_et_translit = 0;
 
-static void am_et_class_init (GtkIMContextSimpleClass *class);
-static void am_et_init (GtkIMContextSimple *im_context);
+static void am_et_class_init (BtkIMContextSimpleClass *class);
+static void am_et_init (BtkIMContextSimple *im_context);
 
 static void
 am_et_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
   {
-    sizeof (GtkIMContextSimpleClass),
+    sizeof (BtkIMContextSimpleClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
     (GClassInitFunc) am_et_class_init,
     NULL,           /* class_finalize */
     NULL,           /* class_data */
-    sizeof (GtkIMContextSimple),
+    sizeof (BtkIMContextSimple),
     0,
     (GInstanceInitFunc) am_et_init,
   };
 
   type_am_et_translit = 
     g_type_module_register_type (module,
-				 GTK_TYPE_IM_CONTEXT_SIMPLE,
-				 "GtkIMContextAmharicEthiopia",
+				 BTK_TYPE_IM_CONTEXT_SIMPLE,
+				 "BtkIMContextAmharicEthiopia",
 				 &object_info, 0);
 }
 
@@ -140,8 +140,8 @@ am_et_register_type (GTypeModule *module)
 static guint16 am_et_compose_seqs[] = {
   /* do punctuation and numerals here */
 
-  '\'',   0, 0, 0, 0, 0, GDK_dead_grave,  /* hopefully this has no side effects */
-  '\'', '\'', 0, 0, 0, 0, GDK_apostrophe,
+  '\'',   0, 0, 0, 0, 0, BDK_dead_grave,  /* hopefully this has no side effects */
+  '\'', '\'', 0, 0, 0, 0, BDK_apostrophe,
   '\'', '1', 0, 0, 0, 0, 0x1369,
   '\'', '1', '0', 0, 0, 0, 0x1372,
   '\'', '1', '0', '0', 0, 0, 0x137b,
@@ -431,40 +431,40 @@ static guint16 am_et_compose_seqs[] = {
   SYLW('x', 0x1238)
   SYL('y', 0x12e8)
   SYLW('z', 0x12d8)
-  GDK_Shift_L, GDK_space, 0, 0, 0, 0, 0x1361,
-  GDK_Shift_R, GDK_space, 0, 0, 0, 0, 0x1361,
+  BDK_Shift_L, BDK_space, 0, 0, 0, 0, 0x1361,
+  BDK_Shift_R, BDK_space, 0, 0, 0, 0, 0x1361,
 };
 
 static void
-am_et_class_init (GtkIMContextSimpleClass *class)
+am_et_class_init (BtkIMContextSimpleClass *class)
 {
 }
 
 static void
-am_et_init (GtkIMContextSimple *im_context)
+am_et_init (BtkIMContextSimple *im_context)
 {
-  gtk_im_context_simple_add_table (im_context,
+  btk_im_context_simple_add_table (im_context,
 				   am_et_compose_seqs,
 				   5,
 				   G_N_ELEMENTS (am_et_compose_seqs) / (5 + 2));
 }
 
-static const GtkIMContextInfo am_et_info = { 
+static const BtkIMContextInfo am_et_info = { 
   "am_et",		   /* ID */
   N_("Amharic (EZ+)"),     /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain */
-   GTK_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "gtk+") */
+   BTK_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "btk+") */
   "am"			   /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &am_et_info
 };
 
 #ifndef INCLUDE_IM_am_et
 #define MODULE_ENTRY(type,function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_am_et_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_am_et_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *module)
@@ -476,14 +476,14 @@ MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, "am_et") == 0)
     return g_object_new (type_am_et_translit, NULL);

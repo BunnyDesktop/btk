@@ -16,8 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#undef GTK_DISABLE_DEPRECATED
-#include "../gtk/gtk.h"
+#undef BTK_DISABLE_DEPRECATED
+#include "../btk/btk.h"
 
 static gboolean destroyed = FALSE;
 static void
@@ -29,31 +29,31 @@ destroy (void)
 static void
 floating_tests (void)
 {
-  GtkWidget *widget = g_object_new (GTK_TYPE_LABEL, NULL);
+  BtkWidget *widget = g_object_new (BTK_TYPE_LABEL, NULL);
   g_object_connect (widget, "signal::destroy", destroy, NULL, NULL);
 
-  g_assert (GTK_OBJECT_FLOATING (widget));
+  g_assert (BTK_OBJECT_FLOATING (widget));
   g_assert (g_object_is_floating (widget));
 
-  GTK_OBJECT_UNSET_FLAGS (widget, GTK_FLOATING);
-  g_assert (!GTK_OBJECT_FLOATING (widget));
+  BTK_OBJECT_UNSET_FLAGS (widget, BTK_FLOATING);
+  g_assert (!BTK_OBJECT_FLOATING (widget));
   g_assert (!g_object_is_floating (widget));
 
-  GTK_OBJECT_SET_FLAGS (widget, GTK_FLOATING);
-  g_assert (GTK_OBJECT_FLOATING (widget));
+  BTK_OBJECT_SET_FLAGS (widget, BTK_FLOATING);
+  g_assert (BTK_OBJECT_FLOATING (widget));
   g_assert (g_object_is_floating (widget));
 
   g_object_ref_sink (widget);
-  g_assert (!GTK_OBJECT_FLOATING (widget));
+  g_assert (!BTK_OBJECT_FLOATING (widget));
   g_assert (!g_object_is_floating (widget));
 
   g_object_force_floating (G_OBJECT (widget));
-  g_assert (GTK_OBJECT_FLOATING (widget));
+  g_assert (BTK_OBJECT_FLOATING (widget));
   g_assert (g_object_is_floating (widget));
 
   g_object_ref (widget);
-  gtk_object_sink (GTK_OBJECT (widget));
-  g_assert (!GTK_OBJECT_FLOATING (widget));
+  btk_object_sink (BTK_OBJECT (widget));
+  g_assert (!BTK_OBJECT_FLOATING (widget));
   g_assert (!g_object_is_floating (widget));
 
   g_assert (!destroyed);
@@ -65,7 +65,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  gtk_test_init (&argc, &argv);
+  btk_test_init (&argc, &argv);
   g_test_add_func ("/floatingtest", floating_tests);
   return g_test_run();
 }

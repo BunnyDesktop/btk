@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# GTK+ - The GIMP Toolkit
+# BTK+ - The GIMP Toolkit
 
 
 
@@ -76,8 +76,8 @@ am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkglibexecdir = $(libexecdir)/@PACKAGE@
+pkbunnylibdir = $(libdir)/@PACKAGE@
+pkbunnylibexecdir = $(libexecdir)/@PACKAGE@
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -92,17 +92,17 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@XINPUT_XFREE_TRUE@am__append_1 = gdkinput-x11.c gdkinput-xfree.c
-@XINPUT_XFREE_FALSE@am__append_2 = gdkinput-none.c
+@XINPUT_XFREE_TRUE@am__append_1 = bdkinput-x11.c bdkinput-xfree.c
+@XINPUT_XFREE_FALSE@am__append_2 = bdkinput-none.c
 noinst_PROGRAMS = checksettings$(EXEEXT)
 TESTS = checksettings$(EXEEXT)
-subdir = gdk/x11
+subdir = bdk/x11
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(libgdkinclude_HEADERS) \
+DIST_COMMON = $(srcdir)/Makefile.am $(libbdkinclude_HEADERS) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -110,35 +110,35 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libgdk_x11_la_LIBADD =
-am__libgdk_x11_la_SOURCES_DIST = MwmUtil.h gdkapplaunchcontext-x11.c \
-	gdkasync.c gdkasync.h gdkcolor-x11.c gdkcursor-x11.c \
-	gdkdisplay-x11.c gdkdisplay-x11.h gdkdnd-x11.c \
-	gdkdrawable-x11.c gdkdrawable-x11.h gdkevents-x11.c \
-	gdkfont-x11.c gdkgc-x11.c gdkgeometry-x11.c gdkglobals-x11.c \
-	gdkim-x11.c gdkimage-x11.c gdkinput.c gdkkeys-x11.c \
-	gdkmain-x11.c gdkpixmap-x11.c gdkpixmap-x11.h \
-	gdkproperty-x11.c gdkscreen-x11.c gdkscreen-x11.h \
-	gdkselection-x11.c gdkspawn-x11.c gdktestutils-x11.c \
-	gdkvisual-x11.c gdkwindow-x11.c gdkwindow-x11.h \
-	gdkxftdefaults.c gdkxid.c gdkx.h gdkprivate-x11.h \
-	gdkinputprivate.h xsettings-client.h xsettings-client.c \
-	xsettings-common.h xsettings-common.c gdkinput-x11.c \
-	gdkinput-xfree.c gdkinput-none.c
-@XINPUT_XFREE_TRUE@am__objects_1 = gdkinput-x11.lo gdkinput-xfree.lo
-@XINPUT_XFREE_FALSE@am__objects_2 = gdkinput-none.lo
-am_libgdk_x11_la_OBJECTS = gdkapplaunchcontext-x11.lo gdkasync.lo \
-	gdkcolor-x11.lo gdkcursor-x11.lo gdkdisplay-x11.lo \
-	gdkdnd-x11.lo gdkdrawable-x11.lo gdkevents-x11.lo \
-	gdkfont-x11.lo gdkgc-x11.lo gdkgeometry-x11.lo \
-	gdkglobals-x11.lo gdkim-x11.lo gdkimage-x11.lo gdkinput.lo \
-	gdkkeys-x11.lo gdkmain-x11.lo gdkpixmap-x11.lo \
-	gdkproperty-x11.lo gdkscreen-x11.lo gdkselection-x11.lo \
-	gdkspawn-x11.lo gdktestutils-x11.lo gdkvisual-x11.lo \
-	gdkwindow-x11.lo gdkxftdefaults.lo gdkxid.lo \
+libbdk_x11_la_LIBADD =
+am__libbdk_x11_la_SOURCES_DIST = MwmUtil.h bdkapplaunchcontext-x11.c \
+	bdkasync.c bdkasync.h bdkcolor-x11.c bdkcursor-x11.c \
+	bdkdisplay-x11.c bdkdisplay-x11.h bdkdnd-x11.c \
+	bdkdrawable-x11.c bdkdrawable-x11.h bdkevents-x11.c \
+	bdkfont-x11.c bdkgc-x11.c bdkgeometry-x11.c bdkglobals-x11.c \
+	bdkim-x11.c bdkimage-x11.c bdkinput.c bdkkeys-x11.c \
+	bdkmain-x11.c bdkpixmap-x11.c bdkpixmap-x11.h \
+	bdkproperty-x11.c bdkscreen-x11.c bdkscreen-x11.h \
+	bdkselection-x11.c bdkspawn-x11.c bdktestutils-x11.c \
+	bdkvisual-x11.c bdkwindow-x11.c bdkwindow-x11.h \
+	bdkxftdefaults.c bdkxid.c bdkx.h bdkprivate-x11.h \
+	bdkinputprivate.h xsettings-client.h xsettings-client.c \
+	xsettings-common.h xsettings-common.c bdkinput-x11.c \
+	bdkinput-xfree.c bdkinput-none.c
+@XINPUT_XFREE_TRUE@am__objects_1 = bdkinput-x11.lo bdkinput-xfree.lo
+@XINPUT_XFREE_FALSE@am__objects_2 = bdkinput-none.lo
+am_libbdk_x11_la_OBJECTS = bdkapplaunchcontext-x11.lo bdkasync.lo \
+	bdkcolor-x11.lo bdkcursor-x11.lo bdkdisplay-x11.lo \
+	bdkdnd-x11.lo bdkdrawable-x11.lo bdkevents-x11.lo \
+	bdkfont-x11.lo bdkgc-x11.lo bdkgeometry-x11.lo \
+	bdkglobals-x11.lo bdkim-x11.lo bdkimage-x11.lo bdkinput.lo \
+	bdkkeys-x11.lo bdkmain-x11.lo bdkpixmap-x11.lo \
+	bdkproperty-x11.lo bdkscreen-x11.lo bdkselection-x11.lo \
+	bdkspawn-x11.lo bdktestutils-x11.lo bdkvisual-x11.lo \
+	bdkwindow-x11.lo bdkxftdefaults.lo bdkxid.lo \
 	xsettings-client.lo xsettings-common.lo $(am__objects_1) \
 	$(am__objects_2)
-libgdk_x11_la_OBJECTS = $(am_libgdk_x11_la_OBJECTS)
+libbdk_x11_la_OBJECTS = $(am_libbdk_x11_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -146,7 +146,7 @@ am__v_lt_1 =
 checksettings_SOURCES = checksettings.c
 checksettings_OBJECTS = checksettings.$(OBJEXT)
 am__DEPENDENCIES_1 =
-checksettings_DEPENDENCIES = libgdk-x11.la $(am__DEPENDENCIES_1)
+checksettings_DEPENDENCIES = libbdk-x11.la $(am__DEPENDENCIES_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -163,22 +163,22 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/checksettings.Po \
-	./$(DEPDIR)/gdkapplaunchcontext-x11.Plo \
-	./$(DEPDIR)/gdkasync.Plo ./$(DEPDIR)/gdkcolor-x11.Plo \
-	./$(DEPDIR)/gdkcursor-x11.Plo ./$(DEPDIR)/gdkdisplay-x11.Plo \
-	./$(DEPDIR)/gdkdnd-x11.Plo ./$(DEPDIR)/gdkdrawable-x11.Plo \
-	./$(DEPDIR)/gdkevents-x11.Plo ./$(DEPDIR)/gdkfont-x11.Plo \
-	./$(DEPDIR)/gdkgc-x11.Plo ./$(DEPDIR)/gdkgeometry-x11.Plo \
-	./$(DEPDIR)/gdkglobals-x11.Plo ./$(DEPDIR)/gdkim-x11.Plo \
-	./$(DEPDIR)/gdkimage-x11.Plo ./$(DEPDIR)/gdkinput-none.Plo \
-	./$(DEPDIR)/gdkinput-x11.Plo ./$(DEPDIR)/gdkinput-xfree.Plo \
-	./$(DEPDIR)/gdkinput.Plo ./$(DEPDIR)/gdkkeys-x11.Plo \
-	./$(DEPDIR)/gdkmain-x11.Plo ./$(DEPDIR)/gdkpixmap-x11.Plo \
-	./$(DEPDIR)/gdkproperty-x11.Plo ./$(DEPDIR)/gdkscreen-x11.Plo \
-	./$(DEPDIR)/gdkselection-x11.Plo ./$(DEPDIR)/gdkspawn-x11.Plo \
-	./$(DEPDIR)/gdktestutils-x11.Plo ./$(DEPDIR)/gdkvisual-x11.Plo \
-	./$(DEPDIR)/gdkwindow-x11.Plo ./$(DEPDIR)/gdkxftdefaults.Plo \
-	./$(DEPDIR)/gdkxid.Plo ./$(DEPDIR)/xsettings-client.Plo \
+	./$(DEPDIR)/bdkapplaunchcontext-x11.Plo \
+	./$(DEPDIR)/bdkasync.Plo ./$(DEPDIR)/bdkcolor-x11.Plo \
+	./$(DEPDIR)/bdkcursor-x11.Plo ./$(DEPDIR)/bdkdisplay-x11.Plo \
+	./$(DEPDIR)/bdkdnd-x11.Plo ./$(DEPDIR)/bdkdrawable-x11.Plo \
+	./$(DEPDIR)/bdkevents-x11.Plo ./$(DEPDIR)/bdkfont-x11.Plo \
+	./$(DEPDIR)/bdkgc-x11.Plo ./$(DEPDIR)/bdkgeometry-x11.Plo \
+	./$(DEPDIR)/bdkglobals-x11.Plo ./$(DEPDIR)/bdkim-x11.Plo \
+	./$(DEPDIR)/bdkimage-x11.Plo ./$(DEPDIR)/bdkinput-none.Plo \
+	./$(DEPDIR)/bdkinput-x11.Plo ./$(DEPDIR)/bdkinput-xfree.Plo \
+	./$(DEPDIR)/bdkinput.Plo ./$(DEPDIR)/bdkkeys-x11.Plo \
+	./$(DEPDIR)/bdkmain-x11.Plo ./$(DEPDIR)/bdkpixmap-x11.Plo \
+	./$(DEPDIR)/bdkproperty-x11.Plo ./$(DEPDIR)/bdkscreen-x11.Plo \
+	./$(DEPDIR)/bdkselection-x11.Plo ./$(DEPDIR)/bdkspawn-x11.Plo \
+	./$(DEPDIR)/bdktestutils-x11.Plo ./$(DEPDIR)/bdkvisual-x11.Plo \
+	./$(DEPDIR)/bdkwindow-x11.Plo ./$(DEPDIR)/bdkxftdefaults.Plo \
+	./$(DEPDIR)/bdkxid.Plo ./$(DEPDIR)/xsettings-client.Plo \
 	./$(DEPDIR)/xsettings-common.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
@@ -199,8 +199,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libgdk_x11_la_SOURCES) checksettings.c
-DIST_SOURCES = $(am__libgdk_x11_la_SOURCES_DIST) checksettings.c
+SOURCES = $(libbdk_x11_la_SOURCES) checksettings.c
+DIST_SOURCES = $(am__libbdk_x11_la_SOURCES_DIST) checksettings.c
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -233,8 +233,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libgdkincludedir)"
-HEADERS = $(libgdkinclude_HEADERS)
+am__installdirs = "$(DESTDIR)$(libbdkincludedir)"
+HEADERS = $(libbdkinclude_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -439,16 +439,16 @@ AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AS = @AS@
-ATK_PREFIX = @ATK_PREFIX@
+BATK_PREFIX = @BATK_PREFIX@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE_DEPENDENCIES_CFLAGS = @BASE_DEPENDENCIES_CFLAGS@
 BASE_DEPENDENCIES_LIBS = @BASE_DEPENDENCIES_LIBS@
-CAIRO_BACKEND_CFLAGS = @CAIRO_BACKEND_CFLAGS@
-CAIRO_BACKEND_LIBS = @CAIRO_BACKEND_LIBS@
-CAIRO_PREFIX = @CAIRO_PREFIX@
+BAIRO_BACKEND_CFLAGS = @BAIRO_BACKEND_CFLAGS@
+BAIRO_BACKEND_LIBS = @BAIRO_BACKEND_LIBS@
+BAIRO_PREFIX = @BAIRO_PREFIX@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -485,52 +485,52 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXE_MANIFEST_ARCHITECTURE = @EXE_MANIFEST_ARCHITECTURE@
 FGREP = @FGREP@
-GAIL_INET_LIBS = @GAIL_INET_LIBS@
-GAIL_LT_CURRENT_MINUS_AGE = @GAIL_LT_CURRENT_MINUS_AGE@
-GAIL_LT_VERSION_INFO = @GAIL_LT_VERSION_INFO@
-GDK_DEP_CFLAGS = @GDK_DEP_CFLAGS@
-GDK_DEP_LIBS = @GDK_DEP_LIBS@
-GDK_EXTRA_CFLAGS = @GDK_EXTRA_CFLAGS@
-GDK_EXTRA_LIBS = @GDK_EXTRA_LIBS@
-GDK_PACKAGES = @GDK_PACKAGES@
-GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
-GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_WLIBS = @GDK_WLIBS@
+BAIL_INET_LIBS = @BAIL_INET_LIBS@
+BAIL_LT_CURRENT_MINUS_AGE = @BAIL_LT_CURRENT_MINUS_AGE@
+BAIL_LT_VERSION_INFO = @BAIL_LT_VERSION_INFO@
+BDK_DEP_CFLAGS = @BDK_DEP_CFLAGS@
+BDK_DEP_LIBS = @BDK_DEP_LIBS@
+BDK_EXTRA_CFLAGS = @BDK_EXTRA_CFLAGS@
+BDK_EXTRA_LIBS = @BDK_EXTRA_LIBS@
+BDK_PACKAGES = @BDK_PACKAGES@
+BDK_PIXBUF_CSOURCE = @BDK_PIXBUF_CSOURCE@
+BDK_PIXBUF_LIBS = @BDK_PIXBUF_LIBS@
+BDK_WLIBS = @BDK_WLIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_CFLAGS = @GLIB_CFLAGS@
-GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GLIB_LIBS = @GLIB_LIBS@
-GLIB_MKENUMS = @GLIB_MKENUMS@
-GLIB_PREFIX = @GLIB_PREFIX@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+BUNNYLIB_CFLAGS = @BUNNYLIB_CFLAGS@
+BUNNYLIB_COMPILE_RESOURCES = @BUNNYLIB_COMPILE_RESOURCES@
+BUNNYLIB_GENMARSHAL = @BUNNYLIB_GENMARSHAL@
+BUNNYLIB_LIBS = @BUNNYLIB_LIBS@
+BUNNYLIB_MKENUMS = @BUNNYLIB_MKENUMS@
+BUNNYLIB_PREFIX = @BUNNYLIB_PREFIX@
+BMODULE_CFLAGS = @BMODULE_CFLAGS@
+BMODULE_LIBS = @BMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GOBJECT_QUERY = @GOBJECT_QUERY@
+BOBJECT_QUERY = @BOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_CHECK = @GTKDOC_CHECK@
-GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
-GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
-GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
-GTKDOC_MKPDF = @GTKDOC_MKPDF@
-GTKDOC_REBASE = @GTKDOC_REBASE@
-GTK_API_VERSION = @GTK_API_VERSION@
-GTK_BINARY_AGE = @GTK_BINARY_AGE@
-GTK_BINARY_VERSION = @GTK_BINARY_VERSION@
-GTK_DEBUG_FLAGS = @GTK_DEBUG_FLAGS@
-GTK_DEP_CFLAGS = @GTK_DEP_CFLAGS@
-GTK_DEP_LIBS = @GTK_DEP_LIBS@
-GTK_EXTRA_CFLAGS = @GTK_EXTRA_CFLAGS@
-GTK_EXTRA_LIBS = @GTK_EXTRA_LIBS@
-GTK_INTERFACE_AGE = @GTK_INTERFACE_AGE@
-GTK_MAJOR_VERSION = @GTK_MAJOR_VERSION@
-GTK_MICRO_VERSION = @GTK_MICRO_VERSION@
-GTK_MINOR_VERSION = @GTK_MINOR_VERSION@
-GTK_PACKAGES = @GTK_PACKAGES@
-GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_VERSION = @GTK_VERSION@
-GTK_XIM_FLAGS = @GTK_XIM_FLAGS@
+BTKDOC_CHECK = @BTKDOC_CHECK@
+BTKDOC_CHECK_PATH = @BTKDOC_CHECK_PATH@
+BTKDOC_DEPS_CFLAGS = @BTKDOC_DEPS_CFLAGS@
+BTKDOC_DEPS_LIBS = @BTKDOC_DEPS_LIBS@
+BTKDOC_MKPDF = @BTKDOC_MKPDF@
+BTKDOC_REBASE = @BTKDOC_REBASE@
+BTK_API_VERSION = @BTK_API_VERSION@
+BTK_BINARY_AGE = @BTK_BINARY_AGE@
+BTK_BINARY_VERSION = @BTK_BINARY_VERSION@
+BTK_DEBUG_FLAGS = @BTK_DEBUG_FLAGS@
+BTK_DEP_CFLAGS = @BTK_DEP_CFLAGS@
+BTK_DEP_LIBS = @BTK_DEP_LIBS@
+BTK_EXTRA_CFLAGS = @BTK_EXTRA_CFLAGS@
+BTK_EXTRA_LIBS = @BTK_EXTRA_LIBS@
+BTK_INTERFACE_AGE = @BTK_INTERFACE_AGE@
+BTK_MAJOR_VERSION = @BTK_MAJOR_VERSION@
+BTK_MICRO_VERSION = @BTK_MICRO_VERSION@
+BTK_MINOR_VERSION = @BTK_MINOR_VERSION@
+BTK_PACKAGES = @BTK_PACKAGES@
+BTK_UPDATE_ICON_CACHE = @BTK_UPDATE_ICON_CACHE@
+BTK_VERSION = @BTK_VERSION@
+BTK_XIM_FLAGS = @BTK_XIM_FLAGS@
 HAVE_HTTP_AUTHSTRING = @HAVE_HTTP_AUTHSTRING@
 HTML_DIR = @HTML_DIR@
 INCLUDED_IMMODULE_DEFINE = @INCLUDED_IMMODULE_DEFINE@
@@ -586,7 +586,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_PREFIX = @PANGO_PREFIX@
+BANGO_PREFIX = @BANGO_PREFIX@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
@@ -639,9 +639,9 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
-gdktarget = @gdktarget@
-gdktargetlib = @gdktargetlib@
-gtktargetlib = @gtktargetlib@
+bdktarget = @bdktarget@
+bdktargetlib = @bdktargetlib@
+btktargetlib = @btktargetlib@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -671,15 +671,15 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-GTESTER = gtester		# in $PATH for non-GLIB packages
-GTESTER_REPORT = gtester-report		# in $PATH for non-GLIB packages
+BTESTER = btester		# in $PATH for non-BUNNYLIB packages
+BTESTER_REPORT = btester-report		# in $PATH for non-BUNNYLIB packages
 
 # initialize variables for unconditional += appending
 
 # We need to include all these C files here since the conditionals
 # don't seem to be correctly expanded for the dist files.
-EXTRA_DIST = gdkinput-x11.c gdkinput-xfree.c gdkinput-none.c \
-	gdksettings.c
+EXTRA_DIST = bdkinput-x11.c bdkinput-xfree.c bdkinput-none.c \
+	bdksettings.c
 TEST_PROGS = 
 
 ### testing rules
@@ -693,47 +693,47 @@ XIDS = 101 102 103 104 105 106 107 197 199 211 223 227 293 307 308 309 310 311 \
   9980 9981 9982 9983 9984 9985 9986 9987 9988 9989 9990 9991 9992 9993 9994 \
   9995 9996 9997 9998 9999
 
-SKIP_GDKTARGET = \
-	test "$(gdktarget)" != "x11" \
-	&& echo "Gtk+Tests:INFO: Skipping GUI tests for non-X11 target."
+SKIP_BDKTARGET = \
+	test "$(bdktarget)" != "x11" \
+	&& echo "Btk+Tests:INFO: Skipping GUI tests for non-X11 target."
 
 XVFB_START = \
 	${XVFB} -help 2>/dev/null 1>&2 \
 	&& XID=`for id in $(XIDS) ; do test -e /tmp/.X$$id-lock || { echo $$id; exit 0; }; done; exit 1` \
 	&& { ${XVFB} :$$XID -screen 0 800x600x16 -nolisten tcp -auth /dev/null >/dev/null 2>&1 & \
 	       trap "kill -15 $$! " 0 HUP INT QUIT TRAP USR1 PIPE TERM ; } \
-	|| { echo "Gtk+Tests:ERROR: Failed to start Xvfb environment for X11 target tests."; exit 1; } \
+	|| { echo "Btk+Tests:ERROR: Failed to start Xvfb environment for X11 target tests."; exit 1; } \
 	&& DISPLAY=:$$XID && export DISPLAY
 
-libgdkincludedir = $(includedir)/gtk-2.0/gdk
+libbdkincludedir = $(includedir)/btk-2.0/bdk
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"Gdk\"	\
-	-DGDK_COMPILATION	\
+	-DG_LOG_DOMAIN=\"Bdk\"	\
+	-DBDK_COMPILATION	\
 	-I$(top_srcdir)		\
-	-I$(top_srcdir)/gdk	\
-	-I$(top_builddir)/gdk	\
-	$(GTK_DEBUG_FLAGS) 	\
-	$(GDK_DEP_CFLAGS)
+	-I$(top_srcdir)/bdk	\
+	-I$(top_builddir)/bdk	\
+	$(BTK_DEBUG_FLAGS) 	\
+	$(BDK_DEP_CFLAGS)
 
-LDADDS = $(GDK_DEP_LIBS)
-noinst_LTLIBRARIES = libgdk-x11.la
-libgdk_x11_la_SOURCES = MwmUtil.h gdkapplaunchcontext-x11.c gdkasync.c \
-	gdkasync.h gdkcolor-x11.c gdkcursor-x11.c gdkdisplay-x11.c \
-	gdkdisplay-x11.h gdkdnd-x11.c gdkdrawable-x11.c \
-	gdkdrawable-x11.h gdkevents-x11.c gdkfont-x11.c gdkgc-x11.c \
-	gdkgeometry-x11.c gdkglobals-x11.c gdkim-x11.c gdkimage-x11.c \
-	gdkinput.c gdkkeys-x11.c gdkmain-x11.c gdkpixmap-x11.c \
-	gdkpixmap-x11.h gdkproperty-x11.c gdkscreen-x11.c \
-	gdkscreen-x11.h gdkselection-x11.c gdkspawn-x11.c \
-	gdktestutils-x11.c gdkvisual-x11.c gdkwindow-x11.c \
-	gdkwindow-x11.h gdkxftdefaults.c gdkxid.c gdkx.h \
-	gdkprivate-x11.h gdkinputprivate.h xsettings-client.h \
+LDADDS = $(BDK_DEP_LIBS)
+noinst_LTLIBRARIES = libbdk-x11.la
+libbdk_x11_la_SOURCES = MwmUtil.h bdkapplaunchcontext-x11.c bdkasync.c \
+	bdkasync.h bdkcolor-x11.c bdkcursor-x11.c bdkdisplay-x11.c \
+	bdkdisplay-x11.h bdkdnd-x11.c bdkdrawable-x11.c \
+	bdkdrawable-x11.h bdkevents-x11.c bdkfont-x11.c bdkgc-x11.c \
+	bdkgeometry-x11.c bdkglobals-x11.c bdkim-x11.c bdkimage-x11.c \
+	bdkinput.c bdkkeys-x11.c bdkmain-x11.c bdkpixmap-x11.c \
+	bdkpixmap-x11.h bdkproperty-x11.c bdkscreen-x11.c \
+	bdkscreen-x11.h bdkselection-x11.c bdkspawn-x11.c \
+	bdktestutils-x11.c bdkvisual-x11.c bdkwindow-x11.c \
+	bdkwindow-x11.h bdkxftdefaults.c bdkxid.c bdkx.h \
+	bdkprivate-x11.h bdkinputprivate.h xsettings-client.h \
 	xsettings-client.c xsettings-common.h xsettings-common.c \
 	$(am__append_1) $(am__append_2)
-libgdkinclude_HEADERS = \
-	gdkx.h
+libbdkinclude_HEADERS = \
+	bdkx.h
 
-checksettings_LDADD = libgdk-x11.la $(GLIB_LIBS)
+checksettings_LDADD = libbdk-x11.la $(BUNNYLIB_LIBS)
 all: all-am
 
 .SUFFIXES:
@@ -747,9 +747,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu gdk/x11/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu bdk/x11/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu gdk/x11/Makefile
+	  $(AUTOMAKE) --gnu bdk/x11/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -789,8 +789,8 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libgdk-x11.la: $(libgdk_x11_la_OBJECTS) $(libgdk_x11_la_DEPENDENCIES) $(EXTRA_libgdk_x11_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libgdk_x11_la_OBJECTS) $(libgdk_x11_la_LIBADD) $(LIBS)
+libbdk-x11.la: $(libbdk_x11_la_OBJECTS) $(libbdk_x11_la_DEPENDENCIES) $(EXTRA_libbdk_x11_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libbdk_x11_la_OBJECTS) $(libbdk_x11_la_LIBADD) $(LIBS)
 
 checksettings$(EXEEXT): $(checksettings_OBJECTS) $(checksettings_DEPENDENCIES) $(EXTRA_checksettings_DEPENDENCIES) 
 	@rm -f checksettings$(EXEEXT)
@@ -803,36 +803,36 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/checksettings.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkapplaunchcontext-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkasync.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkcolor-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkcursor-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkdisplay-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkdnd-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkdrawable-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkevents-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkfont-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkgc-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkgeometry-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkglobals-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkim-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkimage-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkinput-none.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkinput-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkinput-xfree.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkinput.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkkeys-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkmain-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkpixmap-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkproperty-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkscreen-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkselection-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkspawn-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdktestutils-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkvisual-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkwindow-x11.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkxftdefaults.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkxid.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkapplaunchcontext-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkasync.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkcolor-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkcursor-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkdisplay-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkdnd-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkdrawable-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkevents-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkfont-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkgc-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkgeometry-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkglobals-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkim-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkimage-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkinput-none.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkinput-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkinput-xfree.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkinput.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkkeys-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkmain-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkpixmap-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkproperty-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkscreen-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkselection-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkspawn-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdktestutils-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkvisual-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkwindow-x11.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkxftdefaults.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkxid.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xsettings-client.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xsettings-common.Plo@am__quote@ # am--include-marker
 
@@ -868,27 +868,27 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-libgdkincludeHEADERS: $(libgdkinclude_HEADERS)
+install-libbdkincludeHEADERS: $(libbdkinclude_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(libgdkinclude_HEADERS)'; test -n "$(libgdkincludedir)" || list=; \
+	@list='$(libbdkinclude_HEADERS)'; test -n "$(libbdkincludedir)" || list=; \
 	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(libgdkincludedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(libgdkincludedir)" || exit 1; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(libbdkincludedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(libbdkincludedir)" || exit 1; \
 	fi; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libgdkincludedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libgdkincludedir)" || exit $$?; \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libbdkincludedir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libbdkincludedir)" || exit $$?; \
 	done
 
-uninstall-libgdkincludeHEADERS:
+uninstall-libbdkincludeHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libgdkinclude_HEADERS)'; test -n "$(libgdkincludedir)" || list=; \
+	@list='$(libbdkinclude_HEADERS)'; test -n "$(libbdkincludedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(libgdkincludedir)'; $(am__uninstall_files_from_dir)
+	dir='$(DESTDIR)$(libbdkincludedir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -1143,7 +1143,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(PROGRAMS) $(LTLIBRARIES) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libgdkincludedir)"; do \
+	for dir in "$(DESTDIR)$(libbdkincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -1186,36 +1186,36 @@ clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/checksettings.Po
-	-rm -f ./$(DEPDIR)/gdkapplaunchcontext-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkasync.Plo
-	-rm -f ./$(DEPDIR)/gdkcolor-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkcursor-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkdisplay-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkdnd-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkdrawable-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkevents-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkfont-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkgc-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkgeometry-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkglobals-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkim-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkimage-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-none.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-xfree.Plo
-	-rm -f ./$(DEPDIR)/gdkinput.Plo
-	-rm -f ./$(DEPDIR)/gdkkeys-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkmain-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkpixmap-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkproperty-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkscreen-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkselection-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkspawn-x11.Plo
-	-rm -f ./$(DEPDIR)/gdktestutils-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkvisual-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkwindow-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkxftdefaults.Plo
-	-rm -f ./$(DEPDIR)/gdkxid.Plo
+	-rm -f ./$(DEPDIR)/bdkapplaunchcontext-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkasync.Plo
+	-rm -f ./$(DEPDIR)/bdkcolor-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkcursor-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkdisplay-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkdnd-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkdrawable-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkevents-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkfont-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkgc-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkgeometry-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkglobals-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkim-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkimage-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-none.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-xfree.Plo
+	-rm -f ./$(DEPDIR)/bdkinput.Plo
+	-rm -f ./$(DEPDIR)/bdkkeys-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkmain-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkpixmap-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkproperty-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkscreen-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkselection-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkspawn-x11.Plo
+	-rm -f ./$(DEPDIR)/bdktestutils-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkvisual-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkwindow-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkxftdefaults.Plo
+	-rm -f ./$(DEPDIR)/bdkxid.Plo
 	-rm -f ./$(DEPDIR)/xsettings-client.Plo
 	-rm -f ./$(DEPDIR)/xsettings-common.Plo
 	-rm -f Makefile
@@ -1234,7 +1234,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libgdkincludeHEADERS
+install-data-am: install-libbdkincludeHEADERS
 
 install-dvi: install-dvi-am
 
@@ -1264,36 +1264,36 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/checksettings.Po
-	-rm -f ./$(DEPDIR)/gdkapplaunchcontext-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkasync.Plo
-	-rm -f ./$(DEPDIR)/gdkcolor-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkcursor-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkdisplay-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkdnd-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkdrawable-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkevents-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkfont-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkgc-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkgeometry-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkglobals-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkim-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkimage-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-none.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-xfree.Plo
-	-rm -f ./$(DEPDIR)/gdkinput.Plo
-	-rm -f ./$(DEPDIR)/gdkkeys-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkmain-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkpixmap-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkproperty-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkscreen-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkselection-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkspawn-x11.Plo
-	-rm -f ./$(DEPDIR)/gdktestutils-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkvisual-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkwindow-x11.Plo
-	-rm -f ./$(DEPDIR)/gdkxftdefaults.Plo
-	-rm -f ./$(DEPDIR)/gdkxid.Plo
+	-rm -f ./$(DEPDIR)/bdkapplaunchcontext-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkasync.Plo
+	-rm -f ./$(DEPDIR)/bdkcolor-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkcursor-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkdisplay-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkdnd-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkdrawable-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkevents-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkfont-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkgc-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkgeometry-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkglobals-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkim-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkimage-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-none.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-xfree.Plo
+	-rm -f ./$(DEPDIR)/bdkinput.Plo
+	-rm -f ./$(DEPDIR)/bdkkeys-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkmain-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkpixmap-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkproperty-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkscreen-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkselection-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkspawn-x11.Plo
+	-rm -f ./$(DEPDIR)/bdktestutils-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkvisual-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkwindow-x11.Plo
+	-rm -f ./$(DEPDIR)/bdkxftdefaults.Plo
+	-rm -f ./$(DEPDIR)/bdkxid.Plo
 	-rm -f ./$(DEPDIR)/xsettings-client.Plo
 	-rm -f ./$(DEPDIR)/xsettings-common.Plo
 	-rm -f Makefile
@@ -1312,7 +1312,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libgdkincludeHEADERS
+uninstall-am: uninstall-libbdkincludeHEADERS
 
 .MAKE: check-am install-am install-strip
 
@@ -1324,13 +1324,13 @@ uninstall-am: uninstall-libgdkincludeHEADERS
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libgdkincludeHEADERS install-man \
+	install-info-am install-libbdkincludeHEADERS install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
 	pdf pdf-am ps ps-am recheck tags tags-am uninstall \
-	uninstall-am uninstall-libgdkincludeHEADERS
+	uninstall-am uninstall-libbdkincludeHEADERS
 
 .PRECIOUS: Makefile
 
@@ -1340,8 +1340,8 @@ uninstall-am: uninstall-libgdkincludeHEADERS
 test: test-cwd test-recurse
 # test-cwd: run tests in cwd
 test-cwd: ${TEST_PROGS}
-	@$(SKIP_GDKTARGET) || test -z "${TEST_PROGS}" || { \
-	  $(XVFB_START) && { set -e; $(TESTS_ENVIRONMENT) ${GTESTER} --verbose ${TEST_PROGS}; }; \
+	@$(SKIP_BDKTARGET) || test -z "${TEST_PROGS}" || { \
+	  $(XVFB_START) && { set -e; $(TESTS_ENVIRONMENT) ${BTESTER} --verbose ${TEST_PROGS}; }; \
 	}
 # test-recurse: run tests in subdirs
 test-recurse:
@@ -1354,15 +1354,15 @@ test-recurse:
 # full-report: like test-report: with -m perf and -m slow
 test-report perf-report full-report:	${TEST_PROGS}
 	@ ignore_logdir=true ; \
-	  if test -z "$$GTESTER_LOGDIR" ; then \
-	    GTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export GTESTER_LOGDIR ; \
+	  if test -z "$$BTESTER_LOGDIR" ; then \
+	    BTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export BTESTER_LOGDIR ; \
 	    ignore_logdir=false ; \
 	  fi ; \
 	  for subdir in $(SUBDIRS) ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" -o "$$subdir" = "po-properties" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done ; \
-	  $(SKIP_GDKTARGET) || test -z "${TEST_PROGS}" || { \
+	  $(SKIP_BDKTARGET) || test -z "${TEST_PROGS}" || { \
 	    case $@ in \
 	    test-report) test_options="-k";; \
 	    perf-report) test_options="-k -m=perf";; \
@@ -1370,23 +1370,23 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    esac ; \
 	    $(XVFB_START) && { \
 	      set -e; \
-	      if test -z "$$GTESTER_LOGDIR" ; then \
-	        ${GTESTER} --verbose $$test_options -o test-report.xml ${TEST_PROGS} ; \
+	      if test -z "$$BTESTER_LOGDIR" ; then \
+	        ${BTESTER} --verbose $$test_options -o test-report.xml ${TEST_PROGS} ; \
 	      elif test -n "${TEST_PROGS}" ; then \
-	        ${GTESTER} --verbose $$test_options -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ${TEST_PROGS} ; \
+	        ${BTESTER} --verbose $$test_options -o `mktemp "$$BTESTER_LOGDIR/log-XXXXXX"` ${TEST_PROGS} ; \
 	      fi ; \
 	    }; \
 	  }; \
 	  $$ignore_logdir || { \
 	    echo '<?xml version="1.0"?>' > $@.xml ; \
 	    echo '<report-collection>'  >> $@.xml ; \
-	    for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
-	      sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
+	    for lf in `ls -L "$$BTESTER_LOGDIR"/.` ; do \
+	      sed '1,1s/^<?xml\b[^>?]*?>//' <"$$BTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
 	    done ; \
 	    echo >> $@.xml ; \
 	    echo '</report-collection>' >> $@.xml ; \
-	    rm -rf "$$GTESTER_LOGDIR"/ ; \
-	    ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
+	    rm -rf "$$BTESTER_LOGDIR"/ ; \
+	    ${BTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${BTESTER_REPORT} $@.xml >$@.html ; \
 	  }
 .PHONY: test test-cwd test-recurse test-report perf-report full-report
 # run make test-cwd as part of make check

@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) David Zeuthen <davidz@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,35 +19,35 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_MOUNT_OPERATION_PRIVATE_H__
-#define __GTK_MOUNT_OPERATION_PRIVATE_H__
+#ifndef __BTK_MOUNT_OPERATION_PRIVATE_H__
+#define __BTK_MOUNT_OPERATION_PRIVATE_H__
 
-#include <gio/gio.h>
-#include <gdk/gdk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bunnyio/bunnyio.h>
+#include <bdk/bdk.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 
-struct _GtkMountOperationLookupContext;
-typedef struct _GtkMountOperationLookupContext GtkMountOperationLookupContext;
+struct _BtkMountOperationLookupContext;
+typedef struct _BtkMountOperationLookupContext BtkMountOperationLookupContext;
 
-GtkMountOperationLookupContext *_gtk_mount_operation_lookup_context_get  (GdkDisplay *display);
+BtkMountOperationLookupContext *_btk_mount_operation_lookup_context_get  (BdkDisplay *display);
 
-gboolean _gtk_mount_operation_lookup_info         (GtkMountOperationLookupContext *context,
+gboolean _btk_mount_operation_lookup_info         (BtkMountOperationLookupContext *context,
                                                    GPid                            pid,
                                                    gint                            size_pixels,
                                                    gchar                         **out_name,
                                                    gchar                         **out_command_line,
-                                                   GdkPixbuf                     **out_pixbuf);
+                                                   BdkPixbuf                     **out_pixbuf);
 
-void     _gtk_mount_operation_lookup_context_free (GtkMountOperationLookupContext *context);
+void     _btk_mount_operation_lookup_context_free (BtkMountOperationLookupContext *context);
 
 /* throw G_IO_ERROR_FAILED_HANDLED if a helper already reported the error to the user */
-gboolean _gtk_mount_operation_kill_process (GPid      pid,
+gboolean _btk_mount_operation_kill_process (GPid      pid,
                                             GError  **error);
 
-#endif /* __GTK_MOUNT_OPERATION_PRIVATE_H__ */
+#endif /* __BTK_MOUNT_OPERATION_PRIVATE_H__ */

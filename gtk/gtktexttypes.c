@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtktexttypes.c Copyright (C) 2000 Red Hat, Inc.
+/* BTK - The GIMP Toolkit
+ * btktexttypes.c Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,20 +18,20 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
-#include "gtktexttypes.h"
-#include "gtkalias.h"
+#include "btktexttypes.h"
+#include "btkalias.h"
 
 /* These are used to represent embedded non-character objects
  * if you return a string representation of a text buffer
  */
-const gchar gtk_text_unknown_char_utf8[] = { '\xEF', '\xBF', '\xBC', '\0' };
+const gchar btk_text_unknown_char_utf8[] = { '\xEF', '\xBF', '\xBC', '\0' };
 
 static inline gboolean
 inline_byte_begins_utf8_char (const gchar *byte)
@@ -40,10 +40,10 @@ inline_byte_begins_utf8_char (const gchar *byte)
 }
 
 gboolean
-gtk_text_byte_begins_utf8_char (const gchar *byte)
+btk_text_byte_begins_utf8_char (const gchar *byte)
 {
   return inline_byte_begins_utf8_char (byte);
 }
 
-#define __GTK_TEXT_TYPES_C__
-#include "gtkaliasdef.c"
+#define __BTK_TEXT_TYPES_C__
+#include "btkaliasdef.c"

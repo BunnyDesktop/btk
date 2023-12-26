@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * Copyright (C) 2004-2006 Christian Hammond
@@ -22,52 +22,52 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ENTRY_H__
-#define __GTK_ENTRY_H__
+#ifndef __BTK_ENTRY_H__
+#define __BTK_ENTRY_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkeditable.h>
-#include <gtk/gtkimcontext.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkentrybuffer.h>
-#include <gtk/gtkentrycompletion.h>
-#include <gtk/gtkimage.h>
-#include <gtk/gtkselection.h>
+#include <btk/btkeditable.h>
+#include <btk/btkimcontext.h>
+#include <btk/btkmenu.h>
+#include <btk/btkentrybuffer.h>
+#include <btk/btkentrycompletion.h>
+#include <btk/btkimage.h>
+#include <btk/btkselection.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ENTRY                  (gtk_entry_get_type ())
-#define GTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ENTRY, GtkEntry))
-#define GTK_ENTRY_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ENTRY, GtkEntryClass))
-#define GTK_IS_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ENTRY))
-#define GTK_IS_ENTRY_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ENTRY))
-#define GTK_ENTRY_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ENTRY, GtkEntryClass))
+#define BTK_TYPE_ENTRY                  (btk_entry_get_type ())
+#define BTK_ENTRY(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ENTRY, BtkEntry))
+#define BTK_ENTRY_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ENTRY, BtkEntryClass))
+#define BTK_IS_ENTRY(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ENTRY))
+#define BTK_IS_ENTRY_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ENTRY))
+#define BTK_ENTRY_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ENTRY, BtkEntryClass))
 
 typedef enum
 {
-  GTK_ENTRY_ICON_PRIMARY,
-  GTK_ENTRY_ICON_SECONDARY
-} GtkEntryIconPosition;
+  BTK_ENTRY_ICON_PRIMARY,
+  BTK_ENTRY_ICON_SECONDARY
+} BtkEntryIconPosition;
 
-typedef struct _GtkEntry       GtkEntry;
-typedef struct _GtkEntryClass  GtkEntryClass;
+typedef struct _BtkEntry       BtkEntry;
+typedef struct _BtkEntryClass  BtkEntryClass;
 
-struct _GtkEntry
+struct _BtkEntry
 {
-  GtkWidget  widget;
+  BtkWidget  widget;
 
-  gchar       *GSEAL (text);                        /* COMPAT: Deprecated, not used. Remove in GTK+ 3.x */
+  gchar       *GSEAL (text);                        /* COMPAT: Deprecated, not used. Remove in BTK+ 3.x */
 
   guint        GSEAL (editable) : 1;
   guint        GSEAL (visible)  : 1;
@@ -75,18 +75,18 @@ struct _GtkEntry
   guint        GSEAL (in_drag) : 1;	            /* FIXME: Should be private?
                                                        Dragging within the selection */
 
-  guint16      GSEAL (text_length);                 /* COMPAT: Deprecated, not used. Remove in GTK+ 3.x */
-  guint16      GSEAL (text_max_length);             /* COMPAT: Deprecated, not used. Remove in GTK+ 3.x */
+  guint16      GSEAL (text_length);                 /* COMPAT: Deprecated, not used. Remove in BTK+ 3.x */
+  guint16      GSEAL (text_max_length);             /* COMPAT: Deprecated, not used. Remove in BTK+ 3.x */
 
   /*< private >*/
-  GdkWindow    *GSEAL (text_area);
-  GtkIMContext *GSEAL (im_context);
-  GtkWidget    *GSEAL (popup_menu);
+  BdkWindow    *GSEAL (text_area);
+  BtkIMContext *GSEAL (im_context);
+  BtkWidget    *GSEAL (popup_menu);
 
   gint          GSEAL (current_pos);
   gint          GSEAL (selection_bound);
 
-  PangoLayout  *GSEAL (cached_layout);
+  BangoLayout  *GSEAL (cached_layout);
 
   guint         GSEAL (cache_includes_preedit) : 1;
   guint         GSEAL (need_im_reset)          : 1;
@@ -95,19 +95,19 @@ struct _GtkEntry
   guint         GSEAL (cursor_visible)         : 1;
   guint         GSEAL (in_click)               : 1; /* Flag so we don't select all when clicking in entry to focus in */
   guint         GSEAL (is_cell_renderer)       : 1;
-  guint         GSEAL (editing_canceled)       : 1; /* Only used by GtkCellRendererText */ 
+  guint         GSEAL (editing_canceled)       : 1; /* Only used by BtkCellRendererText */ 
   guint         GSEAL (mouse_cursor_obscured)  : 1;
   guint         GSEAL (select_words)           : 1;
   guint         GSEAL (select_lines)           : 1;
-  guint         GSEAL (resolved_dir)           : 4; /* PangoDirection */
+  guint         GSEAL (resolved_dir)           : 4; /* BangoDirection */
   guint         GSEAL (truncate_multiline)     : 1;
 
   guint         GSEAL (button);
   guint         GSEAL (blink_timeout);
   guint         GSEAL (recompute_idle);
   gint          GSEAL (scroll_offset);
-  gint          GSEAL (ascent);	                    /* font ascent in pango units  */
-  gint          GSEAL (descent);	            /* font descent in pango units */
+  gint          GSEAL (ascent);	                    /* font ascent in bango units  */
+  gint          GSEAL (descent);	            /* font descent in bango units */
 
   guint16       GSEAL (x_text_size);	            /* allocated size, in bytes */
   guint16       GSEAL (x_n_bytes);	            /* length in use, in bytes */
@@ -125,210 +125,210 @@ struct _GtkEntry
   gint          GSEAL (width_chars);
 };
 
-struct _GtkEntryClass
+struct _BtkEntryClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 
   /* Hook to customize right-click popup */
-  void (* populate_popup)   (GtkEntry       *entry,
-                             GtkMenu        *menu);
+  void (* populate_popup)   (BtkEntry       *entry,
+                             BtkMenu        *menu);
 
   /* Action signals
    */
-  void (* activate)           (GtkEntry             *entry);
-  void (* move_cursor)        (GtkEntry             *entry,
-			       GtkMovementStep       step,
+  void (* activate)           (BtkEntry             *entry);
+  void (* move_cursor)        (BtkEntry             *entry,
+			       BtkMovementStep       step,
 			       gint                  count,
 			       gboolean              extend_selection);
-  void (* insert_at_cursor)   (GtkEntry             *entry,
+  void (* insert_at_cursor)   (BtkEntry             *entry,
 			       const gchar          *str);
-  void (* delete_from_cursor) (GtkEntry             *entry,
-			       GtkDeleteType         type,
+  void (* delete_from_cursor) (BtkEntry             *entry,
+			       BtkDeleteType         type,
 			       gint                  count);
-  void (* backspace)          (GtkEntry             *entry);
-  void (* cut_clipboard)      (GtkEntry             *entry);
-  void (* copy_clipboard)     (GtkEntry             *entry);
-  void (* paste_clipboard)    (GtkEntry             *entry);
-  void (* toggle_overwrite)   (GtkEntry             *entry);
+  void (* backspace)          (BtkEntry             *entry);
+  void (* cut_clipboard)      (BtkEntry             *entry);
+  void (* copy_clipboard)     (BtkEntry             *entry);
+  void (* paste_clipboard)    (BtkEntry             *entry);
+  void (* toggle_overwrite)   (BtkEntry             *entry);
 
-  /* hook to add other objects beside the entry (like in GtkSpinButton) */
-  void (* get_text_area_size) (GtkEntry       *entry,
+  /* hook to add other objects beside the entry (like in BtkSpinButton) */
+  void (* get_text_area_size) (BtkEntry       *entry,
 			       gint           *x,
 			       gint           *y,
 			       gint           *width,
 			       gint           *height);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1)      (void);
-  void (*_gtk_reserved2)      (void);
+  void (*_btk_reserved1)      (void);
+  void (*_btk_reserved2)      (void);
 };
 
-GType      gtk_entry_get_type       		(void) G_GNUC_CONST;
-GtkWidget* gtk_entry_new            		(void);
-GtkWidget* gtk_entry_new_with_buffer            (GtkEntryBuffer *buffer);
+GType      btk_entry_get_type       		(void) G_GNUC_CONST;
+BtkWidget* btk_entry_new            		(void);
+BtkWidget* btk_entry_new_with_buffer            (BtkEntryBuffer *buffer);
 
-GtkEntryBuffer* gtk_entry_get_buffer            (GtkEntry       *entry);
-void       gtk_entry_set_buffer                 (GtkEntry       *entry,
-                                                 GtkEntryBuffer *buffer);
+BtkEntryBuffer* btk_entry_get_buffer            (BtkEntry       *entry);
+void       btk_entry_set_buffer                 (BtkEntry       *entry,
+                                                 BtkEntryBuffer *buffer);
 
-GdkWindow *gtk_entry_get_text_window            (GtkEntry      *entry);
+BdkWindow *btk_entry_get_text_window            (BtkEntry      *entry);
 
-void       gtk_entry_set_visibility 		(GtkEntry      *entry,
+void       btk_entry_set_visibility 		(BtkEntry      *entry,
 						 gboolean       visible);
-gboolean   gtk_entry_get_visibility             (GtkEntry      *entry);
+gboolean   btk_entry_get_visibility             (BtkEntry      *entry);
 
-void       gtk_entry_set_invisible_char         (GtkEntry      *entry,
+void       btk_entry_set_invisible_char         (BtkEntry      *entry,
                                                  gunichar       ch);
-gunichar   gtk_entry_get_invisible_char         (GtkEntry      *entry);
-void       gtk_entry_unset_invisible_char       (GtkEntry      *entry);
+gunichar   btk_entry_get_invisible_char         (BtkEntry      *entry);
+void       btk_entry_unset_invisible_char       (BtkEntry      *entry);
 
-void       gtk_entry_set_has_frame              (GtkEntry      *entry,
+void       btk_entry_set_has_frame              (BtkEntry      *entry,
                                                  gboolean       setting);
-gboolean   gtk_entry_get_has_frame              (GtkEntry      *entry);
+gboolean   btk_entry_get_has_frame              (BtkEntry      *entry);
 
-void       gtk_entry_set_inner_border                (GtkEntry        *entry,
-                                                      const GtkBorder *border);
-const GtkBorder* gtk_entry_get_inner_border          (GtkEntry        *entry);
+void       btk_entry_set_inner_border                (BtkEntry        *entry,
+                                                      const BtkBorder *border);
+const BtkBorder* btk_entry_get_inner_border          (BtkEntry        *entry);
 
-void       gtk_entry_set_overwrite_mode         (GtkEntry      *entry,
+void       btk_entry_set_overwrite_mode         (BtkEntry      *entry,
                                                  gboolean       overwrite);
-gboolean   gtk_entry_get_overwrite_mode         (GtkEntry      *entry);
+gboolean   btk_entry_get_overwrite_mode         (BtkEntry      *entry);
 
 /* text is truncated if needed */
-void       gtk_entry_set_max_length 		(GtkEntry      *entry,
+void       btk_entry_set_max_length 		(BtkEntry      *entry,
 						 gint           max);
-gint       gtk_entry_get_max_length             (GtkEntry      *entry);
-guint16    gtk_entry_get_text_length            (GtkEntry      *entry);
+gint       btk_entry_get_max_length             (BtkEntry      *entry);
+guint16    btk_entry_get_text_length            (BtkEntry      *entry);
 
-void       gtk_entry_set_activates_default      (GtkEntry      *entry,
+void       btk_entry_set_activates_default      (BtkEntry      *entry,
                                                  gboolean       setting);
-gboolean   gtk_entry_get_activates_default      (GtkEntry      *entry);
+gboolean   btk_entry_get_activates_default      (BtkEntry      *entry);
 
-void       gtk_entry_set_width_chars            (GtkEntry      *entry,
+void       btk_entry_set_width_chars            (BtkEntry      *entry,
                                                  gint           n_chars);
-gint       gtk_entry_get_width_chars            (GtkEntry      *entry);
+gint       btk_entry_get_width_chars            (BtkEntry      *entry);
 
-/* Somewhat more convenient than the GtkEditable generic functions
+/* Somewhat more convenient than the BtkEditable generic functions
  */
-void       gtk_entry_set_text                   (GtkEntry      *entry,
+void       btk_entry_set_text                   (BtkEntry      *entry,
                                                  const gchar   *text);
 /* returns a reference to the text */
-const gchar* gtk_entry_get_text                 (GtkEntry      *entry);
+const gchar* btk_entry_get_text                 (BtkEntry      *entry);
 
-PangoLayout* gtk_entry_get_layout               (GtkEntry      *entry);
-void         gtk_entry_get_layout_offsets       (GtkEntry      *entry,
+BangoLayout* btk_entry_get_layout               (BtkEntry      *entry);
+void         btk_entry_get_layout_offsets       (BtkEntry      *entry,
                                                  gint          *x,
                                                  gint          *y);
-void       gtk_entry_set_alignment              (GtkEntry      *entry,
+void       btk_entry_set_alignment              (BtkEntry      *entry,
                                                  gfloat         xalign);
-gfloat     gtk_entry_get_alignment              (GtkEntry      *entry);
+gfloat     btk_entry_get_alignment              (BtkEntry      *entry);
 
-void                gtk_entry_set_completion (GtkEntry           *entry,
-                                              GtkEntryCompletion *completion);
-GtkEntryCompletion *gtk_entry_get_completion (GtkEntry           *entry);
+void                btk_entry_set_completion (BtkEntry           *entry,
+                                              BtkEntryCompletion *completion);
+BtkEntryCompletion *btk_entry_get_completion (BtkEntry           *entry);
 
-gint       gtk_entry_layout_index_to_text_index (GtkEntry      *entry,
+gint       btk_entry_layout_index_to_text_index (BtkEntry      *entry,
                                                  gint           layout_index);
-gint       gtk_entry_text_index_to_layout_index (GtkEntry      *entry,
+gint       btk_entry_text_index_to_layout_index (BtkEntry      *entry,
                                                  gint           text_index);
 
 /* For scrolling cursor appropriately
  */
-void           gtk_entry_set_cursor_hadjustment (GtkEntry      *entry,
-                                                 GtkAdjustment *adjustment);
-GtkAdjustment* gtk_entry_get_cursor_hadjustment (GtkEntry      *entry);
+void           btk_entry_set_cursor_hadjustment (BtkEntry      *entry,
+                                                 BtkAdjustment *adjustment);
+BtkAdjustment* btk_entry_get_cursor_hadjustment (BtkEntry      *entry);
 
 /* Progress API
  */
-void           gtk_entry_set_progress_fraction   (GtkEntry     *entry,
+void           btk_entry_set_progress_fraction   (BtkEntry     *entry,
                                                   gdouble       fraction);
-gdouble        gtk_entry_get_progress_fraction   (GtkEntry     *entry);
+gdouble        btk_entry_get_progress_fraction   (BtkEntry     *entry);
 
-void           gtk_entry_set_progress_pulse_step (GtkEntry     *entry,
+void           btk_entry_set_progress_pulse_step (BtkEntry     *entry,
                                                   gdouble       fraction);
-gdouble        gtk_entry_get_progress_pulse_step (GtkEntry     *entry);
+gdouble        btk_entry_get_progress_pulse_step (BtkEntry     *entry);
 
-void           gtk_entry_progress_pulse          (GtkEntry     *entry);
+void           btk_entry_progress_pulse          (BtkEntry     *entry);
 
 /* Setting and managing icons
  */
-void           gtk_entry_set_icon_from_pixbuf            (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
-							  GdkPixbuf            *pixbuf);
-void           gtk_entry_set_icon_from_stock             (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+void           btk_entry_set_icon_from_pixbuf            (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
+							  BdkPixbuf            *pixbuf);
+void           btk_entry_set_icon_from_stock             (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  const gchar          *stock_id);
-void           gtk_entry_set_icon_from_icon_name         (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+void           btk_entry_set_icon_from_icon_name         (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  const gchar          *icon_name);
-void           gtk_entry_set_icon_from_gicon             (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+void           btk_entry_set_icon_from_gicon             (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  GIcon                *icon);
-GtkImageType gtk_entry_get_icon_storage_type             (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-GdkPixbuf*   gtk_entry_get_icon_pixbuf                   (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-const gchar* gtk_entry_get_icon_stock                    (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-const gchar* gtk_entry_get_icon_name                     (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-GIcon*       gtk_entry_get_icon_gicon                    (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-void         gtk_entry_set_icon_activatable              (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+BtkImageType btk_entry_get_icon_storage_type             (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+BdkPixbuf*   btk_entry_get_icon_pixbuf                   (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+const gchar* btk_entry_get_icon_stock                    (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+const gchar* btk_entry_get_icon_name                     (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+GIcon*       btk_entry_get_icon_gicon                    (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+void         btk_entry_set_icon_activatable              (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  gboolean              activatable);
-gboolean     gtk_entry_get_icon_activatable              (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-void         gtk_entry_set_icon_sensitive                (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+gboolean     btk_entry_get_icon_activatable              (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+void         btk_entry_set_icon_sensitive                (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  gboolean              sensitive);
-gboolean     gtk_entry_get_icon_sensitive                (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos);
-gint         gtk_entry_get_icon_at_pos                   (GtkEntry             *entry,
+gboolean     btk_entry_get_icon_sensitive                (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos);
+gint         btk_entry_get_icon_at_pos                   (BtkEntry             *entry,
 							  gint                  x,
 							  gint                  y);
-void         gtk_entry_set_icon_tooltip_text             (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+void         btk_entry_set_icon_tooltip_text             (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  const gchar          *tooltip);
-gchar *      gtk_entry_get_icon_tooltip_text             (GtkEntry             *entry,
-                                                          GtkEntryIconPosition  icon_pos);
-void         gtk_entry_set_icon_tooltip_markup           (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
+gchar *      btk_entry_get_icon_tooltip_text             (BtkEntry             *entry,
+                                                          BtkEntryIconPosition  icon_pos);
+void         btk_entry_set_icon_tooltip_markup           (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
 							  const gchar          *tooltip);
-gchar *      gtk_entry_get_icon_tooltip_markup           (GtkEntry             *entry,
-                                                          GtkEntryIconPosition  icon_pos);
-void         gtk_entry_set_icon_drag_source              (GtkEntry             *entry,
-							  GtkEntryIconPosition  icon_pos,
-							  GtkTargetList        *target_list,
-							  GdkDragAction         actions);
-gint         gtk_entry_get_current_icon_drag_source      (GtkEntry             *entry);
+gchar *      btk_entry_get_icon_tooltip_markup           (BtkEntry             *entry,
+                                                          BtkEntryIconPosition  icon_pos);
+void         btk_entry_set_icon_drag_source              (BtkEntry             *entry,
+							  BtkEntryIconPosition  icon_pos,
+							  BtkTargetList        *target_list,
+							  BdkDragAction         actions);
+gint         btk_entry_get_current_icon_drag_source      (BtkEntry             *entry);
 
-GdkWindow  * gtk_entry_get_icon_window                   (GtkEntry             *entry,
-                                                          GtkEntryIconPosition  icon_pos);
+BdkWindow  * btk_entry_get_icon_window                   (BtkEntry             *entry,
+                                                          BtkEntryIconPosition  icon_pos);
 
-gboolean    gtk_entry_im_context_filter_keypress         (GtkEntry             *entry,
-                                                          GdkEventKey          *event);
-void        gtk_entry_reset_im_context                   (GtkEntry             *entry);
+gboolean    btk_entry_im_context_filter_keypress         (BtkEntry             *entry,
+                                                          BdkEventKey          *event);
+void        btk_entry_reset_im_context                   (BtkEntry             *entry);
 
 
 /* Deprecated compatibility functions
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
-GtkWidget* gtk_entry_new_with_max_length	(gint           max);
-void       gtk_entry_append_text    		(GtkEntry      *entry,
+#ifndef BTK_DISABLE_DEPRECATED
+BtkWidget* btk_entry_new_with_max_length	(gint           max);
+void       btk_entry_append_text    		(BtkEntry      *entry,
 						 const gchar   *text);
-void       gtk_entry_prepend_text   		(GtkEntry      *entry,
+void       btk_entry_prepend_text   		(BtkEntry      *entry,
 						 const gchar   *text);
-void       gtk_entry_set_position   		(GtkEntry      *entry,
+void       btk_entry_set_position   		(BtkEntry      *entry,
 						 gint           position);
-void       gtk_entry_select_region  		(GtkEntry      *entry,
+void       btk_entry_select_rebunnyion  		(BtkEntry      *entry,
 						 gint           start,
 						 gint           end);
-void       gtk_entry_set_editable   		(GtkEntry      *entry,
+void       btk_entry_set_editable   		(BtkEntry      *entry,
 						 gboolean       editable);
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GTK_ENTRY_H__ */
+#endif /* __BTK_ENTRY_H__ */

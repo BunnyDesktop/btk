@@ -23,11 +23,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "gdkspawn.h"
+#include "bdkspawn.h"
 
-#include <glib.h>
-#include <gdk/gdk.h>
-#include "gdkalias.h"
+#include <bunnylib.h>
+#include <bdk/bdk.h>
+#include "bdkalias.h"
   
 typedef struct {
   char *display;
@@ -37,7 +37,7 @@ typedef struct {
 
 /*
  * Set the DISPLAY variable, and then call the user-specified child setup
- * function.  This is required so that applications can use gdk_spawn_* and 
+ * function.  This is required so that applications can use bdk_spawn_* and 
  * call putenv() in their child_setup functions.
  */
 static void
@@ -52,8 +52,8 @@ set_environment (gpointer user_data)
 }
 
 /**
- * gdk_spawn_on_screen:
- * @screen: a #GdkScreen
+ * bdk_spawn_on_screen:
+ * @screen: a #BdkScreen
  * @working_directory: child's current working directory, or %NULL to 
  *   inherit parent's
  * @argv: child's argument vector
@@ -65,8 +65,8 @@ set_environment (gpointer user_data)
  * @error: return location for error
  *
  * Like g_spawn_async(), except the child process is spawned in such
- * an environment that on calling gdk_display_open() it would be
- * returned a #GdkDisplay with @screen as the default screen.
+ * an environment that on calling bdk_display_open() it would be
+ * returned a #BdkDisplay with @screen as the default screen.
  *
  * This is useful for applications which wish to launch an application
  * on a specific screen.
@@ -76,10 +76,10 @@ set_environment (gpointer user_data)
  * Since: 2.4
  *
  * Deprecated: 2.24: This function is being removed in 3.0. Use
- *     either g_spawn_sync(), g_spawn_async(), or #GdkAppLaunchContext instead.
+ *     either g_spawn_sync(), g_spawn_async(), or #BdkAppLaunchContext instead.
  **/
 gboolean
-gdk_spawn_on_screen (GdkScreen             *screen,
+bdk_spawn_on_screen (BdkScreen             *screen,
 		     const gchar           *working_directory,
 		     gchar                **argv,
 		     gchar                **envp,
@@ -91,9 +91,9 @@ gdk_spawn_on_screen (GdkScreen             *screen,
 {
   UserChildSetup setup_data;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
 
-  setup_data.display = gdk_screen_make_display_name (screen);
+  setup_data.display = bdk_screen_make_display_name (screen);
   setup_data.child_setup = child_setup;
   setup_data.user_data = user_data;
 
@@ -108,8 +108,8 @@ gdk_spawn_on_screen (GdkScreen             *screen,
 }
 
 /**
- * gdk_spawn_on_screen_with_pipes:
- * @screen: a #GdkScreen
+ * bdk_spawn_on_screen_with_pipes:
+ * @screen: a #BdkScreen
  * @working_directory: child's current working directory, or %NULL to 
  *   inherit parent's
  * @argv: child's argument vector
@@ -127,8 +127,8 @@ gdk_spawn_on_screen (GdkScreen             *screen,
  * @error: return location for error
  *
  * Like g_spawn_async_with_pipes(), except the child process is
- * spawned in such an environment that on calling gdk_display_open()
- * it would be returned a #GdkDisplay with @screen as the default
+ * spawned in such an environment that on calling bdk_display_open()
+ * it would be returned a #BdkDisplay with @screen as the default
  * screen.
  *
  * This is useful for applications which wish to launch an application
@@ -139,10 +139,10 @@ gdk_spawn_on_screen (GdkScreen             *screen,
  * Since: 2.4
  *
  * Deprecated: 2.24: This function is being removed in 3.0. Use
- *     either g_spawn_async_with_pipes() or #GdkAppLaunchContext instead.
+ *     either g_spawn_async_with_pipes() or #BdkAppLaunchContext instead.
  **/
 gboolean
-gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
+bdk_spawn_on_screen_with_pipes (BdkScreen            *screen,
 				const gchar          *working_directory,
 				gchar               **argv,
 				gchar               **envp,
@@ -157,9 +157,9 @@ gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
 {
   UserChildSetup setup_data;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
 
-  setup_data.display = gdk_screen_make_display_name (screen);
+  setup_data.display = bdk_screen_make_display_name (screen);
   setup_data.child_setup = child_setup;
   setup_data.user_data = user_data;
 
@@ -178,14 +178,14 @@ gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
 }
 
 /**
- * gdk_spawn_command_line_on_screen:
- * @screen: a #GdkScreen
+ * bdk_spawn_command_line_on_screen:
+ * @screen: a #BdkScreen
  * @command_line: a command line
  * @error: return location for errors
  *
  * Like g_spawn_command_line_async(), except the child process is
- * spawned in such an environment that on calling gdk_display_open()
- * it would be returned a #GdkDisplay with @screen as the default
+ * spawned in such an environment that on calling bdk_display_open()
+ * it would be returned a #BdkDisplay with @screen as the default
  * screen.
  *
  * This is useful for applications which wish to launch an application
@@ -197,10 +197,10 @@ gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
  *
  * Deprecated: 2.24: This function is being removed in 3.0. Use
  *     either g_spawn_command_line_sync(), g_spawn_command_line_async() or 
- *     #GdkAppLaunchContext instead.
+ *     #BdkAppLaunchContext instead.
  **/
 gboolean
-gdk_spawn_command_line_on_screen (GdkScreen    *screen,
+bdk_spawn_command_line_on_screen (BdkScreen    *screen,
 				  const gchar  *command_line,
 				  GError      **error)
 {
@@ -214,7 +214,7 @@ gdk_spawn_command_line_on_screen (GdkScreen    *screen,
 			   error))
     return FALSE;
 
-  retval = gdk_spawn_on_screen (screen,
+  retval = bdk_spawn_on_screen (screen,
 				NULL, argv, NULL,
 				G_SPAWN_SEARCH_PATH,
 				NULL, NULL, NULL,
@@ -224,5 +224,5 @@ gdk_spawn_command_line_on_screen (GdkScreen    *screen,
   return retval;
 }
 
-#define __GDK_SPAWN_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_SPAWN_X11_C__
+#include "bdkaliasdef.c"

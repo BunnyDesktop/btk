@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,45 +18,45 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_TYPES_H__
-#define __GDK_TYPES_H__
+#ifndef __BDK_TYPES_H__
+#define __BDK_TYPES_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-/* GDK uses "glib". (And so does GTK).
+/* BDK uses "bunnylib". (And so does BTK).
  */
-#include <glib.h>
-#include <pango/pango.h>
-#include <glib-object.h>
+#include <bunnylib.h>
+#include <bango/bango.h>
+#include <bunnylib-object.h>
 
 #ifdef G_OS_WIN32
-#  ifdef GDK_COMPILATION
-#    define GDKVAR extern __declspec(dllexport)
+#  ifdef BDK_COMPILATION
+#    define BDKVAR extern __declspec(dllexport)
 #  else
-#    define GDKVAR extern __declspec(dllimport)
+#    define BDKVAR extern __declspec(dllimport)
 #  endif
 #else
-#  define GDKVAR extern
+#  define BDKVAR extern
 #endif
 
-/* The system specific file gdkconfig.h contains such configuration
- * settings that are needed not only when compiling GDK (or GTK)
- * itself, but also occasionally when compiling programs that use GDK
- * (or GTK). One such setting is what windowing API backend is in use.
+/* The system specific file bdkconfig.h contains such configuration
+ * settings that are needed not only when compiling BDK (or BTK)
+ * itself, but also occasionally when compiling programs that use BDK
+ * (or BTK). One such setting is what windowing API backend is in use.
  */
-#include <gdkconfig.h>
+#include <bdkconfig.h>
 
 /* some common magic values */
-#define GDK_CURRENT_TIME     0L
-#define GDK_PARENT_RELATIVE  1L
+#define BDK_CURRENT_TIME     0L
+#define BDK_PARENT_RELATIVE  1L
 
 
 
@@ -65,108 +65,108 @@ G_BEGIN_DECLS
 
 /* Type definitions for the basic structures.
  */
-typedef struct _GdkPoint	      GdkPoint;
-typedef struct _GdkRectangle	      GdkRectangle;
-typedef struct _GdkSegment	      GdkSegment;
-typedef struct _GdkSpan	              GdkSpan;
+typedef struct _BdkPoint	      BdkPoint;
+typedef struct _BdkRectangle	      BdkRectangle;
+typedef struct _BdkSegment	      BdkSegment;
+typedef struct _BdkSpan	              BdkSpan;
 
 /*
  * Note that on some platforms the wchar_t type
- * is not the same as GdkWChar. For instance
+ * is not the same as BdkWChar. For instance
  * on Win32, wchar_t is unsigned short.
  */
-typedef guint32			    GdkWChar;
+typedef guint32			    BdkWChar;
 
-typedef struct _GdkAtom            *GdkAtom;
+typedef struct _BdkAtom            *BdkAtom;
 
-#define GDK_ATOM_TO_POINTER(atom) (atom)
-#define GDK_POINTER_TO_ATOM(ptr)  ((GdkAtom)(ptr))
+#define BDK_ATOM_TO_POINTER(atom) (atom)
+#define BDK_POINTER_TO_ATOM(ptr)  ((BdkAtom)(ptr))
 
-#ifdef GDK_NATIVE_WINDOW_POINTER
-#define GDK_GPOINTER_TO_NATIVE_WINDOW(p) ((GdkNativeWindow) (p))
+#ifdef BDK_NATIVE_WINDOW_POINTER
+#define BDK_GPOINTER_TO_NATIVE_WINDOW(p) ((BdkNativeWindow) (p))
 #else
-#define GDK_GPOINTER_TO_NATIVE_WINDOW(p) GPOINTER_TO_UINT(p)
+#define BDK_GPOINTER_TO_NATIVE_WINDOW(p) GPOINTER_TO_UINT(p)
 #endif
 
-#define _GDK_MAKE_ATOM(val) ((GdkAtom)GUINT_TO_POINTER(val))
-#define GDK_NONE            _GDK_MAKE_ATOM (0)
+#define _BDK_MAKE_ATOM(val) ((BdkAtom)GUINT_TO_POINTER(val))
+#define BDK_NONE            _BDK_MAKE_ATOM (0)
 
-#ifdef GDK_NATIVE_WINDOW_POINTER
-typedef gpointer GdkNativeWindow;
+#ifdef BDK_NATIVE_WINDOW_POINTER
+typedef gpointer BdkNativeWindow;
 #else
-typedef guint32 GdkNativeWindow;
+typedef guint32 BdkNativeWindow;
 #endif
  
 /* Forward declarations of commonly used types
  */
-typedef struct _GdkColor	      GdkColor;
-typedef struct _GdkColormap	      GdkColormap;
-typedef struct _GdkCursor	      GdkCursor;
-typedef struct _GdkFont		      GdkFont;
-typedef struct _GdkGC                 GdkGC;
-typedef struct _GdkImage              GdkImage;
-typedef struct _GdkRegion             GdkRegion;
-typedef struct _GdkVisual             GdkVisual;
+typedef struct _BdkColor	      BdkColor;
+typedef struct _BdkColormap	      BdkColormap;
+typedef struct _BdkCursor	      BdkCursor;
+typedef struct _BdkFont		      BdkFont;
+typedef struct _BdkGC                 BdkGC;
+typedef struct _BdkImage              BdkImage;
+typedef struct _BdkRebunnyion             BdkRebunnyion;
+typedef struct _BdkVisual             BdkVisual;
 
-typedef struct _GdkDrawable           GdkDrawable;
-typedef struct _GdkDrawable           GdkBitmap;
-typedef struct _GdkDrawable           GdkPixmap;
-typedef struct _GdkDrawable           GdkWindow;
-typedef struct _GdkDisplay	      GdkDisplay;
-typedef struct _GdkScreen	      GdkScreen;
+typedef struct _BdkDrawable           BdkDrawable;
+typedef struct _BdkDrawable           BdkBitmap;
+typedef struct _BdkDrawable           BdkPixmap;
+typedef struct _BdkDrawable           BdkWindow;
+typedef struct _BdkDisplay	      BdkDisplay;
+typedef struct _BdkScreen	      BdkScreen;
 
 typedef enum
 {
-  GDK_LSB_FIRST,
-  GDK_MSB_FIRST
-} GdkByteOrder;
+  BDK_LSB_FIRST,
+  BDK_MSB_FIRST
+} BdkByteOrder;
 
 /* Types of modifiers.
  */
 typedef enum
 {
-  GDK_SHIFT_MASK    = 1 << 0,
-  GDK_LOCK_MASK	    = 1 << 1,
-  GDK_CONTROL_MASK  = 1 << 2,
-  GDK_MOD1_MASK	    = 1 << 3,
-  GDK_MOD2_MASK	    = 1 << 4,
-  GDK_MOD3_MASK	    = 1 << 5,
-  GDK_MOD4_MASK	    = 1 << 6,
-  GDK_MOD5_MASK	    = 1 << 7,
-  GDK_BUTTON1_MASK  = 1 << 8,
-  GDK_BUTTON2_MASK  = 1 << 9,
-  GDK_BUTTON3_MASK  = 1 << 10,
-  GDK_BUTTON4_MASK  = 1 << 11,
-  GDK_BUTTON5_MASK  = 1 << 12,
+  BDK_SHIFT_MASK    = 1 << 0,
+  BDK_LOCK_MASK	    = 1 << 1,
+  BDK_CONTROL_MASK  = 1 << 2,
+  BDK_MOD1_MASK	    = 1 << 3,
+  BDK_MOD2_MASK	    = 1 << 4,
+  BDK_MOD3_MASK	    = 1 << 5,
+  BDK_MOD4_MASK	    = 1 << 6,
+  BDK_MOD5_MASK	    = 1 << 7,
+  BDK_BUTTON1_MASK  = 1 << 8,
+  BDK_BUTTON2_MASK  = 1 << 9,
+  BDK_BUTTON3_MASK  = 1 << 10,
+  BDK_BUTTON4_MASK  = 1 << 11,
+  BDK_BUTTON5_MASK  = 1 << 12,
 
   /* The next few modifiers are used by XKB, so we skip to the end.
    * Bits 15 - 25 are currently unused. Bit 29 is used internally.
    */
   
-  GDK_SUPER_MASK    = 1 << 26,
-  GDK_HYPER_MASK    = 1 << 27,
-  GDK_META_MASK     = 1 << 28,
+  BDK_SUPER_MASK    = 1 << 26,
+  BDK_HYPER_MASK    = 1 << 27,
+  BDK_META_MASK     = 1 << 28,
   
-  GDK_RELEASE_MASK  = 1 << 30,
+  BDK_RELEASE_MASK  = 1 << 30,
 
-  GDK_MODIFIER_MASK = 0x5c001fff
-} GdkModifierType;
-
-typedef enum
-{
-  GDK_INPUT_READ       = 1 << 0,
-  GDK_INPUT_WRITE      = 1 << 1,
-  GDK_INPUT_EXCEPTION  = 1 << 2
-} GdkInputCondition;
+  BDK_MODIFIER_MASK = 0x5c001fff
+} BdkModifierType;
 
 typedef enum
 {
-  GDK_OK	  = 0,
-  GDK_ERROR	  = -1,
-  GDK_ERROR_PARAM = -2,
-  GDK_ERROR_FILE  = -3,
-  GDK_ERROR_MEM	  = -4
-} GdkStatus;
+  BDK_INPUT_READ       = 1 << 0,
+  BDK_INPUT_WRITE      = 1 << 1,
+  BDK_INPUT_EXCEPTION  = 1 << 2
+} BdkInputCondition;
+
+typedef enum
+{
+  BDK_OK	  = 0,
+  BDK_ERROR	  = -1,
+  BDK_ERROR_PARAM = -2,
+  BDK_ERROR_FILE  = -3,
+  BDK_ERROR_MEM	  = -4
+} BdkStatus;
 
 /* We define specific numeric values for these constants,
  * since old application code may depend on them matching the X values
@@ -174,30 +174,30 @@ typedef enum
  */
 typedef enum
 {
-  GDK_GRAB_SUCCESS         = 0,
-  GDK_GRAB_ALREADY_GRABBED = 1,
-  GDK_GRAB_INVALID_TIME    = 2,
-  GDK_GRAB_NOT_VIEWABLE    = 3,
-  GDK_GRAB_FROZEN          = 4
-} GdkGrabStatus;
+  BDK_GRAB_SUCCESS         = 0,
+  BDK_GRAB_ALREADY_GRABBED = 1,
+  BDK_GRAB_INVALID_TIME    = 2,
+  BDK_GRAB_NOT_VIEWABLE    = 3,
+  BDK_GRAB_FROZEN          = 4
+} BdkGrabStatus;
 
-typedef void (*GdkInputFunction) (gpointer	    data,
+typedef void (*BdkInputFunction) (gpointer	    data,
 				  gint		    source,
-				  GdkInputCondition condition);
+				  BdkInputCondition condition);
 
-#ifndef GDK_DISABLE_DEPRECATED
+#ifndef BDK_DISABLE_DEPRECATED
 
-typedef void (*GdkDestroyNotify) (gpointer data);
+typedef void (*BdkDestroyNotify) (gpointer data);
 
-#endif /* GDK_DISABLE_DEPRECATED */
+#endif /* BDK_DISABLE_DEPRECATED */
 
-struct _GdkPoint
+struct _BdkPoint
 {
   gint x;
   gint y;
 };
 
-struct _GdkRectangle
+struct _BdkRectangle
 {
   gint x;
   gint y;
@@ -205,7 +205,7 @@ struct _GdkRectangle
   gint height;
 };
 
-struct _GdkSegment
+struct _BdkSegment
 {
   gint x1;
   gint y1;
@@ -213,7 +213,7 @@ struct _GdkSegment
   gint y2;
 };
 
-struct _GdkSpan
+struct _BdkSpan
 {
   gint x;
   gint y;
@@ -223,4 +223,4 @@ struct _GdkSpan
 G_END_DECLS
 
 
-#endif /* __GDK_TYPES_H__ */
+#endif /* __BDK_TYPES_H__ */

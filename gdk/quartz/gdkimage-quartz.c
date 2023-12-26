@@ -1,4 +1,4 @@
-/* gdkimage-quartz.c
+/* bdkimage-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,15 +20,15 @@
 
 #include "config.h"
 
-#include "gdk.h"
-#include "gdkimage.h"
-#include "gdkprivate-quartz.h"
+#include "bdk.h"
+#include "bdkimage.h"
+#include "bdkprivate-quartz.h"
 
 static GObjectClass *parent_class;
 
-GdkImage *
-_gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
-				 GdkImage    *image,
+BdkImage *
+_bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
+				 BdkImage    *image,
 				 gint         src_x,
 				 gint         src_y,
 				 gint         dest_x,
@@ -36,25 +36,25 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
 				 gint         width,
 				 gint         height)
 {
-  GdkScreen *screen;
+  BdkScreen *screen;
   
-  g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_QUARTZ (drawable), NULL);
+  g_return_val_if_fail (BDK_IS_DRAWABLE_IMPL_QUARTZ (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
 
-  screen = gdk_drawable_get_screen (drawable);
+  screen = bdk_drawable_get_screen (drawable);
   if (!image)
-    image = _gdk_image_new_for_depth (screen, GDK_IMAGE_FASTEST, NULL, 
+    image = _bdk_image_new_for_depth (screen, BDK_IMAGE_FASTEST, NULL, 
 				      width, height,
-				      gdk_drawable_get_depth (drawable));
+				      bdk_drawable_get_depth (drawable));
   
-  if (GDK_IS_PIXMAP_IMPL_QUARTZ (drawable))
+  if (BDK_IS_PIXMAP_IMPL_QUARTZ (drawable))
     {
-      GdkPixmapImplQuartz *pix_impl;
+      BdkPixmapImplQuartz *pix_impl;
       gint bytes_per_row;
       guchar *data;
       int x, y;
 
-      pix_impl = GDK_PIXMAP_IMPL_QUARTZ (drawable);
+      pix_impl = BDK_PIXMAP_IMPL_QUARTZ (drawable);
       data = (guchar *)(pix_impl->data);
 
       if (src_x + width > pix_impl->width || src_y + height > pix_impl->height)
@@ -63,7 +63,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
           return image;
         }
 
-      switch (gdk_drawable_get_depth (drawable))
+      switch (bdk_drawable_get_depth (drawable))
         {
         case 24:
           bytes_per_row = pix_impl->width * 4;
@@ -79,7 +79,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
                   pixel = src[0] << 16 | src[1] << 8 | src[2];
                   src += 4;
 
-                  gdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
+                  bdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
                 }
             }
           break;
@@ -98,7 +98,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
                   pixel = src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3];
                   src += 4;
 
-                  gdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
+                  bdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
                 }
             }
           break;
@@ -117,19 +117,19 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
                   pixel = src[0];
                   src++;
 
-                  gdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
+                  bdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
                 }
             }
           break;
 
         default:
-          g_warning ("Unsupported bit depth %d\n", gdk_drawable_get_depth (drawable));
+          g_warning ("Unsupported bit depth %d\n", bdk_drawable_get_depth (drawable));
           return image;
         }
     }
-  else if (GDK_IS_WINDOW_IMPL_QUARTZ (drawable))
+  else if (BDK_IS_WINDOW_IMPL_QUARTZ (drawable))
     {
-      GdkQuartzView *view;
+      BdkQuartzView *view;
       NSBitmapImageRep *rep;
       guchar *data;
       int x, y;
@@ -143,7 +143,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
       gint a_byte = 3;
       gboolean le_image_data = FALSE;
 
-      if (GDK_WINDOW_IMPL_QUARTZ (drawable) == GDK_WINDOW_IMPL_QUARTZ (GDK_WINDOW_OBJECT (_gdk_root)->impl))
+      if (BDK_WINDOW_IMPL_QUARTZ (drawable) == BDK_WINDOW_IMPL_QUARTZ (BDK_WINDOW_OBJECT (_bdk_root)->impl))
         {
           /* Special case for the root window. */
 	  CGRect rect = CGRectMake (src_x, src_y, width, height);
@@ -174,7 +174,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
       else
         {
 	  NSRect rect = NSMakeRect (src_x, src_y, width, height);
-          view = GDK_WINDOW_IMPL_QUARTZ (drawable)->view;
+          view = BDK_WINDOW_IMPL_QUARTZ (drawable)->view;
 
           /* We return the image even if we can't copy to it. */
           if (![view lockFocusIfCanDraw])
@@ -225,14 +225,14 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
                       b = b * 255 / alpha;
                     }
 
-                  if (image->byte_order == GDK_MSB_FIRST)
+                  if (image->byte_order == BDK_MSB_FIRST)
                     pixel = alpha | b << 8 | g << 16 | r << 24;
                   else
                     pixel = alpha << 24 | b << 16 | g << 8 | r;
                 }
               else
                 {
-                  if (image->byte_order == GDK_MSB_FIRST)
+                  if (image->byte_order == BDK_MSB_FIRST)
                     pixel = b | g << 8 | r << 16;
                   else
                     pixel = b << 16 | g << 8 | r;
@@ -240,7 +240,7 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
 
               src += bpp;
 
-              gdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
+              bdk_image_put_pixel (image, dest_x + x, dest_y + y, pixel);
             }
         }
 
@@ -251,9 +251,9 @@ _gdk_quartz_image_copy_to_image (GdkDrawable *drawable,
 }
 
 static void
-gdk_image_finalize (GObject *object)
+bdk_image_finalize (GObject *object)
 {
-  GdkImage *image = GDK_IMAGE (object);
+  BdkImage *image = BDK_IMAGE (object);
 
   g_free (image->mem);
 
@@ -261,17 +261,17 @@ gdk_image_finalize (GObject *object)
 }
 
 static void
-gdk_image_class_init (GdkImageClass *klass)
+bdk_image_class_init (BdkImageClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
   
-  object_class->finalize = gdk_image_finalize;
+  object_class->finalize = bdk_image_finalize;
 }
 
 GType
-gdk_image_get_type (void)
+bdk_image_get_type (void)
 {
   static GType object_type = 0;
 
@@ -279,19 +279,19 @@ gdk_image_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkImageClass),
+        sizeof (BdkImageClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_image_class_init,
+        (GClassInitFunc) bdk_image_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkImage),
+        sizeof (BdkImage),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkImage",
+                                            "BdkImage",
                                             &object_info,
 					    0);
     }
@@ -299,8 +299,8 @@ gdk_image_get_type (void)
   return object_type;
 }
 
-GdkImage *
-gdk_image_new_bitmap (GdkVisual *visual, gpointer data, gint width, gint height)
+BdkImage *
+bdk_image_new_bitmap (BdkVisual *visual, gpointer data, gint width, gint height)
 {
   /* We don't implement this function because it's broken, deprecated and 
    * tricky to implement. */
@@ -309,29 +309,29 @@ gdk_image_new_bitmap (GdkVisual *visual, gpointer data, gint width, gint height)
   return NULL;
 }
 
-GdkImage*
-_gdk_image_new_for_depth (GdkScreen    *screen,
-			  GdkImageType  type,
-			  GdkVisual    *visual,
+BdkImage*
+_bdk_image_new_for_depth (BdkScreen    *screen,
+			  BdkImageType  type,
+			  BdkVisual    *visual,
 			  gint          width,
 			  gint          height,
 			  gint          depth)
 {
-  GdkImage *image;
+  BdkImage *image;
 
   if (visual)
     depth = visual->depth;
 
   g_assert (depth == 24 || depth == 32);
 
-  image = g_object_new (gdk_image_get_type (), NULL);
+  image = g_object_new (bdk_image_get_type (), NULL);
   image->type = type;
   image->visual = visual;
   image->width = width;
   image->height = height;
   image->depth = depth;
 
-  image->byte_order = (G_BYTE_ORDER == G_LITTLE_ENDIAN) ? GDK_LSB_FIRST : GDK_MSB_FIRST;
+  image->byte_order = (G_BYTE_ORDER == G_LITTLE_ENDIAN) ? BDK_LSB_FIRST : BDK_MSB_FIRST;
 
   /* We only support images with bpp 4 */
   image->bpp = 4;
@@ -345,7 +345,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 }
 
 guint32
-gdk_image_get_pixel (GdkImage *image,
+bdk_image_get_pixel (BdkImage *image,
 		     gint x,
 		     gint y)
 {
@@ -361,7 +361,7 @@ gdk_image_get_pixel (GdkImage *image,
 }
 
 void
-gdk_image_put_pixel (GdkImage *image,
+bdk_image_put_pixel (BdkImage *image,
 		     gint x,
 		     gint y,
 		     guint32 pixel)
@@ -374,7 +374,7 @@ gdk_image_put_pixel (GdkImage *image,
 }
 
 gint
-_gdk_windowing_get_bits_for_depth (GdkDisplay *display,
+_bdk_windowing_get_bits_for_depth (BdkDisplay *display,
 				   gint        depth)
 {
   if (depth == 24 || depth == 32)

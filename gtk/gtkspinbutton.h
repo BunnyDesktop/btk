@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkSpinButton widget for GTK+
+ * BtkSpinButton widget for BTK+
  * Copyright (C) 1998 Lars Hamann and Stefan Jeske
  *
  * This library is free software; you can redistribute it and/or
@@ -21,74 +21,74 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_SPIN_BUTTON_H__
-#define __GTK_SPIN_BUTTON_H__
+#ifndef __BTK_SPIN_BUTTON_H__
+#define __BTK_SPIN_BUTTON_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkentry.h>
-#include <gtk/gtkadjustment.h>
+#include <btk/btkentry.h>
+#include <btk/btkadjustment.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SPIN_BUTTON                  (gtk_spin_button_get_type ())
-#define GTK_SPIN_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SPIN_BUTTON, GtkSpinButton))
-#define GTK_SPIN_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SPIN_BUTTON, GtkSpinButtonClass))
-#define GTK_IS_SPIN_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SPIN_BUTTON))
-#define GTK_IS_SPIN_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SPIN_BUTTON))
-#define GTK_SPIN_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SPIN_BUTTON, GtkSpinButtonClass))
+#define BTK_TYPE_SPIN_BUTTON                  (btk_spin_button_get_type ())
+#define BTK_SPIN_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButton))
+#define BTK_SPIN_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
+#define BTK_IS_SPIN_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPIN_BUTTON))
+#define BTK_IS_SPIN_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SPIN_BUTTON))
+#define BTK_SPIN_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
 
-#define GTK_INPUT_ERROR -1
-
-typedef enum
-{
-  GTK_UPDATE_ALWAYS,
-  GTK_UPDATE_IF_VALID
-} GtkSpinButtonUpdatePolicy;
+#define BTK_INPUT_ERROR -1
 
 typedef enum
 {
-  GTK_SPIN_STEP_FORWARD,
-  GTK_SPIN_STEP_BACKWARD,
-  GTK_SPIN_PAGE_FORWARD,
-  GTK_SPIN_PAGE_BACKWARD,
-  GTK_SPIN_HOME,
-  GTK_SPIN_END,
-  GTK_SPIN_USER_DEFINED
-} GtkSpinType;
+  BTK_UPDATE_ALWAYS,
+  BTK_UPDATE_IF_VALID
+} BtkSpinButtonUpdatePolicy;
 
-
-typedef struct _GtkSpinButton	    GtkSpinButton;
-typedef struct _GtkSpinButtonClass  GtkSpinButtonClass;
-
-
-struct _GtkSpinButton
+typedef enum
 {
-  GtkEntry entry;
+  BTK_SPIN_STEP_FORWARD,
+  BTK_SPIN_STEP_BACKWARD,
+  BTK_SPIN_PAGE_FORWARD,
+  BTK_SPIN_PAGE_BACKWARD,
+  BTK_SPIN_HOME,
+  BTK_SPIN_END,
+  BTK_SPIN_USER_DEFINED
+} BtkSpinType;
 
-  GtkAdjustment *GSEAL (adjustment);
 
-  GdkWindow *GSEAL (panel);
+typedef struct _BtkSpinButton	    BtkSpinButton;
+typedef struct _BtkSpinButtonClass  BtkSpinButtonClass;
+
+
+struct _BtkSpinButton
+{
+  BtkEntry entry;
+
+  BtkAdjustment *GSEAL (adjustment);
+
+  BdkWindow *GSEAL (panel);
 
   guint32 GSEAL (timer);
 
   gdouble GSEAL (climb_rate);
   gdouble GSEAL (timer_step);
 
-  GtkSpinButtonUpdatePolicy GSEAL (update_policy);
+  BtkSpinButtonUpdatePolicy GSEAL (update_policy);
 
   guint GSEAL (in_child) : 2;
-  guint GSEAL (click_child) : 2; /* valid: GTK_ARROW_UP=0, GTK_ARROW_DOWN=1 or 2=NONE/BOTH */
+  guint GSEAL (click_child) : 2; /* valid: BTK_ARROW_UP=0, BTK_ARROW_DOWN=1 or 2=NONE/BOTH */
   guint GSEAL (button) : 2;
   guint GSEAL (need_timer) : 1;
   guint GSEAL (timer_calls) : 3;
@@ -98,99 +98,99 @@ struct _GtkSpinButton
   guint GSEAL (snap_to_ticks) : 1;
 };
 
-struct _GtkSpinButtonClass
+struct _BtkSpinButtonClass
 {
-  GtkEntryClass parent_class;
+  BtkEntryClass parent_class;
 
-  gint (*input)  (GtkSpinButton *spin_button,
+  gint (*input)  (BtkSpinButton *spin_button,
 		  gdouble       *new_value);
-  gint (*output) (GtkSpinButton *spin_button);
-  void (*value_changed) (GtkSpinButton *spin_button);
+  gint (*output) (BtkSpinButton *spin_button);
+  void (*value_changed) (BtkSpinButton *spin_button);
 
   /* Action signals for keybindings, do not connect to these */
-  void (*change_value) (GtkSpinButton *spin_button,
-			GtkScrollType  scroll);
+  void (*change_value) (BtkSpinButton *spin_button,
+			BtkScrollType  scroll);
 
-  void (*wrapped) (GtkSpinButton *spin_button);
+  void (*wrapped) (BtkSpinButton *spin_button);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
 };
 
 
-GType		gtk_spin_button_get_type	   (void) G_GNUC_CONST;
+GType		btk_spin_button_get_type	   (void) G_GNUC_CONST;
 
-void		gtk_spin_button_configure	   (GtkSpinButton  *spin_button,
-						    GtkAdjustment  *adjustment,
+void		btk_spin_button_configure	   (BtkSpinButton  *spin_button,
+						    BtkAdjustment  *adjustment,
 						    gdouble	    climb_rate,
 						    guint	    digits);
 
-GtkWidget*	gtk_spin_button_new		   (GtkAdjustment  *adjustment,
+BtkWidget*	btk_spin_button_new		   (BtkAdjustment  *adjustment,
 						    gdouble	    climb_rate,
 						    guint	    digits);
 
-GtkWidget*	gtk_spin_button_new_with_range	   (gdouble  min,
+BtkWidget*	btk_spin_button_new_with_range	   (gdouble  min,
 						    gdouble  max,
 						    gdouble  step);
 
-void		gtk_spin_button_set_adjustment	   (GtkSpinButton  *spin_button,
-						    GtkAdjustment  *adjustment);
+void		btk_spin_button_set_adjustment	   (BtkSpinButton  *spin_button,
+						    BtkAdjustment  *adjustment);
 
-GtkAdjustment*	gtk_spin_button_get_adjustment	   (GtkSpinButton  *spin_button);
+BtkAdjustment*	btk_spin_button_get_adjustment	   (BtkSpinButton  *spin_button);
 
-void		gtk_spin_button_set_digits	   (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_digits	   (BtkSpinButton  *spin_button,
 						    guint	    digits);
-guint           gtk_spin_button_get_digits         (GtkSpinButton  *spin_button);
+guint           btk_spin_button_get_digits         (BtkSpinButton  *spin_button);
 
-void		gtk_spin_button_set_increments	   (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_increments	   (BtkSpinButton  *spin_button,
 						    gdouble         step,
 						    gdouble         page);
-void            gtk_spin_button_get_increments     (GtkSpinButton  *spin_button,
+void            btk_spin_button_get_increments     (BtkSpinButton  *spin_button,
 						    gdouble        *step,
 						    gdouble        *page);
 
-void		gtk_spin_button_set_range	   (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_range	   (BtkSpinButton  *spin_button,
 						    gdouble         min,
 						    gdouble         max);
-void            gtk_spin_button_get_range          (GtkSpinButton  *spin_button,
+void            btk_spin_button_get_range          (BtkSpinButton  *spin_button,
 						    gdouble        *min,
 						    gdouble        *max);
 
-gdouble		gtk_spin_button_get_value          (GtkSpinButton  *spin_button);
+gdouble		btk_spin_button_get_value          (BtkSpinButton  *spin_button);
 
-gint		gtk_spin_button_get_value_as_int   (GtkSpinButton  *spin_button);
+gint		btk_spin_button_get_value_as_int   (BtkSpinButton  *spin_button);
 
-void		gtk_spin_button_set_value	   (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_value	   (BtkSpinButton  *spin_button,
 						    gdouble	    value);
 
-void		gtk_spin_button_set_update_policy  (GtkSpinButton  *spin_button,
-						    GtkSpinButtonUpdatePolicy  policy);
-GtkSpinButtonUpdatePolicy gtk_spin_button_get_update_policy (GtkSpinButton *spin_button);
+void		btk_spin_button_set_update_policy  (BtkSpinButton  *spin_button,
+						    BtkSpinButtonUpdatePolicy  policy);
+BtkSpinButtonUpdatePolicy btk_spin_button_get_update_policy (BtkSpinButton *spin_button);
 
-void		gtk_spin_button_set_numeric	   (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_numeric	   (BtkSpinButton  *spin_button,
 						    gboolean	    numeric);
-gboolean        gtk_spin_button_get_numeric        (GtkSpinButton  *spin_button);
+gboolean        btk_spin_button_get_numeric        (BtkSpinButton  *spin_button);
 
-void		gtk_spin_button_spin		   (GtkSpinButton  *spin_button,
-						    GtkSpinType     direction,
+void		btk_spin_button_spin		   (BtkSpinButton  *spin_button,
+						    BtkSpinType     direction,
 						    gdouble	    increment);
 
-void		gtk_spin_button_set_wrap	   (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_wrap	   (BtkSpinButton  *spin_button,
 						    gboolean	    wrap);
-gboolean        gtk_spin_button_get_wrap           (GtkSpinButton  *spin_button);
+gboolean        btk_spin_button_get_wrap           (BtkSpinButton  *spin_button);
 
-void		gtk_spin_button_set_snap_to_ticks  (GtkSpinButton  *spin_button,
+void		btk_spin_button_set_snap_to_ticks  (BtkSpinButton  *spin_button,
 						    gboolean	    snap_to_ticks);
-gboolean        gtk_spin_button_get_snap_to_ticks  (GtkSpinButton  *spin_button);
-void            gtk_spin_button_update             (GtkSpinButton  *spin_button);
+gboolean        btk_spin_button_get_snap_to_ticks  (BtkSpinButton  *spin_button);
+void            btk_spin_button_update             (BtkSpinButton  *spin_button);
 
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define gtk_spin_button_get_value_as_float gtk_spin_button_get_value
+#ifndef BTK_DISABLE_DEPRECATED
+#define btk_spin_button_get_value_as_float btk_spin_button_get_value
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_SPIN_BUTTON_H__ */
+#endif /* __BTK_SPIN_BUTTON_H__ */

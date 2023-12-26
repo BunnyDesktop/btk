@@ -1,0 +1,3959 @@
+=== ChangeLog discontinued ===
+
+	With the move to git, BTK+ is switching from a ChangeLog file
+	to relying on commit messages to provide change history. Please
+	see README.commits for guidance on the expected message format.
+
+2009-03-29  Christian Persch  <chpe@gnome.org>
+
+	Bug 577224 – crash when setting new icon after setting icon in
+	btkstatusicon
+
+	* btk/btkstatusicon.c: (btk_status_icon_reset_image_data),
+	(btk_status_icon_set_from_gicon): Retain a reference when setting
+	from a GIcon, and use g_object_unref on GIcon, not g_free.
+
+2009-03-27  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 437533 – Implement draw_shape BangoRenderer method
+
+	* bdk/bdkbango.c (bdk_bango_renderer_draw_shape),
+	(bdk_bango_renderer_class_init): Implement draw_shape
+
+	* demos/btk-demo/rotated_text.c (fancy_shape_renderer),
+	(create_fancy_attr_list_for_layout), (rotated_text_expose_event),
+	(do_rotated_text):
+	1) Port to bangobairo
+	2) Also show a rotated label
+	3) Install a custom shape renderer on both.  The second one goes
+	through bdkbango and hence tests the patch above.  It's working.
+
+2009-03-26  Stef Walter  <stef@memberwebs.com>
+
+	* btk/btkfilechooserentry.c
+	(char_after_cursor_is_directory_separator)
+	(btk_file_chooser_entry_do_insert_text)
+	(btk_file_chooser_entry_focus)
+	(commit_completion_and_refresh)
+	(refresh_current_folder_and_file_part) (autocomplete):
+	* btk/btkspinbutton.c (btk_spin_button_insert_text):
+	* modules/other/bail/bailentry.c (bail_entry_real_initialize)
+	(text_setup) (bail_entry_get_run_attributes)
+	(bail_entry_get_character_extents) 
+	(bail_entry_get_offset_at_point): Use btk_entry_xxx functions
+	rather than using BtkEntry structure directly. 
+	See bug #576801
+
+2009-03-25  Christian Dywan  <christian@twotoasts.de>
+
+	* btk/btkselection.c: Typo correction, s/hilding/holding
+
+2009-03-25  Sven Neumann  <sven@gimp.org>
+
+	* bdk/directfb/bdkwindow-directfb.c
+	(bdk_window_directfb_process_all_updates): compile fix for build
+	with DIRECT_ENABLE_DEBUG.
+
+2009-03-24  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 576306 – bdkscreen.c: get_nearest_monitor too simple, gives wrong
+	result, mispositioning tooltips
+
+	* bdk/bdkscreen.c (get_nearest_monitor): Make this function work.
+	Problem reported by Dave Gilbert.
+
+2009-03-23  Hiroyuki Ikezoe  <poincare@ikezoe.net>
+
+	Bug 576254 - <object> requires attribute "id"
+
+	* docs/reference/btk/tmpl/btkdialog.sgml: Add id attribute to 
+	BtkBuilder UI sample.
+
+2009-03-21  Cody Russell  <bratsche@gnome.org>
+
+	Bug 538840 – [Win32] BTK menu theming could be improved
+
+	* modules/engines/ms-windows/xp_theme.c
+	* modules/engines/ms-windows/msw_style.c: Use newer
+	menu styling API.  This makes btk+ look much better on
+	Windows Vista.
+
+2009-03-19  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Bug 574283 – unused assignment and dead code in
+	btk_widget_set_tooltip_window()
+
+	* btk/btkwidget.c: (btk_widget_set_tooltip_window): Remove
+	an unused assignment and clean up, improving checks.
+
+2009-03-18  Michael Natterer  <mitch@gimp.org>
+
+	* btk/btkscalebutton.c: add static function
+	btk_scale_button_set_orientation_private() and use it instead of
+	the public but deprecated btk_scale_button_set_orientation().
+
+2009-03-17  Tor Lillqvist  <tml@novell.com>
+
+	Bug 575700 - Crash when moving a BtkWindow
+
+	* bdk/win32/bdkevents-win32.c (bdk_event_translate): Fix
+	embarrassing crasher bug introduced on 2009-03-11. A variable was
+	assigned a value only inside a BDK_NOTE but still used outside
+	that.
+
+2009-03-17  Tor Lillqvist  <tml@novell.com>
+
+	* btk/btkprintoperation-win32.c: Newer mingw-w64 uses an
+	underscore-prefixed identification macro.
+
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* README.in: Late release notes for 2.16
+
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.16.0 ===
+
+2009-03-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+	* configure.in: Bump version to 2.16.0
+
+2009-03-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572455 – BtkEntry window layed out wrong if the widget has focus
+
+	* btk/btkentry.c: Fix problems with window positioning. Reported
+	by Benjamin Berg.
+
+2009-03-11  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 573067 - Intra-app dnd of text behavior on Windows is wrong
+
+	* bdk/win32/bdkdnd-win32.c (local_send_motion) (bdk_drag_motion):
+	The default action should be move, not copy. Tweak how the
+	BdkDragAction fields in BdkDragContexts are changed. Seems to help
+	the problem.
+
+	Add more debugging printout for --bdk-debug=dnd to many functions.
+
+	* bdk/win32/bdkmain-win32.c
+	* bdk/win32/bdkprivate-win32.h: (_bdk_win32_drag_protocol_to_string)
+	(_bdk_win32_drag_action_to_string): New functions for use in
+	debugging printouts.
+	
+2009-03-11  Tor Lillqvist  <tml@iki.fi>
+
+	* bdk/win32/bdkdnd-win32.c: Use G_DEFINE_TYPE. Some debugging
+	printout changes. Hacking on the OLE2_DND code, which still
+	doesn't work, though, and is not normally compiled.
+
+2009-03-11  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 570896 - bdkevents-win32.c(2947) : error C4053: one void
+	operand for '?:'
+
+	* bdk/win32/bdkevents-win32.c (bdk_event_translate): Fix
+	compilation error with MSVC. While at it add clarifying comments
+	and fix a typo in the debugging output.
+
+2009-03-11  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 574794 - Can not resize shaped windows on Windows
+
+	* bdk/win32/bdkevents-win32.c (bdk_event_translate): On handling
+	WM_WINDOWPOSCHANGED, don't do anything if the position and size
+	hasn't changed. I am not exactly sure I understand why this helps
+	this particular bug.
+
+2009-03-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 574561 – btk_style_get "shadows" g_object_get
+
+	* btk/btk.symbols:
+	* btk/btkstyle.[hc]: Rename btk_style_get_property to
+	btk_style_get_style_property to avoid problems for language
+	bindings. Pointed out by Torsten Schoenfeld.
+
+2009-03-10  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 574622 – BtkEntry: Should we wrap icon-press and icon-release
+	signals?
+
+	* btk/btkentry.c: ::icon-press and ::icon-release are not
+	action signals. Pointed out by Murray Cumming
+
+2009-03-04  Michael Hasselmann <michaelh@openismus.com>
+
+	* btk/btkcomboboxentry.c (btk_combo_box_entry_contents_changed):
+	Fixed regression reported in bug #574059. (search button not available in 
+	some cases.) The old implementation relied on bug #572478.
+
+2009-03-10  Alexander Larsson  <alexl@redhat.com>
+
+        * btk/btkmountoperation.c:
+        (btk_mount_operation_ask_password):
+	Clear all optionally created widget pointer in priv. Initially
+	priv is cleared so thats ok, but on a second call we may have
+	leftovers from previous calls which is problematic if for instance
+	we asked for the user the first time and not the second, then we
+	will access the old priv->username_entry.
+
+2009-03-06  Michael Natterer  <mitch@gimp.org>
+
+	* btk/btkscalebutton.c (btk_scale_button_set_property): don't call
+	btk_orientable_set_orientation() because that calls g_object_set()
+	again -> infinite recursion. Call btk_scale_button_set_orientation()
+	instead.
+
+2009-03-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+2009-03-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.5 ===
+
+2009-03-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2009-03-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 546285 – Allow BtkEntry to draw progress
+
+	* btk/btkentry.c: Improve the drawing of progress in entries,
+	using fg/bg[SELECTED]. Add a progress-border style property.
+	Draw progress behind icons too.
+	* btk/btkrc.c: Add defaults for fg/bg[SELECTED] in entries.
+	Patch by Benjamin Berg.
+
+2009-03-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573688 – Don't steal update rebunnyion in btk_text_view_paint()
+
+	* btk/btktextview.c (btk_text_view_paint): If additional areas got
+	invalidated, don't try to add them to the paint rebunnyion: in an expose
+	handler, we cannot paint outside the area that was passed in, since
+	drawing will be clipped. So stealing the update rebunnyion from the
+	window causes lost draws.
+	Patch by Owen Taylor
+
+2009-03-02  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 573087 – bdkwindow.c: {x,y}_offset used uninitialized
+
+	* bdk/bdkwindow.c (bdk_window_clear_backing_rect_redirect):
+	Don't use uninitialized vars.
+	Fix offsets for redirected pixmap, draw to pixmap not window.
+
+2009-03-02  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+
+	Bug 457086 - numpad does not work when the Thai-Lao input method is
+	used
+
+	* modules/input/btkimcontextthai.c (is_context_lost_key): Do not count
+	character-generating keypads as context-lost keys. (patch recommitted
+	after approval)
+
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/bdkkeysyms.h: Fix the sorting of BDK_KP_Equal.
+
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 552619 – File Chooser no longer automatically enters newly created
+	directories
+
+	* btk/btkfilechooserdefault.c (edited_idle_cb): Switch to the newly
+	created folder on success.
+
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573515 – po-properties/ special Makefile.in.in handling causes
+	failure to build
+
+	* configure.in: Generate po-properties/POTFILES at configure time.
+	Patch by Loïc Minier
+
+2009-03-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* demos/btk-demo/appwindow.c: Set the program-name property
+	of the about dialog.
+
+	* docs/tools/widgets.c: Add BtkAboutDialog
+
+2009-02-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572273 – No replacement documented for btk_action_connect_proxy()
+
+	* btk/btkaction.c: Make btk-doc pick up deprecation notes.
+	Insisted on by Andre Klapper.
+
+2009-02-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573287 – Warning on startup
+
+	* btk/btkstatusicon.c (btk_status_icon_finalize): Disconnect
+	all tray icon signals. Noticed by Bastien Nocera
+
+2009-02-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573211 – Setting screen for popup windows
+
+	* btk/btkentrycompletion.c:
+	* btk/btknotebook.c: Keep popups on the right screen.
+	Pointed out by Morten Welinder
+
+2009-02-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573113 – Can't build tests due to testfilechooserbutton.c...
+
+	* tests/testfilechooserbutton.c: Don't use deprecated API.
+	Reported by Tobias Mueller
+
+2009-02-28  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 573069 – Bdk-CRITICAL warnings with Btk 2.14 when dragging
+	BtkNotebook tabs
+
+	* btk/btkwidget.c (_btk_widget_synthesize_crossing): Be a little
+	more careful when navigating up the parent chain.
+
+	* bdk/bdkwindow.c (_bdk_window_destroy_hierarchy): Reset the
+	pointer window thats stored on the screen when it is destroyed.
+
+2009-02-27  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572996 – crash in Home Folder: Trying to open the sidebar
+
+	* btk/btkpaned.c (get_child_panes): Handle widget being NULL.
+	Pointed out by Wouter Bolsterlee.
+
+2009-02-27  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572972 – BtkRecentChooserDefault: memory leak in
+	copy_activated_cb()
+
+	* btk/btkrecentchooserdefault.c (copy_activated_cb): Don't leak
+	a BtkRecentInfo. Found by Tommi Rantala
+
+2009-02-27  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572968 – BtkIconView: image_description setter function strdups
+	wrong string
+
+	* btk/btkiconview.c
+	(btk_icon_view_item_accessible_image_set_image_description): Copy
+	the right string. Pointed out by Tommi Rantala
+
+2009-02-27  David Zeuthen  <davidz@redhat.com>
+
+	Bug 573416 – BtkMountOperation fixes for ask_password()
+
+	* btk/btkmountoperation.c (btk_mount_operation_ask_password):
+	Split the message from GMountOperation into primary/secondary like
+	we also do in btk_mount_operation_ask_question()
+
+2009-02-27  Michael Natterer  <mitch@imendio.com>
+
+	Bug 573383 – Setting a textview's buffer to NULL doesn't do a
+	complete job
+
+	* btk/btktextview.c (btk_text_view_set_buffer): always set
+	text_view->layout's buffer, also if it's NULL.
+
+2009-02-25  Tristan Van Berkom <tvb@gnome.org>
+
+	Bug 572904 – BtkRadioAction broken in trunk
+
+	* btk/btkradioaction.c: When setting non active state always
+	notify the action's active state (this prevents toggle type proxies
+	used with radio actions from deactivating when pressed a second time).
+
+2009-02-25  Xan Lopez  <xan@gnome.org>
+
+        Bug 495320 - BtkRange does not use bdk_event_request_motions
+
+        * btk/btkrange.c:
+        (btk_range_motion_notify): Use bdk_event_request_motions to
+        request more motion events, as suggested in the docs for widgets
+        using motion hints.
+
+2009-02-24  Matthias Clasen <mclasen@redhat.com>
+
+	* bdk/x11/bdkevents-x11.c:
+	* bdk/x11/bdkscreen-x11.[hc]: Another attempt at getting Xrandr
+	screen size changes right. Actually handle XRRScreenChangeNotify
+	events, and ignore root ConfigureNotify events if we are using
+	Xrandr. Only emit size-changed signals if the screen size changed,
+	and only emit monitor-changed signals if the monitors changed.
+
+2009-02-23  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 565199 – Ellipsize text in Places list
+
+	* btk/btkfilechooserdefault.c (shortcuts_list_create): Never scroll
+	the places horizontally. Instead, ellipsize the text.
+
+2009-02-19  Michael Hasselmann <michaelh@openismus.com>
+
+	* btk/btkcombobox.c (btk_combo_box_set_active_internal):
+	Added a check to not emit a "changed" signal when an already invalid
+	selection was set to invalid.
+
+2009-02-22  Matthias Clasen <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkactivatable.[hc]: Rename btk_activatable_reset to
+	btk_activatable_sync_action_properties, since the previous name
+	was deemed too generic. Update all implementations.
+
+2009-02-19  Ray Strode  <rstrode@redhat.com>
+
+	* bdk/x11/bdkscreen-x11.c
+	(monitor_compare_function), (init_randr13):
+	After using randr to get a list of monitors,
+	sort the list such that the biggest output
+	of "cloned" outputs comes first in the list.
+	This helps apps that don't generally handle
+	overlapping outputs to work better in randr
+	clone mode.
+
+2009-02-19  Sven Neumann  <sven@gimp.org>
+
+	* bdk/directfb/bdkwindow-directfb.c
+	(bdk_directfb_window_move_resize): looks like being called with
+	negative width and height should be interpreted as a move. Fixes
+	scrolling and makes popups work to some extent.
+
+	(_bdk_directfb_move_resize_child): formatting.
+
+2009-02-19  Sven Neumann  <sven@gimp.org>
+
+	* bdk/directfb/bdkdisplay-directfb.c (bdk_display_open): move the
+	call to _bdk_windowing_window_init() up a little. Fixes a crash
+	when running on pseudo-color visuals. Thanks to Masse Nicolas for
+	pointing this out.
+
+2009-02-19  Sven Neumann  <sven@gimp.org>
+
+	* bdk/directfb/bdkwindow-directfb.c
+	(bdk_window_foreign_new_for_display, bdk_directfb_window_new):
+	initialize private->impl. Thanks to Masse Nicolas for pointing
+	this out.
+
+2009-02-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572387 – gdm crashes after btk 2.15.4 upgrade
+
+	* bdk/x11/bdkscreen-x11.c (init_xrandr13): If X is broken and returns
+	no monitors, fall back to other multihead init methods, so that we
+	at least get one monitor set up.
+
+2009-02-19  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkmountoperation.c: sort functions so their order is more
+	"standard", some cosmetic cleanup (not changing any code).
+
+2009-02-19  Michael Natterer  <mitch@imendio.com>
+
+	* tests/testbtk.c: add some orientation flipping code to the
+	"flipping" test.
+
+2009-02-19  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkscalebutton.c: make the orientation flipping much simpler
+	by using the BtkOrientable features of the involved widgets:
+
+	(btk_scale_button_init): create the frame, box and scale here,
+	they never need to be recreated because they implement BtkOrientable.
+
+	(btk_scale_button_constructor): remove their construction here.
+
+	(btk_scale_button_set_orientation): don't destroy and re-create
+	anything. Instead, simply set the orientation of the above created
+	widgets and fiddle a bit with the "plus" and "minus" buttons'
+	packing and the scale's "inverted" state.
+
+	Remove separate internal BtkScaleButtonHScale and
+	BtkScaleButtonVScale subclasses and simply have a
+	BtkScaleButtonScale directly inherited from BtkScale.
+
+2009-02-19  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+
+	* modules/input/btkimcontextthai.c (is_context_lost_key): Revert the
+	unapproved patch for bug 457086.
+
+2009-02-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/x11/bdkscreen-x11.c (init_randr13): Ignore disconnected outputs,
+	and fill in name and physical dimensions.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	Bug 533456 – Memory leak when window is destroyed
+
+	* bdk/directfb/bdkdirectfb.h
+	* bdk/directfb/bdkprivate-directfb.h
+	* bdk/directfb/bdkcursor-directfb.c
+	* bdk/directfb/bdkevents-directfb.c
+	* bdk/directfb/bdkwindow-directfb.c: removed all #ifdef checks for
+	DIRECTFB_MAJOR_VERSION >= 1 and compile that code unconditionally.
+	as we depend on DirectFB >= 1.0.0 now.  Fixes a potential build
+	issue that would lead to a memory leak as described in bug #533456.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	Bug 513422 – Unknown meaning of translatable messages
+
+	* bdk/directfb/bdkdisplay-directfb.c: removed broken and commented
+	code and the translatable messages that belonged to it.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	Bug 560671 – the client_message API doesn't work in DirectFB
+
+	* bdk/directfb/bdkevents-directfb.c: applied a slightly cleaned up
+	patch from Steve Lhomme that adds this functionality using
+	DirectFB's DFBUserEvent.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	Bug 543710 – Dead keys do not work anymore with DirectFB
+
+	* bdk/directfb/bdkkeys-directfb.c (bdk_directfb_translate_key):
+	applied patch from Josselin Mouette that removes special handling
+	of dead keys as that is done by DirectFB for a long time already.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	* configure.in: depend on DirectFB >= 1.0.0. There's no point in
+	using an earlier development version.
+
+2009-02-18  Sven Neumann  <sven@gimp.org>
+
+	Bug 554407 – directfb backend does not implement BdkWindowImpl
+
+	* bdk/directfb/bdkgeometry-directfb.c
+	* bdk/directfb/bdkprivate-directfb.h
+	* bdk/directfb/bdkwindow-directfb.c: fix the build of the DirectFB
+	backend and resurrect basic functionality. Based on a patch from
+	the Ubuntu bug-tracker and work by Masse Nicolas.
+
+2009-02-18  Theppitak Karoonboonyanan  <thep@linux.thai.net>
+
+	Bug 457086 - numpad does not work when the Thai-Lao input method is
+	used
+
+	* modules/input/btkimcontextthai.c (is_context_lost_key): Do not count
+	character-generating keypads as context-lost keys.
+
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.4 ===
+
+	* bdk/tests/Makefile.am: Disable check-bdk-bairo for now.
+
+2009-02-17  Andre Klapper  <a9016009@gmx.de>
+
+	* demos/btk-demo/main.c:
+	Fix deprecated bunnylib call.
+
+2009-02-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2009-02-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572040 – BtkAssistant does not expose page titles
+
+	* btk/btkassistant.c (btk_assistant_accessible_ref_child): Set
+	the object name to the page title. Proposed by Eitan Isaacson
+
+2009-02-16  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 572041 – Focus should change when advancing forward in BtkAssistant
+
+	* btk/btkassistant.c (set_current_page): Set focus when the current
+	page changes. Pointed out by Eitan Isaacson
+
+2009-02-16  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Require GLib 2.19.7 for GMountOperation::aborted.
+
+	* btk/btkmountoperation.c: Implement GMountOperation::aborted.
+
+2009-02-16  Sven Neumann  <sven@gimp.org>
+
+	* bdk/bdk.symbols
+	* bdk/directfb/bdkkeys-directfb.c: implement
+	bdk_keymap_get_caps_lock_state(). No "state-changed" signal yet.
+
+2009-02-16  Tor Lillqvist  <tml@novell.com>
+
+	Bug 571873 - Compile error with bdk/win32/bdkselection-win32.c
+
+	* bdk/win32/bdkselection-win32.c (bdk_selection_convert): Cast
+	gpointer to char * before pointer arithmetic to avoid compilation
+	error with MSVC.
+
+	(_bdk_selection_property_delete): Remove unused variable.
+
+2009-02-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/x11/bdkdisplay-x11.c (bdk_display_open): Don't forget to
+	register randr events. Found by Søren Sandmann
+
+2009-02-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Check for Xrandr 1.3
+
+	* bdk/x11/bdkdisplay-x11.[ch]: Rename have_randr12 to have_randr13
+	and set if if we have randr 1.3
+
+	* bdk/x11/bdkscreen-x11.c: Go back to using randr for monitor
+	information, if we have XRRGetScreenResourcesCurrent.
+:
+2009-02-12  Cody Russell  <bratsche@gnome.org>
+
+	Bug 571576 – bdk_pixbuf_save_to_stream() broken
+
+	* bdk-pixbuf/bdk-pixbuf-io.c: Fix bdk_pixbuf_save_to_stream() so that
+	it does not always return FALSE (even when it succeeds), and also so
+	that it does not set error to NULL when something goes wrong.
+
+2009-02-12  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 568571 – Asian am/pm format on cups print backend's time parsing
+
+	* modules/printbackends/cups/btkprintbackendcups.c: Add Asian am/pm
+	format into formats recognized by CUPS backend
+
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 570824 – [a11y] TreeView is not keyboard (re)focusable after 
+	selecting a cell in a non-sortable column
+
+	* btk/btktreeview.c (btk_tree_view_header_focus): Don't grab
+	focus to a header button if it is not focusable. Problem reported
+	by Joanmarie Diggs
+
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 508545 – No way to identify terminal classes from documentation
+
+	* btk/btkvolumebutton.[hc]: Move the _BtkVolumeButton definition
+	into the header to make it possible to derive from BtkVoumeButton.
+	Reported by Chris Lord.
+
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 571196 – btk_binding_entry_add_signall deprecated without 
+	alternative
+	* btk/btk.symbols:
+	* btk/btkbindings.[hc]: Undeprecate btk_binding_entry_add_signall
+	since its replacement is a varargs function. Complaint by
+	Torsten Schoenfeld.
+
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 571249 – Icons are not drawn properly when initial widget 
+	state is insensitive
+
+	* btk/btkentry.c (btk_entry_ensure_pixbuf): Render icons
+	in normal state, regardless of the entrys state. Reported by
+	Enrico Tröger.
+
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkfilechooserbutton.c: Don't emit the file-set signal
+	if the file chooser dialog is canceled. But emit it if a file
+	is received via DND.
+
+2009-02-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 353196 – Add a file-set signal to BtkFileChooserButton
+
+	* btk/btkfilechooserbutton.c: Remove BTK_SIGNAL_ACTION
+	from the file-set signal, that wasn't supposed to have it.
+
+2009-02-10  Takao Fujiwara  <takao.fujiwara@sun.com>
+
+	Bug 571015 – libprintbackend-cups has unlocalized strings
+
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	Added a translator comment with the request of translators.
+
+2009-02-09  Richard Hughes  <richard@hughsie.com>
+
+	* docs/reference/btk/migrating-BtkEntry-icons.sgml:
+	Fix the enumerated name in the migration document.
+
+2009-02-09  Cody Russell  <bratsche@gnome.org>
+
+	* bdk/win32/bdkwin32.h: Add potentially missing #defines for
+	XBUTTON1, etc.  Fixes the build that was broken in r21746.
+
+2009-02-09  Takao Fujiwara  <takao.fujiwara@sun.com>
+
+	Bug 571015 – libprintbackend-cups has unlocalized strings
+
+	Reviewed by Matthias Clasen  <mclasen@redhat.com>
+
+	* modules/printbackends/cups/btkprintbackendcups.c (handle_option):
+	Add translatable strings from ppd files.
+
+2009-02-06  Matthias Clasen  <mclasen@redhat.com>
+
+	Make the new BtkAction code work with PolicyKit-gnome's use of actions.
+
+	* btk/btkaction.c (btk_action_[un]block_activate_from): Block
+	the action.
+
+	* btk/btkcheckmenuitem.c (btk_check_menu_item_activatable_reset):
+	* btk/btktogglebutton. (btk_toggle_button_activatable_reset):
+	* btk/btktoggletoolbutton.c (btk_toggle_tool_button_activatable_reset):
+	Work with non-toggle actions without complaining.
+
+	* btk/btktoolbutton.c (btk_tool_button_activatable_update): Updating
+	the icon-name should not remove the label.
+
+	* btk/btkimagemenuitem.c (activatable_update_icon_name): Also
+	update the image when the icon name is set to NULL.
+
+2009-02-06  Matthew Barnes  <mbarnes@redhat.com>
+
+	* btk/btklabel.c (btk_label_set_label): Accept a NULL string.
+
+2009-02-03  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 538439 – tooltip may appear in upper left corner instead of 
+	over widget
+
+	* btk/btktooltip.c (btk_tooltip_trigger_query): Set the root 
+	coordinates in the event correctly. Patch by Kristian Rietveld.
+
+2009-02-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+2009-02-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.3 ===
+
+	* NEWS: Updates
+
+2009-02-01  Behdad Esfahbod  <behdad@gnome.org>
+
+	* btk/btksettings.c (btk_settings_class_init): Change the
+	"btk-fontconfig-timestamp" property from int to uint.  Doesn't affect
+	anything in practice, except that  it overflows years later...
+
+2009-02-01  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 569635 – fontchooser should reload list of families/styles on
+	theme change
+
+	* btk/btkfontsel.c (btk_font_selection_class_init),
+	(btk_font_selection_init), (btk_font_selection_finalize),
+	(btk_font_selection_ref_family), (btk_font_selection_ref_face),
+	(btk_font_selection_reload_fonts),
+	(btk_font_selection_screen_changed),
+	(btk_font_selection_style_set),
+	(btk_font_selection_scroll_to_selection),
+	(btk_font_selection_scroll_on_map),
+	(btk_font_selection_select_font),
+	(btk_font_selection_show_available_fonts),
+	(btk_font_selection_show_available_styles),
+	(btk_font_selection_select_style),
+	(btk_font_selection_select_font_desc),
+	(btk_font_selection_set_font_name):
+	Reload Bango families and faces in style_set.  Installing/uninstalling
+	fonts shows up immediately in an open font chooser now.
+
+2009-01-31  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 162726 – Multiple Latin layouts in XKB break keyboard shortcuts
+
+	* btk/btkkeyhash.c (_btk_key_hash_lookup): Change the handling of
+	fuzzy matches: As long there are any exact matches, only exact 
+	matches are returned. If there are no exact matches, fuzzy matches 
+	will be returned, as long as they are not shadowing a possible exact
+	match. This means that fuzzy matches won't be considered if their
+	keyval is present in the current group. Problem reported by
+	many people, patch by Simos Xenitellis.
+
+2009-01-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2009-01-30  Fridrich Strba  <fridrich.strba@bluewin.ch>
+
+	* configure.in: Allow linking in static jasper bdk-pixbuf loader.
+	(reviewed by Tor Lillqvist)
+
+2009-01-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktextview.c (preedit_changed_handler): Be more careful
+	with the beeps, since preedit-changed is occasionally emitted 
+	without actual input. Pointed out by Tor Lillqvist.
+
+2009-01-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 569918 – 64bit portability issue in btkrecentchooser.c
+
+	* btk/btkrecentchooser.c (btk_recent_chooser_set_use_action_appearance):
+	Avoid a compiler warning. Patch by Magnus Boman.
+
+2009-01-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 359288 – Toolbar items are not shown after hiding
+
+	* btk/btktoolbar.c (slide_idle_handler): Make sure we queue
+	at least one resize. This fixes a problem with toolitems remaining
+	invisible when they shouldn't that was reported by Christian Weiske.
+
+2009-01-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkrecentchoosermenu.c (btk_recent_chooser_menu_create_item):
+	Always show images.
+
+2009-01-29  Tor Lillqvist  <tml@novell.com>
+
+	Bug 559408 - Transparency lost when images are copied between BTK+
+	and the clipboard on Windows
+
+	The code in bdkselection-win32.c is simplified quite a lot. When
+	an image is stored on the clipboard from BTK+, only the "PNG" and
+	CF_DIB formats are advertised. PNG is our preferred format because
+	it can losslessly represent any image that bdk-pixbuf can handle,
+	even with alpha, unambiguously. CF_DIB is also advertised because
+	of its ubiquitous support in Windows software.
+
+	Delayed rendering is used as before, so for other data than text
+	nothing is actually stored on the clipboard until some app asks
+	for it.
+
+	It's pointless to advertise images formats like "image/png" or
+	"image/x-MS-bmp" that no other Windows application is going to
+	look for anyway. Likewise it's pointless to store text under
+	formats like "text/plain" or "UTF8_STRING". Just store
+	CF_UNICODETEXT. CF_TEXT will be available as a synthesized format
+	anyways.
+
+	Office 2007 offers and asks for images in PNG format using the
+	registered clipboard format name "PNG", so we do likewise. If the
+	"PNG" format is available that is preferred when copying to BTK+
+	from the clipboard.
+
+	Unfortunately Word 2007 still uses CF_DIB without handling
+	alpha. But PowerPoint 2007 uses PNG if available and handles alpha
+	correctly. Both Word and Powerpoint offer PNG with alpha nicely.
+
+	Firefox and IE7 offer images that contain alpha as 32-bit version
+	3 BI_RGB DIBs with the undocumented "extra" bytes actually being
+	alpha. Also, alpha is premultiplied into the RGB bytes, presumably
+	because that is how AlphaBlend() wants such DIBs. That is also
+	taken care of. At least for Firefox it easy to be sure that a
+	CF_DIB on the clipboard is from Firefox.
+
+	Also some general stylistic cleanup, comment improvements, and
+	improvements of debugging printout especially in the clipboard
+	handling. Those are not detailled below.
+
+	* bdk/win32/bdkprivate-win32.h
+	* bdk/win32/bdkglobals-win32.c
+	* bdk/win32/bdkgmain-win32.c: Move some globals that were used
+	only in bdkselection-win32.c to be local to that file.
+
+	* bdk/win32/bdkproperty-win32.c (bdk_property_change): Don't
+	bother checking if text to be placed on the clipboard consists of
+	only ASCII.
+
+	* bdk/win32/bdkselection-win32.c: Add static variables for a list
+	of BdkPixbuf-supported formats, well-known registered clipboard
+	formats for images, and for BdkAtoms for well-known image and text
+	formats.
+
+	(_bdk_win32_selection_init): Initialize above static variables.
+
+	(selection_property_store) (bdk_selection_property_get)
+	(_bdk_selection_property_delete): Don't use a FIFO of BdkSelProps
+	for a window after all, it breaks testtext. See bug #163844.
+
+	(bdk_selection_convert): When converting to the TARGETS format,
+	i.e. when the caller wants to know what clipboard formats are
+	available, if PNG is available we report just that and skip
+	CF_DIB, JPEG and GIF even if advertised.
+
+	If CF_UNICODETEXT is available, report only UTF8_STRING.
+
+	When converting to the UTF8_STRING format, i.e. when the caller
+	wants text from the clipboard, try just CF_UNICODETEXT. There is
+	no point in trying CF_TEXT as Windows will synthesize
+	CF_UNICODETEXT from CF_TEXT anyway, if some app has stored just
+	CF_TEXT.
+
+	When converting to the image/bmp format, i.e. when the caller
+	wants an CF_DIB image from the clipboard, we check if the DIB is a
+	version 3 32-bit BI_RGB one that is likely to actually contain
+	alpha in the "extra" bytes. Such a DIB is likely to have
+	premultiplied alpha even, at least in the case of Firefox 3 and
+	IE7. We then edit the DIB in-place into a version 5 one in
+	BI_BITFIELDS format and undo the alpha premultiplication.
+
+	In any case, prepend a BMP file header before letting go of the
+	data which will be fed to the bdk-pixbuf bmp loader by upper
+	levels.
+
+	(bdk_win32_selection_add_targets): If some kind of pixmap image
+	format is being added, actually advertise just PNG and
+	CF_DIB. Note that alpha won't be stored on the clipboard through
+	CF_DIB. This is because bdk-pixbuf's bmp loader doesn't save
+	alpha. Furthermore, few if any non-BTK+ Windows apps seem to
+	understand a version 5 DIB with proper alpha anyway.
+
+	(_bdk_win32_selection_convert_to_dib): Simplified muchly.
+
+2009-01-29  Tor Lillqvist  <tml@novell.com>
+
+	Bug 145058 - Inputting "^^" requires four keystrokes on Win32,
+	differs from platform default behaviour
+
+	* btk/btkimcontextsimple.c
+	(check_win32_special_case_after_compact_match): New
+	function. Called from check_compact_table() after a table-based
+	match has committed a character. In case there was two identical
+	dead accents in the input, another copy of the spacing accent that
+	was already committed is committed. This fixes #145058.
+
+	(check_win32_special_cases): New function. Called first from
+	btk_im_context_simple_filter_keypress(). This fixes another
+	problem: a dead accent followed by a space should commit the
+	corresponding spacing accent. The compose tables from X commit
+	another character in two cases and we want to override that on
+	Windows.
+
+	Add BTK_NOTE (MISC) debugging output to this code.
+
+2009-01-29  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Bug 569435 – make maintainer-clean removes non-generated sources
+
+	* bdk/Makefile.am: Do not remove bdkprivate.h and bdkwindowimpl.h
+	during make maintainer-clean, as these files are not generated.
+
+2009-01-28  Philip Withnall  <philip@tecnocode.co.uk>
+
+	* btk/btktreeview.c: Small documentation fix.
+
+2009-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Use the get_text_area_size vfunc to make
+	alignment and icons in spin buttons work correctly.
+
+2009-01-27  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 569336 – change in btkbutton klass is causing crash when 
+	activating menu item
+
+	* btk/btktogglebutton.c: Don't chain the clicked handler
+	up unconditionally.
+
+2009-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+2009-01-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.2 ===
+
+	* NEWS: Updates
+
+2009-01-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 322932 – Always show icons on panel menus
+
+	* btk/btk.symbols:
+	* btk/btkimagemenuitem.[hc]: Add a property to override the
+	show-menu-images setting for individual menuitems. Patch by
+	William Jon McCann.
+
+2009-01-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkbutton.c: Activate the action in a regular clicked
+	handler instead of the default handler, to make it work with
+	derived classes which don't chain up their clicked handler.
+
+2009-01-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 569104 – Toggle menu entries showed as check menu entries 
+	in nautilus
+
+	* btk/btkactivatable.c (btk_activatable_do_set_related_action):
+	Block the previous action when calling reset() to prevent
+	accidental activation of the previous action.
+
+	* btk/btkaction.c (btk_action_activate): Don't compare booleans.
+
+	* btk/btktoggleaction.c (btk_toggle_action_set_active): Remove
+	extraneous braces.
+
+2009-01-26  Bastien Nocera  <hadess@hadess.net>
+
+	Bug 569240 - Crasher when using markers
+
+	* btk/btkrange.c (btk_range_destroy): Avoid crashes when destroying
+	a BtkRange with markers
+
+2009-01-26  Richard Hult  <richard@imendio.com>
+
+	Bug 566628 – bdk_display_close always asserts on win32 and quartz
+
+	* bdk/quartz/bdkdisplay-quartz.c
+	(_bdk_windowing_set_default_display): Copy fix for bug #566628
+	from the win32 backend: Allow also a NULL parameter in the
+	g_assert().
+
+2009-01-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktoolitem.[hc]: Export the function to create a proxy
+	menuitem from the action for use in subclasses.
+
+	* btk/btktoolbutton.c:
+	* btk/btktoggletoolbutton.c: Use it here.
+
+	* btk/btkrecentchoosermenu.c: Avoid temporary empty state that
+	can lead to a recent action proxy menu being erroneously hidden.
+
+2009-01-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkradioaction.c: Set draw-as-radio to TRUE.
+
+2009-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	Revert changes for bug 567124. Instead of trying to avoid
+	setting up the im context before the widget is realized, just
+	reset it when the client window is set.
+
+	* btk/btkimmulticontext.c: Reset the slave when a client window
+	is set.
+
+	* btk/btkimmodule.c
+	* btk/btktextview.c: Revert changes for bug 567124.
+
+2009-01-25  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* btk/btktreeview.c: Use btk-doc syntax to refer to properties in
+	the docstrings.
+
+2009-01-25  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* btk/btkiconview.c: More docstrings improvements
+	regarding reorderable property.
+
+2009-01-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Bug 559420 – btk_icon_view_enable_model_drag_[source|dest] docs
+	wrt. reorderable property
+
+	* btk/btkiconview.c: Improve docstrings regarding reorderable
+        property. Based on a patch by Björn Lindqvist.
+
+2009-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktoolbutton.c (btk_tool_button_activatable_reset):
+	Fall back from stock ids to icon names like the old code 
+	did. Patch by Tristan van Berkom.
+
+2009-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* tests/testactions.c: Add a testcase for toolitems using
+	icon names.
+
+2009-01-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/x11/bdkcursor-x11.c (_bdk_x11_cursor_update_theme):
+	Don't update blank cursors.
+
+2009-01-24  Claudio Saavedra  <csaavedra@igalia.com>
+
+	* btk/btktreeview.c: (btk_tree_view_class_init): Slightly
+	improve ::search-column property description.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* === Released 2.15.1 ===
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkactivatable.c: Make the section docs produce some valid
+	xml.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkactivatable.c: Fix the section docs so btk-doc finds them.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkrecentchooser.c:
+	* btk/btkuimanager.c: Fix issues found by pltcheck
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 560228 – Add "action-controller" property to BtkWidgetClass
+
+	Rework the way actions and proxies interact, to make the
+	interaction less ad hoc, more extensible, and better suited
+	for support in GUI builders like glade. 
+
+	To be used as a proxy, a widget must now implement the 
+	BtkActivatable interface, and BtkActivatable implementations 
+	are responsible for syncing their appearance with the action 
+	and for activating the action.
+
+	All the widgets that are commonly used as proxies implement
+	BtkActivatable now.
+
+	Patch by Tristan van Berkom.
+
+	* btk/btkactivatable.[hc]: The BtkActivatable interface.
+
+	* btk/btkbutton.c:
+	* btk/btktogglebutton.c:
+	* btk/btktoolitem.c:
+	* btk/btktoolbutton.c:
+	* btk/btktoggletoolbutton.c:
+	* btk/btkmenuitem.c:
+	* btk/btkcheckmenuitem.c:
+	* btk/btkimagemenuitem.c:
+	* btk/btkradiomenuitem.c:
+	* btk/btkrecentchooserprivate.h:
+	* btk/btkrecentchooser.c:
+	* btk/btkrecentchooserdefault.c:
+	* btk/btkrecentchoosermenu.c: Implement BtkActivatable.
+	* btk/btkaction.[hc]: Move appearance synchronization to
+	BtkActivatable implementations.
+
+	* btk/btkradioaction.c:
+	* btk/btkrecentaction.c:
+	* btk/btktoggleaction.c:
+	* btk/btkactiongroup.c: Adapt.
+
+	* btk/btk.h: Include btkactivatable.h
+	* btk/btk.symbols: Add new functions
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 567124 – proposal to delay doing something related to 
+	immodule until widgets realized
+
+	Delay setting up immodules until the widget is realized.
+	Patch by Akira Tagoh
+	
+	* btk/btktextview.c: Don't set up im stuff if the widget
+	is not realized.
+
+	* btk/btkimmodule.c: Assert that we have a window.
+ 
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Skip Desktop if it equals the home folder
+	Patch by Christian Dywan
+
+	* btk/btkfilechooserdefault.c (shortcuts_append_desktop): Skip
+	Desktop if it equals the home folder.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 536965 – BtkPlug: crash on theme change
+
+	Keep BtkPlug in sync with the global list of toplevels.
+	Patch by Federico Mena Quintero
+
+	* btk/btkwindow.h:
+	* btk/btkwindow.c (_btk_window_set_is_toplevel): New internal
+	function used when a BtkPlug parents/unparents itself by an
+	in-process BtkSocket.  This keeps the plug's BTK_TOPLEVEL flag in
+	sync with the global toplevel_list.
+
+	* btk/btkplug.c (btk_plug_set_is_child): Call
+	_btk_window_set_is_toplevel() to keep the toplevel list updated,
+	instead of just setting/unsetting the BTK_TOPLEVEL flag.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 568744 – Spellfixes in BtkTreeView's documentation
+
+	* btk/btktreeview.c: Fix typos in the docs.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 567761 – Spellfixes in BTK+ documentation
+
+	* bdk/x11/bdkselection-x11.c:
+	* btk/btktestutils.c: Fix typos in the docs.
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 567021 – btkimage accessors docs
+
+	* btk/btkimage.c: Improve docs by mentioning allowed NULL values.
+	Patch by Christian Persch
+
+2009-01-23  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566535 – btk_widget_get_snapshot does not work if double buffered 
+	is disabled
+
+	* btk/btkwidget.c (btk_widget_get_snapshot): Use a different approach
+	to snapshotting that is in line with what is done in the client-side
+	windows branch, and that works for widgets regardless if they are
+	double-buffered or not. Patch by Alex Larsson.
+
+	* bdk/bdkwindow.c (_bdk_window_calculate_full_clip_rebunnyion): Clip
+	to the parent.
+
+2009-01-22  Federico Mena Quintero  <federico@novell.com>
+
+	* btk/btkfilechooserentry.c (autocomplete): Relax the assertion;
+	just do nothing if the folder is not loaded or if the cursor position
+	is not at the end of the text.  A very slow-to-load folder can get
+	us into the latter state if the user starts typing first.
+
+2008-01-22  Matthias Clasen  <mnclasen@redhat.com>
+
+	* btk/btkaction.c: Revert the last change, since it breaks
+	epiphany.
+
+2009-01-22  Federico Mena Quintero  <federico@novell.com>
+
+	Fix the computation of "complete but unique" in
+	BtkFileChooserEntry.  Fix the case where "/" was not appended to a
+	unique directory name during explicit Tab completion.
+
+	* btk/btkfilechooserentry.c (maybe_append_separator_to_file):
+	Return whether anything was appended as well as the new string
+	itself.
+	(find_common_prefix): Oops, only turn on
+	is_complete_not_unique_ret if we had a unique match!
+	(append_common_prefix): If we appended a directory separator, we
+	*did* expand the common prefix, so we are not in the "nothing
+	inserted" case.
+
+2009-01-22  Federico Mena Quintero  <federico@novell.com>
+
+	Return an error code when refreshing the entry from the user's
+	input.  We use this in the completion code to know when completion
+	can't happen due to (for example) having a non-local URI in a file
+	chooser that is local_only=TRUE.
+
+	Also, we start maintaining an invariant that
+	chooser_entry->current_folder_file != NULL implies that:
+
+		* what the user entered is valid
+
+		* we are loading that folder (chooser_entry->load_folder_cancellable != NULL) 
+
+		* or we are done loading that folder, or we have a handle
+		to it at least (chooser_entry->current_folder != NULL)
+
+	The invariant also says that all of the above are NULL (and
+	chooser_entry->current_folder_file == NULL) implies that the user
+	typed something invalid.  This makes
+	_btk_file_chooser_entry_get_current_folder() not able to return
+	an invalid folder.
+
+	* btk/btkfilechooserentry.c (RefreshStatus): New enum.
+	(refresh_current_folder_and_file_part): Return a RefreshStatus.
+	We filter out incomplete hostnames here (typing
+	"sftp://incompl[tab]" will error out), as well as completely
+	unparsable input.
+	(start_explicit_completion): Process the result from refresh...().
+	Here we present the actual feedback about only being able to
+	display local folders for local_only=TRUE.
+	(commit_completion_and_refresh): Don't do anything with the result
+	of refresh...(), since this function doesn't get called during
+	completion-related interaction.
+	(start_autocompletion): Process the result from refresh...().  We
+	only do completion in the REFRESH_OK case.  For the error cases,
+	we don't do anything, as this is autocompletion and must not
+	result in non-asked-for errors popping up.
+	(discard_loading_and_current_folder_file): Factor out function to
+	cancel the cancellable and discard the current_folder_file,
+	i.e. to reset the invariant to the "nothing valid is loaded" case.
+	(btk_file_chooser_entry_dispose): Use
+	discard_loading_and_current_folder_file().
+	(reload_current_folder): Likewise.
+	(refresh_current_folder_and_file_part): Likewise, and ensure that
+	the error cases result in the invariant being held.
+	(start_loading_current_folder): Check if the folder to be loaded
+	is non-native for the local_only=TRUE case; if so, return an error
+	as we are configured to load only local folders.
+	(reload_current_folder): Pass on errors from
+	start_loading_current_folder().  Tighten the preconditions, as we
+	are sure that we can only receive non-NULL folder-files to load.
+	(refresh_current_folder_and_file_part): Pass on errors from
+	reload_current_folder().  At the very end, assert the invariant
+	described above.
+	
+2009-01-22  Matthew Barnes  <mbarnes@redhat.com>
+
+	Bug 568334 – Constructor properties for BtkAction
+
+	* btk/btkaction.c (btk_action_class_init): Make all properties
+	G_PARAM_CONSTRUCT except "action-group".
+
+2009-01-22  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkicontheme.c (btk_icon_theme_has_icon): g_return_if_fail()
+	on icon_name != NULL so we get a warning instead of a crash here.
+
+2009-01-21  Matthias Clasen <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2009-01-21  Matthias Clasen <mclasen@redhat.com>
+
+	* btk/btkentry.c: Don't show windows that may not exist
+
+2009-01-21  Matthias Clasen <mclasen@redhat.com>
+
+	* btk/btklabel.c: Implement select-by-words for selectable labels.
+
+2009-01-21  Tor Lillqvist  <tml@novell.com>
+
+	* bdk/win32/bdkcursor-win32.c: Rename static local functions and
+	variables to not have any unnecessary _ or _bdk_win32 prefix.
+
+	* bdk/win32/bdkcursor-win32.c (hcursor_from_type): Implement
+	creating a BDK_BLANK_CURSOR.
+
+2009-01-21  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Change the Caps Lock warning to the more
+	neutral "Caps Lock is on". Requested by Wouter Bolsterlee
+
+2009-01-21  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 568552 – btk_combo + btk entry in invisible mode takes 100% cpu
+
+	* btk/btkentry.c: Fix an expose loop caused by raising windows out
+	of an expose handler. Also, don't show the 'Caps Lock' warning for
+	activated input methods, since that makes it permanently shown
+	for some locales. It should not be that necessary, now that we
+	do show preedit text even in password entries. Pointed out by
+	Frederic Crozat.
+	(start_loading_current_folder): Check if the folder to be loaded
+	is non-native for the local_only=TRUE case; if so, return an error
+	as we are configured to load only local folders.
+	(reload_current_folder): Pass on errors from
+	start_loading_current_folder().  Tighten the preconditions, as we
+	are sure that we can only receive non-NULL folder-files to load.
+	(refresh_current_folder_and_file_part): Pass on errors from
+	reload_current_folder().  At the very end, assert the invariant
+	described above.
+	(start_explicit_completion): Add comments for translators, to
+	explain the purpose of the various feedback messages used during
+	completion.
+
+2009-01-21  Federico Mena Quintero  <federico@novell.com>
+
+	* btk/btkfilechooserdefault.c (save_widgets_create): Set
+	local_only on the location entry when we create it...
+	(set_local_only): ... and set it here only if the location entry
+	exists.
+
+2009-01-21  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 561801 - "scheduled printing" doesn't function as expected
+
+	* btk/btkprintunixdialog: Add tooltip.
+	* modules/printbackends/cups/btkprintbackendcups.c: Add conversion
+	  from local time to utc time for scheduled printing.
+
+2009-01-20  Federico Mena Quintero  <federico@novell.com>
+
+	http://bugzilla.gnome.org/show_bug.cgi?id=545980 -
+	BtkFileChooserEntry should handle URIs
+
+	* btk/btkfilesystem.c (_btk_file_system_parse): Detect URI schemes
+	and parse the full URI.
+	(has_uri_scheme): New function, stolen from the old
+	btkfilesystemgnomevfs.c.
+
+	Patch by Carlos Garnacho <carlos@imendio.com>:
+
+	* btk/btkfilechooserentry.c (discard_current_folder): New
+	function, factored out for when we need to get rid of the
+	current_folder.
+	(btk_file_chooser_entry_dispose): Use discard_current_folder().
+	(finished_loading_cb): Fix prototype.
+	(load_directory_get_folder_callback): Discard the completion
+	store, as well as clearing the completion feedback, if we find an
+	error while loading the folder.  Also, use
+	discard_current_folder().
+	(reload_current_folder): Use discard_current_folder().
+
+	Patch by Carlos Garnacho <carlos@imendio.com> - add a local_only
+	property to BtkFileChooserEntry:
+
+	* btk/btkfilechooserentry.c (struct _BtkFileChooserEntry): Add a
+	local_only field.
+	(_btk_file_chooser_entry_init): Default to local_only being true.
+	(start_explicit_completion): Don't allow completion of non-native
+	files if local_only is turned on.
+	(start_loading_current_folder): Don't start loading non-native
+	folders if local_only is turned on.
+	(_btk_file_chooser_entry_set_local_only): New function.
+	(_btk_file_chooser_entry_get_local_only): New function.
+
+	* btk/btkfilechooserentry.h (_btk_file_chooser_entry_set_local_only,
+	_btk_file_chooser_entry_get_local_only): New prototypes.
+
+	* btk/btkfilechooserdefault.c (set_local_only): Set the local_only
+	property on the entry.
+
+	Fix completion so it doesn't pop up for every character in a URI
+	hostname:
+
+	* btk/btkfilechooser.h (BtkFileChooserError): Add a
+	BTK_FILE_CHOOSER_ERROR_INCOMPLETE_HOSTNAME.
+
+	* btk/btkfilesystem.c (_btk_file_system_parse): Return an
+	"incomplete hostname" error if the user has not typed a full
+	hostname yet in an URI.
+
+	* btk/btkfilechooserentry.c (append_common_prefix): If we get an
+	incomplete hostname, just don't pop up an error, since that is a
+	transient state and the user doesn't need to be notified about it.
+	(refresh_current_folder_and_file_part): Don't revert to showing
+	the base folder if we have an incomplete hostname.
+	(reload_current_folder): Handle the passed folder being NULL, even
+	if we must force a reload.  Also, reload the folder if we didn't
+	have a cancellable for it (i.e. we hadn't started to load it
+	before).
+
+2009-01-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkaction.[hc]: Add setters and getters for BtkAction
+	properties, in preparation for bug 560228.
+
+2009-01-21  Christian Dywan  <christian@twotoasts.de>
+
+	Bug 567413 – BtkComboBoxEntry doesn't emit "changed" signal
+        on entry editing
+
+	* btk/btkcombobox.c (btk_combo_box_set_active): Return only if index
+        is set. Patch by Carl-Anton Ingmarsson.
+
+2009-01-20  Torsten Schoenfeld  <kaffeetisch@gmx.de>
+
+	* btk/btkstyle.c: Add a "Since: 2.16" tag to btk_style_get.
+
+2009-01-20  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 565656 – Add marks to scales
+
+	* btk/btkrange.[hc]: Add internal api to define 'stop values'
+	that have a little resistance when dragging the slider over it.
+
+	* btk/btk.symbols:
+	* btk/btkscale.[hc] (btk_scale_add_mark): New function to add
+	a 'mark' to a scale, which will draws a tick, plus optionally
+	some text, and makes the value a stop value.
+	(btk_scale_clear_values): Removes all marks.
+
+	* tests/testscale.c: Test for marks on scales
+	* tests/Makefile.am: Integrate it
+
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c:
+	* btk/btkfilechooserentry.c:
+	* btk/btktextview.c: Replace several implementation of
+	blank cursor setting by BDK_BLANK_CURSOR.
+
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/bdkcursor.c:
+	* bdk/bdkwindow.c: Update docs on how to create blank cursors.
+
+2009-01-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Cache cursors to avoid libXcursor theme lookup overhead.
+	Patch by David Alan Gilbert.
+
+	* bdk/bdkcursor.h: Add a BDK_BLANK_CURSOR cursor type.
+
+	* bdk/x11/bdkcursor-x11.c: Cache font cursors and named cursors.
+
+	* bdk/x11/bdkprivate-x11.h:
+	* bdk/x11/bdkcdisplay-x11.c: Remove cached cursors when a 
+	display if finalized.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 568263 – btk can't recognize the wrong X Selection TARGETS' 
+	type "TARGETS" by java applications
+
+	* btk/btkselection.c (btk_selection_data_get_targets): Accept
+	a type of TARGETS instead of ATOM, too. Based on a patch by 
+	Peng Wu. 
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 568233 – Wrong statement about BtkEntry's "activate" signal
+
+	* btk/btkentry.c:
+	* btk/btklabel.c:
+	* btk/btktextview.c: Correct some copy-and-paste mistakes in
+	keybinding signal docs. Pointed out by Pascal Terjan.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkentry.[hc]: Add properties and getters for icon tooltips.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 563280 – stock items & translation context
+
+	* btk/btkstock.c: Solve the msgctxt problem a bit more
+	elegantly, and add some hints about this to the docs of
+	btk_stock_set_translate_func. Proposed by Christian Persch
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 568196 – Please change context of Forward stock label
+
+	* btk/btkstock.c: Reinstate separate translation contexts for
+	navigation and media labels (these were lost in the transition
+	to msgctxt. Pointed out by Gabor Kelemen.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 567887 – btk_entry_get_storage_type() should be 
+	btk_entry_get_icon_storage_type()
+
+	* btk/btk.symbols:
+	* btk/btkentry.[hc]: Use the last chance to get the api right,
+	and rename things for consistency, requested by Murray Cumming. 
+	In detail,
+	btk_entry_get_stock -> btk_entry_get_icon_stock
+	btk_entry_get_pixbuf -> btk_entry_get_icon_pixbuf
+	btk_entry_get_gicon -> btk_entry_get_icon_gicon
+	btk_entry_get_storage_type -> btk_entry_get_icon_storage_type
+	::prelight -> ::icon-prelight
+	::pixbuf-primary -> ::primary-icon-pixbuf
+	::stock-primary -> ::primary-icon-stock
+	::icon-name-primary -> ::primary-icon-name
+	::gicon-primary-> ::primary-icon-gicon
+	::storage-type-primary -> ::primary-icon-storage-type
+	::activatable->primary -> ::primary-icon-activatable
+	::sensitive-primary -> ::primary-icon-sensitive
+	(and similar for secondary properties)
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 567655 – btk_status_icon_set_tooltip_text and 
+	btk_status_icon_set_tooltip_markup should use gchar*
+
+	* btk/btkstatusicon.h: Use "const gchar*" in new tooltip api.
+	Pointed out by Torsten Schoenfeld.
+
+2009-01-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* demos/btk-demo/search_entry.c: End the search if the window
+	is closed.
+
+	* demos/btk-demo/search_entry.c:
+	* demos/btk-demo/entry_completion.c: Group the entry examples
+	under "Entry".
+
+2009-01-18  Christian Dywan  <christian@twotoasts.de>
+
+	Remove a redundant include from btktoolbar.c
+
+	* btk/btktoolbar.c: Remove second inclusion of btktoolbar.h.
+        Patch by Enrico Tröger.
+
+2009-01-16  Cody Russell  <bratsche@gnome.org>
+
+	Bug 567944 – [Win32] Sorted treeview columns can be unreadable
+
+	* modules/engines/ms-windows/msw_style.c: Draw selected treeview
+	cells according to treeview focus, but ignore whether it is in
+	a sorted column or not.  Otherwise the intersection of a selected
+	row and a sorted column looks very strange if the treeview does
+	not have focus.
+
+2009-01-16  Daniel Elstner  <danielk@openismus.com>
+
+	* modules/input/btkimcontextmultipress.[ch]: Remove the namespace
+	prefix from functions defined locally only.  Clean up the code and
+	change indentation to match the BTK+ coding style.
+	(_BtkImContextMultipress::key_sequences): Replace array of pointers
+	by GHashTable.  Adapt the implementation accordingly.
+	(passthrough_enabled_for_window): Remove.  The passthrough hack is
+	no longer necessary thanks to the recently introduced "im-module"
+	property of BtkEntry and BtkTextView.
+	(load_config): Rework to implement an improved configuration file
+	format.  Just fetch all keys of the group instead of expecting the
+	keys to be named a certain way.  This also allows interpreting the
+	config key itself as the BDK key name to bind the character sequence
+	to, thereby making it independent of the sequence itself.
+
+	* modules/input/im-multipress.conf: New example configuration using
+	the new syntax.  The example sequences are now bound to the numeric
+	keypad and imitate the behavior of a standard mobile phone.
+
+2009-01-15  Murray Cumming  <murrayc@murrayc.com>
+
+	* btk/btkimcontext.c: documentation description: Mention the various 
+	properties and the environment variable, with links to their 
+ 	documentation.
+	* btk/btksettings.c:
+	* btk/btktextview.c: Make the im-module property documentation more 
+	expansive.
+
+2009-01-15  Diego Escalante Urrelo  <diegoe@gnome.org>
+
+	Bug 562701 – BtkEntryCompletion popup sizes its rows wrong
+	when they span for more than one line.
+
+	Don't assume actions and results have equal height, this causes
+	negative size requisitions when results are more than one
+	line tall.
+
+	* btk/btkentrycompletion.c: change the formula used to calculate
+	the size of the completion popup.
+
+2009-01-14  Federico Mena Quintero  <federico@novell.com>
+
+	Remember the file chooser's geometry across invocations.
+
+	* btk/btkfilechoosersettings.h (struct _BtkFileChooserSettings):
+	New fields geometry_x, geometry_y, geometry_width, geometry_height.
+	(_btk_file_chooser_settings_get_geometry): New prototype.
+	(_btk_file_chooser_settings_set_geometry): New prototype.
+
+	* btk/btkfilechoosersettings.c (GEOMETRY_X_KEY, GEOMETRY_Y_KEY,
+	GEOMETRY_WIDTH_KEY, GEOMETRY_HEIGTH_KEY): New key names.
+	(ensure_settings_read): Read the geometry keys.
+	(_btk_file_chooser_settings_save): Save the geometry keys.
+	(_btk_file_chooser_settings_init): Initialize the geometry keys to
+	"don't have this value".
+	(_btk_file_chooser_settings_get_geometry): New public function.
+	(_btk_file_chooser_settings_set_geometry): New public function.
+
+	* btk/btkfilechooserdefault.c (btk_file_chooser_default_map):
+	Don't change the default size in ::map() so we don't flicker...
+	(btk_file_chooser_default_realize): ... so do it in ::realize()
+	instead, when the window is not yet visible.  This avoids a
+	dialog-that-resizes when you first pop up the file chooser.
+	(emit_default_size_changed): Just emit the signal; don't check for
+	the widget's state so we can be emitted during the initial
+	::realize() when we are not mapped yet.
+	(update_preview_widget_visibility): Only emit default_size_changed
+	if the widget is not mapped, to avoid resizing the dialog while it
+	is visible.
+
+	* btk/btkfilechooserdialog.c
+	(file_chooser_widget_default_size_changed): Simply resize the
+	dialog to the default size without any fancy clamping.  Also,
+	leave in place ifdef-ed out code to restore the file chooser's
+	position in addition to its size.  The code to restore the
+	position doesn't quite work yet, but we'll leave it in as a
+	reference.
+
+	* btk/btkfilechooserdefault.c (save_dialog_geometry): New function.
+	(settings_save): Save the dialog's geometry.
+	(btk_file_chooser_default_get_default_size): Load the geometry
+	from the settings.  If it was already saved, return that instead
+	of computing an ad-hoc size.
+
+2009-01-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 450716 – New API to change global IM
+
+	Requested by Daniel Elstner.
+
+	* btk/btk.symbols:
+	* btk/btkimmulticontext.[hc] (btk_im_multicontext_set_context_id):
+	New function to set the context id on a BtkIMMulticontext.
+
+	* btk/btkentry.c:
+	* btk/btktextview.c: Add a ::im-module property that can be
+	set to override the global setting for the im module to be used.
+
+2009-01-13  Christian Dywan  <christian@imendio.com>
+
+	Bug 566532 – BtkScaleButton implementation of BtkOrientable
+
+	* btk/btk.symbols:
+	* btk/btkscalebutton.c (btk_scale_button_class_init),
+	(btk_scale_button_set_property):
+	* btk/btkscalebutton.h: Deprecate btk_scale_button_get_orientation
+        in favour of implementing BtkOrientable. Patch by Bruce Cowan.
+
+2009-01-13  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 164002 - query scripts don't work uninstalled on windows
+
+	* btk/btkmain.c (_btk_get_libdir): If the btk DLL is in a ".libs"
+	folder, assume we are running uninstalled, and use the
+	configure-time BTK_LIBDIR.
+
+2009-01-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Refer to tray icon spec, instead of a random email.
+
+2009-01-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkwindow.c (btk_window_set_icon_name): Don't cause lots
+	of X traffic when the icon name doesn't actually change. Some
+	apps like to reset their window icon frequently, without actually
+	changing the icon name...
+
+2009-01-12  Paolo Borelli  <pborelli@katamail.com>
+
+	Bug 492794 – Pasting external text at end of view yields wrong
+	scrolling to mark
+
+	* btk/btktextbuffer.[ch]:
+	* btk/btktextview.c:
+	Add a "paste-done" signal and use it to propelry scroll the
+	view at the end of the pasted text in the case of an async
+	paste. Patch by Ignacio Casal Quintero based on a patch by
+	Yevgen Muntyan.
+
+2009-01-12  Tor Lillqvist  <tml@iki.fi>
+
+	* bdk/bdk.c (bdk_arg_debug_cb) (bdk_arg_no_debug_cb): A
+	GOptionArgFunc should return gboolean and take also a GError
+	pointer parameter, so make these two functions do that. Return
+	FALSE (and set the GError) if the parsing of the debug string
+	failed completely. Note that g_parse_debug_string() doesn't really
+	have any way to return parsing status, and accepts partially
+	incorrect strings, though.
+
+2009-01-12  Claudio Saavedra  <csaavedra@igalia.com>
+
+	Bug 567468 – no check for trailing != NULL in
+	btk_text_layout_get_iter_at_position()
+
+	* btk/btktextlayout.c: (btk_text_layout_get_iter_at_position):
+	Check for trailing to be non-NULL.
+	* btk/btktextview.c: (btk_text_view_get_iter_at_position): document
+	that trailing may be NULL.
+
+2009-01-11  Tor Lillqvist  <tml@iki.fi>
+
+	Bug 523554 - Copy from GIMP to Word broken
+
+	* bdk/win32/bdkselection-win32.c
+	(_bdk_win32_selection_convert_to_dib): The DIB stored in the
+	Windows Clipboard was for some unknown reason truncated by one
+	byte. Don't do that.
+
+2009-01-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 567024 – btktoolbutton doesn't create right proxy menu item 
+	image with GIcon
+
+	* btk/btktoolbutton.c: Properly create a menu proxy from a GIcon.
+	Patch by Christian Persch
+
+	* tests/testtoolbar.c: Add an example with a GIcon
+
+2009-01-09  Christian Dywan  <christian@imendio.com>
+
+	Fail in bdk_window_new if _bdk_window_new failed
+
+	* bdk/bdkwindow.c (bdk_window_new): Add g_return_val_if_fail
+        in case _bdk_window_new is NULL. Approved by Tim Janik
+
+2009-01-08  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566733 – Add GIcon to BtkAction, BtkToolButton
+
+	* btk/btkaction.c: Add a ::gicon property to BtkAction and set the 
+	icon from it if specified. The stock icon is preferred if a stock id 
+	is given. Based on a patch by A. Walton
+
+2009-01-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/stock-icons/{16,24}/btk-caps-lock-warning.png: New icons
+	* btk/btkstock.h: Add BTK_STOCK_CAPS_LOCK_WARNING.
+	* btk/btkiconfactory.c (get_default_icons): Register the stock icon.
+	* btk/btkentry.c (show_capslock_feedback): Use the new stock icon.
+
+2009-01-05  Tor Lillqvist  <tml@novell.com>
+
+	Bug 566628 - bdk_display_close always asserts on win32
+
+	* bdk/win32/bdkdisplay-win32.c
+	(_bdk_windowing_set_default_display): Allow also a NULL parameter
+	in the g_assert(). Still don't actually do anything in this
+	function, though.
+
+2009-01-04  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566568 – btk_tree_model_get_value docs typo
+
+	* btk/btktreemodel.c (btk_tree_model_get_value): Fix a typo
+	in the docs, pointed out by Christian Persch.
+
+2009-01-04  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566391 – btk_about_dialog_set_url_hook should activate 
+	pre-existing website links
+
+	* btk/btkaboutdialog.c: Make setting website, website-label and
+	url hook work independent of their order. Reported by Steven
+	Sheehy.
+
+2009-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/x11/bdkscreen-x11.h:
+	* bdk/x11/bdkevents-x11.c (fetch_net_wm_check_window): Recheck
+	_NET_SUPPORTING_WM_CHECK every now and then to avoid getting
+	stuck on the id of a former wmcheck window that got reused by
+	another client (see RH bug 471927)
+
+2009-01-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktreesortable.c: Improve the docs
+
+	* btk/btktreemodelsort.c: Don't assert when using the "unsorted"
+	sort column id.
+
+2009-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 565998 – configure script doesn't check for bairo-xlib.pc
+
+	* configure.in: Check for bairo-xlib when looking for
+	bdk dependencies. Requested by Alberto Ruiz
+
+2009-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566334 – compile failure for btk+ on Mac OS X
+
+	* btk/btkstatusicon.c: Fix the build on OS X. 
+	Reported by Bart Cortooms.
+
+2009-01-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 566083 – Icon pixmap hardcoded during DnD
+
+	* btk/btkwidget.c:
+	* btk/btkentry.c: Add docs about using ::drag-begin for setting
+	a custom drag icon. Reported by Xan Lopez
+
+2009-01-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: Bump version
+
+	* === Released 2.15.0 ===
+
+2009-01-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c (btk_entry_set_icon_sensitive): Fix default
+	value
+
+	* btk/tests/builder.c: Clean up asserts, make domain
+	test work with current BtkBuilder behaviour.
+
+	* Makefile.decl: Start Xvfb with -ac -noreset to try
+	and get the gui tests working.
+
+2009-01-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols: Add a few forgotten symbols
+	* btk/btkprintoperation.c:
+	* btk/btktrayicon-x11.c: Make some functions static
+
+2008-12-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Updates
+
+2008-12-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkruler.[hc]: Some more
+
+2008-12-31  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkpaned.[hc]:
+	* btk/btkscale.[hc]:
+	* btk/btkscrollbar.[hc]: 
+	* btk/btkseparator.[hc]: Keep these all abstract for now.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Rename the icon signals to ::icon-press and
+	::icon-release to avoid clashes with the existing SexyIconEntry
+	signals. Also annotate the BdkEvent parameters as static-scope.
+
+	* tests/testentryicons.c: Adapt
+	* demos/btk-demo/search-entry.c: Adapt
+	
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 565846 – "va_end(args);" should be added into btk_tree_store_new
+
+	* btk/btktreestore.c (btk_tree_store_new): Add a missing
+	va_end() call. Pointed out by Jiwon Lee.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Code cleanups; get rid of get_text_area_size,
+	replace get_icon_allocation by get_icon_allocations, don't
+	pass allocation to place_windows; other stylistic changes to 
+	the icon-related code.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Avoid size allocation loops.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Fix errors in property definitions and
+	get_property implementation.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Redo the Caps Lock warning using an icon.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 558694 – Paned window splitter keynav broken
+
+	* btk/btkpaned.c (get_child_panes): Don't add unrealized
+	widgets.
+
+2008-12-30  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkstyle.c:
+	* btk/btkmenutooltbutton.c:
+	* btk/btkprintoperationpreview.c: Doc additions
+
+2008-12-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkiconview.c:
+	* btk/btklabel.c:
+	* btk/btkentry.c:
+	* btk/btktextview.c:
+	* btk/btkeditable.c: 
+	* btk/btktextbuffer.c: Doc additions.
+
+2008-12-29  Tor Lillqvist  <tml@novell.com>
+
+	* btk/btk.symbols: Add missing symbols from btkentry.c.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkwindow.c: 
+	* btk/btkstyle.c: Doc additions
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk[hv]scrollbar.c: Document btk_[hv]scrollbar_new.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkwidget.c: Document btk_mnemonic_activate.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktextlayout.c: Un-doc-commentize non-public api
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprogress.h: Fix a typo
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkhsv.c:
+	* btk/btkentry.c: Doc fixes
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkwidget.c:
+	* btk/btktextutil.c: Un-doc-commentize non-exported functions
+	to make btk-doc happy.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkscale.c:
+	* btk/btkimagemenuitem.c: Doc fixes
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkeditable.h: Match parameter names to make btk-doc happy.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* tk/btkfontsel.c: Merge docs inline.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprintsettings.c:
+	* btk/btkbindings.c:
+	* btk/btkstyle.c: Doc fixes
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkscrolledwindow.c: 
+	* btk/btkscale.c: Merge docs inline.
+
+2008-12-28  Ryan Lortie  <desrt@desrt.ca>
+
+	small fix for "Paned Window Widgets" example
+
+	* docs/tutorial/btk-tut.sgml: use btk_container_add rather than
+	add_with_viewport for putting a BtkTreeView into a ScrolledWindow
+
+	Spotted by Benjamin Herrenschmidt
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkimmodule.c:
+	* btk/btkseparatortoolitem.c: Doc fixes
+
+	* btk/btkfontsel.c:
+	* btk/btkeditable.c: Merge docs inline.
+
+2008-12-28  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkhsv.c:
+	* btk/btkwidget.c: 
+	* btk/btkaccelgroup.c: Documentation fixes
+
+	* btk/btkstatusicon.c:
+	* btk/btkentry.c:
+	* btk/btkeditable.[hc]: Make parameter names match to make btk-doc
+	happy.
+
+2008-12-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Expand the docs some more.
+
+2008-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Don't emit ::icon-pressed on nonactivatable
+	icons. Fix up docs to match actual api.
+
+	* tests/testentryicons.c: Reshuffle tests a bit. Add a DND test.
+
+2008-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Fix interaction between icons and widget sensitivity.
+	Also fix a few typos.
+
+	* tests/testentryicons.c: Add property editors.
+	* tests/Makefile.am: Glue
+
+2008-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Allow builtin icons when loading themed icons,
+	and don't leak a BtkIconInfo.
+
+2008-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Emit ::icon-pressed regardless which button was
+	pressed. Also make it explicit in the signal signature that the
+	position parameter is a BtkEntryIconPosition.
+
+2008-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkentry.c: Emit property notification for the text-length
+	property.
+
+2008-12-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* demos/btk-demo/search_entry.c: Add a demo for new entry features.
+	* demos/btk-demo/Makefile.am: Glue
+
+2008-12-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/bdkapplaunchcontext.c:
+	* bdk/bdkkeys.c:
+	* bdk/x11/bdkdnd-x11.c:
+	* bdk/x11/bdkkeyx-x11.c:
+	* bdk/x11/bdktestutils-x11.c: Typo fixes and other small
+	doc improvements.
+
+2008-12-23  Li Yuan  <li.yuan@sun.com>
+
+	* btk/btkiconview.c: (btk_icon_view_accessible_model_row_changed):
+	Bug #549251. No need to set name if there is no a11y item object.
+
+2008-12-21  Yair Hershkovitz  <yairhr@gmail.com>
+
+	Bug 565203: RTL locales: icons are misplaced when horizontal 
+	            btkiconview is contained in a btkscrolledwindow.
+
+	* btk/btkiconview.c (btk_icon_view_layout_single_row):
+	Fix horizontal icon positions when in RTL locale.
+
+2008-12-19  Matthias Clasen  <mclasen@redhat.com>
+
+	* NEWS: Update
+
+2008-12-19  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 564881 – btkstatusicon.c: 'event' bug again
+
+	* btk/btkstatusicon.c (button_callback): Fix the build.
+	Patch by Christian Dywan.
+
+2008-12-19  Cody Russell  <bratsche@gnome.org>
+
+	Bug 85292 – add an icon to btkentry
+
+	* btk/btkmarshalers.list: Add VOID:INT,BOXED
+	* tests/testentryicons.c: Initial icon entry test
+	* tests/Makefile.am: Add testentryicons
+	* btk/btkentry.[ch]: Add API for setting primary/secondary icons
+	and other features related to them.
+	
+2008-12-19  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 339318 - Allow page rendering to (optionally) happen in a thread
+
+	* btk/btk.symbols: API change
+	* doc/reference/btk/btk-sections.txt: API change
+	* btk/btkprintoperation-private.h
+	* btk/btkprintoperation.h
+	* btk/btkprintoperation.c: Adds 2 new functions
+	   btk_print_operation_set_defer_drawing()
+	     - Sets up the BtkPrintOperation to wait for calling of
+	       btk_print_operation_draw_page_finish() from application. It can
+	       be used for drawing page in another thread.
+	       This function must be called in the callback of "draw-page"
+	       signal.
+	   btk_print_operation_draw_page_finish()
+	     - Signalize that drawing of particular page is complete.
+	       It is called after completion of page drawing (e.g. drawing
+	       in another thread).
+	       If btk_print_operation_set_defer_drawing() was called before,
+	       then this function has to be called by application. In another
+	       case it is called by the library itself.
+
+2008-12-15  Matthias Clasen  <mclasen@redhat.com>
+
+        * btk/btkprintunixdialog.c: Don't export emit_ok_response
+
+2008-12-15  Tomas Bzatek  <tbzatek@redhat.com>
+
+	* btk/btkfilechooserdefault.c: (list_row_activated):
+	* btk/btkfilesystem.c: (_btk_file_info_consider_as_directory):
+	Mask G_FILE_TYPE_SHORTCUT as a directory (#561494)
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkfilechooserdefault.c (update_current_folder_get_info_cb):
+	Mount the enclosing volume if the folder we're switching to is not
+	mounted. Patch by Tomas Bzatek, based on work by Carlos Garnacho
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 561494 – FileChooser network browsing and authentication support
+
+	* btk/btkfilesystem.[hc] (_btk_file_info_consider_as_directory): 
+	Privately export this method. It classifies directories and mountables
+	the same.
+
+	* btk/btkfilesystem.c (enclosing_volume_mount_cb): Silently drop
+	G_IO_ERROR_ALREADY_MOUNTED error for gvfs backends without visible
+	mounts.
+
+	* btk/btkfilesystemmodel.c:
+	* btk/btkfilechooserbutton.c:
+	* btk/btkfilechooserentry.c: 
+	* btk/btkfilechooserdefault.c: Use the new function instead of 
+	direct checks for G_FILE_TYPE_DIRECTORY throughout.
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 562579 – Remove error dialog when directory does not exist
+
+	* btk/btkfilechooserdefault.c (update_current_folder_get_info_cb):
+	Don't show an error dialog when changing to a non-existing folder,
+	since this is ususally just an annoyance. 
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556233 – local-only causes G_IS_FILE warning
+
+	* btk/gktfilechooserdefault.c (set_local_only): Avoid a warning
+	in tests. Patch by Christian Dywan
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 563158 – CellRendererProgress pulsing and progressing rows can 
+	not be used together
+
+	* btk/btkcellrendererprogress.c (btk_cell_renderer_progress_set_pulse):
+	Don't try to keep state in a cell renderer between two paint
+	calls. It doesn't work. Patch by Kristian Mueller
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 555560 – btk_combo_box_set_active fails with no model
+	
+	* btk/btkcombobox.c: Allow out-of-order setting of model and active.
+	Patch by Christian Dywan
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 558306 – Cannot build bdk (btk+ 2.14.4) on Solaris 8
+
+	* bdk/x11/bdktestutils-x11.c (bdk_test_simulate_button):
+	Remove a C99ism. Pointed out by Eric Lamarque
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 549251 – BTK icon view accessible issue.
+
+	* btk/btkiconview.c (btk_icon_view_accessible_model_row_changed):
+	Handle separate append/set for rows.  Patch by Li Yuan
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556839 – Crash when opening a link
+
+	* btk/btkstatusicon.c (btk_status_icon_finalize): Destroy the
+	image too. Patch by Carlos Garcia Campos
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 563751 – xatom cache is prefilled too late
+
+	* bdk/x11/bdkdisplay-x11.c (bdk_display_open): Initialize the
+	XAtom cache earlier. Patch by Christian Persch
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 564212 – btk_icon_view_accessible_model_rows_reordered explain 
+	new_order in the wrong way
+
+	* btk/btkiconview.c (btk_icon_view_accessible_model_rows_reordered):
+	Use the new order correctly.  Patch by Li Yuan
+
+2008-12-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 563835 – Typo in btk_widget_has_screen() docs
+
+	* bdk/directfb/bdkwindow-directfb.c:
+	* bdk/bdkwindow.c:
+	* bdk/x11/bdkwindow-x11.c:
+	* btk/btkmenushell.c:
+	* btk/btkwidget.c:
+	* btk/tests/builder.c:
+	* tests/testdnd.c: s/heirarchy/hierarchy/ in docs and comments.
+	Pointed out by Wouter Bolsterlee
+
+2008-12-12  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 564066 – Crash in btk_rc_parse_default_files
+
+	* btk/btkrc.c (btk_rc_parse_default_files): Handle being called
+	early. Bug report by Andrés G. Aragoneses
+
+2008-12-12  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkmountoperation.c: Set an empty title on password dialogs.
+	Pointed out by Máirín Duffy.
+
+2008-12-11  Sven Herzberg  <sven@imendio.com>
+
+	Document the "set-scroll-adjustments" signal
+
+	Reviewed by Kristian Rietveld.
+
+	* btk/btkiconview.c,
+	* btk/btklayout.c,
+	* btk/btktextview.c,
+	* btk/btktreeview.c,
+	* btk/btkviewport.c: added proper documentation for the signal
+
+2008-12-11  Daniel Elstner  <danielk@openismus.com>
+
+	Bug 563994 – Input method module interface not documented
+
+	* btk/btkimcontext.h: Add public/private markers.
+	* btk/btkimcontext.c: Add section documentation which explains how
+	to add a new input method module to BTK+.  Document the signals and
+	virtual functions of BtkIMContextClass.
+	* btk/btkimmodule.c: Document struct BtkIMContextInfo.
+	* docs/reference/btk/btk-sections.txt: Add BtkIMContextClass and
+	BtkIMContextInfo to section BtkIMContext.
+	* docs/reference/btk/Makefile.am (IGNORE_HFILES): Remove
+	btkimmodule.h from the list in order to pick up BtkIMContextInfo.
+	* docs/reference/btk/tmpl/btkimcontext.sgml: Remove file from
+	repository since all the hand-edited content has been migrated to
+	source file comments.
+
+2008-12-10  Matthias Clasen  <mclasen@redhat.com>
+
+        Bug 563991 – btk_file_chooser_button_new_with_backend is deprecated
+        -- but what should be used instead?
+
+        * btk/btkfilechooserbutton.c: Enhanced deprecation annotation.
+
+2008-12-10  Daniel Elstner  <danielk@openismus.com>
+
+	Maintenance of Multipress input method by Openismus GmbH:
+
+	* modules/input/btkimcontextmultipress.[ch]: Clean up the code
+	a bit to follow the BTK+ coding style more closely.  Fix the code
+	to emit "preedit-start" and "preedit-end", too, rather than only
+	"preedit-changed".
+	(BTK_IM_CONTEXT_MULTIPRESS*): Rename incorrectly spelled macros
+	btk_im_context_multipress*. Shouldn't break API or ABI as it's
+	only used internally.
+	* modules/input/immultipress.c: More cleanup,
+	* modules/input/README.multipress: ditto.
+
+2008-12-09  Michael Natterer  <mitch@imendio.com>
+
+	* bdk/bdk.symbols: add missing #ifndef BDK_DISABLE_DEPRECATED.
+
+2008-12-09  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkcontainer.c (struct PackingPropertiesData): add missing
+	semicolon.
+
+	* btk/btkcontainer.c (attributes_text_element): "value" is a
+	gchar*, not const gchar*.
+
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 546378 – BtkAssistant page title is not translatable
+
+	* btk/btkbuilderparser.c: Make btk_builder_get_translation_domain()
+	useful for subparsers.
+
+	* btk/btkcontainer.c: Make the child property parser support
+	translatable child properties. Patch by Antti Kaijanmäki
+ 
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 554274 – Add default hook for BtkLinkButton
+
+	* btk/btklinkbutton.c: Call btk_show_uri() if no uri hook has
+	been set. Patch by Emmanuele Bassi
+
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 559325 – documentation for bdk_display_get_window_at_pointer() 
+:	is wrong
+
+	* bdk/bdkdisplay.c (bdk_display_get_window_at_pointer): Correct
+	the documentation. Patch by Paul Davis
+
+2008-12-07  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 563285 – test print backend does not compile
+
+	* modules/printbackends/test/btkprintbackendtest.c: Clean up
+	includes. 
+
+2008-12-07  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 563547 – Update bdkx11 atom precache table
+
+	* bdk/x11/bdkdisplay-x11.c: Add more atoms to precache.
+
+2008-12-05  Michael Natterer  <mitch@imendio.com>
+
+	Bug 546285 – Allow BtkEntry to draw progress
+
+	* btk/btkentry.[ch]: add new API similar to BtkProgressBar which
+	allows to set the entry's progress_fraction, its progress_pulse_step
+	and to let the entry's progress pulse.
+
+	* btk/btk.symbols: updated.
+
+	* tests/testbtk.c: add progress demo code to the "Entry" window.
+
+2008-12-04  Johan Dahlin  <jdahlin@async.com.br>
+
+	* btk/btkstatusicon.c:
+	Add missing space in btk-doc deprecated syntax
+
+2008-12-03  Simos Xenitellis  <simos@gnome.org>
+
+	Bug 557420 – Some compose sequences don't work anymore (or only in
+	a specific order)
+
+	* btk/btkimcontextsimple.c: Update of table size, keysym boundary,
+	to match the btkimcontextsimpleseqs.h table.
+	* btk/btkimcontextsimpleseqs.h: Update with older btk+ compose
+	sequences that went missing due to table update with upstream.
+	* btk/compose-parse.py: Updated to include btk-compose-lookaside.txt
+	* btk/btk-compose-lookaside.txt: Older btk+ compose sequences that
+	are not found in the X.Org Compose file.
+
+2008-12-03  Sven Herzberg  <sven@imendio.com>
+
+	Bug 562998 – BtkFontButton documentation improvements
+
+	* btk/btkfontbutton.c: mention the way the font string should be used.
+	Patch by Sven Herzberg and Nelson Benitez
+
+2008-12-03  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 559914 – eog doesn't apply paper setup.
+
+	* btk/btkpapersize.c: Call the btk_paper_size_new_from_ppd() with width
+	and height in points.
+
+2008-12-02  Carlos Garcia Campos  <carlosgc@gnome.org>
+
+	Bug 562878 – password save incorrectly set in btkmountoperation
+
+	* btk/btkmountoperation.c (remember_button_toggled),
+	(btk_mount_operation_ask_password): Remember the password save
+	flags only when the radio button becomes active. Set also the
+	default state of the radio buttons depending on the current value
+	of password save flags. 
+	
+2008-12-01  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 555334 – connected server feature
+
+	* btk/btkfilesystem.c (get_volumes_list): Filter out shadow mounts.
+	Patch by David Zeuthen.
+
+2008-12-01  Matthias Clasen <mclasen@redhat.com>
+
+	* btk/btkentry.c: Revert an accidental change that sneaked
+	in with the last commit.
+
+2008-12-01  Paul Bolle  <pebolle@tiscali.nl>
+
+	Bug 562817 – BtkDialog: typo
+
+	* btk/btkdialog.c: Fix typo
+
+2008-11-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 554453 – "typeahead find" widget of BtkTreeView appears on 
+	wrong monitor in a multi-head environment
+
+	* btk/btktreeview.c (btk_tree_view_ensure_interactive_directory):
+	Make sure the typeahead window follows screen changes of the
+	treeview. Noticed by Rainer Stransky
+
+2008-11-30  Christian Dywan  <christian@imendio.com>
+
+	Bug 559622 – BdkDevice test segfaults
+
+	* bdk/x11/bdkdisplay-x11.c (bdk_display_x11_dispose):
+	* bdk/x11/bdkinput.c (bdk_device_class_init), (bdk_device_dispose):
+	Free and reset device in dispose. Patch by Michael Natterer and myself.
+
+2008-11-30  Christian Dywan  <christian@imendio.com>
+
+	Bug 554076 – eventually release g_new-ed supported_atoms
+
+	* bdk/x11/bdkevents-x11.c (cleanup_atoms),
+	(bdk_x11_screen_supports_net_wm_hint): Set cleanup callback.
+        Patch by Caolan McNamara.
+
+2008-11-30  Christian Dywan  <christian@imendio.com>
+
+	Bug 539263 – Deprecate bdk_window_get_toplevels
+
+	* bdk/bdkwindow.c:
+	* bdk/bdkwindow.h: Deprecate bdk_window_get_toplevels
+
+2008-11-29  Federico Mena Quintero  <federico@novell.com>
+
+	* btk/btktreeview.c (btk_tree_view_bin_expose): If tree lines are
+	enabled, flip them around for the right-to-left case.  Fixes
+	https://bugzilla.novell.com/show_bug.cgi?id=447004.  Patch by
+	Ricardo Cruz <rpmcruz@alunos.dcc.fc.up.pt>
+
+2008-11-29  Christian Persch  <chpe@gnome.org>
+
+	* btk/btkselection.c: Typo fix.
+
+2008-11-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkselection.c:
+	* btk/btkentry.c:
+	* btk/btkdnd.c:
+	* btk/btkcolorsel.c:
+	* btk/btkbindings.c: Improve deprecation annotations.
+
+2008-11-26  Christian Dywan  <christian@imendio.com>
+
+	Bug 561504 – testbtk should load rc file from sub folder
+
+	* tests/testbtk.c (main):
+        Make testbtk look in subfolder and warn if not found
+
+2008-11-25  Johan Dahlin  <jdahlin@async.com.br>
+
+	Bug 559947 – Unchecked dependency on python>=2.4
+
+	* btk/btk-builder-convert:
+	Avoid using sorted() which is only present in python 2.
+
+2008-11-24  Tristan Van Berkom <tvb@gnome.org>
+
+	* btk/btkalignment.c: Bug 561539 - Fix warnings when size allocations
+	fall short of border width and padding.
+
+2008-11-22  Paul Bolle  <pebolle@tiscali.nl>
+
+	Bug 561335 - Fix typos in BtkToolItem documentation
+
+	* btk/btktoolitem.c: Fix typos in BtkToolItem documentation
+
+2008-11-21  Matthias Clasen <mclasen@redhat.com>
+
+	* configure.in: Bump btk-doc dependency to 1.11 for
+	nicer index-generation.
+
+2008-11-21  Matthias Clasen <mclasen@redhat.com>
+
+	* btk/btkmountoperation.[hc]: Declare structs in a way that
+	btk-doc understands.
+
+2008-11-17  Christian Dywan  <christian@imendio.com>
+
+	Bug 377699 – realizing btk.Progress() causes SEGV
+
+	* btk/btkprogress.c: Define BtkProgress as an abstract type
+
+2008-11-13  Christian Dywan  <christian@imendio.com>
+
+	Bug 560602 – Wrong BtkMenuItem default value (test fails)
+
+	* btk/btkmenuitem.c (btk_menu_item_class_init):
+	Correct default "label" value to ""
+
+2008-11-12  Christian Dywan  <christian@imendio.com>
+
+	Bug 560139 – BtkEntry doesn't paint with the right state
+
+	* btk/btkentry.c (btk_entry_class_init), (btk_entry_draw_frame),
+	(btk_entry_expose): Reflect the right state if state-hint is set
+
+2008-11-12  Christian Dywan  <christian@imendio.com>
+
+	Bug 559619 – invisible-char default cannot be tested
+
+	* btk/tests/defaultvalue.c (test_type):
+        Skip invisible-char when testing
+
+2008-11-12  Richard Hult  <richard@imendio.com>
+
+	* btk/btkdnd-quartz.c: (btk_drag_set_icon_pixmap): Implement,
+	patch from Paul Davis.
+
+2008-11-12  Christian Dywan  <christian@imendio.com>
+
+	Bug 525550 – BTK+ 2.13.0 BtkCurve test fails
+
+	* btk/tests/object.c (list_ignore_properties),
+	(object_test_property), (main): Ignore BtkCurve when testing
+
+2008-11-12  Richard Hult  <richard@imendio.com>
+
+	Bug 550942 – [patch] Rework of bdkeventloop-quartz.c
+
+	* bdk/bdk.c:
+	* bdk/bdkinternals.h: Add eventloop debug facility.
+	* bdk/quartz/bdkeventloop-quartz.c: Big rework of the quartz
+	mainloop integration, patch from Owen Taylor. See bug #550942 for
+	the details.
+
+2008-11-12  Richard Hult  <richard@imendio.com>
+
+	Bug 558586 – handling of keyboard under darwin (quartz)
+
+	* bdk/quartz/bdkkeys-quartz.c: Follow up on this bug, only use the
+	new API when building on 64-bit, since there are still old non-xml
+	layouts used out there we don't want to break them. (For 64-bit
+	those layouts doesn't work so we don't have a choice there.)
+
+2008-11-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkspinbutton.c: Chain up in enter and leave notify handlers.
+
+2008-11-11  Michael Natterer  <mitch@imendio.com>
+
+	Bug 553765 – Add orientation API to BtkRange
+
+	* btk/btkrange.[ch]: implement the BtkOrientable interface. Add
+	evil code that makes sure that the stepper_detail and slider_detail
+	set in BtkRangeClass continue to work with the hacked subclasses
+	below.
+
+	* btk/btkscale.[ch]: swallow all code from BtkHScale and BtkVScale
+	and add btk_scale_new() and btk_scale_new_with_range() which take
+	a BtkOrientation argument. Set slider_detail to "Xscale" so above
+	evil code works.
+
+	* btk/btkscrollbar.[ch]: add btk_scrollbar_new() which takes a
+	BtkOrientation argument. Set stepper_detail to "Xscrollbar" so
+	above evil code works.
+
+	* btk/btkhscale.c
+	* btk/btkvscale.c
+	* btk/btkhscrollbar.c
+	* btk/btkvscrollbar.c: remove all code except the constructor and
+	call btk_orientable_set_orientation() in init().
+
+	* btk/btk.symbols: changed accordingly.
+
+2008-11-11  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btktoolbar.h: move deprecated functions together, move
+	setters and getters together, some indentation cleanup.
+
+2008-11-11  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btktoolbar.[ch]: implement the BtkOrientable interface
+	and deprecate btk_toolbar_get,set_orientation().
+
+	* btk/btk.symbols: changed accordingly.
+
+2008-11-10  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 560135 - Print when the user double clicks a printer
+
+	* btk/btkprintunixdialog.c: add handling of double click to
+	BtkPrintUnixDialog.
+
+2008-11-07  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkpaned.c: argh, actually call the newly added private
+	btk_paned_calc_position() instead of the deprecated public
+	version.
+
+2008-11-07  Michael Natterer  <mitch@imendio.com>
+
+	Bug 553586 – Add orientation API to BtkPaned
+
+	* btk/btkpaned.[ch]: implement the BtkOrientable interface
+	and swallow all code from BtkHPaned and BtkVPaned. Add
+	btk_paned_new() which takes a BtkOrientation argument. Deprecate
+	btk_paned_compute_position() for good (also for BTK_COMPILATION).
+
+	* btk/btkhpaned.[ch]
+	* btk/btkvpaned.[ch]: remove all code except the constructor and
+	call btk_orientable_set_orientation() in init().
+
+	* btk/btk.symbols: add btk_box_new().
+
+2008-11-07  Johan Dahlin  <jdahlin@async.com.br>
+
+	* btk/btkcontainer.c (btk_container_buildable_add_child):
+	Check for child->parent instead of BTK_WIDGET_TOPLEVEL.
+
+2008-11-07  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkscrollbar.c: remove bogus newlines in the middle of
+	function calls, fix broken indentation and remove trailing
+	whitespace.
+
+2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* btk/btkmenuitem.c: Made buildable and added support for adding
+	children of type "submenu"
+
+	* btk/btkwindow.c: Added support for custom tag "accel-groups" to
+	add BtkAccelGroups to the window.
+
+	* btk/btkcontainer.c: Added builder contextual warnings in
+	buildable_add_child()
+
+	* btk/tests/builder.c: Added tests for buildable menus (test that
+	accelerators are properly connected on stock items, test the menu
+	hierarchy, test permission to add alien/custom menuitem children).
+
+	* docs/reference/btk/tmpl/btkbuilder.sgml
+	* docs/reference/btk/tmpl/btkwindow.sgml
+	* docs/reference/btk/tmpl/btkmenuitem.sgml: Updated docs for
+	buildable submenus and accel groups.
+
+2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* btk/btkmenuitem.[ch]: added new apis
+	btk_menu_item_[set/get]_label() and
+	btk_menu_item_[set/get]_use_underline() with "label" and
+	"use-underline" properties, constructors cleaned up to use
+	g_object_new().  BtkMenuItemClass take new vfuncs
+	->get/set_label().
+
+	* btk/btkcheckmenuitem.c: constructors cleaned up to use
+	g_object_new().
+
+	* btk/btkimagemenuitem.[ch]: added new apis
+	btk_image_menu_item_[get/set]_use_stock() and
+	btk_image_menu_item_set_accel_group() with "use-stock" and
+	write-only "accel-group" properties. constructors cleaned up to
+	use g_object_new().
+
+2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* btk/btkbuilder.h: Fixed a crasher in
+	BTK_BUILDER_WARN_INVALID_CHILD_TYPE()
+
+2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+
+	* btk/btklabel.c: btk_label_set_attributes() now applies attributes
+	on top of any markup or mnemonic attributes (bug 558409).
+
+	* README: Updated and added release notes for 2.16
+
+2008-11-06  Richard Hult  <richard@imendio.com>
+
+	Bug 558586 – handling of keyboard under darwin (quartz)
+
+	* bdk/quartz/bdkkeys-quartz.c: (maybe_update_keymap): Patch from
+	Arnaud Charlet to replace use of deprecated keyboard layout API
+	with the new TIS API available in 10.5. The old code is still used
+	when building for 10.4.
+
+2008-11-05  Richard Hult  <richard@imendio.com>
+
+	* bdk/quartz/bdkevents-quartz.c:
+	(get_keyboard_modifiers_from_ns_event), (create_key_event): Revert
+	(at least for now) the alt/cmd switching since it breaks the
+	"alt-gr" functionality of alt which makes it impossible to input
+	lots of characters.
+
+2008-11-05  Christian Dywan  <christian@imendio.com>
+
+	Bug 559404 – btk_editable_insert_text counts length in bytes
+
+	* btk/btkeditable.c:
+	Document new_text_length as the number of bytes
+
+2008-11-05  Richard Hult  <richard@imendio.com>
+
+	* bdk/quartz/bdkwindow-quartz.c:
+	(bdk_window_impl_quartz_begin_paint_rebunnyion): Set the fill color
+	outside the loop.
+
+2008-11-05  Richard Hult  <richard@imendio.com>
+
+	* btk/btkstatusicon.c: (btk_status_icon_set_has_tooltip),
+	(btk_status_icon_get_tooltip_markup): Fix build for win32 and
+	quartz.
+
+2008-11-04  Tor Lillqvist  <tml@novell.com>
+
+	Bug 557212 - Problem with which window gains focus and is visible
+
+	* bdk/win32/bdkevents-win32.c (ensure_stacking_on_activate_app):
+	Only do the restacking for the active window of the
+	application. Seems to fix the problem.
+
+	(bdk_event_translate): Only call ensure_stacking_on_activate_app()
+	when the application is being activated, not deactivated.
+
+2008-11-03  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkstatusicon.[hc]: Add new tooltip api.
+
+2008-11-03  Christian Persch  <chpe@gnome.org>
+
+	Bug 558001 – btk_icon_view_enable_model_drag_[source|dest] problem
+
+	* btk/btkiconview.c: Make btk_drag_*_add_*_targets() usable with
+	BtkIconView.
+
+2008-11-02  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 558929 – btkstatusicon.c: 'event' is a member of the structure
+
+	* btk/btkstatusicon.c: Fix the build.
+
+2008-11-02  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkimagemenuitem.c: Make it possible to overrule the
+	btk-menu-images setting.
+
+	* btk/btkaction.c (connect_proxy): Show the image before adding
+	it to the image menu item.
+
+2008-11-01  Tor Lillqvist  <tml@novell.com>
+
+	Bug 558278 - Crash when calling a callback set by
+	bdk_add_client_message_filter()
+
+	* bdk/win32/bdkevents-win32.c (apply_event_filters): Rename from
+	apply_filters() so that it is clear that this function is for
+	BdkEventFilters only.
+
+	(print_event): Print more information for BDK_CLIENT_EVENT events.
+
+	(bdk_event_translate): When handling client filters, don't use
+	apply_event_filters(). Use similar code as in the X11 backend,
+	although not exactly, as the parameter list and return value
+	semantics of bdk_event_translate() is different.
+
+	* tests/testclientmessage.c: New interactive test program to
+	verify client message functionality.
+
+	* tests/Makefile.am: Add it.
+
+2008-11-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 409435 – BtkStatusIcon enhancements: DnD, scroll events, 
+	middle click, rich tooltips
+
+	* btk/btkstatusicon.[hc]: Add support for button press/release and
+	scroll events. Patch by Ed Catmur
+
+2008-11-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 322934 – Replace menu's proxy icons with empty space hiding icons
+
+	* btk/btkmenu.c (btk_menu_size_request): Use consistent padding
+	regardless of imagees or checks being in the menu. Also add
+	padding on the right edge.
+	Proposal by Luca Ferretti, patch by Jon McCann
+
+2008-11-01  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 412134 – Add API to query style properties from the style
+
+	* btk/btk.symbols:
+	* btk/btkstyle.[hc]: Add getters for style properties to
+	avoid the need for ugly workarounds with dummy widget instances.
+	Patch by Mariano Suárez-Alvarez
+
+2008-10-31  Christian Dywan  <christian@imendio.com>
+
+	Bug 558667 – btk_font_selection_dialog_get_apply_button - deprecate?
+
+	* btk/btk.symbols:
+	* btk/btkfontsel.c:
+	* btk/btkfontsel.h:
+	Deprecate btk_font_selection_dialog_get_apply_button
+
+2008-10-31  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 558323 – glitches when popping up combos in treeviews
+
+	* btk/btkcellrenderercombo.c (btk_cell_renderer_combo_set_property):
+	Don't set the model property on the combo box, since that leads
+	to loops.
+
+2008-10-31  Christian Dywan  <christian@imendio.com>
+
+	Bug 347230 – testicontheme shortcomings
+
+	* tests/testicontheme.c (main):
+	Use theme for "display" and quit on window closing
+
+2008-10-30  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 558522 – scroll arrow painted insensitive even though there
+	are pages beyond the edge
+
+	* btk/btknotebook.c (btk_notebook_real_insert_page): Redraw
+	arrows. Pointed out by Christian Persch
+
+2008-10-30  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkcellrenderertext.h
+	* btk/btkentry.[ch]
+	* btk/btkimcontext.h
+	* btk/btklabel.c
+	* btk/btkstyle.h: <bango/bango.h> is pulled in by <bdk/bdk.h>,
+	remove its inclusion here.
+
+2008-10-30  Michael Natterer  <mitch@imendio.com>
+
+	* btk/*.h: no need to include <btk/btkenums.h> in headers which
+	somehow include btkobject.h or another header which includes it.
+
+2008-10-30  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 339714 - Set printer dpi on bairo ps/pdf surfaces when printing
+
+	* btk/btk.symbols
+	* btk/btkprintsettings.c
+	* btk/btkprintsettings.h
+	* docs/reference/btk/btk-sections.txt
+	* modules/printbackends/file/btkprintbackendfile.c
+	* modules/printbackends/test/btkprintbackendtest.c
+	* modules/printbackends/cups/btkprintbackendcups.c
+	* modules/printbackends/lpr/btkprintbackendlpr.c:
+	Added lpi (lines per inch) setting to BtkPrintSettings and support
+	for anamorphic dpi. Surface fallback resolution is set to 2*lpi.
+
+2008-10-30  Michael Natterer  <mitch@imendio.com>
+
+	* btk/*.h: no need to include <bdk/bdk.h> in any widget header,
+	it's included via btkwidget.h anyway.
+
+2008-10-30  Sven Neumann  <sven@gimp.org>
+
+	* btk/btkwidget.c (btk_widget_get_property): removed redundant
+	conditional.
+
+2008-10-30  Christian Dywan  <christian@imendio.com>
+
+	Bug 557316 – BtkLinkButton should consider user-defined tooltip
+
+	* btk/btklinkbutton.c (btk_link_button_query_tooltip_cb):
+	Only override the tooltip if not previously set
+
+2008-10-29  Christian Dywan  <christian@imendio.com>
+
+	Bug 557762 – Misleading error message in BDK DirectFB
+
+	* bdk/directfb/bdkdisplay-directfb.c (bdk_display_open):
+	Correctly say GetInputDevice instead of GetDisplayLayer
+
+2008-10-29  Christian Dywan  <christian@imendio.com>
+
+	Bug 558397 – btk_widget_error_bell undefined without a screen
+
+	* btk/btkwidget.c (btk_widget_error_bell): Test the settings
+	instance and return silently if unset
+
+2008-10-28  Michael Natterer  <mitch@imendio.com>
+
+	* bdk/keyname-table.h: fix small typo.
+
+2008-10-27  Richard Hult  <richard@imendio.com>
+
+	Bug 557894 – Wrong return value for
+	bdk_pointer_grab_info_libbtk_only()
+
+	* bdk/quartz/bdkevents-quartz.c:
+	(bdk_pointer_grab_info_libbtk_only): Return TRUE when there is a
+	pointer grab. Patch by Owen Taylor.
+
+2008-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktoolshell.c:
+	* btk/btktoolitem.c: Remove markup from short descriptions.
+
+2008-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/keyname-table.h:
+	* btk/gen-paper-names.c:
+	* btk/paper_names_offsets.c:
+	* btk/btkpapersize.c:
+	* btk/btkaccellabel.c:
+	* btk/btkprintoperation.c:
+	* btk/btkstock.c: More conversion to C_().
+
+2008-10-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkaccellabel.c:
+	* btk/btkcalendar.c:
+	* btk/btkcellrendereraccel.c:
+	* btk/btkcellrendererprogress.c:
+	* btk/btkimmulticontext.c:
+	* btk/btkrecentchoosermenu.c:
+	* btk/btkvolumebutton.c: Use C_() instead of Q_(). String change!
+
+2008-10-26  Christian Persch  <chpe@gnome.org>
+
+	Bug 557065 – btkcellrendererpixbuf spams console over and over with
+	'could not load image' warnings
+
+	* btk/btkcellrendererpixbuf.c:
+	(btk_cell_renderer_pixbuf_create_themed_pixbuf): Remove noisy
+	g_warning.
+
+2008-10-26  Philip Withnall  <philip@tecnocode.co.uk>
+
+	Bug 530454 – Clarify page_nr when printing
+
+	* btk/btkprintoperation.c (btk_print_operation_class_init): Point out
+	that page_nr is 0-based in the documentation.
+
+2008-10-25  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 557315 – stale clipboard target cache
+
+	* btk/btkclipboard.c (btk_clipboard_set_contents): Remove cached
+	targets. Pointed out by Evan Stade
+
+2008-10-24  Tristan Van Berkom  <tvb@gnome.org>
+
+	* btk/btkwidget.c: Added a note about BtkWidget:has-tooltip in
+	the docs for BtkWidget::query-tooltip.
+
+2008-10-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkmountoperation.c: The "screen" property ought to have
+	type BdkScreen, not BtkWindow. Found by Cosimo Cecchi
+
+2008-10-24  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556954 – btk+/btk/btkrecentchooserdefault.c: mismatching
+	allocation and deallocation
+
+	* btk/btkrecentchooserdefault.c (remove_selected_from_list): Don't
+	free a strdup'ed string by g_free. Pointed out by Daniel Marjamäki
+
+2008-10-24  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 556835 – btkentry.c: variable is declared at middle of block
+
+	* btk/btkentry.c (btk_entry_copy_clipboard): Fix a C99ism pointed
+	out by Kazuki Iwamoto
+
+2008-10-24  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 557524 – "va_end(args);" should be added into
+	btk_text_buffer_insert_with_tags_by_name( )
+
+	* btk/btktextbuffer.c (btk_text_buffer_insert_with_tags_by_name):
+	Don't forget to call va_end. Pointed out by Boram Park
+
+2008-10-23  Alexander Larsson  <alexl@redhat.com>
+
+	Bug 528320 - Incorrect icons displayed for files with custom
+	mimetype icons
+	
+        * btk/btkfilesystem.c:
+        (_btk_file_info_render_icon):
+	Fall back on default file icon if there was no icon or it
+	was not found in the theme. This goes with the corresponding
+	change in bunnylib to not add the fallback icon, but is useful
+	in other cases too.
+
+2008-10-22  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 555920 – btkentry.c passes wrong enum to
+	bango_layout_set_alignment()
+
+	* btk/btkentry.c (btk_entry_create_layout): Don't set layout
+	adjustment.
+
+2008-10-22  Matthias Clasen  <mclasen@redhat.com>
+
+	* bdk/x11/bdkscreen-x11.c: Only emit size-changed if the screen
+	size actually changed.
+
+2008-10-21  Michael Natterer  <mitch@imendio.com>
+
+	* bdk/bdkdraw.c
+	* bdk/bdkimage.c
+	* bdk/bdkscreen.c
+	* bdk/bdkwindow.c: replace assertions for obj != NULL by
+	BDK_IS_OBJ(), remove redundant != NULL checks when there is
+	already a type check, add some g_return_if_fail() that were
+	missing entirely, fix some broken indentation and spacing.
+
+2008-10-21  Tor Lillqvist  <tml@novell.com>
+
+	Bug 557266 - Window Management Problem
+
+	Also reported in mail to btk-list, and of course it has been well
+	known in general that window state management is messy and buggy
+	in various ways in bdk/win32.
+
+	* bdk/win32/bdkwindow-win32.c (show_window_internal): Correct
+	handling of BDK_WINDOW_STATE_ABOVE windows. It doesn't work to set
+	the WS_EX_TOPMOST extended style bit using SetWindowLong(). We
+	must call SetWindowPos() on the window using HWND_TOPMOST
+	instead. The description for WS_EX_TOPMOST in the documentation
+	for CreateWindowEx() even implies that if you read it carefully.
+
+2008-10-21  Michael Natterer  <mitch@imendio.com>
+
+	* bdk/bdkapplaunchcontext.c: reorder functions to be in standard
+	order, add prototypes and namespace to static functions, add
+	g_return_if_fail()s which were missing all over the place.
+
+2008-10-20  Christian Persch  <chpe@gnome.org>
+
+	Bug 557059 – crash when compositing emblems with icon
+
+	* btk/btkicontheme.c: (apply_emblems): Copy the pixbuf before using it
+	with btk_pixbuf_composite, in case its pixdata is read-only (mmaped
+	from icon cache or builtins).
+
+2008-10-20  Murray Cumming  <murrayc@murrayc.com>
+
+	* btk/btkiconview.c: btk_icon_view_set_tooltip_row(), 
+	btk_icon_view_set_tooltip_item():
+	* btk/btktreeview.c: btk_icon_view_set_tooltip_row(), 
+	btk_icon_view_set_tooltip_cell():
+	Documentation: Mention the simple set_tooltip_column() 
+	alternative.
+
+2008-10-18  Tor Lillqvist  <tml@novell.com>
+
+	* bdk/win32/bdkevents-win32.c (bdk_event_translate): On
+	WM_WINDOWPOSCHANGING, don't dereference windowpos in the debugging
+	output without setting it first.
+
+2008-10-18  Tor Lillqvist  <tml@novell.com>
+
+	Bug 556578 - GIMP windows stay on top of other windows
+
+	* bdk/win32/bdkevents-win32.c (ensure_stacking_on_unminimize)
+	(ensure_stacking_on_window_pos_changing)
+	(ensure_stacking_on_activate_app): Ignore unmapped windows in the
+	loops where we look for the lowest "transient-type" window.
+
+	(bdk_event_translate): Don't call
+	ensure_stacking_on_window_pos_changing() or
+	ensure_stacking_on_activate_app() for unmapped windows.
+
+2008-10-16  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 556527 - The current page property is not passed to
+	BtkPrintUnixDialog
+
+	* btk/btkprintoperation-unix.c: pass current-page property
+	to BtkPrintUnixDialog
+
+2008-10-15  Michael Natterer  <mitch@imendio.com>
+
+	* bdk/bdkapplaunchcontext.h (BDK_IS_APP_LAUNCH_CONTEXT): fix typo
+	in the type name so the macro becomes usable.
+
+2008-10-14  Christian Dywan  <christian@imendio.com>
+
+	556150 – btk 'object' property test fixing
+
+	* btk/tests/object.c (list_ignore_properties):
+        Remove some recently fixed properties from the exception list
+
+2008-10-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 555779 – BtkCellRendererPixbuf crashed on failed GIcon lookup
+
+	* btk/btkcellrendererpixbuf
+	(btk_cell_renderer_pixbuf_create_themed_pixbuf): Don't crash
+	if a GIcon is not present in the current theme. Patch by 
+	Alex Larsson.
+
+2008-10-13  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 552318 – menubar mnemonics consumed even when
+	btk-enable-mnemonics=false
+
+	* btk/btkwindow.c (btk_window_activate_key): Don't let mnemonic
+	entries block accelerator activation when btk-enable-mnemonics is
+	FALSE. Problem reported by Andreas Moog.
+
+2008-10-13  Cody Russell <cody@jhu.edu>
+
+	* test/testfilechooser.c: Fix option parsing so that -a and
+	--action work correctly.
+
+2008-10-13  Christian Persch <chpe@gnome.org>
+
+	Bug 555386 – format not a string literal and no format arguments
+
+	* btk/btkiconfactory.c
+	* btk/btkprintbackend.c
+	* btk/btkprintoperation.c
+	* btk/btkthemes.c
+	* btk/tests/builder.c
+	* modules/other/bail/bailtextview.c
+	* tests/testmerge.c: Use printf safely.
+
+2008-10-13  Christian Persch <chpe@gnome.org>
+
+	Bug 555724 – btkcellrendereraccel not initialised correctly
+
+	* btk/btkcellrendereraccel.c: Initialise the cell text.
+
+2008-10-12  Simos Xenitellis  <simos@gnome.org>
+
+	Bug 555625 – Updated btk_compose_seqs_compact table 
+	(btkimcontextsimpleseqs.h)
+	
+	* btk/btkimcontextsimpleseqs.c: Updated the compose sequence table.
+	In this update we removed a further set of compose sequences that
+	are otherwise covered by check_algorithmically(). 
+
+	* btk/btkimcontextsimple.c: Updated table value that shows how many 
+	distinct first values exist in the compose sequences. 
+	Change from 22 to 20.
+	
+2008-10-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktoolbar.c: Revert the BtkSettings::btk-toolbar-icon-size
+	part of the previous change, since it doesn't work correctly without
+	extra complication, and using custom icon sizes doesn't make too
+	much sense in a desktop-wide setting.
+
+2008-10-11  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 555186 – Setting btk-toolbar-icon-size with custom icon_size
+
+	* btk/btktoolbar.c: Turn BtkToolbar::icon-size and
+	BtkSettings::btk-toolbar-icon-size into int properties, to
+	allow the use of app-registered icon sizes.
+
+2008-10-11  Christian Dywan  <christian@imendio.com>
+
+	Bug 555676 – btk_widget_real_grab_focus assumes toplevel == window
+
+	* btk/btkwidget.c (btk_widget_real_grab_focus):
+        Actually test for BTK_IS_WINDOW *and* BTK_WIDGET_TOPLEVEL
+
+2008-10-10  Behdad Esfahbod  <behdad@gnome.org>
+
+	Bug 551355 – [PATCH] Make bunnylib build with libtool 2.2
+
+	* autogen.sh: Accept libtool 2.2.   We are moving towards having
+	it working.
+
+2008-10-10  Richard Hult  <richard@imendio.com>
+
+	* bdk/quartz/bdkkeys-quartz.c: (bdk_keymap_get_caps_lock_state)
+	Add empty stub to fix linking.
+
+2008-10-10  Simos Xenitellis  <simos@gnome.org>
+
+	Bug 555000 – Wrong treatment on non-spacing marks dead keys in 
+	BtkIMContextSimple
+
+	* btk/btkimcontextsimple.c: Change IS_DEAD_KEY() macro so that
+	it only checks if input is a deadkey keysym.
+
+2008-10-09  Christian Dywan  <christian@imendio.com>
+
+	Bug 555676 – btk_widget_real_grab_focus assumes toplevel == window
+
+	* btk/btkwidget.c (btk_widget_real_grab_focus):
+        Test for BTK_IS_WINDOW instead of BTK_WIDGET_TOPLEVEL
+
+2008-10-09  Christian Dywan  <christian@imendio.com>
+
+	Bug 555573 – btk_font_selection_set_font_name
+        shouldn't require a screen
+
+	* btk/btkfontsel.c (btk_font_selection_set_font_name):
+        Don't warn if there is no screen, just return FALSE
+
+2008-10-09  Christian Dywan  <christian@imendio.com>
+
+	Bug 555523 – btk_scale_button_set_adjustment should accept NULL
+
+	* btk/btkscalebutton.c (btk_scale_button_set_adjustment):
+	Create a new adjustment if NULL is passed, like other widgets
+
+2008-10-09  Christian Dywan  <christian@imendio.com>
+
+	Bug 555578 – BtkTable propertiy maxima are wrong
+
+	* btk/btktable.c (btk_table_class_init), (btk_table_resize):
+        Always use 65535 instead of G_MAXUINT since that is
+        the actually supported maximum number of columns and rows
+
+2008-10-09  Richard Hult  <richard@imendio.com>
+
+	Bug 550342 – Splash screens have a caption
+
+	* bdk/quartz/bdkwindow-quartz.c: (_bdk_window_new),
+	(bdk_window_set_decorations): Patch from Marianne Gagnon to make
+	splash windows borderless.
+
+2008-10-09  Michael Natterer  <mitch@imendio.com>
+
+	Bug 516425 – Optionally display accelerators in popups
+
+	* btk/btkuimanager.h (enum BtkUIManagerItemType): add value
+	BTK_UI_MANAGER_POPUP_WITH_ACCELS which works like _POPUP but
+	shows the actions' accelerators.
+
+	* btk/btkuimanager.c: honor the new enum value for programmatically
+	created UIs, and support <popup accelerators="true"> in the XML
+	for the same purpose.
+
+2008-10-09  Simos Xenitellis  <simos@gnome.org>
+
+	Bug 554192 – double press on the "circumflex" dead key 
+	(standard french 105 keyboard) no longer produces the "^" character
+
+	* btk/btkimcontextsimple.c (btk_im_context_simple_filter_keypress):
+	Changed the order, put check_compact_table() first, then 
+	check_algorithmically().
+
+2008-10-08  Christian Persch  <chpe@gnome.org>
+
+        Bug 554702 – btkfilesystem leaks GError
+
+        * btk/btkfilesystem.c (_btk_file_system_init): Free the GError.
+
+2008-10-08  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkfilechooserdefault.c (update_current_folder_get_info_cb):
+	Don't forget to reset reload_state when current_folder is already
+	correct. Fixes https://bugzilla.redhat.com/show_bug.cgi?id=465992
+
+2008-10-08  Christian Dywan  <christian@imendio.com>
+
+	Bug 555270 – Allow unsetting a MessageDialog's image
+
+	* btk/btkmessagedialog.c (btk_message_dialog_set_property),
+        Remove a superfluous cast to BtkWidget*
+	(btk_message_dialog_set_image): Accept NULL for the image
+	and unset the image in that case.
+
+2008-10-08  Christian Dywan  <christian@imendio.com>
+
+	Bug 436533 – Allow more space efficient scroll arrows placement
+
+	* btk/btkenums.h: Add BtkArrowPlacement
+	* btk/btkmenu.c (btk_menu_class_init), (get_arrows_border),
+	(get_arrows_visible_area), (get_double_arrows),
+	(get_arrows_sensitive_area): Implement BtkMenu::arrow-placement
+        to allow scrolling arrows to be placed at the start, end or both
+        Patch by Tommi Komulainen and myself
+
+2008-10-08  Christian Dywan  <christian@imendio.com>
+
+	Bug 555387 – Changing the sensitivity of a statusbar
+	mistakenly requires a display
+
+	* btk/btkstatusbar.c (set_grip_cursor): Only change the cursor
+        of the resize grip if there is a grip window.
+
+2008-10-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btktooltip.c (btk_tooltip_show_tooltip): Avoid unitialized
+	memory warnings from valgrind.
+
+2008-10-07 11:03:30  Tim Janik  <timj@imendio.com>
+
+	* btk/btkbox.h: keep BtkBox as an abstract type and keep _btk_box_new()
+	as private function until we settle on the exact semantics.
+	renamed _btk_box_set_old_defaults() as suggested by Mitch.
+
+2008-10-07  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkbox.c: reindent static prototypes.
+
+2008-10-07  Michael Natterer  <mitch@imendio.com>
+
+	Bug 553573 – Add orientation API to BtkBox
+
+	* btk/btkbox.[hh]: implement the BtkOrientable interface and
+	swallow all code from BtkHBox and BtkVBox. Add btk_box_new()
+	which takes a BtkOrientation argument. Also move the newly
+	added "spacing_set" boolean from struct BtkBox to the new
+	private struct.
+
+	* btk/btkhbox.[ch]
+	* btk/btkvbox.[ch]: remove all code except the constructor and
+	call btk_orientable_set_orientation() in init().
+
+	* btk/btk.symbols: add btk_box_new().
+
+2008-10-06  Björn Lindqvist  <bjourne@gmail.com>
+
+	Bug 539464 – btk_cell_view_get_model is missing in BtkCellView
+
+	* btk/btkcellview.c (btk_cell_view_get_model): Add
+	btk_cell_view_get_model.
+
+2008-10-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprintunixdialog.c (create_main_page): Show the tooltip
+	on the range entry itself, too.
+
+2008-10-04  Tor Lillqvist  <tml@novell.com>
+
+	Bug 132501 - Make utility window translate to tool window in win32
+
+	Implement the utility window type hint. Such windows are kept on
+	top of other windows of the same process. Makes GIMP's toolbox and
+	dock windows behave more like in GNOME under metacity. Apply the
+	same logic also to windows marked with the dialog window type
+	hint, and windows that are transient for some other window. I'll
+	call such windows "transient-type" below.
+
+	* bdk/win32/bdkevents-win32.c (doesnt_want_key): Drop unused
+	variables.
+
+	(ensure_stacking_on_unminimize)
+	(ensure_stacking_on_window_pos_changing)
+	(ensure_stacking_on_activate_app): New functions to implement the
+	desired stacking order. Make sure that a window that is not
+	transient-type stays below any transient-type windows of the
+	application. When activating a non-transient-type window make sure
+	it rises as high as possible while still staying below the lowest
+	transient-type window.
+
+	(bdk_event_translate): Call above functions on
+	WM_WINDOWPOSCHANGING, WM_ACTIVATEAPP and on WM_SIZE when
+	unminimizing. Improve debugging printout.
+
+	* bdk/win32/bdkwindow-win32.c (get_effective_window_decorations):
+	Handle utility windows like toolbar windows.
+
+	(bdk_window_new_internal) (update_style_bits): Give utility
+	windows the WS_EX_TOOLWINDOW extended style.
+
+	(bdk_window_set_title): If debugging "misc" or "events", make the
+	handle of top-level windows show up in their title bars. Very
+	useful when looking at debugging output.
+
+	(bdk_window_set_transient_for) (bdk_window_set_keep_above)
+	(bdk_window_set_keep_below) (bdk_window_set_modal_hint)
+	(bdk_window_set_skip_taskbar_hint)
+	(bdk_window_set_skip_pager_hint): Add and improve debugging
+	printout.
+
+	(bdk_window_set_type_hint): Print hint symbolically in BDK_NOTE().
+
+2008-10-04  Tor Lillqvist  <tml@novell.com>
+
+	* bdk/win32/bdkmain-win32.c (_bdk_win32_window_exstyle_to_string)
+	(_bdk_win32_window_pos_bits_to_string): New debugging printout
+	functions. Decode the WS_EX_* and SWP_* bits.
+
+	* bdk/win32/bdkprivate-win32.h: Declare them. Define
+	BDK_DEBUG_MISC_OR_EVENTS for use in BDK_NOTE() to match either
+	"misc" or "events".
+
+2008-10-03  Matthias Clasen <mclasen@redhat.com>
+
+	* btk/btkmodules.c (_btk_modules_settings_changed): Add some
+	debug output.
+
+2008-10-02  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 96431 – Can't cut and paste / DND within invisible entry
+
+	* btk/btkentry.c: Disable cut, copy and drag out of an invisible
+	entry. Proposed by Owen Taylor
+
+2008-10-02  Matthias Clasen <mclasen@redhat.com>
+
+	Bug 530575 – BtkEntry with invisible chars has a confused cursor in
+	overwrite mode
+
+	* btk/btkentry.c (btk_entry_draw_cursor): Use the visible text
+	in the layout when positioning the cursor, not the actual text
+	content of the entry. This makes a different when using overwrite
+	mode in an invisible entry. 
+	Problem noticed by Jonathan Blandford
+
+	* btk/btktextutil.c: Fix a typo in a comment
+
+2008-10-02  Christian Persch
+
+        Bug 554704 – btkfilesystemmodel does too much work
+
+        * btk/btkfilesystemmodel.c: Replace g_slist_length()<1 check with a
+        simple NULL check.
+
+2008-10-02  Christian Persch
+
+        Bug 554701 – filechooser spams console with useless warnings
+
+        * btk/btkfilesystem.c.c: Don't warn if the async call was simply
+        cancelled.
+
+2008-10-02  Christian Persch
+
+        Bug 554698 – mem leak in filechooser
+
+        * btk/btkfilechooserdefault.c: Plug a mem leak.
+
+2008-10-02  Christian Persch
+
+        Bug 554696 – invalid free function used
+
+        * btk/btkfilesystemmodel.c: Use the right free func.
+
+2008-10-02  Christian Persch
+
+        Bug 554691 – mem leak in filechooser
+
+        * btk/btkfilesystemmodel.c: Plug a mem leak.
+
+2008-10-02  Christian Persch
+
+        Bug 554690 – mem leak in filechooser
+
+        * btk/btkfilechooserdefault.c: Plug a mem leak.
+
+2008-10-02  Michael Natterer  <mitch@imendio.com>
+
+	Bug 553585 – Add orientation API to BtkRuler
+
+	* btk/btkruler.[ch]: implement the BtkOrientable interface and
+	swallow all code from BtkHRuler and BtkVRuler. Add btk_ruler_new()
+	which takes a BtkOrientation argument.
+
+	* btk/btkhruler.c
+	* btk/btkvruler.c: remove all code except the constructor and
+	call btk_orientable_set_orientation() in init().
+
+	* btk/btk.symbols: add btk_ruler_new().
+
+2008-10-01  Torsten Schoenfeld  <kaffeetisch@gmx.de>
+
+	* docs/reference/btk/btk-sections.txt:
+	* btk/btk.symbols:
+	* btk/btkselection.c:
+	* btk/btkselection.h: Add btk_selection_data_get_selection to
+	retrieve the sealed struct field BtkSelectionData.selection.
+
+2008-10-01  Tor Lillqvist  <tml@novell.com>
+
+	* btk/btkscalebutton.c: Don't #define _GNU_SOURCE on Windows as it
+	confuses newest mingw headers.
+
+2008-10-01  Tor Lillqvist  <tml@novell.com>
+
+	* bdk/win32/bdkkeys-win32.c (bdk_keymap_get_caps_lock_state):
+	Implement trivially on Windows. Not sure if something more complex
+	is actually needed, more specifically whether the function needs
+	to differentiate between "Caps Lock" and "Shift Lock" semantics?
+
+2008-10-01  Simos Xenitellis  <simos@gnome.org>
+
+	Bug 554506 – combining diacritics broken, became deadkeys
+
+	* btk/btkimcontextsimple.c: added check if keysym is greater
+	than 0x1000000, in this case it is not a dead key.
+
+2008-09-30  Michael Natterer  <mitch@imendio.com>
+
+	Bug 553582 – Add orientation API to BtkSeparator
+
+	* btk/btkseparator.[ch]: implement the BtkOrientable interface and
+	swallow all code from BtkHSeparator and BtkVSeparator. Add
+	btk_separator_new() which takes a BtkOrientation argument.
+
+	* btk/btkhseparator.c
+	* btk/btkvseparator.c: remove all code except the constructor and
+	call btk_orientable_set_orientation() in init().
+
+	* btk/btk.symbols: add btk_separator_new().
+
+2008-09-30  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 344522 – support non-local destination files (BtkPrint):
+
+	* btk/btkprintunixdialog.c
+	* btk/btkprinteroptionwidget.c: Process URI instead of filename.
+	* modules/printbackends/file/btkprintbackendfile.c: Add ability
+	to save files on non-local filesystems.
+
+2008-09-30  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btk.symbols: forgot the G_GNUC_CONST of
+	btk_orientable_get_type().
+
+2008-09-30  Michael Natterer  <mitch@imendio.com>
+
+	Bug 541009 – Get rid of separate subclasses for horizontal and
+	vertical orientation:
+
+	* btk/Makefile.am
+	* btk/btk.symbols
+	* btk/btk.h
+	* btk/btkorientable.[ch]: add new interface BtkOrientable which
+	will be implemented by everything that can switch orientation.
+
+2008-09-30  Christian Dywan  <christian@imendio.com>
+
+	Fix a typo in the tutorial.
+
+	* docs/tutorial/btk-tut.sgml: It's mnemonic, not 'mnemnonic'.
+
+2008-09-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 553086 – hard to see current immodule
+
+	* btk/btkimmulticontext.c (btk_im_multicontext_append_menuitems):
+	Display the actually selected context in the system menuitem.
+	Complaint by Akira Tagoh.
+
+2008-09-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 530568 – Entries with visibility=FALSE should warn for caps-lock
+	on
+
+	* btk/btkentry.c: Add a tooltip-like Caps Lock warning for
+	password entries. The warning is also triggered if an input method
+	is active. The warning can be turned off using the
+	BtkEntry::caps-lock-warning property. 
+	Proposed by Owen Taylor
+
+2008-09-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols:
+	* btk/btkimmulticontext.[hc] (btk_im_multicontext_get_context_id): 
+	Add a getter for the the sealed context_id field.
+
+2008-09-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 107000 – Add signals to BdkKeymap for monitoring caps_lock, etc.
+
+	* bdk/bdk.symbols:
+	* bdk/bdkkeys.[ch]: Add a new BdkKeymap::state-changed signal, and
+	a bdk_keymap_get_caps_lock_state function.
+
+	* bdk/x11/bdkkeys-x11.c: Implement it here. For now, only emit
+	state-changed when caps lock lockedness changes. 
+
+	* bdk/x11/bdkdisplay-x11.c: Also select for modifier lock status
+	changes in the XkbSelectEventDetails call.
+
+2008-09-29  Kristian Rietveld  <kris@imendio.com>
+
+	Bug 487624 - Tooltips doesn't get updated if ther's no mouse motion
+	over widget
+
+	* btk/btkwidget.c (btk_widget_set_property): after updating
+	tooltip text or markup, call btk_widget_trigger_tooltip_query()
+	so that existing visible tooltips are updated.
+
+2008-09-29  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 371908 – Password Entry broken
+	Bug 317002 – Disable input method completely in BtkEntry when it's 
+	in invisible mode.
+
+	* btk/btkentry.c (btk_entry_backspace): Make backspace behave
+	properly when invisible.
+
+	* btk/btkentry.c (btk_entry_create_layout): Show preedit even if
+	invisible. 
+
+	* btk/btkentry.c (btk_entry_set_visibility): Don't disable input
+	methods when making the entry invisible.
+	
+2008-09-29  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* bdk/x11/bdkinput.c:
+	(bdk_device_class_init), (bdk_device_finalize): Correctly chain
+	up the finalize implementation.
+
+2008-09-29  Richard Hult  <richard@imendio.com>
+
+	Bug 554141 – uninitialized data use/free in btkclipboard-quartz.c
+
+	* btk/btkclipboard-quartz.c: (btk_clipboard_wait_for_contents):
+	Patch from Jon A. Cruz to initialize the allocated selection data.
+
+2008-09-27  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 339367 – Incorrect spotlocation
+
+	* modules/input/btkimcontextxim.c: Correct the spot location
+	for on-the-spot style.
+
+2008-09-27  Denis Washington  <denisw@svn.gnome.org>
+
+	* btk/btkiconview.c: only draw keyboard focus when keyboard navigation
+	is used, like BtkTreeView. (Bug #553575)
+
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 552959 – BtkTrayIcon: _NET_SYSTEM_TRAY_VISUAL and real
+	transparency
+
+	* btk/btktrayicon-x11.c: Add support for the _NET_SYSTEM_TRAY_VISUAL
+	property described in
+	http://lists.freedesktop.org/archives/xdg/2008-September/009919.html
+	If _NET_SYSTEM_TRAY_VISUAL is a visual with an alpha channel, the 
+	parent-relative-background hack is skipped and we draw with a real
+	transparent background.
+
+	* btk/btkrc.c: Remove the default BtkTrayIcon style, since the
+	parent-relative background is now set when realizing the tray
+	icon.
+
+	Patch by Owen Taylor
+
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 552956 – Should check composite extension version
+
+	* bdk/x11/bdkdisplay-x11.c: Check that the version of the
+	composite extension is at least 0.4.
+	Patch by Owen Taylor
+
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+	
+	Bug 553803 – eventually call XCloseDevice on XOpenDevice results
+
+	* bdk/x11/bdkinput.c: Add a finalize function for device objects,
+	and call XCloseDevice there. 
+
+	* bdk/x11/bdkinput-x11.c:
+	* bdk/x11/bdkdisplay-x11.c: Move freeing of device objects to
+	the finalize function.
+	Patch by Caolan McNamara
+	
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 553578 - tabs are not drawn correctly
+
+	* btk/btknotebook.c: Track the visibility state of notebook tabs 
+	between allocations so that we know to redraw the tab labels if 
+	tabs are hidden and shown without changing position. 
+	Reported by Marek Kašík, patch by Owen Taylor.
+
+2008-09-26  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 553133 – BtkFileChooser won't ask to mount a volume
+	Bug 553211 – BtkFileChooserButton unsets filter after first use
+
+	* btk/btkfilechooserdefault.c (shortcuts_activate_volume): Use
+	a BtkMountOperation when mounting, so that we get a password
+	dialog when required.  
+
+	* btk/btkfilechooserdefault.c (show_and_select_files): Also
+	get the content-type, since it is used later on. 
+	Pointed out by Davyd Madeley.
+
+2008-09-26  Cody Russell  <bratsche@gnome.org>
+
+	Bug 553917 – Typo in bdkwindow-win32.c
+
+	* bdk/win32/bdkwindow-win32.c: Fixed a typo in
+	update_system_menu().  Changed BDK_DECOR_ALL to BDK_FUNC_ALL.
+
+	Reported by Richard Hult
+
+2008-09-25  Marek Kasik  <mkasik@redhat.com>
+
+	Bug 553241 – double freed pointer in lpr_write cause firefox3 crash
+
+	* modules/printbackends/lpr/btkprintbackendlpr.c:
+	The redundant freeing of memory was removed.
+
+	Patch by Chris Wang
+
+2008-09-25  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkfilechooserdefault.c (btk_file_chooser_default_finalize):
+	don't unref the file system backend, the newly added
+	unset_file_system_backend() already does this (bug #553135).
+
+2008-09-24  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkeventbox.c: events return gboolean not gint, reindented
+	static prototypes.
+
+2008-09-24  Johan Dahlin  <johan@gnome.org>
+
+	Bug 553385 – btk-builder-convert creates untranslated combobox models
+
+	* btk/btk-builder-convert: Set the translatable property on
+	col tags for converted combos.
+
+2008-09-24  Tor Lillqvist  <tml@novell.com>
+
+	* btk-zip.sh.in: Include all of share/man, lib/pkgconfig,
+	share/aclocal and share/btk-doc instead of trying to list
+	individual files or subdirectories. We had missed bail.pc, for
+	instance.
+
+2008-09-24  Christian Dywan  <christian@imendio.com>
+
+	Bug 538782 – Make BtkMenu's arrow size themable
+
+	* btk/btkmenu.c (btk_menu_class_init), (btk_menu_paint):
+        Implement "arrow-scaling" style property in BtkMenu.
+
+2008-09-24  Christian Dywan  <christian@imendio.com>
+
+	Bug 408244 – add BtkDialog::content-area-spacing
+
+	* btk/btkbox.c (btk_box_init), (btk_box_set_spacing),
+	(_btk_box_set_spacing_set), (_btk_box_get_spacing_set):
+	* btk/btkbox.h:
+	* btk/btkdialog.c (btk_dialog_class_init), (update_spacings):
+        Implement "content-area-spacing" style property in BtkDialog
+        and internal helper _btk_box_get_spacing_set in BtkBox.
+        Patch by Tim Janik, Sven Herzberg and myself.
+
+2008-09-24  Christian Dywan  <christian@imendio.com>
+
+	Bug 541391 – Unfocussable Treeview swallows focus
+
+	* btk/btktreeview.c (grab_focus_and_unset_draw_keyfocus),
+	(btk_tree_view_focus): Honor BTK_WIDGET_CAN_FOCUS properly
+
+2008-09-24  Denis Washington  <denisw@svn.gnome.org>
+
+	* btk/btkiconview.c: draw focus as a rectangle around the
+	complete item, not just the text. (Bug #38254)
+
+2008-09-23  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkobject.c
+	* btk/btksignal.[ch]: s/BtkType/GType/ and
+	s/BtkSignalMarshaller/GSignalCMarshaller/.
+
+2008-09-23  Michael Natterer  <mitch@imendio.com>
+
+	* bdk/x11/bdkevents-x11.c (bdk_event_translate): remove unused
+	variable and fix indentation.
+
+2008-09-23  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btkclist.h
+	* btk/btkctree.h
+	* btk/btklist.h
+	* btk/btklistitem.h
+	* btk/btkobject.h
+	* btk/btkoldeditable.h
+	* btk/btkpixmap.h
+	* btk/btkpreview.h
+	* btk/btktext.h
+	* btk/btktipsquery.h
+	* btk/btktree.h
+	* btk/btktreeitem.h: get rid of BtkType and BTK_CHECK_FOO() also
+	in all deprecated headers.
+
+2008-09-22  Matthias Clasen  <mclasen@redhat.com>
+
+	Bug 553135 – eog crash: assertion failed. Btk error:
+	shortcuts_remove_rows: code should not be reached
+
+	* btk/btkfilechooserdefault.c: Disconnect from BtkFileSystem 
+	signals when we are destroyed, in order to avoid nasty surprises.
+	Patch by Claudio Saavedra
+
+2008-09-22  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 552789 – Show size column in the search and recently used
+	files modes
+
+	* btk/btkfilechooserdefault.c: Display the file size column
+	when in OPERATION_MODE_SEARCH. This removes a stat() call
+	and simplifies the code a little bit by changing the query
+	for file informations for each search engine hit.
+
+2008-09-22  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btksignal.[ch]
+	* btk/btkclist.c
+	* btk/btklist.c
+	* btk/btkmain.c
+	* btk/btktext.c
+	* btk/btktreeitem.c: use G_CALLBACK and GCallback instead of
+	BTK_SIGNAL_FUNC and BtkSignalFunc also in deprecated code.
+
+2008-09-22  Frederic Crozat  <fcrozat@mandriva.com>
+
+	* btk/btkfilesystem.c: use the correct gi18n header.
+	Fixes bug #553000.
+
+2008-09-22  Michael Natterer  <mitch@imendio.com>
+
+	* btk/btktoolbar.[ch]: add "Deprecated: 2.4" to all the deprecated
+	append(), prepend() and insert() functions and recommend to use
+	btk_toolbar_insert() instead. Use GCallback instead of
+	BtkSignalFunc even in deprecated API.
+
+2008-09-20  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkfilechooserbutton.c (filter_model_visible_func): Don't
+	leak a GFile.
+
+2008-09-19  Owen Taylor  <otaylor@redhat.com>
+
+	Small cleanups to debug messages for BtkPlug/BtkSocket
+
+	* btk/btksocket-x11.c: Fix debug message to say "Socket" not "Plug"
+	* btk/btkplug-x11.c: Remove excess newlines from the ends of debug
+	messages.
+
+2008-09-19  Carlos Garnacho  <carlos@imendio.com>
+
+	Bug 83935 – BtkEntry's default invisible char should be U+25CF
+
+	* btk/btkentry.c (find_invisible_char) (btk_entry_init): Find a
+	more suitable invisible char than '*' based on the used font.
+	(btk_entry_class_init) (btk_entry_set_property)
+	(btk_entry_get_property): Add a "invisible-char-set" property.
+	(btk_entry_unset_invisible_char): New function, needed now that the
+	default invisible char isn't fixed.
+	* btk/btkentry.h:
+	* btk/btk.symbols:
+	* docs/reference/btk/btk-sections.txt: Add the new function.
+
+2008-09-19  Christian Persch  <chpe@gnome.org>
+ 
+ 	Bug 552837 – mem leak in btkimmulticontext
+ 
+ 	* btk/btkimmulticontext.c: (btk_im_multicontext_get_slave): Plug mem
+ 	leak.
+ 
+2008-09-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	* btk/btkfilechooserdefault.c (settings_save): Save the size column
+	visibility state with the rest of the FileChooser settings.
+
+2008-09-18  Emmanuele Bassi  <ebassi@linux.intel.com>
+
+	Bug 325095 – show a 'size' column
+
+	* btk/btkfilechooserdefault.c:
+	* btk/btkfilechooserprivate.h: Add a context menu item controlling
+	the visibility of the file size column. This works only for the
+	browse mode, and the column is not visible by default.
+
+	* btk/btkfilechoosersettings.[ch]: Add a ShowSizeColumn key to the
+	settings file.
+
+2008-09-18  Dominic Lachowicz  <domlachowicz@gmail.com>
+
+	* modules/engines/ms-windows/*: Revert most of previous patch, as
+	it didn't work as expected; Some work toward #531086 - the new
+	BtkTooltip widget doesn't theme properly on win32. Now, at least
+	the background color seems okay
+	
+2008-09-18  Dominic Lachowicz  <domlachowicz@gmail.com>
+
+	* modules/engines/ms-windows/*: MS Windows style should use
+	bango_win32_font_description_from_logfont; Allows us to rip out a
+	lot of potentially buggy code, and also get the font specification
+	from the XP theme (#434987)
+	
+2008-09-18  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in: updated version number to 2.15.0 for development.
+
+	* ChangeLog.pre-2-14: rotate ChangeLog
+
+=== Branch for 2.14 ===

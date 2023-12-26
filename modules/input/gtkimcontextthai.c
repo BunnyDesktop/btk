@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,88 +21,88 @@
 
 #include <string.h>
 
-#include <gdk/gdkkeysyms.h>
-#include "gtkimcontextthai.h"
+#include <bdk/bdkkeysyms.h>
+#include "btkimcontextthai.h"
 #include "thai-charprop.h"
 
-static void     gtk_im_context_thai_class_init          (GtkIMContextThaiClass *class);
-static void     gtk_im_context_thai_init                (GtkIMContextThai      *im_context_thai);
-static gboolean gtk_im_context_thai_filter_keypress     (GtkIMContext          *context,
-						         GdkEventKey           *key);
+static void     btk_im_context_thai_class_init          (BtkIMContextThaiClass *class);
+static void     btk_im_context_thai_init                (BtkIMContextThai      *im_context_thai);
+static gboolean btk_im_context_thai_filter_keypress     (BtkIMContext          *context,
+						         BdkEventKey           *key);
 
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
-static void     forget_previous_chars (GtkIMContextThai *context_thai);
-static void     remember_previous_char (GtkIMContextThai *context_thai,
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
+static void     forget_previous_chars (BtkIMContextThai *context_thai);
+static void     remember_previous_char (BtkIMContextThai *context_thai,
                                         gunichar new_char);
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
 static GObjectClass *parent_class;
 
-GType gtk_type_im_context_thai = 0;
+GType btk_type_im_context_thai = 0;
 
 void
-gtk_im_context_thai_register_type (GTypeModule *type_module)
+btk_im_context_thai_register_type (GTypeModule *type_module)
 {
   const GTypeInfo im_context_thai_info =
   {
-    sizeof (GtkIMContextThaiClass),
+    sizeof (BtkIMContextThaiClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) gtk_im_context_thai_class_init,
+    (GClassInitFunc) btk_im_context_thai_class_init,
     NULL,           /* class_finalize */    
     NULL,           /* class_data */
-    sizeof (GtkIMContextThai),
+    sizeof (BtkIMContextThai),
     0,
-    (GInstanceInitFunc) gtk_im_context_thai_init,
+    (GInstanceInitFunc) btk_im_context_thai_init,
   };
 
-  gtk_type_im_context_thai = 
+  btk_type_im_context_thai = 
     g_type_module_register_type (type_module,
-                                 GTK_TYPE_IM_CONTEXT,
-                                 "GtkIMContextThai",
+                                 BTK_TYPE_IM_CONTEXT,
+                                 "BtkIMContextThai",
                                  &im_context_thai_info, 0);
 }
 
 static void
-gtk_im_context_thai_class_init (GtkIMContextThaiClass *class)
+btk_im_context_thai_class_init (BtkIMContextThaiClass *class)
 {
-  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
+  BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
-  im_context_class->filter_keypress = gtk_im_context_thai_filter_keypress;
+  im_context_class->filter_keypress = btk_im_context_thai_filter_keypress;
 }
 
 static void
-gtk_im_context_thai_init (GtkIMContextThai *context_thai)
+btk_im_context_thai_init (BtkIMContextThai *context_thai)
 {
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
   forget_previous_chars (context_thai);
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
   context_thai->isc_mode = ISC_BASICCHECK;
 }
 
-GtkIMContext *
-gtk_im_context_thai_new (void)
+BtkIMContext *
+btk_im_context_thai_new (void)
 {
-  GtkIMContextThai *result;
+  BtkIMContextThai *result;
 
-  result = GTK_IM_CONTEXT_THAI (g_object_new (GTK_TYPE_IM_CONTEXT_THAI, NULL));
+  result = BTK_IM_CONTEXT_THAI (g_object_new (BTK_TYPE_IM_CONTEXT_THAI, NULL));
 
-  return GTK_IM_CONTEXT (result);
+  return BTK_IM_CONTEXT (result);
 }
 
-GtkIMContextThaiISCMode
-gtk_im_context_thai_get_isc_mode (GtkIMContextThai *context_thai)
+BtkIMContextThaiISCMode
+btk_im_context_thai_get_isc_mode (BtkIMContextThai *context_thai)
 {
   return context_thai->isc_mode;
 }
 
-GtkIMContextThaiISCMode
-gtk_im_context_thai_set_isc_mode (GtkIMContextThai *context_thai,
-                                  GtkIMContextThaiISCMode mode)
+BtkIMContextThaiISCMode
+btk_im_context_thai_set_isc_mode (BtkIMContextThai *context_thai,
+                                  BtkIMContextThaiISCMode mode)
 {
-  GtkIMContextThaiISCMode prev_mode = context_thai->isc_mode;
+  BtkIMContextThaiISCMode prev_mode = context_thai->isc_mode;
   context_thai->isc_mode = mode;
   return prev_mode;
 }
@@ -111,31 +111,31 @@ static gboolean
 is_context_lost_key(guint keyval)
 {
   return ((keyval & 0xFF00) == 0xFF00) &&
-         (keyval == GDK_BackSpace ||
-          keyval == GDK_Tab ||
-          keyval == GDK_Linefeed ||
-          keyval == GDK_Clear ||
-          keyval == GDK_Return ||
-          keyval == GDK_Pause ||
-          keyval == GDK_Scroll_Lock ||
-          keyval == GDK_Sys_Req ||
-          keyval == GDK_Escape ||
-          keyval == GDK_Delete ||
-          (GDK_Home <= keyval && keyval <= GDK_Begin) || /* IsCursorkey */
-          (GDK_KP_Space <= keyval && keyval <= GDK_KP_Delete) || /* IsKeypadKey, non-chars only */
-          (GDK_Select <= keyval && keyval <= GDK_Break) || /* IsMiscFunctionKey */
-          (GDK_F1 <= keyval && keyval <= GDK_F35)); /* IsFunctionKey */
+         (keyval == BDK_BackSpace ||
+          keyval == BDK_Tab ||
+          keyval == BDK_Linefeed ||
+          keyval == BDK_Clear ||
+          keyval == BDK_Return ||
+          keyval == BDK_Pause ||
+          keyval == BDK_Scroll_Lock ||
+          keyval == BDK_Sys_Req ||
+          keyval == BDK_Escape ||
+          keyval == BDK_Delete ||
+          (BDK_Home <= keyval && keyval <= BDK_Begin) || /* IsCursorkey */
+          (BDK_KP_Space <= keyval && keyval <= BDK_KP_Delete) || /* IsKeypadKey, non-chars only */
+          (BDK_Select <= keyval && keyval <= BDK_Break) || /* IsMiscFunctionKey */
+          (BDK_F1 <= keyval && keyval <= BDK_F35)); /* IsFunctionKey */
 }
 
 static gboolean
 is_context_intact_key(guint keyval)
 {
   return (((keyval & 0xFF00) == 0xFF00) &&
-           ((GDK_Shift_L <= keyval && keyval <= GDK_Hyper_R) || /* IsModifierKey */
-            (keyval == GDK_Mode_switch) ||
-            (keyval == GDK_Num_Lock))) ||
+           ((BDK_Shift_L <= keyval && keyval <= BDK_Hyper_R) || /* IsModifierKey */
+            (keyval == BDK_Mode_switch) ||
+            (keyval == BDK_Num_Lock))) ||
          (((keyval & 0xFE00) == 0xFE00) &&
-          (GDK_ISO_Lock <= keyval && keyval <= GDK_ISO_Last_Group_Lock));
+          (BDK_ISO_Lock <= keyval && keyval <= BDK_ISO_Last_Group_Lock));
 }
 
 static gboolean
@@ -162,29 +162,29 @@ thai_is_accept (gunichar new_char, gunichar prev_char, gint isc_mode)
 
 #define thai_is_composible(n,p)  (TAC_compose_input ((p), (n)) == 'C')
 
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
 static void
-forget_previous_chars (GtkIMContextThai *context_thai)
+forget_previous_chars (BtkIMContextThai *context_thai)
 {
   memset (context_thai->char_buff, 0, sizeof (context_thai->char_buff));
 }
 
 static void
-remember_previous_char (GtkIMContextThai *context_thai, gunichar new_char)
+remember_previous_char (BtkIMContextThai *context_thai, gunichar new_char)
 {
   memmove (context_thai->char_buff + 1, context_thai->char_buff,
-           (GTK_IM_CONTEXT_THAI_BUFF_SIZE - 1) * sizeof (context_thai->char_buff[0]));
+           (BTK_IM_CONTEXT_THAI_BUFF_SIZE - 1) * sizeof (context_thai->char_buff[0]));
   context_thai->char_buff[0] = new_char;
 }
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
 static gunichar
-get_previous_char (GtkIMContextThai *context_thai, gint offset)
+get_previous_char (BtkIMContextThai *context_thai, gint offset)
 {
   gchar *surrounding;
   gint  cursor_index;
 
-  if (gtk_im_context_get_surrounding ((GtkIMContext *)context_thai,
+  if (btk_im_context_get_surrounding ((BtkIMContext *)context_thai,
                                       &surrounding, &cursor_index))
     {
       gunichar prev_char;
@@ -203,20 +203,20 @@ get_previous_char (GtkIMContextThai *context_thai, gint offset)
       g_free (surrounding);
       return prev_char;
     }
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
   else
     {
       offset = -offset - 1;
-      if (0 <= offset && offset < GTK_IM_CONTEXT_THAI_BUFF_SIZE)
+      if (0 <= offset && offset < BTK_IM_CONTEXT_THAI_BUFF_SIZE)
         return context_thai->char_buff[offset];
     }
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
     return 0;
 }
 
 static gboolean
-gtk_im_context_thai_commit_chars (GtkIMContextThai *context_thai,
+btk_im_context_thai_commit_chars (BtkIMContextThai *context_thai,
                                   gunichar *s, gsize len)
 {
   gchar *utf8;
@@ -232,68 +232,68 @@ gtk_im_context_thai_commit_chars (GtkIMContextThai *context_thai,
 }
 
 static gboolean
-accept_input (GtkIMContextThai *context_thai, gunichar new_char)
+accept_input (BtkIMContextThai *context_thai, gunichar new_char)
 {
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
   remember_previous_char (context_thai, new_char);
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
-  return gtk_im_context_thai_commit_chars (context_thai, &new_char, 1);
+  return btk_im_context_thai_commit_chars (context_thai, &new_char, 1);
 }
 
 static gboolean
-reorder_input (GtkIMContextThai *context_thai,
+reorder_input (BtkIMContextThai *context_thai,
                gunichar prev_char, gunichar new_char)
 {
   gunichar buf[2];
 
-  if (!gtk_im_context_delete_surrounding (GTK_IM_CONTEXT (context_thai), -1, 1))
+  if (!btk_im_context_delete_surrounding (BTK_IM_CONTEXT (context_thai), -1, 1))
     return FALSE;
 
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
   forget_previous_chars (context_thai);
   remember_previous_char (context_thai, new_char);
   remember_previous_char (context_thai, prev_char);
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
   buf[0] = new_char;
   buf[1] = prev_char;
-  return gtk_im_context_thai_commit_chars (context_thai, buf, 2);
+  return btk_im_context_thai_commit_chars (context_thai, buf, 2);
 }
 
 static gboolean
-replace_input (GtkIMContextThai *context_thai, gunichar new_char)
+replace_input (BtkIMContextThai *context_thai, gunichar new_char)
 {
-  if (!gtk_im_context_delete_surrounding (GTK_IM_CONTEXT (context_thai), -1, 1))
+  if (!btk_im_context_delete_surrounding (BTK_IM_CONTEXT (context_thai), -1, 1))
     return FALSE;
 
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
   forget_previous_chars (context_thai);
   remember_previous_char (context_thai, new_char);
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
-  return gtk_im_context_thai_commit_chars (context_thai, &new_char, 1);
+  return btk_im_context_thai_commit_chars (context_thai, &new_char, 1);
 }
 
 static gboolean
-gtk_im_context_thai_filter_keypress (GtkIMContext *context,
-                                     GdkEventKey  *event)
+btk_im_context_thai_filter_keypress (BtkIMContext *context,
+                                     BdkEventKey  *event)
 {
-  GtkIMContextThai *context_thai = GTK_IM_CONTEXT_THAI (context);
+  BtkIMContextThai *context_thai = BTK_IM_CONTEXT_THAI (context);
   gunichar prev_char, new_char;
   gboolean is_reject;
-  GtkIMContextThaiISCMode isc_mode;
+  BtkIMContextThaiISCMode isc_mode;
 
-  if (event->type != GDK_KEY_PRESS)
+  if (event->type != BDK_KEY_PRESS)
     return FALSE;
 
-  if (event->state & (GDK_MODIFIER_MASK
-                      & ~(GDK_SHIFT_MASK | GDK_LOCK_MASK | GDK_MOD2_MASK)) ||
+  if (event->state & (BDK_MODIFIER_MASK
+                      & ~(BDK_SHIFT_MASK | BDK_LOCK_MASK | BDK_MOD2_MASK)) ||
       is_context_lost_key (event->keyval))
     {
-#ifndef GTK_IM_CONTEXT_THAI_NO_FALLBACK
+#ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
       forget_previous_chars (context_thai);
-#endif /* !GTK_IM_CONTEXT_THAI_NO_FALLBACK */
+#endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
       return FALSE;
     }
   if (event->keyval == 0 || is_context_intact_key (event->keyval))
@@ -304,9 +304,9 @@ gtk_im_context_thai_filter_keypress (GtkIMContext *context,
   prev_char = get_previous_char (context_thai, -1);
   if (!prev_char)
     prev_char = ' ';
-  new_char = gdk_keyval_to_unicode (event->keyval);
+  new_char = bdk_keyval_to_unicode (event->keyval);
   is_reject = TRUE;
-  isc_mode = gtk_im_context_thai_get_isc_mode (context_thai);
+  isc_mode = btk_im_context_thai_get_isc_mode (context_thai);
   if (thai_is_accept (new_char, prev_char, isc_mode))
     {
       accept_input (context_thai, new_char);
@@ -338,7 +338,7 @@ gtk_im_context_thai_filter_keypress (GtkIMContext *context,
   if (is_reject)
     {
       /* reject character */
-      gdk_beep ();
+      bdk_beep ();
     }
   return TRUE;
 }

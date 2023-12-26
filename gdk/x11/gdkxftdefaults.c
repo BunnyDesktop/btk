@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright © 2005 Red Hat, Inc
  *
  * This library is free software; you can redistribute it and/or
@@ -50,8 +50,8 @@
 #define FC_HINT_FULL        3
 #endif
 
-#include <gdkscreen-x11.h>
-#include <gdkx.h>
+#include <bdkscreen-x11.h>
+#include <bdkx.h>
 
 static gint
 parse_boolean (char *v)
@@ -146,11 +146,11 @@ get_integer_default (Display *dpy,
 }
 
 static void
-init_xft_settings (GdkScreen *screen)
+init_xft_settings (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
-  Display *xdisplay = GDK_SCREEN_XDISPLAY (screen);
-  int xscreen = GDK_SCREEN_XNUMBER (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
+  Display *xdisplay = BDK_SCREEN_XDISPLAY (screen);
+  int xscreen = BDK_SCREEN_XNUMBER (screen);
   double dpi_double;
 
   if (screen_x11->xft_init)
@@ -173,7 +173,7 @@ init_xft_settings (GdkScreen *screen)
       int subpixel = FC_RGBA_UNKNOWN;
       
 #if RENDER_MAJOR > 0 || RENDER_MINOR >= 6
-      if (_gdk_x11_have_render (screen_x11->display))
+      if (_bdk_x11_have_render (screen_x11->display))
 	{
 	  int render_order = XRenderQuerySubpixelOrder (xdisplay, xscreen);
 	  
@@ -209,17 +209,17 @@ init_xft_settings (GdkScreen *screen)
     dpi_double = (((double) DisplayHeight (xdisplay, xscreen) * 25.4) / 
 		  (double) DisplayHeightMM (xdisplay, xscreen));
 
-  screen_x11->xft_dpi = (int)(0.5 + PANGO_SCALE * dpi_double);
+  screen_x11->xft_dpi = (int)(0.5 + BANGO_SCALE * dpi_double);
 }
 
 gboolean
-_gdk_x11_get_xft_setting (GdkScreen   *screen,
+_bdk_x11_get_xft_setting (BdkScreen   *screen,
 			  const gchar *name,
 			  GValue      *value)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   
-  if (strncmp (name, "gtk-xft-", 8) != 0)
+  if (strncmp (name, "btk-xft-", 8) != 0)
     return FALSE;
 
   name += 8;

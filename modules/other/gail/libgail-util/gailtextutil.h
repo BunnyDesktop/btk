@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,71 +17,71 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_TEXT_UTIL_H__
-#define __GAIL_TEXT_UTIL_H__
+#ifndef __BAIL_TEXT_UTIL_H__
+#define __BAIL_TEXT_UTIL_H__
 
-#include <glib-object.h>
-#include <gtk/gtk.h>
+#include <bunnylib-object.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_TEXT_UTIL                  (gail_text_util_get_type ())
-#define GAIL_TEXT_UTIL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_TEXT_UTIL, GailTextUtil))
-#define GAIL_TEXT_UTIL_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_TEXT_UTIL, GailTextUtilClass))
-#define GAIL_IS_TEXT_UTIL(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_TEXT_UTIL))
-#define GAIL_IS_TEXT_UTIL_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_TEXT_UTIL))
-#define GAIL_TEXT_UTIL_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_TEXT_UTIL, GailTextUtilClass))
+#define BAIL_TYPE_TEXT_UTIL                  (bail_text_util_get_type ())
+#define BAIL_TEXT_UTIL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtil))
+#define BAIL_TEXT_UTIL_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TEXT_UTIL, BailTextUtilClass))
+#define BAIL_IS_TEXT_UTIL(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_UTIL))
+#define BAIL_IS_TEXT_UTIL_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_UTIL))
+#define BAIL_TEXT_UTIL_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtilClass))
 
 /**
- *GailOffsetType:
- *@GAIL_BEFORE_OFFSET: Text before offset is required.
- *@GAIL_AT_OFFSET: Text at offset is required,
- *@GAIL_AFTER_OFFSET: Text after offset is required.
+ *BailOffsetType:
+ *@BAIL_BEFORE_OFFSET: Text before offset is required.
+ *@BAIL_AT_OFFSET: Text at offset is required,
+ *@BAIL_AFTER_OFFSET: Text after offset is required.
  *
- * Specifies which of the functions atk_text_get_text_before_offset(),
- * atk_text_get_text_at_offset(), atk_text_get_text_after_offset() the
- * function gail_text_util_get_text() is being called for.
+ * Specifies which of the functions batk_text_get_text_before_offset(),
+ * batk_text_get_text_at_offset(), batk_text_get_text_after_offset() the
+ * function bail_text_util_get_text() is being called for.
  **/
 typedef enum
 {
-  GAIL_BEFORE_OFFSET,
-  GAIL_AT_OFFSET,
-  GAIL_AFTER_OFFSET
-}GailOffsetType;
+  BAIL_BEFORE_OFFSET,
+  BAIL_AT_OFFSET,
+  BAIL_AFTER_OFFSET
+}BailOffsetType;
 
-typedef struct _GailTextUtil		GailTextUtil;
-typedef struct _GailTextUtilClass	GailTextUtilClass;
+typedef struct _BailTextUtil		BailTextUtil;
+typedef struct _BailTextUtilClass	BailTextUtilClass;
 
-struct _GailTextUtil
+struct _BailTextUtil
 {
   GObject parent;
 
-  GtkTextBuffer *buffer;
+  BtkTextBuffer *buffer;
 };
 
-struct _GailTextUtilClass
+struct _BailTextUtilClass
 {
   GObjectClass parent_class;
 };
 
-GType         gail_text_util_get_type      (void);
-GailTextUtil* gail_text_util_new           (void);
+GType         bail_text_util_get_type      (void);
+BailTextUtil* bail_text_util_new           (void);
 
-void          gail_text_util_text_setup    (GailTextUtil    *textutil,
+void          bail_text_util_text_setup    (BailTextUtil    *textutil,
                                             const gchar     *text);
-void          gail_text_util_buffer_setup  (GailTextUtil    *textutil,
-                                            GtkTextBuffer   *buffer);
-gchar*        gail_text_util_get_text      (GailTextUtil    *textutil,
+void          bail_text_util_buffer_setup  (BailTextUtil    *textutil,
+                                            BtkTextBuffer   *buffer);
+gchar*        bail_text_util_get_text      (BailTextUtil    *textutil,
                                              gpointer        layout,
-                                            GailOffsetType  function,
-                                            AtkTextBoundary boundary_type,
+                                            BailOffsetType  function,
+                                            BatkTextBoundary boundary_type,
                                             gint            offset,
                                             gint            *start_offset,
                                             gint            *end_offset);
-gchar*        gail_text_util_get_substring (GailTextUtil    *textutil,
+gchar*        bail_text_util_get_substring (BailTextUtil    *textutil,
                                             gint            start_pos,
                                             gint            end_pos);
 
 G_END_DECLS
 
-#endif /*__GAIL_TEXT_UTIL_H__ */
+#endif /*__BAIL_TEXT_UTIL_H__ */

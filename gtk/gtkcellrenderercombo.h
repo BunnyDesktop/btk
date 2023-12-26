@@ -1,4 +1,4 @@
-/* GtkCellRendererCombo
+/* BtkCellRendererCombo
  * Copyright (C) 2004 Lorenzo Gil Sanchez
  *
  * This library is free software; you can redistribute it and/or
@@ -17,33 +17,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_CELL_RENDERER_COMBO_H__
-#define __GTK_CELL_RENDERER_COMBO_H__
+#ifndef __BTK_CELL_RENDERER_COMBO_H__
+#define __BTK_CELL_RENDERER_COMBO_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktreemodel.h>
-#include <gtk/gtkcellrenderertext.h>
+#include <btk/btktreemodel.h>
+#include <btk/btkcellrenderertext.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CELL_RENDERER_COMBO		(gtk_cell_renderer_combo_get_type ())
-#define GTK_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_RENDERER_COMBO, GtkCellRendererCombo))
-#define GTK_CELL_RENDERER_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CELL_RENDERER_COMBO, GtkCellRendererComboClass))
-#define GTK_IS_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CELL_RENDERER_COMBO))
-#define GTK_IS_CELL_RENDERER_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CELL_RENDERER_COMBO))
-#define GTK_CELL_RENDERER_COMBO_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CELL_RENDERER_COMBO, GtkCellRendererTextClass))
+#define BTK_TYPE_CELL_RENDERER_COMBO		(btk_cell_renderer_combo_get_type ())
+#define BTK_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererCombo))
+#define BTK_CELL_RENDERER_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererComboClass))
+#define BTK_IS_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_COMBO))
+#define BTK_IS_CELL_RENDERER_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_COMBO))
+#define BTK_CELL_RENDERER_COMBO_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererTextClass))
 
-typedef struct _GtkCellRendererCombo      GtkCellRendererCombo;
-typedef struct _GtkCellRendererComboClass GtkCellRendererComboClass;
+typedef struct _BtkCellRendererCombo      BtkCellRendererCombo;
+typedef struct _BtkCellRendererComboClass BtkCellRendererComboClass;
 
-struct _GtkCellRendererCombo
+struct _BtkCellRendererCombo
 {
-  GtkCellRendererText parent;
+  BtkCellRendererText parent;
 
-  GtkTreeModel *GSEAL (model);
+  BtkTreeModel *GSEAL (model);
   gint          GSEAL (text_column);
   gboolean      GSEAL (has_entry);
 
@@ -51,14 +51,14 @@ struct _GtkCellRendererCombo
   guint         GSEAL (focus_out_id);
 };
 
-struct _GtkCellRendererComboClass
+struct _BtkCellRendererComboClass
 {
-  GtkCellRendererTextClass parent;
+  BtkCellRendererTextClass parent;
 };
 
-GType            gtk_cell_renderer_combo_get_type (void) G_GNUC_CONST;
-GtkCellRenderer *gtk_cell_renderer_combo_new      (void);
+GType            btk_cell_renderer_combo_get_type (void) G_GNUC_CONST;
+BtkCellRenderer *btk_cell_renderer_combo_new      (void);
 
 G_END_DECLS
 
-#endif /* __GTK_CELL_RENDERER_COMBO_H__ */
+#endif /* __BTK_CELL_RENDERER_COMBO_H__ */

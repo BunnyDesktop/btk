@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
  *
@@ -19,43 +19,43 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <stdlib.h>
 
-#include "gdkvisual.h"
-#include "gdkscreen.h" /* gdk_screen_get_default() */
-#include "gdkprivate-win32.h"
+#include "bdkvisual.h"
+#include "bdkscreen.h" /* bdk_screen_get_default() */
+#include "bdkprivate-win32.h"
 
-static void  gdk_visual_decompose_mask (gulong     mask,
+static void  bdk_visual_decompose_mask (gulong     mask,
 					gint      *shift,
 					gint      *prec);
 
-static GdkVisual *system_visual = NULL;
+static BdkVisual *system_visual = NULL;
 
 static gint available_depths[1];
 
-static GdkVisualType available_types[1];
+static BdkVisualType available_types[1];
 
 static void
-gdk_visual_finalize (GObject *object)
+bdk_visual_finalize (GObject *object)
 {
-  g_error ("A GdkVisual object was finalized. This should not happen");
+  g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-gdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (GObjectClass *class)
 {
-  class->finalize = gdk_visual_finalize;
+  class->finalize = bdk_visual_finalize;
 }
 
 GType
-gdk_visual_get_type (void)
+bdk_visual_get_type (void)
 {
   static GType object_type = 0;
 
@@ -63,19 +63,19 @@ gdk_visual_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkVisualClass),
+        sizeof (BdkVisualClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_visual_class_init,
+        (GClassInitFunc) bdk_visual_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkVisual),
+        sizeof (BdkVisual),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkVisual",
+                                            "BdkVisual",
                                             &object_info, 0);
     }
   
@@ -83,7 +83,7 @@ gdk_visual_get_type (void)
 }
 
 void
-_gdk_visual_init (void)
+_bdk_visual_init (void)
 {
   struct
   {
@@ -96,60 +96,60 @@ _gdk_visual_init (void)
   } bmi;
   HBITMAP hbm;
 
-  const gint rastercaps = GetDeviceCaps (_gdk_display_hdc, RASTERCAPS);
-  const int numcolors = GetDeviceCaps (_gdk_display_hdc, NUMCOLORS);
-  gint bitspixel = GetDeviceCaps (_gdk_display_hdc, BITSPIXEL);
+  const gint rastercaps = GetDeviceCaps (_bdk_display_hdc, RASTERCAPS);
+  const int numcolors = GetDeviceCaps (_bdk_display_hdc, NUMCOLORS);
+  gint bitspixel = GetDeviceCaps (_bdk_display_hdc, BITSPIXEL);
   gint map_entries = 0;
 
-  system_visual = g_object_new (GDK_TYPE_VISUAL, NULL);
+  system_visual = g_object_new (BDK_TYPE_VISUAL, NULL);
 
-  GDK_NOTE (COLORMAP, g_print ("BITSPIXEL=%d NUMCOLORS=%d\n",
+  BDK_NOTE (COLORMAP, g_print ("BITSPIXEL=%d NUMCOLORS=%d\n",
 			       bitspixel, numcolors));
 
   if (rastercaps & RC_PALETTE)
     {
-      const int sizepalette = GetDeviceCaps (_gdk_display_hdc, SIZEPALETTE);
-      gchar *max_colors = getenv ("GDK_WIN32_MAX_COLORS");
-      system_visual->type = GDK_VISUAL_PSEUDO_COLOR;
+      const int sizepalette = GetDeviceCaps (_bdk_display_hdc, SIZEPALETTE);
+      gchar *max_colors = getenv ("BDK_WIN32_MAX_COLORS");
+      system_visual->type = BDK_VISUAL_PSEUDO_COLOR;
 
-      GDK_NOTE (COLORMAP, g_print ("SIZEPALETTE=%d\n", sizepalette));
+      BDK_NOTE (COLORMAP, g_print ("SIZEPALETTE=%d\n", sizepalette));
       g_assert (sizepalette == 256);
 
       if (max_colors != NULL)
-	_gdk_max_colors = atoi (max_colors);
+	_bdk_max_colors = atoi (max_colors);
       
-      map_entries = _gdk_max_colors;
+      map_entries = _bdk_max_colors;
 
       if (map_entries >= 16 && map_entries < sizepalette)
 	{
-	  /* The calls to gdk_rgb_set_min_colors() here have knowledge
-	   * of what color cubes gdk_rgb_do_colormaps() will try, and
+	  /* The calls to bdk_rgb_set_min_colors() here have knowledge
+	   * of what color cubes bdk_rgb_do_colormaps() will try, and
 	   * of the static system palette colors... XXX
 	   */
 	  if (map_entries < 32)
 	    {
 	      map_entries = 16;
-	      system_visual->type = GDK_VISUAL_STATIC_COLOR;
+	      system_visual->type = BDK_VISUAL_STATIC_COLOR;
 	      bitspixel = 4;
-	      gdk_rgb_set_min_colors (2*2*2);
+	      bdk_rgb_set_min_colors (2*2*2);
 	    }
 	  else if (map_entries < 64)
 	    {
 	      map_entries = 32;
 	      bitspixel = 5;
-	      gdk_rgb_set_min_colors (3*3*3);
+	      bdk_rgb_set_min_colors (3*3*3);
 	    }
 	  else if (map_entries < 128)
 	    {
 	      map_entries = 64;
 	      bitspixel = 6;
-	      gdk_rgb_set_min_colors (3*3*3);
+	      bdk_rgb_set_min_colors (3*3*3);
 	    }
 	  else if (map_entries < 256)
 	    {
 	      map_entries = 128;
 	      bitspixel = 7;
-	      gdk_rgb_set_min_colors (5*5*4);
+	      bdk_rgb_set_min_colors (5*5*4);
 	    }
 	  else
 	    g_assert_not_reached ();
@@ -160,27 +160,27 @@ _gdk_visual_init (void)
   else if (bitspixel == 1 && numcolors == 16)
     {
       bitspixel = 4;
-      system_visual->type = GDK_VISUAL_STATIC_COLOR;
+      system_visual->type = BDK_VISUAL_STATIC_COLOR;
       map_entries = 16;
     }
   else if (bitspixel == 1)
     {
-      system_visual->type = GDK_VISUAL_STATIC_GRAY;
+      system_visual->type = BDK_VISUAL_STATIC_GRAY;
       map_entries = 2;
     }
   else if (bitspixel == 4)
     {
-      system_visual->type = GDK_VISUAL_STATIC_COLOR;
+      system_visual->type = BDK_VISUAL_STATIC_COLOR;
       map_entries = 16;
     }
   else if (bitspixel == 8)
     {
-      system_visual->type = GDK_VISUAL_STATIC_COLOR;
+      system_visual->type = BDK_VISUAL_STATIC_COLOR;
       map_entries = 256;
     }
   else if (bitspixel == 16)
     {
-      system_visual->type = GDK_VISUAL_TRUE_COLOR;
+      system_visual->type = BDK_VISUAL_TRUE_COLOR;
 #if 1
       /* This code by Mike Enright,
        * see http://www.users.cts.com/sd/m/menright/display.html
@@ -188,10 +188,10 @@ _gdk_visual_init (void)
       memset (&bmi, 0, sizeof (bmi));
       bmi.bi.biSize = sizeof (bmi.bi);
 
-      hbm = CreateCompatibleBitmap (_gdk_display_hdc, 1, 1);
-      GetDIBits (_gdk_display_hdc, hbm, 0, 1, NULL,
+      hbm = CreateCompatibleBitmap (_bdk_display_hdc, 1, 1);
+      GetDIBits (_bdk_display_hdc, hbm, 0, 1, NULL,
 		 (BITMAPINFO *) &bmi, DIB_RGB_COLORS);
-      GetDIBits (_gdk_display_hdc, hbm, 0, 1, NULL,
+      GetDIBits (_bdk_display_hdc, hbm, 0, 1, NULL,
 		 (BITMAPINFO *) &bmi, DIB_RGB_COLORS);
       DeleteObject (hbm);
 
@@ -247,30 +247,30 @@ _gdk_visual_init (void)
   else if (bitspixel == 24 || bitspixel == 32)
     {
       bitspixel = 24;
-      system_visual->type = GDK_VISUAL_TRUE_COLOR;
+      system_visual->type = BDK_VISUAL_TRUE_COLOR;
       system_visual->red_mask   = 0x00FF0000;
       system_visual->green_mask = 0x0000FF00;
       system_visual->blue_mask  = 0x000000FF;
     }
   else
-    g_error ("_gdk_visual_init: unsupported BITSPIXEL: %d\n", bitspixel);
+    g_error ("_bdk_visual_init: unsupported BITSPIXEL: %d\n", bitspixel);
 
   system_visual->depth = bitspixel;
-  system_visual->byte_order = GDK_LSB_FIRST;
+  system_visual->byte_order = BDK_LSB_FIRST;
   system_visual->bits_per_rgb = 42; /* Not used? */
 
-  if ((system_visual->type == GDK_VISUAL_TRUE_COLOR) ||
-      (system_visual->type == GDK_VISUAL_DIRECT_COLOR))
+  if ((system_visual->type == BDK_VISUAL_TRUE_COLOR) ||
+      (system_visual->type == BDK_VISUAL_DIRECT_COLOR))
     {
-      gdk_visual_decompose_mask (system_visual->red_mask,
+      bdk_visual_decompose_mask (system_visual->red_mask,
 				 &system_visual->red_shift,
 				 &system_visual->red_prec);
 
-      gdk_visual_decompose_mask (system_visual->green_mask,
+      bdk_visual_decompose_mask (system_visual->green_mask,
 				 &system_visual->green_shift,
 				 &system_visual->green_prec);
 
-      gdk_visual_decompose_mask (system_visual->blue_mask,
+      bdk_visual_decompose_mask (system_visual->blue_mask,
 				 &system_visual->blue_shift,
 				 &system_visual->blue_prec);
       map_entries = 1 << (MAX (system_visual->red_prec,
@@ -298,40 +298,40 @@ _gdk_visual_init (void)
 }
 
 gint
-gdk_visual_get_best_depth (void)
+bdk_visual_get_best_depth (void)
 {
   return available_depths[0];
 }
 
-GdkVisualType
-gdk_visual_get_best_type (void)
+BdkVisualType
+bdk_visual_get_best_type (void)
 {
   return available_types[0];
 }
 
-GdkVisual*
-gdk_screen_get_system_visual (GdkScreen *screen)
+BdkVisual*
+bdk_screen_get_system_visual (BdkScreen *screen)
 {
   return system_visual;
 }
 
-GdkVisual*
-gdk_visual_get_best (void)
+BdkVisual*
+bdk_visual_get_best (void)
 {
-  return ((GdkVisual*) system_visual);
+  return ((BdkVisual*) system_visual);
 }
 
-GdkVisual*
-gdk_visual_get_best_with_depth (gint depth)
+BdkVisual*
+bdk_visual_get_best_with_depth (gint depth)
 {
   if (depth == system_visual->depth)
-    return (GdkVisual*) system_visual;
+    return (BdkVisual*) system_visual;
   else
     return NULL;
 }
 
-GdkVisual*
-gdk_visual_get_best_with_type (GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_type (BdkVisualType visual_type)
 {
   if (visual_type == system_visual->type)
     return system_visual;
@@ -339,9 +339,9 @@ gdk_visual_get_best_with_type (GdkVisualType visual_type)
     return NULL;
 }
 
-GdkVisual*
-gdk_visual_get_best_with_both (gint          depth,
-			       GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_both (gint          depth,
+			       BdkVisualType visual_type)
 {
   if ((depth == system_visual->depth) && (visual_type == system_visual->type))
     return system_visual;
@@ -350,7 +350,7 @@ gdk_visual_get_best_with_both (gint          depth,
 }
 
 void
-gdk_query_depths  (gint **depths,
+bdk_query_depths  (gint **depths,
 		   gint  *count)
 {
   *count = 1;
@@ -358,7 +358,7 @@ gdk_query_depths  (gint **depths,
 }
 
 void
-gdk_query_visual_types (GdkVisualType **visual_types,
+bdk_query_visual_types (BdkVisualType **visual_types,
 			gint           *count)
 {
   *count = 1;
@@ -366,21 +366,21 @@ gdk_query_visual_types (GdkVisualType **visual_types,
 }
 
 GList*
-gdk_screen_list_visuals (GdkScreen *screen)
+bdk_screen_list_visuals (BdkScreen *screen)
 {
   return g_list_append (NULL, (gpointer) system_visual);
 }
 
-GdkScreen *
-gdk_visual_get_screen (GdkVisual *visual)
+BdkScreen *
+bdk_visual_get_screen (BdkVisual *visual)
 {
-  g_return_val_if_fail (GDK_IS_VISUAL (visual), NULL);
+  g_return_val_if_fail (BDK_IS_VISUAL (visual), NULL);
 
-  return gdk_screen_get_default ();
+  return bdk_screen_get_default ();
 }
 
 static void
-gdk_visual_decompose_mask (gulong  mask,
+bdk_visual_decompose_mask (gulong  mask,
 			   gint   *shift,
 			   gint   *prec)
 {

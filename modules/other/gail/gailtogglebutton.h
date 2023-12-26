@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_TOGGLE_BUTTON_H__
-#define __GAIL_TOGGLE_BUTTON_H__
+#ifndef __BAIL_TOGGLE_BUTTON_H__
+#define __BAIL_TOGGLE_BUTTON_H__
 
-#include <gail/gailbutton.h>
+#include <bail/bailbutton.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_TOGGLE_BUTTON              (gail_toggle_button_get_type ())
-#define GAIL_TOGGLE_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_TOGGLE_BUTTON, GailToggleButton))
-#define GAIL_TOGGLE_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_TOGGLE_BUTTON, GailToggleButtonClass))
-#define GAIL_IS_TOGGLE_BUTTON(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_TOGGLE_BUTTON))
-#define GAIL_IS_TOGGLE_BUTTON_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_TOGGLE_BUTTON))
-#define GAIL_TOGGLE_BUTTON_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_TOGGLE_BUTTON, GailToggleButtonClass))
+#define BAIL_TYPE_TOGGLE_BUTTON              (bail_toggle_button_get_type ())
+#define BAIL_TOGGLE_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButton))
+#define BAIL_TOGGLE_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButtonClass))
+#define BAIL_IS_TOGGLE_BUTTON(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TOGGLE_BUTTON))
+#define BAIL_IS_TOGGLE_BUTTON_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TOGGLE_BUTTON))
+#define BAIL_TOGGLE_BUTTON_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButtonClass))
 
-typedef struct _GailToggleButton              GailToggleButton;
-typedef struct _GailToggleButtonClass         GailToggleButtonClass;
+typedef struct _BailToggleButton              BailToggleButton;
+typedef struct _BailToggleButtonClass         BailToggleButtonClass;
 
-struct _GailToggleButton
+struct _BailToggleButton
 {
-  GailButton parent;
+  BailButton parent;
 };
 
-GType gail_toggle_button_get_type (void);
+GType bail_toggle_button_get_type (void);
 
-struct _GailToggleButtonClass
+struct _BailToggleButtonClass
 {
-  GailButtonClass parent_class;
+  BailButtonClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_TOGGLE_BUTTON_H__ */
+#endif /* __BAIL_TOGGLE_BUTTON_H__ */

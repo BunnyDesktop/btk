@@ -1,10 +1,10 @@
-/* HSV color selector for GTK+
+/* HSV color selector for BTK+
  *
  * Copyright (C) 1999 The Free Software Foundation
  *
  * Authors: Simon Budig <Simon.Budig@unix-ag.org> (original code)
- *          Federico Mena-Quintero <federico@gimp.org> (cleanup for GTK+)
- *          Jonathan Blandford <jrb@redhat.com> (cleanup for GTK+)
+ *          Federico Mena-Quintero <federico@gimp.org> (cleanup for BTK+)
+ *          Jonathan Blandford <jrb@redhat.com> (cleanup for BTK+)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,87 +23,87 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_HSV_H__
-#define __GTK_HSV_H__
+#ifndef __BTK_HSV_H__
+#define __BTK_HSV_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_HSV            (gtk_hsv_get_type ())
-#define GTK_HSV(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HSV, GtkHSV))
-#define GTK_HSV_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HSV, GtkHSVClass))
-#define GTK_IS_HSV(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HSV))
-#define GTK_IS_HSV_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HSV))
-#define GTK_HSV_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HSV, GtkHSVClass))
+#define BTK_TYPE_HSV            (btk_hsv_get_type ())
+#define BTK_HSV(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSV, BtkHSV))
+#define BTK_HSV_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSV, BtkHSVClass))
+#define BTK_IS_HSV(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSV))
+#define BTK_IS_HSV_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSV))
+#define BTK_HSV_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSV, BtkHSVClass))
 
 
-typedef struct _GtkHSV      GtkHSV;
-typedef struct _GtkHSVClass GtkHSVClass;
+typedef struct _BtkHSV      BtkHSV;
+typedef struct _BtkHSVClass BtkHSVClass;
 
-struct _GtkHSV
+struct _BtkHSV
 {
-  GtkWidget parent_instance;
+  BtkWidget parent_instance;
 
   /* Private data */
   gpointer GSEAL (priv);
 };
 
-struct _GtkHSVClass
+struct _BtkHSVClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 
   /* Notification signals */
-  void (* changed) (GtkHSV          *hsv);
+  void (* changed) (BtkHSV          *hsv);
 
   /* Keybindings */
-  void (* move)    (GtkHSV          *hsv,
-                    GtkDirectionType type);
+  void (* move)    (BtkHSV          *hsv,
+                    BtkDirectionType type);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_hsv_get_type     (void) G_GNUC_CONST;
-GtkWidget* gtk_hsv_new          (void);
-void       gtk_hsv_set_color    (GtkHSV    *hsv,
+GType      btk_hsv_get_type     (void) G_GNUC_CONST;
+BtkWidget* btk_hsv_new          (void);
+void       btk_hsv_set_color    (BtkHSV    *hsv,
 				 double     h,
 				 double     s,
 				 double     v);
-void       gtk_hsv_get_color    (GtkHSV    *hsv,
+void       btk_hsv_get_color    (BtkHSV    *hsv,
 				 gdouble   *h,
 				 gdouble   *s,
 				 gdouble   *v);
-void       gtk_hsv_set_metrics  (GtkHSV    *hsv,
+void       btk_hsv_set_metrics  (BtkHSV    *hsv,
 				 gint       size,
 				 gint       ring_width);
-void       gtk_hsv_get_metrics  (GtkHSV    *hsv,
+void       btk_hsv_get_metrics  (BtkHSV    *hsv,
 				 gint      *size,
 				 gint      *ring_width);
-gboolean   gtk_hsv_is_adjusting (GtkHSV    *hsv);
+gboolean   btk_hsv_is_adjusting (BtkHSV    *hsv);
 
 /* Convert colors between the RGB and HSV color spaces */
-void       gtk_hsv_to_rgb       (gdouble    h,
+void       btk_hsv_to_rgb       (gdouble    h,
 				 gdouble    s,
 				 gdouble    v,
 				 gdouble   *r,
 				 gdouble   *g,
 				 gdouble   *b);
-void       gtk_rgb_to_hsv       (gdouble    r,
+void       btk_rgb_to_hsv       (gdouble    r,
 				 gdouble    g,
 				 gdouble    b,
 				 gdouble   *h,
@@ -112,4 +112,4 @@ void       gtk_rgb_to_hsv       (gdouble    r,
 
 G_END_DECLS
 
-#endif /* __GTK_HSV_H__ */
+#endif /* __BTK_HSV_H__ */

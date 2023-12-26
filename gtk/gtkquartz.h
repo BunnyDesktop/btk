@@ -1,4 +1,4 @@
-/* gtkquartz.h: Utility functions used by the Quartz port
+/* btkquartz.h: Utility functions used by the Quartz port
  *
  * Copyright (C) 2006 Imendio AB
  *
@@ -18,29 +18,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_QUARTZ_H__
-#define __GTK_QUARTZ_H__
+#ifndef __BTK_QUARTZ_H__
+#define __BTK_QUARTZ_H__
 
 #import <Cocoa/Cocoa.h>
-#include <gtk/gtkselection.h>
+#include <btk/btkselection.h>
 
 G_BEGIN_DECLS
 
-NSSet   *_gtk_quartz_target_list_to_pasteboard_types    (GtkTargetList *target_list);
-NSSet   *_gtk_quartz_target_entries_to_pasteboard_types (const GtkTargetEntry *targets,
+NSSet   *_btk_quartz_target_list_to_pasteboard_types    (BtkTargetList *target_list);
+NSSet   *_btk_quartz_target_entries_to_pasteboard_types (const BtkTargetEntry *targets,
 							 guint                 n_targets);
 
-GList   *_gtk_quartz_pasteboard_types_to_atom_list (NSArray  *array);
+GList   *_btk_quartz_pasteboard_types_to_atom_list (NSArray  *array);
 
-GtkSelectionData *_gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
-								  GdkAtom       target,
-								  GdkAtom       selection);
+BtkSelectionData *_btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
+								  BdkAtom       target,
+								  BdkAtom       selection);
 
-void _gtk_quartz_set_selection_data_for_pasteboard (NSPasteboard *pasteboard,
-						    GtkSelectionData *selection_data);
+void _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard *pasteboard,
+						    BtkSelectionData *selection_data);
 			
-NSImage *_gtk_quartz_create_image_from_pixbuf (GdkPixbuf *pixbuf);
+NSImage *_btk_quartz_create_image_from_pixbuf (BdkPixbuf *pixbuf);
 			    
 G_END_DECLS
 
-#endif /* __GTK_QUARTZ_H__ */
+#endif /* __BTK_QUARTZ_H__ */

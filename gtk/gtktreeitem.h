@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,73 +18,73 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifdef GTK_ENABLE_BROKEN
+#ifdef BTK_ENABLE_BROKEN
 
-#ifndef __GTK_TREE_ITEM_H__
-#define __GTK_TREE_ITEM_H__
+#ifndef __BTK_TREE_ITEM_H__
+#define __BTK_TREE_ITEM_H__
 
 
-#include <gtk/gtkitem.h>
+#include <btk/btkitem.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TREE_ITEM              (gtk_tree_item_get_type ())
-#define GTK_TREE_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TREE_ITEM, GtkTreeItem))
-#define GTK_TREE_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TREE_ITEM, GtkTreeItemClass))
-#define GTK_IS_TREE_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TREE_ITEM))
-#define GTK_IS_TREE_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TREE_ITEM))
-#define GTK_TREE_ITEM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TREE_ITEM, GtkTreeItemClass))
+#define BTK_TYPE_TREE_ITEM              (btk_tree_item_get_type ())
+#define BTK_TREE_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_ITEM, BtkTreeItem))
+#define BTK_TREE_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_ITEM, BtkTreeItemClass))
+#define BTK_IS_TREE_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_ITEM))
+#define BTK_IS_TREE_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_ITEM))
+#define BTK_TREE_ITEM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_ITEM, BtkTreeItemClass))
 
 
-#define GTK_TREE_ITEM_SUBTREE(obj)      (GTK_TREE_ITEM(obj)->subtree)
+#define BTK_TREE_ITEM_SUBTREE(obj)      (BTK_TREE_ITEM(obj)->subtree)
 
 
-typedef struct _GtkTreeItem       GtkTreeItem;
-typedef struct _GtkTreeItemClass  GtkTreeItemClass;
+typedef struct _BtkTreeItem       BtkTreeItem;
+typedef struct _BtkTreeItemClass  BtkTreeItemClass;
 
-struct _GtkTreeItem
+struct _BtkTreeItem
 {
-  GtkItem item;
+  BtkItem item;
 
-  GtkWidget *subtree;
-  GtkWidget *pixmaps_box;
-  GtkWidget *plus_pix_widget, *minus_pix_widget;
+  BtkWidget *subtree;
+  BtkWidget *pixmaps_box;
+  BtkWidget *plus_pix_widget, *minus_pix_widget;
 
   GList *pixmaps;		/* pixmap node for this items color depth */
 
   guint expanded : 1;
 };
 
-struct _GtkTreeItemClass
+struct _BtkTreeItemClass
 {
-  GtkItemClass parent_class;
+  BtkItemClass parent_class;
 
-  void (* expand)   (GtkTreeItem *tree_item);
-  void (* collapse) (GtkTreeItem *tree_item);
+  void (* expand)   (BtkTreeItem *tree_item);
+  void (* collapse) (BtkTreeItem *tree_item);
 };
 
 
-GType      gtk_tree_item_get_type       (void) G_GNUC_CONST;
-GtkWidget* gtk_tree_item_new            (void);
-GtkWidget* gtk_tree_item_new_with_label (const gchar *label);
-void       gtk_tree_item_set_subtree    (GtkTreeItem *tree_item,
-					 GtkWidget   *subtree);
-void       gtk_tree_item_remove_subtree (GtkTreeItem *tree_item);
-void       gtk_tree_item_select         (GtkTreeItem *tree_item);
-void       gtk_tree_item_deselect       (GtkTreeItem *tree_item);
-void       gtk_tree_item_expand         (GtkTreeItem *tree_item);
-void       gtk_tree_item_collapse       (GtkTreeItem *tree_item);
+GType      btk_tree_item_get_type       (void) G_GNUC_CONST;
+BtkWidget* btk_tree_item_new            (void);
+BtkWidget* btk_tree_item_new_with_label (const gchar *label);
+void       btk_tree_item_set_subtree    (BtkTreeItem *tree_item,
+					 BtkWidget   *subtree);
+void       btk_tree_item_remove_subtree (BtkTreeItem *tree_item);
+void       btk_tree_item_select         (BtkTreeItem *tree_item);
+void       btk_tree_item_deselect       (BtkTreeItem *tree_item);
+void       btk_tree_item_expand         (BtkTreeItem *tree_item);
+void       btk_tree_item_collapse       (BtkTreeItem *tree_item);
 
 
 G_END_DECLS
 
-#endif /* __GTK_TREE_ITEM_H__ */
+#endif /* __BTK_TREE_ITEM_H__ */
 
-#endif /* GTK_ENABLE_BROKEN */
+#endif /* BTK_ENABLE_BROKEN */

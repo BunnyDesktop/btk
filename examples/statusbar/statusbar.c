@@ -1,74 +1,74 @@
 
 #include <stdlib.h>
-#include <gtk/gtk.h>
-#include <glib.h>
+#include <btk/btk.h>
+#include <bunnylib.h>
 
-GtkWidget *status_bar;
+BtkWidget *status_bar;
 
-static void push_item( GtkWidget *widget,
+static void push_item( BtkWidget *widget,
                        gpointer   data )
 {
   static int count = 1;
   gchar *buff;
 
   buff = g_strdup_printf ("Item %d", count++);
-  gtk_statusbar_push (GTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data), buff);
+  btk_statusbar_push (BTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data), buff);
   g_free (buff);
 }
 
-static void pop_item( GtkWidget *widget,
+static void pop_item( BtkWidget *widget,
                       gpointer   data )
 {
-  gtk_statusbar_pop (GTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data));
+  btk_statusbar_pop (BTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data));
 }
 
 int main( int   argc,
           char *argv[] )
 {
 
-    GtkWidget *window;
-    GtkWidget *vbox;
-    GtkWidget *button;
+    BtkWidget *window;
+    BtkWidget *vbox;
+    BtkWidget *button;
 
     gint context_id;
 
-    gtk_init (&argc, &argv);
+    btk_init (&argc, &argv);
 
     /* create a new window */
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_widget_set_size_request (GTK_WIDGET (window), 200, 100);
-    gtk_window_set_title (GTK_WINDOW (window), "GTK Statusbar Example");
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_widget_set_size_request (BTK_WIDGET (window), 200, 100);
+    btk_window_set_title (BTK_WINDOW (window), "BTK Statusbar Example");
     g_signal_connect (window, "delete-event",
                       G_CALLBACK (exit), NULL);
 
-    vbox = gtk_vbox_new (FALSE, 1);
-    gtk_container_add (GTK_CONTAINER (window), vbox);
-    gtk_widget_show (vbox);
+    vbox = btk_vbox_new (FALSE, 1);
+    btk_container_add (BTK_CONTAINER (window), vbox);
+    btk_widget_show (vbox);
 
-    status_bar = gtk_statusbar_new ();
-    gtk_box_pack_start (GTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
-    gtk_widget_show (status_bar);
+    status_bar = btk_statusbar_new ();
+    btk_box_pack_start (BTK_BOX (vbox), status_bar, TRUE, TRUE, 0);
+    btk_widget_show (status_bar);
 
-    context_id = gtk_statusbar_get_context_id(
-                          GTK_STATUSBAR (status_bar), "Statusbar example");
+    context_id = btk_statusbar_get_context_id(
+                          BTK_STATUSBAR (status_bar), "Statusbar example");
 
-    button = gtk_button_new_with_label ("push item");
+    button = btk_button_new_with_label ("push item");
     g_signal_connect (button, "clicked",
                       G_CALLBACK (push_item), GINT_TO_POINTER (context_id));
-    gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 2);
-    gtk_widget_show (button);
+    btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 2);
+    btk_widget_show (button);
 
-    button = gtk_button_new_with_label ("pop last item");
+    button = btk_button_new_with_label ("pop last item");
     g_signal_connect (button, "clicked",
                       G_CALLBACK (pop_item), GINT_TO_POINTER (context_id));
-    gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 2);
-    gtk_widget_show (button);
+    btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 2);
+    btk_widget_show (button);
 
     /* always display the window as the last step so it all splashes on
      * the screen at once. */
-    gtk_widget_show (window);
+    btk_widget_show (window);
 
-    gtk_main ();
+    btk_main ();
 
     return 0;
 }

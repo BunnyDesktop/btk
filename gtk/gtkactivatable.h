@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2008 Tristan Van Berkom <tristan.van.berkom@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,72 +17,72 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_ACTIVATABLE_H__
-#define __GTK_ACTIVATABLE_H__
+#ifndef __BTK_ACTIVATABLE_H__
+#define __BTK_ACTIVATABLE_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkaction.h>
-#include <gtk/gtktypeutils.h>
+#include <btk/btkaction.h>
+#include <btk/btktypeutils.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ACTIVATABLE            (gtk_activatable_get_type ())
-#define GTK_ACTIVATABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ACTIVATABLE, GtkActivatable))
-#define GTK_ACTIVATABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), GTK_TYPE_ACTIVATABLE, GtkActivatableIface))
-#define GTK_IS_ACTIVATABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ACTIVATABLE))
-#define GTK_ACTIVATABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GTK_TYPE_ACTIVATABLE, GtkActivatableIface))
+#define BTK_TYPE_ACTIVATABLE            (btk_activatable_get_type ())
+#define BTK_ACTIVATABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatable))
+#define BTK_ACTIVATABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
+#define BTK_IS_ACTIVATABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTIVATABLE))
+#define BTK_ACTIVATABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
 
 
-typedef struct _GtkActivatable      GtkActivatable; /* Dummy typedef */
-typedef struct _GtkActivatableIface GtkActivatableIface;
+typedef struct _BtkActivatable      BtkActivatable; /* Dummy typedef */
+typedef struct _BtkActivatableIface BtkActivatableIface;
 
 
 /**
- * GtkActivatableIface:
+ * BtkActivatableIface:
  * @update: Called to update the activatable when its related action's properties change.
- * You must check the #GtkActivatable:use-action-appearance property only apply action
+ * You must check the #BtkActivatable:use-action-appearance property only apply action
  * properties that are meant to effect the appearance accordingly.
  * @sync_action_properties: Called to update the activatable completely, this is called internally when
- * #GtkActivatable::related-action property is set or unset and by the implementor when
- * #GtkActivatable::use-action-appearance changes.<note><para>This method can be called
+ * #BtkActivatable::related-action property is set or unset and by the implementor when
+ * #BtkActivatable::use-action-appearance changes.<note><para>This method can be called
  * with a %NULL action at times</para></note>
  *
  * Since: 2.16
  */
 
-struct _GtkActivatableIface
+struct _BtkActivatableIface
 {
   GTypeInterface g_iface;
 
   /* virtual table */
-  void   (* update)                   (GtkActivatable *activatable,
-		                       GtkAction      *action,
+  void   (* update)                   (BtkActivatable *activatable,
+		                       BtkAction      *action,
 		                       const gchar    *property_name);
-  void   (* sync_action_properties)   (GtkActivatable *activatable,
-		                       GtkAction      *action);
+  void   (* sync_action_properties)   (BtkActivatable *activatable,
+		                       BtkAction      *action);
 };
 
 
-GType      gtk_activatable_get_type                   (void) G_GNUC_CONST;
+GType      btk_activatable_get_type                   (void) G_GNUC_CONST;
 
-void       gtk_activatable_sync_action_properties     (GtkActivatable *activatable,
-						       GtkAction      *action);
+void       btk_activatable_sync_action_properties     (BtkActivatable *activatable,
+						       BtkAction      *action);
 
-void       gtk_activatable_set_related_action         (GtkActivatable *activatable,
-						       GtkAction      *action);
-GtkAction *gtk_activatable_get_related_action         (GtkActivatable *activatable);
+void       btk_activatable_set_related_action         (BtkActivatable *activatable,
+						       BtkAction      *action);
+BtkAction *btk_activatable_get_related_action         (BtkActivatable *activatable);
 
-void       gtk_activatable_set_use_action_appearance  (GtkActivatable *activatable,
+void       btk_activatable_set_use_action_appearance  (BtkActivatable *activatable,
 						       gboolean        use_appearance);
-gboolean   gtk_activatable_get_use_action_appearance  (GtkActivatable *activatable);
+gboolean   btk_activatable_get_use_action_appearance  (BtkActivatable *activatable);
 
 /* For use in activatable implementations */
-void       gtk_activatable_do_set_related_action      (GtkActivatable *activatable,
-						       GtkAction      *action);
+void       btk_activatable_do_set_related_action      (BtkActivatable *activatable,
+						       BtkAction      *action);
 
 G_END_DECLS
 
-#endif /* __GTK_ACTIVATABLE_H__ */
+#endif /* __BTK_ACTIVATABLE_H__ */

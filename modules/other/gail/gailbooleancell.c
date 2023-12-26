@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The GNOME Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,69 +19,69 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailbooleancell.h"
+#include <btk/btk.h>
+#include "bailbooleancell.h"
 
-static void      gail_boolean_cell_class_init          (GailBooleanCellClass *klass);
-static void      gail_boolean_cell_init                (GailBooleanCell *cell);
+static void      bail_boolean_cell_class_init          (BailBooleanCellClass *klass);
+static void      bail_boolean_cell_init                (BailBooleanCell *cell);
 /* Misc */
 
-static gboolean gail_boolean_cell_update_cache         (GailRendererCell     *cell,
+static gboolean bail_boolean_cell_update_cache         (BailRendererCell     *cell,
                                                         gboolean             emit_change_signal);
 
-gchar *gail_boolean_cell_property_list[] = {
+gchar *bail_boolean_cell_property_list[] = {
   "active",
   "radio",
   "sensitive",
   NULL
 };
 
-G_DEFINE_TYPE (GailBooleanCell, gail_boolean_cell, GAIL_TYPE_RENDERER_CELL)
+G_DEFINE_TYPE (BailBooleanCell, bail_boolean_cell, BAIL_TYPE_RENDERER_CELL)
 
 static void 
-gail_boolean_cell_class_init (GailBooleanCellClass *klass)
+bail_boolean_cell_class_init (BailBooleanCellClass *klass)
 {
-  GailRendererCellClass *renderer_cell_class = GAIL_RENDERER_CELL_CLASS (klass);
+  BailRendererCellClass *renderer_cell_class = BAIL_RENDERER_CELL_CLASS (klass);
 
-  renderer_cell_class->update_cache = gail_boolean_cell_update_cache;
-  renderer_cell_class->property_list = gail_boolean_cell_property_list;
+  renderer_cell_class->update_cache = bail_boolean_cell_update_cache;
+  renderer_cell_class->property_list = bail_boolean_cell_property_list;
 }
 
 static void
-gail_boolean_cell_init (GailBooleanCell *cell)
+bail_boolean_cell_init (BailBooleanCell *cell)
 {
 }
 
-AtkObject* 
-gail_boolean_cell_new (void)
+BatkObject* 
+bail_boolean_cell_new (void)
 {
   GObject *object;
-  AtkObject *atk_object;
-  GailRendererCell *cell;
-  GailBooleanCell *boolean_cell;
+  BatkObject *batk_object;
+  BailRendererCell *cell;
+  BailBooleanCell *boolean_cell;
 
-  object = g_object_new (GAIL_TYPE_BOOLEAN_CELL, NULL);
+  object = g_object_new (BAIL_TYPE_BOOLEAN_CELL, NULL);
 
   g_return_val_if_fail (object != NULL, NULL);
 
-  atk_object = ATK_OBJECT (object);
-  atk_object->role = ATK_ROLE_TABLE_CELL;
+  batk_object = BATK_OBJECT (object);
+  batk_object->role = BATK_ROLE_TABLE_CELL;
 
-  cell = GAIL_RENDERER_CELL(object);
-  boolean_cell = GAIL_BOOLEAN_CELL(object);
+  cell = BAIL_RENDERER_CELL(object);
+  boolean_cell = BAIL_BOOLEAN_CELL(object);
 
-  cell->renderer = gtk_cell_renderer_toggle_new ();
+  cell->renderer = btk_cell_renderer_toggle_new ();
   g_object_ref_sink (cell->renderer);
   boolean_cell->cell_value = FALSE;
   boolean_cell->cell_sensitive = TRUE;
-  return atk_object;
+  return batk_object;
 }
 
 static gboolean
-gail_boolean_cell_update_cache (GailRendererCell *cell, 
+bail_boolean_cell_update_cache (BailRendererCell *cell, 
                                 gboolean         emit_change_signal)
 {
-  GailBooleanCell *boolean_cell = GAIL_BOOLEAN_CELL (cell);
+  BailBooleanCell *boolean_cell = BAIL_BOOLEAN_CELL (cell);
   gboolean rv = FALSE;
   gboolean new_boolean;
   gboolean new_sensitive;
@@ -97,9 +97,9 @@ gail_boolean_cell_update_cache (GailRendererCell *cell,
       /* Update cell's state */
 
     if (new_boolean)
-      gail_cell_add_state (GAIL_CELL (cell), ATK_STATE_CHECKED, emit_change_signal);
+      bail_cell_add_state (BAIL_CELL (cell), BATK_STATE_CHECKED, emit_change_signal);
     else
-      gail_cell_remove_state (GAIL_CELL (cell), ATK_STATE_CHECKED, emit_change_signal);
+      bail_cell_remove_state (BAIL_CELL (cell), BATK_STATE_CHECKED, emit_change_signal);
     }
 
   if (boolean_cell->cell_sensitive != new_sensitive)
@@ -110,9 +110,9 @@ gail_boolean_cell_update_cache (GailRendererCell *cell,
       /* Update cell's state */
 
       if (new_sensitive)
-        gail_cell_add_state (GAIL_CELL (cell), ATK_STATE_SENSITIVE, emit_change_signal);
+        bail_cell_add_state (BAIL_CELL (cell), BATK_STATE_SENSITIVE, emit_change_signal);
       else
-        gail_cell_remove_state (GAIL_CELL (cell), ATK_STATE_SENSITIVE, emit_change_signal);
+        bail_cell_remove_state (BAIL_CELL (cell), BATK_STATE_SENSITIVE, emit_change_signal);
     }
 
   return rv;

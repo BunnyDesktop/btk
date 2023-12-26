@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilesystem.h: Filesystem abstraction functions.
+/* BTK - The GIMP Toolkit
+ * btkfilesystem.h: Filesystem abstraction functions.
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,154 +18,154 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_SYSTEM_H__
-#define __GTK_FILE_SYSTEM_H__
+#ifndef __BTK_FILE_SYSTEM_H__
+#define __BTK_FILE_SYSTEM_H__
 
-#include <gio/gio.h>
-#include <gtk/gtkwidget.h>	/* For icon handling */
+#include <bunnyio/bunnyio.h>
+#include <btk/btkwidget.h>	/* For icon handling */
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FILE_SYSTEM         (_gtk_file_system_get_type ())
-#define GTK_FILE_SYSTEM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GTK_TYPE_FILE_SYSTEM, GtkFileSystem))
-#define GTK_FILE_SYSTEM_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), GTK_TYPE_FILE_SYSTEM, GtkFileSystemClass))
-#define GTK_IS_FILE_SYSTEM(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GTK_TYPE_FILE_SYSTEM))
-#define GTK_IS_FILE_SYSTEM_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), GTK_TYPE_FILE_SYSTEM))
-#define GTK_FILE_SYSTEM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), GTK_TYPE_FILE_SYSTEM, GtkFileSystemClass))
+#define BTK_TYPE_FILE_SYSTEM         (_btk_file_system_get_type ())
+#define BTK_FILE_SYSTEM(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystem))
+#define BTK_FILE_SYSTEM_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_FILE_SYSTEM, BtkFileSystemClass))
+#define BTK_IS_FILE_SYSTEM(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_FILE_SYSTEM))
+#define BTK_IS_FILE_SYSTEM_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_FILE_SYSTEM))
+#define BTK_FILE_SYSTEM_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystemClass))
 
-#define GTK_TYPE_FOLDER         (_gtk_folder_get_type ())
-#define GTK_FOLDER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GTK_TYPE_FOLDER, GtkFolder))
-#define GTK_FOLDER_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), GTK_TYPE_FOLDER, GtkFolderClass))
-#define GTK_IS_FOLDER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GTK_TYPE_FOLDER))
-#define GTK_IS_FOLDER_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), GTK_TYPE_FOLDER))
-#define GTK_FOLDER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), GTK_TYPE_FOLDER, GtkFolderClass))
+#define BTK_TYPE_FOLDER         (_btk_folder_get_type ())
+#define BTK_FOLDER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_FOLDER, BtkFolder))
+#define BTK_FOLDER_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_FOLDER, BtkFolderClass))
+#define BTK_IS_FOLDER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_FOLDER))
+#define BTK_IS_FOLDER_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_FOLDER))
+#define BTK_FOLDER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_FOLDER, BtkFolderClass))
 
-typedef struct GtkFileSystemClass GtkFileSystemClass;
-typedef struct GtkFileSystem GtkFileSystem;
-typedef struct GtkFolderClass GtkFolderClass;
-typedef struct GtkFolder GtkFolder;
-typedef struct GtkFileSystemVolume GtkFileSystemVolume; /* opaque struct */
-typedef struct GtkFileSystemBookmark GtkFileSystemBookmark; /* opaque struct */
+typedef struct BtkFileSystemClass BtkFileSystemClass;
+typedef struct BtkFileSystem BtkFileSystem;
+typedef struct BtkFolderClass BtkFolderClass;
+typedef struct BtkFolder BtkFolder;
+typedef struct BtkFileSystemVolume BtkFileSystemVolume; /* opaque struct */
+typedef struct BtkFileSystemBookmark BtkFileSystemBookmark; /* opaque struct */
 
-struct GtkFileSystemClass
+struct BtkFileSystemClass
 {
   GObjectClass parent_class;
 
-  void (*bookmarks_changed) (GtkFileSystem *file_system);
-  void (*volumes_changed)   (GtkFileSystem *file_system);
+  void (*bookmarks_changed) (BtkFileSystem *file_system);
+  void (*volumes_changed)   (BtkFileSystem *file_system);
 };
 
-struct GtkFileSystem
+struct BtkFileSystem
 {
   GObject parent_object;
 };
 
-struct GtkFolderClass
+struct BtkFolderClass
 {
   GObjectClass parent_class;
 
-  void (*files_added)      (GtkFolder *folder,
+  void (*files_added)      (BtkFolder *folder,
 			    GList     *paths);
-  void (*files_removed)    (GtkFolder *folder,
+  void (*files_removed)    (BtkFolder *folder,
 			    GList     *paths);
-  void (*files_changed)    (GtkFolder *folder,
+  void (*files_changed)    (BtkFolder *folder,
 			    GList     *paths);
-  void (*finished_loading) (GtkFolder *folder);
-  void (*deleted)          (GtkFolder *folder);
+  void (*finished_loading) (BtkFolder *folder);
+  void (*deleted)          (BtkFolder *folder);
 };
 
-struct GtkFolder
+struct BtkFolder
 {
   GObject parent_object;
 };
 
-typedef void (* GtkFileSystemGetFolderCallback)    (GCancellable        *cancellable,
-						    GtkFolder           *folder,
+typedef void (* BtkFileSystemGetFolderCallback)    (GCancellable        *cancellable,
+						    BtkFolder           *folder,
 						    const GError        *error,
 						    gpointer             data);
-typedef void (* GtkFileSystemGetInfoCallback)      (GCancellable        *cancellable,
+typedef void (* BtkFileSystemGetInfoCallback)      (GCancellable        *cancellable,
 						    GFileInfo           *file_info,
 						    const GError        *error,
 						    gpointer             data);
-typedef void (* GtkFileSystemVolumeMountCallback)  (GCancellable        *cancellable,
-						    GtkFileSystemVolume *volume,
+typedef void (* BtkFileSystemVolumeMountCallback)  (GCancellable        *cancellable,
+						    BtkFileSystemVolume *volume,
 						    const GError        *error,
 						    gpointer             data);
 
-/* GtkFileSystem methods */
-GType           _gtk_file_system_get_type     (void) G_GNUC_CONST;
+/* BtkFileSystem methods */
+GType           _btk_file_system_get_type     (void) G_GNUC_CONST;
 
-GtkFileSystem * _gtk_file_system_new          (void);
+BtkFileSystem * _btk_file_system_new          (void);
 
-GSList *        _gtk_file_system_list_volumes   (GtkFileSystem *file_system);
-GSList *        _gtk_file_system_list_bookmarks (GtkFileSystem *file_system);
+GSList *        _btk_file_system_list_volumes   (BtkFileSystem *file_system);
+GSList *        _btk_file_system_list_bookmarks (BtkFileSystem *file_system);
 
-GCancellable *  _gtk_file_system_get_info               (GtkFileSystem                     *file_system,
+GCancellable *  _btk_file_system_get_info               (BtkFileSystem                     *file_system,
 							 GFile                             *file,
 							 const gchar                       *attributes,
-							 GtkFileSystemGetInfoCallback       callback,
+							 BtkFileSystemGetInfoCallback       callback,
 							 gpointer                           data);
-GCancellable *  _gtk_file_system_mount_volume           (GtkFileSystem                     *file_system,
-							 GtkFileSystemVolume               *volume,
+GCancellable *  _btk_file_system_mount_volume           (BtkFileSystem                     *file_system,
+							 BtkFileSystemVolume               *volume,
 							 GMountOperation                   *mount_operation,
-							 GtkFileSystemVolumeMountCallback   callback,
+							 BtkFileSystemVolumeMountCallback   callback,
 							 gpointer                           data);
-GCancellable *  _gtk_file_system_mount_enclosing_volume (GtkFileSystem                     *file_system,
+GCancellable *  _btk_file_system_mount_enclosing_volume (BtkFileSystem                     *file_system,
 							 GFile                             *file,
 							 GMountOperation                   *mount_operation,
-							 GtkFileSystemVolumeMountCallback   callback,
+							 BtkFileSystemVolumeMountCallback   callback,
 							 gpointer                           data);
 
-gboolean        _gtk_file_system_insert_bookmark    (GtkFileSystem      *file_system,
+gboolean        _btk_file_system_insert_bookmark    (BtkFileSystem      *file_system,
 						     GFile              *file,
 						     gint                position,
 						     GError            **error);
-gboolean        _gtk_file_system_remove_bookmark    (GtkFileSystem      *file_system,
+gboolean        _btk_file_system_remove_bookmark    (BtkFileSystem      *file_system,
 						     GFile              *file,
 						     GError            **error);
 
-gchar *         _gtk_file_system_get_bookmark_label (GtkFileSystem *file_system,
+gchar *         _btk_file_system_get_bookmark_label (BtkFileSystem *file_system,
 						     GFile         *file);
-void            _gtk_file_system_set_bookmark_label (GtkFileSystem *file_system,
+void            _btk_file_system_set_bookmark_label (BtkFileSystem *file_system,
 						     GFile         *file,
 						     const gchar   *label);
 
-GtkFileSystemVolume * _gtk_file_system_get_volume_for_file (GtkFileSystem       *file_system,
+BtkFileSystemVolume * _btk_file_system_get_volume_for_file (BtkFileSystem       *file_system,
 							    GFile               *file);
 
-/* GtkFolder functions */
-GSList *     _gtk_folder_list_children (GtkFolder  *folder);
-GFileInfo *  _gtk_folder_get_info      (GtkFolder  *folder,
+/* BtkFolder functions */
+GSList *     _btk_folder_list_children (BtkFolder  *folder);
+GFileInfo *  _btk_folder_get_info      (BtkFolder  *folder,
 				        GFile      *file);
 
-gboolean     _gtk_folder_is_finished_loading (GtkFolder *folder);
+gboolean     _btk_folder_is_finished_loading (BtkFolder *folder);
 
 
-/* GtkFileSystemVolume methods */
-gchar *               _gtk_file_system_volume_get_display_name (GtkFileSystemVolume *volume);
-gboolean              _gtk_file_system_volume_is_mounted       (GtkFileSystemVolume *volume);
-GFile *               _gtk_file_system_volume_get_root         (GtkFileSystemVolume *volume);
-GdkPixbuf *           _gtk_file_system_volume_render_icon      (GtkFileSystemVolume  *volume,
-							        GtkWidget            *widget,
+/* BtkFileSystemVolume methods */
+gchar *               _btk_file_system_volume_get_display_name (BtkFileSystemVolume *volume);
+gboolean              _btk_file_system_volume_is_mounted       (BtkFileSystemVolume *volume);
+GFile *               _btk_file_system_volume_get_root         (BtkFileSystemVolume *volume);
+BdkPixbuf *           _btk_file_system_volume_render_icon      (BtkFileSystemVolume  *volume,
+							        BtkWidget            *widget,
 							        gint                  icon_size,
 							        GError              **error);
 
-GtkFileSystemVolume  *_gtk_file_system_volume_ref              (GtkFileSystemVolume *volume);
-void                  _gtk_file_system_volume_unref            (GtkFileSystemVolume *volume);
+BtkFileSystemVolume  *_btk_file_system_volume_ref              (BtkFileSystemVolume *volume);
+void                  _btk_file_system_volume_unref            (BtkFileSystemVolume *volume);
 
-/* GtkFileSystemBookmark methods */
-void                   _gtk_file_system_bookmark_free          (GtkFileSystemBookmark *bookmark);
+/* BtkFileSystemBookmark methods */
+void                   _btk_file_system_bookmark_free          (BtkFileSystemBookmark *bookmark);
 
 /* GFileInfo helper functions */
-GdkPixbuf *     _gtk_file_info_render_icon (GFileInfo *info,
-					    GtkWidget *widget,
+BdkPixbuf *     _btk_file_info_render_icon (GFileInfo *info,
+					    BtkWidget *widget,
 					    gint       icon_size);
 
-gboolean	_gtk_file_info_consider_as_directory (GFileInfo *info);
+gboolean	_btk_file_info_consider_as_directory (GFileInfo *info);
 
 /* GFile helper functions */
-gboolean	_gtk_file_has_native_path (GFile *file);
+gboolean	_btk_file_has_native_path (GFile *file);
 
 G_END_DECLS
 
-#endif /* __GTK_FILE_SYSTEM_H__ */
+#endif /* __BTK_FILE_SYSTEM_H__ */

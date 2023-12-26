@@ -1,4 +1,4 @@
-/* gdkapplaunchcontext-quartz.c - Gtk+ implementation for GAppLaunchContext
+/* bdkapplaunchcontext-quartz.c - Btk+ implementation for GAppLaunchContext
 
    Copyright (C) 2007 Red Hat, Inc.
 
@@ -22,11 +22,11 @@
 
 #include "config.h"
 
-#include "gdkapplaunchcontext.h"
+#include "bdkapplaunchcontext.h"
 
 
 char *
-_gdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
+_bdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
                                       GAppInfo          *info,
                                       GList             *files)
 {
@@ -34,7 +34,7 @@ _gdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
 }
 
 void
-_gdk_windowing_launch_failed (GAppLaunchContext *context,
+_bdk_windowing_launch_failed (GAppLaunchContext *context,
                               const char        *startup_notify_id)
 {
 }

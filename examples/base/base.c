@@ -1,17 +1,17 @@
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 int main( int   argc,
           char *argv[] )
 {
-    GtkWidget *window;
+    BtkWidget *window;
     
-    gtk_init (&argc, &argv);
+    btk_init (&argc, &argv);
     
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_widget_show  (window);
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_widget_show  (window);
     
-    gtk_main ();
+    btk_main ();
     
     return 0;
 }

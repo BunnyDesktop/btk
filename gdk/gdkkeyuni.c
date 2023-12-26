@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,18 +18,18 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gdk.h"
-#include "gdkalias.h"
+#include "bdk.h"
+#include "bdkalias.h"
 
-#ifdef GDK_WINDOWING_WIN32
-#include "win32/gdkprivate-win32.h"
+#ifdef BDK_WINDOWING_WIN32
+#include "win32/bdkprivate-win32.h"
 #endif
 
 /* Thanks to Markus G. Kuhn <mkuhn@acm.org> for the ksysym<->Unicode
@@ -43,7 +43,7 @@
 static const struct {
   unsigned short keysym;
   unsigned short ucs;
-} gdk_keysym_to_unicode_tab[] = {
+} bdk_keysym_to_unicode_tab[] = {
   { 0x01a1, 0x0104 }, /*                     Aogonek Ą LATIN CAPITAL LETTER A WITH OGONEK */
   { 0x01a2, 0x02d8 }, /*                       breve ˘ BREVE */
   { 0x01a3, 0x0141 }, /*                     Lstroke Ł LATIN CAPITAL LETTER L WITH STROKE */
@@ -832,7 +832,7 @@ static const struct {
   { 0x20ac, 0x20ac }, /*                    EuroSign € EURO SIGN */
 
 
-  /* Following items added to GTK, not in the xterm table */
+  /* Following items added to BTK, not in the xterm table */
 
   /* Numeric keypad */
   
@@ -859,20 +859,20 @@ static const struct {
 };
 
 /**
- * gdk_keyval_to_unicode:
- * @keyval: a GDK key symbol 
+ * bdk_keyval_to_unicode:
+ * @keyval: a BDK key symbol 
  * 
- * Convert from a GDK key symbol to the corresponding ISO10646 (Unicode)
+ * Convert from a BDK key symbol to the corresponding ISO10646 (Unicode)
  * character.
  * 
  * Return value: the corresponding unicode character, or 0 if there
  *               is no corresponding character.
  **/
 guint32
-gdk_keyval_to_unicode (guint keyval)
+bdk_keyval_to_unicode (guint keyval)
 {
   int min = 0;
-  int max = G_N_ELEMENTS (gdk_keysym_to_unicode_tab) - 1;
+  int max = G_N_ELEMENTS (bdk_keysym_to_unicode_tab) - 1;
   int mid;
 
   /* First check for Latin-1 characters (1:1 mapping) */
@@ -885,25 +885,25 @@ gdk_keyval_to_unicode (guint keyval)
   if ((keyval & 0xff000000) == 0x01000000)
     return keyval & 0x00ffffff;
 
-#if defined(GDK_WINDOWING_WIN32)
+#if defined(BDK_WINDOWING_WIN32)
   if (keyval == 0xffae)
     {
-      GdkWin32Keymap *keymap = GDK_WIN32_KEYMAP (gdk_keymap_get_default ());
+      BdkWin32Keymap *keymap = BDK_WIN32_KEYMAP (bdk_keymap_get_default ());
 
-      return (guint32) _gdk_win32_keymap_get_decimal_mark (keymap);
+      return (guint32) _bdk_win32_keymap_get_decimal_mark (keymap);
     }
 #endif
 
   /* binary search in table */
   while (max >= min) {
     mid = (min + max) / 2;
-    if (gdk_keysym_to_unicode_tab[mid].keysym < keyval)
+    if (bdk_keysym_to_unicode_tab[mid].keysym < keyval)
       min = mid + 1;
-    else if (gdk_keysym_to_unicode_tab[mid].keysym > keyval)
+    else if (bdk_keysym_to_unicode_tab[mid].keysym > keyval)
       max = mid - 1;
     else {
       /* found it */
-      return gdk_keysym_to_unicode_tab[mid].ucs;
+      return bdk_keysym_to_unicode_tab[mid].ucs;
     }
   }
   
@@ -914,7 +914,7 @@ gdk_keyval_to_unicode (guint keyval)
 static const struct {
   unsigned short keysym;
   unsigned short ucs;
-} gdk_unicode_to_keysym_tab[] = {
+} bdk_unicode_to_keysym_tab[] = {
   { 0x0abd, 0x002e }, /*                decimalpoint . FULL STOP */
   { 0x0ba3, 0x003c }, /*                   leftcaret < LESS-THAN SIGN */
   { 0x0ba6, 0x003e }, /*                  rightcaret > GREATER-THAN SIGN */
@@ -1668,20 +1668,20 @@ static const struct {
 };
 
 /**
- * gdk_unicode_to_keyval:
+ * bdk_unicode_to_keyval:
  * @wc: a ISO10646 encoded character
  * 
  * Convert from a ISO10646 character to a key symbol.
  * 
- * Return value: the corresponding GDK key symbol, if one exists.
+ * Return value: the corresponding BDK key symbol, if one exists.
  *               or, if there is no corresponding symbol, 
  *               wc | 0x01000000
  **/
 guint
-gdk_unicode_to_keyval (guint32 wc)
+bdk_unicode_to_keyval (guint32 wc)
 {
   int min = 0;
-  int max = G_N_ELEMENTS (gdk_unicode_to_keysym_tab) - 1;
+  int max = G_N_ELEMENTS (bdk_unicode_to_keysym_tab) - 1;
   int mid;
 
   /* First check for Latin-1 characters (1:1 mapping) */
@@ -1692,13 +1692,13 @@ gdk_unicode_to_keyval (guint32 wc)
   /* Binary search in table */
   while (max >= min) {
     mid = (min + max) / 2;
-    if (gdk_unicode_to_keysym_tab[mid].ucs < wc)
+    if (bdk_unicode_to_keysym_tab[mid].ucs < wc)
       min = mid + 1;
-    else if (gdk_unicode_to_keysym_tab[mid].ucs > wc)
+    else if (bdk_unicode_to_keysym_tab[mid].ucs > wc)
       max = mid - 1;
     else {
       /* found it */
-      return gdk_unicode_to_keysym_tab[mid].keysym;
+      return bdk_unicode_to_keysym_tab[mid].keysym;
     }
   }
   
@@ -1709,5 +1709,5 @@ gdk_unicode_to_keyval (guint32 wc)
   return wc | 0x01000000;
 }
 
-#define __GDK_KEYUNI_C__
-#include "gdkaliasdef.c"
+#define __BDK_KEYUNI_C__
+#include "bdkaliasdef.c"

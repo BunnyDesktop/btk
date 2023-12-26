@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,99 +19,99 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailcontainer.h"
+#include <btk/btk.h>
+#include "bailcontainer.h"
 
-static void         gail_container_class_init          (GailContainerClass *klass);
-static void         gail_container_init                (GailContainer      *container);
+static void         bail_container_class_init          (BailContainerClass *klass);
+static void         bail_container_init                (BailContainer      *container);
 
-static gint         gail_container_get_n_children      (AtkObject          *obj);
-static AtkObject*   gail_container_ref_child           (AtkObject          *obj,
+static gint         bail_container_get_n_children      (BatkObject          *obj);
+static BatkObject*   bail_container_ref_child           (BatkObject          *obj,
                                                         gint               i);
-static gint         gail_container_add_gtk             (GtkContainer       *container,
-                                                        GtkWidget          *widget,
+static gint         bail_container_add_btk             (BtkContainer       *container,
+                                                        BtkWidget          *widget,
                                                         gpointer           data);
-static gint         gail_container_remove_gtk          (GtkContainer       *container,
-                                                        GtkWidget          *widget,
+static gint         bail_container_remove_btk          (BtkContainer       *container,
+                                                        BtkWidget          *widget,
                                                         gpointer           data);
-static gint         gail_container_real_add_gtk        (GtkContainer       *container,
-                                                        GtkWidget          *widget,
+static gint         bail_container_real_add_btk        (BtkContainer       *container,
+                                                        BtkWidget          *widget,
                                                         gpointer           data);
-static gint         gail_container_real_remove_gtk     (GtkContainer       *container,
-                                                        GtkWidget          *widget,
-                                                        gpointer           data);
-
-static void          gail_container_real_initialize    (AtkObject          *obj,
+static gint         bail_container_real_remove_btk     (BtkContainer       *container,
+                                                        BtkWidget          *widget,
                                                         gpointer           data);
 
-static void          gail_container_finalize           (GObject            *object);
+static void          bail_container_real_initialize    (BatkObject          *obj,
+                                                        gpointer           data);
 
-G_DEFINE_TYPE (GailContainer, gail_container, GAIL_TYPE_WIDGET)
+static void          bail_container_finalize           (GObject            *object);
+
+G_DEFINE_TYPE (BailContainer, bail_container, BAIL_TYPE_WIDGET)
 
 static void
-gail_container_class_init (GailContainerClass *klass)
+bail_container_class_init (BailContainerClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gail_container_finalize;
+  bobject_class->finalize = bail_container_finalize;
 
-  class->get_n_children = gail_container_get_n_children;
-  class->ref_child = gail_container_ref_child;
-  class->initialize = gail_container_real_initialize;
+  class->get_n_children = bail_container_get_n_children;
+  class->ref_child = bail_container_ref_child;
+  class->initialize = bail_container_real_initialize;
 
-  klass->add_gtk = gail_container_real_add_gtk;
-  klass->remove_gtk = gail_container_real_remove_gtk;
+  klass->add_btk = bail_container_real_add_btk;
+  klass->remove_btk = bail_container_real_remove_btk;
 }
 
 static void
-gail_container_init (GailContainer      *container)
+bail_container_init (BailContainer      *container)
 {
   container->children = NULL;
 }
 
 static gint
-gail_container_get_n_children (AtkObject* obj)
+bail_container_get_n_children (BatkObject* obj)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   GList *children;
   gint count = 0;
 
-  g_return_val_if_fail (GAIL_IS_CONTAINER (obj), count);
+  g_return_val_if_fail (BAIL_IS_CONTAINER (obj), count);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     return 0;
 
-  children = gtk_container_get_children (GTK_CONTAINER(widget));
+  children = btk_container_get_children (BTK_CONTAINER(widget));
   count = g_list_length (children);
   g_list_free (children);
 
   return count; 
 }
 
-static AtkObject* 
-gail_container_ref_child (AtkObject *obj,
+static BatkObject* 
+bail_container_ref_child (BatkObject *obj,
                           gint       i)
 {
   GList *children, *tmp_list;
-  AtkObject  *accessible;
-  GtkWidget *widget;
+  BatkObject  *accessible;
+  BtkWidget *widget;
 
-  g_return_val_if_fail (GAIL_IS_CONTAINER (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_CONTAINER (obj), NULL);
   g_return_val_if_fail ((i >= 0), NULL);
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     return NULL;
 
-  children = gtk_container_get_children (GTK_CONTAINER (widget));
+  children = btk_container_get_children (BTK_CONTAINER (widget));
   tmp_list = g_list_nth (children, i);
   if (!tmp_list)
     {
       g_list_free (children);
       return NULL;
     }  
-  accessible = gtk_widget_get_accessible (GTK_WIDGET (tmp_list->data));
+  accessible = btk_widget_get_accessible (BTK_WIDGET (tmp_list->data));
 
   g_list_free (children);
   g_object_ref (accessible);
@@ -119,105 +119,105 @@ gail_container_ref_child (AtkObject *obj,
 }
 
 static gint
-gail_container_add_gtk (GtkContainer *container,
-                        GtkWidget    *widget,
+bail_container_add_btk (BtkContainer *container,
+                        BtkWidget    *widget,
                         gpointer     data)
 {
-  GailContainer *gail_container = GAIL_CONTAINER (data);
-  GailContainerClass *klass;
+  BailContainer *bail_container = BAIL_CONTAINER (data);
+  BailContainerClass *klass;
 
-  klass = GAIL_CONTAINER_GET_CLASS (gail_container);
+  klass = BAIL_CONTAINER_GET_CLASS (bail_container);
 
-  if (klass->add_gtk)
-    return klass->add_gtk (container, widget, data);
+  if (klass->add_btk)
+    return klass->add_btk (container, widget, data);
   else
     return 1;
 }
  
 static gint
-gail_container_remove_gtk (GtkContainer *container,
-                           GtkWidget    *widget,
+bail_container_remove_btk (BtkContainer *container,
+                           BtkWidget    *widget,
                            gpointer     data)
 {
-  GailContainer *gail_container = GAIL_CONTAINER (data);
-  GailContainerClass *klass;
+  BailContainer *bail_container = BAIL_CONTAINER (data);
+  BailContainerClass *klass;
 
-  klass = GAIL_CONTAINER_GET_CLASS (gail_container);
+  klass = BAIL_CONTAINER_GET_CLASS (bail_container);
 
-  if (klass->remove_gtk)
-    return klass->remove_gtk (container, widget, data);
+  if (klass->remove_btk)
+    return klass->remove_btk (container, widget, data);
   else
     return 1;
 }
  
 static gint
-gail_container_real_add_gtk (GtkContainer *container,
-                             GtkWidget    *widget,
+bail_container_real_add_btk (BtkContainer *container,
+                             BtkWidget    *widget,
                              gpointer     data)
 {
-  AtkObject* atk_parent = ATK_OBJECT (data);
-  AtkObject* atk_child = gtk_widget_get_accessible (widget);
-  GailContainer *gail_container = GAIL_CONTAINER (atk_parent);
+  BatkObject* batk_parent = BATK_OBJECT (data);
+  BatkObject* batk_child = btk_widget_get_accessible (widget);
+  BailContainer *bail_container = BAIL_CONTAINER (batk_parent);
   gint       index;
 
-  g_object_notify (G_OBJECT (atk_child), "accessible_parent");
+  g_object_notify (G_OBJECT (batk_child), "accessible_parent");
 
-  g_list_free (gail_container->children);
-  gail_container->children = gtk_container_get_children (container);
-  index = g_list_index (gail_container->children, widget);
-  g_signal_emit_by_name (atk_parent, "children_changed::add", 
-                         index, atk_child, NULL);
+  g_list_free (bail_container->children);
+  bail_container->children = btk_container_get_children (container);
+  index = g_list_index (bail_container->children, widget);
+  g_signal_emit_by_name (batk_parent, "children_changed::add", 
+                         index, batk_child, NULL);
 
   return 1;
 }
 
 static gint
-gail_container_real_remove_gtk (GtkContainer       *container,
-                                GtkWidget          *widget,
+bail_container_real_remove_btk (BtkContainer       *container,
+                                BtkWidget          *widget,
                                 gpointer           data)
 {
-  AtkPropertyValues values = { NULL };
-  AtkObject* atk_parent;
-  AtkObject *atk_child;
-  GailContainer *gail_container;
+  BatkPropertyValues values = { NULL };
+  BatkObject* batk_parent;
+  BatkObject *batk_child;
+  BailContainer *bail_container;
   gint       index;
 
-  atk_parent = ATK_OBJECT (data);
-  atk_child = gtk_widget_get_accessible (widget);
+  batk_parent = BATK_OBJECT (data);
+  batk_child = btk_widget_get_accessible (widget);
 
-  if (atk_child)
+  if (batk_child)
     {
       g_value_init (&values.old_value, G_TYPE_POINTER);
-      g_value_set_pointer (&values.old_value, atk_parent);
+      g_value_set_pointer (&values.old_value, batk_parent);
     
       values.property_name = "accessible-parent";
 
-      g_object_ref (atk_child);
-      g_signal_emit_by_name (atk_child,
+      g_object_ref (batk_child);
+      g_signal_emit_by_name (batk_child,
                              "property_change::accessible-parent", &values, NULL);
-      g_object_unref (atk_child);
+      g_object_unref (batk_child);
     }
-  gail_container = GAIL_CONTAINER (atk_parent);
-  index = g_list_index (gail_container->children, widget);
-  g_list_free (gail_container->children);
-  gail_container->children = gtk_container_get_children (container);
-  if (index >= 0 && index <= g_list_length (gail_container->children))
-    g_signal_emit_by_name (atk_parent, "children_changed::remove", 
-			   index, atk_child, NULL);
+  bail_container = BAIL_CONTAINER (batk_parent);
+  index = g_list_index (bail_container->children, widget);
+  g_list_free (bail_container->children);
+  bail_container->children = btk_container_get_children (container);
+  if (index >= 0 && index <= g_list_length (bail_container->children))
+    g_signal_emit_by_name (batk_parent, "children_changed::remove", 
+			   index, batk_child, NULL);
 
   return 1;
 }
 
 static void
-gail_container_real_initialize (AtkObject *obj,
+bail_container_real_initialize (BatkObject *obj,
                                 gpointer  data)
 {
-  GailContainer *container = GAIL_CONTAINER (obj);
+  BailContainer *container = BAIL_CONTAINER (obj);
   guint handler_id;
 
-  ATK_OBJECT_CLASS (gail_container_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_container_parent_class)->initialize (obj, data);
 
-  container->children = gtk_container_get_children (GTK_CONTAINER (data));
+  container->children = btk_container_get_children (BTK_CONTAINER (data));
 
   /*
    * We store the handler ids for these signals in case some objects
@@ -225,30 +225,30 @@ gail_container_real_initialize (AtkObject *obj,
    */
   handler_id = g_signal_connect (data,
                                  "add",
-                                 G_CALLBACK (gail_container_add_gtk),
+                                 G_CALLBACK (bail_container_add_btk),
                                  obj);
-  g_object_set_data (G_OBJECT (obj), "gail-add-handler-id", 
+  g_object_set_data (G_OBJECT (obj), "bail-add-handler-id", 
                      GUINT_TO_POINTER (handler_id));
   handler_id = g_signal_connect (data,
                                  "remove",
-                                 G_CALLBACK (gail_container_remove_gtk),
+                                 G_CALLBACK (bail_container_remove_btk),
                                  obj);
-  g_object_set_data (G_OBJECT (obj), "gail-remove-handler-id", 
+  g_object_set_data (G_OBJECT (obj), "bail-remove-handler-id", 
                      GUINT_TO_POINTER (handler_id));
 
-  if (GTK_IS_TOOLBAR (data))
-    obj->role = ATK_ROLE_TOOL_BAR;
-  else if (GTK_IS_VIEWPORT (data))
-    obj->role = ATK_ROLE_VIEWPORT;
+  if (BTK_IS_TOOLBAR (data))
+    obj->role = BATK_ROLE_TOOL_BAR;
+  else if (BTK_IS_VIEWPORT (data))
+    obj->role = BATK_ROLE_VIEWPORT;
   else
-    obj->role = ATK_ROLE_PANEL;
+    obj->role = BATK_ROLE_PANEL;
 }
 
 static void
-gail_container_finalize (GObject *object)
+bail_container_finalize (GObject *object)
 {
-  GailContainer *container = GAIL_CONTAINER (object);
+  BailContainer *container = BAIL_CONTAINER (object);
 
   g_list_free (container->children);
-  G_OBJECT_CLASS (gail_container_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_container_parent_class)->finalize (object);
 }

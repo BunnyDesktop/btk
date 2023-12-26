@@ -21,13 +21,13 @@
  */
 
 #include "config.h"
-#include "gtksearchengine.h"
-#include "gtksearchenginebeagle.h"
-#include "gtksearchenginesimple.h"
-#include "gtksearchenginetracker.h"
-#include "gtksearchenginequartz.h"
+#include "btksearchengine.h"
+#include "btksearchenginebeagle.h"
+#include "btksearchenginesimple.h"
+#include "btksearchenginetracker.h"
+#include "btksearchenginequartz.h"
 
-#include <gdk/gdkconfig.h> /* for GDK_WINDOWING_QUARTZ */
+#include <bdk/bdkconfig.h> /* for BDK_WINDOWING_QUARTZ */
 
 #ifndef G_OS_WIN32		/* Beagle and tracker are not ported
 				 * to Windows, as far as I know.
@@ -49,27 +49,27 @@ enum
 
 static guint signals[LAST_SIGNAL];
 
-G_DEFINE_ABSTRACT_TYPE (GtkSearchEngine, _gtk_search_engine, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (BtkSearchEngine, _btk_search_engine, G_TYPE_OBJECT);
 
 static void
 finalize (GObject *object)
 {
-  G_OBJECT_CLASS (_gtk_search_engine_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_search_engine_parent_class)->finalize (object);
 }
 
 static void
-_gtk_search_engine_class_init (GtkSearchEngineClass *class)
+_btk_search_engine_class_init (BtkSearchEngineClass *class)
 {
-  GObjectClass *gobject_class;
+  GObjectClass *bobject_class;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  gobject_class->finalize = finalize;
+  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class->finalize = finalize;
   
   signals[HITS_ADDED] =
     g_signal_new ("hits-added",
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkSearchEngineClass, hits_added),
+		  G_STRUCT_OFFSET (BtkSearchEngineClass, hits_added),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
 		  G_TYPE_NONE, 1,
@@ -79,7 +79,7 @@ _gtk_search_engine_class_init (GtkSearchEngineClass *class)
     g_signal_new ("hits-subtracted",
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkSearchEngineClass, hits_subtracted),
+		  G_STRUCT_OFFSET (BtkSearchEngineClass, hits_subtracted),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
 		  G_TYPE_NONE, 1,
@@ -89,7 +89,7 @@ _gtk_search_engine_class_init (GtkSearchEngineClass *class)
     g_signal_new ("finished",
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkSearchEngineClass, finished),
+		  G_STRUCT_OFFSET (BtkSearchEngineClass, finished),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
@@ -98,7 +98,7 @@ _gtk_search_engine_class_init (GtkSearchEngineClass *class)
     g_signal_new ("error",
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkSearchEngineClass, error),
+		  G_STRUCT_OFFSET (BtkSearchEngineClass, error),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__STRING,
 		  G_TYPE_NONE, 1,
@@ -106,109 +106,109 @@ _gtk_search_engine_class_init (GtkSearchEngineClass *class)
 }
 
 static void
-_gtk_search_engine_init (GtkSearchEngine *engine)
+_btk_search_engine_init (BtkSearchEngine *engine)
 {
 }
 
-GtkSearchEngine *
-_gtk_search_engine_new (void)
+BtkSearchEngine *
+_btk_search_engine_new (void)
 {
-  GtkSearchEngine *engine = NULL;
+  BtkSearchEngine *engine = NULL;
 	
 #ifdef HAVE_TRACKER
-  engine = _gtk_search_engine_tracker_new ();
+  engine = _btk_search_engine_tracker_new ();
   if (engine)
     return engine;
 #endif
   
 #ifdef HAVE_BEAGLE
-  engine = _gtk_search_engine_beagle_new ();
+  engine = _btk_search_engine_beagle_new ();
   if (engine)
     return engine;
 #endif
 
-#ifdef GDK_WINDOWING_QUARTZ
-  engine = _gtk_search_engine_quartz_new ();
+#ifdef BDK_WINDOWING_QUARTZ
+  engine = _btk_search_engine_quartz_new ();
   if (engine)
     return engine;
 #endif
 
   if (g_thread_supported ())
-    engine = _gtk_search_engine_simple_new ();
+    engine = _btk_search_engine_simple_new ();
   
   return engine;
 }
 
 void
-_gtk_search_engine_set_query (GtkSearchEngine *engine, 
-			      GtkQuery        *query)
+_btk_search_engine_set_query (BtkSearchEngine *engine, 
+			      BtkQuery        *query)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
-  g_return_if_fail (GTK_SEARCH_ENGINE_GET_CLASS (engine)->set_query != NULL);
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_SEARCH_ENGINE_GET_CLASS (engine)->set_query != NULL);
   
-  GTK_SEARCH_ENGINE_GET_CLASS (engine)->set_query (engine, query);
+  BTK_SEARCH_ENGINE_GET_CLASS (engine)->set_query (engine, query);
 }
 
 void
-_gtk_search_engine_start (GtkSearchEngine *engine)
+_btk_search_engine_start (BtkSearchEngine *engine)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
-  g_return_if_fail (GTK_SEARCH_ENGINE_GET_CLASS (engine)->start != NULL);
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_SEARCH_ENGINE_GET_CLASS (engine)->start != NULL);
   
-  GTK_SEARCH_ENGINE_GET_CLASS (engine)->start (engine);
+  BTK_SEARCH_ENGINE_GET_CLASS (engine)->start (engine);
 }
 
 void
-_gtk_search_engine_stop (GtkSearchEngine *engine)
+_btk_search_engine_stop (BtkSearchEngine *engine)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
-  g_return_if_fail (GTK_SEARCH_ENGINE_GET_CLASS (engine)->stop != NULL);
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_SEARCH_ENGINE_GET_CLASS (engine)->stop != NULL);
   
-  GTK_SEARCH_ENGINE_GET_CLASS (engine)->stop (engine);
+  BTK_SEARCH_ENGINE_GET_CLASS (engine)->stop (engine);
 }
 
 gboolean
-_gtk_search_engine_is_indexed (GtkSearchEngine *engine)
+_btk_search_engine_is_indexed (BtkSearchEngine *engine)
 {
-  g_return_val_if_fail (GTK_IS_SEARCH_ENGINE (engine), FALSE);
-  g_return_val_if_fail (GTK_SEARCH_ENGINE_GET_CLASS (engine)->is_indexed != NULL, FALSE);
+  g_return_val_if_fail (BTK_IS_SEARCH_ENGINE (engine), FALSE);
+  g_return_val_if_fail (BTK_SEARCH_ENGINE_GET_CLASS (engine)->is_indexed != NULL, FALSE);
   
-  return GTK_SEARCH_ENGINE_GET_CLASS (engine)->is_indexed (engine);
+  return BTK_SEARCH_ENGINE_GET_CLASS (engine)->is_indexed (engine);
 }
 
 void	       
-_gtk_search_engine_hits_added (GtkSearchEngine *engine, 
+_btk_search_engine_hits_added (BtkSearchEngine *engine, 
 			       GList           *hits)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
   
   g_signal_emit (engine, signals[HITS_ADDED], 0, hits);
 }
 
 
 void	       
-_gtk_search_engine_hits_subtracted (GtkSearchEngine *engine, 
+_btk_search_engine_hits_subtracted (BtkSearchEngine *engine, 
 				    GList           *hits)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
   
   g_signal_emit (engine, signals[HITS_SUBTRACTED], 0, hits);
 }
 
 
 void	       
-_gtk_search_engine_finished (GtkSearchEngine *engine)
+_btk_search_engine_finished (BtkSearchEngine *engine)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
   
   g_signal_emit (engine, signals[FINISHED], 0);
 }
 
 void
-_gtk_search_engine_error (GtkSearchEngine *engine, 
+_btk_search_engine_error (BtkSearchEngine *engine, 
 			  const gchar     *error_message)
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (engine));
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (engine));
   
   g_signal_emit (engine, signals[ERROR], 0, error_message);
 }

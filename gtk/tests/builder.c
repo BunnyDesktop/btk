@@ -24,11 +24,11 @@
 #include <locale.h>
 #include <math.h>
 
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
 
-/* Copied from gtkiconfactory.c; keep in sync! */
-struct _GtkIconSet
+/* Copied from btkiconfactory.c; keep in sync! */
+struct _BtkIconSet
 {
   guint ref_count;
   GSList *sources;
@@ -38,18 +38,18 @@ struct _GtkIconSet
 };
 
 
-static GtkBuilder *
+static BtkBuilder *
 builder_new_from_string (const gchar *buffer,
                          gsize length,
                          const gchar *domain)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GError *error = NULL;
 
-  builder = gtk_builder_new ();
+  builder = btk_builder_new ();
   if (domain)
-    gtk_builder_set_translation_domain (builder, domain);
-  gtk_builder_add_from_string (builder, buffer, length, &error);
+    btk_builder_set_translation_domain (builder, domain);
+  btk_builder_add_from_string (builder, buffer, length, &error);
   if (error)
     {
       g_print ("ERROR: %s", error->message);
@@ -62,65 +62,65 @@ builder_new_from_string (const gchar *buffer,
 static void
 test_parser (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GError *error;
   
-  builder = gtk_builder_new ();
+  builder = btk_builder_new ();
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<xxx/>", -1, &error);
+  btk_builder_add_from_string (builder, "<xxx/>", -1, &error);
   g_assert (g_error_matches (error, 
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_UNHANDLED_TAG));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_UNHANDLED_TAG));
   g_error_free (error);
   
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface invalid=\"X\"/>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface invalid=\"X\"/>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_ATTRIBUTE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_ATTRIBUTE));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface><child/></interface>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface><child/></interface>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR, 
-                             GTK_BUILDER_ERROR_INVALID_TAG));
+                             BTK_BUILDER_ERROR, 
+                             BTK_BUILDER_ERROR_INVALID_TAG));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface><object class=\"GtkVBox\" id=\"a\"><object class=\"GtkHBox\" id=\"b\"/></object></interface>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface><object class=\"BtkVBox\" id=\"a\"><object class=\"BtkHBox\" id=\"b\"/></object></interface>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_TAG));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_TAG));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface><object class=\"Unknown\" id=\"a\"></object></interface>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface><object class=\"Unknown\" id=\"a\"></object></interface>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface><object class=\"GtkWidget\" id=\"a\" constructor=\"none\"></object></interface>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface><object class=\"BtkWidget\" id=\"a\" constructor=\"none\"></object></interface>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface><object class=\"GtkButton\" id=\"a\"><child internal-child=\"foobar\"><object class=\"GtkButton\" id=\"int\"/></child></object></interface>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface><object class=\"BtkButton\" id=\"a\"><child internal-child=\"foobar\"><object class=\"BtkButton\" id=\"int\"/></child></object></interface>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, "<interface><object class=\"GtkButton\" id=\"a\"></object><object class=\"GtkButton\" id=\"a\"/></object></interface>", -1, &error);
+  btk_builder_add_from_string (builder, "<interface><object class=\"BtkButton\" id=\"a\"></object><object class=\"BtkButton\" id=\"a\"/></object></interface>", -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_DUPLICATE_ID));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_DUPLICATE_ID));
   g_error_free (error);
 
   g_object_unref (builder);
@@ -131,69 +131,69 @@ static int after = 0;
 static int object = 0;
 static int object_after = 0;
 
-void /* exported for GtkBuilder */
-signal_normal (GtkWindow *window, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_normal (BtkWindow *window, GParamSpec spec)
 {
-  g_assert (GTK_IS_WINDOW (window));
+  g_assert (BTK_IS_WINDOW (window));
   g_assert (normal == 0);
   g_assert (after == 0);
 
   normal++;
 }
 
-void /* exported for GtkBuilder */
-signal_after (GtkWindow *window, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_after (BtkWindow *window, GParamSpec spec)
 {
-  g_assert (GTK_IS_WINDOW (window));
+  g_assert (BTK_IS_WINDOW (window));
   g_assert (normal == 1);
   g_assert (after == 0);
   
   after++;
 }
 
-void /* exported for GtkBuilder */
-signal_object (GtkButton *button, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_object (BtkButton *button, GParamSpec spec)
 {
-  g_assert (GTK_IS_BUTTON (button));
+  g_assert (BTK_IS_BUTTON (button));
   g_assert (object == 0);
   g_assert (object_after == 0);
 
   object++;
 }
 
-void /* exported for GtkBuilder */
-signal_object_after (GtkButton *button, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_object_after (BtkButton *button, GParamSpec spec)
 {
-  g_assert (GTK_IS_BUTTON (button));
+  g_assert (BTK_IS_BUTTON (button));
   g_assert (object == 1);
   g_assert (object_after == 0);
 
   object_after++;
 }
 
-void /* exported for GtkBuilder */
-signal_first (GtkButton *button, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_first (BtkButton *button, GParamSpec spec)
 {
   g_assert (normal == 0);
   normal = 10;
 }
 
-void /* exported for GtkBuilder */
-signal_second (GtkButton *button, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_second (BtkButton *button, GParamSpec spec)
 {
   g_assert (normal == 10);
   normal = 20;
 }
 
-void /* exported for GtkBuilder */
-signal_extra (GtkButton *button, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_extra (BtkButton *button, GParamSpec spec)
 {
   g_assert (normal == 20);
   normal = 30;
 }
 
-void /* exported for GtkBuilder */
-signal_extra2 (GtkButton *button, GParamSpec spec)
+void /* exported for BtkBuilder */
+signal_extra2 (BtkButton *button, GParamSpec spec)
 {
   g_assert (normal == 30);
   normal = 40;
@@ -202,12 +202,12 @@ signal_extra2 (GtkButton *button, GParamSpec spec)
 static void
 test_connect_signals (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *window;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkButton\" id=\"button\"/>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkButton\" id=\"button\"/>"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <signal name=\"notify::title\" handler=\"signal_normal\"/>"
     "    <signal name=\"notify::title\" handler=\"signal_after\" after=\"yes\"/>"
     "    <signal name=\"notify::title\" handler=\"signal_object\""
@@ -218,70 +218,70 @@ test_connect_signals (void)
     "</interface>";
   const gchar buffer_order[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <signal name=\"notify::title\" handler=\"signal_first\"/>"
     "    <signal name=\"notify::title\" handler=\"signal_second\"/>"
     "  </object>"
     "</interface>";
   const gchar buffer_extra[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window2\">"
+    "  <object class=\"BtkWindow\" id=\"window2\">"
     "    <signal name=\"notify::title\" handler=\"signal_extra\"/>"
     "  </object>"
     "</interface>";
   const gchar buffer_extra2[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window3\">"
+    "  <object class=\"BtkWindow\" id=\"window3\">"
     "    <signal name=\"notify::title\" handler=\"signal_extra2\"/>"
     "  </object>"
     "</interface>";
   const gchar buffer_after_child[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkButton\" id=\"button1\"/>"
+    "      <object class=\"BtkButton\" id=\"button1\"/>"
     "    </child>"
     "    <signal name=\"notify::title\" handler=\"signal_normal\"/>"
     "  </object>"
     "</interface>";
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  gtk_builder_connect_signals (builder, NULL);
+  btk_builder_connect_signals (builder, NULL);
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_window_set_title (GTK_WINDOW (window), "test");
+  window = btk_builder_get_object (builder, "window1");
+  btk_window_set_title (BTK_WINDOW (window), "test");
 
   g_assert_cmpint (normal, ==, 1);
   g_assert_cmpint (after, ==, 1);
   g_assert_cmpint (object, ==, 1);
   g_assert_cmpint (object_after, ==, 1);
 
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer_order, -1, NULL);
-  gtk_builder_connect_signals (builder, NULL);
-  window = gtk_builder_get_object (builder, "window1");
+  btk_builder_connect_signals (builder, NULL);
+  window = btk_builder_get_object (builder, "window1");
   normal = 0;
-  gtk_window_set_title (GTK_WINDOW (window), "test");
+  btk_window_set_title (BTK_WINDOW (window), "test");
   g_assert (normal == 20);
 
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
 
-  gtk_builder_add_from_string (builder, buffer_extra,
+  btk_builder_add_from_string (builder, buffer_extra,
 			       strlen (buffer_extra), NULL);
-  gtk_builder_add_from_string (builder, buffer_extra2,
+  btk_builder_add_from_string (builder, buffer_extra2,
 			       strlen (buffer_extra2), NULL);
-  gtk_builder_connect_signals (builder, NULL);
-  window = gtk_builder_get_object (builder, "window2");
-  gtk_window_set_title (GTK_WINDOW (window), "test");
+  btk_builder_connect_signals (builder, NULL);
+  window = btk_builder_get_object (builder, "window2");
+  btk_window_set_title (BTK_WINDOW (window), "test");
   g_assert (normal == 30);
 
-  gtk_widget_destroy (GTK_WIDGET (window));
-  window = gtk_builder_get_object (builder, "window3");
-  gtk_window_set_title (GTK_WINDOW (window), "test");
+  btk_widget_destroy (BTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window3");
+  btk_window_set_title (BTK_WINDOW (window), "test");
   g_assert (normal == 40);
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
   
   g_object_unref (builder);
 
@@ -290,37 +290,37 @@ test_connect_signals (void)
   normal = 0;
   
   builder = builder_new_from_string (buffer_after_child, -1, NULL);
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_builder_connect_signals (builder, NULL);
-  gtk_window_set_title (GTK_WINDOW (window), "test");
+  window = btk_builder_get_object (builder, "window1");
+  btk_builder_connect_signals (builder, NULL);
+  btk_window_set_title (BTK_WINDOW (window), "test");
 
   g_assert (normal == 1);
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
 }
 
 static void
 test_uimanager_simple (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *window, *uimgr, *menubar;
   GObject *menu, *label;
   GList *children;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkUIManager\" id=\"uimgr1\"/>"
+    "  <object class=\"BtkUIManager\" id=\"uimgr1\"/>"
     "</interface>";
     
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkUIManager\" id=\"uimgr1\">"
+    "  <object class=\"BtkUIManager\" id=\"uimgr1\">"
     "    <child>"
-    "      <object class=\"GtkActionGroup\" id=\"ag1\">"
+    "      <object class=\"BtkActionGroup\" id=\"ag1\">"
     "        <child>"
-    "          <object class=\"GtkAction\" id=\"file\">"
+    "          <object class=\"BtkAction\" id=\"file\">"
     "            <property name=\"label\">_File</property>"
     "          </object>"
-    "          <accelerator key=\"n\" modifiers=\"GDK_CONTROL_MASK\"/>"
+    "          <accelerator key=\"n\" modifiers=\"BDK_CONTROL_MASK\"/>"
     "        </child>"
     "      </object>"
     "    </child>"
@@ -331,60 +331,60 @@ test_uimanager_simple (void)
     "      </menubar>"
     "    </ui>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkMenuBar\" id=\"menubar1\" constructor=\"uimgr1\"/>"
+    "      <object class=\"BtkMenuBar\" id=\"menubar1\" constructor=\"uimgr1\"/>"
     "    </child>"
     "  </object>"
     "</interface>";
 
   builder = builder_new_from_string (buffer, -1, NULL);
 
-  uimgr = gtk_builder_get_object (builder, "uimgr1");
-  g_assert (GTK_IS_UI_MANAGER (uimgr));
+  uimgr = btk_builder_get_object (builder, "uimgr1");
+  g_assert (BTK_IS_UI_MANAGER (uimgr));
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer2, -1, NULL);
 
-  menubar = gtk_builder_get_object (builder, "menubar1");
-  g_assert (GTK_IS_MENU_BAR (menubar));
+  menubar = btk_builder_get_object (builder, "menubar1");
+  g_assert (BTK_IS_MENU_BAR (menubar));
 
-  children = gtk_container_get_children (GTK_CONTAINER (menubar));
+  children = btk_container_get_children (BTK_CONTAINER (menubar));
   menu = children->data;
-  g_assert (GTK_IS_MENU_ITEM (menu));
-  g_assert (strcmp (GTK_WIDGET (menu)->name, "file") == 0);
+  g_assert (BTK_IS_MENU_ITEM (menu));
+  g_assert (strcmp (BTK_WIDGET (menu)->name, "file") == 0);
   g_list_free (children);
   
-  label = G_OBJECT (GTK_BIN (menu)->child);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_text (GTK_LABEL (label)), "File") == 0);
+  label = G_OBJECT (BTK_BIN (menu)->child);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_text (BTK_LABEL (label)), "File") == 0);
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
 }
 
 static void
 test_domain (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer1[] = "<interface/>";
   const gchar buffer2[] = "<interface domain=\"domain\"/>";
   const gchar *domain;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  domain = gtk_builder_get_translation_domain (builder);
+  domain = btk_builder_get_translation_domain (builder);
   g_assert (domain == NULL);
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer1, -1, "domain-1");
-  domain = gtk_builder_get_translation_domain (builder);
+  domain = btk_builder_get_translation_domain (builder);
   g_assert (domain);
   g_assert (strcmp (domain, "domain-1") == 0);
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  domain = gtk_builder_get_translation_domain (builder);
+  domain = btk_builder_get_translation_domain (builder);
   g_assert (domain == NULL);
   g_object_unref (builder);
 }
@@ -393,29 +393,29 @@ test_domain (void)
 static void
 test_translation (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label\">"
+    "      <object class=\"BtkLabel\" id=\"label\">"
     "        <property name=\"label\" translatable=\"yes\">File</property>"
     "      </object>"
     "    </child>"
     "  </object>"
     "</interface>";
-  GtkLabel *window, *label;
+  BtkLabel *window, *label;
 
   setlocale (LC_ALL, "sv_SE");
   textdomain ("builder");
   bindtextdomain ("builder", "tests");
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  label = GTK_LABEL (gtk_builder_get_object (builder, "label"));
-  g_assert (strcmp (gtk_label_get_text (label), "Arkiv") == 0);
+  label = BTK_LABEL (btk_builder_get_object (builder, "label"));
+  g_assert (strcmp (btk_label_get_text (label), "Arkiv") == 0);
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
 }
 #endif
@@ -423,24 +423,24 @@ test_translation (void)
 static void
 test_sizegroup (void)
 {
-  GtkBuilder * builder;
+  BtkBuilder * builder;
   const gchar buffer1[] =
     "<interface domain=\"test\">"
-    "  <object class=\"GtkSizeGroup\" id=\"sizegroup1\">"
-    "    <property name=\"mode\">GTK_SIZE_GROUP_HORIZONTAL</property>"
+    "  <object class=\"BtkSizeGroup\" id=\"sizegroup1\">"
+    "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
     "    <widgets>"
     "      <widget name=\"radio1\"/>"
     "      <widget name=\"radio2\"/>"
     "    </widgets>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"vbox1\">"
+    "      <object class=\"BtkVBox\" id=\"vbox1\">"
     "        <child>"
-    "          <object class=\"GtkRadioButton\" id=\"radio1\"/>"
+    "          <object class=\"BtkRadioButton\" id=\"radio1\"/>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkRadioButton\" id=\"radio2\"/>"
+    "          <object class=\"BtkRadioButton\" id=\"radio2\"/>"
     "        </child>"
     "      </object>"
     "    </child>"
@@ -448,36 +448,36 @@ test_sizegroup (void)
     "</interface>";
   const gchar buffer2[] =
     "<interface domain=\"test\">"
-    "  <object class=\"GtkSizeGroup\" id=\"sizegroup1\">"
-    "    <property name=\"mode\">GTK_SIZE_GROUP_HORIZONTAL</property>"
+    "  <object class=\"BtkSizeGroup\" id=\"sizegroup1\">"
+    "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
     "    <widgets>"
     "    </widgets>"
     "   </object>"
     "</interface>";
   const gchar buffer3[] =
     "<interface domain=\"test\">"
-    "  <object class=\"GtkSizeGroup\" id=\"sizegroup1\">"
-    "    <property name=\"mode\">GTK_SIZE_GROUP_HORIZONTAL</property>"
+    "  <object class=\"BtkSizeGroup\" id=\"sizegroup1\">"
+    "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
     "    <widgets>"
     "      <widget name=\"radio1\"/>"
     "      <widget name=\"radio2\"/>"
     "    </widgets>"
     "  </object>"
-    "  <object class=\"GtkSizeGroup\" id=\"sizegroup2\">"
-    "    <property name=\"mode\">GTK_SIZE_GROUP_HORIZONTAL</property>"
+    "  <object class=\"BtkSizeGroup\" id=\"sizegroup2\">"
+    "    <property name=\"mode\">BTK_SIZE_GROUP_HORIZONTAL</property>"
     "    <widgets>"
     "      <widget name=\"radio1\"/>"
     "      <widget name=\"radio2\"/>"
     "    </widgets>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"vbox1\">"
+    "      <object class=\"BtkVBox\" id=\"vbox1\">"
     "        <child>"
-    "          <object class=\"GtkRadioButton\" id=\"radio1\"/>"
+    "          <object class=\"BtkRadioButton\" id=\"radio1\"/>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkRadioButton\" id=\"radio2\"/>"
+    "          <object class=\"BtkRadioButton\" id=\"radio2\"/>"
     "        </child>"
     "      </object>"
     "    </child>"
@@ -487,34 +487,34 @@ test_sizegroup (void)
   GSList *widgets;
 
   builder = builder_new_from_string (buffer1, -1, NULL);
-  sizegroup = gtk_builder_get_object (builder, "sizegroup1");
-  widgets = gtk_size_group_get_widgets (GTK_SIZE_GROUP (sizegroup));
+  sizegroup = btk_builder_get_object (builder, "sizegroup1");
+  widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
   g_assert (g_slist_length (widgets) == 2);
   g_slist_free (widgets);
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  sizegroup = gtk_builder_get_object (builder, "sizegroup1");
-  widgets = gtk_size_group_get_widgets (GTK_SIZE_GROUP (sizegroup));
+  sizegroup = btk_builder_get_object (builder, "sizegroup1");
+  widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
   g_assert (g_slist_length (widgets) == 0);
   g_slist_free (widgets);
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer3, -1, NULL);
-  sizegroup = gtk_builder_get_object (builder, "sizegroup1");
-  widgets = gtk_size_group_get_widgets (GTK_SIZE_GROUP (sizegroup));
+  sizegroup = btk_builder_get_object (builder, "sizegroup1");
+  widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
   g_assert (g_slist_length (widgets) == 2);
   g_slist_free (widgets);
-  sizegroup = gtk_builder_get_object (builder, "sizegroup2");
-  widgets = gtk_size_group_get_widgets (GTK_SIZE_GROUP (sizegroup));
+  sizegroup = btk_builder_get_object (builder, "sizegroup2");
+  widgets = btk_size_group_get_widgets (BTK_SIZE_GROUP (sizegroup));
   g_assert (g_slist_length (widgets) == 2);
   g_slist_free (widgets);
 
 #if 0
   {
     GObject *window;
-    window = gtk_builder_get_object (builder, "window1");
-    gtk_widget_destroy (GTK_WIDGET (window));
+    window = btk_builder_get_object (builder, "window1");
+    btk_widget_destroy (BTK_WIDGET (window));
   }
 #endif  
   g_object_unref (builder);
@@ -525,7 +525,7 @@ test_list_store (void)
 {
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"gchararray\"/>"
     "      <column type=\"guint\"/>"
@@ -534,7 +534,7 @@ test_list_store (void)
     "</interface>";
   const char buffer2[] = 
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"gchararray\"/>"
     "      <column type=\"gchararray\"/>"
@@ -556,7 +556,7 @@ test_list_store (void)
     "</interface>";
   const char buffer3[] = 
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"gchararray\"/>"
     "      <column type=\"gchararray\"/>"
@@ -579,28 +579,28 @@ test_list_store (void)
     "    </data>"
     "  </object>"
     "</interface>";
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *store;
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   gchar *surname, *lastname;
   int age;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  store = gtk_builder_get_object (builder, "liststore1");
-  g_assert (gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)) == 2);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 1) == G_TYPE_UINT);
+  store = btk_builder_get_object (builder, "liststore1");
+  g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 2);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_UINT);
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer2, -1, NULL);
-  store = gtk_builder_get_object (builder, "liststore1");
-  g_assert (gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)) == 3);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 1) == G_TYPE_STRING);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 2) == G_TYPE_INT);
+  store = btk_builder_get_object (builder, "liststore1");
+  g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 3);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 2) == G_TYPE_INT);
   
-  g_assert (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter) == TRUE);
-  gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+  g_assert (btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &iter) == TRUE);
+  btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
                       0, &surname,
                       1, &lastname,
                       2, &age,
@@ -612,9 +612,9 @@ test_list_store (void)
   g_assert (strcmp (lastname, "Doe") == 0);
   g_free (lastname);
   g_assert (age == 25);
-  g_assert (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter) == TRUE);
+  g_assert (btk_tree_model_iter_next (BTK_TREE_MODEL (store), &iter) == TRUE);
   
-  gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+  btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
                       0, &surname,
                       1, &lastname,
                       2, &age,
@@ -626,19 +626,19 @@ test_list_store (void)
   g_assert (strcmp (lastname, "Dole") == 0);
   g_free (lastname);
   g_assert (age == 50);
-  g_assert (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter) == FALSE);
+  g_assert (btk_tree_model_iter_next (BTK_TREE_MODEL (store), &iter) == FALSE);
 
   g_object_unref (builder);  
 
   builder = builder_new_from_string (buffer3, -1, NULL);
-  store = gtk_builder_get_object (builder, "liststore1");
-  g_assert (gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)) == 3);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 1) == G_TYPE_STRING);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 2) == G_TYPE_INT);
+  store = btk_builder_get_object (builder, "liststore1");
+  g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 3);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 2) == G_TYPE_INT);
   
-  g_assert (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter) == TRUE);
-  gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+  g_assert (btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &iter) == TRUE);
+  btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
                       0, &surname,
                       1, &lastname,
                       2, &age,
@@ -650,9 +650,9 @@ test_list_store (void)
   g_assert (strcmp (lastname, "Doe") == 0);
   g_free (lastname);
   g_assert (age == 25);
-  g_assert (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter) == TRUE);
+  g_assert (btk_tree_model_iter_next (BTK_TREE_MODEL (store), &iter) == TRUE);
   
-  gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+  btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
                       0, &surname,
                       1, &lastname,
                       2, &age,
@@ -664,9 +664,9 @@ test_list_store (void)
   g_assert (strcmp (lastname, "Dole") == 0);
   g_free (lastname);
   g_assert (age == 50);
-  g_assert (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter) == TRUE);
+  g_assert (btk_tree_model_iter_next (BTK_TREE_MODEL (store), &iter) == TRUE);
   
-  gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+  btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
                       0, &surname,
                       1, &lastname,
                       2, &age,
@@ -674,7 +674,7 @@ test_list_store (void)
   g_assert (surname == NULL);
   g_assert (lastname == NULL);
   g_assert (age == 19);
-  g_assert (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter) == FALSE);
+  g_assert (btk_tree_model_iter_next (BTK_TREE_MODEL (store), &iter) == FALSE);
 
   g_object_unref (builder);
 }
@@ -684,21 +684,21 @@ test_tree_store (void)
 {
   const gchar buffer[] =
     "<interface domain=\"test\">"
-    "  <object class=\"GtkTreeStore\" id=\"treestore1\">"
+    "  <object class=\"BtkTreeStore\" id=\"treestore1\">"
     "    <columns>"
     "      <column type=\"gchararray\"/>"
     "      <column type=\"guint\"/>"
     "    </columns>"
     "  </object>"
     "</interface>";
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *store;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  store = gtk_builder_get_object (builder, "treestore1");
-  g_assert (gtk_tree_model_get_n_columns (GTK_TREE_MODEL (store)) == 2);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
-  g_assert (gtk_tree_model_get_column_type (GTK_TREE_MODEL (store), 1) == G_TYPE_UINT);
+  store = btk_builder_get_object (builder, "treestore1");
+  g_assert (btk_tree_model_get_n_columns (BTK_TREE_MODEL (store)) == 2);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 0) == G_TYPE_STRING);
+  g_assert (btk_tree_model_get_column_type (BTK_TREE_MODEL (store), 1) == G_TYPE_UINT);
   
   g_object_unref (builder);
 }
@@ -708,82 +708,82 @@ test_types (void)
 {
   const gchar buffer[] = 
     "<interface>"
-    "  <object class=\"GtkAction\" id=\"action\"/>"
-    "  <object class=\"GtkActionGroup\" id=\"actiongroup\"/>"
-    "  <object class=\"GtkAlignment\" id=\"alignment\"/>"
-    "  <object class=\"GtkArrow\" id=\"arrow\"/>"
-    "  <object class=\"GtkButton\" id=\"button\"/>"
-    "  <object class=\"GtkCheckButton\" id=\"checkbutton\"/>"
-    "  <object class=\"GtkDialog\" id=\"dialog\"/>"
-    "  <object class=\"GtkDrawingArea\" id=\"drawingarea\"/>"
-    "  <object class=\"GtkEventBox\" id=\"eventbox\"/>"
-    "  <object class=\"GtkEntry\" id=\"entry\"/>"
-    "  <object class=\"GtkFontButton\" id=\"fontbutton\"/>"
-    "  <object class=\"GtkHButtonBox\" id=\"hbuttonbox\"/>"
-    "  <object class=\"GtkHBox\" id=\"hbox\"/>"
-    "  <object class=\"GtkHPaned\" id=\"hpaned\"/>"
-    "  <object class=\"GtkHRuler\" id=\"hruler\"/>"
-    "  <object class=\"GtkHScale\" id=\"hscale\"/>"
-    "  <object class=\"GtkHScrollbar\" id=\"hscrollbar\"/>"
-    "  <object class=\"GtkHSeparator\" id=\"hseparator\"/>"
-    "  <object class=\"GtkImage\" id=\"image\"/>"
-    "  <object class=\"GtkLabel\" id=\"label\"/>"
-    "  <object class=\"GtkListStore\" id=\"liststore\"/>"
-    "  <object class=\"GtkMenuBar\" id=\"menubar\"/>"
-    "  <object class=\"GtkNotebook\" id=\"notebook\"/>"
-    "  <object class=\"GtkProgressBar\" id=\"progressbar\"/>"
-    "  <object class=\"GtkRadioButton\" id=\"radiobutton\"/>"
-    "  <object class=\"GtkSizeGroup\" id=\"sizegroup\"/>"
-    "  <object class=\"GtkScrolledWindow\" id=\"scrolledwindow\"/>"
-    "  <object class=\"GtkSpinButton\" id=\"spinbutton\"/>"
-    "  <object class=\"GtkStatusbar\" id=\"statusbar\"/>"
-    "  <object class=\"GtkTextView\" id=\"textview\"/>"
-    "  <object class=\"GtkToggleAction\" id=\"toggleaction\"/>"
-    "  <object class=\"GtkToggleButton\" id=\"togglebutton\"/>"
-    "  <object class=\"GtkToolbar\" id=\"toolbar\"/>"
-    "  <object class=\"GtkTreeStore\" id=\"treestore\"/>"
-    "  <object class=\"GtkTreeView\" id=\"treeview\"/>"
-    "  <object class=\"GtkTable\" id=\"table\"/>"
-    "  <object class=\"GtkVBox\" id=\"vbox\"/>"
-    "  <object class=\"GtkVButtonBox\" id=\"vbuttonbox\"/>"
-    "  <object class=\"GtkVScrollbar\" id=\"vscrollbar\"/>"
-    "  <object class=\"GtkVSeparator\" id=\"vseparator\"/>"
-    "  <object class=\"GtkViewport\" id=\"viewport\"/>"
-    "  <object class=\"GtkVRuler\" id=\"vruler\"/>"
-    "  <object class=\"GtkVPaned\" id=\"vpaned\"/>"
-    "  <object class=\"GtkVScale\" id=\"vscale\"/>"
-    "  <object class=\"GtkWindow\" id=\"window\"/>"
-    "  <object class=\"GtkUIManager\" id=\"uimanager\"/>"
+    "  <object class=\"BtkAction\" id=\"action\"/>"
+    "  <object class=\"BtkActionGroup\" id=\"actiongroup\"/>"
+    "  <object class=\"BtkAlignment\" id=\"alignment\"/>"
+    "  <object class=\"BtkArrow\" id=\"arrow\"/>"
+    "  <object class=\"BtkButton\" id=\"button\"/>"
+    "  <object class=\"BtkCheckButton\" id=\"checkbutton\"/>"
+    "  <object class=\"BtkDialog\" id=\"dialog\"/>"
+    "  <object class=\"BtkDrawingArea\" id=\"drawingarea\"/>"
+    "  <object class=\"BtkEventBox\" id=\"eventbox\"/>"
+    "  <object class=\"BtkEntry\" id=\"entry\"/>"
+    "  <object class=\"BtkFontButton\" id=\"fontbutton\"/>"
+    "  <object class=\"BtkHButtonBox\" id=\"hbuttonbox\"/>"
+    "  <object class=\"BtkHBox\" id=\"hbox\"/>"
+    "  <object class=\"BtkHPaned\" id=\"hpaned\"/>"
+    "  <object class=\"BtkHRuler\" id=\"hruler\"/>"
+    "  <object class=\"BtkHScale\" id=\"hscale\"/>"
+    "  <object class=\"BtkHScrollbar\" id=\"hscrollbar\"/>"
+    "  <object class=\"BtkHSeparator\" id=\"hseparator\"/>"
+    "  <object class=\"BtkImage\" id=\"image\"/>"
+    "  <object class=\"BtkLabel\" id=\"label\"/>"
+    "  <object class=\"BtkListStore\" id=\"liststore\"/>"
+    "  <object class=\"BtkMenuBar\" id=\"menubar\"/>"
+    "  <object class=\"BtkNotebook\" id=\"notebook\"/>"
+    "  <object class=\"BtkProgressBar\" id=\"progressbar\"/>"
+    "  <object class=\"BtkRadioButton\" id=\"radiobutton\"/>"
+    "  <object class=\"BtkSizeGroup\" id=\"sizegroup\"/>"
+    "  <object class=\"BtkScrolledWindow\" id=\"scrolledwindow\"/>"
+    "  <object class=\"BtkSpinButton\" id=\"spinbutton\"/>"
+    "  <object class=\"BtkStatusbar\" id=\"statusbar\"/>"
+    "  <object class=\"BtkTextView\" id=\"textview\"/>"
+    "  <object class=\"BtkToggleAction\" id=\"toggleaction\"/>"
+    "  <object class=\"BtkToggleButton\" id=\"togglebutton\"/>"
+    "  <object class=\"BtkToolbar\" id=\"toolbar\"/>"
+    "  <object class=\"BtkTreeStore\" id=\"treestore\"/>"
+    "  <object class=\"BtkTreeView\" id=\"treeview\"/>"
+    "  <object class=\"BtkTable\" id=\"table\"/>"
+    "  <object class=\"BtkVBox\" id=\"vbox\"/>"
+    "  <object class=\"BtkVButtonBox\" id=\"vbuttonbox\"/>"
+    "  <object class=\"BtkVScrollbar\" id=\"vscrollbar\"/>"
+    "  <object class=\"BtkVSeparator\" id=\"vseparator\"/>"
+    "  <object class=\"BtkViewport\" id=\"viewport\"/>"
+    "  <object class=\"BtkVRuler\" id=\"vruler\"/>"
+    "  <object class=\"BtkVPaned\" id=\"vpaned\"/>"
+    "  <object class=\"BtkVScale\" id=\"vscale\"/>"
+    "  <object class=\"BtkWindow\" id=\"window\"/>"
+    "  <object class=\"BtkUIManager\" id=\"uimanager\"/>"
     "</interface>";
   const gchar buffer2[] = 
     "<interface>"
-    "  <object type-func=\"gtk_window_get_type\" id=\"window\"/>"
+    "  <object type-func=\"btk_window_get_type\" id=\"window\"/>"
     "</interface>";
   const gchar buffer3[] = 
     "<interface>"
     "  <object type-func=\"xxx_invalid_get_type_function\" id=\"window\"/>"
     "</interface>";
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *window;
   GError *error;
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  gtk_widget_destroy (GTK_WIDGET (gtk_builder_get_object (builder, "dialog")));
-  gtk_widget_destroy (GTK_WIDGET (gtk_builder_get_object (builder, "window")));
+  btk_widget_destroy (BTK_WIDGET (btk_builder_get_object (builder, "dialog")));
+  btk_widget_destroy (BTK_WIDGET (btk_builder_get_object (builder, "window")));
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  window = gtk_builder_get_object (builder, "window");
-  g_assert (GTK_IS_WINDOW (window));
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window");
+  g_assert (BTK_IS_WINDOW (window));
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
   
   error = NULL;
-  builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder, buffer3, -1, &error);
+  builder = btk_builder_new ();
+  btk_builder_add_from_string (builder, buffer3, -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION));
   g_error_free (error);
   g_object_unref (builder);
 }
@@ -791,10 +791,10 @@ test_types (void)
 static void
 test_spin_button (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "<object class=\"GtkAdjustment\" id=\"adjustment1\">"
+    "<object class=\"BtkAdjustment\" id=\"adjustment1\">"
     "<property name=\"lower\">0</property>"
     "<property name=\"upper\">10</property>"
     "<property name=\"step-increment\">2</property>"
@@ -802,20 +802,20 @@ test_spin_button (void)
     "<property name=\"page-size\">0</property>"
     "<property name=\"value\">1</property>"
     "</object>"
-    "<object class=\"GtkSpinButton\" id=\"spinbutton1\">"
+    "<object class=\"BtkSpinButton\" id=\"spinbutton1\">"
     "<property name=\"visible\">True</property>"
     "<property name=\"adjustment\">adjustment1</property>"
     "</object>"
     "</interface>";
   GObject *obj;
-  GtkAdjustment *adjustment;
+  BtkAdjustment *adjustment;
   gdouble value;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  obj = gtk_builder_get_object (builder, "spinbutton1");
-  g_assert (GTK_IS_SPIN_BUTTON (obj));
-  adjustment = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (obj));
-  g_assert (GTK_IS_ADJUSTMENT (adjustment));
+  obj = btk_builder_get_object (builder, "spinbutton1");
+  g_assert (BTK_IS_SPIN_BUTTON (obj));
+  adjustment = btk_spin_button_get_adjustment (BTK_SPIN_BUTTON (obj));
+  g_assert (BTK_IS_ADJUSTMENT (adjustment));
   g_object_get (adjustment, "value", &value, NULL);
   g_assert (value == 1);
   g_object_get (adjustment, "lower", &value, NULL);
@@ -835,53 +835,53 @@ test_spin_button (void)
 static void
 test_notebook (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkNotebook\" id=\"notebook1\">"
+    "  <object class=\"BtkNotebook\" id=\"notebook1\">"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label1\">"
+    "      <object class=\"BtkLabel\" id=\"label1\">"
     "        <property name=\"label\">label1</property>"
     "      </object>"
     "    </child>"
     "    <child type=\"tab\">"
-    "      <object class=\"GtkLabel\" id=\"tablabel1\">"
+    "      <object class=\"BtkLabel\" id=\"tablabel1\">"
     "        <property name=\"label\">tab_label1</property>"
     "      </object>"
     "    </child>"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label2\">"
+    "      <object class=\"BtkLabel\" id=\"label2\">"
     "        <property name=\"label\">label2</property>"
     "      </object>"
     "    </child>"
     "    <child type=\"tab\">"
-    "      <object class=\"GtkLabel\" id=\"tablabel2\">"
+    "      <object class=\"BtkLabel\" id=\"tablabel2\">"
     "        <property name=\"label\">tab_label2</property>"
     "      </object>"
     "    </child>"
     "  </object>"
     "</interface>";
   GObject *notebook;
-  GtkWidget *label;
+  BtkWidget *label;
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  notebook = gtk_builder_get_object (builder, "notebook1");
+  notebook = btk_builder_get_object (builder, "notebook1");
   g_assert (notebook != NULL);
-  g_assert (gtk_notebook_get_n_pages (GTK_NOTEBOOK (notebook)) == 2);
+  g_assert (btk_notebook_get_n_pages (BTK_NOTEBOOK (notebook)) == 2);
 
-  label = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 0);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_label (GTK_LABEL (label)), "label1") == 0);
-  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (notebook), label);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_label (GTK_LABEL (label)), "tab_label1") == 0);
+  label = btk_notebook_get_nth_page (BTK_NOTEBOOK (notebook), 0);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_label (BTK_LABEL (label)), "label1") == 0);
+  label = btk_notebook_get_tab_label (BTK_NOTEBOOK (notebook), label);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_label (BTK_LABEL (label)), "tab_label1") == 0);
 
-  label = gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook), 1);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_label (GTK_LABEL (label)), "label2") == 0);
-  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (notebook), label);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_label (GTK_LABEL (label)), "tab_label2") == 0);
+  label = btk_notebook_get_nth_page (BTK_NOTEBOOK (notebook), 1);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_label (BTK_LABEL (label)), "label2") == 0);
+  label = btk_notebook_get_tab_label (BTK_NOTEBOOK (notebook), label);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_label (BTK_LABEL (label)), "tab_label2") == 0);
 
   g_object_unref (builder);
 }
@@ -889,36 +889,36 @@ test_notebook (void)
 static void
 test_construct_only_property (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
-    "    <property name=\"type\">GTK_WINDOW_POPUP</property>"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
+    "    <property name=\"type\">BTK_WINDOW_POPUP</property>"
     "  </object>"
     "</interface>";
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkTextTagTable\" id=\"tagtable1\"/>"
-    "  <object class=\"GtkTextBuffer\" id=\"textbuffer1\">"
+    "  <object class=\"BtkTextTagTable\" id=\"tagtable1\"/>"
+    "  <object class=\"BtkTextBuffer\" id=\"textbuffer1\">"
     "    <property name=\"tag-table\">tagtable1</property>"
     "  </object>"
     "</interface>";
   GObject *widget, *tagtable, *textbuffer;
-  GtkWindowType type;
+  BtkWindowType type;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  widget = gtk_builder_get_object (builder, "window1");
+  widget = btk_builder_get_object (builder, "window1");
   g_object_get (widget, "type", &type, NULL);
-  g_assert (type == GTK_WINDOW_POPUP);
+  g_assert (type == BTK_WINDOW_POPUP);
 
-  gtk_widget_destroy (GTK_WIDGET (widget));
+  btk_widget_destroy (BTK_WIDGET (widget));
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  textbuffer = gtk_builder_get_object (builder, "textbuffer1");
+  textbuffer = btk_builder_get_object (builder, "textbuffer1");
   g_assert (textbuffer != NULL);
   g_object_get (textbuffer, "tag-table", &tagtable, NULL);
-  g_assert (tagtable == gtk_builder_get_object (builder, "tagtable1"));
+  g_assert (tagtable == btk_builder_get_object (builder, "tagtable1"));
   g_object_unref (tagtable);
   g_object_unref (builder);
 }
@@ -926,20 +926,20 @@ test_construct_only_property (void)
 static void
 test_object_properties (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"vbox\">"
+    "      <object class=\"BtkVBox\" id=\"vbox\">"
     "        <property name=\"border-width\">10</property>"
     "        <child>"
-    "          <object class=\"GtkLabel\" id=\"label1\">"
+    "          <object class=\"BtkLabel\" id=\"label1\">"
     "            <property name=\"mnemonic-widget\">spinbutton1</property>"
     "          </object>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkSpinButton\" id=\"spinbutton1\"/>"
+    "          <object class=\"BtkSpinButton\" id=\"spinbutton1\"/>"
     "        </child>"
     "      </object>"
     "    </child>"
@@ -947,21 +947,21 @@ test_object_properties (void)
     "</interface>";
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window2\"/>"
+    "  <object class=\"BtkWindow\" id=\"window2\"/>"
     "</interface>";
   GObject *label, *spinbutton, *window;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  label = gtk_builder_get_object (builder, "label1");
+  label = btk_builder_get_object (builder, "label1");
   g_assert (label != NULL);
-  spinbutton = gtk_builder_get_object (builder, "spinbutton1");
+  spinbutton = btk_builder_get_object (builder, "spinbutton1");
   g_assert (spinbutton != NULL);
-  g_assert (spinbutton == (GObject*)gtk_label_get_mnemonic_widget (GTK_LABEL (label)));
+  g_assert (spinbutton == (GObject*)btk_label_get_mnemonic_widget (BTK_LABEL (label)));
 
-  gtk_builder_add_from_string (builder, buffer2, -1, NULL);
-  window = gtk_builder_get_object (builder, "window2");
+  btk_builder_add_from_string (builder, buffer2, -1, NULL);
+  window = btk_builder_get_object (builder, "window2");
   g_assert (window != NULL);
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
 
   g_object_unref (builder);
 }
@@ -969,13 +969,13 @@ test_object_properties (void)
 static void
 test_children (void)
 {
-  GtkBuilder * builder;
+  BtkBuilder * builder;
   GList *children;
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkButton\" id=\"button1\">"
+    "      <object class=\"BtkButton\" id=\"button1\">"
     "        <property name=\"label\">Hello</property>"
     "      </object>"
     "    </child>"
@@ -983,12 +983,12 @@ test_children (void)
     "</interface>";
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkDialog\" id=\"dialog1\">"
+    "  <object class=\"BtkDialog\" id=\"dialog1\">"
     "    <child internal-child=\"vbox\">"
-    "      <object class=\"GtkVBox\" id=\"dialog1-vbox\">"
+    "      <object class=\"BtkVBox\" id=\"dialog1-vbox\">"
     "        <property name=\"border-width\">10</property>"
     "          <child internal-child=\"action_area\">"
-    "            <object class=\"GtkHButtonBox\" id=\"dialog1-action_area\">"
+    "            <object class=\"BtkHButtonBox\" id=\"dialog1-action_area\">"
     "              <property name=\"border-width\">20</property>"
     "            </object>"
     "          </child>"
@@ -1001,61 +1001,61 @@ test_children (void)
   GObject *dialog, *vbox, *action_area;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  window = gtk_builder_get_object (builder, "window1");
+  window = btk_builder_get_object (builder, "window1");
   g_assert (window != NULL);
-  g_assert (GTK_IS_WINDOW (window));
+  g_assert (BTK_IS_WINDOW (window));
 
-  button = gtk_builder_get_object (builder, "button1");
+  button = btk_builder_get_object (builder, "button1");
   g_assert (button != NULL);
-  g_assert (GTK_IS_BUTTON (button));
-  g_assert (GTK_WIDGET(button)->parent != NULL);
-  g_assert (strcmp (gtk_buildable_get_name (GTK_BUILDABLE (GTK_WIDGET (button)->parent)), "window1") == 0);
+  g_assert (BTK_IS_BUTTON (button));
+  g_assert (BTK_WIDGET(button)->parent != NULL);
+  g_assert (strcmp (btk_buildable_get_name (BTK_BUILDABLE (BTK_WIDGET (button)->parent)), "window1") == 0);
 
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer2, -1, NULL);
-  dialog = gtk_builder_get_object (builder, "dialog1");
+  dialog = btk_builder_get_object (builder, "dialog1");
   g_assert (dialog != NULL);
-  g_assert (GTK_IS_DIALOG (dialog));
-  children = gtk_container_get_children (GTK_CONTAINER (dialog));
+  g_assert (BTK_IS_DIALOG (dialog));
+  children = btk_container_get_children (BTK_CONTAINER (dialog));
   g_assert (g_list_length (children) == 1);
   g_list_free (children);
   
-  vbox = gtk_builder_get_object (builder, "dialog1-vbox");
+  vbox = btk_builder_get_object (builder, "dialog1-vbox");
   g_assert (vbox != NULL);
-  g_assert (GTK_IS_VBOX (vbox));
-  g_assert (strcmp (gtk_buildable_get_name (GTK_BUILDABLE (GTK_WIDGET (vbox)->parent)), "dialog1") == 0);
-  g_assert (GTK_CONTAINER (vbox)->border_width == 10);
-  g_assert (strcmp (gtk_buildable_get_name (GTK_BUILDABLE (GTK_DIALOG (dialog)->vbox)), "dialog1-vbox") == 0);
+  g_assert (BTK_IS_VBOX (vbox));
+  g_assert (strcmp (btk_buildable_get_name (BTK_BUILDABLE (BTK_WIDGET (vbox)->parent)), "dialog1") == 0);
+  g_assert (BTK_CONTAINER (vbox)->border_width == 10);
+  g_assert (strcmp (btk_buildable_get_name (BTK_BUILDABLE (BTK_DIALOG (dialog)->vbox)), "dialog1-vbox") == 0);
 
-  action_area = gtk_builder_get_object (builder, "dialog1-action_area");
+  action_area = btk_builder_get_object (builder, "dialog1-action_area");
   g_assert (action_area != NULL);
-  g_assert (GTK_IS_HBUTTON_BOX (action_area));
-  g_assert (GTK_WIDGET (action_area)->parent != NULL);
-  g_assert (GTK_CONTAINER (action_area)->border_width == 20);
-  g_assert (GTK_DIALOG (dialog)->action_area != NULL);
-  g_assert (gtk_buildable_get_name (GTK_BUILDABLE (GTK_DIALOG (dialog)->action_area)) != NULL);
-  g_assert (strcmp (gtk_buildable_get_name (GTK_BUILDABLE (GTK_DIALOG (dialog)->action_area)), "dialog1-action_area") == 0);
-  gtk_widget_destroy (GTK_WIDGET (dialog));
+  g_assert (BTK_IS_HBUTTON_BOX (action_area));
+  g_assert (BTK_WIDGET (action_area)->parent != NULL);
+  g_assert (BTK_CONTAINER (action_area)->border_width == 20);
+  g_assert (BTK_DIALOG (dialog)->action_area != NULL);
+  g_assert (btk_buildable_get_name (BTK_BUILDABLE (BTK_DIALOG (dialog)->action_area)) != NULL);
+  g_assert (strcmp (btk_buildable_get_name (BTK_BUILDABLE (BTK_DIALOG (dialog)->action_area)), "dialog1-action_area") == 0);
+  btk_widget_destroy (BTK_WIDGET (dialog));
   g_object_unref (builder);
 }
 
 static void
 test_child_properties (void)
 {
-  GtkBuilder * builder;
+  BtkBuilder * builder;
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkVBox\" id=\"vbox1\">"
+    "  <object class=\"BtkVBox\" id=\"vbox1\">"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label1\"/>"
+    "      <object class=\"BtkLabel\" id=\"label1\"/>"
     "      <packing>"
     "        <property name=\"pack-type\">start</property>"
     "      </packing>"
     "    </child>"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label2\"/>"
+    "      <object class=\"BtkLabel\" id=\"label2\"/>"
     "      <packing>"
     "        <property name=\"pack-type\">end</property>"
     "      </packing>"
@@ -1064,29 +1064,29 @@ test_child_properties (void)
     "</interface>";
 
   GObject *label, *vbox;
-  GtkPackType pack_type;
+  BtkPackType pack_type;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  vbox = gtk_builder_get_object (builder, "vbox1");
-  g_assert (GTK_IS_VBOX (vbox));
+  vbox = btk_builder_get_object (builder, "vbox1");
+  g_assert (BTK_IS_VBOX (vbox));
 
-  label = gtk_builder_get_object (builder, "label1");
-  g_assert (GTK_IS_LABEL (label));
-  gtk_container_child_get (GTK_CONTAINER (vbox),
-                           GTK_WIDGET (label),
+  label = btk_builder_get_object (builder, "label1");
+  g_assert (BTK_IS_LABEL (label));
+  btk_container_child_get (BTK_CONTAINER (vbox),
+                           BTK_WIDGET (label),
                            "pack-type",
                            &pack_type,
                            NULL);
-  g_assert (pack_type == GTK_PACK_START);
+  g_assert (pack_type == BTK_PACK_START);
   
-  label = gtk_builder_get_object (builder, "label2");
-  g_assert (GTK_IS_LABEL (label));
-  gtk_container_child_get (GTK_CONTAINER (vbox),
-                           GTK_WIDGET (label),
+  label = btk_builder_get_object (builder, "label2");
+  g_assert (BTK_IS_LABEL (label));
+  btk_container_child_get (BTK_CONTAINER (vbox),
+                           BTK_WIDGET (label),
                            "pack-type",
                            &pack_type,
                            NULL);
-  g_assert (pack_type == GTK_PACK_END);
+  g_assert (pack_type == BTK_PACK_END);
 
   g_object_unref (builder);
 }
@@ -1094,10 +1094,10 @@ test_child_properties (void)
 static void
 test_treeview_column (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "<object class=\"GtkListStore\" id=\"liststore1\">"
+    "<object class=\"BtkListStore\" id=\"liststore1\">"
     "  <columns>"
     "    <column type=\"gchararray\"/>"
     "    <column type=\"guint\"/>"
@@ -1109,16 +1109,16 @@ test_treeview_column (void)
     "    </row>"
     "  </data>"
     "</object>"
-    "<object class=\"GtkWindow\" id=\"window1\">"
+    "<object class=\"BtkWindow\" id=\"window1\">"
     "  <child>"
-    "    <object class=\"GtkTreeView\" id=\"treeview1\">"
+    "    <object class=\"BtkTreeView\" id=\"treeview1\">"
     "      <property name=\"visible\">True</property>"
     "      <property name=\"model\">liststore1</property>"
     "      <child>"
-    "        <object class=\"GtkTreeViewColumn\" id=\"column1\">"
+    "        <object class=\"BtkTreeViewColumn\" id=\"column1\">"
     "          <property name=\"title\">Test</property>"
     "          <child>"
-    "            <object class=\"GtkCellRendererText\" id=\"renderer1\"/>"
+    "            <object class=\"BtkCellRendererText\" id=\"renderer1\"/>"
     "            <attributes>"
     "              <attribute name=\"text\">1</attribute>"
     "            </attributes>"
@@ -1126,10 +1126,10 @@ test_treeview_column (void)
     "        </object>"
     "      </child>"
     "      <child>"
-    "        <object class=\"GtkTreeViewColumn\" id=\"column2\">"
+    "        <object class=\"BtkTreeViewColumn\" id=\"column2\">"
     "          <property name=\"title\">Number</property>"
     "          <child>"
-    "            <object class=\"GtkCellRendererText\" id=\"renderer2\"/>"
+    "            <object class=\"BtkCellRendererText\" id=\"renderer2\"/>"
     "            <attributes>"
     "              <attribute name=\"text\">0</attribute>"
     "            </attributes>"
@@ -1141,44 +1141,44 @@ test_treeview_column (void)
     "</object>"
     "</interface>";
   GObject *window, *treeview;
-  GtkTreeViewColumn *column;
+  BtkTreeViewColumn *column;
   GList *renderers;
   GObject *renderer;
   gchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  treeview = gtk_builder_get_object (builder, "treeview1");
+  treeview = btk_builder_get_object (builder, "treeview1");
   g_assert (treeview);
-  g_assert (GTK_IS_TREE_VIEW (treeview));
-  column = gtk_tree_view_get_column (GTK_TREE_VIEW (treeview), 0);
-  g_assert (GTK_IS_TREE_VIEW_COLUMN (column));
-  g_assert (strcmp (gtk_tree_view_column_get_title (column), "Test") == 0);
+  g_assert (BTK_IS_TREE_VIEW (treeview));
+  column = btk_tree_view_get_column (BTK_TREE_VIEW (treeview), 0);
+  g_assert (BTK_IS_TREE_VIEW_COLUMN (column));
+  g_assert (strcmp (btk_tree_view_column_get_title (column), "Test") == 0);
 
-  renderers = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (column));
+  renderers = btk_cell_layout_get_cells (BTK_CELL_LAYOUT (column));
   g_assert (g_list_length (renderers) == 1);
   renderer = g_list_nth_data (renderers, 0);
   g_assert (renderer);
-  g_assert (GTK_IS_CELL_RENDERER_TEXT (renderer));
+  g_assert (BTK_IS_CELL_RENDERER_TEXT (renderer));
   g_list_free (renderers);
 
-  gtk_widget_realize (GTK_WIDGET (treeview));
+  btk_widget_realize (BTK_WIDGET (treeview));
 
-  renderer = gtk_builder_get_object (builder, "renderer1");
+  renderer = btk_builder_get_object (builder, "renderer1");
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "25") == 0);
   g_free (text);
   
-  renderer = gtk_builder_get_object (builder, "renderer2");
+  renderer = btk_builder_get_object (builder, "renderer2");
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "John") == 0);
   g_free (text);
 
-  gtk_widget_unrealize (GTK_WIDGET (treeview));
+  btk_widget_unrealize (BTK_WIDGET (treeview));
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
   
   g_object_unref (builder);
 }
@@ -1186,13 +1186,13 @@ test_treeview_column (void)
 static void
 test_icon_view (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"gchararray\"/>"
-    "      <column type=\"GdkPixbuf\"/>"
+    "      <column type=\"BdkPixbuf\"/>"
     "    </columns>"
     "    <data>"
     "      <row>"
@@ -1200,15 +1200,15 @@ test_icon_view (void)
     "      </row>"
     "    </data>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkIconView\" id=\"iconview1\">"
+    "      <object class=\"BtkIconView\" id=\"iconview1\">"
     "        <property name=\"model\">liststore1</property>"
     "        <property name=\"text-column\">0</property>"
     "        <property name=\"pixbuf-column\">1</property>"
     "        <property name=\"visible\">True</property>"
     "        <child>"
-    "          <object class=\"GtkCellRendererText\" id=\"renderer1\"/>"
+    "          <object class=\"BtkCellRendererText\" id=\"renderer1\"/>"
     "          <attributes>"
     "            <attribute name=\"text\">0</attribute>"
     "          </attributes>"
@@ -1221,30 +1221,30 @@ test_icon_view (void)
   gchar *text;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  iconview = gtk_builder_get_object (builder, "iconview1");
+  iconview = btk_builder_get_object (builder, "iconview1");
   g_assert (iconview);
-  g_assert (GTK_IS_ICON_VIEW (iconview));
+  g_assert (BTK_IS_ICON_VIEW (iconview));
 
-  gtk_widget_realize (GTK_WIDGET (iconview));
+  btk_widget_realize (BTK_WIDGET (iconview));
 
-  renderer = gtk_builder_get_object (builder, "renderer1");
+  renderer = btk_builder_get_object (builder, "renderer1");
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "test") == 0);
   g_free (text);
     
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
 }
 
 static void
 test_combo_box (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"guint\"/>"
     "      <column type=\"gchararray\"/>"
@@ -1260,19 +1260,19 @@ test_combo_box (void)
     "      </row>"
     "    </data>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkComboBox\" id=\"combobox1\">"
+    "      <object class=\"BtkComboBox\" id=\"combobox1\">"
     "        <property name=\"model\">liststore1</property>"
     "        <property name=\"visible\">True</property>"
     "        <child>"
-    "          <object class=\"GtkCellRendererText\" id=\"renderer1\"/>"
+    "          <object class=\"BtkCellRendererText\" id=\"renderer1\"/>"
     "          <attributes>"
     "            <attribute name=\"text\">0</attribute>"
     "          </attributes>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkCellRendererText\" id=\"renderer2\"/>"
+    "          <object class=\"BtkCellRendererText\" id=\"renderer2\"/>"
     "          <attributes>"
     "            <attribute name=\"text\">1</attribute>"
     "          </attributes>"
@@ -1285,26 +1285,26 @@ test_combo_box (void)
   gchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  combobox = gtk_builder_get_object (builder, "combobox1");
+  combobox = btk_builder_get_object (builder, "combobox1");
   g_assert (combobox);
-  gtk_widget_realize (GTK_WIDGET (combobox));
+  btk_widget_realize (BTK_WIDGET (combobox));
 
-  renderer = gtk_builder_get_object (builder, "renderer2");
+  renderer = btk_builder_get_object (builder, "renderer2");
   g_assert (renderer);
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "Bar") == 0);
   g_free (text);
 
-  renderer = gtk_builder_get_object (builder, "renderer1");
+  renderer = btk_builder_get_object (builder, "renderer1");
   g_assert (renderer);
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "2") == 0);
   g_free (text);
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
 
   g_object_unref (builder);
 }
@@ -1313,10 +1313,10 @@ test_combo_box (void)
 static void
 test_combo_box_entry (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"guint\"/>"
     "      <column type=\"gchararray\"/>"
@@ -1332,20 +1332,20 @@ test_combo_box_entry (void)
     "      </row>"
     "    </data>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkComboBox\" id=\"comboboxentry1\">"
+    "      <object class=\"BtkComboBox\" id=\"comboboxentry1\">"
     "        <property name=\"model\">liststore1</property>"
     "        <property name=\"has-entry\">True</property>"
     "        <property name=\"visible\">True</property>"
     "        <child>"
-    "          <object class=\"GtkCellRendererText\" id=\"renderer1\"/>"
+    "          <object class=\"BtkCellRendererText\" id=\"renderer1\"/>"
     "            <attributes>"
     "              <attribute name=\"text\">0</attribute>"
     "            </attributes>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkCellRendererText\" id=\"renderer2\"/>"
+    "          <object class=\"BtkCellRendererText\" id=\"renderer2\"/>"
     "            <attributes>"
     "              <attribute name=\"text\">1</attribute>"
     "            </attributes>"
@@ -1358,25 +1358,25 @@ test_combo_box_entry (void)
   gchar *text;
 
   builder = builder_new_from_string (buffer, -1, NULL);
-  combobox = gtk_builder_get_object (builder, "comboboxentry1");
+  combobox = btk_builder_get_object (builder, "comboboxentry1");
   g_assert (combobox);
 
-  renderer = gtk_builder_get_object (builder, "renderer2");
+  renderer = btk_builder_get_object (builder, "renderer2");
   g_assert (renderer);
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "Bar") == 0);
   g_free (text);
 
-  renderer = gtk_builder_get_object (builder, "renderer1");
+  renderer = btk_builder_get_object (builder, "renderer1");
   g_assert (renderer);
   g_object_get (renderer, "text", &text, NULL);
   g_assert (text);
   g_assert (strcmp (text, "2") == 0);
   g_free (text);
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
 
   g_object_unref (builder);
 }
@@ -1385,10 +1385,10 @@ test_combo_box_entry (void)
 static void
 test_cell_view (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar *buffer =
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\">"
     "    <columns>"
     "      <column type=\"gchararray\"/>"
     "    </columns>"
@@ -1398,14 +1398,14 @@ test_cell_view (void)
     "      </row>"
     "    </data>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkCellView\" id=\"cellview1\">"
+    "      <object class=\"BtkCellView\" id=\"cellview1\">"
     "        <property name=\"visible\">True</property>"
     "        <property name=\"model\">liststore1</property>"
-    "        <accelerator key=\"f\" modifiers=\"GDK_CONTROL_MASK\" signal=\"grab_focus\"/>"
+    "        <accelerator key=\"f\" modifiers=\"BDK_CONTROL_MASK\" signal=\"grab_focus\"/>"
     "        <child>"
-    "          <object class=\"GtkCellRendererText\" id=\"renderer1\"/>"
+    "          <object class=\"BtkCellRendererText\" id=\"renderer1\"/>"
     "          <attributes>"
     "            <attribute name=\"text\">0</attribute>"
     "          </attributes>"
@@ -1416,28 +1416,28 @@ test_cell_view (void)
     "</interface>";
   GObject *cellview;
   GObject *model, *window;
-  GtkTreePath *path;
+  BtkTreePath *path;
   GList *renderers;
   GObject *renderer;
   gchar *text;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  cellview = gtk_builder_get_object (builder, "cellview1");
+  cellview = btk_builder_get_object (builder, "cellview1");
   g_assert (builder);
   g_assert (cellview);
-  g_assert (GTK_IS_CELL_VIEW (cellview));
+  g_assert (BTK_IS_CELL_VIEW (cellview));
   g_object_get (cellview, "model", &model, NULL);
   g_assert (model);
-  g_assert (GTK_IS_TREE_MODEL (model));
+  g_assert (BTK_IS_TREE_MODEL (model));
   g_object_unref (model);
-  path = gtk_tree_path_new_first ();
-  gtk_cell_view_set_displayed_row (GTK_CELL_VIEW (cellview), path);
+  path = btk_tree_path_new_first ();
+  btk_cell_view_set_displayed_row (BTK_CELL_VIEW (cellview), path);
   
-  renderers = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (cellview));
+  renderers = btk_cell_layout_get_cells (BTK_CELL_LAYOUT (cellview));
   g_assert (renderers);
   g_assert (g_list_length (renderers) == 1);
   
-  gtk_widget_realize (GTK_WIDGET (cellview));
+  btk_widget_realize (BTK_WIDGET (cellview));
 
   renderer = g_list_nth_data (renderers, 0);
   g_list_free (renderers);
@@ -1445,10 +1445,10 @@ test_cell_view (void)
   g_object_get (renderer, "text", &text, NULL);
   g_assert (strcmp (text, "test") == 0);
   g_free (text);
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 
-  window = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window));
+  window = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window));
   
   g_object_unref (builder);
 }
@@ -1456,19 +1456,19 @@ test_cell_view (void)
 static void
 test_dialog (void)
 {
-  GtkBuilder * builder;
+  BtkBuilder * builder;
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkDialog\" id=\"dialog1\">"
+    "  <object class=\"BtkDialog\" id=\"dialog1\">"
     "    <child internal-child=\"vbox\">"
-    "      <object class=\"GtkVBox\" id=\"dialog1-vbox\">"
+    "      <object class=\"BtkVBox\" id=\"dialog1-vbox\">"
     "          <child internal-child=\"action_area\">"
-    "            <object class=\"GtkHButtonBox\" id=\"dialog1-action_area\">"
+    "            <object class=\"BtkHButtonBox\" id=\"dialog1-action_area\">"
     "              <child>"
-    "                <object class=\"GtkButton\" id=\"button_cancel\"/>"
+    "                <object class=\"BtkButton\" id=\"button_cancel\"/>"
     "              </child>"
     "              <child>"
-    "                <object class=\"GtkButton\" id=\"button_ok\"/>"
+    "                <object class=\"BtkButton\" id=\"button_ok\"/>"
     "              </child>"
     "            </object>"
     "          </child>"
@@ -1486,27 +1486,27 @@ test_dialog (void)
   GObject *button_cancel;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  dialog1 = gtk_builder_get_object (builder, "dialog1");
-  button_ok = gtk_builder_get_object (builder, "button_ok");
-  g_assert (gtk_dialog_get_response_for_widget (GTK_DIALOG (dialog1), GTK_WIDGET (button_ok)) == 3);
-  button_cancel = gtk_builder_get_object (builder, "button_cancel");
-  g_assert (gtk_dialog_get_response_for_widget (GTK_DIALOG (dialog1), GTK_WIDGET (button_cancel)) == -5);
+  dialog1 = btk_builder_get_object (builder, "dialog1");
+  button_ok = btk_builder_get_object (builder, "button_ok");
+  g_assert (btk_dialog_get_response_for_widget (BTK_DIALOG (dialog1), BTK_WIDGET (button_ok)) == 3);
+  button_cancel = btk_builder_get_object (builder, "button_cancel");
+  g_assert (btk_dialog_get_response_for_widget (BTK_DIALOG (dialog1), BTK_WIDGET (button_cancel)) == -5);
   
-  gtk_widget_destroy (GTK_WIDGET (dialog1));
+  btk_widget_destroy (BTK_WIDGET (dialog1));
   g_object_unref (builder);
 }
 
 static void
 test_message_dialog (void)
 {
-  GtkBuilder * builder;
+  BtkBuilder * builder;
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkMessageDialog\" id=\"dialog1\">"
+    "  <object class=\"BtkMessageDialog\" id=\"dialog1\">"
     "    <child internal-child=\"message_area\">"
-    "      <object class=\"GtkVBox\" id=\"dialog-message-area\">"
+    "      <object class=\"BtkVBox\" id=\"dialog-message-area\">"
     "        <child>"
-    "          <object class=\"GtkExpander\" id=\"expander\"/>"
+    "          <object class=\"BtkExpander\" id=\"expander\"/>"
     "        </child>"
     "      </object>"
     "    </child>"
@@ -1517,36 +1517,36 @@ test_message_dialog (void)
   GObject *expander;
 
   builder = builder_new_from_string (buffer1, -1, NULL);
-  dialog1 = gtk_builder_get_object (builder, "dialog1");
-  expander = gtk_builder_get_object (builder, "expander");
-  g_assert (GTK_IS_EXPANDER (expander));
-  g_assert (gtk_widget_get_parent (GTK_WIDGET (expander)) == gtk_message_dialog_get_message_area (GTK_MESSAGE_DIALOG (dialog1)));
+  dialog1 = btk_builder_get_object (builder, "dialog1");
+  expander = btk_builder_get_object (builder, "expander");
+  g_assert (BTK_IS_EXPANDER (expander));
+  g_assert (btk_widget_get_parent (BTK_WIDGET (expander)) == btk_message_dialog_get_message_area (BTK_MESSAGE_DIALOG (dialog1)));
 
-  gtk_widget_destroy (GTK_WIDGET (dialog1));
+  btk_widget_destroy (BTK_WIDGET (dialog1));
   g_object_unref (builder);
 }
 
 static void
 test_accelerators (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar *buffer =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkButton\" id=\"button1\">"
-    "        <accelerator key=\"q\" modifiers=\"GDK_CONTROL_MASK\" signal=\"clicked\"/>"
+    "      <object class=\"BtkButton\" id=\"button1\">"
+    "        <accelerator key=\"q\" modifiers=\"BDK_CONTROL_MASK\" signal=\"clicked\"/>"
     "      </object>"
     "    </child>"
     "  </object>"
     "</interface>";
   const gchar *buffer2 =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkTreeView\" id=\"treeview1\">"
-    "        <signal name=\"cursor-changed\" handler=\"gtk_main_quit\"/>"
-    "        <accelerator key=\"f\" modifiers=\"GDK_CONTROL_MASK\" signal=\"grab_focus\"/>"
+    "      <object class=\"BtkTreeView\" id=\"treeview1\">"
+    "        <signal name=\"cursor-changed\" handler=\"btk_main_quit\"/>"
+    "        <accelerator key=\"f\" modifiers=\"BDK_CONTROL_MASK\" signal=\"grab_focus\"/>"
     "      </object>"
     "    </child>"
     "  </object>"
@@ -1556,29 +1556,29 @@ test_accelerators (void)
   GObject *accel_group;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  window1 = gtk_builder_get_object (builder, "window1");
+  window1 = btk_builder_get_object (builder, "window1");
   g_assert (window1);
-  g_assert (GTK_IS_WINDOW (window1));
+  g_assert (BTK_IS_WINDOW (window1));
 
-  accel_groups = gtk_accel_groups_from_object (window1);
+  accel_groups = btk_accel_groups_from_object (window1);
   g_assert (g_slist_length (accel_groups) == 1);
   accel_group = g_slist_nth_data (accel_groups, 0);
   g_assert (accel_group);
 
-  gtk_widget_destroy (GTK_WIDGET (window1));
+  btk_widget_destroy (BTK_WIDGET (window1));
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  window1 = gtk_builder_get_object (builder, "window1");
+  window1 = btk_builder_get_object (builder, "window1");
   g_assert (window1);
-  g_assert (GTK_IS_WINDOW (window1));
+  g_assert (BTK_IS_WINDOW (window1));
 
-  accel_groups = gtk_accel_groups_from_object (window1);
+  accel_groups = btk_accel_groups_from_object (window1);
   g_assert (g_slist_length (accel_groups) == 1);
   accel_group = g_slist_nth_data (accel_groups, 0);
   g_assert (accel_group);
 
-  gtk_widget_destroy (GTK_WIDGET (window1));
+  btk_widget_destroy (BTK_WIDGET (window1));
   g_object_unref (builder);
 }
 
@@ -1587,9 +1587,9 @@ test_widget (void)
 {
   const gchar *buffer =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkButton\" id=\"button1\">"
+    "      <object class=\"BtkButton\" id=\"button1\">"
     "         <property name=\"can-focus\">True</property>"
     "         <property name=\"has-focus\">True</property>"
     "      </object>"
@@ -1598,9 +1598,9 @@ test_widget (void)
    "</interface>";
   const gchar *buffer2 =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkButton\" id=\"button1\">"
+    "      <object class=\"BtkButton\" id=\"button1\">"
     "         <property name=\"can-default\">True</property>"
     "         <property name=\"has-default\">True</property>"
     "      </object>"
@@ -1609,14 +1609,14 @@ test_widget (void)
    "</interface>";
   const gchar *buffer3 =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"vbox1\">"
+    "      <object class=\"BtkVBox\" id=\"vbox1\">"
     "        <child>"
-    "          <object class=\"GtkLabel\" id=\"label1\">"
+    "          <object class=\"BtkLabel\" id=\"label1\">"
     "            <child internal-child=\"accessible\">"
-    "              <object class=\"AtkObject\" id=\"a11y-label1\">"
-    "                <property name=\"AtkObject::accessible-name\">A Label</property>"
+    "              <object class=\"BatkObject\" id=\"a11y-label1\">"
+    "                <property name=\"BatkObject::accessible-name\">A Label</property>"
     "              </object>"
     "            </child>"
     "            <accessibility>"
@@ -1625,7 +1625,7 @@ test_widget (void)
     "          </object>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkButton\" id=\"button1\">"
+    "          <object class=\"BtkButton\" id=\"button1\">"
     "            <accessibility>"
     "              <action action_name=\"click\" description=\"Sliff\"/>"
     "              <action action_name=\"clack\" translatable=\"yes\">Sniff</action>"
@@ -1636,50 +1636,50 @@ test_widget (void)
     "    </child>"
     "  </object>"
     "</interface>";
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *window1, *button1, *label1;
-  AtkObject *accessible;
-  AtkRelationSet *relation_set;
-  AtkRelation *relation;
+  BatkObject *accessible;
+  BatkRelationSet *relation_set;
+  BatkRelation *relation;
   char *name;
   
   builder = builder_new_from_string (buffer, -1, NULL);
-  button1 = gtk_builder_get_object (builder, "button1");
+  button1 = btk_builder_get_object (builder, "button1");
 
 #if 0
-  g_assert (gtk_widget_has_focus (GTK_WIDGET (button1)));
+  g_assert (btk_widget_has_focus (BTK_WIDGET (button1)));
 #endif
-  window1 = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window1));
+  window1 = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window1));
   
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer2, -1, NULL);
-  button1 = gtk_builder_get_object (builder, "button1");
+  button1 = btk_builder_get_object (builder, "button1");
 
-  g_assert (gtk_widget_get_receives_default (GTK_WIDGET (button1)));
+  g_assert (btk_widget_get_receives_default (BTK_WIDGET (button1)));
   
   g_object_unref (builder);
   
   builder = builder_new_from_string (buffer3, -1, NULL);
 
-  window1 = gtk_builder_get_object (builder, "window1");
-  label1 = gtk_builder_get_object (builder, "label1");
+  window1 = btk_builder_get_object (builder, "window1");
+  label1 = btk_builder_get_object (builder, "label1");
 
-  accessible = gtk_widget_get_accessible (GTK_WIDGET (label1));
-  relation_set = atk_object_ref_relation_set (accessible);
-  g_return_if_fail (atk_relation_set_get_n_relations (relation_set) == 1);
-  relation = atk_relation_set_get_relation (relation_set, 0);
+  accessible = btk_widget_get_accessible (BTK_WIDGET (label1));
+  relation_set = batk_object_ref_relation_set (accessible);
+  g_return_if_fail (batk_relation_set_get_n_relations (relation_set) == 1);
+  relation = batk_relation_set_get_relation (relation_set, 0);
   g_return_if_fail (relation != NULL);
-  g_return_if_fail (ATK_IS_RELATION (relation));
-  g_return_if_fail (atk_relation_get_relation_type (relation) != ATK_RELATION_LABELLED_BY);
+  g_return_if_fail (BATK_IS_RELATION (relation));
+  g_return_if_fail (batk_relation_get_relation_type (relation) != BATK_RELATION_LABELLED_BY);
   g_object_unref (relation_set);
 
   g_object_get (G_OBJECT (accessible), "accessible-name", &name, NULL);
   g_return_if_fail (strcmp (name, "A Label") == 0);
   g_free (name);
   
-  gtk_widget_destroy (GTK_WIDGET (window1));
+  btk_widget_destroy (BTK_WIDGET (window1));
   g_object_unref (builder);
 }
 
@@ -1688,30 +1688,30 @@ test_window (void)
 {
   const gchar *buffer1 =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "     <property name=\"title\"></property>"
     "  </object>"
    "</interface>";
   const gchar *buffer2 =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "  </object>"
    "</interface>";
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GObject *window1;
   gchar *title;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  window1 = gtk_builder_get_object (builder, "window1");
+  window1 = btk_builder_get_object (builder, "window1");
   g_object_get (window1, "title", &title, NULL);
   g_assert (strcmp (title, "") == 0);
   g_free (title);
-  gtk_widget_destroy (GTK_WIDGET (window1));
+  btk_widget_destroy (BTK_WIDGET (window1));
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  window1 = gtk_builder_get_object (builder, "window1");
-  gtk_widget_destroy (GTK_WIDGET (window1));
+  window1 = btk_builder_get_object (builder, "window1");
+  btk_widget_destroy (BTK_WIDGET (window1));
   g_object_unref (builder);
 }
 
@@ -1720,146 +1720,146 @@ test_value_from_string (void)
 {
   GValue value = { 0 };
   GError *error = NULL;
-  GtkBuilder *builder;
+  BtkBuilder *builder;
 
-  builder = gtk_builder_new ();
+  builder = btk_builder_new ();
   
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_STRING, "test", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_STRING, "test", &value, &error));
   g_assert (G_VALUE_HOLDS_STRING (&value));
   g_assert (strcmp (g_value_get_string (&value), "test") == 0);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "true", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "true", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == TRUE);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "false", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "false", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == FALSE);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "yes", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "yes", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == TRUE);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "no", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "no", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == FALSE);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "0", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "0", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == FALSE);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "1", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "1", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == TRUE);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "tRuE", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "tRuE", &value, &error));
   g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
   g_assert (g_value_get_boolean (&value) == TRUE);
   g_value_unset (&value);
   
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "blaurgh", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "blaurgh", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "yess", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "yess", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "trueee", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "trueee", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_BOOLEAN, "", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_INT, "12345", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_INT, "12345", &value, &error));
   g_assert (G_VALUE_HOLDS_INT (&value));
   g_assert (g_value_get_int (&value) == 12345);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_LONG, "9912345", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_LONG, "9912345", &value, &error));
   g_assert (G_VALUE_HOLDS_LONG (&value));
   g_assert (g_value_get_long (&value) == 9912345);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_UINT, "2345", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_UINT, "2345", &value, &error));
   g_assert (G_VALUE_HOLDS_UINT (&value));
   g_assert (g_value_get_uint (&value) == 2345);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_FLOAT, "1.454", &value, &error));
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_FLOAT, "1.454", &value, &error));
   g_assert (G_VALUE_HOLDS_FLOAT (&value));
   g_assert (fabs (g_value_get_float (&value) - 1.454) < 0.00001);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_FLOAT, "abc", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_FLOAT, "abc", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
 
-  g_assert (gtk_builder_value_from_string_type (builder, G_TYPE_INT, "/-+,abc", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, G_TYPE_INT, "/-+,abc", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
 
-  g_assert (gtk_builder_value_from_string_type (builder, GTK_TYPE_WINDOW_TYPE, "toplevel", &value, &error) == TRUE);
+  g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WINDOW_TYPE, "toplevel", &value, &error) == TRUE);
   g_assert (G_VALUE_HOLDS_ENUM (&value));
-  g_assert (g_value_get_enum (&value) == GTK_WINDOW_TOPLEVEL);
+  g_assert (g_value_get_enum (&value) == BTK_WINDOW_TOPLEVEL);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, GTK_TYPE_WINDOW_TYPE, "sliff", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WINDOW_TYPE, "sliff", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
-  g_assert (gtk_builder_value_from_string_type (builder, GTK_TYPE_WIDGET_FLAGS, "mapped", &value, &error) == TRUE);
+  g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WIDGET_FLAGS, "mapped", &value, &error) == TRUE);
   g_assert (G_VALUE_HOLDS_FLAGS (&value));
-  g_assert (g_value_get_flags (&value) == GTK_MAPPED);
+  g_assert (g_value_get_flags (&value) == BTK_MAPPED);
   g_value_unset (&value);
 
-  g_assert (gtk_builder_value_from_string_type (builder, GTK_TYPE_WIDGET_FLAGS, "GTK_VISIBLE | GTK_REALIZED", &value, &error) == TRUE);
+  g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WIDGET_FLAGS, "BTK_VISIBLE | BTK_REALIZED", &value, &error) == TRUE);
   g_assert (G_VALUE_HOLDS_FLAGS (&value));
-  g_assert (g_value_get_flags (&value) == (GTK_VISIBLE | GTK_REALIZED));
+  g_assert (g_value_get_flags (&value) == (BTK_VISIBLE | BTK_REALIZED));
   g_value_unset (&value);
   
-  g_assert (gtk_builder_value_from_string_type (builder, GTK_TYPE_WINDOW_TYPE, "foobar", &value, &error) == FALSE);
+  g_assert (btk_builder_value_from_string_type (builder, BTK_TYPE_WINDOW_TYPE, "foobar", &value, &error) == FALSE);
   g_value_unset (&value);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_VALUE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_VALUE));
   g_error_free (error);
   error = NULL;
   
@@ -1878,14 +1878,14 @@ model_weakref (gpointer data,
 static void
 test_reference_counting (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkListStore\" id=\"liststore1\"/>"
-    "  <object class=\"GtkListStore\" id=\"liststore2\"/>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkListStore\" id=\"liststore1\"/>"
+    "  <object class=\"BtkListStore\" id=\"liststore2\"/>"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkTreeView\" id=\"treeview1\">"
+    "      <object class=\"BtkTreeView\" id=\"treeview1\">"
     "        <property name=\"model\">liststore1</property>"
     "      </object>"
     "    </child>"
@@ -1893,9 +1893,9 @@ test_reference_counting (void)
     "</interface>";
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkVBox\" id=\"vbox1\">"
+    "  <object class=\"BtkVBox\" id=\"vbox1\">"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label1\"/>"
+    "      <object class=\"BtkLabel\" id=\"label1\"/>"
     "      <packing>"
     "        <property name=\"pack-type\">start</property>"
     "      </packing>"
@@ -1905,18 +1905,18 @@ test_reference_counting (void)
   GObject *window, *treeview, *model;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  window = gtk_builder_get_object (builder, "window1");
-  treeview = gtk_builder_get_object (builder, "treeview1");
-  model = gtk_builder_get_object (builder, "liststore1");
+  window = btk_builder_get_object (builder, "window1");
+  treeview = btk_builder_get_object (builder, "treeview1");
+  model = btk_builder_get_object (builder, "liststore1");
   g_object_unref (builder);
 
   g_object_weak_ref (model, (GWeakNotify)model_weakref, NULL);
 
   g_assert (model_freed == FALSE);
-  gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), NULL);
+  btk_tree_view_set_model (BTK_TREE_VIEW (treeview), NULL);
   g_assert (model_freed == TRUE);
   
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
 
   builder = builder_new_from_string (buffer2, -1, NULL);
   g_object_unref (builder);
@@ -1925,10 +1925,10 @@ test_reference_counting (void)
 static void
 test_icon_factory (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   const gchar buffer1[] =
     "<interface>"
-    "  <object class=\"GtkIconFactory\" id=\"iconfactory1\">"
+    "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
     "      <source stock-id=\"apple-red\" filename=\"apple-red.png\"/>"
     "    </sources>"
@@ -1936,7 +1936,7 @@ test_icon_factory (void)
     "</interface>";
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkIconFactory\" id=\"iconfactory1\">"
+    "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
     "      <source stock-id=\"sliff\" direction=\"rtl\" state=\"active\""
     "              size=\"menu\" filename=\"sloff.png\"/>"
@@ -1948,13 +1948,13 @@ test_icon_factory (void)
 #if 0
   const gchar buffer3[] =
     "<interface>"
-    "  <object class=\"GtkIconFactory\" id=\"iconfactory1\">"
+    "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <invalid/>"
     "  </object>"
     "</interface>";
   const gchar buffer4[] =
     "<interface>"
-    "  <object class=\"GtkIconFactory\" id=\"iconfactory1\">"
+    "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
     "      <invalid/>"
     "    </sources>"
@@ -1962,7 +1962,7 @@ test_icon_factory (void)
     "</interface>";
   const gchar buffer5[] =
     "<interface>"
-    "  <object class=\"GtkIconFactory\" id=\"iconfactory1\">"
+    "  <object class=\"BtkIconFactory\" id=\"iconfactory1\">"
     "    <sources>"
     "      <source/>"
     "    </sources>"
@@ -1971,18 +1971,18 @@ test_icon_factory (void)
   GError *error = NULL;
 #endif  
   GObject *factory;
-  GtkIconSet *icon_set;
-  GtkIconSource *icon_source;
-  GtkWidget *image;
+  BtkIconSet *icon_set;
+  BtkIconSource *icon_source;
+  BtkWidget *image;
   
   builder = builder_new_from_string (buffer1, -1, NULL);
-  factory = gtk_builder_get_object (builder, "iconfactory1");
+  factory = btk_builder_get_object (builder, "iconfactory1");
   g_assert (factory != NULL);
 
-  icon_set = gtk_icon_factory_lookup (GTK_ICON_FACTORY (factory), "apple-red");
+  icon_set = btk_icon_factory_lookup (BTK_ICON_FACTORY (factory), "apple-red");
   g_assert (icon_set != NULL);
-  gtk_icon_factory_add_default (GTK_ICON_FACTORY (factory));
-  image = gtk_image_new_from_stock ("apple-red", GTK_ICON_SIZE_BUTTON);
+  btk_icon_factory_add_default (BTK_ICON_FACTORY (factory));
+  image = btk_image_new_from_stock ("apple-red", BTK_ICON_SIZE_BUTTON);
   g_assert (image != NULL);
   g_object_ref_sink (image);
   g_object_unref (image);
@@ -1990,47 +1990,47 @@ test_icon_factory (void)
   g_object_unref (builder);
 
   builder = builder_new_from_string (buffer2, -1, NULL);
-  factory = gtk_builder_get_object (builder, "iconfactory1");
+  factory = btk_builder_get_object (builder, "iconfactory1");
   g_assert (factory != NULL);
 
-  icon_set = gtk_icon_factory_lookup (GTK_ICON_FACTORY (factory), "sliff");
+  icon_set = btk_icon_factory_lookup (BTK_ICON_FACTORY (factory), "sliff");
   g_assert (icon_set != NULL);
   g_assert (g_slist_length (icon_set->sources) == 2);
 
   icon_source = icon_set->sources->data;
-  g_assert (gtk_icon_source_get_direction (icon_source) == GTK_TEXT_DIR_RTL);
-  g_assert (gtk_icon_source_get_state (icon_source) == GTK_STATE_ACTIVE);
-  g_assert (gtk_icon_source_get_size (icon_source) == GTK_ICON_SIZE_MENU);
-  g_assert (g_str_has_suffix (gtk_icon_source_get_filename (icon_source), "sloff.png"));
+  g_assert (btk_icon_source_get_direction (icon_source) == BTK_TEXT_DIR_RTL);
+  g_assert (btk_icon_source_get_state (icon_source) == BTK_STATE_ACTIVE);
+  g_assert (btk_icon_source_get_size (icon_source) == BTK_ICON_SIZE_MENU);
+  g_assert (g_str_has_suffix (btk_icon_source_get_filename (icon_source), "sloff.png"));
   
   icon_source = icon_set->sources->next->data;
-  g_assert (gtk_icon_source_get_direction (icon_source) == GTK_TEXT_DIR_LTR);
-  g_assert (gtk_icon_source_get_state (icon_source) == GTK_STATE_SELECTED);
-  g_assert (gtk_icon_source_get_size (icon_source) == GTK_ICON_SIZE_DND);
-  g_assert (g_str_has_suffix (gtk_icon_source_get_filename (icon_source), "slurf.png"));
+  g_assert (btk_icon_source_get_direction (icon_source) == BTK_TEXT_DIR_LTR);
+  g_assert (btk_icon_source_get_state (icon_source) == BTK_STATE_SELECTED);
+  g_assert (btk_icon_source_get_size (icon_source) == BTK_ICON_SIZE_DND);
+  g_assert (g_str_has_suffix (btk_icon_source_get_filename (icon_source), "slurf.png"));
 
   g_object_unref (builder);
 
 #if 0
   error = NULL;
-  gtk_builder_add_from_string (builder, buffer3, -1, &error);
+  btk_builder_add_from_string (builder, buffer3, -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_TAG));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_TAG));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, buffer4, -1, &error);
+  btk_builder_add_from_string (builder, buffer4, -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_TAG));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_TAG));
   g_error_free (error);
 
   error = NULL;
-  gtk_builder_add_from_string (builder, buffer5, -1, &error);
+  btk_builder_add_from_string (builder, buffer5, -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_ATTRIBUTE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_ATTRIBUTE));
   g_error_free (error);
 #endif
 
@@ -2046,40 +2046,40 @@ typedef struct {
 } FoundAttrs;
 
 static gboolean 
-filter_pango_attrs (PangoAttribute *attr, 
+filter_bango_attrs (BangoAttribute *attr, 
 		    gpointer        data)
 {
   FoundAttrs *found = (FoundAttrs *)data;
 
-  if (attr->klass->type == PANGO_ATTR_WEIGHT)
+  if (attr->klass->type == BANGO_ATTR_WEIGHT)
     found->weight = TRUE;
-  else if (attr->klass->type == PANGO_ATTR_FOREGROUND)
+  else if (attr->klass->type == BANGO_ATTR_FOREGROUND)
     found->foreground = TRUE;
-  else if (attr->klass->type == PANGO_ATTR_UNDERLINE)
+  else if (attr->klass->type == BANGO_ATTR_UNDERLINE)
     found->underline = TRUE;
   /* Make sure optional start/end properties are working */
-  else if (attr->klass->type == PANGO_ATTR_SIZE && 
+  else if (attr->klass->type == BANGO_ATTR_SIZE && 
 	   attr->start_index == 5 &&
 	   attr->end_index   == 10)
     found->size = TRUE;
-  else if (attr->klass->type == PANGO_ATTR_FONT_DESC)
+  else if (attr->klass->type == BANGO_ATTR_FONT_DESC)
     found->font_desc = TRUE;
-  else if (attr->klass->type == PANGO_ATTR_LANGUAGE)
+  else if (attr->klass->type == BANGO_ATTR_LANGUAGE)
     found->language = TRUE;
 
   return TRUE;
 }
 
 static void
-test_pango_attributes (void)
+test_bango_attributes (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   FoundAttrs found = { 0, };
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkLabel\" id=\"label1\">"
+    "  <object class=\"BtkLabel\" id=\"label1\">"
     "    <attributes>"
-    "      <attribute name=\"weight\" value=\"PANGO_WEIGHT_BOLD\"/>"
+    "      <attribute name=\"weight\" value=\"BANGO_WEIGHT_BOLD\"/>"
     "      <attribute name=\"foreground\" value=\"DarkSlateGray\"/>"
     "      <attribute name=\"underline\" value=\"True\"/>"
     "      <attribute name=\"size\" value=\"4\" start=\"5\" end=\"10\"/>"
@@ -2090,7 +2090,7 @@ test_pango_attributes (void)
     "</interface>";
   const gchar err_buffer1[] =
     "<interface>"
-    "  <object class=\"GtkLabel\" id=\"label1\">"
+    "  <object class=\"BtkLabel\" id=\"label1\">"
     "    <attributes>"
     "      <attribute name=\"weight\"/>"
     "    </attributes>"
@@ -2098,28 +2098,28 @@ test_pango_attributes (void)
     "</interface>";
   const gchar err_buffer2[] =
     "<interface>"
-    "  <object class=\"GtkLabel\" id=\"label1\">"
+    "  <object class=\"BtkLabel\" id=\"label1\">"
     "    <attributes>"
-    "      <attribute name=\"weight\" value=\"PANGO_WEIGHT_BOLD\" unrecognized=\"True\"/>"
+    "      <attribute name=\"weight\" value=\"BANGO_WEIGHT_BOLD\" unrecognized=\"True\"/>"
     "    </attributes>"
     "  </object>"
     "</interface>";
 
   GObject *label;
   GError  *error = NULL;
-  PangoAttrList *attrs, *filtered;
+  BangoAttrList *attrs, *filtered;
   
   /* Test attributes are set */
   builder = builder_new_from_string (buffer, -1, NULL);
-  label = gtk_builder_get_object (builder, "label1");
+  label = btk_builder_get_object (builder, "label1");
   g_assert (label != NULL);
 
-  attrs = gtk_label_get_attributes (GTK_LABEL (label));
+  attrs = btk_label_get_attributes (BTK_LABEL (label));
   g_assert (attrs != NULL);
 
-  filtered = pango_attr_list_filter (attrs, filter_pango_attrs, &found);
+  filtered = bango_attr_list_filter (attrs, filter_bango_attrs, &found);
   g_assert (filtered);
-  pango_attr_list_unref (filtered);
+  bango_attr_list_unref (filtered);
 
   g_assert (found.weight);
   g_assert (found.foreground);
@@ -2131,23 +2131,23 @@ test_pango_attributes (void)
   g_object_unref (builder);
 
   /* Test errors are set */
-  builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder, err_buffer1, -1, &error);
-  label = gtk_builder_get_object (builder, "label1");
+  builder = btk_builder_new ();
+  btk_builder_add_from_string (builder, err_buffer1, -1, &error);
+  label = btk_builder_get_object (builder, "label1");
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_MISSING_ATTRIBUTE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_MISSING_ATTRIBUTE));
   g_object_unref (builder);
   g_error_free (error);
   error = NULL;
 
-  builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder, err_buffer2, -1, &error);
-  label = gtk_builder_get_object (builder, "label1");
+  builder = btk_builder_new ();
+  btk_builder_add_from_string (builder, err_buffer2, -1, &error);
+  label = btk_builder_get_object (builder, "label1");
 
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_INVALID_ATTRIBUTE));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_INVALID_ATTRIBUTE));
   g_object_unref (builder);
   g_error_free (error);
 }
@@ -2155,20 +2155,20 @@ test_pango_attributes (void)
 static void
 test_requires (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GError     *error = NULL;
   gchar      *buffer;
   const gchar buffer_fmt[] =
     "<interface>"
-    "  <requires lib=\"gtk+\" version=\"%d.%d\"/>"
+    "  <requires lib=\"btk+\" version=\"%d.%d\"/>"
     "</interface>";
 
-  buffer = g_strdup_printf (buffer_fmt, GTK_MAJOR_VERSION, GTK_MINOR_VERSION + 1);
-  builder = gtk_builder_new ();
-  gtk_builder_add_from_string (builder, buffer, -1, &error);
+  buffer = g_strdup_printf (buffer_fmt, BTK_MAJOR_VERSION, BTK_MINOR_VERSION + 1);
+  builder = btk_builder_new ();
+  btk_builder_add_from_string (builder, buffer, -1, &error);
   g_assert (g_error_matches (error,
-                             GTK_BUILDER_ERROR,
-                             GTK_BUILDER_ERROR_VERSION_MISMATCH));
+                             BTK_BUILDER_ERROR,
+                             BTK_BUILDER_ERROR_VERSION_MISMATCH));
   g_object_unref (builder);
   g_error_free (error);
   g_free (buffer);
@@ -2177,12 +2177,12 @@ test_requires (void)
 static void
 test_add_objects (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GError *error;
   gint ret;
   GObject *obj;
-  GtkUIManager *manager;
-  GtkWidget *menubar;
+  BtkUIManager *manager;
+  BtkWidget *menubar;
   GObject *menu, *label;
   GList *children;
   gchar *objects[2] = {"mainbox", NULL};
@@ -2191,18 +2191,18 @@ test_add_objects (void)
   gchar *objects4[2] = {"uimgr1", NULL};
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window\">"
+    "  <object class=\"BtkWindow\" id=\"window\">"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"mainbox\">"
+    "      <object class=\"BtkVBox\" id=\"mainbox\">"
     "        <property name=\"visible\">True</property>"
     "        <child>"
-    "          <object class=\"GtkLabel\" id=\"label1\">"
+    "          <object class=\"BtkLabel\" id=\"label1\">"
     "            <property name=\"visible\">True</property>"
     "            <property name=\"label\" translatable=\"no\">first label</property>"
     "          </object>"
     "        </child>"
     "        <child>"
-    "          <object class=\"GtkLabel\" id=\"label2\">"
+    "          <object class=\"BtkLabel\" id=\"label2\">"
     "            <property name=\"visible\">True</property>"
     "            <property name=\"label\" translatable=\"no\">second label</property>"
     "          </object>"
@@ -2213,9 +2213,9 @@ test_add_objects (void)
     "      </object>"
     "    </child>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window2\">"
+    "  <object class=\"BtkWindow\" id=\"window2\">"
     "    <child>"
-    "      <object class=\"GtkLabel\" id=\"label3\">"
+    "      <object class=\"BtkLabel\" id=\"label3\">"
     "        <property name=\"label\" translatable=\"no\">second label</property>"
     "      </object>"
     "    </child>"
@@ -2223,14 +2223,14 @@ test_add_objects (void)
     "<interface/>";
   const gchar buffer2[] =
     "<interface>"
-    "  <object class=\"GtkUIManager\" id=\"uimgr1\">"
+    "  <object class=\"BtkUIManager\" id=\"uimgr1\">"
     "    <child>"
-    "      <object class=\"GtkActionGroup\" id=\"ag1\">"
+    "      <object class=\"BtkActionGroup\" id=\"ag1\">"
     "        <child>"
-    "          <object class=\"GtkAction\" id=\"file\">"
+    "          <object class=\"BtkAction\" id=\"file\">"
     "            <property name=\"label\">_File</property>"
     "          </object>"
-    "          <accelerator key=\"n\" modifiers=\"GDK_CONTROL_MASK\"/>"
+    "          <accelerator key=\"n\" modifiers=\"BDK_CONTROL_MASK\"/>"
     "        </child>"
     "      </object>"
     "    </child>"
@@ -2241,113 +2241,113 @@ test_add_objects (void)
     "      </menubar>"
     "    </ui>"
     "  </object>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <child>"
-    "      <object class=\"GtkMenuBar\" id=\"menubar1\" constructor=\"uimgr1\"/>"
+    "      <object class=\"BtkMenuBar\" id=\"menubar1\" constructor=\"uimgr1\"/>"
     "    </child>"
     "  </object>"
     "</interface>";
 
   error = NULL;
-  builder = gtk_builder_new ();
-  ret = gtk_builder_add_objects_from_string (builder, buffer, -1, objects, &error);
+  builder = btk_builder_new ();
+  ret = btk_builder_add_objects_from_string (builder, buffer, -1, objects, &error);
   g_assert (ret);
   g_assert (error == NULL);
-  obj = gtk_builder_get_object (builder, "window");
+  obj = btk_builder_get_object (builder, "window");
   g_assert (obj == NULL);
-  obj = gtk_builder_get_object (builder, "window2");
+  obj = btk_builder_get_object (builder, "window2");
   g_assert (obj == NULL);
-  obj = gtk_builder_get_object (builder, "mainbox");  
-  g_assert (GTK_IS_WIDGET (obj));
+  obj = btk_builder_get_object (builder, "mainbox");  
+  g_assert (BTK_IS_WIDGET (obj));
   g_object_unref (builder);
 
   error = NULL;
-  builder = gtk_builder_new ();
-  ret = gtk_builder_add_objects_from_string (builder, buffer, -1, objects2, &error);
+  builder = btk_builder_new ();
+  ret = btk_builder_add_objects_from_string (builder, buffer, -1, objects2, &error);
   g_assert (ret);
   g_assert (error == NULL);
-  obj = gtk_builder_get_object (builder, "window");
+  obj = btk_builder_get_object (builder, "window");
   g_assert (obj == NULL);
-  obj = gtk_builder_get_object (builder, "window2");
-  g_assert (GTK_IS_WINDOW (obj));
-  gtk_widget_destroy (GTK_WIDGET (obj));
-  obj = gtk_builder_get_object (builder, "mainbox");  
-  g_assert (GTK_IS_WIDGET (obj));
+  obj = btk_builder_get_object (builder, "window2");
+  g_assert (BTK_IS_WINDOW (obj));
+  btk_widget_destroy (BTK_WIDGET (obj));
+  obj = btk_builder_get_object (builder, "mainbox");  
+  g_assert (BTK_IS_WIDGET (obj));
   g_object_unref (builder);
 
   /* test cherry picking a ui manager and menubar that depends on it */
   error = NULL;
-  builder = gtk_builder_new ();
-  ret = gtk_builder_add_objects_from_string (builder, buffer2, -1, objects3, &error);
+  builder = btk_builder_new ();
+  ret = btk_builder_add_objects_from_string (builder, buffer2, -1, objects3, &error);
   g_assert (ret);
-  obj = gtk_builder_get_object (builder, "uimgr1");
-  g_assert (GTK_IS_UI_MANAGER (obj));
-  obj = gtk_builder_get_object (builder, "file");
-  g_assert (GTK_IS_ACTION (obj));
-  obj = gtk_builder_get_object (builder, "menubar1");
-  g_assert (GTK_IS_MENU_BAR (obj));
-  menubar = GTK_WIDGET (obj);
+  obj = btk_builder_get_object (builder, "uimgr1");
+  g_assert (BTK_IS_UI_MANAGER (obj));
+  obj = btk_builder_get_object (builder, "file");
+  g_assert (BTK_IS_ACTION (obj));
+  obj = btk_builder_get_object (builder, "menubar1");
+  g_assert (BTK_IS_MENU_BAR (obj));
+  menubar = BTK_WIDGET (obj);
 
-  children = gtk_container_get_children (GTK_CONTAINER (menubar));
+  children = btk_container_get_children (BTK_CONTAINER (menubar));
   menu = children->data;
   g_assert (menu != NULL);
-  g_assert (GTK_IS_MENU_ITEM (menu));
-  g_assert (strcmp (GTK_WIDGET (menu)->name, "file") == 0);
+  g_assert (BTK_IS_MENU_ITEM (menu));
+  g_assert (strcmp (BTK_WIDGET (menu)->name, "file") == 0);
   g_list_free (children);
  
-  label = G_OBJECT (GTK_BIN (menu)->child);
+  label = G_OBJECT (BTK_BIN (menu)->child);
   g_assert (label != NULL);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_text (GTK_LABEL (label)), "File") == 0);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_text (BTK_LABEL (label)), "File") == 0);
 
   g_object_unref (builder);
 
   /* test cherry picking just the ui manager */
   error = NULL;
-  builder = gtk_builder_new ();
-  ret = gtk_builder_add_objects_from_string (builder, buffer2, -1, objects4, &error);
+  builder = btk_builder_new ();
+  ret = btk_builder_add_objects_from_string (builder, buffer2, -1, objects4, &error);
   g_assert (ret);
-  obj = gtk_builder_get_object (builder, "uimgr1");
-  g_assert (GTK_IS_UI_MANAGER (obj));
-  manager = GTK_UI_MANAGER (obj);
-  obj = gtk_builder_get_object (builder, "file");
-  g_assert (GTK_IS_ACTION (obj));
-  menubar = gtk_ui_manager_get_widget (manager, "/menubar1");
-  g_assert (GTK_IS_MENU_BAR (menubar));
+  obj = btk_builder_get_object (builder, "uimgr1");
+  g_assert (BTK_IS_UI_MANAGER (obj));
+  manager = BTK_UI_MANAGER (obj);
+  obj = btk_builder_get_object (builder, "file");
+  g_assert (BTK_IS_ACTION (obj));
+  menubar = btk_ui_manager_get_widget (manager, "/menubar1");
+  g_assert (BTK_IS_MENU_BAR (menubar));
 
-  children = gtk_container_get_children (GTK_CONTAINER (menubar));
+  children = btk_container_get_children (BTK_CONTAINER (menubar));
   menu = children->data;
   g_assert (menu != NULL);
-  g_assert (GTK_IS_MENU_ITEM (menu));
-  g_assert (strcmp (GTK_WIDGET (menu)->name, "file") == 0);
+  g_assert (BTK_IS_MENU_ITEM (menu));
+  g_assert (strcmp (BTK_WIDGET (menu)->name, "file") == 0);
   g_list_free (children);
  
-  label = G_OBJECT (GTK_BIN (menu)->child);
+  label = G_OBJECT (BTK_BIN (menu)->child);
   g_assert (label != NULL);
-  g_assert (GTK_IS_LABEL (label));
-  g_assert (strcmp (gtk_label_get_text (GTK_LABEL (label)), "File") == 0);
+  g_assert (BTK_IS_LABEL (label));
+  g_assert (strcmp (btk_label_get_text (BTK_LABEL (label)), "File") == 0);
 
   g_object_unref (builder);
 }
 
-static GtkWidget *
-get_parent_menubar (GtkWidget *menuitem)
+static BtkWidget *
+get_parent_menubar (BtkWidget *menuitem)
 {
-  GtkMenuShell *menu_shell = (GtkMenuShell *)menuitem->parent;
-  GtkWidget *attach = NULL;
+  BtkMenuShell *menu_shell = (BtkMenuShell *)menuitem->parent;
+  BtkWidget *attach = NULL;
 
-  g_assert (GTK_IS_MENU_SHELL (menu_shell));
+  g_assert (BTK_IS_MENU_SHELL (menu_shell));
 
-  while (menu_shell && !GTK_IS_MENU_BAR (menu_shell))
+  while (menu_shell && !BTK_IS_MENU_BAR (menu_shell))
     {
-      if (GTK_IS_MENU (menu_shell) && 
-	  (attach = gtk_menu_get_attach_widget (GTK_MENU (menu_shell))) != NULL)
-	menu_shell = (GtkMenuShell *)attach->parent;
+      if (BTK_IS_MENU (menu_shell) && 
+	  (attach = btk_menu_get_attach_widget (BTK_MENU (menu_shell))) != NULL)
+	menu_shell = (BtkMenuShell *)attach->parent;
       else
 	menu_shell = NULL;
     }
 
-  return menu_shell ? GTK_WIDGET (menu_shell) : NULL;
+  return menu_shell ? BTK_WIDGET (menu_shell) : NULL;
 }
 
 static void
@@ -2355,28 +2355,28 @@ test_menus (void)
 {
   const gchar *buffer =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <accel-groups>"
     "      <group name=\"accelgroup1\"/>"
     "    </accel-groups>"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"vbox1\">"
+    "      <object class=\"BtkVBox\" id=\"vbox1\">"
     "        <property name=\"visible\">True</property>"
     "        <property name=\"orientation\">vertical</property>"
     "        <child>"
-    "          <object class=\"GtkMenuBar\" id=\"menubar1\">"
+    "          <object class=\"BtkMenuBar\" id=\"menubar1\">"
     "            <property name=\"visible\">True</property>"
     "            <child>"
-    "              <object class=\"GtkMenuItem\" id=\"menuitem1\">"
+    "              <object class=\"BtkMenuItem\" id=\"menuitem1\">"
     "                <property name=\"visible\">True</property>"
     "                <property name=\"label\" translatable=\"yes\">_File</property>"
     "                <property name=\"use_underline\">True</property>"
     "                <child type=\"submenu\">"
-    "                  <object class=\"GtkMenu\" id=\"menu1\">"
+    "                  <object class=\"BtkMenu\" id=\"menu1\">"
     "                    <property name=\"visible\">True</property>"
     "                    <child>"
-    "                      <object class=\"GtkImageMenuItem\" id=\"imagemenuitem1\">"
-    "                        <property name=\"label\">gtk-new</property>"
+    "                      <object class=\"BtkImageMenuItem\" id=\"imagemenuitem1\">"
+    "                        <property name=\"label\">btk-new</property>"
     "                        <property name=\"visible\">True</property>"
     "                        <property name=\"use_stock\">True</property>"
     "                        <property name=\"accel_group\">accelgroup1</property>"
@@ -2391,27 +2391,27 @@ test_menus (void)
     "      </object>"
     "    </child>"
     "  </object>"
-    "<object class=\"GtkAccelGroup\" id=\"accelgroup1\"/>"
+    "<object class=\"BtkAccelGroup\" id=\"accelgroup1\"/>"
     "</interface>";
 
   const gchar *buffer1 =
     "<interface>"
-    "  <object class=\"GtkWindow\" id=\"window1\">"
+    "  <object class=\"BtkWindow\" id=\"window1\">"
     "    <accel-groups>"
     "      <group name=\"accelgroup1\"/>"
     "    </accel-groups>"
     "    <child>"
-    "      <object class=\"GtkVBox\" id=\"vbox1\">"
+    "      <object class=\"BtkVBox\" id=\"vbox1\">"
     "        <property name=\"visible\">True</property>"
     "        <property name=\"orientation\">vertical</property>"
     "        <child>"
-    "          <object class=\"GtkMenuBar\" id=\"menubar1\">"
+    "          <object class=\"BtkMenuBar\" id=\"menubar1\">"
     "            <property name=\"visible\">True</property>"
     "            <child>"
-    "              <object class=\"GtkImageMenuItem\" id=\"imagemenuitem1\">"
+    "              <object class=\"BtkImageMenuItem\" id=\"imagemenuitem1\">"
     "                <property name=\"visible\">True</property>"
     "                <child>"
-    "                  <object class=\"GtkLabel\" id=\"custom1\">"
+    "                  <object class=\"BtkLabel\" id=\"custom1\">"
     "                    <property name=\"visible\">True</property>"
     "                    <property name=\"label\">a label</property>"
     "                  </object>"
@@ -2423,60 +2423,60 @@ test_menus (void)
     "      </object>"
     "    </child>"
     "  </object>"
-    "<object class=\"GtkAccelGroup\" id=\"accelgroup1\"/>"
+    "<object class=\"BtkAccelGroup\" id=\"accelgroup1\"/>"
     "</interface>";
-  GtkBuilder *builder;
-  GtkWidget *window, *item;
-  GtkAccelGroup *accel_group;
-  GtkWidget *item_accel_label, *sample_accel_label, *sample_menu_item, *custom;
+  BtkBuilder *builder;
+  BtkWidget *window, *item;
+  BtkAccelGroup *accel_group;
+  BtkWidget *item_accel_label, *sample_accel_label, *sample_menu_item, *custom;
 
   /* Check that the item has the correct accel label string set
    */
   builder = builder_new_from_string (buffer, -1, NULL);
-  window = (GtkWidget *)gtk_builder_get_object (builder, "window1");
-  item = (GtkWidget *)gtk_builder_get_object (builder, "imagemenuitem1");
-  accel_group = (GtkAccelGroup *)gtk_builder_get_object (builder, "accelgroup1");
+  window = (BtkWidget *)btk_builder_get_object (builder, "window1");
+  item = (BtkWidget *)btk_builder_get_object (builder, "imagemenuitem1");
+  accel_group = (BtkAccelGroup *)btk_builder_get_object (builder, "accelgroup1");
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  sample_menu_item = gtk_image_menu_item_new_from_stock (GTK_STOCK_NEW, accel_group);
+  sample_menu_item = btk_image_menu_item_new_from_stock (BTK_STOCK_NEW, accel_group);
 
-  g_assert (GTK_BIN (sample_menu_item)->child);
-  g_assert (GTK_IS_ACCEL_LABEL (GTK_BIN (sample_menu_item)->child));
-  sample_accel_label = GTK_WIDGET (GTK_BIN (sample_menu_item)->child);
-  gtk_widget_show (sample_accel_label);
+  g_assert (BTK_BIN (sample_menu_item)->child);
+  g_assert (BTK_IS_ACCEL_LABEL (BTK_BIN (sample_menu_item)->child));
+  sample_accel_label = BTK_WIDGET (BTK_BIN (sample_menu_item)->child);
+  btk_widget_show (sample_accel_label);
 
-  g_assert (GTK_BIN (item)->child);
-  g_assert (GTK_IS_ACCEL_LABEL (GTK_BIN (item)->child));
-  item_accel_label = GTK_WIDGET (GTK_BIN (item)->child);
+  g_assert (BTK_BIN (item)->child);
+  g_assert (BTK_IS_ACCEL_LABEL (BTK_BIN (item)->child));
+  item_accel_label = BTK_WIDGET (BTK_BIN (item)->child);
 
-  gtk_accel_label_refetch (GTK_ACCEL_LABEL (sample_accel_label));
-  gtk_accel_label_refetch (GTK_ACCEL_LABEL (item_accel_label));
+  btk_accel_label_refetch (BTK_ACCEL_LABEL (sample_accel_label));
+  btk_accel_label_refetch (BTK_ACCEL_LABEL (item_accel_label));
 
-  g_assert (GTK_ACCEL_LABEL (sample_accel_label)->accel_string != NULL);
-  g_assert (GTK_ACCEL_LABEL (item_accel_label)->accel_string != NULL);
-  g_assert (strcmp (GTK_ACCEL_LABEL (item_accel_label)->accel_string, 
-		    GTK_ACCEL_LABEL (sample_accel_label)->accel_string) == 0);
+  g_assert (BTK_ACCEL_LABEL (sample_accel_label)->accel_string != NULL);
+  g_assert (BTK_ACCEL_LABEL (item_accel_label)->accel_string != NULL);
+  g_assert (strcmp (BTK_ACCEL_LABEL (item_accel_label)->accel_string, 
+		    BTK_ACCEL_LABEL (sample_accel_label)->accel_string) == 0);
 
   /* Check the menu hierarchy worked here  */
   g_assert (get_parent_menubar (item));
 
-  gtk_widget_destroy (GTK_WIDGET (window));
-  gtk_widget_destroy (sample_menu_item);
+  btk_widget_destroy (BTK_WIDGET (window));
+  btk_widget_destroy (sample_menu_item);
   g_object_unref (builder);
 
 
   /* Check that we can add alien children to menu items via normal
-   * GtkContainer apis.
+   * BtkContainer apis.
    */
   builder = builder_new_from_string (buffer1, -1, NULL);
-  window = (GtkWidget *)gtk_builder_get_object (builder, "window1");
-  item = (GtkWidget *)gtk_builder_get_object (builder, "imagemenuitem1");
-  custom = (GtkWidget *)gtk_builder_get_object (builder, "custom1");
+  window = (BtkWidget *)btk_builder_get_object (builder, "window1");
+  item = (BtkWidget *)btk_builder_get_object (builder, "imagemenuitem1");
+  custom = (BtkWidget *)btk_builder_get_object (builder, "custom1");
 
   g_assert (custom->parent == item);
 
-  gtk_widget_destroy (GTK_WIDGET (window));
+  btk_widget_destroy (BTK_WIDGET (window));
   g_object_unref (builder);
 
 }
@@ -2485,42 +2485,42 @@ test_menus (void)
 static void 
 test_file (const gchar *filename)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GError *error = NULL;
   GSList *l, *objects;
 
-  builder = gtk_builder_new ();
+  builder = btk_builder_new ();
 
-  if (!gtk_builder_add_from_file (builder, filename, &error))
+  if (!btk_builder_add_from_file (builder, filename, &error))
     {
       g_error ("%s", error->message);
       g_error_free (error);
       return;
     }
 
-  objects = gtk_builder_get_objects (builder);
+  objects = btk_builder_get_objects (builder);
   for (l = objects; l; l = l->next)
     {
       GObject *obj = (GObject*)l->data;
 
-      if (GTK_IS_DIALOG (obj))
+      if (BTK_IS_DIALOG (obj))
 	{
 	  int response;
 
 	  g_print ("Running dialog %s.\n",
-		   gtk_widget_get_name (GTK_WIDGET (obj)));
-	  response = gtk_dialog_run (GTK_DIALOG (obj));
+		   btk_widget_get_name (BTK_WIDGET (obj)));
+	  response = btk_dialog_run (BTK_DIALOG (obj));
 	}
-      else if (GTK_IS_WINDOW (obj))
+      else if (BTK_IS_WINDOW (obj))
 	{
-	  g_signal_connect (obj, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	  g_signal_connect (obj, "destroy", G_CALLBACK (btk_main_quit), NULL);
 	  g_print ("Showing %s.\n",
-		   gtk_widget_get_name (GTK_WIDGET (obj)));
-	  gtk_widget_show_all (GTK_WIDGET (obj));
+		   btk_widget_get_name (BTK_WIDGET (obj)));
+	  btk_widget_show_all (BTK_WIDGET (obj));
 	}
     }
 
-  gtk_main ();
+  btk_main ();
 
   g_object_unref (builder);
   builder = NULL;
@@ -2529,26 +2529,26 @@ test_file (const gchar *filename)
 static void
 test_message_area (void)
 {
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   GError *error;
   GObject *obj, *obj1;
   const gchar buffer[] =
     "<interface>"
-    "  <object class=\"GtkInfoBar\" id=\"infobar1\">"
+    "  <object class=\"BtkInfoBar\" id=\"infobar1\">"
     "    <child internal-child=\"content_area\">"
-    "      <object class=\"GtkHBox\" id=\"contentarea1\">"
+    "      <object class=\"BtkHBox\" id=\"contentarea1\">"
     "        <child>"
-    "          <object class=\"GtkLabel\" id=\"content\">"
+    "          <object class=\"BtkLabel\" id=\"content\">"
     "            <property name=\"label\" translatable=\"yes\">Message</property>"
     "          </object>"
     "        </child>"
     "      </object>"
     "    </child>"
     "    <child internal-child=\"action_area\">"
-    "      <object class=\"GtkVButtonBox\" id=\"actionarea1\">"
+    "      <object class=\"BtkVButtonBox\" id=\"actionarea1\">"
     "        <child>"
-    "          <object class=\"GtkButton\" id=\"button_ok\">"
-    "            <property name=\"label\">gtk-ok</property>"
+    "          <object class=\"BtkButton\" id=\"button_ok\">"
+    "            <property name=\"label\">btk-ok</property>"
     "            <property name=\"use-stock\">yes</property>"
     "          </object>"
     "        </child>"
@@ -2563,15 +2563,15 @@ test_message_area (void)
   error = NULL;
   builder = builder_new_from_string (buffer, -1, NULL);
   g_assert (error == NULL);
-  obj = gtk_builder_get_object (builder, "infobar1");
-  g_assert (GTK_IS_INFO_BAR (obj));
-  obj1 = gtk_builder_get_object (builder, "content");
-  g_assert (GTK_IS_LABEL (obj1));
-  g_assert (gtk_widget_get_parent (gtk_widget_get_parent (GTK_WIDGET (obj1))) == GTK_WIDGET (obj));
+  obj = btk_builder_get_object (builder, "infobar1");
+  g_assert (BTK_IS_INFO_BAR (obj));
+  obj1 = btk_builder_get_object (builder, "content");
+  g_assert (BTK_IS_LABEL (obj1));
+  g_assert (btk_widget_get_parent (btk_widget_get_parent (BTK_WIDGET (obj1))) == BTK_WIDGET (obj));
 
-  obj1 = gtk_builder_get_object (builder, "button_ok");
-  g_assert (GTK_IS_BUTTON (obj1));
-  g_assert (gtk_widget_get_parent (gtk_widget_get_parent (GTK_WIDGET (obj1))) == GTK_WIDGET (obj));
+  obj1 = btk_builder_get_object (builder, "button_ok");
+  g_assert (BTK_IS_BUTTON (obj1));
+  g_assert (btk_widget_get_parent (btk_widget_get_parent (BTK_WIDGET (obj1))) == BTK_WIDGET (obj));
 
   g_object_unref (builder);
 }
@@ -2580,7 +2580,7 @@ int
 main (int argc, char **argv)
 {
   /* initialize test program */
-  gtk_test_init (&argc, &argv);
+  btk_test_init (&argc, &argv);
 
   if (argc > 1)
     {
@@ -2616,7 +2616,7 @@ main (int argc, char **argv)
   g_test_add_func ("/Builder/Reference Counting", test_reference_counting);
   g_test_add_func ("/Builder/Window", test_window);
   g_test_add_func ("/Builder/IconFactory", test_icon_factory);
-  g_test_add_func ("/Builder/PangoAttributes", test_pango_attributes);
+  g_test_add_func ("/Builder/BangoAttributes", test_bango_attributes);
   g_test_add_func ("/Builder/Requires", test_requires);
   g_test_add_func ("/Builder/AddObjects", test_add_objects);
   g_test_add_func ("/Builder/Menus", test_menus);

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,101 +20,101 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailadjustment.h"
+#include <btk/btk.h>
+#include "bailadjustment.h"
 
-static void	 gail_adjustment_class_init        (GailAdjustmentClass *klass);
+static void	 bail_adjustment_class_init        (BailAdjustmentClass *klass);
 
-static void	 gail_adjustment_init              (GailAdjustment      *adjustment);
+static void	 bail_adjustment_init              (BailAdjustment      *adjustment);
 
-static void	 gail_adjustment_real_initialize   (AtkObject	        *obj,
+static void	 bail_adjustment_real_initialize   (BatkObject	        *obj,
                                                     gpointer            data);
 
-static void	 atk_value_interface_init          (AtkValueIface       *iface);
+static void	 batk_value_interface_init          (BatkValueIface       *iface);
 
-static void	 gail_adjustment_get_current_value (AtkValue            *obj,
+static void	 bail_adjustment_get_current_value (BatkValue            *obj,
                                                     GValue              *value);
-static void	 gail_adjustment_get_maximum_value (AtkValue            *obj,
+static void	 bail_adjustment_get_maximum_value (BatkValue            *obj,
                                                     GValue              *value);
-static void	 gail_adjustment_get_minimum_value (AtkValue            *obj,
+static void	 bail_adjustment_get_minimum_value (BatkValue            *obj,
                                                     GValue              *value);
-static void	 gail_adjustment_get_minimum_increment (AtkValue        *obj,
+static void	 bail_adjustment_get_minimum_increment (BatkValue        *obj,
                                                     GValue              *value);
-static gboolean	 gail_adjustment_set_current_value (AtkValue            *obj,
+static gboolean	 bail_adjustment_set_current_value (BatkValue            *obj,
                                                     const GValue        *value);
 
-static void      gail_adjustment_destroyed         (GtkAdjustment       *adjustment,
-                                                    GailAdjustment      *gail_adjustment);
+static void      bail_adjustment_destroyed         (BtkAdjustment       *adjustment,
+                                                    BailAdjustment      *bail_adjustment);
 
-G_DEFINE_TYPE_WITH_CODE (GailAdjustment, gail_adjustment, ATK_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailAdjustment, bail_adjustment, BATK_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init))
 
 static void	 
-gail_adjustment_class_init (GailAdjustmentClass *klass)
+bail_adjustment_class_init (BailAdjustmentClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_adjustment_real_initialize;
+  class->initialize = bail_adjustment_real_initialize;
 }
 
 static void
-gail_adjustment_init (GailAdjustment *adjustment)
+bail_adjustment_init (BailAdjustment *adjustment)
 {
 }
 
-AtkObject* 
-gail_adjustment_new (GtkAdjustment *adjustment)
+BatkObject* 
+bail_adjustment_new (BtkAdjustment *adjustment)
 {
   GObject *object;
-  AtkObject *atk_object;
+  BatkObject *batk_object;
 
-  g_return_val_if_fail (GTK_IS_ADJUSTMENT (adjustment), NULL);
+  g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), NULL);
 
-  object = g_object_new (GAIL_TYPE_ADJUSTMENT, NULL);
+  object = g_object_new (BAIL_TYPE_ADJUSTMENT, NULL);
 
-  atk_object = ATK_OBJECT (object);
-  atk_object_initialize (atk_object, adjustment);
+  batk_object = BATK_OBJECT (object);
+  batk_object_initialize (batk_object, adjustment);
 
-  return atk_object;
+  return batk_object;
 }
 
 static void
-gail_adjustment_real_initialize (AtkObject *obj,
+bail_adjustment_real_initialize (BatkObject *obj,
                                  gpointer  data)
 {
-  GtkAdjustment *adjustment;
+  BtkAdjustment *adjustment;
 
-  ATK_OBJECT_CLASS (gail_adjustment_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_adjustment_parent_class)->initialize (obj, data);
 
-  adjustment = GTK_ADJUSTMENT (data);
+  adjustment = BTK_ADJUSTMENT (data);
 
-  obj->role = ATK_ROLE_UNKNOWN;
-  GAIL_ADJUSTMENT (obj)->adjustment = adjustment;
+  obj->role = BATK_ROLE_UNKNOWN;
+  BAIL_ADJUSTMENT (obj)->adjustment = adjustment;
 
   g_signal_connect_object (G_OBJECT (adjustment),
                            "destroy",
-                           G_CALLBACK (gail_adjustment_destroyed),
+                           G_CALLBACK (bail_adjustment_destroyed),
                            obj, 0);
 }
 
 static void	 
-atk_value_interface_init (AtkValueIface *iface)
+batk_value_interface_init (BatkValueIface *iface)
 {
-  iface->get_current_value = gail_adjustment_get_current_value;
-  iface->get_maximum_value = gail_adjustment_get_maximum_value;
-  iface->get_minimum_value = gail_adjustment_get_minimum_value;
-  iface->get_minimum_increment = gail_adjustment_get_minimum_increment;
-  iface->set_current_value = gail_adjustment_set_current_value;
+  iface->get_current_value = bail_adjustment_get_current_value;
+  iface->get_maximum_value = bail_adjustment_get_maximum_value;
+  iface->get_minimum_value = bail_adjustment_get_minimum_value;
+  iface->get_minimum_increment = bail_adjustment_get_minimum_increment;
+  iface->set_current_value = bail_adjustment_set_current_value;
 }
 
 static void	 
-gail_adjustment_get_current_value (AtkValue             *obj,
+bail_adjustment_get_current_value (BatkValue             *obj,
                                    GValue               *value)
 {
-  GtkAdjustment* adjustment;
+  BtkAdjustment* adjustment;
   gdouble current_value;
  
-  adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
+  adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
     /* State is defunct */
@@ -128,13 +128,13 @@ gail_adjustment_get_current_value (AtkValue             *obj,
 }
 
 static void	 
-gail_adjustment_get_maximum_value (AtkValue             *obj,
+bail_adjustment_get_maximum_value (BatkValue             *obj,
                                    GValue               *value)
 {
-  GtkAdjustment* adjustment;
+  BtkAdjustment* adjustment;
   gdouble maximum_value;
  
-  adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
+  adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
     /* State is defunct */
@@ -148,13 +148,13 @@ gail_adjustment_get_maximum_value (AtkValue             *obj,
 }
 
 static void	 
-gail_adjustment_get_minimum_value (AtkValue             *obj,
+bail_adjustment_get_minimum_value (BatkValue             *obj,
                                    GValue               *value)
 {
-  GtkAdjustment* adjustment;
+  BtkAdjustment* adjustment;
   gdouble minimum_value;
  
-  adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
+  adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
     /* State is defunct */
@@ -168,13 +168,13 @@ gail_adjustment_get_minimum_value (AtkValue             *obj,
 }
 
 static void
-gail_adjustment_get_minimum_increment (AtkValue        *obj,
+bail_adjustment_get_minimum_increment (BatkValue        *obj,
                                        GValue          *value)
 {
-  GtkAdjustment* adjustment;
+  BtkAdjustment* adjustment;
   gdouble minimum_increment;
  
-  adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
+  adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
   if (adjustment == NULL)
   {
     /* State is defunct */
@@ -209,22 +209,22 @@ gail_adjustment_get_minimum_increment (AtkValue        *obj,
 }
 
 static gboolean	 
-gail_adjustment_set_current_value (AtkValue             *obj,
+bail_adjustment_set_current_value (BatkValue             *obj,
                                    const GValue         *value)
 {
   if (G_VALUE_HOLDS_DOUBLE (value))
   {
-    GtkAdjustment* adjustment;
+    BtkAdjustment* adjustment;
     gdouble new_value;
  
-    adjustment = GAIL_ADJUSTMENT (obj)->adjustment;
+    adjustment = BAIL_ADJUSTMENT (obj)->adjustment;
     if (adjustment == NULL)
     {
       /* State is defunct */
       return FALSE;
     }
     new_value = g_value_get_double (value);
-    gtk_adjustment_set_value (adjustment, new_value);
+    btk_adjustment_set_value (adjustment, new_value);
 
     return TRUE;
   }
@@ -233,12 +233,12 @@ gail_adjustment_set_current_value (AtkValue             *obj,
 }
 
 static void
-gail_adjustment_destroyed (GtkAdjustment       *adjustment,
-                           GailAdjustment      *gail_adjustment)
+bail_adjustment_destroyed (BtkAdjustment       *adjustment,
+                           BailAdjustment      *bail_adjustment)
 {
   /*
    * This is the signal handler for the "destroy" signal for the 
-   * GtkAdjustment. We set the  pointer location to NULL;
+   * BtkAdjustment. We set the  pointer location to NULL;
    */
-  gail_adjustment->adjustment = NULL;
+  bail_adjustment->adjustment = NULL;
 }

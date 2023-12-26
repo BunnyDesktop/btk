@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,16 +18,16 @@
  */
 
 
-#ifndef __GAIL_PRIVATE_MACROS_H__
-#define __GAIL_PRIVATE_MACROS_H__
+#ifndef __BAIL_PRIVATE_MACROS_H__
+#define __BAIL_PRIVATE_MACROS_H__
 
 G_BEGIN_DECLS
 
 /* Note: these macros are logic macros, not intended to warn on failure. */
 
-#define gail_return_val_if_fail(a, b)  if (!(a)) return (b)
-#define gail_return_if_fail(a) if (!(a)) return
+#define bail_return_val_if_fail(a, b)  if (!(a)) return (b)
+#define bail_return_if_fail(a) if (!(a)) return
 
 G_END_DECLS
 
-#endif /* __GAIL_PRIVATE_MACROS_H__ */
+#endif /* __BAIL_PRIVATE_MACROS_H__ */

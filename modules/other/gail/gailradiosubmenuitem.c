@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2002 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,58 +19,58 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailradiosubmenuitem.h"
+#include <btk/btk.h>
+#include "bailradiosubmenuitem.h"
 
-static void      gail_radio_sub_menu_item_class_init        (GailRadioSubMenuItemClass *klass);
-static void      gail_radio_sub_menu_item_init              (GailRadioSubMenuItem      *radio_menu_item);
+static void      bail_radio_sub_menu_item_class_init        (BailRadioSubMenuItemClass *klass);
+static void      bail_radio_sub_menu_item_init              (BailRadioSubMenuItem      *radio_menu_item);
 
-static AtkRelationSet* gail_radio_sub_menu_item_ref_relation_set (AtkObject       *obj);
+static BatkRelationSet* bail_radio_sub_menu_item_ref_relation_set (BatkObject       *obj);
 
-G_DEFINE_TYPE (GailRadioSubMenuItem, gail_radio_sub_menu_item, GAIL_TYPE_CHECK_SUB_MENU_ITEM)
+G_DEFINE_TYPE (BailRadioSubMenuItem, bail_radio_sub_menu_item, BAIL_TYPE_CHECK_SUB_MENU_ITEM)
 
 static void
-gail_radio_sub_menu_item_class_init (GailRadioSubMenuItemClass *klass)
+bail_radio_sub_menu_item_class_init (BailRadioSubMenuItemClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->ref_relation_set = gail_radio_sub_menu_item_ref_relation_set;
+  class->ref_relation_set = bail_radio_sub_menu_item_ref_relation_set;
 }
 
-AtkObject* 
-gail_radio_sub_menu_item_new (GtkWidget *widget)
+BatkObject* 
+bail_radio_sub_menu_item_new (BtkWidget *widget)
 {
   GObject *object;
-  AtkObject *accessible;
+  BatkObject *accessible;
 
-  g_return_val_if_fail (GTK_IS_RADIO_MENU_ITEM (widget), NULL);
+  g_return_val_if_fail (BTK_IS_RADIO_MENU_ITEM (widget), NULL);
 
-  object = g_object_new (GAIL_TYPE_RADIO_SUB_MENU_ITEM, NULL);
+  object = g_object_new (BAIL_TYPE_RADIO_SUB_MENU_ITEM, NULL);
 
-  accessible = ATK_OBJECT (object);
-  atk_object_initialize (accessible, widget);
+  accessible = BATK_OBJECT (object);
+  batk_object_initialize (accessible, widget);
 
-  accessible->role = ATK_ROLE_RADIO_MENU_ITEM;
+  accessible->role = BATK_ROLE_RADIO_MENU_ITEM;
   return accessible;
 }
 
 static void
-gail_radio_sub_menu_item_init (GailRadioSubMenuItem *radio_menu_item)
+bail_radio_sub_menu_item_init (BailRadioSubMenuItem *radio_menu_item)
 {
   radio_menu_item->old_group = NULL;
 }
 
-AtkRelationSet*
-gail_radio_sub_menu_item_ref_relation_set (AtkObject *obj)
+BatkRelationSet*
+bail_radio_sub_menu_item_ref_relation_set (BatkObject *obj)
 {
-  GtkWidget *widget;
-  AtkRelationSet *relation_set;
+  BtkWidget *widget;
+  BatkRelationSet *relation_set;
   GSList *list;
-  GailRadioSubMenuItem *radio_menu_item;
+  BailRadioSubMenuItem *radio_menu_item;
 
-  g_return_val_if_fail (GAIL_IS_RADIO_SUB_MENU_ITEM (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_RADIO_SUB_MENU_ITEM (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
   {
     /*
@@ -78,24 +78,24 @@ gail_radio_sub_menu_item_ref_relation_set (AtkObject *obj)
      */
     return NULL;
   }
-  radio_menu_item = GAIL_RADIO_SUB_MENU_ITEM (obj);
+  radio_menu_item = BAIL_RADIO_SUB_MENU_ITEM (obj);
 
-  relation_set = ATK_OBJECT_CLASS (gail_radio_sub_menu_item_parent_class)->ref_relation_set (obj);
+  relation_set = BATK_OBJECT_CLASS (bail_radio_sub_menu_item_parent_class)->ref_relation_set (obj);
 
   /*
    * If the radio menu_item'group has changed remove the relation
    */
-  list = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
+  list = btk_radio_menu_item_get_group (BTK_RADIO_MENU_ITEM (widget));
   
   if (radio_menu_item->old_group != list)
     {
-      AtkRelation *relation;
+      BatkRelation *relation;
 
-      relation = atk_relation_set_get_relation_by_type (relation_set, ATK_RELATION_MEMBER_OF);
-      atk_relation_set_remove (relation_set, relation);
+      relation = batk_relation_set_get_relation_by_type (relation_set, BATK_RELATION_MEMBER_OF);
+      batk_relation_set_remove (relation_set, relation);
     }
 
-  if (!atk_relation_set_contains (relation_set, ATK_RELATION_MEMBER_OF))
+  if (!batk_relation_set_contains (relation_set, BATK_RELATION_MEMBER_OF))
   {
     /*
      * Get the members of the menu_item group
@@ -104,27 +104,27 @@ gail_radio_sub_menu_item_ref_relation_set (AtkObject *obj)
     radio_menu_item->old_group = list;
     if (list)
     {
-      AtkObject **accessible_array;
+      BatkObject **accessible_array;
       guint list_length;
-      AtkRelation* relation;
+      BatkRelation* relation;
       gint i = 0;
 
       list_length = g_slist_length (list);
-      accessible_array = (AtkObject**) g_malloc (sizeof (AtkObject *) * 
+      accessible_array = (BatkObject**) g_malloc (sizeof (BatkObject *) * 
                           list_length);
       while (list != NULL)
       {
-        GtkWidget* list_item = list->data;
+        BtkWidget* list_item = list->data;
 
-        accessible_array[i++] = gtk_widget_get_accessible (list_item);
+        accessible_array[i++] = btk_widget_get_accessible (list_item);
 
         list = list->next;
       }
-      relation = atk_relation_new (accessible_array, list_length,
-                                   ATK_RELATION_MEMBER_OF);
+      relation = batk_relation_new (accessible_array, list_length,
+                                   BATK_RELATION_MEMBER_OF);
       g_free (accessible_array);
 
-      atk_relation_set_add (relation_set, relation);
+      batk_relation_set_add (relation_set, relation);
       /*
        * Unref the relation so that it is not leaked.
        */

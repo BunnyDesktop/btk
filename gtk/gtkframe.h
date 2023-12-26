@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,79 +18,79 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_FRAME_H__
-#define __GTK_FRAME_H__
+#ifndef __BTK_FRAME_H__
+#define __BTK_FRAME_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
+#include <btk/btkbin.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_FRAME                  (gtk_frame_get_type ())
-#define GTK_FRAME(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FRAME, GtkFrame))
-#define GTK_FRAME_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FRAME, GtkFrameClass))
-#define GTK_IS_FRAME(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FRAME))
-#define GTK_IS_FRAME_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FRAME))
-#define GTK_FRAME_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FRAME, GtkFrameClass))
+#define BTK_TYPE_FRAME                  (btk_frame_get_type ())
+#define BTK_FRAME(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FRAME, BtkFrame))
+#define BTK_FRAME_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FRAME, BtkFrameClass))
+#define BTK_IS_FRAME(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FRAME))
+#define BTK_IS_FRAME_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FRAME))
+#define BTK_FRAME_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FRAME, BtkFrameClass))
 
 
-typedef struct _GtkFrame       GtkFrame;
-typedef struct _GtkFrameClass  GtkFrameClass;
+typedef struct _BtkFrame       BtkFrame;
+typedef struct _BtkFrameClass  BtkFrameClass;
 
-struct _GtkFrame
+struct _BtkFrame
 {
-  GtkBin bin;
+  BtkBin bin;
 
-  GtkWidget *GSEAL (label_widget);
+  BtkWidget *GSEAL (label_widget);
   gint16 GSEAL (shadow_type);
   gfloat GSEAL (label_xalign);
   gfloat GSEAL (label_yalign);
 
-  GtkAllocation GSEAL (child_allocation);
+  BtkAllocation GSEAL (child_allocation);
 };
 
-struct _GtkFrameClass
+struct _BtkFrameClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
-  void (*compute_child_allocation) (GtkFrame *frame, GtkAllocation *allocation);
+  void (*compute_child_allocation) (BtkFrame *frame, BtkAllocation *allocation);
 };
 
 
-GType      gtk_frame_get_type         (void) G_GNUC_CONST;
-GtkWidget* gtk_frame_new              (const gchar   *label);
+GType      btk_frame_get_type         (void) G_GNUC_CONST;
+BtkWidget* btk_frame_new              (const gchar   *label);
 
-void                  gtk_frame_set_label (GtkFrame    *frame,
+void                  btk_frame_set_label (BtkFrame    *frame,
 					   const gchar *label);
-const gchar *gtk_frame_get_label      (GtkFrame    *frame);
+const gchar *btk_frame_get_label      (BtkFrame    *frame);
 
-void       gtk_frame_set_label_widget (GtkFrame      *frame,
-				       GtkWidget     *label_widget);
-GtkWidget *gtk_frame_get_label_widget (GtkFrame      *frame);
-void       gtk_frame_set_label_align  (GtkFrame      *frame,
+void       btk_frame_set_label_widget (BtkFrame      *frame,
+				       BtkWidget     *label_widget);
+BtkWidget *btk_frame_get_label_widget (BtkFrame      *frame);
+void       btk_frame_set_label_align  (BtkFrame      *frame,
 				       gfloat         xalign,
 				       gfloat         yalign);
-void       gtk_frame_get_label_align  (GtkFrame      *frame,
+void       btk_frame_get_label_align  (BtkFrame      *frame,
 				       gfloat        *xalign,
 				       gfloat        *yalign);
-void       gtk_frame_set_shadow_type  (GtkFrame      *frame,
-				       GtkShadowType  type);
-GtkShadowType gtk_frame_get_shadow_type (GtkFrame    *frame);
+void       btk_frame_set_shadow_type  (BtkFrame      *frame,
+				       BtkShadowType  type);
+BtkShadowType btk_frame_get_shadow_type (BtkFrame    *frame);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_FRAME_H__ */
+#endif /* __BTK_FRAME_H__ */

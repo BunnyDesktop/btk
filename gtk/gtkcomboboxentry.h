@@ -1,5 +1,5 @@
-/* gtkcomboboxentry.h
- * Copyright (C) 2002, 2003  Kristian Rietveld <kris@gtk.org>
+/* btkcomboboxentry.h
+ * Copyright (C) 2002, 2003  Kristian Rietveld <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,65 +17,65 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_COMBO_BOX_ENTRY_H__
-#define __GTK_COMBO_BOX_ENTRY_H__
+#ifndef __BTK_COMBO_BOX_ENTRY_H__
+#define __BTK_COMBO_BOX_ENTRY_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcombobox.h>
-#include <gtk/gtktreemodel.h>
+#include <btk/btkcombobox.h>
+#include <btk/btktreemodel.h>
 
 G_BEGIN_DECLS
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#define GTK_TYPE_COMBO_BOX_ENTRY             (gtk_combo_box_entry_get_type ())
-#define GTK_COMBO_BOX_ENTRY(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_COMBO_BOX_ENTRY, GtkComboBoxEntry))
-#define GTK_COMBO_BOX_ENTRY_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), GTK_TYPE_COMBO_BOX_ENTRY, GtkComboBoxEntryClass))
-#define GTK_IS_COMBO_BOX_ENTRY(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_COMBO_BOX_ENTRY))
-#define GTK_IS_COMBO_BOX_ENTRY_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), GTK_TYPE_COMBO_BOX_ENTRY))
-#define GTK_COMBO_BOX_ENTRY_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), GTK_TYPE_COMBO_BOX_ENTRY, GtkComboBoxEntryClass))
+#define BTK_TYPE_COMBO_BOX_ENTRY             (btk_combo_box_entry_get_type ())
+#define BTK_COMBO_BOX_ENTRY(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntry))
+#define BTK_COMBO_BOX_ENTRY_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryClass))
+#define BTK_IS_COMBO_BOX_ENTRY(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX_ENTRY))
+#define BTK_IS_COMBO_BOX_ENTRY_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_COMBO_BOX_ENTRY))
+#define BTK_COMBO_BOX_ENTRY_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryClass))
 
-typedef struct _GtkComboBoxEntry             GtkComboBoxEntry;
-typedef struct _GtkComboBoxEntryClass        GtkComboBoxEntryClass;
-typedef struct _GtkComboBoxEntryPrivate      GtkComboBoxEntryPrivate;
+typedef struct _BtkComboBoxEntry             BtkComboBoxEntry;
+typedef struct _BtkComboBoxEntryClass        BtkComboBoxEntryClass;
+typedef struct _BtkComboBoxEntryPrivate      BtkComboBoxEntryPrivate;
 
-struct _GtkComboBoxEntry
+struct _BtkComboBoxEntry
 {
-  GtkComboBox parent_instance;
+  BtkComboBox parent_instance;
 
   /*< private >*/
-  GtkComboBoxEntryPrivate *GSEAL (priv);
+  BtkComboBoxEntryPrivate *GSEAL (priv);
 };
 
-struct _GtkComboBoxEntryClass
+struct _BtkComboBoxEntryClass
 {
-  GtkComboBoxClass parent_class;
+  BtkComboBoxClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved0) (void);
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
+  void (*_btk_reserved0) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
 };
 
 
-GType       gtk_combo_box_entry_get_type        (void) G_GNUC_CONST;
-GtkWidget  *gtk_combo_box_entry_new             (void);
-GtkWidget  *gtk_combo_box_entry_new_with_model  (GtkTreeModel     *model,
+GType       btk_combo_box_entry_get_type        (void) G_GNUC_CONST;
+BtkWidget  *btk_combo_box_entry_new             (void);
+BtkWidget  *btk_combo_box_entry_new_with_model  (BtkTreeModel     *model,
                                                  gint              text_column);
 
-void        gtk_combo_box_entry_set_text_column (GtkComboBoxEntry *entry_box,
+void        btk_combo_box_entry_set_text_column (BtkComboBoxEntry *entry_box,
                                                  gint              text_column);
-gint        gtk_combo_box_entry_get_text_column (GtkComboBoxEntry *entry_box);
+gint        btk_combo_box_entry_get_text_column (BtkComboBoxEntry *entry_box);
 
 /* convenience -- text */
-GtkWidget  *gtk_combo_box_entry_new_text        (void);
+BtkWidget  *btk_combo_box_entry_new_text        (void);
 
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_COMBO_BOX_ENTRY_H__ */
+#endif /* __BTK_COMBO_BOX_ENTRY_H__ */

@@ -1,6 +1,6 @@
-/* gdkscreen-quartz.h
+/* bdkscreen-quartz.h
  *
- * Copyright (C) 2009  Kristian Rietveld  <kris@gtk.org>
+ * Copyright (C) 2009  Kristian Rietveld  <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,27 +18,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_SCREEN_QUARTZ_H__
-#define __GDK_SCREEN_QUARTZ_H__
+#ifndef __BDK_SCREEN_QUARTZ_H__
+#define __BDK_SCREEN_QUARTZ_H__
 
 G_BEGIN_DECLS
 
-typedef struct _GdkScreenQuartz GdkScreenQuartz;
-typedef struct _GdkScreenQuartzClass GdkScreenQuartzClass;
+typedef struct _BdkScreenQuartz BdkScreenQuartz;
+typedef struct _BdkScreenQuartzClass BdkScreenQuartzClass;
 
-#define GDK_TYPE_SCREEN_QUARTZ              (_gdk_screen_quartz_get_type ())
-#define GDK_SCREEN_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_SCREEN_QUARTZ, GdkScreenQuartz))
-#define GDK_SCREEN_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_SCREEN_QUARTZ, GdkScreenQuartzClass))
-#define GDK_IS_SCREEN_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_SCREEN_QUARTZ))
-#define GDK_IS_SCREEN_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_SCREEN_QUARTZ))
-#define GDK_SCREEN_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_SCREEN_QUARTZ, GdkScreenQuartzClass))
+#define BDK_TYPE_SCREEN_QUARTZ              (_bdk_screen_quartz_get_type ())
+#define BDK_SCREEN_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartz))
+#define BDK_SCREEN_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
+#define BDK_IS_SCREEN_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_QUARTZ))
+#define BDK_IS_SCREEN_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_QUARTZ))
+#define BDK_SCREEN_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
 
-struct _GdkScreenQuartz
+struct _BdkScreenQuartz
 {
-  GdkScreen parent_instance;
+  BdkScreen parent_instance;
 
-  GdkDisplay *display;
-  GdkColormap *default_colormap;
+  BdkDisplay *display;
+  BdkColormap *default_colormap;
 
   /* Origin of "root window" in Cocoa coordinates */
   gint min_x;
@@ -48,21 +48,21 @@ struct _GdkScreenQuartz
   gint height;
 
   int n_screens;
-  GdkRectangle *screen_rects;
+  BdkRectangle *screen_rects;
 
   guint screen_changed_id;
 
   guint emit_monitors_changed : 1;
 };
 
-struct _GdkScreenQuartzClass
+struct _BdkScreenQuartzClass
 {
-  GdkScreenClass parent_class;
+  BdkScreenClass parent_class;
 };
 
-GType      _gdk_screen_quartz_get_type (void);
-GdkScreen *_gdk_screen_quartz_new      (void);
+GType      _bdk_screen_quartz_get_type (void);
+BdkScreen *_bdk_screen_quartz_new      (void);
 
 G_END_DECLS
 
-#endif /* _GDK_SCREEN_QUARTZ_H_ */
+#endif /* _BDK_SCREEN_QUARTZ_H_ */

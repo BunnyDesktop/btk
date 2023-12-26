@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkrecentchoosermenu.c - Recently used items menu widget
+/* BTK - The GIMP Toolkit
+ * btkrecentchoosermenu.c - Recently used items menu widget
  * Copyright (C) 2005, Emmanuele Bassi
  * 
  * This library is free software; you can redistribute it and/or
@@ -22,35 +22,35 @@
 
 #include <string.h>
 
-#include "gtkrecentmanager.h"
-#include "gtkrecentfilter.h"
-#include "gtkrecentchooser.h"
-#include "gtkrecentchooserutils.h"
-#include "gtkrecentchooserprivate.h"
-#include "gtkrecentchoosermenu.h"
+#include "btkrecentmanager.h"
+#include "btkrecentfilter.h"
+#include "btkrecentchooser.h"
+#include "btkrecentchooserutils.h"
+#include "btkrecentchooserprivate.h"
+#include "btkrecentchoosermenu.h"
 
-#include "gtkstock.h"
-#include "gtkicontheme.h"
-#include "gtkiconfactory.h"
-#include "gtkintl.h"
-#include "gtksettings.h"
-#include "gtkmenushell.h"
-#include "gtkmenuitem.h"
-#include "gtkimagemenuitem.h"
-#include "gtkseparatormenuitem.h"
-#include "gtkmenu.h"
-#include "gtkimage.h"
-#include "gtklabel.h"
-#include "gtktooltip.h"
-#include "gtkactivatable.h"
-#include "gtktypebuiltins.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkstock.h"
+#include "btkicontheme.h"
+#include "btkiconfactory.h"
+#include "btkintl.h"
+#include "btksettings.h"
+#include "btkmenushell.h"
+#include "btkmenuitem.h"
+#include "btkimagemenuitem.h"
+#include "btkseparatormenuitem.h"
+#include "btkmenu.h"
+#include "btkimage.h"
+#include "btklabel.h"
+#include "btktooltip.h"
+#include "btkactivatable.h"
+#include "btktypebuiltins.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
-struct _GtkRecentChooserMenuPrivate
+struct _BtkRecentChooserMenuPrivate
 {
   /* the recent manager object */
-  GtkRecentManager *manager;
+  BtkRecentManager *manager;
   
   /* size of the icons of the menu items */  
   gint icon_size;
@@ -59,7 +59,7 @@ struct _GtkRecentChooserMenuPrivate
   gint label_width;
 
   gint first_recent_item_pos;
-  GtkWidget *placeholder;
+  BtkWidget *placeholder;
 
   /* RecentChooser properties */
   gint limit;  
@@ -71,13 +71,13 @@ struct _GtkRecentChooserMenuPrivate
   
   guint show_numbers : 1;
   
-  GtkRecentSortType sort_type;
-  GtkRecentSortFunc sort_func;
+  BtkRecentSortType sort_type;
+  BtkRecentSortFunc sort_func;
   gpointer sort_data;
   GDestroyNotify sort_data_destroy;
   
   GSList *filters;
-  GtkRecentFilter *current_filter;
+  BtkRecentFilter *current_filter;
  
   guint local_manager : 1;
   gulong manager_changed_id;
@@ -99,149 +99,149 @@ enum {
 #define FALLBACK_ITEM_LIMIT 	10
 #define DEFAULT_LABEL_WIDTH     30
 
-#define GTK_RECENT_CHOOSER_MENU_GET_PRIVATE(obj)	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_RECENT_CHOOSER_MENU, GtkRecentChooserMenuPrivate))
+#define BTK_RECENT_CHOOSER_MENU_GET_PRIVATE(obj)	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenuPrivate))
 
-static void     gtk_recent_chooser_menu_finalize    (GObject                   *object);
-static void     gtk_recent_chooser_menu_dispose     (GObject                   *object);
-static GObject *gtk_recent_chooser_menu_constructor (GType                      type,
+static void     btk_recent_chooser_menu_finalize    (GObject                   *object);
+static void     btk_recent_chooser_menu_dispose     (GObject                   *object);
+static GObject *btk_recent_chooser_menu_constructor (GType                      type,
 						     guint                      n_construct_properties,
 						     GObjectConstructParam     *construct_params);
 
-static void gtk_recent_chooser_iface_init      (GtkRecentChooserIface     *iface);
+static void btk_recent_chooser_iface_init      (BtkRecentChooserIface     *iface);
 
-static void gtk_recent_chooser_menu_set_property (GObject      *object,
+static void btk_recent_chooser_menu_set_property (GObject      *object,
 						  guint         prop_id,
 						  const GValue *value,
 						  GParamSpec   *pspec);
-static void gtk_recent_chooser_menu_get_property (GObject      *object,
+static void btk_recent_chooser_menu_get_property (GObject      *object,
 						  guint         prop_id,
 						  GValue       *value,
 						  GParamSpec   *pspec);
 
-static gboolean          gtk_recent_chooser_menu_set_current_uri    (GtkRecentChooser  *chooser,
+static gboolean          btk_recent_chooser_menu_set_current_uri    (BtkRecentChooser  *chooser,
 							             const gchar       *uri,
 							             GError           **error);
-static gchar *           gtk_recent_chooser_menu_get_current_uri    (GtkRecentChooser  *chooser);
-static gboolean          gtk_recent_chooser_menu_select_uri         (GtkRecentChooser  *chooser,
+static gchar *           btk_recent_chooser_menu_get_current_uri    (BtkRecentChooser  *chooser);
+static gboolean          btk_recent_chooser_menu_select_uri         (BtkRecentChooser  *chooser,
 								     const gchar       *uri,
 								     GError           **error);
-static void              gtk_recent_chooser_menu_unselect_uri       (GtkRecentChooser  *chooser,
+static void              btk_recent_chooser_menu_unselect_uri       (BtkRecentChooser  *chooser,
 								     const gchar       *uri);
-static void              gtk_recent_chooser_menu_select_all         (GtkRecentChooser  *chooser);
-static void              gtk_recent_chooser_menu_unselect_all       (GtkRecentChooser  *chooser);
-static GList *           gtk_recent_chooser_menu_get_items          (GtkRecentChooser  *chooser);
-static GtkRecentManager *gtk_recent_chooser_menu_get_recent_manager (GtkRecentChooser  *chooser);
-static void              gtk_recent_chooser_menu_set_sort_func      (GtkRecentChooser  *chooser,
-								     GtkRecentSortFunc  sort_func,
+static void              btk_recent_chooser_menu_select_all         (BtkRecentChooser  *chooser);
+static void              btk_recent_chooser_menu_unselect_all       (BtkRecentChooser  *chooser);
+static GList *           btk_recent_chooser_menu_get_items          (BtkRecentChooser  *chooser);
+static BtkRecentManager *btk_recent_chooser_menu_get_recent_manager (BtkRecentChooser  *chooser);
+static void              btk_recent_chooser_menu_set_sort_func      (BtkRecentChooser  *chooser,
+								     BtkRecentSortFunc  sort_func,
 								     gpointer           sort_data,
 								     GDestroyNotify     data_destroy);
-static void              gtk_recent_chooser_menu_add_filter         (GtkRecentChooser  *chooser,
-								     GtkRecentFilter   *filter);
-static void              gtk_recent_chooser_menu_remove_filter      (GtkRecentChooser  *chooser,
-								     GtkRecentFilter   *filter);
-static GSList *          gtk_recent_chooser_menu_list_filters       (GtkRecentChooser  *chooser);
-static void              gtk_recent_chooser_menu_set_current_filter (GtkRecentChooserMenu *menu,
-								     GtkRecentFilter      *filter);
+static void              btk_recent_chooser_menu_add_filter         (BtkRecentChooser  *chooser,
+								     BtkRecentFilter   *filter);
+static void              btk_recent_chooser_menu_remove_filter      (BtkRecentChooser  *chooser,
+								     BtkRecentFilter   *filter);
+static GSList *          btk_recent_chooser_menu_list_filters       (BtkRecentChooser  *chooser);
+static void              btk_recent_chooser_menu_set_current_filter (BtkRecentChooserMenu *menu,
+								     BtkRecentFilter      *filter);
 
-static void              gtk_recent_chooser_menu_populate           (GtkRecentChooserMenu *menu);
-static void              gtk_recent_chooser_menu_set_show_tips      (GtkRecentChooserMenu *menu,
+static void              btk_recent_chooser_menu_populate           (BtkRecentChooserMenu *menu);
+static void              btk_recent_chooser_menu_set_show_tips      (BtkRecentChooserMenu *menu,
 								     gboolean              show_tips);
 
-static void     set_recent_manager (GtkRecentChooserMenu *menu,
-				    GtkRecentManager     *manager);
+static void     set_recent_manager (BtkRecentChooserMenu *menu,
+				    BtkRecentManager     *manager);
 
-static void     chooser_set_sort_type (GtkRecentChooserMenu *menu,
-				       GtkRecentSortType     sort_type);
+static void     chooser_set_sort_type (BtkRecentChooserMenu *menu,
+				       BtkRecentSortType     sort_type);
 
-static gint     get_icon_size_for_widget (GtkWidget *widget);
+static gint     get_icon_size_for_widget (BtkWidget *widget);
 
-static void     item_activate_cb   (GtkWidget        *widget,
+static void     item_activate_cb   (BtkWidget        *widget,
 			            gpointer          user_data);
-static void     manager_changed_cb (GtkRecentManager *manager,
+static void     manager_changed_cb (BtkRecentManager *manager,
 				    gpointer          user_data);
 
-static void gtk_recent_chooser_activatable_iface_init (GtkActivatableIface  *iface);
-static void gtk_recent_chooser_update                 (GtkActivatable       *activatable,
-						       GtkAction            *action,
+static void btk_recent_chooser_activatable_iface_init (BtkActivatableIface  *iface);
+static void btk_recent_chooser_update                 (BtkActivatable       *activatable,
+						       BtkAction            *action,
 						       const gchar          *property_name);
-static void gtk_recent_chooser_sync_action_properties (GtkActivatable       *activatable,
-						       GtkAction            *action);
+static void btk_recent_chooser_sync_action_properties (BtkActivatable       *activatable,
+						       BtkAction            *action);
 
-G_DEFINE_TYPE_WITH_CODE (GtkRecentChooserMenu,
-			 gtk_recent_chooser_menu,
-			 GTK_TYPE_MENU,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_RECENT_CHOOSER,
-				 		gtk_recent_chooser_iface_init)
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_ACTIVATABLE,
-				 		gtk_recent_chooser_activatable_iface_init))
+G_DEFINE_TYPE_WITH_CODE (BtkRecentChooserMenu,
+			 btk_recent_chooser_menu,
+			 BTK_TYPE_MENU,
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_RECENT_CHOOSER,
+				 		btk_recent_chooser_iface_init)
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_ACTIVATABLE,
+				 		btk_recent_chooser_activatable_iface_init))
 
 
 static void
-gtk_recent_chooser_iface_init (GtkRecentChooserIface *iface)
+btk_recent_chooser_iface_init (BtkRecentChooserIface *iface)
 {
-  iface->set_current_uri = gtk_recent_chooser_menu_set_current_uri;
-  iface->get_current_uri = gtk_recent_chooser_menu_get_current_uri;
-  iface->select_uri = gtk_recent_chooser_menu_select_uri;
-  iface->unselect_uri = gtk_recent_chooser_menu_unselect_uri;
-  iface->select_all = gtk_recent_chooser_menu_select_all;
-  iface->unselect_all = gtk_recent_chooser_menu_unselect_all;
-  iface->get_items = gtk_recent_chooser_menu_get_items;
-  iface->get_recent_manager = gtk_recent_chooser_menu_get_recent_manager;
-  iface->set_sort_func = gtk_recent_chooser_menu_set_sort_func;
-  iface->add_filter = gtk_recent_chooser_menu_add_filter;
-  iface->remove_filter = gtk_recent_chooser_menu_remove_filter;
-  iface->list_filters = gtk_recent_chooser_menu_list_filters;
+  iface->set_current_uri = btk_recent_chooser_menu_set_current_uri;
+  iface->get_current_uri = btk_recent_chooser_menu_get_current_uri;
+  iface->select_uri = btk_recent_chooser_menu_select_uri;
+  iface->unselect_uri = btk_recent_chooser_menu_unselect_uri;
+  iface->select_all = btk_recent_chooser_menu_select_all;
+  iface->unselect_all = btk_recent_chooser_menu_unselect_all;
+  iface->get_items = btk_recent_chooser_menu_get_items;
+  iface->get_recent_manager = btk_recent_chooser_menu_get_recent_manager;
+  iface->set_sort_func = btk_recent_chooser_menu_set_sort_func;
+  iface->add_filter = btk_recent_chooser_menu_add_filter;
+  iface->remove_filter = btk_recent_chooser_menu_remove_filter;
+  iface->list_filters = btk_recent_chooser_menu_list_filters;
 }
 
 static void
-gtk_recent_chooser_activatable_iface_init (GtkActivatableIface *iface)
+btk_recent_chooser_activatable_iface_init (BtkActivatableIface *iface)
 {
-  iface->update = gtk_recent_chooser_update;
-  iface->sync_action_properties = gtk_recent_chooser_sync_action_properties;
+  iface->update = btk_recent_chooser_update;
+  iface->sync_action_properties = btk_recent_chooser_sync_action_properties;
 }
 
 static void
-gtk_recent_chooser_menu_class_init (GtkRecentChooserMenuClass *klass)
+btk_recent_chooser_menu_class_init (BtkRecentChooserMenuClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->constructor = gtk_recent_chooser_menu_constructor;
-  gobject_class->dispose = gtk_recent_chooser_menu_dispose;
-  gobject_class->finalize = gtk_recent_chooser_menu_finalize;
-  gobject_class->set_property = gtk_recent_chooser_menu_set_property;
-  gobject_class->get_property = gtk_recent_chooser_menu_get_property;
+  bobject_class->constructor = btk_recent_chooser_menu_constructor;
+  bobject_class->dispose = btk_recent_chooser_menu_dispose;
+  bobject_class->finalize = btk_recent_chooser_menu_finalize;
+  bobject_class->set_property = btk_recent_chooser_menu_set_property;
+  bobject_class->get_property = btk_recent_chooser_menu_get_property;
 
-  _gtk_recent_chooser_install_properties (gobject_class);
+  _btk_recent_chooser_install_properties (bobject_class);
 
   /**
-   * GtkRecentChooserMenu:show-numbers
+   * BtkRecentChooserMenu:show-numbers
    *
    * Whether the first ten items in the menu should be prepended by
    * a number acting as a unique mnemonic.
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 		  		   PROP_SHOW_NUMBERS,
 				   g_param_spec_boolean ("show-numbers",
 							 P_("Show Numbers"),
 							 P_("Whether the items should be displayed with a number"),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
   
 
-  g_object_class_override_property (gobject_class, PROP_ACTIVATABLE_RELATED_ACTION, "related-action");
-  g_object_class_override_property (gobject_class, PROP_ACTIVATABLE_USE_ACTION_APPEARANCE, "use-action-appearance");
+  g_object_class_override_property (bobject_class, PROP_ACTIVATABLE_RELATED_ACTION, "related-action");
+  g_object_class_override_property (bobject_class, PROP_ACTIVATABLE_USE_ACTION_APPEARANCE, "use-action-appearance");
 
-  g_type_class_add_private (klass, sizeof (GtkRecentChooserMenuPrivate));
+  g_type_class_add_private (klass, sizeof (BtkRecentChooserMenuPrivate));
 }
 
 static void
-gtk_recent_chooser_menu_init (GtkRecentChooserMenu *menu)
+btk_recent_chooser_menu_init (BtkRecentChooserMenu *menu)
 {
-  GtkRecentChooserMenuPrivate *priv;
+  BtkRecentChooserMenuPrivate *priv;
   
-  priv = GTK_RECENT_CHOOSER_MENU_GET_PRIVATE (menu);
+  priv = BTK_RECENT_CHOOSER_MENU_GET_PRIVATE (menu);
   
   menu->priv = priv;
   
@@ -253,7 +253,7 @@ gtk_recent_chooser_menu_init (GtkRecentChooserMenu *menu)
   priv->local_only = TRUE;
   
   priv->limit = FALLBACK_ITEM_LIMIT;
-  priv->sort_type = GTK_RECENT_SORT_NONE;
+  priv->sort_type = BTK_RECENT_SORT_NONE;
   priv->icon_size = FALLBACK_ICON_SIZE;
   priv->label_width = DEFAULT_LABEL_WIDTH;
   
@@ -264,10 +264,10 @@ gtk_recent_chooser_menu_init (GtkRecentChooserMenu *menu)
 }
 
 static void
-gtk_recent_chooser_menu_finalize (GObject *object)
+btk_recent_chooser_menu_finalize (GObject *object)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (object);
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
   
   priv->manager = NULL;
   
@@ -280,14 +280,14 @@ gtk_recent_chooser_menu_finalize (GObject *object)
   priv->sort_data = NULL;
   priv->sort_func = NULL;
   
-  G_OBJECT_CLASS (gtk_recent_chooser_menu_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_recent_chooser_menu_parent_class)->finalize (object);
 }
 
 static void
-gtk_recent_chooser_menu_dispose (GObject *object)
+btk_recent_chooser_menu_dispose (GObject *object)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (object);
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
 
   if (priv->manager_changed_id)
     {
@@ -309,22 +309,22 @@ gtk_recent_chooser_menu_dispose (GObject *object)
       priv->current_filter = NULL;
     }
   
-  G_OBJECT_CLASS (gtk_recent_chooser_menu_parent_class)->dispose (object);
+  G_OBJECT_CLASS (btk_recent_chooser_menu_parent_class)->dispose (object);
 }
 
 static GObject *
-gtk_recent_chooser_menu_constructor (GType                  type,
+btk_recent_chooser_menu_constructor (GType                  type,
 				     guint                  n_params,
 				     GObjectConstructParam *params)
 {
-  GtkRecentChooserMenu *menu;
-  GtkRecentChooserMenuPrivate *priv;
+  BtkRecentChooserMenu *menu;
+  BtkRecentChooserMenuPrivate *priv;
   GObjectClass *parent_class;
   GObject *object;
   
-  parent_class = G_OBJECT_CLASS (gtk_recent_chooser_menu_parent_class);
+  parent_class = G_OBJECT_CLASS (btk_recent_chooser_menu_parent_class);
   object = parent_class->constructor (type, n_params, params);
-  menu = GTK_RECENT_CHOOSER_MENU (object);
+  menu = BTK_RECENT_CHOOSER_MENU (object);
   priv = menu->priv;
   
   g_assert (priv->manager);
@@ -339,73 +339,73 @@ gtk_recent_chooser_menu_constructor (GType                  type,
    * user appended or prepended custom menu items to the
    * recent chooser menu widget.
    */
-  priv->placeholder = gtk_menu_item_new_with_label (_("No items found"));
-  gtk_widget_set_sensitive (priv->placeholder, FALSE);
+  priv->placeholder = btk_menu_item_new_with_label (_("No items found"));
+  btk_widget_set_sensitive (priv->placeholder, FALSE);
   g_object_set_data (G_OBJECT (priv->placeholder),
-                     "gtk-recent-menu-placeholder",
+                     "btk-recent-menu-placeholder",
                      GINT_TO_POINTER (TRUE));
 
-  gtk_menu_shell_insert (GTK_MENU_SHELL (menu), priv->placeholder, 0);
-  gtk_widget_set_no_show_all (priv->placeholder, TRUE);
-  gtk_widget_show (priv->placeholder);
+  btk_menu_shell_insert (BTK_MENU_SHELL (menu), priv->placeholder, 0);
+  btk_widget_set_no_show_all (priv->placeholder, TRUE);
+  btk_widget_show (priv->placeholder);
 
   /* (re)populate the menu */
-  gtk_recent_chooser_menu_populate (menu);
+  btk_recent_chooser_menu_populate (menu);
 
   return object;
 }
 
 static void
-gtk_recent_chooser_menu_set_property (GObject      *object,
+btk_recent_chooser_menu_set_property (GObject      *object,
 				      guint         prop_id,
 				      const GValue *value,
 				      GParamSpec   *pspec)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (object);
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
   
   switch (prop_id)
     {
     case PROP_SHOW_NUMBERS:
       priv->show_numbers = g_value_get_boolean (value);
       break;
-    case GTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
+    case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
       set_recent_manager (menu, g_value_get_object (value));
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
       priv->show_private = g_value_get_boolean (value);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
       priv->show_not_found = g_value_get_boolean (value);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      gtk_recent_chooser_menu_set_show_tips (menu, g_value_get_boolean (value));
+    case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
+      btk_recent_chooser_menu_set_show_tips (menu, g_value_get_boolean (value));
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
       priv->show_icons = g_value_get_boolean (value);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
+    case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
       g_warning ("%s: Choosers of type `%s' do not support selecting multiple items.",
                  G_STRFUNC,
                  G_OBJECT_TYPE_NAME (object));
       break;
-    case GTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
+    case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
       priv->local_only = g_value_get_boolean (value);
       break;
-    case GTK_RECENT_CHOOSER_PROP_LIMIT:
+    case BTK_RECENT_CHOOSER_PROP_LIMIT:
       priv->limit = g_value_get_int (value);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SORT_TYPE:
+    case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
       chooser_set_sort_type (menu, g_value_get_enum (value));
       break;
-    case GTK_RECENT_CHOOSER_PROP_FILTER:
-      gtk_recent_chooser_menu_set_current_filter (menu, g_value_get_object (value));
+    case BTK_RECENT_CHOOSER_PROP_FILTER:
+      btk_recent_chooser_menu_set_current_filter (menu, g_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      _gtk_recent_chooser_set_related_action (GTK_RECENT_CHOOSER (menu), g_value_get_object (value));
+      _btk_recent_chooser_set_related_action (BTK_RECENT_CHOOSER (menu), g_value_get_object (value));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE: 
-      _gtk_recent_chooser_set_use_action_appearance (GTK_RECENT_CHOOSER (menu), g_value_get_boolean (value));
+      _btk_recent_chooser_set_use_action_appearance (BTK_RECENT_CHOOSER (menu), g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -414,51 +414,51 @@ gtk_recent_chooser_menu_set_property (GObject      *object,
 }
 
 static void
-gtk_recent_chooser_menu_get_property (GObject    *object,
+btk_recent_chooser_menu_get_property (GObject    *object,
 				      guint       prop_id,
 				      GValue     *value,
 				      GParamSpec *pspec)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (object);
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (object);
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
   
   switch (prop_id)
     {
     case PROP_SHOW_NUMBERS:
       g_value_set_boolean (value, priv->show_numbers);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
       g_value_set_boolean (value, priv->show_tips);
       break;
-    case GTK_RECENT_CHOOSER_PROP_LIMIT:
+    case BTK_RECENT_CHOOSER_PROP_LIMIT:
       g_value_set_int (value, priv->limit);
       break;
-    case GTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
+    case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
       g_value_set_boolean (value, priv->local_only);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SORT_TYPE:
+    case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
       g_value_set_enum (value, priv->sort_type);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
       g_value_set_boolean (value, priv->show_private);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
       g_value_set_boolean (value, priv->show_not_found);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
+    case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
       g_value_set_boolean (value, priv->show_icons);
       break;
-    case GTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
+    case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
       g_value_set_boolean (value, FALSE);
       break;
-    case GTK_RECENT_CHOOSER_PROP_FILTER:
+    case BTK_RECENT_CHOOSER_PROP_FILTER:
       g_value_set_object (value, priv->current_filter);
       break;
     case PROP_ACTIVATABLE_RELATED_ACTION:
-      g_value_set_object (value, _gtk_recent_chooser_get_related_action (GTK_RECENT_CHOOSER (menu)));
+      g_value_set_object (value, _btk_recent_chooser_get_related_action (BTK_RECENT_CHOOSER (menu)));
       break;
     case PROP_ACTIVATABLE_USE_ACTION_APPEARANCE: 
-      g_value_set_boolean (value, _gtk_recent_chooser_get_use_action_appearance (GTK_RECENT_CHOOSER (menu)));
+      g_value_set_boolean (value, _btk_recent_chooser_get_use_action_appearance (BTK_RECENT_CHOOSER (menu)));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -467,30 +467,30 @@ gtk_recent_chooser_menu_get_property (GObject    *object,
 }
 
 static gboolean
-gtk_recent_chooser_menu_set_current_uri (GtkRecentChooser  *chooser,
+btk_recent_chooser_menu_set_current_uri (BtkRecentChooser  *chooser,
 					 const gchar       *uri,
 					 GError           **error)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (chooser);
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (chooser);
   GList *children, *l;
-  GtkWidget *menu_item = NULL;
+  BtkWidget *menu_item = NULL;
   gboolean found = FALSE;
   
-  children = gtk_container_get_children (GTK_CONTAINER (menu));
+  children = btk_container_get_children (BTK_CONTAINER (menu));
   
   for (l = children; l != NULL; l = l->next)
     {
-      GtkRecentInfo *info;
+      BtkRecentInfo *info;
       
-      menu_item = GTK_WIDGET (l->data);
+      menu_item = BTK_WIDGET (l->data);
       
-      info = g_object_get_data (G_OBJECT (menu_item), "gtk-recent-info");
+      info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
       if (!info)
         continue;
       
-      if (strcmp (uri, gtk_recent_info_get_uri (info)) == 0)
+      if (strcmp (uri, btk_recent_info_get_uri (info)) == 0)
         {
-          gtk_menu_shell_activate_item (GTK_MENU_SHELL (menu),
+          btk_menu_shell_activate_item (BTK_MENU_SHELL (menu),
 	                                menu_item,
 					TRUE);
 	  found = TRUE;
@@ -503,8 +503,8 @@ gtk_recent_chooser_menu_set_current_uri (GtkRecentChooser  *chooser,
   
   if (!found)  
     {
-      g_set_error (error, GTK_RECENT_CHOOSER_ERROR,
-      		   GTK_RECENT_CHOOSER_ERROR_NOT_FOUND,
+      g_set_error (error, BTK_RECENT_CHOOSER_ERROR,
+      		   BTK_RECENT_CHOOSER_ERROR_NOT_FOUND,
       		   _("No recently used resource found with URI `%s'"),
       		   uri);
     }
@@ -513,45 +513,45 @@ gtk_recent_chooser_menu_set_current_uri (GtkRecentChooser  *chooser,
 }
 
 static gchar *
-gtk_recent_chooser_menu_get_current_uri (GtkRecentChooser  *chooser)
+btk_recent_chooser_menu_get_current_uri (BtkRecentChooser  *chooser)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (chooser);
-  GtkWidget *menu_item;
-  GtkRecentInfo *info;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (chooser);
+  BtkWidget *menu_item;
+  BtkRecentInfo *info;
   
-  menu_item = gtk_menu_get_active (GTK_MENU (menu));
+  menu_item = btk_menu_get_active (BTK_MENU (menu));
   if (!menu_item)
     return NULL;
   
-  info = g_object_get_data (G_OBJECT (menu_item), "gtk-recent-info");
+  info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
   if (!info)
     return NULL;
   
-  return g_strdup (gtk_recent_info_get_uri (info));
+  return g_strdup (btk_recent_info_get_uri (info));
 }
 
 static gboolean
-gtk_recent_chooser_menu_select_uri (GtkRecentChooser  *chooser,
+btk_recent_chooser_menu_select_uri (BtkRecentChooser  *chooser,
 				    const gchar       *uri,
 				    GError           **error)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (chooser);
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (chooser);
   GList *children, *l;
-  GtkWidget *menu_item = NULL;
+  BtkWidget *menu_item = NULL;
   gboolean found = FALSE;
   
-  children = gtk_container_get_children (GTK_CONTAINER (menu));
+  children = btk_container_get_children (BTK_CONTAINER (menu));
   for (l = children; l != NULL; l = l->next)
     {
-      GtkRecentInfo *info;
+      BtkRecentInfo *info;
       
-      menu_item = GTK_WIDGET (l->data);
+      menu_item = BTK_WIDGET (l->data);
       
-      info = g_object_get_data (G_OBJECT (menu_item), "gtk-recent-info");
+      info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
       if (!info)
         continue;
       
-      if (0 == strcmp (uri, gtk_recent_info_get_uri (info)))
+      if (0 == strcmp (uri, btk_recent_info_get_uri (info)))
         found = TRUE;
     }
 
@@ -559,31 +559,31 @@ gtk_recent_chooser_menu_select_uri (GtkRecentChooser  *chooser,
   
   if (!found)  
     {
-      g_set_error (error, GTK_RECENT_CHOOSER_ERROR,
-      		   GTK_RECENT_CHOOSER_ERROR_NOT_FOUND,
+      g_set_error (error, BTK_RECENT_CHOOSER_ERROR,
+      		   BTK_RECENT_CHOOSER_ERROR_NOT_FOUND,
       		   _("No recently used resource found with URI `%s'"),
       		   uri);
       return FALSE;
     }
   else
     {
-      gtk_menu_shell_select_item (GTK_MENU_SHELL (menu), menu_item);
+      btk_menu_shell_select_item (BTK_MENU_SHELL (menu), menu_item);
 
       return TRUE;
     }
 }
 
 static void
-gtk_recent_chooser_menu_unselect_uri (GtkRecentChooser *chooser,
+btk_recent_chooser_menu_unselect_uri (BtkRecentChooser *chooser,
 				       const gchar     *uri)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (chooser);
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (chooser);
   
-  gtk_menu_shell_deselect (GTK_MENU_SHELL (menu));
+  btk_menu_shell_deselect (BTK_MENU_SHELL (menu));
 }
 
 static void
-gtk_recent_chooser_menu_select_all (GtkRecentChooser *chooser)
+btk_recent_chooser_menu_select_all (BtkRecentChooser *chooser)
 {
   g_warning (_("This function is not implemented for "
                "widgets of class '%s'"),
@@ -591,7 +591,7 @@ gtk_recent_chooser_menu_select_all (GtkRecentChooser *chooser)
 }
 
 static void
-gtk_recent_chooser_menu_unselect_all (GtkRecentChooser *chooser)
+btk_recent_chooser_menu_unselect_all (BtkRecentChooser *chooser)
 {
   g_warning (_("This function is not implemented for "
                "widgets of class '%s'"),
@@ -599,13 +599,13 @@ gtk_recent_chooser_menu_unselect_all (GtkRecentChooser *chooser)
 }
 
 static void
-gtk_recent_chooser_menu_set_sort_func (GtkRecentChooser  *chooser,
-				       GtkRecentSortFunc  sort_func,
+btk_recent_chooser_menu_set_sort_func (BtkRecentChooser  *chooser,
+				       BtkRecentSortFunc  sort_func,
 				       gpointer           sort_data,
 				       GDestroyNotify     data_destroy)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (chooser);
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (chooser);
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
   
   if (priv->sort_data_destroy)
     {
@@ -626,8 +626,8 @@ gtk_recent_chooser_menu_set_sort_func (GtkRecentChooser  *chooser,
 }
 
 static void
-chooser_set_sort_type (GtkRecentChooserMenu *menu,
-		       GtkRecentSortType     sort_type)
+chooser_set_sort_type (BtkRecentChooserMenu *menu,
+		       BtkRecentSortType     sort_type)
 {
   if (menu->priv->sort_type == sort_type)
     return;
@@ -637,45 +637,45 @@ chooser_set_sort_type (GtkRecentChooserMenu *menu,
 
 
 static GList *
-gtk_recent_chooser_menu_get_items (GtkRecentChooser *chooser)
+btk_recent_chooser_menu_get_items (BtkRecentChooser *chooser)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (chooser);
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (chooser);
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
 
-  return _gtk_recent_chooser_get_items (chooser,
+  return _btk_recent_chooser_get_items (chooser,
                                         priv->current_filter,
                                         priv->sort_func,
                                         priv->sort_data);
 }
 
-static GtkRecentManager *
-gtk_recent_chooser_menu_get_recent_manager (GtkRecentChooser *chooser)
+static BtkRecentManager *
+btk_recent_chooser_menu_get_recent_manager (BtkRecentChooser *chooser)
 {
-  GtkRecentChooserMenuPrivate *priv;
+  BtkRecentChooserMenuPrivate *priv;
  
-  priv = GTK_RECENT_CHOOSER_MENU (chooser)->priv;
+  priv = BTK_RECENT_CHOOSER_MENU (chooser)->priv;
   
   return priv->manager;
 }
 
 static void
-gtk_recent_chooser_menu_add_filter (GtkRecentChooser *chooser,
-				    GtkRecentFilter  *filter)
+btk_recent_chooser_menu_add_filter (BtkRecentChooser *chooser,
+				    BtkRecentFilter  *filter)
 {
-  GtkRecentChooserMenu *menu;
+  BtkRecentChooserMenu *menu;
 
-  menu = GTK_RECENT_CHOOSER_MENU (chooser);
+  menu = BTK_RECENT_CHOOSER_MENU (chooser);
   
-  gtk_recent_chooser_menu_set_current_filter (menu, filter);
+  btk_recent_chooser_menu_set_current_filter (menu, filter);
 }
 
 static void
-gtk_recent_chooser_menu_remove_filter (GtkRecentChooser *chooser,
-				       GtkRecentFilter  *filter)
+btk_recent_chooser_menu_remove_filter (BtkRecentChooser *chooser,
+				       BtkRecentFilter  *filter)
 {
-  GtkRecentChooserMenu *menu;
+  BtkRecentChooserMenu *menu;
 
-  menu = GTK_RECENT_CHOOSER_MENU (chooser);
+  menu = BTK_RECENT_CHOOSER_MENU (chooser);
   
   if (filter == menu->priv->current_filter)
     {
@@ -687,12 +687,12 @@ gtk_recent_chooser_menu_remove_filter (GtkRecentChooser *chooser,
 }
 
 static GSList *
-gtk_recent_chooser_menu_list_filters (GtkRecentChooser *chooser)
+btk_recent_chooser_menu_list_filters (BtkRecentChooser *chooser)
 {
-  GtkRecentChooserMenu *menu;
+  BtkRecentChooserMenu *menu;
   GSList *retval = NULL;
 
-  menu = GTK_RECENT_CHOOSER_MENU (chooser);
+  menu = BTK_RECENT_CHOOSER_MENU (chooser);
  
   if (menu->priv->current_filter)
     retval = g_slist_prepend (retval, menu->priv->current_filter);
@@ -701,10 +701,10 @@ gtk_recent_chooser_menu_list_filters (GtkRecentChooser *chooser)
 }
 
 static void
-gtk_recent_chooser_menu_set_current_filter (GtkRecentChooserMenu *menu,
-					    GtkRecentFilter      *filter)
+btk_recent_chooser_menu_set_current_filter (BtkRecentChooserMenu *menu,
+					    BtkRecentFilter      *filter)
 {
-  GtkRecentChooserMenuPrivate *priv;
+  BtkRecentChooserMenuPrivate *priv;
 
   priv = menu->priv;
   
@@ -716,7 +716,7 @@ gtk_recent_chooser_menu_set_current_filter (GtkRecentChooserMenu *menu,
   if (priv->current_filter)
     g_object_ref_sink (priv->current_filter);
 
-  gtk_recent_chooser_menu_populate (menu);
+  btk_recent_chooser_menu_populate (menu);
   
   g_object_notify (G_OBJECT (menu), "filter");
 }
@@ -756,11 +756,11 @@ escape_underscores (const gchar *string)
 }
 
 static void
-gtk_recent_chooser_menu_add_tip (GtkRecentChooserMenu *menu,
-				 GtkRecentInfo        *info,
-				 GtkWidget            *item)
+btk_recent_chooser_menu_add_tip (BtkRecentChooserMenu *menu,
+				 BtkRecentInfo        *info,
+				 BtkWidget            *item)
 {
-  GtkRecentChooserMenuPrivate *priv;
+  BtkRecentChooserMenuPrivate *priv;
   gchar *path;
 
   g_assert (info != NULL);
@@ -768,28 +768,28 @@ gtk_recent_chooser_menu_add_tip (GtkRecentChooserMenu *menu,
 
   priv = menu->priv;
   
-  path = gtk_recent_info_get_uri_display (info);
+  path = btk_recent_info_get_uri_display (info);
   if (path)
     {
       gchar *tip_text = g_strdup_printf (_("Open '%s'"), path);
 
-      gtk_widget_set_tooltip_text (item, tip_text);
-      gtk_widget_set_has_tooltip (item, priv->show_tips);
+      btk_widget_set_tooltip_text (item, tip_text);
+      btk_widget_set_has_tooltip (item, priv->show_tips);
 
       g_free (path);
       g_free (tip_text);
     }
 }
 
-static GtkWidget *
-gtk_recent_chooser_menu_create_item (GtkRecentChooserMenu *menu,
-				     GtkRecentInfo        *info,
+static BtkWidget *
+btk_recent_chooser_menu_create_item (BtkRecentChooserMenu *menu,
+				     BtkRecentInfo        *info,
 				     gint                  count)
 {
-  GtkRecentChooserMenuPrivate *priv;
+  BtkRecentChooserMenuPrivate *priv;
   gchar *text;
-  GtkWidget *item, *image, *label;
-  GdkPixbuf *icon;
+  BtkWidget *item, *image, *label;
+  BdkPixbuf *icon;
 
   g_assert (info != NULL);
 
@@ -799,7 +799,7 @@ gtk_recent_chooser_menu_create_item (GtkRecentChooserMenu *menu,
     {
       gchar *name, *escaped;
       
-      name = g_strdup (gtk_recent_info_get_display_name (info));
+      name = g_strdup (btk_recent_info_get_display_name (info));
       if (!name)
         name = g_strdup (_("Unknown item"));
       
@@ -819,38 +819,38 @@ gtk_recent_chooser_menu_create_item (GtkRecentChooserMenu *menu,
          */
         text = g_strdup_printf (C_("recent menu label", "%d. %s"), count, escaped);
       
-      item = gtk_image_menu_item_new_with_mnemonic (text);
+      item = btk_image_menu_item_new_with_mnemonic (text);
       
       g_free (escaped);
       g_free (name);
     }
   else
     {
-      text = g_strdup (gtk_recent_info_get_display_name (info));
-      item = gtk_image_menu_item_new_with_label (text);
+      text = g_strdup (btk_recent_info_get_display_name (info));
+      item = btk_image_menu_item_new_with_label (text);
     }
 
   g_free (text);
 
-  gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (item),
+  btk_image_menu_item_set_always_show_image (BTK_IMAGE_MENU_ITEM (item),
                                              TRUE);
 
   /* ellipsize the menu item label, in case the recent document
    * display name is huge.
    */
-  label = GTK_BIN (item)->child;
-  if (GTK_IS_LABEL (label))
+  label = BTK_BIN (item)->child;
+  if (BTK_IS_LABEL (label))
     {
-      gtk_label_set_ellipsize (GTK_LABEL (label), PANGO_ELLIPSIZE_END);
-      gtk_label_set_max_width_chars (GTK_LABEL (label), priv->label_width);
+      btk_label_set_ellipsize (BTK_LABEL (label), BANGO_ELLIPSIZE_END);
+      btk_label_set_max_width_chars (BTK_LABEL (label), priv->label_width);
     }
   
   if (priv->show_icons)
     {
-      icon = gtk_recent_info_get_icon (info, priv->icon_size);
+      icon = btk_recent_info_get_icon (info, priv->icon_size);
         
-      image = gtk_image_new_from_pixbuf (icon);
-      gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+      image = btk_image_new_from_pixbuf (icon);
+      btk_image_menu_item_set_image (BTK_IMAGE_MENU_ITEM (item), image);
       g_object_unref (icon);
     }
 
@@ -862,18 +862,18 @@ gtk_recent_chooser_menu_create_item (GtkRecentChooserMenu *menu,
 }
 
 static void
-gtk_recent_chooser_menu_insert_item (GtkRecentChooserMenu *menu,
-                                     GtkWidget            *menuitem,
+btk_recent_chooser_menu_insert_item (BtkRecentChooserMenu *menu,
+                                     BtkWidget            *menuitem,
                                      gint                  position)
 {
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
   gint real_position;
 
   if (priv->first_recent_item_pos == -1)
     {
       GList *children, *l;
 
-      children = gtk_container_get_children (GTK_CONTAINER (menu));
+      children = btk_container_get_children (BTK_CONTAINER (menu));
 
       for (real_position = 0, l = children;
            l != NULL;
@@ -883,7 +883,7 @@ gtk_recent_chooser_menu_insert_item (GtkRecentChooserMenu *menu,
           gboolean is_placeholder = FALSE;
 
           is_placeholder =
-            GPOINTER_TO_INT (g_object_get_data (child, "gtk-recent-menu-placeholder"));
+            GPOINTER_TO_INT (g_object_get_data (child, "btk-recent-menu-placeholder"));
 
           if (is_placeholder)
             break;
@@ -895,39 +895,39 @@ gtk_recent_chooser_menu_insert_item (GtkRecentChooserMenu *menu,
   else
     real_position = priv->first_recent_item_pos;
 
-  gtk_menu_shell_insert (GTK_MENU_SHELL (menu), menuitem,
+  btk_menu_shell_insert (BTK_MENU_SHELL (menu), menuitem,
                          real_position + position);
-  gtk_widget_show (menuitem);
+  btk_widget_show (menuitem);
 }
 
 /* removes the items we own from the menu */
 static void
-gtk_recent_chooser_menu_dispose_items (GtkRecentChooserMenu *menu)
+btk_recent_chooser_menu_dispose_items (BtkRecentChooserMenu *menu)
 {
   GList *children, *l;
  
-  children = gtk_container_get_children (GTK_CONTAINER (menu));
+  children = btk_container_get_children (BTK_CONTAINER (menu));
   for (l = children; l != NULL; l = l->next)
     {
-      GtkWidget *menu_item = GTK_WIDGET (l->data);
+      BtkWidget *menu_item = BTK_WIDGET (l->data);
       gboolean has_mark = FALSE;
       
       /* check for our mark, in order to remove just the items we own */
       has_mark =
-        GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu_item), "gtk-recent-menu-mark"));
+        GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menu_item), "btk-recent-menu-mark"));
 
       if (has_mark)
         {
-          GtkRecentInfo *info;
+          BtkRecentInfo *info;
           
           /* destroy the attached RecentInfo struct, if found */
-          info = g_object_get_data (G_OBJECT (menu_item), "gtk-recent-info");
+          info = g_object_get_data (G_OBJECT (menu_item), "btk-recent-info");
           if (info)
-            g_object_set_data_full (G_OBJECT (menu_item), "gtk-recent-info",
+            g_object_set_data_full (G_OBJECT (menu_item), "btk-recent-info",
             			    NULL, NULL);
           
           /* and finally remove the item from the menu */
-          gtk_container_remove (GTK_CONTAINER (menu), menu_item);
+          btk_container_remove (BTK_CONTAINER (menu), menu_item);
         }
     }
 
@@ -943,73 +943,73 @@ typedef struct
   gint n_items;
   gint loaded_items;
   gint displayed_items;
-  GtkRecentChooserMenu *menu;
-  GtkWidget *placeholder;
+  BtkRecentChooserMenu *menu;
+  BtkWidget *placeholder;
 } MenuPopulateData;
 
 static gboolean
 idle_populate_func (gpointer data)
 {
   MenuPopulateData *pdata;
-  GtkRecentChooserMenuPrivate *priv;
-  GtkRecentInfo *info;
+  BtkRecentChooserMenuPrivate *priv;
+  BtkRecentInfo *info;
   gboolean retval;
-  GtkWidget *item;
+  BtkWidget *item;
 
   pdata = (MenuPopulateData *) data;
   priv = pdata->menu->priv;
 
   if (!pdata->items)
     {
-      pdata->items = gtk_recent_chooser_get_items (GTK_RECENT_CHOOSER (pdata->menu));
+      pdata->items = btk_recent_chooser_get_items (BTK_RECENT_CHOOSER (pdata->menu));
       if (!pdata->items)
         {
           /* show the placeholder here */
-          gtk_widget_show (pdata->placeholder);
+          btk_widget_show (pdata->placeholder);
           pdata->displayed_items = 1;
           priv->populate_id = 0;
 
 	  return FALSE;
 	}
       else
-        gtk_widget_hide (pdata->placeholder);
+        btk_widget_hide (pdata->placeholder);
       
       pdata->n_items = g_list_length (pdata->items);
       pdata->loaded_items = 0;
     }
 
   info = g_list_nth_data (pdata->items, pdata->loaded_items);
-  item = gtk_recent_chooser_menu_create_item (pdata->menu,
+  item = btk_recent_chooser_menu_create_item (pdata->menu,
                                               info,
 					      pdata->displayed_items);
   if (!item)
     goto check_and_return;
       
-  gtk_recent_chooser_menu_add_tip (pdata->menu, info, item);
-  gtk_recent_chooser_menu_insert_item (pdata->menu, item,
+  btk_recent_chooser_menu_add_tip (pdata->menu, info, item);
+  btk_recent_chooser_menu_insert_item (pdata->menu, item,
                                        pdata->displayed_items);
   
   pdata->displayed_items += 1;
       
   /* mark the menu item as one of our own */
   g_object_set_data (G_OBJECT (item),
-                     "gtk-recent-menu-mark",
+                     "btk-recent-menu-mark",
       		     GINT_TO_POINTER (TRUE));
       
   /* attach the RecentInfo object to the menu item, and own a reference
    * to it, so that it will be destroyed with the menu item when it's
    * not needed anymore.
    */
-  g_object_set_data_full (G_OBJECT (item), "gtk-recent-info",
-      			  gtk_recent_info_ref (info),
-      			  (GDestroyNotify) gtk_recent_info_unref);
+  g_object_set_data_full (G_OBJECT (item), "btk-recent-info",
+      			  btk_recent_info_ref (info),
+      			  (GDestroyNotify) btk_recent_info_unref);
   
 check_and_return:
   pdata->loaded_items += 1;
 
   if (pdata->loaded_items == pdata->n_items)
     {
-      g_list_foreach (pdata->items, (GFunc) gtk_recent_info_unref, NULL);
+      g_list_foreach (pdata->items, (GFunc) btk_recent_info_unref, NULL);
       g_list_free (pdata->items);
 
       priv->populate_id = 0;
@@ -1033,7 +1033,7 @@ idle_populate_clean_up (gpointer data)
        * the filtering process in the idle loop
        */
       if (!pdata->displayed_items)
-        gtk_widget_show (pdata->placeholder);
+        btk_widget_show (pdata->placeholder);
       g_object_unref (pdata->placeholder);
 
       g_slice_free (MenuPopulateData, data);
@@ -1041,10 +1041,10 @@ idle_populate_clean_up (gpointer data)
 }
 
 static void
-gtk_recent_chooser_menu_populate (GtkRecentChooserMenu *menu)
+btk_recent_chooser_menu_populate (BtkRecentChooserMenu *menu)
 {
   MenuPopulateData *pdata;
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
 
   if (menu->priv->populate_id)
     return;
@@ -1057,12 +1057,12 @@ gtk_recent_chooser_menu_populate (GtkRecentChooserMenu *menu)
   pdata->menu = menu;
   pdata->placeholder = g_object_ref (priv->placeholder);
 
-  priv->icon_size = get_icon_size_for_widget (GTK_WIDGET (menu));
+  priv->icon_size = get_icon_size_for_widget (BTK_WIDGET (menu));
   
   /* remove our menu items first */
-  gtk_recent_chooser_menu_dispose_items (menu);
+  btk_recent_chooser_menu_dispose_items (menu);
   
-  priv->populate_id = gdk_threads_add_idle_full (G_PRIORITY_HIGH_IDLE + 30,
+  priv->populate_id = bdk_threads_add_idle_full (G_PRIORITY_HIGH_IDLE + 30,
   					         idle_populate_func,
 					         pdata,
                                                  idle_populate_clean_up);
@@ -1072,29 +1072,29 @@ gtk_recent_chooser_menu_populate (GtkRecentChooserMenu *menu)
  * to the recent menu widget
  */
 static void
-item_activate_cb (GtkWidget *widget,
+item_activate_cb (BtkWidget *widget,
 		  gpointer   user_data)
 {
-  GtkRecentChooser *chooser = GTK_RECENT_CHOOSER (user_data);
+  BtkRecentChooser *chooser = BTK_RECENT_CHOOSER (user_data);
   
-  _gtk_recent_chooser_item_activated (chooser);
+  _btk_recent_chooser_item_activated (chooser);
 }
 
 /* we force a redraw if the manager changes when we are showing */
 static void
-manager_changed_cb (GtkRecentManager *manager,
+manager_changed_cb (BtkRecentManager *manager,
 		    gpointer          user_data)
 {
-  GtkRecentChooserMenu *menu = GTK_RECENT_CHOOSER_MENU (user_data);
+  BtkRecentChooserMenu *menu = BTK_RECENT_CHOOSER_MENU (user_data);
 
-  gtk_recent_chooser_menu_populate (menu);
+  btk_recent_chooser_menu_populate (menu);
 }
 
 static void
-set_recent_manager (GtkRecentChooserMenu *menu,
-		    GtkRecentManager     *manager)
+set_recent_manager (BtkRecentChooserMenu *menu,
+		    BtkRecentManager     *manager)
 {
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
 
   if (priv->manager)
     {
@@ -1116,7 +1116,7 @@ set_recent_manager (GtkRecentChooserMenu *menu,
   if (manager)
     priv->manager = manager;
   else
-    priv->manager = gtk_recent_manager_get_default ();
+    priv->manager = btk_recent_manager_get_default ();
   
   if (priv->manager)
     priv->manager_changed_id = g_signal_connect (priv->manager, "changed",
@@ -1125,17 +1125,17 @@ set_recent_manager (GtkRecentChooserMenu *menu,
 }
 
 static gint
-get_icon_size_for_widget (GtkWidget *widget)
+get_icon_size_for_widget (BtkWidget *widget)
 {
-  GtkSettings *settings;
+  BtkSettings *settings;
   gint width, height;
 
-  if (gtk_widget_has_screen (widget))
-    settings = gtk_settings_get_for_screen (gtk_widget_get_screen (widget));
+  if (btk_widget_has_screen (widget))
+    settings = btk_settings_get_for_screen (btk_widget_get_screen (widget));
   else
-    settings = gtk_settings_get_default ();
+    settings = btk_settings_get_default ();
 
-  if (gtk_icon_size_lookup_for_settings (settings, GTK_ICON_SIZE_MENU,
+  if (btk_icon_size_lookup_for_settings (settings, BTK_ICON_SIZE_MENU,
                                          &width, &height))
     return MAX (width, height);
 
@@ -1143,52 +1143,52 @@ get_icon_size_for_widget (GtkWidget *widget)
 }
 
 static void
-foreach_set_shot_tips (GtkWidget *widget,
+foreach_set_shot_tips (BtkWidget *widget,
                        gpointer   user_data)
 {
-  GtkRecentChooserMenu *menu = user_data;
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenu *menu = user_data;
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
   gboolean has_mark;
 
   /* toggle the tooltip only on the items we create */
   has_mark =
-    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "gtk-recent-menu-mark"));
+    GPOINTER_TO_INT (g_object_get_data (G_OBJECT (widget), "btk-recent-menu-mark"));
 
   if (has_mark)
-    gtk_widget_set_has_tooltip (widget, priv->show_tips);
+    btk_widget_set_has_tooltip (widget, priv->show_tips);
 }
 
 static void
-gtk_recent_chooser_menu_set_show_tips (GtkRecentChooserMenu *menu,
+btk_recent_chooser_menu_set_show_tips (BtkRecentChooserMenu *menu,
 				       gboolean              show_tips)
 {
-  GtkRecentChooserMenuPrivate *priv = menu->priv;
+  BtkRecentChooserMenuPrivate *priv = menu->priv;
 
   if (priv->show_tips == show_tips)
     return;
   
   priv->show_tips = show_tips;
-  gtk_container_foreach (GTK_CONTAINER (menu), foreach_set_shot_tips, menu);
+  btk_container_foreach (BTK_CONTAINER (menu), foreach_set_shot_tips, menu);
 }
 
 static void
-gtk_recent_chooser_update (GtkActivatable *activatable,
-			   GtkAction      *action,
+btk_recent_chooser_update (BtkActivatable *activatable,
+			   BtkAction      *action,
 			   const gchar    *property_name)
 {
   if (strcmp (property_name, "sensitive") == 0)
-    gtk_widget_set_sensitive (GTK_WIDGET (activatable), gtk_action_is_sensitive (action));
+    btk_widget_set_sensitive (BTK_WIDGET (activatable), btk_action_is_sensitive (action));
 
-  _gtk_recent_chooser_update (activatable, action, property_name);
+  _btk_recent_chooser_update (activatable, action, property_name);
 }
 
 static void
-gtk_recent_chooser_sync_action_properties (GtkActivatable *activatable,
-				           GtkAction      *action)
+btk_recent_chooser_sync_action_properties (BtkActivatable *activatable,
+				           BtkAction      *action)
 {
-  gtk_widget_set_sensitive (GTK_WIDGET (activatable), gtk_action_is_sensitive (action));
+  btk_widget_set_sensitive (BTK_WIDGET (activatable), btk_action_is_sensitive (action));
 
-  _gtk_recent_chooser_sync_action_properties (activatable, action);
+  _btk_recent_chooser_sync_action_properties (activatable, action);
 }
 
 
@@ -1197,80 +1197,80 @@ gtk_recent_chooser_sync_action_properties (GtkActivatable *activatable,
  */
 
 /**
- * gtk_recent_chooser_menu_new:
+ * btk_recent_chooser_menu_new:
  *
- * Creates a new #GtkRecentChooserMenu widget.
+ * Creates a new #BtkRecentChooserMenu widget.
  *
  * This kind of widget shows the list of recently used resources as
  * a menu, each item as a menu item.  Each item inside the menu might
  * have an icon, representing its MIME type, and a number, for mnemonic
  * access.
  *
- * This widget implements the #GtkRecentChooser interface.
+ * This widget implements the #BtkRecentChooser interface.
  *
- * This widget creates its own #GtkRecentManager object.  See the
- * gtk_recent_chooser_menu_new_for_manager() function to know how to create
- * a #GtkRecentChooserMenu widget bound to another #GtkRecentManager object.
+ * This widget creates its own #BtkRecentManager object.  See the
+ * btk_recent_chooser_menu_new_for_manager() function to know how to create
+ * a #BtkRecentChooserMenu widget bound to another #BtkRecentManager object.
  *
- * Return value: a new #GtkRecentChooserMenu
+ * Return value: a new #BtkRecentChooserMenu
  *
  * Since: 2.10
  */
-GtkWidget *
-gtk_recent_chooser_menu_new (void)
+BtkWidget *
+btk_recent_chooser_menu_new (void)
 {
-  return g_object_new (GTK_TYPE_RECENT_CHOOSER_MENU,
+  return g_object_new (BTK_TYPE_RECENT_CHOOSER_MENU,
   		       "recent-manager", NULL,
   		       NULL);
 }
 
 /**
- * gtk_recent_chooser_menu_new_for_manager:
- * @manager: a #GtkRecentManager
+ * btk_recent_chooser_menu_new_for_manager:
+ * @manager: a #BtkRecentManager
  *
- * Creates a new #GtkRecentChooserMenu widget using @manager as
+ * Creates a new #BtkRecentChooserMenu widget using @manager as
  * the underlying recently used resources manager.
  *
  * This is useful if you have implemented your own recent manager,
- * or if you have a customized instance of a #GtkRecentManager
- * object or if you wish to share a common #GtkRecentManager object
- * among multiple #GtkRecentChooser widgets.
+ * or if you have a customized instance of a #BtkRecentManager
+ * object or if you wish to share a common #BtkRecentManager object
+ * among multiple #BtkRecentChooser widgets.
  *
- * Return value: a new #GtkRecentChooserMenu, bound to @manager.
+ * Return value: a new #BtkRecentChooserMenu, bound to @manager.
  *
  * Since: 2.10
  */
-GtkWidget *
-gtk_recent_chooser_menu_new_for_manager (GtkRecentManager *manager)
+BtkWidget *
+btk_recent_chooser_menu_new_for_manager (BtkRecentManager *manager)
 {
-  g_return_val_if_fail (manager == NULL || GTK_IS_RECENT_MANAGER (manager), NULL);
+  g_return_val_if_fail (manager == NULL || BTK_IS_RECENT_MANAGER (manager), NULL);
   
-  return g_object_new (GTK_TYPE_RECENT_CHOOSER_MENU,
+  return g_object_new (BTK_TYPE_RECENT_CHOOSER_MENU,
   		       "recent-manager", manager,
   		       NULL);
 }
 
 /**
- * gtk_recent_chooser_menu_get_show_numbers:
- * @menu: a #GtkRecentChooserMenu
+ * btk_recent_chooser_menu_get_show_numbers:
+ * @menu: a #BtkRecentChooserMenu
  *
- * Returns the value set by gtk_recent_chooser_menu_set_show_numbers().
+ * Returns the value set by btk_recent_chooser_menu_set_show_numbers().
  * 
  * Return value: %TRUE if numbers should be shown.
  *
  * Since: 2.10
  */
 gboolean
-gtk_recent_chooser_menu_get_show_numbers (GtkRecentChooserMenu *menu)
+btk_recent_chooser_menu_get_show_numbers (BtkRecentChooserMenu *menu)
 {
-  g_return_val_if_fail (GTK_IS_RECENT_CHOOSER_MENU (menu), FALSE);
+  g_return_val_if_fail (BTK_IS_RECENT_CHOOSER_MENU (menu), FALSE);
 
   return menu->priv->show_numbers;
 }
 
 /**
- * gtk_recent_chooser_menu_set_show_numbers:
- * @menu: a #GtkRecentChooserMenu
+ * btk_recent_chooser_menu_set_show_numbers:
+ * @menu: a #BtkRecentChooserMenu
  * @show_numbers: whether to show numbers
  *
  * Sets whether a number should be added to the items of @menu.  The
@@ -1281,10 +1281,10 @@ gtk_recent_chooser_menu_get_show_numbers (GtkRecentChooserMenu *menu)
  * Since: 2.10
  */
 void
-gtk_recent_chooser_menu_set_show_numbers (GtkRecentChooserMenu *menu,
+btk_recent_chooser_menu_set_show_numbers (BtkRecentChooserMenu *menu,
 					  gboolean              show_numbers)
 {
-  g_return_if_fail (GTK_IS_RECENT_CHOOSER_MENU (menu));
+  g_return_if_fail (BTK_IS_RECENT_CHOOSER_MENU (menu));
 
   if (menu->priv->show_numbers == show_numbers)
     return;
@@ -1293,5 +1293,5 @@ gtk_recent_chooser_menu_set_show_numbers (GtkRecentChooserMenu *menu,
   g_object_notify (G_OBJECT (menu), "show-numbers");
 }
 
-#define __GTK_RECENT_CHOOSER_MENU_C__
-#include "gtkaliasdef.c"
+#define __BTK_RECENT_CHOOSER_MENU_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,65 +18,65 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_CHECK_BUTTON_H__
-#define __GTK_CHECK_BUTTON_H__
+#ifndef __BTK_CHECK_BUTTON_H__
+#define __BTK_CHECK_BUTTON_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktogglebutton.h>
+#include <btk/btktogglebutton.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CHECK_BUTTON                  (gtk_check_button_get_type ())
-#define GTK_CHECK_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CHECK_BUTTON, GtkCheckButton))
-#define GTK_CHECK_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CHECK_BUTTON, GtkCheckButtonClass))
-#define GTK_IS_CHECK_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CHECK_BUTTON))
-#define GTK_IS_CHECK_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CHECK_BUTTON))
-#define GTK_CHECK_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CHECK_BUTTON, GtkCheckButtonClass))
+#define BTK_TYPE_CHECK_BUTTON                  (btk_check_button_get_type ())
+#define BTK_CHECK_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButton))
+#define BTK_CHECK_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CHECK_BUTTON, BtkCheckButtonClass))
+#define BTK_IS_CHECK_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CHECK_BUTTON))
+#define BTK_IS_CHECK_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CHECK_BUTTON))
+#define BTK_CHECK_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CHECK_BUTTON, BtkCheckButtonClass))
 
 
-typedef struct _GtkCheckButton       GtkCheckButton;
-typedef struct _GtkCheckButtonClass  GtkCheckButtonClass;
+typedef struct _BtkCheckButton       BtkCheckButton;
+typedef struct _BtkCheckButtonClass  BtkCheckButtonClass;
 
-struct _GtkCheckButton
+struct _BtkCheckButton
 {
-  GtkToggleButton toggle_button;
+  BtkToggleButton toggle_button;
 };
 
-struct _GtkCheckButtonClass
+struct _BtkCheckButtonClass
 {
-  GtkToggleButtonClass parent_class;
+  BtkToggleButtonClass parent_class;
 
-  void (* draw_indicator) (GtkCheckButton *check_button,
-			   GdkRectangle   *area);
+  void (* draw_indicator) (BtkCheckButton *check_button,
+			   BdkRectangle   *area);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_check_button_get_type       (void) G_GNUC_CONST;
-GtkWidget* gtk_check_button_new               (void);
-GtkWidget* gtk_check_button_new_with_label    (const gchar *label);
-GtkWidget* gtk_check_button_new_with_mnemonic (const gchar *label);
+GType      btk_check_button_get_type       (void) G_GNUC_CONST;
+BtkWidget* btk_check_button_new               (void);
+BtkWidget* btk_check_button_new_with_label    (const gchar *label);
+BtkWidget* btk_check_button_new_with_mnemonic (const gchar *label);
 
-void _gtk_check_button_get_props (GtkCheckButton *check_button,
+void _btk_check_button_get_props (BtkCheckButton *check_button,
 				  gint           *indicator_size,
 				  gint           *indicator_spacing);
 
 G_END_DECLS
 
-#endif /* __GTK_CHECK_BUTTON_H__ */
+#endif /* __BTK_CHECK_BUTTON_H__ */

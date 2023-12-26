@@ -1,4 +1,4 @@
-/* gtkbuildable.c
+/* btkbuildable.c
  * Copyright (C) 2006-2007 Async Open Source,
  *                         Johan Dahlin <jdahlin@async.com.br>
  *
@@ -19,41 +19,41 @@
  */
 
 /**
- * SECTION:gtkbuildable
- * @Short_description: Interface for objects that can be built by GtkBuilder
- * @Title: GtkBuildable
+ * SECTION:btkbuildable
+ * @Short_description: Interface for objects that can be built by BtkBuilder
+ * @Title: BtkBuildable
  *
- * In order to allow construction from a <link linkend="BUILDER-UI">GtkBuilder
+ * In order to allow construction from a <link linkend="BUILDER-UI">BtkBuilder
  * UI description</link>, an object class must implement the
- * GtkBuildable interface. The interface includes methods for setting
+ * BtkBuildable interface. The interface includes methods for setting
  * names and properties of objects, parsing custom tags, constructing
  * child objects.
  *
- * The GtkBuildable interface is implemented by all widgets and
- * many of the non-widget objects that are provided by GTK+. The
- * main user of this interface is #GtkBuilder, there should be
+ * The BtkBuildable interface is implemented by all widgets and
+ * many of the non-widget objects that are provided by BTK+. The
+ * main user of this interface is #BtkBuilder, there should be
  * very little need for applications to call any
- * <function>gtk_buildable_...</function> functions.
+ * <function>btk_buildable_...</function> functions.
  */
 
 #include "config.h"
-#include "gtkbuildable.h"
-#include "gtktypeutils.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkbuildable.h"
+#include "btktypeutils.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
-typedef GtkBuildableIface GtkBuildableInterface;
-G_DEFINE_INTERFACE (GtkBuildable, gtk_buildable, G_TYPE_OBJECT)
+typedef BtkBuildableIface BtkBuildableInterface;
+G_DEFINE_INTERFACE (BtkBuildable, btk_buildable, G_TYPE_OBJECT)
 
 static void
-gtk_buildable_default_init (GtkBuildableInterface *iface)
+btk_buildable_default_init (BtkBuildableInterface *iface)
 {
 }
 
 /**
- * gtk_buildable_set_name:
- * @buildable: a #GtkBuildable
+ * btk_buildable_set_name:
+ * @buildable: a #BtkBuildable
  * @name: name to set
  *
  * Sets the name of the @buildable object.
@@ -61,59 +61,59 @@ gtk_buildable_default_init (GtkBuildableInterface *iface)
  * Since: 2.12
  **/
 void
-gtk_buildable_set_name (GtkBuildable *buildable,
+btk_buildable_set_name (BtkBuildable *buildable,
                         const gchar  *name)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_if_fail (GTK_IS_BUILDABLE (buildable));
+  g_return_if_fail (BTK_IS_BUILDABLE (buildable));
   g_return_if_fail (name != NULL);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
 
   if (iface->set_name)
     (* iface->set_name) (buildable, name);
   else
     g_object_set_data_full (G_OBJECT (buildable),
-			    "gtk-builder-name",
+			    "btk-builder-name",
 			    g_strdup (name),
 			    g_free);
 }
 
 /**
- * gtk_buildable_get_name:
- * @buildable: a #GtkBuildable
+ * btk_buildable_get_name:
+ * @buildable: a #BtkBuildable
  *
  * Gets the name of the @buildable object. 
  * 
- * #GtkBuilder sets the name based on the the 
- * <link linkend="BUILDER-UI">GtkBuilder UI definition</link> 
+ * #BtkBuilder sets the name based on the the 
+ * <link linkend="BUILDER-UI">BtkBuilder UI definition</link> 
  * used to construct the @buildable.
  *
- * Returns: the name set with gtk_buildable_set_name()
+ * Returns: the name set with btk_buildable_set_name()
  *
  * Since: 2.12
  **/
 const gchar *
-gtk_buildable_get_name (GtkBuildable *buildable)
+btk_buildable_get_name (BtkBuildable *buildable)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_val_if_fail (GTK_IS_BUILDABLE (buildable), NULL);
+  g_return_val_if_fail (BTK_IS_BUILDABLE (buildable), NULL);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
 
   if (iface->get_name)
     return (* iface->get_name) (buildable);
   else
     return (const gchar*)g_object_get_data (G_OBJECT (buildable),
-					    "gtk-builder-name");
+					    "btk-builder-name");
 }
 
 /**
- * gtk_buildable_add_child:
- * @buildable: a #GtkBuildable
- * @builder: a #GtkBuilder
+ * btk_buildable_add_child:
+ * @buildable: a #BtkBuildable
+ * @builder: a #BtkBuilder
  * @child: child to add
  * @type: (allow-none): kind of child or %NULL
  *
@@ -123,26 +123,26 @@ gtk_buildable_get_name (GtkBuildable *buildable)
  * Since: 2.12
  **/
 void
-gtk_buildable_add_child (GtkBuildable *buildable,
-			 GtkBuilder   *builder,
+btk_buildable_add_child (BtkBuildable *buildable,
+			 BtkBuilder   *builder,
 			 GObject      *child,
 			 const gchar  *type)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_if_fail (GTK_IS_BUILDABLE (buildable));
-  g_return_if_fail (GTK_IS_BUILDER (builder));
+  g_return_if_fail (BTK_IS_BUILDABLE (buildable));
+  g_return_if_fail (BTK_IS_BUILDER (builder));
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   g_return_if_fail (iface->add_child != NULL);
 
   (* iface->add_child) (buildable, builder, child, type);
 }
 
 /**
- * gtk_buildable_set_buildable_property:
- * @buildable: a #GtkBuildable
- * @builder: a #GtkBuilder
+ * btk_buildable_set_buildable_property:
+ * @buildable: a #BtkBuildable
+ * @builder: a #BtkBuilder
  * @name: name of property
  * @value: value of property
  *
@@ -151,19 +151,19 @@ gtk_buildable_add_child (GtkBuildable *buildable,
  * Since: 2.12
  **/
 void
-gtk_buildable_set_buildable_property (GtkBuildable *buildable,
-				      GtkBuilder   *builder,
+btk_buildable_set_buildable_property (BtkBuildable *buildable,
+				      BtkBuilder   *builder,
 				      const gchar  *name,
 				      const GValue *value)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_if_fail (GTK_IS_BUILDABLE (buildable));
-  g_return_if_fail (GTK_IS_BUILDER (builder));
+  g_return_if_fail (BTK_IS_BUILDABLE (buildable));
+  g_return_if_fail (BTK_IS_BUILDER (builder));
   g_return_if_fail (name != NULL);
   g_return_if_fail (value != NULL);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   if (iface->set_buildable_property)
     (* iface->set_buildable_property) (buildable, builder, name, value);
   else
@@ -171,41 +171,41 @@ gtk_buildable_set_buildable_property (GtkBuildable *buildable,
 }
 
 /**
- * gtk_buildable_parser_finished:
- * @buildable: a #GtkBuildable
- * @builder: a #GtkBuilder
+ * btk_buildable_parser_finished:
+ * @buildable: a #BtkBuildable
+ * @builder: a #BtkBuilder
  *
  * Called when the builder finishes the parsing of a 
- * <link linkend="BUILDER-UI">GtkBuilder UI definition</link>. 
+ * <link linkend="BUILDER-UI">BtkBuilder UI definition</link>. 
  * Note that this will be called once for each time 
- * gtk_builder_add_from_file() or gtk_builder_add_from_string() 
+ * btk_builder_add_from_file() or btk_builder_add_from_string() 
  * is called on a builder.
  *
  * Since: 2.12
  **/
 void
-gtk_buildable_parser_finished (GtkBuildable *buildable,
-			       GtkBuilder   *builder)
+btk_buildable_parser_finished (BtkBuildable *buildable,
+			       BtkBuilder   *builder)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_if_fail (GTK_IS_BUILDABLE (buildable));
-  g_return_if_fail (GTK_IS_BUILDER (builder));
+  g_return_if_fail (BTK_IS_BUILDABLE (buildable));
+  g_return_if_fail (BTK_IS_BUILDER (builder));
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   if (iface->parser_finished)
     (* iface->parser_finished) (buildable, builder);
 }
 
 /**
- * gtk_buildable_construct_child:
- * @buildable: A #GtkBuildable
- * @builder: #GtkBuilder used to construct this object
+ * btk_buildable_construct_child:
+ * @buildable: A #BtkBuildable
+ * @builder: #BtkBuilder used to construct this object
  * @name: name of child to construct
  *
  * Constructs a child of @buildable with the name @name.
  *
- * #GtkBuilder calls this function if a "constructor" has been
+ * #BtkBuilder calls this function if a "constructor" has been
  * specified in the UI definition.
  *
  * Returns: (transfer full): the constructed child
@@ -213,26 +213,26 @@ gtk_buildable_parser_finished (GtkBuildable *buildable,
  * Since: 2.12
  **/
 GObject *
-gtk_buildable_construct_child (GtkBuildable *buildable,
-                               GtkBuilder   *builder,
+btk_buildable_construct_child (BtkBuildable *buildable,
+                               BtkBuilder   *builder,
                                const gchar  *name)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_val_if_fail (GTK_IS_BUILDABLE (buildable), NULL);
-  g_return_val_if_fail (GTK_IS_BUILDER (builder), NULL);
+  g_return_val_if_fail (BTK_IS_BUILDABLE (buildable), NULL);
+  g_return_val_if_fail (BTK_IS_BUILDER (builder), NULL);
   g_return_val_if_fail (name != NULL, NULL);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   g_return_val_if_fail (iface->construct_child != NULL, NULL);
 
   return (* iface->construct_child) (buildable, builder, name);
 }
 
 /**
- * gtk_buildable_custom_tag_start:
- * @buildable: a #GtkBuildable
- * @builder: a #GtkBuilder used to construct this object
+ * btk_buildable_custom_tag_start:
+ * @buildable: a #BtkBuildable
+ * @builder: a #BtkBuilder used to construct this object
  * @child: (allow-none): child object or %NULL for non-child tags
  * @tagname: name of tag
  * @parser: (out): a #GMarkupParser structure to fill in
@@ -247,20 +247,20 @@ gtk_buildable_construct_child (GtkBuildable *buildable,
  * Since: 2.12
  **/
 gboolean
-gtk_buildable_custom_tag_start (GtkBuildable  *buildable,
-                                GtkBuilder    *builder,
+btk_buildable_custom_tag_start (BtkBuildable  *buildable,
+                                BtkBuilder    *builder,
                                 GObject       *child,
                                 const gchar   *tagname,
                                 GMarkupParser *parser,
                                 gpointer      *data)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_val_if_fail (GTK_IS_BUILDABLE (buildable), FALSE);
-  g_return_val_if_fail (GTK_IS_BUILDER (builder), FALSE);
+  g_return_val_if_fail (BTK_IS_BUILDABLE (buildable), FALSE);
+  g_return_val_if_fail (BTK_IS_BUILDER (builder), FALSE);
   g_return_val_if_fail (tagname != NULL, FALSE);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   g_return_val_if_fail (iface->custom_tag_start != NULL, FALSE);
 
   return (* iface->custom_tag_start) (buildable, builder, child,
@@ -268,9 +268,9 @@ gtk_buildable_custom_tag_start (GtkBuildable  *buildable,
 }
 
 /**
- * gtk_buildable_custom_tag_end:
- * @buildable: A #GtkBuildable
- * @builder: #GtkBuilder used to construct this object
+ * btk_buildable_custom_tag_end:
+ * @buildable: A #BtkBuildable
+ * @builder: #BtkBuilder used to construct this object
  * @child: (allow-none): child object or %NULL for non-child tags
  * @tagname: name of tag
  * @data: (type gpointer): user data that will be passed in to parser functions
@@ -281,57 +281,57 @@ gtk_buildable_custom_tag_start (GtkBuildable  *buildable,
  * Since: 2.12
  **/
 void
-gtk_buildable_custom_tag_end (GtkBuildable  *buildable,
-                              GtkBuilder    *builder,
+btk_buildable_custom_tag_end (BtkBuildable  *buildable,
+                              BtkBuilder    *builder,
                               GObject       *child,
                               const gchar   *tagname,
                               gpointer      *data)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_if_fail (GTK_IS_BUILDABLE (buildable));
-  g_return_if_fail (GTK_IS_BUILDER (builder));
+  g_return_if_fail (BTK_IS_BUILDABLE (buildable));
+  g_return_if_fail (BTK_IS_BUILDER (builder));
   g_return_if_fail (tagname != NULL);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   if (iface->custom_tag_end)
     (* iface->custom_tag_end) (buildable, builder, child, tagname, data);
 }
 
 /**
- * gtk_buildable_custom_finished:
- * @buildable: a #GtkBuildable
- * @builder: a #GtkBuilder
+ * btk_buildable_custom_finished:
+ * @buildable: a #BtkBuildable
+ * @builder: a #BtkBuilder
  * @child: (allow-none): child object or %NULL for non-child tags
  * @tagname: the name of the tag
  * @data: user data created in custom_tag_start
  *
- * This is similar to gtk_buildable_parser_finished() but is
+ * This is similar to btk_buildable_parser_finished() but is
  * called once for each custom tag handled by the @buildable.
  * 
  * Since: 2.12
  **/
 void
-gtk_buildable_custom_finished (GtkBuildable  *buildable,
-			       GtkBuilder    *builder,
+btk_buildable_custom_finished (BtkBuildable  *buildable,
+			       BtkBuilder    *builder,
 			       GObject       *child,
 			       const gchar   *tagname,
 			       gpointer       data)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_if_fail (GTK_IS_BUILDABLE (buildable));
-  g_return_if_fail (GTK_IS_BUILDER (builder));
+  g_return_if_fail (BTK_IS_BUILDABLE (buildable));
+  g_return_if_fail (BTK_IS_BUILDER (builder));
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   if (iface->custom_finished)
     (* iface->custom_finished) (buildable, builder, child, tagname, data);
 }
 
 /**
- * gtk_buildable_get_internal_child:
- * @buildable: a #GtkBuildable
- * @builder: a #GtkBuilder
+ * btk_buildable_get_internal_child:
+ * @buildable: a #BtkBuildable
+ * @builder: a #BtkBuilder
  * @childname: name of child
  *
  * Get the internal child called @childname of the @buildable object.
@@ -341,22 +341,22 @@ gtk_buildable_custom_finished (GtkBuildable  *buildable,
  * Since: 2.12
  **/
 GObject *
-gtk_buildable_get_internal_child (GtkBuildable *buildable,
-                                  GtkBuilder   *builder,
+btk_buildable_get_internal_child (BtkBuildable *buildable,
+                                  BtkBuilder   *builder,
                                   const gchar  *childname)
 {
-  GtkBuildableIface *iface;
+  BtkBuildableIface *iface;
 
-  g_return_val_if_fail (GTK_IS_BUILDABLE (buildable), NULL);
-  g_return_val_if_fail (GTK_IS_BUILDER (builder), NULL);
+  g_return_val_if_fail (BTK_IS_BUILDABLE (buildable), NULL);
+  g_return_val_if_fail (BTK_IS_BUILDER (builder), NULL);
   g_return_val_if_fail (childname != NULL, NULL);
 
-  iface = GTK_BUILDABLE_GET_IFACE (buildable);
+  iface = BTK_BUILDABLE_GET_IFACE (buildable);
   if (!iface->get_internal_child)
     return NULL;
 
   return (* iface->get_internal_child) (buildable, builder, childname);
 }
 
-#define __GTK_BUILDABLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_BUILDABLE_C__
+#include "btkaliasdef.c"

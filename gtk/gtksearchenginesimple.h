@@ -20,40 +20,40 @@
  * Based on nautilus-search-engine-simple.h
  */
 
-#ifndef __GTK_SEARCH_ENGINE_SIMPLE_H__
-#define __GTK_SEARCH_ENGINE_SIMPLE_H__
+#ifndef __BTK_SEARCH_ENGINE_SIMPLE_H__
+#define __BTK_SEARCH_ENGINE_SIMPLE_H__
 
-#include "gtksearchengine.h"
+#include "btksearchengine.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SEARCH_ENGINE_SIMPLE		(_gtk_search_engine_simple_get_type ())
-#define GTK_SEARCH_ENGINE_SIMPLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SEARCH_ENGINE_SIMPLE, GtkSearchEngineSimple))
-#define GTK_SEARCH_ENGINE_SIMPLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SEARCH_ENGINE_SIMPLE, GtkSearchEngineSimpleClass))
-#define GTK_IS_SEARCH_ENGINE_SIMPLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SEARCH_ENGINE_SIMPLE))
-#define GTK_IS_SEARCH_ENGINE_SIMPLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SEARCH_ENGINE_SIMPLE))
-#define GTK_SEARCH_ENGINE_SIMPLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SEARCH_ENGINE_SIMPLE, GtkSearchEngineSimpleClass))
+#define BTK_TYPE_SEARCH_ENGINE_SIMPLE		(_btk_search_engine_simple_get_type ())
+#define BTK_SEARCH_ENGINE_SIMPLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimple))
+#define BTK_SEARCH_ENGINE_SIMPLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimpleClass))
+#define BTK_IS_SEARCH_ENGINE_SIMPLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE_SIMPLE))
+#define BTK_IS_SEARCH_ENGINE_SIMPLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE_SIMPLE))
+#define BTK_SEARCH_ENGINE_SIMPLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimpleClass))
 
-typedef struct _GtkSearchEngineSimple GtkSearchEngineSimple;
-typedef struct _GtkSearchEngineSimpleClass GtkSearchEngineSimpleClass;
-typedef struct _GtkSearchEngineSimplePrivate GtkSearchEngineSimplePrivate;
+typedef struct _BtkSearchEngineSimple BtkSearchEngineSimple;
+typedef struct _BtkSearchEngineSimpleClass BtkSearchEngineSimpleClass;
+typedef struct _BtkSearchEngineSimplePrivate BtkSearchEngineSimplePrivate;
 
-struct _GtkSearchEngineSimple 
+struct _BtkSearchEngineSimple 
 {
-  GtkSearchEngine parent;
+  BtkSearchEngine parent;
 
-  GtkSearchEngineSimplePrivate *priv;
+  BtkSearchEngineSimplePrivate *priv;
 };
 
-struct _GtkSearchEngineSimpleClass
+struct _BtkSearchEngineSimpleClass
 {
-  GtkSearchEngineClass parent_class;
+  BtkSearchEngineClass parent_class;
 };
 
-GType            _gtk_search_engine_simple_get_type (void);
+GType            _btk_search_engine_simple_get_type (void);
 
-GtkSearchEngine* _gtk_search_engine_simple_new      (void);
+BtkSearchEngine* _btk_search_engine_simple_new      (void);
 
 G_END_DECLS
 
-#endif /* __GTK_SEARCH_ENGINE_SIMPLE_H__ */
+#endif /* __BTK_SEARCH_ENGINE_SIMPLE_H__ */

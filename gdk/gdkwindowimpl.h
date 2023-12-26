@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,115 +18,115 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_WINDOW_IMPL_H__
-#define __GDK_WINDOW_IMPL_H__
+#ifndef __BDK_WINDOW_IMPL_H__
+#define __BDK_WINDOW_IMPL_H__
 
-#include <gdk/gdkwindow.h>
+#include <bdk/bdkwindow.h>
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_WINDOW_IMPL           (gdk_window_impl_get_type ())
-#define GDK_WINDOW_IMPL(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), GDK_TYPE_WINDOW_IMPL, GdkWindowImpl))
-#define GDK_IS_WINDOW_IMPL(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GDK_TYPE_WINDOW_IMPL))
-#define GDK_WINDOW_IMPL_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GDK_TYPE_WINDOW_IMPL, GdkWindowImplIface))
+#define BDK_TYPE_WINDOW_IMPL           (bdk_window_impl_get_type ())
+#define BDK_WINDOW_IMPL(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImpl))
+#define BDK_IS_WINDOW_IMPL(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_WINDOW_IMPL))
+#define BDK_WINDOW_IMPL_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImplIface))
 
-typedef struct _GdkWindowImpl       GdkWindowImpl;      /* dummy */
-typedef struct _GdkWindowImplIface  GdkWindowImplIface;
+typedef struct _BdkWindowImpl       BdkWindowImpl;      /* dummy */
+typedef struct _BdkWindowImplIface  BdkWindowImplIface;
 
-struct _GdkWindowImplIface
+struct _BdkWindowImplIface
 {
   GTypeInterface g_iface;
 
-  void         (* show)                 (GdkWindow       *window,
+  void         (* show)                 (BdkWindow       *window,
 					 gboolean         already_mapped);
-  void         (* hide)                 (GdkWindow       *window);
-  void         (* withdraw)             (GdkWindow       *window);
-  void         (* raise)                (GdkWindow       *window);
-  void         (* lower)                (GdkWindow       *window);
-  void         (* restack_under)        (GdkWindow       *window,
+  void         (* hide)                 (BdkWindow       *window);
+  void         (* withdraw)             (BdkWindow       *window);
+  void         (* raise)                (BdkWindow       *window);
+  void         (* lower)                (BdkWindow       *window);
+  void         (* restack_under)        (BdkWindow       *window,
 					 GList           *native_siblings);
-  void         (* restack_toplevel)     (GdkWindow       *window,
-					 GdkWindow       *sibling,
+  void         (* restack_toplevel)     (BdkWindow       *window,
+					 BdkWindow       *sibling,
 					 gboolean        above);
 
-  void         (* move_resize)          (GdkWindow       *window,
+  void         (* move_resize)          (BdkWindow       *window,
                                          gboolean         with_move,
                                          gint             x,
                                          gint             y,
                                          gint             width,
                                          gint             height);
-  void         (* set_background)       (GdkWindow       *window,
-                                         const GdkColor  *color);
-  void         (* set_back_pixmap)      (GdkWindow       *window,
-                                         GdkPixmap       *pixmap);
+  void         (* set_background)       (BdkWindow       *window,
+                                         const BdkColor  *color);
+  void         (* set_back_pixmap)      (BdkWindow       *window,
+                                         BdkPixmap       *pixmap);
 
-  GdkEventMask (* get_events)           (GdkWindow       *window);
-  void         (* set_events)           (GdkWindow       *window,
-                                         GdkEventMask     event_mask);
+  BdkEventMask (* get_events)           (BdkWindow       *window);
+  void         (* set_events)           (BdkWindow       *window,
+                                         BdkEventMask     event_mask);
   
-  gboolean     (* reparent)             (GdkWindow       *window,
-                                         GdkWindow       *new_parent,
+  gboolean     (* reparent)             (BdkWindow       *window,
+                                         BdkWindow       *new_parent,
                                          gint             x,
                                          gint             y);
-  void         (* clear_region)         (GdkWindow       *window,
-					 GdkRegion       *region,
+  void         (* clear_rebunnyion)         (BdkWindow       *window,
+					 BdkRebunnyion       *rebunnyion,
 					 gboolean         send_expose);
   
-  void         (* set_cursor)           (GdkWindow       *window,
-                                         GdkCursor       *cursor);
+  void         (* set_cursor)           (BdkWindow       *window,
+                                         BdkCursor       *cursor);
 
-  void         (* get_geometry)         (GdkWindow       *window,
+  void         (* get_geometry)         (BdkWindow       *window,
                                          gint            *x,
                                          gint            *y,
                                          gint            *width,
                                          gint            *height,
                                          gint            *depth);
-  gint         (* get_root_coords)      (GdkWindow       *window,
+  gint         (* get_root_coords)      (BdkWindow       *window,
 					 gint             x,
 					 gint             y,
                                          gint            *root_x,
                                          gint            *root_y);
-  gint         (* get_deskrelative_origin) (GdkWindow       *window,
+  gint         (* get_deskrelative_origin) (BdkWindow       *window,
                                          gint            *x,
                                          gint            *y);
-  gboolean     (* get_pointer)          (GdkWindow       *window,
+  gboolean     (* get_pointer)          (BdkWindow       *window,
                                          gint            *x,
                                          gint            *y,
-					 GdkModifierType  *mask);
+					 BdkModifierType  *mask);
 
-  void         (* shape_combine_region) (GdkWindow       *window,
-                                         const GdkRegion *shape_region,
+  void         (* shape_combine_rebunnyion) (BdkWindow       *window,
+                                         const BdkRebunnyion *shape_rebunnyion,
                                          gint             offset_x,
                                          gint             offset_y);
-  void         (* input_shape_combine_region) (GdkWindow       *window,
-					       const GdkRegion *shape_region,
+  void         (* input_shape_combine_rebunnyion) (BdkWindow       *window,
+					       const BdkRebunnyion *shape_rebunnyion,
 					       gint             offset_x,
 					       gint             offset_y);
 
-  gboolean     (* set_static_gravities) (GdkWindow       *window,
+  gboolean     (* set_static_gravities) (BdkWindow       *window,
 				         gboolean         use_static);
 
   /* Called before processing updates for a window. This gives the windowing
-   * layer a chance to save the region for later use in avoiding duplicate
+   * layer a chance to save the rebunnyion for later use in avoiding duplicate
    * exposes. The return value indicates whether the function has a saved
-   * the region; if the result is TRUE, then the windowing layer is responsible
-   * for destroying the region later.
+   * the rebunnyion; if the result is TRUE, then the windowing layer is responsible
+   * for destroying the rebunnyion later.
    */
-  gboolean     (* queue_antiexpose)     (GdkWindow       *window,
-					 GdkRegion       *update_area);
-  void         (* queue_translation)    (GdkWindow       *window,
-					 GdkGC           *gc,
-					 GdkRegion       *area,
+  gboolean     (* queue_antiexpose)     (BdkWindow       *window,
+					 BdkRebunnyion       *update_area);
+  void         (* queue_translation)    (BdkWindow       *window,
+					 BdkGC           *gc,
+					 BdkRebunnyion       *area,
 					 gint            dx,
 					 gint            dy);
 
-/* Called to do the windowing system specific part of gdk_window_destroy(),
+/* Called to do the windowing system specific part of bdk_window_destroy(),
  *
  * window: The window being destroyed
  * recursing: If TRUE, then this is being called because a parent
@@ -139,25 +139,25 @@ struct _GdkWindowImplIface
  *            system calls should be made. (This may never happen for some
  *            windowing systems.)
  */
-  void         (* destroy)              (GdkWindow       *window,
+  void         (* destroy)              (BdkWindow       *window,
 					 gboolean         recursing,
 					 gboolean         foreign_destroy);
 
-  void         (* input_window_destroy) (GdkWindow       *window);
-  void         (* input_window_crossing)(GdkWindow       *window,
+  void         (* input_window_destroy) (BdkWindow       *window);
+  void         (* input_window_crossing)(BdkWindow       *window,
 					 gboolean         enter);
   gboolean     supports_native_bg;
 };
 
 /* Interface Functions */
-GType gdk_window_impl_get_type (void) G_GNUC_CONST;
+GType bdk_window_impl_get_type (void) G_GNUC_CONST;
 
-/* private definitions from gdkwindow.h */
+/* private definitions from bdkwindow.h */
 
-struct _GdkWindowRedirect
+struct _BdkWindowRedirect
 {
-  GdkWindowObject *redirected;
-  GdkDrawable *pixmap;
+  BdkWindowObject *redirected;
+  BdkDrawable *pixmap;
 
   gint src_x;
   gint src_y;
@@ -166,10 +166,10 @@ struct _GdkWindowRedirect
   gint width;
   gint height;
 
-  GdkRegion *damage;
+  BdkRebunnyion *damage;
   guint damage_idle;
 };
 
 G_END_DECLS
 
-#endif /* __GDK_WINDOW_IMPL_H__ */
+#endif /* __BDK_WINDOW_IMPL_H__ */

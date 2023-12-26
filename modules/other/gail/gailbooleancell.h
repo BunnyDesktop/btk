@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The GNOME Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,40 +17,40 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_BOOLEAN_CELL_H__
-#define __GAIL_BOOLEAN_CELL_H__
+#ifndef __BAIL_BOOLEAN_CELL_H__
+#define __BAIL_BOOLEAN_CELL_H__
 
-#include <atk/atk.h>
-#include <gail/gailrenderercell.h>
+#include <batk/batk.h>
+#include <bail/bailrenderercell.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_BOOLEAN_CELL            (gail_boolean_cell_get_type ())
-#define GAIL_BOOLEAN_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_BOOLEAN_CELL, GailBooleanCell))
-#define GAIL_BOOLEAN_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_BOOLEAN_CELL, GailBooleanCellClass))
-#define GAIL_IS_BOOLEAN_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_BOOLEAN_CELL))
-#define GAIL_IS_BOOLEAN_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_BOOLEAN_CELL))
-#define GAIL_BOOLEAN_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_BOOLEAN_CELL, GailBooleanCellClass))
+#define BAIL_TYPE_BOOLEAN_CELL            (bail_boolean_cell_get_type ())
+#define BAIL_BOOLEAN_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCell))
+#define BAIL_BOOLEAN_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_BOOLEAN_CELL, BailBooleanCellClass))
+#define BAIL_IS_BOOLEAN_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BOOLEAN_CELL))
+#define BAIL_IS_BOOLEAN_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BOOLEAN_CELL))
+#define BAIL_BOOLEAN_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BOOLEAN_CELL, BailBooleanCellClass))
 
-typedef struct _GailBooleanCell                  GailBooleanCell;
-typedef struct _GailBooleanCellClass             GailBooleanCellClass;
+typedef struct _BailBooleanCell                  BailBooleanCell;
+typedef struct _BailBooleanCellClass             BailBooleanCellClass;
 
-struct _GailBooleanCell
+struct _BailBooleanCell
 {
-  GailRendererCell parent;
+  BailRendererCell parent;
   gboolean cell_value;
   gboolean cell_sensitive;
 };
 
- GType gail_boolean_cell_get_type (void);
+ GType bail_boolean_cell_get_type (void);
 
-struct _GailBooleanCellClass
+struct _BailBooleanCellClass
 {
-  GailRendererCellClass parent_class;
+  BailRendererCellClass parent_class;
 };
 
-AtkObject *gail_boolean_cell_new (void);
+BatkObject *bail_boolean_cell_new (void);
 
 G_END_DECLS
 
-#endif /* __GAIL_TREE_VIEW_BOOLEAN_CELL_H__ */
+#endif /* __BAIL_TREE_VIEW_BOOLEAN_CELL_H__ */

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
  *
@@ -19,53 +19,53 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <string.h>
 #include <stdlib.h>
 
-#include "gdkproperty.h"
-#include "gdkselection.h"
-#include "gdkdisplay.h"
-#include "gdkprivate-win32.h"
+#include "bdkproperty.h"
+#include "bdkselection.h"
+#include "bdkdisplay.h"
+#include "bdkprivate-win32.h"
 
-/* We emulate the GDK_SELECTION window properties of windows (as used
+/* We emulate the BDK_SELECTION window properties of windows (as used
  * in the X11 backend) by using a hash table from window handles to
- * GdkSelProp structs.
+ * BdkSelProp structs.
  */
 
 typedef struct {
   guchar *data;
   gsize length;
   gint format;
-  GdkAtom type;
-} GdkSelProp;
+  BdkAtom type;
+} BdkSelProp;
 
 static GHashTable *sel_prop_table = NULL;
 
-static GdkSelProp *dropfiles_prop = NULL;
+static BdkSelProp *dropfiles_prop = NULL;
 
 /* We store the owner of each selection in this table. Obviously, this only
  * is valid intra-app, and in fact it is necessary for the intra-app DND to work.
  */
 static GHashTable *sel_owner_table = NULL;
 
-/* GdkAtoms for well-known image formats */
-static GdkAtom *known_pixbuf_formats;
+/* BdkAtoms for well-known image formats */
+static BdkAtom *known_pixbuf_formats;
 static int n_known_pixbuf_formats;
 
-/* GdkAtoms for well-known text formats */
-static GdkAtom text_plain;
-static GdkAtom text_plain_charset_utf_8;
-static GdkAtom text_plain_charset_CP1252;
+/* BdkAtoms for well-known text formats */
+static BdkAtom text_plain;
+static BdkAtom text_plain_charset_utf_8;
+static BdkAtom text_plain_charset_CP1252;
 
 void
-_gdk_win32_selection_init (void)
+_bdk_win32_selection_init (void)
 {
   GSList *pixbuf_formats;
   GSList *rover;
@@ -74,13 +74,13 @@ _gdk_win32_selection_init (void)
   sel_owner_table = g_hash_table_new (NULL, NULL);
   _format_atom_table = g_hash_table_new (NULL, NULL);
 
-  pixbuf_formats = gdk_pixbuf_get_formats ();
+  pixbuf_formats = bdk_pixbuf_get_formats ();
 
   n_known_pixbuf_formats = 0;
   for (rover = pixbuf_formats; rover != NULL; rover = rover->next)
     {
       gchar **mime_types =
-	gdk_pixbuf_format_get_mime_types ((GdkPixbufFormat *) rover->data);
+	bdk_pixbuf_format_get_mime_types ((BdkPixbufFormat *) rover->data);
 
       gchar **mime_type;
 
@@ -88,25 +88,25 @@ _gdk_win32_selection_init (void)
 	n_known_pixbuf_formats++;
     }
 
-  known_pixbuf_formats = g_new (GdkAtom, n_known_pixbuf_formats);
+  known_pixbuf_formats = g_new (BdkAtom, n_known_pixbuf_formats);
 
   n_known_pixbuf_formats = 0;
   for (rover = pixbuf_formats; rover != NULL; rover = rover->next)
     {
       gchar **mime_types =
-	gdk_pixbuf_format_get_mime_types ((GdkPixbufFormat *) rover->data);
+	bdk_pixbuf_format_get_mime_types ((BdkPixbufFormat *) rover->data);
 
       gchar **mime_type;
 
       for (mime_type = mime_types; *mime_type != NULL; mime_type++)
-	known_pixbuf_formats[n_known_pixbuf_formats++] = gdk_atom_intern (*mime_type, FALSE);
+	known_pixbuf_formats[n_known_pixbuf_formats++] = bdk_atom_intern (*mime_type, FALSE);
     }
 
   g_slist_free (pixbuf_formats);
   
-  text_plain = gdk_atom_intern ("text/plain", FALSE);
-  text_plain_charset_utf_8= gdk_atom_intern ("text/plain;charset=utf-8", FALSE);
-  text_plain_charset_CP1252 = gdk_atom_intern ("text/plain;charset=CP1252", FALSE);
+  text_plain = bdk_atom_intern ("text/plain", FALSE);
+  text_plain_charset_utf_8= bdk_atom_intern ("text/plain;charset=utf-8", FALSE);
+  text_plain_charset_CP1252 = bdk_atom_intern ("text/plain;charset=CP1252", FALSE);
 
   g_hash_table_replace (_format_atom_table,
 			GINT_TO_POINTER (_cf_png),
@@ -163,7 +163,7 @@ sanitize_utf8 (const gchar *src,
 }
 
 static gchar *
-_gdk_utf8_to_string_target_internal (const gchar *str,
+_bdk_utf8_to_string_target_internal (const gchar *str,
 				     gint         length)
 {
   GError *error = NULL;
@@ -184,43 +184,43 @@ _gdk_utf8_to_string_target_internal (const gchar *str,
 }
 
 static void
-selection_property_store (GdkWindow *owner,
-			  GdkAtom    type,
+selection_property_store (BdkWindow *owner,
+			  BdkAtom    type,
 			  gint       format,
 			  guchar    *data,
 			  gint       length)
 {
-  GdkSelProp *prop;
+  BdkSelProp *prop;
 
-  g_return_if_fail (type != GDK_TARGET_STRING);
+  g_return_if_fail (type != BDK_TARGET_STRING);
 
-  prop = g_hash_table_lookup (sel_prop_table, GDK_WINDOW_HWND (owner));
+  prop = g_hash_table_lookup (sel_prop_table, BDK_WINDOW_HWND (owner));
 
   if (prop != NULL)
     {
       g_free (prop->data);
       g_free (prop);
-      g_hash_table_remove (sel_prop_table, GDK_WINDOW_HWND (owner));
+      g_hash_table_remove (sel_prop_table, BDK_WINDOW_HWND (owner));
     }
 
-  prop = g_new (GdkSelProp, 1);
+  prop = g_new (BdkSelProp, 1);
 
   prop->data = data;
   prop->length = length;
   prop->format = format;
   prop->type = type;
 
-  g_hash_table_insert (sel_prop_table, GDK_WINDOW_HWND (owner), prop);
+  g_hash_table_insert (sel_prop_table, BDK_WINDOW_HWND (owner), prop);
 }
 
 void
-_gdk_dropfiles_store (gchar *data)
+_bdk_dropfiles_store (gchar *data)
 {
   if (data != NULL)
     {
       g_assert (dropfiles_prop == NULL);
 
-      dropfiles_prop = g_new (GdkSelProp, 1);
+      dropfiles_prop = g_new (BdkSelProp, 1);
       dropfiles_prop->data = (guchar *) data;
       dropfiles_prop->length = strlen (data) + 1;
       dropfiles_prop->format = 8;
@@ -238,46 +238,46 @@ _gdk_dropfiles_store (gchar *data)
 }
 
 static gchar *
-get_mapped_gdk_atom_name (GdkAtom gdk_target)
+get_mapped_bdk_atom_name (BdkAtom bdk_target)
 {
-  if (gdk_target == _image_png)
+  if (bdk_target == _image_png)
     return g_strdup ("PNG");
 
-  if (gdk_target == _image_jpeg)
+  if (bdk_target == _image_jpeg)
     return g_strdup ("JFIF");
   
-  if (gdk_target == _image_gif)
+  if (bdk_target == _image_gif)
     return g_strdup ("GIF");
   
-  return gdk_atom_name (gdk_target);
+  return bdk_atom_name (bdk_target);
 }
 
 gboolean
-gdk_selection_owner_set_for_display (GdkDisplay *display,
-                                     GdkWindow  *owner,
-                                     GdkAtom     selection,
+bdk_selection_owner_set_for_display (BdkDisplay *display,
+                                     BdkWindow  *owner,
+                                     BdkAtom     selection,
                                      guint32     time,
                                      gboolean    send_event)
 {
   HWND hwnd;
-  GdkEvent tmp_event;
+  BdkEvent tmp_event;
 
-  g_return_val_if_fail (display == _gdk_display, FALSE);
-  g_return_val_if_fail (selection != GDK_NONE, FALSE);
+  g_return_val_if_fail (display == _bdk_display, FALSE);
+  g_return_val_if_fail (selection != BDK_NONE, FALSE);
 
-  GDK_NOTE (DND, {
-      gchar *sel_name = gdk_atom_name (selection);
+  BDK_NOTE (DND, {
+      gchar *sel_name = bdk_atom_name (selection);
 
-      g_print ("gdk_selection_owner_set_for_display: %p %s\n",
-	       (owner ? GDK_WINDOW_HWND (owner) : NULL),
+      g_print ("bdk_selection_owner_set_for_display: %p %s\n",
+	       (owner ? BDK_WINDOW_HWND (owner) : NULL),
 	       sel_name);
       g_free (sel_name);
     });
 
-  if (selection != GDK_SELECTION_CLIPBOARD)
+  if (selection != BDK_SELECTION_CLIPBOARD)
     {
       if (owner != NULL)
-	g_hash_table_insert (sel_owner_table, selection, GDK_WINDOW_HWND (owner));
+	g_hash_table_insert (sel_owner_table, selection, BDK_WINDOW_HWND (owner));
       else
 	g_hash_table_remove (sel_owner_table, selection);
       return TRUE;
@@ -286,10 +286,10 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
   /* Rest of this function handles the CLIPBOARD selection */
   if (owner != NULL)
     {
-      if (GDK_WINDOW_DESTROYED (owner))
+      if (BDK_WINDOW_DESTROYED (owner))
 	return FALSE;
 
-      hwnd = GDK_WINDOW_HWND (owner);
+      hwnd = BDK_WINDOW_HWND (owner);
     }
   else
     hwnd = NULL;
@@ -298,7 +298,7 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
     return FALSE;
 
   _ignore_destroy_clipboard = TRUE;
-  GDK_NOTE (DND, g_print ("... EmptyClipboard()\n"));
+  BDK_NOTE (DND, g_print ("... EmptyClipboard()\n"));
   if (!API_CALL (EmptyClipboard, ()))
     {
       _ignore_destroy_clipboard = FALSE;
@@ -313,52 +313,52 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
   if (owner != NULL)
     {
       /* Send ourselves a selection request message so that
-       * gdk_property_change will be called to store the clipboard
+       * bdk_property_change will be called to store the clipboard
        * data.
        */
-      GDK_NOTE (DND, g_print ("... sending GDK_SELECTION_REQUEST to ourselves\n"));
-      tmp_event.selection.type = GDK_SELECTION_REQUEST;
+      BDK_NOTE (DND, g_print ("... sending BDK_SELECTION_REQUEST to ourselves\n"));
+      tmp_event.selection.type = BDK_SELECTION_REQUEST;
       tmp_event.selection.window = owner;
       tmp_event.selection.send_event = FALSE;
       tmp_event.selection.selection = selection;
       tmp_event.selection.target = _utf8_string;
-      tmp_event.selection.property = _gdk_selection;
+      tmp_event.selection.property = _bdk_selection;
       tmp_event.selection.requestor = hwnd;
       tmp_event.selection.time = time;
 
-      gdk_event_put (&tmp_event);
+      bdk_event_put (&tmp_event);
     }
 
   return TRUE;
 }
 
-GdkWindow*
-gdk_selection_owner_get_for_display (GdkDisplay *display,
-                                     GdkAtom     selection)
+BdkWindow*
+bdk_selection_owner_get_for_display (BdkDisplay *display,
+                                     BdkAtom     selection)
 {
-  GdkWindow *window;
+  BdkWindow *window;
 
-  g_return_val_if_fail (display == _gdk_display, NULL);
-  g_return_val_if_fail (selection != GDK_NONE, NULL);
+  g_return_val_if_fail (display == _bdk_display, NULL);
+  g_return_val_if_fail (selection != BDK_NONE, NULL);
 
-  if (selection == GDK_SELECTION_CLIPBOARD)
+  if (selection == BDK_SELECTION_CLIPBOARD)
     {
       HWND owner = GetClipboardOwner ();
 
       if (owner == NULL)
 	return NULL;
 
-      return gdk_win32_handle_table_lookup ((GdkNativeWindow) owner);
+      return bdk_win32_handle_table_lookup ((BdkNativeWindow) owner);
     }
 
-  window = gdk_window_lookup ((GdkNativeWindow) g_hash_table_lookup (sel_owner_table, selection));
+  window = bdk_window_lookup ((BdkNativeWindow) g_hash_table_lookup (sel_owner_table, selection));
 
-  GDK_NOTE (DND, {
-      gchar *sel_name = gdk_atom_name (selection);
+  BDK_NOTE (DND, {
+      gchar *sel_name = bdk_atom_name (selection);
       
-      g_print ("gdk_selection_owner_get: %s = %p\n",
+      g_print ("bdk_selection_owner_get: %s = %p\n",
 	       sel_name,
-	       (window ? GDK_WINDOW_HWND (window) : NULL));
+	       (window ? BDK_WINDOW_HWND (window) : NULL));
       g_free (sel_name);
     });
 
@@ -366,15 +366,15 @@ gdk_selection_owner_get_for_display (GdkDisplay *display,
 }
 
 static void
-generate_selection_notify (GdkWindow *requestor,
-			   GdkAtom    selection,
-			   GdkAtom    target,
-			   GdkAtom    property,
+generate_selection_notify (BdkWindow *requestor,
+			   BdkAtom    selection,
+			   BdkAtom    target,
+			   BdkAtom    property,
 			   guint32    time)
 {
-  GdkEvent tmp_event;
+  BdkEvent tmp_event;
 
-  tmp_event.selection.type = GDK_SELECTION_NOTIFY;
+  tmp_event.selection.type = BDK_SELECTION_NOTIFY;
   tmp_event.selection.window = requestor;
   tmp_event.selection.send_event = FALSE;
   tmp_event.selection.selection = selection;
@@ -383,47 +383,47 @@ generate_selection_notify (GdkWindow *requestor,
   tmp_event.selection.requestor = 0;
   tmp_event.selection.time = time;
 
-  gdk_event_put (&tmp_event);
+  bdk_event_put (&tmp_event);
 }
 
 void
-gdk_selection_convert (GdkWindow *requestor,
-		       GdkAtom    selection,
-		       GdkAtom    target,
+bdk_selection_convert (BdkWindow *requestor,
+		       BdkAtom    selection,
+		       BdkAtom    target,
 		       guint32    time)
 {
   HGLOBAL hdata;
-  GdkAtom property = _gdk_selection;
+  BdkAtom property = _bdk_selection;
 
-  g_return_if_fail (selection != GDK_NONE);
+  g_return_if_fail (selection != BDK_NONE);
   g_return_if_fail (requestor != NULL);
 
-  if (GDK_WINDOW_DESTROYED (requestor))
+  if (BDK_WINDOW_DESTROYED (requestor))
     return;
 
-  GDK_NOTE (DND, {
-      gchar *sel_name = gdk_atom_name (selection);
-      gchar *tgt_name = gdk_atom_name (target);
+  BDK_NOTE (DND, {
+      gchar *sel_name = bdk_atom_name (selection);
+      gchar *tgt_name = bdk_atom_name (target);
       
-      g_print ("gdk_selection_convert: %p %s %s\n",
-	       GDK_WINDOW_HWND (requestor),
+      g_print ("bdk_selection_convert: %p %s %s\n",
+	       BDK_WINDOW_HWND (requestor),
 	       sel_name, tgt_name);
       g_free (sel_name);
       g_free (tgt_name);
     });
 
-  if (selection == GDK_SELECTION_CLIPBOARD && target == _targets)
+  if (selection == BDK_SELECTION_CLIPBOARD && target == _targets)
     {
       gint ntargets, fmt;
-      GdkAtom *targets;
+      BdkAtom *targets;
       gboolean has_text = FALSE;
       gboolean has_png = FALSE;
       gboolean has_bmp = FALSE;
 
-      if (!API_CALL (OpenClipboard, (GDK_WINDOW_HWND (requestor))))
+      if (!API_CALL (OpenClipboard, (BDK_WINDOW_HWND (requestor))))
 	return;
 
-      targets = g_new (GdkAtom, CountClipboardFormats ());
+      targets = g_new (BdkAtom, CountClipboardFormats ());
       ntargets = 0;
 
       for (fmt = 0; 0 != (fmt = EnumClipboardFormats (fmt)); )
@@ -441,7 +441,7 @@ gdk_selection_convert (GdkWindow *requestor,
 
 	  if (fmt == CF_UNICODETEXT || fmt == CF_TEXT)
 	    {
-	      /* Advertise text to GDK always as UTF8_STRING */
+	      /* Advertise text to BDK always as UTF8_STRING */
 	      if (!has_text)
 		targets[ntargets++] = _utf8_string;
 	      has_text = TRUE;
@@ -483,23 +483,23 @@ gdk_selection_convert (GdkWindow *requestor,
 		  strcmp (sFormat, "image/x-ico") == 0 ||
 		  strcmp (sFormat, "image/x-win-bitmap") == 0)
 		{
-		  /* Ignore these (from older GTK+ versions
+		  /* Ignore these (from older BTK+ versions
 		   * presumably), as the same image in the CF_DIB
 		   * format will also be on the clipboard anyway.
 		   */
 		}
 	      else
-		targets[ntargets++] = gdk_atom_intern (sFormat, FALSE);
+		targets[ntargets++] = bdk_atom_intern (sFormat, FALSE);
             }
         }
 
-      GDK_NOTE (DND, {
+      BDK_NOTE (DND, {
 	  int i;
 	  
 	  g_print ("... ");
 	  for (i = 0; i < ntargets; i++)
 	    {
-	      gchar *atom_name = gdk_atom_name (targets[i]);
+	      gchar *atom_name = bdk_atom_name (targets[i]);
 
 	      g_print ("%s", atom_name);
 	      g_free (atom_name);
@@ -510,21 +510,21 @@ gdk_selection_convert (GdkWindow *requestor,
 	});
 
       if (ntargets > 0)
-	selection_property_store (requestor, GDK_SELECTION_TYPE_ATOM,
+	selection_property_store (requestor, BDK_SELECTION_TYPE_ATOM,
 				  32, (guchar *) targets,
-				  ntargets * sizeof (GdkAtom));
+				  ntargets * sizeof (BdkAtom));
       else
-	property = GDK_NONE;
+	property = BDK_NONE;
 
       API_CALL (CloseClipboard, ());
     }
-  else if (selection == GDK_SELECTION_CLIPBOARD && target == _utf8_string)
+  else if (selection == BDK_SELECTION_CLIPBOARD && target == _utf8_string)
     {
       /* Converting the CLIPBOARD selection means he wants the
        * contents of the clipboard. Get the clipboard data, and store
        * it for later.
        */
-      if (!API_CALL (OpenClipboard, (GDK_WINDOW_HWND (requestor))))
+      if (!API_CALL (OpenClipboard, (BDK_WINDOW_HWND (requestor))))
 	return;
 
       if ((hdata = GetClipboardData (CF_UNICODETEXT)) != NULL)
@@ -537,7 +537,7 @@ gdk_selection_convert (GdkWindow *requestor,
 	    {
 	      length = GlobalSize (hdata);
 
-	      GDK_NOTE (DND, g_print ("... CF_UNICODETEXT: %ld bytes\n",
+	      BDK_NOTE (DND, g_print ("... CF_UNICODETEXT: %ld bytes\n",
 				      length));
 
 	      /* Strip out \r */
@@ -563,13 +563,13 @@ gdk_selection_convert (GdkWindow *requestor,
 	    }
 	}
       else
-	property = GDK_NONE;
+	property = BDK_NONE;
 
       API_CALL (CloseClipboard, ());
     }
-  else if (selection == GDK_SELECTION_CLIPBOARD && target == _image_bmp)
+  else if (selection == BDK_SELECTION_CLIPBOARD && target == _image_bmp)
     {
-      if (!API_CALL (OpenClipboard, (GDK_WINDOW_HWND (requestor))))
+      if (!API_CALL (OpenClipboard, (BDK_WINDOW_HWND (requestor))))
 	return;
 
       if ((hdata = GetClipboardData (CF_DIB)) != NULL)
@@ -578,7 +578,7 @@ gdk_selection_convert (GdkWindow *requestor,
 
           if ((bi = GlobalLock (hdata)) != NULL)
             {
-	      /* Need to add a BMP file header so gdk-pixbuf can load
+	      /* Need to add a BMP file header so bdk-pixbuf can load
 	       * it.
 	       *
 	       * If the data is from Mozilla Firefox or IE7, and
@@ -587,14 +587,14 @@ gdk_selection_convert (GdkWindow *requestor,
 	       * biBitCount==32, we assume that the "extra" byte in
 	       * each pixel in fact is alpha.
 	       *
-	       * The gdk-pixbuf bmp loader doesn't trust 32-bit BI_RGB
+	       * The bdk-pixbuf bmp loader doesn't trust 32-bit BI_RGB
 	       * bitmaps to in fact have alpha, so we have to convince
 	       * it by changing the bitmap header to a version 5
 	       * BI_BITFIELDS one with explicit alpha mask indicated.
 	       *
 	       * The RGB bytes that are in bitmaps on the clipboard
 	       * originating from Firefox or IE7 seem to be
-	       * premultiplied with alpha. The gdk-pixbuf bmp loader
+	       * premultiplied with alpha. The bdk-pixbuf bmp loader
 	       * of course doesn't expect that, so we have to undo the
 	       * premultiplication before feeding the bitmap to the
 	       * bmp loader.
@@ -610,7 +610,7 @@ gdk_selection_convert (GdkWindow *requestor,
 	      gint new_length;
 	      gboolean make_dibv5 = FALSE;
 
-	      GDK_NOTE (DND, g_print ("... CF_DIB: %d bytes\n", data_length));
+	      BDK_NOTE (DND, g_print ("... CF_DIB: %d bytes\n", data_length));
 
 	      if (bi->biSize == sizeof (BITMAPINFOHEADER) &&
 		  bi->biPlanes == 1 &&
@@ -637,7 +637,7 @@ gdk_selection_convert (GdkWindow *requestor,
 		  TRUE)
 		{
 		  /* We turn the BITMAPINFOHEADER into a
-		   * BITMAPV5HEADER before feeding it to gdk-pixbuf.
+		   * BITMAPV5HEADER before feeding it to bdk-pixbuf.
 		   */
 		  new_length = (data_length +
 				sizeof (BITMAPFILEHEADER) +
@@ -741,15 +741,15 @@ gdk_selection_convert (GdkWindow *requestor,
 
       API_CALL (CloseClipboard, ());
     }
-  else if (selection == GDK_SELECTION_CLIPBOARD)
+  else if (selection == BDK_SELECTION_CLIPBOARD)
     {
       gchar *mapped_target_name;
       UINT fmt = 0;
 
-      if (!API_CALL (OpenClipboard, (GDK_WINDOW_HWND (requestor))))
+      if (!API_CALL (OpenClipboard, (BDK_WINDOW_HWND (requestor))))
 	return;
 
-      mapped_target_name = get_mapped_gdk_atom_name (target);
+      mapped_target_name = get_mapped_bdk_atom_name (target);
 
       /* Check if it's available. We could simply call
        * GetClipboardData (RegisterClipboardFormat (targetname)), but
@@ -774,7 +774,7 @@ gdk_selection_convert (GdkWindow *requestor,
                     {
                       length = GlobalSize (hdata);
 	      
-                      GDK_NOTE (DND, g_print ("... %s: %d bytes\n", mapped_target_name, length));
+                      BDK_NOTE (DND, g_print ("... %s: %d bytes\n", mapped_target_name, length));
 	      
                       selection_property_store (requestor, target, 8,
 						g_memdup (ptr, length), length);
@@ -787,10 +787,10 @@ gdk_selection_convert (GdkWindow *requestor,
       g_free (mapped_target_name);
       API_CALL (CloseClipboard, ());
     }
-  else if (selection == _gdk_win32_dropfiles)
+  else if (selection == _bdk_win32_dropfiles)
     {
       /* This means he wants the names of the dropped files.
-       * gdk_dropfiles_filter already has stored the text/uri-list
+       * bdk_dropfiles_filter already has stored the text/uri-list
        * data temporarily in dropfiles_prop.
        */
       if (dropfiles_prop != NULL)
@@ -803,37 +803,37 @@ gdk_selection_convert (GdkWindow *requestor,
 	}
     }
   else
-    property = GDK_NONE;
+    property = BDK_NONE;
 
   /* Generate a selection notify message so that we actually fetch the
-   * data (if property == _gdk_selection) or indicating failure (if
-   * property == GDK_NONE).
+   * data (if property == _bdk_selection) or indicating failure (if
+   * property == BDK_NONE).
    */
   generate_selection_notify (requestor, selection, target, property, time);
 }
 
 gint
-gdk_selection_property_get (GdkWindow  *requestor,
+bdk_selection_property_get (BdkWindow  *requestor,
 			    guchar    **data,
-			    GdkAtom    *ret_type,
+			    BdkAtom    *ret_type,
 			    gint       *ret_format)
 {
-  GdkSelProp *prop;
+  BdkSelProp *prop;
 
   g_return_val_if_fail (requestor != NULL, 0);
-  g_return_val_if_fail (GDK_IS_WINDOW (requestor), 0);
+  g_return_val_if_fail (BDK_IS_WINDOW (requestor), 0);
 
-  if (GDK_WINDOW_DESTROYED (requestor))
+  if (BDK_WINDOW_DESTROYED (requestor))
     return 0;
   
-  GDK_NOTE (DND, g_print ("gdk_selection_property_get: %p",
-			   GDK_WINDOW_HWND (requestor)));
+  BDK_NOTE (DND, g_print ("bdk_selection_property_get: %p",
+			   BDK_WINDOW_HWND (requestor)));
 
-  prop = g_hash_table_lookup (sel_prop_table, GDK_WINDOW_HWND (requestor));
+  prop = g_hash_table_lookup (sel_prop_table, BDK_WINDOW_HWND (requestor));
 
   if (prop == NULL)
     {
-      GDK_NOTE (DND, g_print (" (nothing)\n"));
+      BDK_NOTE (DND, g_print (" (nothing)\n"));
       *data = NULL;
 
       return 0;
@@ -844,8 +844,8 @@ gdk_selection_property_get (GdkWindow  *requestor,
   if (prop->length > 0)
     memmove (*data, prop->data, prop->length);
 
-  GDK_NOTE (DND, {
-      gchar *type_name = gdk_atom_name (prop->type);
+  BDK_NOTE (DND, {
+      gchar *type_name = bdk_atom_name (prop->type);
 
       g_print (" %s format:%d length:%d\n", type_name, prop->format, prop->length);
       g_free (type_name);
@@ -861,40 +861,40 @@ gdk_selection_property_get (GdkWindow  *requestor,
 }
 
 void
-_gdk_selection_property_delete (GdkWindow *window)
+_bdk_selection_property_delete (BdkWindow *window)
 {
-  GdkSelProp *prop;
+  BdkSelProp *prop;
 
-  GDK_NOTE (DND, g_print ("_gdk_selection_property_delete: %p (no-op)\n",
-			   GDK_WINDOW_HWND (window)));
+  BDK_NOTE (DND, g_print ("_bdk_selection_property_delete: %p (no-op)\n",
+			   BDK_WINDOW_HWND (window)));
 
 #if 1 /* without this we can only paste the first image from clipboard */
-  prop = g_hash_table_lookup (sel_prop_table, GDK_WINDOW_HWND (window));
+  prop = g_hash_table_lookup (sel_prop_table, BDK_WINDOW_HWND (window));
   if (prop != NULL)
     {
       g_free (prop->data);
       g_free (prop);
-      g_hash_table_remove (sel_prop_table, GDK_WINDOW_HWND (window));
+      g_hash_table_remove (sel_prop_table, BDK_WINDOW_HWND (window));
     }
 #endif
 }
 
 void
-gdk_selection_send_notify_for_display (GdkDisplay      *display,
-                                       GdkNativeWindow  requestor,
-                                       GdkAtom     	selection,
-                                       GdkAtom     	target,
-                                       GdkAtom     	property,
+bdk_selection_send_notify_for_display (BdkDisplay      *display,
+                                       BdkNativeWindow  requestor,
+                                       BdkAtom     	selection,
+                                       BdkAtom     	target,
+                                       BdkAtom     	property,
                                        guint32     	time)
 {
-  g_return_if_fail (display == _gdk_display);
+  g_return_if_fail (display == _bdk_display);
 
-  GDK_NOTE (DND, {
-      gchar *sel_name = gdk_atom_name (selection);
-      gchar *tgt_name = gdk_atom_name (target);
-      gchar *prop_name = gdk_atom_name (property);
+  BDK_NOTE (DND, {
+      gchar *sel_name = bdk_atom_name (selection);
+      gchar *tgt_name = bdk_atom_name (target);
+      gchar *prop_name = bdk_atom_name (property);
       
-      g_print ("gdk_selection_send_notify_for_display: %p %s %s %s (no-op)\n",
+      g_print ("bdk_selection_send_notify_for_display: %p %s %s %s (no-op)\n",
 	       requestor, sel_name, tgt_name, prop_name);
       g_free (sel_name);
       g_free (tgt_name);
@@ -903,12 +903,12 @@ gdk_selection_send_notify_for_display (GdkDisplay      *display,
 }
 
 /* It's hard to say whether implementing this actually is of any use
- * on the Win32 platform? gtk calls only
- * gdk_text_property_to_utf8_list_for_display().
+ * on the Win32 platform? btk calls only
+ * bdk_text_property_to_utf8_list_for_display().
  */
 gint
-gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
-					    GdkAtom       encoding,
+bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
+					    BdkAtom       encoding,
 					    gint          format, 
 					    const guchar *text,
 					    gint          length,
@@ -918,12 +918,12 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
   const gchar *charset;
   gchar *source_charset;
 
-  g_return_val_if_fail (display == _gdk_display, 0);
+  g_return_val_if_fail (display == _bdk_display, 0);
 
-  GDK_NOTE (DND, {
-      gchar *enc_name = gdk_atom_name (encoding);
+  BDK_NOTE (DND, {
+      gchar *enc_name = bdk_atom_name (encoding);
       
-      g_print ("gdk_text_property_to_text_list_for_display: %s %d %.20s %d\n",
+      g_print ("bdk_text_property_to_text_list_for_display: %s %d %.20s %d\n",
 	       enc_name, format, text, length);
       g_free (enc_name);
     });
@@ -931,12 +931,12 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
   if (!list)
     return 0;
 
-  if (encoding == GDK_TARGET_STRING)
+  if (encoding == BDK_TARGET_STRING)
     source_charset = g_strdup ("ISO-8859-1");
   else if (encoding == _utf8_string)
     source_charset = g_strdup ("UTF-8");
   else
-    source_charset = gdk_atom_name (encoding);
+    source_charset = bdk_atom_name (encoding);
     
   g_get_charset (&charset);
 
@@ -954,7 +954,7 @@ gdk_text_property_to_text_list_for_display (GdkDisplay   *display,
 }
 
 void
-gdk_free_text_list (gchar **list)
+bdk_free_text_list (gchar **list)
 {
   g_return_if_fail (list != NULL);
 
@@ -1032,8 +1032,8 @@ make_list (const gchar  *text,
 }
 
 gint 
-gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
-                                            GdkAtom        encoding,
+bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
+                                            BdkAtom        encoding,
                                             gint           format,
                                             const guchar  *text,
                                             gint           length,
@@ -1041,9 +1041,9 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
 {
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
-  g_return_val_if_fail (display == _gdk_display, 0);
+  g_return_val_if_fail (display == _bdk_display, 0);
 
-  if (encoding == GDK_TARGET_STRING)
+  if (encoding == BDK_TARGET_STRING)
     {
       return make_list ((gchar *)text, length, TRUE, list);
     }
@@ -1053,9 +1053,9 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
     }
   else
     {
-      gchar *enc_name = gdk_atom_name (encoding);
+      gchar *enc_name = bdk_atom_name (encoding);
 
-      g_warning ("gdk_text_property_to_utf8_list_for_display: encoding %s not handled\n", enc_name);
+      g_warning ("bdk_text_property_to_utf8_list_for_display: encoding %s not handled\n", enc_name);
       g_free (enc_name);
 
       if (list)
@@ -1066,23 +1066,23 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay    *display,
 }
 
 gint
-gdk_string_to_compound_text_for_display (GdkDisplay  *display,
+bdk_string_to_compound_text_for_display (BdkDisplay  *display,
 					 const gchar *str,
-					 GdkAtom     *encoding,
+					 BdkAtom     *encoding,
 					 gint        *format,
 					 guchar     **ctext,
 					 gint        *length)
 {
   g_return_val_if_fail (str != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
-  g_return_val_if_fail (display == _gdk_display, 0);
+  g_return_val_if_fail (display == _bdk_display, 0);
 
-  GDK_NOTE (DND, g_print ("gdk_string_to_compound_text_for_display: %.20s\n", str));
+  BDK_NOTE (DND, g_print ("bdk_string_to_compound_text_for_display: %.20s\n", str));
 
   /* Always fail on Win32. No COMPOUND_TEXT support. */
 
   if (encoding)
-    *encoding = GDK_NONE;
+    *encoding = BDK_NONE;
 
   if (format)
     *format = 0;
@@ -1097,28 +1097,28 @@ gdk_string_to_compound_text_for_display (GdkDisplay  *display,
 }
 
 gchar *
-gdk_utf8_to_string_target (const gchar *str)
+bdk_utf8_to_string_target (const gchar *str)
 {
-  return _gdk_utf8_to_string_target_internal (str, strlen (str));
+  return _bdk_utf8_to_string_target_internal (str, strlen (str));
 }
 
 gboolean
-gdk_utf8_to_compound_text_for_display (GdkDisplay  *display,
+bdk_utf8_to_compound_text_for_display (BdkDisplay  *display,
                                        const gchar *str,
-                                       GdkAtom     *encoding,
+                                       BdkAtom     *encoding,
                                        gint        *format,
                                        guchar     **ctext,
                                        gint        *length)
 {
   g_return_val_if_fail (str != NULL, FALSE);
-  g_return_val_if_fail (display == _gdk_display, FALSE);
+  g_return_val_if_fail (display == _bdk_display, FALSE);
 
-  GDK_NOTE (DND, g_print ("gdk_utf8_to_compound_text_for_display: %.20s\n", str));
+  BDK_NOTE (DND, g_print ("bdk_utf8_to_compound_text_for_display: %.20s\n", str));
 
   /* Always fail on Win32. No COMPOUND_TEXT support. */
 
   if (encoding)
-    *encoding = GDK_NONE;
+    *encoding = BDK_NONE;
 
   if (format)
     *format = 0;
@@ -1133,7 +1133,7 @@ gdk_utf8_to_compound_text_for_display (GdkDisplay  *display,
 }
 
 void
-gdk_free_compound_text (guchar *ctext)
+bdk_free_compound_text (guchar *ctext)
 {
   /* As we never generate anything claimed to be COMPOUND_TEXT, this
    * should never be called. Or if it is called, ctext should be the
@@ -1142,34 +1142,34 @@ gdk_free_compound_text (guchar *ctext)
   g_return_if_fail (ctext == NULL);
 }
 
-/* This function is called from gtk_selection_add_target() and
- * gtk_selection_add_targets() in gtkselection.c. It is this function
+/* This function is called from btk_selection_add_target() and
+ * btk_selection_add_targets() in btkselection.c. It is this function
  * that takes care of setting those clipboard formats for which we use
  * delayed rendering. Formats copied directly to the clipboard are
- * handled in gdk_property_change() in gdkproperty-win32.c.
+ * handled in bdk_property_change() in bdkproperty-win32.c.
  */
 
 void
-gdk_win32_selection_add_targets (GdkWindow  *owner,
-				 GdkAtom     selection,
+bdk_win32_selection_add_targets (BdkWindow  *owner,
+				 BdkAtom     selection,
 				 gint	     n_targets,
-				 GdkAtom    *targets)
+				 BdkAtom    *targets)
 {
   HWND hwnd = NULL;
   gboolean has_image = FALSE;
   gint i;
 
-  GDK_NOTE (DND, {
-      gchar *sel_name = gdk_atom_name (selection);
+  BDK_NOTE (DND, {
+      gchar *sel_name = bdk_atom_name (selection);
       
-      g_print ("gdk_win32_selection_add_targets: %p: %s: ",
-	       owner ? GDK_WINDOW_HWND (owner) : NULL,
+      g_print ("bdk_win32_selection_add_targets: %p: %s: ",
+	       owner ? BDK_WINDOW_HWND (owner) : NULL,
 	       sel_name);
       g_free (sel_name);
 
       for (i = 0; i < n_targets; i++)
 	{
-	  gchar *tgt_name = gdk_atom_name (targets[i]);
+	  gchar *tgt_name = bdk_atom_name (targets[i]);
 
 	  g_print ("%s", tgt_name);
 	  g_free (tgt_name);
@@ -1179,14 +1179,14 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
       g_print ("\n");
     });
 
-  if (selection != GDK_SELECTION_CLIPBOARD)
+  if (selection != BDK_SELECTION_CLIPBOARD)
     return;
 
   if (owner != NULL)
     {
-      if (GDK_WINDOW_DESTROYED (owner))
+      if (BDK_WINDOW_DESTROYED (owner))
 	return;
-      hwnd = GDK_WINDOW_HWND (owner);
+      hwnd = BDK_WINDOW_HWND (owner);
     }
 
   if (!API_CALL (OpenClipboard, (hwnd)))
@@ -1195,7 +1195,7 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
   /* We have a very simple strategy: If some kind of pixmap image
    * format is being added, actually advertise just PNG and DIB. PNG
    * is our preferred format because it can losslessly represent any
-   * image that gdk-pixbuf formats in general can, even with alpha,
+   * image that bdk-pixbuf formats in general can, even with alpha,
    * unambiguously. CF_DIB is also advertised because of the general
    * support for it in Windows software, but note that alpha won't be
    * handled.
@@ -1211,10 +1211,10 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 	  {
 	    if (!has_image)
 	      {
-		GDK_NOTE (DND, g_print ("... SetClipboardData(PNG,NULL)\n"));
+		BDK_NOTE (DND, g_print ("... SetClipboardData(PNG,NULL)\n"));
 		SetClipboardData (_cf_png, NULL);
 
-		GDK_NOTE (DND, g_print ("... SetClipboardData(CF_DIB,NULL)\n"));
+		BDK_NOTE (DND, g_print ("... SetClipboardData(CF_DIB,NULL)\n"));
 		SetClipboardData (CF_DIB, NULL);
 
 		has_image = TRUE;
@@ -1229,13 +1229,13 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 	continue;
 
       /* We don't bother registering and advertising clipboard formats
-       * that are X11 specific or no non-GTK+ apps will have ever
+       * that are X11 specific or no non-BTK+ apps will have ever
        * heard of, and when there are equivalent clipboard formats
        * that are commonly used.
        */
       if (targets[i] == _save_targets ||
 	  targets[i] == _utf8_string ||
-	  targets[i] == GDK_TARGET_STRING ||
+	  targets[i] == BDK_TARGET_STRING ||
 	  targets[i] == _compound_text ||
 	  targets[i] == _text ||
 	  targets[i] == text_plain_charset_utf_8 ||
@@ -1243,7 +1243,7 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 	  targets[i] == text_plain)
 	continue;
 
-      target_name = gdk_atom_name (targets[i]);
+      target_name = bdk_atom_name (targets[i]);
 
       if (g_str_has_prefix (target_name, "text/plain;charset="))
 	{
@@ -1257,8 +1257,8 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 			    GINT_TO_POINTER (cf),
 			    targets[i]);
       
-      GDK_NOTE (DND, g_print ("... SetClipboardData(%s,NULL)\n",
-			      _gdk_win32_cf_to_string (cf)));
+      BDK_NOTE (DND, g_print ("... SetClipboardData(%s,NULL)\n",
+			      _bdk_win32_cf_to_string (cf)));
       SetClipboardData (cf, NULL);
 
       g_free (target_name);
@@ -1267,17 +1267,17 @@ gdk_win32_selection_add_targets (GdkWindow  *owner,
 }
 
 /* Convert from types such as "image/jpg" or "image/png" to DIB using
- * gdk-pixbuf so that image copied from GTK+ apps can be pasted in
+ * bdk-pixbuf so that image copied from BTK+ apps can be pasted in
  * native apps like mspaint.exe
  */
 HGLOBAL
-_gdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
-				     GdkAtom  target)
+_bdk_win32_selection_convert_to_dib (HGLOBAL  hdata,
+				     BdkAtom  target)
 {
-  GDK_NOTE (DND, {
-      gchar *target_name = gdk_atom_name (target);
+  BDK_NOTE (DND, {
+      gchar *target_name = bdk_atom_name (target);
 
-      g_print ("_gdk_win32_selection_convert_to_dib: %p %s\n",
+      g_print ("_bdk_win32_selection_convert_to_dib: %p %s\n",
 	       hdata, target_name);
       g_free (target_name);
     });

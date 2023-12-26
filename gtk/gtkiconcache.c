@@ -1,4 +1,4 @@
-/* gtkiconcache.c
+/* btkiconcache.c
  * Copyright (C) 2004  Anders Carlsson <andersca@gnome.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,15 +19,15 @@
 
 #include "config.h"
 
-#include "gtkdebug.h"
-#include "gtkiconcache.h"
-#include "gtkiconcachevalidator.h"
-#include "gtkalias.h"
+#include "btkdebug.h"
+#include "btkiconcache.h"
+#include "btkiconcachevalidator.h"
+#include "btkalias.h"
 
-#include <glib/gstdio.h>
+#include <bunnylib/gstdio.h>
 
-#undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include <gdk-pixbuf/gdk-pixdata.h>
+#undef BDK_PIXBUF_DISABLE_DEPRECATED
+#include <bdk-pixbuf/bdk-pixdata.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -52,7 +52,7 @@
 #define GET_UINT32(cache, offset) (GUINT32_FROM_BE (*(guint32 *)((cache) + (offset))))
 
 
-struct _GtkIconCache {
+struct _BtkIconCache {
   gint ref_count;
 
   GMappedFile *map;
@@ -61,21 +61,21 @@ struct _GtkIconCache {
   guint32 last_chain_offset;
 };
 
-GtkIconCache *
-_gtk_icon_cache_ref (GtkIconCache *cache)
+BtkIconCache *
+_btk_icon_cache_ref (BtkIconCache *cache)
 {
   cache->ref_count++;
   return cache;
 }
 
 void
-_gtk_icon_cache_unref (GtkIconCache *cache)
+_btk_icon_cache_unref (BtkIconCache *cache)
 {
   cache->ref_count --;
 
   if (cache->ref_count == 0)
     {
-      GTK_NOTE (ICONTHEME, 
+      BTK_NOTE (ICONTHEME, 
 		g_print ("unmapping icon cache\n"));
 
       if (cache->map)
@@ -84,10 +84,10 @@ _gtk_icon_cache_unref (GtkIconCache *cache)
     }
 }
 
-GtkIconCache *
-_gtk_icon_cache_new_for_path (const gchar *path)
+BtkIconCache *
+_btk_icon_cache_new_for_path (const gchar *path)
 {
-  GtkIconCache *cache = NULL;
+  BtkIconCache *cache = NULL;
   GMappedFile *map;
 
   gchar *cache_filename;
@@ -99,7 +99,7 @@ _gtk_icon_cache_new_for_path (const gchar *path)
    /* Check if we have a cache file */
   cache_filename = g_build_filename (path, "icon-theme.cache", NULL);
 
-  GTK_NOTE (ICONTHEME, 
+  BTK_NOTE (ICONTHEME, 
 	    g_print ("look for cache in %s\n", path));
 
   if (g_stat (path, &path_st) < 0)
@@ -115,33 +115,33 @@ _gtk_icon_cache_new_for_path (const gchar *path)
    * because GStatBuf may not be stat on Windows
    */
 #ifdef G_OS_WIN32
-  if (GLIB_CHECK_VERSION (2, 57, 3))
+  if (BUNNYLIB_CHECK_VERSION (2, 57, 3))
     {
 # ifdef __MINGW64_VERSION_MAJOR
 #  ifdef _WIN64
-#   define gtk_fstat _fstat64
+#   define btk_fstat _fstat64
 #  else
-#   define gtk_fstat _fstat32
+#   define btk_fstat _fstat32
 #  endif
 # elif defined (_MSC_VER) && !defined (_WIN64)
-#   define gtk_fstat _fstat32
+#   define btk_fstat _fstat32
 # endif
     }
 #endif
 
-#ifndef gtk_fstat
-#define gtk_fstat fstat
+#ifndef btk_fstat
+#define btk_fstat fstat
 #endif
 
-  if (gtk_fstat (fd, &st) < 0 || st.st_size < 4)
+  if (btk_fstat (fd, &st) < 0 || st.st_size < 4)
     goto done;
 
-#undef gtk_fstat
+#undef btk_fstat
 
   /* Verify cache is uptodate */
   if (st.st_mtime < path_st.st_mtime)
     {
-      GTK_NOTE (ICONTHEME, 
+      BTK_NOTE (ICONTHEME, 
 		g_print ("cache outdated\n"));
       goto done; 
     }
@@ -157,9 +157,9 @@ _gtk_icon_cache_new_for_path (const gchar *path)
   info.flags = CHECK_OFFSETS|CHECK_STRINGS;
 
 #ifdef G_ENABLE_DEBUG
-  if (gtk_debug_flags & GTK_DEBUG_ICONTHEME)
+  if (btk_debug_flags & BTK_DEBUG_ICONTHEME)
     {
-      if (!_gtk_icon_cache_validate (&info))
+      if (!_btk_icon_cache_validate (&info))
         {
           g_mapped_file_unref (map);
           g_warning ("Icon cache '%s' is invalid\n", cache_filename);
@@ -169,9 +169,9 @@ _gtk_icon_cache_new_for_path (const gchar *path)
     }
 #endif 
 
-  GTK_NOTE (ICONTHEME, g_print ("found cache for %s\n", path));
+  BTK_NOTE (ICONTHEME, g_print ("found cache for %s\n", path));
 
-  cache = g_new0 (GtkIconCache, 1);
+  cache = g_new0 (BtkIconCache, 1);
   cache->ref_count = 1;
   cache->map = map;
   cache->buffer = g_mapped_file_get_contents (map);
@@ -184,12 +184,12 @@ _gtk_icon_cache_new_for_path (const gchar *path)
   return cache;
 }
 
-GtkIconCache *
-_gtk_icon_cache_new (const gchar *data)
+BtkIconCache *
+_btk_icon_cache_new (const gchar *data)
 {
-  GtkIconCache *cache;
+  BtkIconCache *cache;
 
-  cache = g_new0 (GtkIconCache, 1);
+  cache = g_new0 (BtkIconCache, 1);
   cache->ref_count = 1;
   cache->map = NULL;
   cache->buffer = (gchar *)data;
@@ -198,7 +198,7 @@ _gtk_icon_cache_new (const gchar *data)
 }
 
 static gint
-get_directory_index (GtkIconCache *cache,
+get_directory_index (BtkIconCache *cache,
 		     const gchar *directory)
 {
   guint32 dir_list_offset;
@@ -221,7 +221,7 @@ get_directory_index (GtkIconCache *cache,
 }
 
 gint
-_gtk_icon_cache_get_directory_index (GtkIconCache *cache,
+_btk_icon_cache_get_directory_index (BtkIconCache *cache,
 			             const gchar *directory)
 {
   return get_directory_index (cache, directory);
@@ -241,7 +241,7 @@ icon_name_hash (gconstpointer key)
 }
 
 static gint
-find_image_offset (GtkIconCache *cache,
+find_image_offset (BtkIconCache *cache,
 		   const gchar  *icon_name,
 		   gint          directory_index)
 {
@@ -300,7 +300,7 @@ find_dir:
 }
 
 gint
-_gtk_icon_cache_get_icon_flags (GtkIconCache *cache,
+_btk_icon_cache_get_icon_flags (BtkIconCache *cache,
 				const gchar  *icon_name,
 				gint          directory_index)
 {
@@ -315,7 +315,7 @@ _gtk_icon_cache_get_icon_flags (GtkIconCache *cache,
 }
 
 void
-_gtk_icon_cache_add_icons (GtkIconCache *cache,
+_btk_icon_cache_add_icons (BtkIconCache *cache,
 			   const gchar  *directory,
 			   GHashTable   *hash_table)
 {
@@ -357,7 +357,7 @@ _gtk_icon_cache_add_icons (GtkIconCache *cache,
 }
 
 gboolean
-_gtk_icon_cache_has_icon (GtkIconCache *cache,
+_btk_icon_cache_has_icon (BtkIconCache *cache,
 			  const gchar  *icon_name)
 {
   guint32 hash_offset;
@@ -386,7 +386,7 @@ _gtk_icon_cache_has_icon (GtkIconCache *cache,
 }
 
 gboolean
-_gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
+_btk_icon_cache_has_icon_in_directory (BtkIconCache *cache,
 				       const gchar  *icon_name,
 				       const gchar  *directory)
 {
@@ -445,20 +445,20 @@ static void
 pixbuf_destroy_cb (guchar   *pixels, 
 		   gpointer  data)
 {
-  GtkIconCache *cache = data;
+  BtkIconCache *cache = data;
 
-  _gtk_icon_cache_unref (cache);
+  _btk_icon_cache_unref (cache);
 }
 
-GdkPixbuf *
-_gtk_icon_cache_get_icon (GtkIconCache *cache,
+BdkPixbuf *
+_btk_icon_cache_get_icon (BtkIconCache *cache,
 			  const gchar  *icon_name,
 			  gint          directory_index)
 {
   guint32 offset, image_data_offset, pixel_data_offset;
   guint32 length, type;
-  GdkPixbuf *pixbuf;
-  GdkPixdata pixdata;
+  BdkPixbuf *pixbuf;
+  BdkPixdata pixdata;
   GError *error = NULL;
 
   offset = find_image_offset (cache, icon_name, directory_index);
@@ -474,50 +474,50 @@ _gtk_icon_cache_get_icon (GtkIconCache *cache,
 
   if (type != 0)
     {
-      GTK_NOTE (ICONTHEME,
+      BTK_NOTE (ICONTHEME,
 		g_print ("invalid pixel data type %u\n", type));
       return NULL;
     }
 
   length = GET_UINT32 (cache->buffer, pixel_data_offset + 4);
   
-  if (!gdk_pixdata_deserialize (&pixdata, length, 
+  if (!bdk_pixdata_deserialize (&pixdata, length, 
 				(guchar *)(cache->buffer + pixel_data_offset + 8),
 				&error))
     {
-      GTK_NOTE (ICONTHEME,
+      BTK_NOTE (ICONTHEME,
 		g_print ("could not deserialize data: %s\n", error->message));
       g_error_free (error);
 
       return NULL;
     }
 
-  pixbuf = gdk_pixbuf_new_from_data (pixdata.pixel_data, GDK_COLORSPACE_RGB,
-				     (pixdata.pixdata_type & GDK_PIXDATA_COLOR_TYPE_MASK) == GDK_PIXDATA_COLOR_TYPE_RGBA,
+  pixbuf = bdk_pixbuf_new_from_data (pixdata.pixel_data, BDK_COLORSPACE_RGB,
+				     (pixdata.pixdata_type & BDK_PIXDATA_COLOR_TYPE_MASK) == BDK_PIXDATA_COLOR_TYPE_RGBA,
 				     8, pixdata.width, pixdata.height, pixdata.rowstride,
-				     (GdkPixbufDestroyNotify)pixbuf_destroy_cb, 
+				     (BdkPixbufDestroyNotify)pixbuf_destroy_cb, 
 				     cache);
   if (!pixbuf)
     {
-      GTK_NOTE (ICONTHEME,
+      BTK_NOTE (ICONTHEME,
 		g_print ("could not convert pixdata to pixbuf: %s\n", error->message));
       g_error_free (error);
 
       return NULL;
     }
 
-  _gtk_icon_cache_ref (cache);
+  _btk_icon_cache_ref (cache);
 
   return pixbuf;
 }
 
-GtkIconData  *
-_gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
+BtkIconData  *
+_btk_icon_cache_get_icon_data  (BtkIconCache *cache,
 				const gchar  *icon_name,
 				gint          directory_index)
 {
   guint32 offset, image_data_offset, meta_data_offset;
-  GtkIconData *data;
+  BtkIconData *data;
   int i;
 
   offset = find_image_offset (cache, icon_name, directory_index);
@@ -533,7 +533,7 @@ _gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
   if (!meta_data_offset)
     return NULL;
 
-  data = g_slice_new0 (GtkIconData);
+  data = g_slice_new0 (BtkIconData);
 
   offset = GET_UINT32 (cache->buffer, meta_data_offset);
   if (offset)
@@ -549,7 +549,7 @@ _gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
   if (offset)
     {
       data->n_attach_points = GET_UINT32 (cache->buffer, offset);
-      data->attach_points = g_new (GdkPoint, data->n_attach_points);
+      data->attach_points = g_new (BdkPoint, data->n_attach_points);
       for (i = 0; i < data->n_attach_points; i++)
 	{
 	  data->attach_points[i].x = GET_UINT16 (cache->buffer, offset + 4 + 4 * i); 

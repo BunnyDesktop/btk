@@ -1,6 +1,6 @@
 # -*- mode: makefile -*-
 #
-# gtk-doc.make - make rules for gtk-doc
+# btk-doc.make - make rules for btk-doc
 # Copyright (C) 2003 James Henstridge
 #               2004-2007 Damon Chaplin
 #               2007-2017 Stefan Sauer
@@ -22,14 +22,14 @@
 # Everything below here is generic #
 ####################################
 
-if GTK_DOC_USE_LIBTOOL
-GTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-GTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
-GTKDOC_RUN = $(LIBTOOL) --mode=execute
+if BTK_DOC_USE_LIBTOOL
+BTKDOC_CC = $(LIBTOOL) --tag=CC --mode=compile $(CC) $(INCLUDES) $(BTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+BTKDOC_LD = $(LIBTOOL) --tag=CC --mode=link $(CC) $(BTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+BTKDOC_RUN = $(LIBTOOL) --mode=execute
 else
-GTKDOC_CC = $(CC) $(INCLUDES) $(GTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-GTKDOC_LD = $(CC) $(GTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
-GTKDOC_RUN =
+BTKDOC_CC = $(CC) $(INCLUDES) $(BTKDOC_DEPS_CFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+BTKDOC_LD = $(CC) $(BTKDOC_DEPS_LIBS) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS)
+BTKDOC_RUN =
 endif
 
 # We set GPATH here; this gives us semantics for GNU make
@@ -68,29 +68,29 @@ REPORT_FILES = \
 	$(DOC_MODULE)-undeclared.txt \
 	$(DOC_MODULE)-unused.txt
 
-gtkdoc-check.test: Makefile
+btkdoc-check.test: Makefile
 	$(AM_V_GEN)echo "#!/bin/sh -e" > $@; \
-		echo "$(GTKDOC_CHECK_PATH) || exit 1" >> $@; \
+		echo "$(BTKDOC_CHECK_PATH) || exit 1" >> $@; \
 		chmod +x $@
 
-CLEANFILES = $(SCANOBJ_FILES) $(REPORT_FILES) $(DOC_STAMPS) gtkdoc-check.test
+CLEANFILES = $(SCANOBJ_FILES) $(REPORT_FILES) $(DOC_STAMPS) btkdoc-check.test
 
-if GTK_DOC_BUILD_HTML
+if BTK_DOC_BUILD_HTML
 HTML_BUILD_STAMP=html-build.stamp
 else
 HTML_BUILD_STAMP=
 endif
-if GTK_DOC_BUILD_PDF
+if BTK_DOC_BUILD_PDF
 PDF_BUILD_STAMP=pdf-build.stamp
 else
 PDF_BUILD_STAMP=
 endif
 
-all-gtk-doc: $(HTML_BUILD_STAMP) $(PDF_BUILD_STAMP)
-.PHONY: all-gtk-doc
+all-btk-doc: $(HTML_BUILD_STAMP) $(PDF_BUILD_STAMP)
+.PHONY: all-btk-doc
 
-if ENABLE_GTK_DOC
-all-local: all-gtk-doc
+if ENABLE_BTK_DOC
+all-local: all-btk-doc
 endif
 
 docs: $(HTML_BUILD_STAMP) $(PDF_BUILD_STAMP)
@@ -99,12 +99,12 @@ $(REPORT_FILES): sgml-build.stamp
 
 #### setup ####
 
-GTK_DOC_V_SETUP=$(GTK_DOC_V_SETUP_@AM_V@)
-GTK_DOC_V_SETUP_=$(GTK_DOC_V_SETUP_@AM_DEFAULT_V@)
-GTK_DOC_V_SETUP_0=@echo "  DOC   Preparing build";
+BTK_DOC_V_SETUP=$(BTK_DOC_V_SETUP_@AM_V@)
+BTK_DOC_V_SETUP_=$(BTK_DOC_V_SETUP_@AM_DEFAULT_V@)
+BTK_DOC_V_SETUP_0=@echo "  DOC   Preparing build";
 
 setup-build.stamp:
-	-$(GTK_DOC_V_SETUP)if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
+	-$(BTK_DOC_V_SETUP)if test "$(abs_srcdir)" != "$(abs_builddir)" ; then \
 	  files=`echo $(SETUP_FILES) $(DOC_MODULE).types`; \
 	  if test "x$$files" != "x" ; then \
 	    for file in $$files ; do \
@@ -119,30 +119,30 @@ setup-build.stamp:
 
 #### scan ####
 
-GTK_DOC_V_SCAN=$(GTK_DOC_V_SCAN_@AM_V@)
-GTK_DOC_V_SCAN_=$(GTK_DOC_V_SCAN_@AM_DEFAULT_V@)
-GTK_DOC_V_SCAN_0=@echo "  DOC   Scanning header files";
+BTK_DOC_V_SCAN=$(BTK_DOC_V_SCAN_@AM_V@)
+BTK_DOC_V_SCAN_=$(BTK_DOC_V_SCAN_@AM_DEFAULT_V@)
+BTK_DOC_V_SCAN_0=@echo "  DOC   Scanning header files";
 
-GTK_DOC_V_INTROSPECT=$(GTK_DOC_V_INTROSPECT_@AM_V@)
-GTK_DOC_V_INTROSPECT_=$(GTK_DOC_V_INTROSPECT_@AM_DEFAULT_V@)
-GTK_DOC_V_INTROSPECT_0=@echo "  DOC   Introspecting gobjects";
+BTK_DOC_V_INTROSPECT=$(BTK_DOC_V_INTROSPECT_@AM_V@)
+BTK_DOC_V_INTROSPECT_=$(BTK_DOC_V_INTROSPECT_@AM_DEFAULT_V@)
+BTK_DOC_V_INTROSPECT_0=@echo "  DOC   Introspecting bobjects";
 
 scan-build.stamp: setup-build.stamp $(HFILE_GLOB) $(CFILE_GLOB)
-	$(GTK_DOC_V_SCAN)_source_dir='' ; \
+	$(BTK_DOC_V_SCAN)_source_dir='' ; \
 	for i in $(DOC_SOURCE_DIR) ; do \
 	  _source_dir="$${_source_dir} --source-dir=$$i" ; \
 	done ; \
-	gtkdoc-scan --module=$(DOC_MODULE) --ignore-headers="$(IGNORE_HFILES)" $${_source_dir} $(SCAN_OPTIONS) $(EXTRA_HFILES)
-	$(GTK_DOC_V_INTROSPECT)if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null 2>&1 ; then \
+	btkdoc-scan --module=$(DOC_MODULE) --ignore-headers="$(IGNORE_HFILES)" $${_source_dir} $(SCAN_OPTIONS) $(EXTRA_HFILES)
+	$(BTK_DOC_V_INTROSPECT)if grep -l '^..*$$' $(DOC_MODULE).types > /dev/null 2>&1 ; then \
 	  scanobj_options=""; \
-	  gtkdoc-scangobj 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+	  btkdoc-scangobj 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
 	  if test "$$?" = "0"; then \
 	    if test "x$(V)" = "x1"; then \
 	      scanobj_options="--verbose"; \
 	    fi; \
 	  fi; \
-	  CC="$(GTKDOC_CC)" LD="$(GTKDOC_LD)" RUN="$(GTKDOC_RUN)" CFLAGS="$(GTKDOC_CFLAGS) $(CFLAGS)" LDFLAGS="$(GTKDOC_LIBS) $(LDFLAGS)" \
-	  gtkdoc-scangobj $(SCANGOBJ_OPTIONS) $$scanobj_options --module=$(DOC_MODULE); \
+	  CC="$(BTKDOC_CC)" LD="$(BTKDOC_LD)" RUN="$(BTKDOC_RUN)" CFLAGS="$(BTKDOC_CFLAGS) $(CFLAGS)" LDFLAGS="$(BTKDOC_LIBS) $(LDFLAGS)" \
+	  btkdoc-scangobj $(SCANGOBJ_OPTIONS) $$scanobj_options --module=$(DOC_MODULE); \
 	else \
 	  for i in $(SCANOBJ_FILES) ; do \
 	    test -f $$i || touch $$i ; \
@@ -155,16 +155,16 @@ $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(DOC_MODULE)-sections.txt $(DOC_MODULE)
 
 #### xml ####
 
-GTK_DOC_V_XML=$(GTK_DOC_V_XML_@AM_V@)
-GTK_DOC_V_XML_=$(GTK_DOC_V_XML_@AM_DEFAULT_V@)
-GTK_DOC_V_XML_0=@echo "  DOC   Building XML";
+BTK_DOC_V_XML=$(BTK_DOC_V_XML_@AM_V@)
+BTK_DOC_V_XML_=$(BTK_DOC_V_XML_@AM_DEFAULT_V@)
+BTK_DOC_V_XML_0=@echo "  DOC   Building XML";
 
-sgml-build.stamp: setup-build.stamp $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(HFILE_GLOB) $(CFILE_GLOB) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt $(expand_content_files) xml/gtkdocentities.ent
-	$(GTK_DOC_V_XML)_source_dir='' ; \
+sgml-build.stamp: setup-build.stamp $(DOC_MODULE)-decl.txt $(SCANOBJ_FILES) $(HFILE_GLOB) $(CFILE_GLOB) $(DOC_MODULE)-sections.txt $(DOC_MODULE)-overrides.txt $(expand_content_files) xml/btkdocentities.ent
+	$(BTK_DOC_V_XML)_source_dir='' ; \
 	for i in $(DOC_SOURCE_DIR) ; do \
 	  _source_dir="$${_source_dir} --source-dir=$$i" ; \
 	done ; \
-	gtkdoc-mkdb --module=$(DOC_MODULE) --output-format=xml --expand-content-files="$(expand_content_files)" --main-sgml-file=$(DOC_MAIN_SGML_FILE) $${_source_dir} $(MKDB_OPTIONS)
+	btkdoc-mkdb --module=$(DOC_MODULE) --output-format=xml --expand-content-files="$(expand_content_files)" --main-sgml-file=$(DOC_MAIN_SGML_FILE) $${_source_dir} $(MKDB_OPTIONS)
 	$(AM_V_at)touch sgml-build.stamp
 
 sgml.stamp: sgml-build.stamp
@@ -173,8 +173,8 @@ sgml.stamp: sgml-build.stamp
 $(DOC_MAIN_SGML_FILE): sgml-build.stamp
 	@true
 
-xml/gtkdocentities.ent: Makefile
-	$(GTK_DOC_V_XML)$(MKDIR_P) $(@D) && ( \
+xml/btkdocentities.ent: Makefile
+	$(BTK_DOC_V_XML)$(MKDIR_P) $(@D) && ( \
 		echo "<!ENTITY package \"$(PACKAGE)\">"; \
 		echo "<!ENTITY package_bugreport \"$(PACKAGE_BUGREPORT)\">"; \
 		echo "<!ENTITY package_name \"$(PACKAGE_NAME)\">"; \
@@ -186,47 +186,47 @@ xml/gtkdocentities.ent: Makefile
 
 #### html ####
 
-GTK_DOC_V_HTML=$(GTK_DOC_V_HTML_@AM_V@)
-GTK_DOC_V_HTML_=$(GTK_DOC_V_HTML_@AM_DEFAULT_V@)
-GTK_DOC_V_HTML_0=@echo "  DOC   Building HTML";
+BTK_DOC_V_HTML=$(BTK_DOC_V_HTML_@AM_V@)
+BTK_DOC_V_HTML_=$(BTK_DOC_V_HTML_@AM_DEFAULT_V@)
+BTK_DOC_V_HTML_0=@echo "  DOC   Building HTML";
 
-GTK_DOC_V_XREF=$(GTK_DOC_V_XREF_@AM_V@)
-GTK_DOC_V_XREF_=$(GTK_DOC_V_XREF_@AM_DEFAULT_V@)
-GTK_DOC_V_XREF_0=@echo "  DOC   Fixing cross-references";
+BTK_DOC_V_XREF=$(BTK_DOC_V_XREF_@AM_V@)
+BTK_DOC_V_XREF_=$(BTK_DOC_V_XREF_@AM_DEFAULT_V@)
+BTK_DOC_V_XREF_0=@echo "  DOC   Fixing cross-references";
 
 html-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files) $(expand_content_files)
-	$(GTK_DOC_V_HTML)rm -rf html && mkdir html && \
+	$(BTK_DOC_V_HTML)rm -rf html && mkdir html && \
 	mkhtml_options=""; \
-	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+	btkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
 	if test "$$?" = "0"; then \
 	  if test "x$(V)" = "x1"; then \
 	    mkhtml_options="$$mkhtml_options --verbose"; \
 	  fi; \
 	fi; \
-	gtkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-path"; \
+	btkdoc-mkhtml 2>&1 --help | grep  >/dev/null "\-\-path"; \
 	if test "$$?" = "0"; then \
 	  mkhtml_options="$$mkhtml_options --path=\"$(abs_srcdir)\""; \
 	fi; \
-	cd html && gtkdoc-mkhtml $$mkhtml_options $(MKHTML_OPTIONS) $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
+	cd html && btkdoc-mkhtml $$mkhtml_options $(MKHTML_OPTIONS) $(DOC_MODULE) ../$(DOC_MAIN_SGML_FILE)
 	-@test "x$(HTML_IMAGES)" = "x" || \
 	for file in $(HTML_IMAGES) ; do \
 	  test -f $(abs_srcdir)/$$file && cp $(abs_srcdir)/$$file $(abs_builddir)/html; \
 	  test -f $(abs_builddir)/$$file && cp $(abs_builddir)/$$file $(abs_builddir)/html; \
 	  test -f $$file && cp $$file $(abs_builddir)/html; \
 	done;
-	$(GTK_DOC_V_XREF)gtkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
+	$(BTK_DOC_V_XREF)btkdoc-fixxref --module=$(DOC_MODULE) --module-dir=html --html-dir=$(HTML_DIR) $(FIXXREF_OPTIONS)
 	$(AM_V_at)touch html-build.stamp
 
 #### pdf ####
 
-GTK_DOC_V_PDF=$(GTK_DOC_V_PDF_@AM_V@)
-GTK_DOC_V_PDF_=$(GTK_DOC_V_PDF_@AM_DEFAULT_V@)
-GTK_DOC_V_PDF_0=@echo "  DOC   Building PDF";
+BTK_DOC_V_PDF=$(BTK_DOC_V_PDF_@AM_V@)
+BTK_DOC_V_PDF_=$(BTK_DOC_V_PDF_@AM_DEFAULT_V@)
+BTK_DOC_V_PDF_0=@echo "  DOC   Building PDF";
 
 pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files) $(expand_content_files)
-	$(GTK_DOC_V_PDF)rm -f $(DOC_MODULE).pdf && \
+	$(BTK_DOC_V_PDF)rm -f $(DOC_MODULE).pdf && \
 	mkpdf_options=""; \
-	gtkdoc-mkpdf 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
+	btkdoc-mkpdf 2>&1 --help | grep  >/dev/null "\-\-verbose"; \
 	if test "$$?" = "0"; then \
 	  if test "x$(V)" = "x1"; then \
 	    mkpdf_options="$$mkpdf_options --verbose"; \
@@ -241,7 +241,7 @@ pdf-build.stamp: sgml.stamp $(DOC_MAIN_SGML_FILE) $(content_files) $(expand_cont
 	    fi; \
 	  done; \
 	fi; \
-	gtkdoc-mkpdf --path="$(abs_srcdir)" $$mkpdf_options $(DOC_MODULE) $(DOC_MAIN_SGML_FILE) $(MKPDF_OPTIONS)
+	btkdoc-mkpdf --path="$(abs_srcdir)" $$mkpdf_options $(DOC_MODULE) $(DOC_MAIN_SGML_FILE) $(MKPDF_OPTIONS)
 	$(AM_V_at)touch pdf-build.stamp
 
 ##############
@@ -285,7 +285,7 @@ install-data-local:
 	    mv -f $${installdir}/$(DOC_MODULE).devhelp2 \
 	      $${installdir}/$(DOC_MODULE)-$(DOC_MODULE_VERSION).devhelp2; \
 	  fi; \
-	  $(GTKDOC_REBASE) --relative --dest-dir=$(DESTDIR) --html-dir=$${installdir}; \
+	  $(BTKDOC_REBASE) --relative --dest-dir=$(DESTDIR) --html-dir=$${installdir}; \
 	fi
 
 uninstall-local:
@@ -297,25 +297,25 @@ uninstall-local:
 	rm -rf $${installdir}
 
 #
-# Require gtk-doc when making dist
+# Require btk-doc when making dist
 #
-if HAVE_GTK_DOC
-dist-check-gtkdoc: docs
+if HAVE_BTK_DOC
+dist-check-btkdoc: docs
 else
-dist-check-gtkdoc:
-	@echo "*** gtk-doc is needed to run 'make dist'.         ***"
-	@echo "*** gtk-doc was not found when 'configure' ran.   ***"
-	@echo "*** please install gtk-doc and rerun 'configure'. ***"
+dist-check-btkdoc:
+	@echo "*** btk-doc is needed to run 'make dist'.         ***"
+	@echo "*** btk-doc was not found when 'configure' ran.   ***"
+	@echo "*** please install btk-doc and rerun 'configure'. ***"
 	@false
 endif
 
-dist-hook: dist-check-gtkdoc all-gtk-doc dist-hook-local
+dist-hook: dist-check-btkdoc all-btk-doc dist-hook-local
 	@mkdir $(distdir)/html
 	@cp ./html/* $(distdir)/html
 	@-cp ./$(DOC_MODULE).pdf $(distdir)/
 	@-cp ./$(DOC_MODULE).types $(distdir)/
 	@-cp ./$(DOC_MODULE)-sections.txt $(distdir)/
 	@cd $(distdir) && rm -f $(DISTCLEANFILES)
-	@$(GTKDOC_REBASE) --online --relative --html-dir=$(distdir)/html
+	@$(BTKDOC_REBASE) --online --relative --html-dir=$(distdir)/html
 
 .PHONY : dist-hook-local docs

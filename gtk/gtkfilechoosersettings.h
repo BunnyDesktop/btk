@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechoosersettings.h: Internal settings for the GtkFileChooser widget
+/* BTK - The GIMP Toolkit
+ * btkfilechoosersettings.h: Internal settings for the BtkFileChooser widget
  * Copyright (C) 2006, Novell, Inc.
  *
  * Authors: Federico Mena-Quintero <federico@novell.com>
@@ -20,14 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_CHOOSER_SETTINGS_H__
-#define __GTK_FILE_CHOOSER_SETTINGS_H__
+#ifndef __BTK_FILE_CHOOSER_SETTINGS_H__
+#define __BTK_FILE_CHOOSER_SETTINGS_H__
 
-#include "gtkfilechooserprivate.h"
+#include "btkfilechooserprivate.h"
 
 G_BEGIN_DECLS
 
-#define GTK_FILE_CHOOSER_SETTINGS_TYPE (_gtk_file_chooser_settings_get_type ())
+#define BTK_FILE_CHOOSER_SETTINGS_TYPE (_btk_file_chooser_settings_get_type ())
 
 /* Column numbers for the file list */
 enum {
@@ -37,16 +37,16 @@ enum {
   FILE_LIST_COL_NUM_COLUMNS
 };
 
-typedef struct _GtkFileChooserSettings GtkFileChooserSettings;
-typedef struct _GtkFileChooserSettingsClass GtkFileChooserSettingsClass;
+typedef struct _BtkFileChooserSettings BtkFileChooserSettings;
+typedef struct _BtkFileChooserSettingsClass BtkFileChooserSettingsClass;
 
-struct _GtkFileChooserSettings
+struct _BtkFileChooserSettings
 {
   GObject object;
 
   LocationMode location_mode;
 
-  GtkSortType sort_order;
+  BtkSortType sort_order;
   gint sort_column;
   StartupMode startup_mode;
 
@@ -60,51 +60,51 @@ struct _GtkFileChooserSettings
   guint show_size_column : 1;
 };
 
-struct _GtkFileChooserSettingsClass
+struct _BtkFileChooserSettingsClass
 {
   GObjectClass parent_class;
 };
 
-GType _gtk_file_chooser_settings_get_type (void) G_GNUC_CONST;
+GType _btk_file_chooser_settings_get_type (void) G_GNUC_CONST;
 
-GtkFileChooserSettings *_gtk_file_chooser_settings_new (void);
+BtkFileChooserSettings *_btk_file_chooser_settings_new (void);
 
-LocationMode _gtk_file_chooser_settings_get_location_mode (GtkFileChooserSettings *settings);
-void         _gtk_file_chooser_settings_set_location_mode (GtkFileChooserSettings *settings,
+LocationMode _btk_file_chooser_settings_get_location_mode (BtkFileChooserSettings *settings);
+void         _btk_file_chooser_settings_set_location_mode (BtkFileChooserSettings *settings,
 							   LocationMode            location_mode);
 
-gboolean _gtk_file_chooser_settings_get_show_hidden (GtkFileChooserSettings *settings);
-void     _gtk_file_chooser_settings_set_show_hidden (GtkFileChooserSettings *settings,
+gboolean _btk_file_chooser_settings_get_show_hidden (BtkFileChooserSettings *settings);
+void     _btk_file_chooser_settings_set_show_hidden (BtkFileChooserSettings *settings,
 						     gboolean                show_hidden);
 
-gboolean _gtk_file_chooser_settings_get_show_size_column (GtkFileChooserSettings *settings);
-void     _gtk_file_chooser_settings_set_show_size_column (GtkFileChooserSettings *settings,
+gboolean _btk_file_chooser_settings_get_show_size_column (BtkFileChooserSettings *settings);
+void     _btk_file_chooser_settings_set_show_size_column (BtkFileChooserSettings *settings,
                                                           gboolean                show_column);
 
-gint _gtk_file_chooser_settings_get_sort_column (GtkFileChooserSettings *settings);
-void _gtk_file_chooser_settings_set_sort_column (GtkFileChooserSettings *settings,
+gint _btk_file_chooser_settings_get_sort_column (BtkFileChooserSettings *settings);
+void _btk_file_chooser_settings_set_sort_column (BtkFileChooserSettings *settings,
 						 gint sort_column);
 
-GtkSortType _gtk_file_chooser_settings_get_sort_order (GtkFileChooserSettings *settings);
-void        _gtk_file_chooser_settings_set_sort_order (GtkFileChooserSettings *settings,
-						       GtkSortType sort_order);
+BtkSortType _btk_file_chooser_settings_get_sort_order (BtkFileChooserSettings *settings);
+void        _btk_file_chooser_settings_set_sort_order (BtkFileChooserSettings *settings,
+						       BtkSortType sort_order);
 
-void _gtk_file_chooser_settings_get_geometry (GtkFileChooserSettings *settings,
+void _btk_file_chooser_settings_get_geometry (BtkFileChooserSettings *settings,
 					      int                    *out_x,
 					      int                    *out_y,
 					      int                    *out_width,
 					      int                    *out_heigth);
-void _gtk_file_chooser_settings_set_geometry (GtkFileChooserSettings *settings,
+void _btk_file_chooser_settings_set_geometry (BtkFileChooserSettings *settings,
 					      int                     x,
 					      int                     y,
 					      int                     width,
 					      int                     heigth);
 
-void _gtk_file_chooser_settings_set_startup_mode (GtkFileChooserSettings *settings,
+void _btk_file_chooser_settings_set_startup_mode (BtkFileChooserSettings *settings,
 						  StartupMode             startup_mode);
-StartupMode _gtk_file_chooser_settings_get_startup_mode (GtkFileChooserSettings *settings);
+StartupMode _btk_file_chooser_settings_get_startup_mode (BtkFileChooserSettings *settings);
 
-gboolean _gtk_file_chooser_settings_save (GtkFileChooserSettings *settings,
+gboolean _btk_file_chooser_settings_save (BtkFileChooserSettings *settings,
 					  GError                **error);
 
 /* FIXME: persist these options:

@@ -17,41 +17,41 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 typedef struct _Info Info;
 struct _Info
 {
-  GtkWindow  *window;
-  GtkToolbar *toolbar;
+  BtkWindow  *window;
+  BtkToolbar *toolbar;
   gint	      counter;
 };
 
 static void
-add_random (GtkToolbar *toolbar, gint n)
+add_random (BtkToolbar *toolbar, gint n)
 {
   gint position;
   gchar *label = g_strdup_printf ("Button %d", n);
 
-  GtkWidget *widget = gtk_button_new_with_label (label);
+  BtkWidget *widget = btk_button_new_with_label (label);
 
   g_free (label);
-  gtk_widget_show_all (widget);
+  btk_widget_show_all (widget);
 
   if (g_list_length (toolbar->children) == 0)
     position = 0;
   else
     position = g_random_int_range (0, g_list_length (toolbar->children));
 
-  gtk_toolbar_insert_widget (toolbar, widget, "Bar", "Baz", position);
+  btk_toolbar_insert_widget (toolbar, widget, "Bar", "Baz", position);
 }
 
 static void
-remove_random (GtkToolbar *toolbar)
+remove_random (BtkToolbar *toolbar)
 {
-  GtkToolbarChild *child;
+  BtkToolbarChild *child;
   gint position;
 
   if (!toolbar->children)
@@ -61,7 +61,7 @@ remove_random (GtkToolbar *toolbar)
 
   child = g_list_nth_data (toolbar->children, position);
   
-  gtk_container_remove (GTK_CONTAINER (toolbar), child->widget);
+  btk_container_remove (BTK_CONTAINER (toolbar), child->widget);
 }
 
 static gboolean
@@ -78,16 +78,16 @@ stress_test_old_api (gpointer data)
   
   if (info->counter++ == 200)
     {
-      gtk_main_quit ();
+      btk_main_quit ();
       return FALSE;
     }
 
   if (!info->toolbar)
     {
-      info->toolbar = GTK_TOOLBAR (gtk_toolbar_new ());
-      gtk_container_add (GTK_CONTAINER (info->window),
-			 GTK_WIDGET (info->toolbar));
-      gtk_widget_show (GTK_WIDGET (info->toolbar));
+      info->toolbar = BTK_TOOLBAR (btk_toolbar_new ());
+      btk_container_add (BTK_CONTAINER (info->window),
+			 BTK_WIDGET (info->toolbar));
+      btk_widget_show (BTK_WIDGET (info->toolbar));
     }
 
   if (!info->toolbar->children)
@@ -129,21 +129,21 @@ main (gint argc, gchar **argv)
 {
   Info info;
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   info.toolbar = NULL;
   info.counter = 0;
-  info.window = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
+  info.window = BTK_WINDOW (btk_window_new (BTK_WINDOW_TOPLEVEL));
 
-  gtk_widget_show (GTK_WIDGET (info.window));
+  btk_widget_show (BTK_WIDGET (info.window));
   
-  gdk_threads_add_idle (stress_test_old_api, &info);
+  bdk_threads_add_idle (stress_test_old_api, &info);
 
-  gtk_widget_show_all (GTK_WIDGET (info.window));
+  btk_widget_show_all (BTK_WIDGET (info.window));
   
-  gtk_main ();
+  btk_main ();
 
-  gtk_widget_destroy (GTK_WIDGET (info.window));
+  btk_widget_destroy (BTK_WIDGET (info.window));
 
   info.toolbar = NULL;
   info.window = NULL;

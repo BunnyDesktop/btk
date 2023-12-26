@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,22 +18,22 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
 #include <locale.h>
 
-#include "gdki18n.h"
-#include "gdkinternals.h"
-#include "gdkprivate-quartz.h"
+#include "bdki18n.h"
+#include "bdkinternals.h"
+#include "bdkprivate-quartz.h"
 
 gchar*
-gdk_set_locale (void)
+bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
     g_warning ("locale not supported by C library");
@@ -42,7 +42,7 @@ gdk_set_locale (void)
 }
 
 gchar *
-gdk_wcstombs (const GdkWChar *src)
+bdk_wcstombs (const BdkWChar *src)
 {
   gchar *mbstr;
 
@@ -61,7 +61,7 @@ gdk_wcstombs (const GdkWChar *src)
 }
 
 gint
-gdk_mbstowcs (GdkWChar *dest, const gchar *src, gint dest_max)
+bdk_mbstowcs (BdkWChar *dest, const gchar *src, gint dest_max)
 {
   gint i;
   

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-1999 Tor Lillqvist
  *
@@ -19,12 +19,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -33,7 +33,7 @@
 
 /*
   Main entry point for 2.6 seems to be open_display so
-  most stuff in main is moved over to gdkdisplay-directfb.c
+  most stuff in main is moved over to bdkdisplay-directfb.c
   I'll move stub functions here that make no sense for directfb
   and true globals
   Michael Emmel
@@ -42,255 +42,255 @@
 #include "config.h"
 #include <string.h>
 #include <stdlib.h>
-#include "gdk.h"
+#include "bdk.h"
 
-#include "gdkdisplay.h"
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdisplay.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkinternals.h"
+#include "bdkinternals.h"
 
-#include "gdkinput-directfb.h"
+#include "bdkinput-directfb.h"
 
-#include "gdkintl.h"
-#include "gdkalias.h"
+#include "bdkintl.h"
+#include "bdkalias.h"
 
 
 void
-_gdk_windowing_init (void)
+_bdk_windowing_init (void)
 {
   /* Not that usable called before parse_args
    */
 }
 
 void
-gdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (gboolean use_xshm)
 {
 }
 
 gboolean
-gdk_get_use_xshm (void)
+bdk_get_use_xshm (void)
 {
   return FALSE;
 }
 
 void
-_gdk_windowing_display_set_sm_client_id (GdkDisplay *display,const gchar *sm_client_id)
+_bdk_windowing_display_set_sm_client_id (BdkDisplay *display,const gchar *sm_client_id)
 {
-  g_message ("gdk_set_sm_client_id() is unimplemented.");
+  g_message ("bdk_set_sm_client_id() is unimplemented.");
 }
 
 
 void
-_gdk_windowing_exit (void)
+_bdk_windowing_exit (void)
 {
 
-  if (_gdk_display->buffer)
-    _gdk_display->buffer->Release (_gdk_display->buffer);
+  if (_bdk_display->buffer)
+    _bdk_display->buffer->Release (_bdk_display->buffer);
 
-  _gdk_directfb_keyboard_exit ();
+  _bdk_directfb_keyboard_exit ();
 
-  if (_gdk_display->keyboard)
-    _gdk_display->keyboard->Release (_gdk_display->keyboard);
+  if (_bdk_display->keyboard)
+    _bdk_display->keyboard->Release (_bdk_display->keyboard);
 
-  _gdk_display->layer->Release (_gdk_display->layer);
+  _bdk_display->layer->Release (_bdk_display->layer);
 
-  _gdk_display->directfb->Release (_gdk_display->directfb);
+  _bdk_display->directfb->Release (_bdk_display->directfb);
 
-  g_free (_gdk_display);
-  _gdk_display = NULL;
+  g_free (_bdk_display);
+  _bdk_display = NULL;
 }
 
 gchar *
-gdk_get_display (void)
+bdk_get_display (void)
 {
-  return g_strdup (gdk_display_get_name (gdk_display_get_default ()));
+  return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
 }
 
 
 /* utils */
 static const guint type_masks[] =
   {
-    GDK_STRUCTURE_MASK,        /* GDK_DELETE            =  0, */
-    GDK_STRUCTURE_MASK,        /* GDK_DESTROY           =  1, */
-    GDK_EXPOSURE_MASK,         /* GDK_EXPOSE            =  2, */
-    GDK_POINTER_MOTION_MASK,   /* GDK_MOTION_NOTIFY     =  3, */
-    GDK_BUTTON_PRESS_MASK,     /* GDK_BUTTON_PRESS      =  4, */
-    GDK_BUTTON_PRESS_MASK,     /* GDK_2BUTTON_PRESS     =  5, */
-    GDK_BUTTON_PRESS_MASK,     /* GDK_3BUTTON_PRESS     =  6, */
-    GDK_BUTTON_RELEASE_MASK,   /* GDK_BUTTON_RELEASE    =  7, */
-    GDK_KEY_PRESS_MASK,        /* GDK_KEY_PRESS         =  8, */
-    GDK_KEY_RELEASE_MASK,      /* GDK_KEY_RELEASE       =  9, */
-    GDK_ENTER_NOTIFY_MASK,     /* GDK_ENTER_NOTIFY      = 10, */
-    GDK_LEAVE_NOTIFY_MASK,     /* GDK_LEAVE_NOTIFY      = 11, */
-    GDK_FOCUS_CHANGE_MASK,     /* GDK_FOCUS_CHANGE      = 12, */
-    GDK_STRUCTURE_MASK,        /* GDK_CONFIGURE         = 13, */
-    GDK_VISIBILITY_NOTIFY_MASK,/* GDK_MAP               = 14, */
-    GDK_VISIBILITY_NOTIFY_MASK,/* GDK_UNMAP             = 15, */
-    GDK_PROPERTY_CHANGE_MASK,  /* GDK_PROPERTY_NOTIFY   = 16, */
-    GDK_PROPERTY_CHANGE_MASK,  /* GDK_SELECTION_CLEAR   = 17, */
-    GDK_PROPERTY_CHANGE_MASK,  /* GDK_SELECTION_REQUEST = 18, */
-    GDK_PROPERTY_CHANGE_MASK,  /* GDK_SELECTION_NOTIFY  = 19, */
-    GDK_PROXIMITY_IN_MASK,     /* GDK_PROXIMITY_IN      = 20, */
-    GDK_PROXIMITY_OUT_MASK,    /* GDK_PROXIMITY_OUT     = 21, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_DRAG_ENTER        = 22, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_DRAG_LEAVE        = 23, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_DRAG_MOTION       = 24, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_DRAG_STATUS       = 25, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_DROP_START        = 26, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_DROP_FINISHED     = 27, */
-    GDK_ALL_EVENTS_MASK,       /* GDK_CLIENT_EVENT      = 28, */
-    GDK_VISIBILITY_NOTIFY_MASK,/* GDK_VISIBILITY_NOTIFY = 29, */
-    GDK_EXPOSURE_MASK,         /* GDK_NO_EXPOSE         = 30, */
-    GDK_SCROLL_MASK            /* GDK_SCROLL            = 31  */
+    BDK_STRUCTURE_MASK,        /* BDK_DELETE            =  0, */
+    BDK_STRUCTURE_MASK,        /* BDK_DESTROY           =  1, */
+    BDK_EXPOSURE_MASK,         /* BDK_EXPOSE            =  2, */
+    BDK_POINTER_MOTION_MASK,   /* BDK_MOTION_NOTIFY     =  3, */
+    BDK_BUTTON_PRESS_MASK,     /* BDK_BUTTON_PRESS      =  4, */
+    BDK_BUTTON_PRESS_MASK,     /* BDK_2BUTTON_PRESS     =  5, */
+    BDK_BUTTON_PRESS_MASK,     /* BDK_3BUTTON_PRESS     =  6, */
+    BDK_BUTTON_RELEASE_MASK,   /* BDK_BUTTON_RELEASE    =  7, */
+    BDK_KEY_PRESS_MASK,        /* BDK_KEY_PRESS         =  8, */
+    BDK_KEY_RELEASE_MASK,      /* BDK_KEY_RELEASE       =  9, */
+    BDK_ENTER_NOTIFY_MASK,     /* BDK_ENTER_NOTIFY      = 10, */
+    BDK_LEAVE_NOTIFY_MASK,     /* BDK_LEAVE_NOTIFY      = 11, */
+    BDK_FOCUS_CHANGE_MASK,     /* BDK_FOCUS_CHANGE      = 12, */
+    BDK_STRUCTURE_MASK,        /* BDK_CONFIGURE         = 13, */
+    BDK_VISIBILITY_NOTIFY_MASK,/* BDK_MAP               = 14, */
+    BDK_VISIBILITY_NOTIFY_MASK,/* BDK_UNMAP             = 15, */
+    BDK_PROPERTY_CHANGE_MASK,  /* BDK_PROPERTY_NOTIFY   = 16, */
+    BDK_PROPERTY_CHANGE_MASK,  /* BDK_SELECTION_CLEAR   = 17, */
+    BDK_PROPERTY_CHANGE_MASK,  /* BDK_SELECTION_REQUEST = 18, */
+    BDK_PROPERTY_CHANGE_MASK,  /* BDK_SELECTION_NOTIFY  = 19, */
+    BDK_PROXIMITY_IN_MASK,     /* BDK_PROXIMITY_IN      = 20, */
+    BDK_PROXIMITY_OUT_MASK,    /* BDK_PROXIMITY_OUT     = 21, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_DRAG_ENTER        = 22, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_DRAG_LEAVE        = 23, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_DRAG_MOTION       = 24, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_DRAG_STATUS       = 25, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_DROP_START        = 26, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_DROP_FINISHED     = 27, */
+    BDK_ALL_EVENTS_MASK,       /* BDK_CLIENT_EVENT      = 28, */
+    BDK_VISIBILITY_NOTIFY_MASK,/* BDK_VISIBILITY_NOTIFY = 29, */
+    BDK_EXPOSURE_MASK,         /* BDK_NO_EXPOSE         = 30, */
+    BDK_SCROLL_MASK            /* BDK_SCROLL            = 31  */
   };
 
-GdkWindow *
-gdk_directfb_other_event_window (GdkWindow    *window,
-                                 GdkEventType  type)
+BdkWindow *
+bdk_directfb_other_event_window (BdkWindow    *window,
+                                 BdkEventType  type)
 {
   guint32    evmask;
-  GdkWindow *w;
+  BdkWindow *w;
 
   w = window;
-  while (w != _gdk_parent_root)
+  while (w != _bdk_parent_root)
     {
-      /* Huge hack, so that we don't propagate events to GtkWindow->frame */
+      /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
-          (GDK_WINDOW_OBJECT (w)->window_type != GDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "gdk-window-child-handler")))
+          (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
+          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
         break;
 
-      evmask = GDK_WINDOW_OBJECT (w)->event_mask;
+      evmask = BDK_WINDOW_OBJECT (w)->event_mask;
 
       if (evmask & type_masks[type])
         return w;
 
-      w = gdk_window_get_parent (w);
+      w = bdk_window_get_parent (w);
     }
 
   return NULL;
 }
 
-GdkWindow *
-gdk_directfb_pointer_event_window (GdkWindow    *window,
-                                   GdkEventType  type)
+BdkWindow *
+bdk_directfb_pointer_event_window (BdkWindow    *window,
+                                   BdkEventType  type)
 {
   guint            evmask;
-  GdkModifierType  mask;
-  GdkWindow       *w;
+  BdkModifierType  mask;
+  BdkWindow       *w;
 
-  gdk_directfb_mouse_get_info (NULL, NULL, &mask);
+  bdk_directfb_mouse_get_info (NULL, NULL, &mask);
 
-  if (_gdk_directfb_pointer_grab_window && !_gdk_directfb_pointer_grab_owner_events )
+  if (_bdk_directfb_pointer_grab_window && !_bdk_directfb_pointer_grab_owner_events )
     {
-      evmask = _gdk_directfb_pointer_grab_events;
+      evmask = _bdk_directfb_pointer_grab_events;
 
-      if (evmask & (GDK_BUTTON1_MOTION_MASK |
-                    GDK_BUTTON2_MOTION_MASK |
-                    GDK_BUTTON3_MOTION_MASK))
+      if (evmask & (BDK_BUTTON1_MOTION_MASK |
+                    BDK_BUTTON2_MOTION_MASK |
+                    BDK_BUTTON3_MOTION_MASK))
         {
-          if (((mask & GDK_BUTTON1_MASK) &&
-               (evmask & GDK_BUTTON1_MOTION_MASK)) ||
-              ((mask & GDK_BUTTON2_MASK) &&
-               (evmask & GDK_BUTTON2_MOTION_MASK)) ||
-              ((mask & GDK_BUTTON3_MASK) &&
-               (evmask & GDK_BUTTON3_MOTION_MASK)))
-            evmask |= GDK_POINTER_MOTION_MASK;
+          if (((mask & BDK_BUTTON1_MASK) &&
+               (evmask & BDK_BUTTON1_MOTION_MASK)) ||
+              ((mask & BDK_BUTTON2_MASK) &&
+               (evmask & BDK_BUTTON2_MOTION_MASK)) ||
+              ((mask & BDK_BUTTON3_MASK) &&
+               (evmask & BDK_BUTTON3_MOTION_MASK)))
+            evmask |= BDK_POINTER_MOTION_MASK;
         }
 
       if (evmask & type_masks[type]) {
 
-        if (_gdk_directfb_pointer_grab_owner_events) {
-          return _gdk_directfb_pointer_grab_window;
+        if (_bdk_directfb_pointer_grab_owner_events) {
+          return _bdk_directfb_pointer_grab_window;
         } else {
-          GdkWindowObject *obj = GDK_WINDOW_OBJECT (window);
+          BdkWindowObject *obj = BDK_WINDOW_OBJECT (window);
           while (obj != NULL &&
-                 obj != GDK_WINDOW_OBJECT (_gdk_directfb_pointer_grab_window)) {
-            obj = (GdkWindowObject *)obj->parent;
+                 obj != BDK_WINDOW_OBJECT (_bdk_directfb_pointer_grab_window)) {
+            obj = (BdkWindowObject *)obj->parent;
           }
-          if (obj == GDK_WINDOW_OBJECT (_gdk_directfb_pointer_grab_window)) {
+          if (obj == BDK_WINDOW_OBJECT (_bdk_directfb_pointer_grab_window)) {
             return window;
           } else {
             //was not  child of the grab window so return the grab window
-            return _gdk_directfb_pointer_grab_window;
+            return _bdk_directfb_pointer_grab_window;
           }
         }
       }
     }
 
   w = window;
-  while (w != _gdk_parent_root)
+  while (w != _bdk_parent_root)
     {
-      /* Huge hack, so that we don't propagate events to GtkWindow->frame */
+      /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
-          (GDK_WINDOW_OBJECT (w)->window_type != GDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "gdk-window-child-handler")))
+          (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
+          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
         break;
 
-      evmask = GDK_WINDOW_OBJECT (w)->event_mask;
+      evmask = BDK_WINDOW_OBJECT (w)->event_mask;
 
-      if (evmask & (GDK_BUTTON1_MOTION_MASK |
-                    GDK_BUTTON2_MOTION_MASK |
-                    GDK_BUTTON3_MOTION_MASK))
+      if (evmask & (BDK_BUTTON1_MOTION_MASK |
+                    BDK_BUTTON2_MOTION_MASK |
+                    BDK_BUTTON3_MOTION_MASK))
         {
-          if (((mask & GDK_BUTTON1_MASK) &&
-               (evmask & GDK_BUTTON1_MOTION_MASK)) ||
-              ((mask & GDK_BUTTON2_MASK) &&
-               (evmask & GDK_BUTTON2_MOTION_MASK)) ||
-              ((mask & GDK_BUTTON3_MASK) &&
-               (evmask & GDK_BUTTON3_MOTION_MASK)))
-            evmask |= GDK_POINTER_MOTION_MASK;
+          if (((mask & BDK_BUTTON1_MASK) &&
+               (evmask & BDK_BUTTON1_MOTION_MASK)) ||
+              ((mask & BDK_BUTTON2_MASK) &&
+               (evmask & BDK_BUTTON2_MOTION_MASK)) ||
+              ((mask & BDK_BUTTON3_MASK) &&
+               (evmask & BDK_BUTTON3_MOTION_MASK)))
+            evmask |= BDK_POINTER_MOTION_MASK;
         }
 
       if (evmask & type_masks[type])
         return w;
 
-      w = gdk_window_get_parent (w);
+      w = bdk_window_get_parent (w);
     }
 
   return NULL;
 }
 
-GdkWindow *
-gdk_directfb_keyboard_event_window (GdkWindow    *window,
-                                    GdkEventType  type)
+BdkWindow *
+bdk_directfb_keyboard_event_window (BdkWindow    *window,
+                                    BdkEventType  type)
 {
   guint32    evmask;
-  GdkWindow *w;
+  BdkWindow *w;
 
-  if (_gdk_directfb_keyboard_grab_window &&
-      !_gdk_directfb_keyboard_grab_owner_events)
+  if (_bdk_directfb_keyboard_grab_window &&
+      !_bdk_directfb_keyboard_grab_owner_events)
     {
-      return _gdk_directfb_keyboard_grab_window;
+      return _bdk_directfb_keyboard_grab_window;
     }
 
   w = window;
-  while (w != _gdk_parent_root)
+  while (w != _bdk_parent_root)
     {
-      /* Huge hack, so that we don't propagate events to GtkWindow->frame */
+      /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
-          (GDK_WINDOW_OBJECT (w)->window_type != GDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "gdk-window-child-handler")))
+          (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
+          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
         break;
 
-      evmask = GDK_WINDOW_OBJECT (w)->event_mask;
+      evmask = BDK_WINDOW_OBJECT (w)->event_mask;
 
       if (evmask & type_masks[type])
         return w;
 
-      w = gdk_window_get_parent (w);
+      w = bdk_window_get_parent (w);
     }
   return w;
 }
 
 
 void
-gdk_directfb_event_fill (GdkEvent     *event,
-                         GdkWindow    *window,
-                         GdkEventType  type)
+bdk_directfb_event_fill (BdkEvent     *event,
+                         BdkWindow    *window,
+                         BdkEventType  type)
 {
-  guint32 the_time = gdk_directfb_get_time ();
+  guint32 the_time = bdk_directfb_get_time ();
 
   event->any.type       = type;
   event->any.window     = g_object_ref (window);
@@ -298,93 +298,93 @@ gdk_directfb_event_fill (GdkEvent     *event,
 
   switch (type)
     {
-    case GDK_MOTION_NOTIFY:
+    case BDK_MOTION_NOTIFY:
       event->motion.time = the_time;
       event->motion.axes = NULL;
       break;
-    case GDK_BUTTON_PRESS:
-    case GDK_2BUTTON_PRESS:
-    case GDK_3BUTTON_PRESS:
-    case GDK_BUTTON_RELEASE:
+    case BDK_BUTTON_PRESS:
+    case BDK_2BUTTON_PRESS:
+    case BDK_3BUTTON_PRESS:
+    case BDK_BUTTON_RELEASE:
       event->button.time = the_time;
       event->button.axes = NULL;
       break;
-    case GDK_KEY_PRESS:
-    case GDK_KEY_RELEASE:
+    case BDK_KEY_PRESS:
+    case BDK_KEY_RELEASE:
       event->key.time = the_time;
       break;
-    case GDK_ENTER_NOTIFY:
-    case GDK_LEAVE_NOTIFY:
+    case BDK_ENTER_NOTIFY:
+    case BDK_LEAVE_NOTIFY:
       event->crossing.time = the_time;
       break;
-    case GDK_PROPERTY_NOTIFY:
+    case BDK_PROPERTY_NOTIFY:
       event->property.time = the_time;
       break;
-    case GDK_SELECTION_CLEAR:
-    case GDK_SELECTION_REQUEST:
-    case GDK_SELECTION_NOTIFY:
+    case BDK_SELECTION_CLEAR:
+    case BDK_SELECTION_REQUEST:
+    case BDK_SELECTION_NOTIFY:
       event->selection.time = the_time;
       break;
-    case GDK_PROXIMITY_IN:
-    case GDK_PROXIMITY_OUT:
+    case BDK_PROXIMITY_IN:
+    case BDK_PROXIMITY_OUT:
       event->proximity.time = the_time;
       break;
-    case GDK_DRAG_ENTER:
-    case GDK_DRAG_LEAVE:
-    case GDK_DRAG_MOTION:
-    case GDK_DRAG_STATUS:
-    case GDK_DROP_START:
-    case GDK_DROP_FINISHED:
+    case BDK_DRAG_ENTER:
+    case BDK_DRAG_LEAVE:
+    case BDK_DRAG_MOTION:
+    case BDK_DRAG_STATUS:
+    case BDK_DROP_START:
+    case BDK_DROP_FINISHED:
       event->dnd.time = the_time;
       break;
-    case GDK_SCROLL:
+    case BDK_SCROLL:
       event->scroll.time = the_time;
       break;
-    case GDK_FOCUS_CHANGE:
-    case GDK_CONFIGURE:
-    case GDK_MAP:
-    case GDK_UNMAP:
-    case GDK_CLIENT_EVENT:
-    case GDK_VISIBILITY_NOTIFY:
-    case GDK_NO_EXPOSE:
-    case GDK_DELETE:
-    case GDK_DESTROY:
-    case GDK_EXPOSE:
+    case BDK_FOCUS_CHANGE:
+    case BDK_CONFIGURE:
+    case BDK_MAP:
+    case BDK_UNMAP:
+    case BDK_CLIENT_EVENT:
+    case BDK_VISIBILITY_NOTIFY:
+    case BDK_NO_EXPOSE:
+    case BDK_DELETE:
+    case BDK_DESTROY:
+    case BDK_EXPOSE:
     default:
       break;
     }
 }
 
-GdkEvent *
-gdk_directfb_event_make (GdkWindow    *window,
-                         GdkEventType  type)
+BdkEvent *
+bdk_directfb_event_make (BdkWindow    *window,
+                         BdkEventType  type)
 {
-  GdkEvent *event = gdk_event_new (GDK_NOTHING);
+  BdkEvent *event = bdk_event_new (BDK_NOTHING);
 
-  gdk_directfb_event_fill (event, window, type);
+  bdk_directfb_event_fill (event, window, type);
 
-  _gdk_event_queue_append (gdk_display_get_default (), event);
+  _bdk_event_queue_append (bdk_display_get_default (), event);
 
   return event;
 }
 
 void
-gdk_error_trap_push (void)
+bdk_error_trap_push (void)
 {
 }
 
 gint
-gdk_error_trap_pop (void)
+bdk_error_trap_pop (void)
 {
   return 0;
 }
 
-GdkGrabStatus
-gdk_keyboard_grab (GdkWindow *window,
+BdkGrabStatus
+bdk_keyboard_grab (BdkWindow *window,
                    gint       owner_events,
                    guint32    time)
 {
-  return gdk_directfb_keyboard_grab (gdk_display_get_default(),
+  return bdk_directfb_keyboard_grab (bdk_display_get_default(),
                                      window,
                                      owner_events,
                                      time);
@@ -392,7 +392,7 @@ gdk_keyboard_grab (GdkWindow *window,
 
 /*
  *--------------------------------------------------------------
- * gdk_pointer_grab
+ * bdk_pointer_grab
  *
  *   Grabs the pointer to a specific window
  *
@@ -408,25 +408,25 @@ gdk_keyboard_grab (GdkWindow *window,
  * Results:
  *
  * Side effects:
- *   requires a corresponding call to gdk_pointer_ungrab
+ *   requires a corresponding call to bdk_pointer_ungrab
  *
  *--------------------------------------------------------------
  */
 
 
-GdkGrabStatus
-_gdk_windowing_pointer_grab (GdkWindow    *window,
-                             GdkWindow    *native,
+BdkGrabStatus
+_bdk_windowing_pointer_grab (BdkWindow    *window,
+                             BdkWindow    *native,
                              gboolean      owner_events,
-                             GdkEventMask  event_mask,
-                             GdkWindow    *confine_to,
-                             GdkCursor    *cursor,
+                             BdkEventMask  event_mask,
+                             BdkWindow    *confine_to,
+                             BdkCursor    *cursor,
                              guint32       time)
 {
-  g_return_val_if_fail (GDK_IS_WINDOW (window), 0);
-  g_return_val_if_fail (confine_to == NULL || GDK_IS_WINDOW (confine_to), 0);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
+  g_return_val_if_fail (confine_to == NULL || BDK_IS_WINDOW (confine_to), 0);
 
-  _gdk_display_add_pointer_grab (&_gdk_display->parent,
+  _bdk_display_add_pointer_grab (&_bdk_display->parent,
                                  window,
                                  native,
                                  owner_events,
@@ -435,8 +435,8 @@ _gdk_windowing_pointer_grab (GdkWindow    *window,
                                  time,
                                  FALSE);
 
-  return GDK_GRAB_SUCCESS;
+  return BDK_GRAB_SUCCESS;
 }
 
-#define __GDK_MAIN_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_MAIN_X11_C__
+#include "bdkaliasdef.c"

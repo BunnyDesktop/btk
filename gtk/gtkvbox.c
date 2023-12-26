@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,66 +18,66 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkorientable.h"
-#include "gtkvbox.h"
-#include "gtkalias.h"
+#include "btkorientable.h"
+#include "btkvbox.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkvbox
+ * SECTION:btkvbox
  * @Short_description: A vertical container box
- * @Title: GtkVBox
- * @See_also: #GtkHBox
+ * @Title: BtkVBox
+ * @See_also: #BtkHBox
  *
- * A #GtkVBox is a container that organizes child widgets into a single column.
+ * A #BtkVBox is a container that organizes child widgets into a single column.
  *
- * Use the #GtkBox packing interface to determine the arrangement,
- * spacing, height, and alignment of #GtkVBox children.
+ * Use the #BtkBox packing interface to determine the arrangement,
+ * spacing, height, and alignment of #BtkVBox children.
  *
  * All children are allocated the same width.
  */
 
-G_DEFINE_TYPE (GtkVBox, gtk_vbox, GTK_TYPE_BOX)
+G_DEFINE_TYPE (BtkVBox, btk_vbox, BTK_TYPE_BOX)
 
 static void
-gtk_vbox_class_init (GtkVBoxClass *class)
+btk_vbox_class_init (BtkVBoxClass *class)
 {
 }
 
 static void
-gtk_vbox_init (GtkVBox *vbox)
+btk_vbox_init (BtkVBox *vbox)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (vbox),
-                                  GTK_ORIENTATION_VERTICAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (vbox),
+                                  BTK_ORIENTATION_VERTICAL);
 
-  _gtk_box_set_old_defaults (GTK_BOX (vbox));
+  _btk_box_set_old_defaults (BTK_BOX (vbox));
 }
 
 /**
- * gtk_vbox_new:
+ * btk_vbox_new:
  * @homogeneous: %TRUE if all children are to be given equal space allotments.
  * @spacing: the number of pixels to place by default between children.
  *
- * Creates a new #GtkVBox.
+ * Creates a new #BtkVBox.
  *
- * Returns: a new #GtkVBox.
+ * Returns: a new #BtkVBox.
  */
-GtkWidget *
-gtk_vbox_new (gboolean homogeneous,
+BtkWidget *
+btk_vbox_new (gboolean homogeneous,
 	      gint     spacing)
 {
-  return g_object_new (GTK_TYPE_VBOX,
+  return g_object_new (BTK_TYPE_VBOX,
                        "spacing",     spacing,
                        "homogeneous", homogeneous ? TRUE : FALSE,
                        NULL);
 }
 
-#define __GTK_VBOX_C__
-#include "gtkaliasdef.c"
+#define __BTK_VBOX_C__
+#include "btkaliasdef.c"

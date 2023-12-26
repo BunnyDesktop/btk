@@ -1,6 +1,6 @@
 
 ============================
-GAIL README
+BAIL README
 Last Updated: August 2, 2001
 ============================
 
@@ -9,24 +9,24 @@ General Info
 ============
 
 This README describes how to use the various test programs
-in the gail/tests directory.
+in the bail/tests directory.
 
 To run the various test programs described in this README,
 the test libraries must be built and installed.  Running
-"make", then "make install" in the gail top-level directory
+"make", then "make install" in the bail top-level directory
 will take care of this.  Then do the following:
 
-1. Set the environment variable GTK_MODULES to
-   "libgail:lib<testname>"
+1. Set the environment variable BTK_MODULES to
+   "libbail:lib<testname>"
 
-   For example, for ferret, it would be "libgail:libferret"
+   For example, for ferret, it would be "libbail:libferret"
 
-2. Run the GTK+ test program specified.  These test programs
-   are found in the GTK+ build directory in the subdirectory
+2. Run the BTK+ test program specified.  These test programs
+   are found in the BTK+ build directory in the subdirectory
    called "tests".
 
 Most test programs will display output directly to the 
-terminal window where the GTK+ test program was launched.
+terminal window where the BTK+ test program was launched.
 Some test programs (testtable and testtext) will launch a
 test GUI program which allows more interactive testing.
 
@@ -49,22 +49,22 @@ testlib
 
 Contains general purpose functionality that is used by the
 various tests.  These include functions that find a specific
-widget/AtkObject in the test program, and functions used by
-tests that use the Gail Test GUI.
+widget/BatkObject in the test program, and functions used by
+tests that use the Bail Test GUI.
 
 
 ferret
 ======
 
-Ferret is a passive in-process test tool for ATK and GAIL.
+Ferret is a passive in-process test tool for BATK and BAIL.
 
-Run a GTK+-2.0 application such as "testgtk", and ferret will
+Run a BTK+-2.0 application such as "testbtk", and ferret will
 display a window on screen.   In this window accessibility
-information about the GTK+ widgets will appear as they
+information about the BTK+ widgets will appear as they
 receive focus.
 
 The ferret window has several tabs, one for each of the
-following ATK interfaces.
+following BATK interfaces.
 
   Object
   Action
@@ -76,7 +76,7 @@ following ATK interfaces.
 
 Tabs that do not apply to the current widget in focus will be
 displayed as inactive.  Clicking on an active tab will display
-information about the AtkObject accessed via the ATK API.  In the
+information about the BatkObject accessed via the BATK API.  In the
 Action tab the various actions are displayed as buttons.  When
 a button is clicked, the action specified on the button's
 label is performed.
@@ -85,7 +85,7 @@ If you have installed the "festival" speech synthesis system,
 running festival in server mode (festival --server) and turning
 on Ferret's Festival support will cause the following to happen:
 
-1. AtkObject accessible names, roles, and keybindings will be
+1. BatkObject accessible names, roles, and keybindings will be
    spoken as they receive focus.
 2. When the caret (cursor) is moved in a text field, the 
    current line will be spoken, unless the caret is moved
@@ -96,7 +96,7 @@ Festival support can be turned on by checking "Festival" in the
 menu, or by setting the environment variable FERRET_FESTIVAL
 prior to starting the test.  By checking "Festival Terse" or
 by setting the environment variable FERRET_TERSE, only the
-name of the AtkObject will be spoken (and not the roles and
+name of the BatkObject will be spoken (and not the roles and
 keybindings).
 
 A magnifier can be turned on to enlarge the widget in focus
@@ -107,7 +107,7 @@ the magnifier standalone code is running.
 Checking "Track Mouse in the menu or by setting the environment
 variable FERRET_MOUSETRACK causes ferret to display information
 about the widget that is under the mouse rather than the widget
-that has focus.  The mouse is tracked via GtkWidget
+that has focus.  The mouse is tracked via BtkWidget
 "enter_notify_event" signals, so flyweight objects are not tracked.
 
 Checking "Terminal Output" in the menu or by setting the 
@@ -115,104 +115,104 @@ environment variable FERRET_ASCII will display the information
 that is normally displayed to the ferret GUI window to the
 terminal screen.
 
-Checking "No ATK Signals" in the menu or by setting the
+Checking "No BATK Signals" in the menu or by setting the
 environment variable FERRET_NOSIGNALS will cause ferret to
-ignore any ATK signals, and it will not update its display
+ignore any BATK signals, and it will not update its display
 when such signals occur.
 
 
 testaction
 ==========
 
-This is a GTK+ module used to test the implementation of the ATK
-interface AtkAction, except for atk_action_do_action() in the GAIL 
-library. It is normally used with the GTK+ test program testgtk.
+This is a BTK+ module used to test the implementation of the BATK
+interface BatkAction, except for batk_action_do_action() in the BAIL 
+library. It is normally used with the BTK+ test program testbtk.
 
 
 testbutton
 ==========
 
-This is a GTK+ module used to test the accessible implementation 
-for buttons. It is normally used with the GTK+ test program testgtk.
+This is a BTK+ module used to test the accessible implementation 
+for buttons. It is normally used with the BTK+ test program testbtk.
 
 Set the TEST_ACCESSIBLE_NAME environment variable to have the test
 driver attach to a widget by widget name (compared via the 
-gtk_widget_get_name function call).
+btk_widget_get_name function call).
 
 Set the environment variable TEST_ACCESSIBLE_AUTO and the program
-will execute the action defined for a GailButton once.
+will execute the action defined for a BailButton once.
 
 
 testcombo
 =========
 
-This is a GTK+ module used to test the implementation of the ATK action
-interfaces on GailCombo. It is normally used with the GTK+ test program 
-testgtk by putting the focus in the GtkCombo in entry window.
+This is a BTK+ module used to test the implementation of the BATK action
+interfaces on BailCombo. It is normally used with the BTK+ test program 
+testbtk by putting the focus in the BtkCombo in entry window.
 
 
 testcomponent
 =============
 
-This is a GTK+ module used to test the implementation of the ATK
-interface AtkComponent in the GAIL library. It is normally used with the 
-GTK+ test program testgtk.
+This is a BTK+ module used to test the implementation of the BATK
+interface BatkComponent in the BAIL library. It is normally used with the 
+BTK+ test program testbtk.
 
 
 testimage
 =========
 
-This is a GTK+ module used to test the implementation of the ATK
-interface AtkImage in the GAIL library. It is normally used with the GTK+
-test program testgtk, but can also be used with testdnd when you want
-to test GtkPixmap. This modules pops up an extra dialog on startup , containing
-GtkArrows and a GtkImage. This dialog has to be closed before control is returned to main window.
+This is a BTK+ module used to test the implementation of the BATK
+interface BatkImage in the BAIL library. It is normally used with the BTK+
+test program testbtk, but can also be used with testdnd when you want
+to test BtkPixmap. This modules pops up an extra dialog on startup , containing
+BtkArrows and a BtkImage. This dialog has to be closed before control is returned to main window.
 
 
 testmenuitem
 ============
 
-This is a GTK+ module used to test the accessible implementation 
-for menu items. It is normally used with the GTK+ test program testgtk.
+This is a BTK+ module used to test the accessible implementation 
+for menu items. It is normally used with the BTK+ test program testbtk.
 
 Set the TEST_ACCESSIBLE_NAME environment variable to have the test
 driver attach to a widget by widget name (compared via the 
-gtk_widget_get_name function call).
+btk_widget_get_name function call).
 
 Set the environment variable TEST_ACCESSIBLE_AUTO and the program
-will execute the action defined for a GailButton once.
+will execute the action defined for a BailButton once.
 
 
 testnotebook
 =============
 
-This is a GTK+ module used to test the implementation of the ATK
-interface AtkSelection for GailNotebook. It is normally used with the 
-GTK+ test program testgtk.
+This is a BTK+ module used to test the implementation of the BATK
+interface BatkSelection for BailNotebook. It is normally used with the 
+BTK+ test program testbtk.
 
 
 testobject
 ==========
 
-This is a GTK+ module used to test the implementation of the ATK
-interface in atkobject.h in the GAIL library. It is normally used with the 
-GTK+ test program testgtk.
+This is a BTK+ module used to test the implementation of the BATK
+interface in batkobject.h in the BAIL library. It is normally used with the 
+BTK+ test program testbtk.
 
 
 testoptionmenu
 ==============
 
-This is a GTK+ module used to test the implementation of the ATK interfaces
-for GtkOptionmenu. It should be used with the GTK+ test program testgtk and
+This is a BTK+ module used to test the implementation of the BATK interfaces
+for BtkOptionmenu. It should be used with the BTK+ test program testbtk and
 its file selection dialog.
 
 
 testpaned
 =========
 
-This is a GTK+ module used to test the implementation of the ATK
-interface AtkValue for GailPaned. It is normally used with the 
-GTK+ test program testgtk. It checks the setting of the position 
+This is a BTK+ module used to test the implementation of the BATK
+interface BatkValue for BailPaned. It is normally used with the 
+BTK+ test program testbtk. It checks the setting of the position 
 programmatically and that notification is received if the position
 is changed interactively.
 
@@ -220,41 +220,41 @@ is changed interactively.
 testprops
 ==========
 
-This is a GTK+ module used to test the implementation of ATK properties 
-and property change handlers in the GAIL library. It is normally used with 
-the GTK+ test program testgtk. To see the changing of the state
-ATK_STATE_SHOWING use menus in "progress bar". To see the changing of the
-state ATK_STATE_SENSITIVE uses "labels". To see changing of child and parent
+This is a BTK+ module used to test the implementation of BATK properties 
+and property change handlers in the BAIL library. It is normally used with 
+the BTK+ test program testbtk. To see the changing of the state
+BATK_STATE_SHOWING use menus in "progress bar". To see the changing of the
+state BATK_STATE_SENSITIVE uses "labels". To see changing of child and parent
 use resize check box in "panes".
 
 Set the TEST_ACCESSIBLE_NAME environment variable to have the test
 driver attach to a widget by widget name (compared via the 
-gtk_widget_get_name function call).
+btk_widget_get_name function call).
 
 
 testselection
 =============
 
-This is a GTK+ module used to test the implementation of the AtkSelection
-interface works for the GAIL library. It is normally used with the GTK+ 
-test program testgtk and clicking on the menus option. It can also be used
-with the GtkCombo which can be accessed by clicking on the entry option.
+This is a BTK+ module used to test the implementation of the BatkSelection
+interface works for the BAIL library. It is normally used with the BTK+ 
+test program testbtk and clicking on the menus option. It can also be used
+with the BtkCombo which can be accessed by clicking on the entry option.
 
 
 teststatusbar
 =============
 
-This is a GTK+ module used to test that the text on the statusbar
-can be retrieved using GailStatusbar. It is normally used with the GTK+ 
-test program testgtk and clicking on statusbar button.
+This is a BTK+ module used to test that the text on the statusbar
+can be retrieved using BailStatusbar. It is normally used with the BTK+ 
+test program testbtk and clicking on statusbar button.
 
 
 testtable
 =========
 
-This is GTK+ module used to test the implementation of AtkTable
-interfaces.  It can be used with GailTreeView, for example.  It
-can be used with any of the following GTK+ test programs:
+This is BTK+ module used to test the implementation of BatkTable
+interfaces.  It can be used with BailTreeView, for example.  It
+can be used with any of the following BTK+ test programs:
 testtreecolumns, testtreefocus, testtreesort, testtreeview,
 or treestoretest.
 
@@ -269,15 +269,15 @@ test without the GUI program.
 testtext
 ========
 
-This is a GTK+ module used to test the implementation of AtkText and 
-AtkEditableText interfaces on GailTextView.  It is normally used with 
-the GTK+ test program testtext started with a text file loaded.
-It can also be used with the GTK+ test program testgtk, and then
+This is a BTK+ module used to test the implementation of BatkText and 
+BatkEditableText interfaces on BailTextView.  It is normally used with 
+the BTK+ test program testtext started with a text file loaded.
+It can also be used with the BTK+ test program testbtk, and then
 click on the "entry" or "label" button.
 
 Set the TEST_ACCESSIBLE_NAME environment variable to have the test
 driver attach to a widget by widget name (compared via the 
-gtk_widget_get_name function call).
+btk_widget_get_name function call).
 
 Set the TEST_ACCESSIBLE_DELAY environment variable to an integer
 and the test driver will attach to only a widget on the nth screen
@@ -287,9 +287,9 @@ that is displayed.
 testtoplevel
 ============
 
-This test exercises the AtkUtil functions.  It accesses the
-atk_get_root() toplevel object, sets/removes global listeners,
-and displays the ATK implementation name/version.
+This test exercises the BatkUtil functions.  It accesses the
+batk_get_root() toplevel object, sets/removes global listeners,
+and displays the BATK implementation name/version.
 
 Set the TEST_ACCESSIBLE_DEPTH environment variable to control
 how deep the children of the toplevel object are displayed.
@@ -300,12 +300,12 @@ show the complete hierarchy.
 testvalues
 ==========
 
-This is a GTK+ module used to test the implementation of AtkValue interface
-works for the GAIL library. GailProgressbar, GailSpinbutton and GailRange
+This is a BTK+ module used to test the implementation of BatkValue interface
+works for the BAIL library. BailProgressbar, BailSpinbutton and BailRange
 can all be tested using this module.
 
 
-GAIL README Authors
+BAIL README Authors
 ===================
 
 -Brian Cameron (brian.cameron@sun.com)

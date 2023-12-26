@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtktextiterprivate.h Copyright (C) 2000 Red Hat, Inc.
+/* BTK - The GIMP Toolkit
+ * btktextiterprivate.h Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,34 +18,34 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TEXT_ITER_PRIVATE_H__
-#define __GTK_TEXT_ITER_PRIVATE_H__
+#ifndef __BTK_TEXT_ITER_PRIVATE_H__
+#define __BTK_TEXT_ITER_PRIVATE_H__
 
-#include <gtk/gtktextiter.h>
+#include <btk/btktextiter.h>
 
 G_BEGIN_DECLS
 
-#include <gtk/gtktextiter.h>
-#include <gtk/gtktextbtree.h>
+#include <btk/btktextiter.h>
+#include <btk/btktextbtree.h>
 
-GtkTextLineSegment *_gtk_text_iter_get_indexable_segment      (const GtkTextIter *iter);
-GtkTextLineSegment *_gtk_text_iter_get_any_segment            (const GtkTextIter *iter);
-GtkTextLine *       _gtk_text_iter_get_text_line              (const GtkTextIter *iter);
-GtkTextBTree *      _gtk_text_iter_get_btree                  (const GtkTextIter *iter);
-gboolean            _gtk_text_iter_forward_indexable_segment  (GtkTextIter       *iter);
-gboolean            _gtk_text_iter_backward_indexable_segment (GtkTextIter       *iter);
-gint                _gtk_text_iter_get_segment_byte           (const GtkTextIter *iter);
-gint                _gtk_text_iter_get_segment_char           (const GtkTextIter *iter);
+BtkTextLineSegment *_btk_text_iter_get_indexable_segment      (const BtkTextIter *iter);
+BtkTextLineSegment *_btk_text_iter_get_any_segment            (const BtkTextIter *iter);
+BtkTextLine *       _btk_text_iter_get_text_line              (const BtkTextIter *iter);
+BtkTextBTree *      _btk_text_iter_get_btree                  (const BtkTextIter *iter);
+gboolean            _btk_text_iter_forward_indexable_segment  (BtkTextIter       *iter);
+gboolean            _btk_text_iter_backward_indexable_segment (BtkTextIter       *iter);
+gint                _btk_text_iter_get_segment_byte           (const BtkTextIter *iter);
+gint                _btk_text_iter_get_segment_char           (const BtkTextIter *iter);
 
 
 /* debug */
-void _gtk_text_iter_check (const GtkTextIter *iter);
+void _btk_text_iter_check (const BtkTextIter *iter);
 
 G_END_DECLS
 

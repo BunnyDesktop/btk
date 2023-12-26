@@ -6,20 +6,20 @@ EXTRA_DIST += Makefile.msc
 
 INCLUDES = \
 	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/gdk		\
-	-I$(top_builddir)/gdk		\
-	-DGDK_DISABLE_DEPRECATED	\
-	$(GTK_DEP_CFLAGS)	\
-	$(GMODULE_CFLAGS)
+	-I$(top_srcdir)/bdk		\
+	-I$(top_builddir)/bdk		\
+	-DBDK_DISABLE_DEPRECATED	\
+	$(BTK_DEP_CFLAGS)	\
+	$(BMODULE_CFLAGS)
 
 
 LDADDS = \
-	$(top_builddir)/gdk/$(gdktargetlib)		\
-	$(top_builddir)/gtk/$(gtktargetlib)		\
-	$(GTK_DEP_LIBS)		\
-	$(GMODULE_LIBS)
+	$(top_builddir)/bdk/$(bdktargetlib)		\
+	$(top_builddir)/btk/$(btktargetlib)		\
+	$(BTK_DEP_LIBS)		\
+	$(BMODULE_LIBS)
 
-enginedir = $(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/engines
+enginedir = $(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/engines
 
 engine_LTLIBRARIES = libwimp.la
 

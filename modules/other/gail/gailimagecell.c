@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The GNOME Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,123 +19,123 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailimagecell.h"
+#include <btk/btk.h>
+#include "bailimagecell.h"
 
-static void      gail_image_cell_class_init          (GailImageCellClass *klass);
-static void      gail_image_cell_init                (GailImageCell      *image_cell);
+static void      bail_image_cell_class_init          (BailImageCellClass *klass);
+static void      bail_image_cell_init                (BailImageCell      *image_cell);
 
-static void      gail_image_cell_finalize            (GObject            *object);
+static void      bail_image_cell_finalize            (GObject            *object);
 
-/* AtkImage */
-static void      atk_image_interface_init              (AtkImageIface  *iface);
+/* BatkImage */
+static void      batk_image_interface_init              (BatkImageIface  *iface);
 static const gchar *
-                 gail_image_cell_get_image_description (AtkImage       *image);
-static gboolean  gail_image_cell_set_image_description (AtkImage       *image,
+                 bail_image_cell_get_image_description (BatkImage       *image);
+static gboolean  bail_image_cell_set_image_description (BatkImage       *image,
                                                         const gchar    *description);
-static void      gail_image_cell_get_image_position    (AtkImage       *image,
+static void      bail_image_cell_get_image_position    (BatkImage       *image,
                                                         gint           *x,
                                                         gint           *y,
-                                                        AtkCoordType   coord_type);
-static void      gail_image_cell_get_image_size        (AtkImage       *image,
+                                                        BatkCoordType   coord_type);
+static void      bail_image_cell_get_image_size        (BatkImage       *image,
                                                         gint           *width,
                                                         gint           *height);
 
 /* Misc */
 
-static gboolean  gail_image_cell_update_cache          (GailRendererCell *cell,
+static gboolean  bail_image_cell_update_cache          (BailRendererCell *cell,
                                                         gboolean         emit_change_signal);
 
 // FIXMEchpe static!!!
-gchar *gail_image_cell_property_list[] = {
+gchar *bail_image_cell_property_list[] = {
   "pixbuf",
   NULL
 };
 
-G_DEFINE_TYPE_WITH_CODE (GailImageCell, gail_image_cell, GAIL_TYPE_RENDERER_CELL,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_IMAGE, atk_image_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailImageCell, bail_image_cell, BAIL_TYPE_RENDERER_CELL,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_IMAGE, batk_image_interface_init))
 
 static void 
-gail_image_cell_class_init (GailImageCellClass *klass)
+bail_image_cell_class_init (BailImageCellClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GailRendererCellClass *renderer_cell_class = GAIL_RENDERER_CELL_CLASS(klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BailRendererCellClass *renderer_cell_class = BAIL_RENDERER_CELL_CLASS(klass);
 
-  gobject_class->finalize = gail_image_cell_finalize;
+  bobject_class->finalize = bail_image_cell_finalize;
 
-  renderer_cell_class->update_cache = gail_image_cell_update_cache;
-  renderer_cell_class->property_list = gail_image_cell_property_list;
+  renderer_cell_class->update_cache = bail_image_cell_update_cache;
+  renderer_cell_class->property_list = bail_image_cell_property_list;
 }
 
-AtkObject* 
-gail_image_cell_new (void)
+BatkObject* 
+bail_image_cell_new (void)
 {
   GObject *object;
-  AtkObject *atk_object;
-  GailRendererCell *cell;
+  BatkObject *batk_object;
+  BailRendererCell *cell;
 
-  object = g_object_new (GAIL_TYPE_IMAGE_CELL, NULL);
+  object = g_object_new (BAIL_TYPE_IMAGE_CELL, NULL);
 
   g_return_val_if_fail (object != NULL, NULL);
 
-  atk_object = ATK_OBJECT (object);
-  atk_object->role = ATK_ROLE_TABLE_CELL;
+  batk_object = BATK_OBJECT (object);
+  batk_object->role = BATK_ROLE_TABLE_CELL;
 
-  cell = GAIL_RENDERER_CELL(object);
+  cell = BAIL_RENDERER_CELL(object);
 
-  cell->renderer = gtk_cell_renderer_pixbuf_new ();
+  cell->renderer = btk_cell_renderer_pixbuf_new ();
   g_object_ref_sink (cell->renderer);
-  return atk_object;
+  return batk_object;
 }
 
 static void
-gail_image_cell_init (GailImageCell *image_cell)
+bail_image_cell_init (BailImageCell *image_cell)
 {
   image_cell->image_description = NULL;
 }
 
 
 static void
-gail_image_cell_finalize (GObject *object)
+bail_image_cell_finalize (GObject *object)
 {
-  GailImageCell *image_cell = GAIL_IMAGE_CELL (object);
+  BailImageCell *image_cell = BAIL_IMAGE_CELL (object);
 
   g_free (image_cell->image_description);
-  G_OBJECT_CLASS (gail_image_cell_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_image_cell_parent_class)->finalize (object);
 }
 
 static gboolean
-gail_image_cell_update_cache (GailRendererCell *cell, 
+bail_image_cell_update_cache (BailRendererCell *cell, 
                               gboolean         emit_change_signal)
 {
   return FALSE;
 }
 
 static void
-atk_image_interface_init (AtkImageIface  *iface)
+batk_image_interface_init (BatkImageIface  *iface)
 {
-  iface->get_image_description = gail_image_cell_get_image_description;
-  iface->set_image_description = gail_image_cell_set_image_description;
-  iface->get_image_position = gail_image_cell_get_image_position;
-  iface->get_image_size = gail_image_cell_get_image_size;
+  iface->get_image_description = bail_image_cell_get_image_description;
+  iface->set_image_description = bail_image_cell_set_image_description;
+  iface->get_image_position = bail_image_cell_get_image_position;
+  iface->get_image_size = bail_image_cell_get_image_size;
 }
 
 static const gchar *
-gail_image_cell_get_image_description (AtkImage     *image)
+bail_image_cell_get_image_description (BatkImage     *image)
 {
-  GailImageCell *image_cell;
+  BailImageCell *image_cell;
 
-  image_cell = GAIL_IMAGE_CELL (image);
+  image_cell = BAIL_IMAGE_CELL (image);
   return image_cell->image_description;
 }
 
 static gboolean
-gail_image_cell_set_image_description (AtkImage     *image,
+bail_image_cell_set_image_description (BatkImage     *image,
                                        const gchar  *description)
 {
-  GailImageCell *image_cell;
+  BailImageCell *image_cell;
 
-  image_cell = GAIL_IMAGE_CELL (image);
+  image_cell = BAIL_IMAGE_CELL (image);
   g_free (image_cell->image_description);
   image_cell->image_description = g_strdup (description);
   if (image_cell->image_description)
@@ -145,26 +145,26 @@ gail_image_cell_set_image_description (AtkImage     *image,
 }
 
 static void
-gail_image_cell_get_image_position (AtkImage     *image,
+bail_image_cell_get_image_position (BatkImage     *image,
                                     gint         *x,
                                     gint         *y,
-                                    AtkCoordType coord_type)
+                                    BatkCoordType coord_type)
 {
-  atk_component_get_position (ATK_COMPONENT (image), x, y, coord_type);
+  batk_component_get_position (BATK_COMPONENT (image), x, y, coord_type);
 }
 
 static void
-gail_image_cell_get_image_size (AtkImage *image,
+bail_image_cell_get_image_size (BatkImage *image,
                                 gint     *width,
                                 gint     *height)
 {
-  GailImageCell *cell = GAIL_IMAGE_CELL (image);
-  GtkCellRenderer *cell_renderer;
-  GdkPixbuf *pixbuf;
+  BailImageCell *cell = BAIL_IMAGE_CELL (image);
+  BtkCellRenderer *cell_renderer;
+  BdkPixbuf *pixbuf;
 
-  cell_renderer  = GAIL_RENDERER_CELL (cell)->renderer;
-  pixbuf = GTK_CELL_RENDERER_PIXBUF (cell_renderer)->pixbuf;
+  cell_renderer  = BAIL_RENDERER_CELL (cell)->renderer;
+  pixbuf = BTK_CELL_RENDERER_PIXBUF (cell_renderer)->pixbuf;
 
-  *width = gdk_pixbuf_get_width (pixbuf);
-  *height = gdk_pixbuf_get_height (pixbuf);
+  *width = bdk_pixbuf_get_width (pixbuf);
+  *height = bdk_pixbuf_get_height (pixbuf);
 }

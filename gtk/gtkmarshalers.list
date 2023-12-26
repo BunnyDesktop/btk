@@ -1,4 +1,4 @@
-# see glib-genmarshal(1) for a detailed description of the file format,
+# see bunnylib-genmarshal(1) for a detailed description of the file format,
 # possible parameter types are:
 #   VOID        indicates   no   return   type,  or  no  extra
 #               parameters. if VOID is used as  the  parameter

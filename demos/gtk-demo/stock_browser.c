@@ -8,16 +8,16 @@
 
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget *window = NULL;
+static BtkWidget *window = NULL;
 
 typedef struct _StockItemInfo StockItemInfo;
 struct _StockItemInfo
 {
   gchar *id;
-  GtkStockItem item;
-  GdkPixbuf *small_icon;
+  BtkStockItem item;
+  BdkPixbuf *small_icon;
   gchar *macro;
   gchar *accel_str;
 };
@@ -74,11 +74,11 @@ stock_item_info_get_type (void)
 typedef struct _StockItemDisplay StockItemDisplay;
 struct _StockItemDisplay
 {
-  GtkWidget *type_label;
-  GtkWidget *macro_label;
-  GtkWidget *id_label;
-  GtkWidget *label_accel_label;
-  GtkWidget *icon_image;
+  BtkWidget *type_label;
+  BtkWidget *macro_label;
+  BtkWidget *id_label;
+  BtkWidget *label_accel_label;
+  BtkWidget *icon_image;
 };
 
 static gchar*
@@ -87,15 +87,15 @@ id_to_macro (const gchar *id)
   GString *macro = NULL;
   const gchar *cp;
 
-  /* gtk-foo-bar -> GTK_STOCK_FOO_BAR */
+  /* btk-foo-bar -> BTK_STOCK_FOO_BAR */
 
   macro = g_string_new (NULL);
   
   cp = id;
   
-  if (strncmp (cp, "gtk-", 4) == 0)
+  if (strncmp (cp, "btk-", 4) == 0)
     {
-      g_string_append (macro, "GTK_STOCK_");
+      g_string_append (macro, "BTK_STOCK_");
       cp += 4;
     }
 
@@ -114,28 +114,28 @@ id_to_macro (const gchar *id)
   return g_string_free (macro, FALSE);
 }
 
-static GtkTreeModel*
+static BtkTreeModel*
 create_model (void)
 {
-  GtkListStore *store;
+  BtkListStore *store;
   GSList *ids;
   GSList *tmp_list;
   
-  store = gtk_list_store_new (2, STOCK_ITEM_INFO_TYPE, G_TYPE_STRING);
+  store = btk_list_store_new (2, STOCK_ITEM_INFO_TYPE, G_TYPE_STRING);
 
-  ids = gtk_stock_list_ids ();
+  ids = btk_stock_list_ids ();
   ids = g_slist_sort (ids, (GCompareFunc) strcmp);
   tmp_list = ids;
   while (tmp_list != NULL)
     {
       StockItemInfo info;
-      GtkStockItem item;
-      GtkTreeIter iter;
-      GtkIconSet *icon_set;
+      BtkStockItem item;
+      BtkTreeIter iter;
+      BtkIconSet *icon_set;
       
       info.id = tmp_list->data;
       
-      if (gtk_stock_lookup (info.id, &item))
+      if (btk_stock_lookup (info.id, &item))
         {
           info.item = item;
         }
@@ -149,46 +149,46 @@ create_model (void)
         }
 
       /* only show icons for stock IDs that have default icons */
-      icon_set = gtk_icon_factory_lookup_default (info.id);
+      icon_set = btk_icon_factory_lookup_default (info.id);
       if (icon_set)
         {
-          GtkIconSize *sizes = NULL;
+          BtkIconSize *sizes = NULL;
           gint n_sizes = 0;
           gint i;
-          GtkIconSize size;
+          BtkIconSize size;
 
           /* See what sizes this stock icon really exists at */
-          gtk_icon_set_get_sizes (icon_set, &sizes, &n_sizes);
+          btk_icon_set_get_sizes (icon_set, &sizes, &n_sizes);
 
           /* Use menu size if it exists, otherwise first size found */
           size = sizes[0];
           i = 0;
           while (i < n_sizes)
             {
-              if (sizes[i] == GTK_ICON_SIZE_MENU)
+              if (sizes[i] == BTK_ICON_SIZE_MENU)
                 {
-                  size = GTK_ICON_SIZE_MENU;
+                  size = BTK_ICON_SIZE_MENU;
                   break;
                 }
               ++i;
             }
           g_free (sizes);
           
-          info.small_icon = gtk_widget_render_icon (window, info.id,
+          info.small_icon = btk_widget_render_icon (window, info.id,
                                                     size,
                                                     NULL);
           
-          if (size != GTK_ICON_SIZE_MENU)
+          if (size != BTK_ICON_SIZE_MENU)
             {
               /* Make the result the proper size for our thumbnail */
               gint w, h;
-              GdkPixbuf *scaled;
+              BdkPixbuf *scaled;
               
-              gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &w, &h);
+              btk_icon_size_lookup (BTK_ICON_SIZE_MENU, &w, &h);
               
-              scaled = gdk_pixbuf_scale_simple (info.small_icon,
+              scaled = bdk_pixbuf_scale_simple (info.small_icon,
                                                 w, h,
-                                                GDK_INTERP_BILINEAR);
+                                                BDK_INTERP_BILINEAR);
 
               g_object_unref (info.small_icon);
               info.small_icon = scaled;
@@ -199,7 +199,7 @@ create_model (void)
 
       if (info.item.keyval != 0)
         {
-          info.accel_str = gtk_accelerator_name (info.item.keyval,
+          info.accel_str = btk_accelerator_name (info.item.keyval,
                                                  info.item.modifier);
         }
       else
@@ -209,8 +209,8 @@ create_model (void)
 
       info.macro = id_to_macro (info.id);
       
-      gtk_list_store_append (store, &iter);
-      gtk_list_store_set (store, &iter, 0, &info, 1, info.id, -1);
+      btk_list_store_append (store, &iter);
+      btk_list_store_set (store, &iter, 0, &info, 1, info.id, -1);
 
       g_free (info.macro);
       g_free (info.accel_str);
@@ -223,28 +223,28 @@ create_model (void)
   g_slist_foreach (ids, (GFunc)g_free, NULL);
   g_slist_free (ids);
 
-  return GTK_TREE_MODEL (store);
+  return BTK_TREE_MODEL (store);
 }
 
 /* Finds the largest size at which the given image stock id is
  * available. This would not be useful for a normal application
  */
-static GtkIconSize
+static BtkIconSize
 get_largest_size (const char *id)
 {
-  GtkIconSet *set = gtk_icon_factory_lookup_default (id);
-  GtkIconSize *sizes;
+  BtkIconSet *set = btk_icon_factory_lookup_default (id);
+  BtkIconSize *sizes;
   gint n_sizes, i;
-  GtkIconSize best_size = GTK_ICON_SIZE_INVALID;
+  BtkIconSize best_size = BTK_ICON_SIZE_INVALID;
   gint best_pixels = 0;
 
-  gtk_icon_set_get_sizes (set, &sizes, &n_sizes);
+  btk_icon_set_get_sizes (set, &sizes, &n_sizes);
 
   for (i = 0; i < n_sizes; i++)
     {
       gint width, height;
       
-      gtk_icon_size_lookup (sizes[i], &width, &height);
+      btk_icon_size_lookup (sizes[i], &width, &height);
 
       if (width * height > best_pixels)
 	{
@@ -259,80 +259,80 @@ get_largest_size (const char *id)
 }
 
 static void
-selection_changed (GtkTreeSelection *selection)
+selection_changed (BtkTreeSelection *selection)
 {
-  GtkTreeView *treeview;
+  BtkTreeView *treeview;
   StockItemDisplay *display;
-  GtkTreeModel *model;
-  GtkTreeIter iter;
+  BtkTreeModel *model;
+  BtkTreeIter iter;
   
-  treeview = gtk_tree_selection_get_tree_view (selection);
+  treeview = btk_tree_selection_get_tree_view (selection);
   display = g_object_get_data (G_OBJECT (treeview), "stock-display");
 
-  if (gtk_tree_selection_get_selected (selection, &model, &iter))
+  if (btk_tree_selection_get_selected (selection, &model, &iter))
     {
       StockItemInfo *info;
       gchar *str;
       
-      gtk_tree_model_get (model, &iter,
+      btk_tree_model_get (model, &iter,
                           0, &info,
                           -1);
 
       if (info->small_icon && info->item.label)
-        gtk_label_set_text (GTK_LABEL (display->type_label), "Icon and Item");
+        btk_label_set_text (BTK_LABEL (display->type_label), "Icon and Item");
       else if (info->small_icon)
-        gtk_label_set_text (GTK_LABEL (display->type_label), "Icon Only");
+        btk_label_set_text (BTK_LABEL (display->type_label), "Icon Only");
       else if (info->item.label)
-        gtk_label_set_text (GTK_LABEL (display->type_label), "Item Only");
+        btk_label_set_text (BTK_LABEL (display->type_label), "Item Only");
       else
-        gtk_label_set_text (GTK_LABEL (display->type_label), "???????");
+        btk_label_set_text (BTK_LABEL (display->type_label), "???????");
 
-      gtk_label_set_text (GTK_LABEL (display->macro_label), info->macro);
-      gtk_label_set_text (GTK_LABEL (display->id_label), info->id);
+      btk_label_set_text (BTK_LABEL (display->macro_label), info->macro);
+      btk_label_set_text (BTK_LABEL (display->id_label), info->id);
 
       if (info->item.label)
         {
           str = g_strdup_printf ("%s %s", info->item.label, info->accel_str);
-          gtk_label_set_text_with_mnemonic (GTK_LABEL (display->label_accel_label), str);
+          btk_label_set_text_with_mnemonic (BTK_LABEL (display->label_accel_label), str);
           g_free (str);
         }
       else
         {
-          gtk_label_set_text (GTK_LABEL (display->label_accel_label), "");
+          btk_label_set_text (BTK_LABEL (display->label_accel_label), "");
         }
 
       if (info->small_icon)
-        gtk_image_set_from_stock (GTK_IMAGE (display->icon_image), info->id,
+        btk_image_set_from_stock (BTK_IMAGE (display->icon_image), info->id,
                                   get_largest_size (info->id));
       else
-        gtk_image_set_from_pixbuf (GTK_IMAGE (display->icon_image), NULL);
+        btk_image_set_from_pixbuf (BTK_IMAGE (display->icon_image), NULL);
 
       stock_item_info_free (info);
     }
   else
     {
-      gtk_label_set_text (GTK_LABEL (display->type_label), "No selected item");
-      gtk_label_set_text (GTK_LABEL (display->macro_label), "");
-      gtk_label_set_text (GTK_LABEL (display->id_label), "");
-      gtk_label_set_text (GTK_LABEL (display->label_accel_label), "");
-      gtk_image_set_from_pixbuf (GTK_IMAGE (display->icon_image), NULL);
+      btk_label_set_text (BTK_LABEL (display->type_label), "No selected item");
+      btk_label_set_text (BTK_LABEL (display->macro_label), "");
+      btk_label_set_text (BTK_LABEL (display->id_label), "");
+      btk_label_set_text (BTK_LABEL (display->label_accel_label), "");
+      btk_image_set_from_pixbuf (BTK_IMAGE (display->icon_image), NULL);
     }
 }
 
 static void
-macro_set_func_text (GtkTreeViewColumn *tree_column,
-		     GtkCellRenderer   *cell,
-		     GtkTreeModel      *model,
-		     GtkTreeIter       *iter,
+macro_set_func_text (BtkTreeViewColumn *tree_column,
+		     BtkCellRenderer   *cell,
+		     BtkTreeModel      *model,
+		     BtkTreeIter       *iter,
 		     gpointer           data)
 {
   StockItemInfo *info;
   
-  gtk_tree_model_get (model, iter,
+  btk_tree_model_get (model, iter,
                       0, &info,
                       -1);
   
-  g_object_set (GTK_CELL_RENDERER (cell),
+  g_object_set (BTK_CELL_RENDERER (cell),
                 "text", info->macro,
                 NULL);
   
@@ -340,19 +340,19 @@ macro_set_func_text (GtkTreeViewColumn *tree_column,
 }
 
 static void
-id_set_func (GtkTreeViewColumn *tree_column,
-             GtkCellRenderer   *cell,
-             GtkTreeModel      *model,
-             GtkTreeIter       *iter,
+id_set_func (BtkTreeViewColumn *tree_column,
+             BtkCellRenderer   *cell,
+             BtkTreeModel      *model,
+             BtkTreeIter       *iter,
              gpointer           data)
 {
   StockItemInfo *info;
   
-  gtk_tree_model_get (model, iter,
+  btk_tree_model_get (model, iter,
                       0, &info,
                       -1);
   
-  g_object_set (GTK_CELL_RENDERER (cell),
+  g_object_set (BTK_CELL_RENDERER (cell),
                 "text", info->id,
                 NULL);
   
@@ -360,19 +360,19 @@ id_set_func (GtkTreeViewColumn *tree_column,
 }
 
 static void
-accel_set_func (GtkTreeViewColumn *tree_column,
-                GtkCellRenderer   *cell,
-                GtkTreeModel      *model,
-                GtkTreeIter       *iter,
+accel_set_func (BtkTreeViewColumn *tree_column,
+                BtkCellRenderer   *cell,
+                BtkTreeModel      *model,
+                BtkTreeIter       *iter,
                 gpointer           data)
 {
   StockItemInfo *info;
   
-  gtk_tree_model_get (model, iter,
+  btk_tree_model_get (model, iter,
                       0, &info,
                       -1);
   
-  g_object_set (GTK_CELL_RENDERER (cell),
+  g_object_set (BTK_CELL_RENDERER (cell),
                 "text", info->accel_str,
                 NULL);
   
@@ -380,89 +380,89 @@ accel_set_func (GtkTreeViewColumn *tree_column,
 }
 
 static void
-label_set_func (GtkTreeViewColumn *tree_column,
-                GtkCellRenderer   *cell,
-                GtkTreeModel      *model,
-                GtkTreeIter       *iter,
+label_set_func (BtkTreeViewColumn *tree_column,
+                BtkCellRenderer   *cell,
+                BtkTreeModel      *model,
+                BtkTreeIter       *iter,
                 gpointer           data)
 {
   StockItemInfo *info;
   
-  gtk_tree_model_get (model, iter,
+  btk_tree_model_get (model, iter,
                       0, &info,
                       -1);
   
-  g_object_set (GTK_CELL_RENDERER (cell),
+  g_object_set (BTK_CELL_RENDERER (cell),
                 "text", info->item.label,
                 NULL);
   
   stock_item_info_free (info);
 }
 
-GtkWidget *
-do_stock_browser (GtkWidget *do_widget)
+BtkWidget *
+do_stock_browser (BtkWidget *do_widget)
 {  
   if (!window)
     {
-      GtkWidget *frame;
-      GtkWidget *vbox;
-      GtkWidget *hbox;
-      GtkWidget *sw;
-      GtkWidget *treeview;
-      GtkWidget *align;
-      GtkTreeModel *model;
-      GtkCellRenderer *cell_renderer;
+      BtkWidget *frame;
+      BtkWidget *vbox;
+      BtkWidget *hbox;
+      BtkWidget *sw;
+      BtkWidget *treeview;
+      BtkWidget *align;
+      BtkTreeModel *model;
+      BtkCellRenderer *cell_renderer;
       StockItemDisplay *display;
-      GtkTreeSelection *selection;
-      GtkTreeViewColumn *column;
+      BtkTreeSelection *selection;
+      BtkTreeViewColumn *column;
 
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_screen (GTK_WINDOW (window),
-			     gtk_widget_get_screen (do_widget));
-      gtk_window_set_title (GTK_WINDOW (window), "Stock Icons and Items");
-      gtk_window_set_default_size (GTK_WINDOW (window), -1, 500);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      btk_window_set_screen (BTK_WINDOW (window),
+			     btk_widget_get_screen (do_widget));
+      btk_window_set_title (BTK_WINDOW (window), "Stock Icons and Items");
+      btk_window_set_default_size (BTK_WINDOW (window), -1, 500);
 
-      g_signal_connect (window, "destroy", G_CALLBACK (gtk_widget_destroyed), &window);
-      gtk_container_set_border_width (GTK_CONTAINER (window), 8);
+      g_signal_connect (window, "destroy", G_CALLBACK (btk_widget_destroyed), &window);
+      btk_container_set_border_width (BTK_CONTAINER (window), 8);
 
-      hbox = gtk_hbox_new (FALSE, 8);
-      gtk_container_add (GTK_CONTAINER (window), hbox);
+      hbox = btk_hbox_new (FALSE, 8);
+      btk_container_add (BTK_CONTAINER (window), hbox);
 
-      sw = gtk_scrolled_window_new (NULL, NULL);
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-                                      GTK_POLICY_NEVER,
-                                      GTK_POLICY_AUTOMATIC);
-      gtk_box_pack_start (GTK_BOX (hbox), sw, FALSE, FALSE, 0);
+      sw = btk_scrolled_window_new (NULL, NULL);
+      btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (sw),
+                                      BTK_POLICY_NEVER,
+                                      BTK_POLICY_AUTOMATIC);
+      btk_box_pack_start (BTK_BOX (hbox), sw, FALSE, FALSE, 0);
 
       model = create_model ();
       
-      treeview = gtk_tree_view_new_with_model (model);
+      treeview = btk_tree_view_new_with_model (model);
 
       g_object_unref (model);
 
-      gtk_container_add (GTK_CONTAINER (sw), treeview);
+      btk_container_add (BTK_CONTAINER (sw), treeview);
       
-      column = gtk_tree_view_column_new ();
-      gtk_tree_view_column_set_title (column, "Macro");
+      column = btk_tree_view_column_new ();
+      btk_tree_view_column_set_title (column, "Macro");
 
-      cell_renderer = gtk_cell_renderer_pixbuf_new ();
-      gtk_tree_view_column_pack_start (column,
+      cell_renderer = btk_cell_renderer_pixbuf_new ();
+      btk_tree_view_column_pack_start (column,
 				       cell_renderer,
 				       FALSE);
-      gtk_tree_view_column_set_attributes (column, cell_renderer,
+      btk_tree_view_column_set_attributes (column, cell_renderer,
 					   "stock_id", 1, NULL);
-      cell_renderer = gtk_cell_renderer_text_new ();
-      gtk_tree_view_column_pack_start (column,
+      cell_renderer = btk_cell_renderer_text_new ();
+      btk_tree_view_column_pack_start (column,
 				       cell_renderer,
 				       TRUE);
-      gtk_tree_view_column_set_cell_data_func (column, cell_renderer,
+      btk_tree_view_column_set_cell_data_func (column, cell_renderer,
 					       macro_set_func_text, NULL, NULL);
 
-      gtk_tree_view_append_column (GTK_TREE_VIEW (treeview),
+      btk_tree_view_append_column (BTK_TREE_VIEW (treeview),
 				   column);
 
-      cell_renderer = gtk_cell_renderer_text_new ();
-      gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (treeview),
+      cell_renderer = btk_cell_renderer_text_new ();
+      btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (treeview),
                                                   -1,
                                                   "Label",
                                                   cell_renderer,
@@ -470,8 +470,8 @@ do_stock_browser (GtkWidget *do_widget)
                                                   NULL,
                                                   NULL);
 
-      cell_renderer = gtk_cell_renderer_text_new ();
-      gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (treeview),
+      cell_renderer = btk_cell_renderer_text_new ();
+      btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (treeview),
                                                   -1,
                                                   "Accel",
                                                   cell_renderer,
@@ -479,8 +479,8 @@ do_stock_browser (GtkWidget *do_widget)
                                                   NULL,
                                                   NULL);
 
-      cell_renderer = gtk_cell_renderer_text_new ();
-      gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (treeview),
+      cell_renderer = btk_cell_renderer_text_new ();
+      btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (treeview),
                                                   -1,
                                                   "ID",
                                                   cell_renderer,
@@ -488,15 +488,15 @@ do_stock_browser (GtkWidget *do_widget)
                                                   NULL,
                                                   NULL);
       
-      align = gtk_alignment_new (0.5, 0.0, 0.0, 0.0);
-      gtk_box_pack_end (GTK_BOX (hbox), align, FALSE, FALSE, 0);
+      align = btk_alignment_new (0.5, 0.0, 0.0, 0.0);
+      btk_box_pack_end (BTK_BOX (hbox), align, FALSE, FALSE, 0);
       
-      frame = gtk_frame_new ("Selected Item");
-      gtk_container_add (GTK_CONTAINER (align), frame);
+      frame = btk_frame_new ("Selected Item");
+      btk_container_add (BTK_CONTAINER (align), frame);
 
-      vbox = gtk_vbox_new (FALSE, 8);
-      gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
-      gtk_container_add (GTK_CONTAINER (frame), vbox);
+      vbox = btk_vbox_new (FALSE, 8);
+      btk_container_set_border_width (BTK_CONTAINER (vbox), 4);
+      btk_container_add (BTK_CONTAINER (frame), vbox);
 
       display = g_new (StockItemDisplay, 1);
       g_object_set_data_full (G_OBJECT (treeview),
@@ -504,27 +504,27 @@ do_stock_browser (GtkWidget *do_widget)
                               display,
                               g_free); /* free display with treeview */
       
-      display->type_label = gtk_label_new (NULL);
-      display->macro_label = gtk_label_new (NULL);
-      display->id_label = gtk_label_new (NULL);
-      display->label_accel_label = gtk_label_new (NULL);
-      display->icon_image = gtk_image_new_from_pixbuf (NULL); /* empty image */
+      display->type_label = btk_label_new (NULL);
+      display->macro_label = btk_label_new (NULL);
+      display->id_label = btk_label_new (NULL);
+      display->label_accel_label = btk_label_new (NULL);
+      display->icon_image = btk_image_new_from_pixbuf (NULL); /* empty image */
 
-      gtk_box_pack_start (GTK_BOX (vbox), display->type_label,
+      btk_box_pack_start (BTK_BOX (vbox), display->type_label,
                           FALSE, FALSE, 0);
 
-      gtk_box_pack_start (GTK_BOX (vbox), display->icon_image,
+      btk_box_pack_start (BTK_BOX (vbox), display->icon_image,
                           FALSE, FALSE, 0);
       
-      gtk_box_pack_start (GTK_BOX (vbox), display->label_accel_label,
+      btk_box_pack_start (BTK_BOX (vbox), display->label_accel_label,
                           FALSE, FALSE, 0);
-      gtk_box_pack_start (GTK_BOX (vbox), display->macro_label,
+      btk_box_pack_start (BTK_BOX (vbox), display->macro_label,
                           FALSE, FALSE, 0);
-      gtk_box_pack_start (GTK_BOX (vbox), display->id_label,
+      btk_box_pack_start (BTK_BOX (vbox), display->id_label,
                           FALSE, FALSE, 0);
 
-      selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
-      gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
+      selection = btk_tree_view_get_selection (BTK_TREE_VIEW (treeview));
+      btk_tree_selection_set_mode (selection, BTK_SELECTION_SINGLE);
       
       g_signal_connect (selection,
 			"changed",
@@ -532,13 +532,13 @@ do_stock_browser (GtkWidget *do_widget)
 			NULL);
     }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show_all (window);
+      btk_widget_show_all (window);
     }
   else
     {	 
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 

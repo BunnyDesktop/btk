@@ -1,7 +1,7 @@
-/* Scrolling test suite for GtkTreeView
- * Copyright (C) 2006  Kristian Rietveld  <kris@gtk.org>
+/* Scrolling test suite for BtkTreeView
+ * Copyright (C) 2006  Kristian Rietveld  <kris@btk.org>
  * Copyright (C) 2007  Imendio AB,  Kristian Rietveld
- * Copyright (C) 2009  Kristian Rietveld  <kris@gtk.org>
+ * Copyright (C) 2009  Kristian Rietveld  <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,11 @@
  */
 
 /* Original v1.0 -- December 26, 2006
- * Conversion to GLib/GTK+ test framework during December, 2007
+ * Conversion to GLib/BTK+ test framework during December, 2007
  */
 
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <unistd.h>
 
 #define VIEW_WIDTH 320
@@ -38,52 +38,52 @@
  *   - Test that nothing happens if the row is fully visible.
  *   - The tests are dependent on the theme/font (size measurements,
  *     chosen paths).
- *   - Convert to proper GTK+ coding style.
+ *   - Convert to proper BTK+ coding style.
  *   - Briefly test scrolling in tree stores as well.
  */
 
 
 /* Constructing models for testing */
-static GtkTreeModel *
+static BtkTreeModel *
 create_model (gboolean constant)
 {
 	int i;
 
-	GtkTreeIter iter;
-	GtkListStore *store;
+	BtkTreeIter iter;
+	BtkListStore *store;
 
-	store = gtk_list_store_new (1, G_TYPE_STRING);
+	store = btk_list_store_new (1, G_TYPE_STRING);
 
 	for (i = 0; i < N_ROWS; i++) {
-		gtk_list_store_append (store, &iter);
+		btk_list_store_append (store, &iter);
 		if (constant || i % 2 == 0)
-			gtk_list_store_set (store, &iter, 0, "Foo", -1);
+			btk_list_store_set (store, &iter, 0, "Foo", -1);
 		else
-			gtk_list_store_set (store, &iter, 0, "Sliff\nSloff\nBleh", -1);
+			btk_list_store_set (store, &iter, 0, "Sliff\nSloff\nBleh", -1);
 	}
 
-	return GTK_TREE_MODEL (store);
+	return BTK_TREE_MODEL (store);
 }
 
-static GtkTreeModel *
+static BtkTreeModel *
 create_big_model (gboolean constant)
 {
 	int i;
 
-	GtkTreeIter iter;
-	GtkListStore *store;
+	BtkTreeIter iter;
+	BtkListStore *store;
 
-	store = gtk_list_store_new (1, G_TYPE_STRING);
+	store = btk_list_store_new (1, G_TYPE_STRING);
 
 	for (i = 0; i < BIG_N_ROWS; i++) {
-		gtk_list_store_append (store, &iter);
+		btk_list_store_append (store, &iter);
 		if (constant || i % 2 == 0)
-			gtk_list_store_set (store, &iter, 0, "Foo", -1);
+			btk_list_store_set (store, &iter, 0, "Foo", -1);
 		else
-			gtk_list_store_set (store, &iter, 0, "Sliff\nSloff\nBleh", -1);
+			btk_list_store_set (store, &iter, 0, "Sliff\nSloff\nBleh", -1);
 	}
 
-	return GTK_TREE_MODEL (store);
+	return BTK_TREE_MODEL (store);
 }
 
 /*
@@ -92,38 +92,38 @@ create_big_model (gboolean constant)
 
 typedef struct
 {
-	GtkWidget *window;
-	GtkWidget *tree_view;
+	BtkWidget *window;
+	BtkWidget *tree_view;
 }
 ScrollFixture;
 
 static void
 scroll_fixture_setup (ScrollFixture *fixture,
-		      GtkTreeModel  *model,
+		      BtkTreeModel  *model,
 		      gconstpointer  test_data)
 {
-	GtkWidget *sw;
-	GtkCellRenderer *renderer;
-	GtkTreeViewColumn *column;
+	BtkWidget *sw;
+	BtkCellRenderer *renderer;
+	BtkTreeViewColumn *column;
 
-	fixture->window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	fixture->window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
-	sw = gtk_scrolled_window_new (NULL, NULL);
-	gtk_container_add (GTK_CONTAINER (fixture->window), sw);
+	sw = btk_scrolled_window_new (NULL, NULL);
+	btk_container_add (BTK_CONTAINER (fixture->window), sw);
 
-	fixture->tree_view = gtk_tree_view_new_with_model (model);
+	fixture->tree_view = btk_tree_view_new_with_model (model);
 	g_object_unref (model);
-	gtk_widget_set_size_request (fixture->tree_view, VIEW_WIDTH, VIEW_HEIGHT);
+	btk_widget_set_size_request (fixture->tree_view, VIEW_WIDTH, VIEW_HEIGHT);
 
-	renderer = gtk_cell_renderer_text_new ();
+	renderer = btk_cell_renderer_text_new ();
 	g_object_set (renderer, "editable", TRUE, NULL);
-	column = gtk_tree_view_column_new_with_attributes ("Title",
+	column = btk_tree_view_column_new_with_attributes ("Title",
 							   renderer,
 							   "text", 0,
 							   NULL);
 
-	gtk_tree_view_append_column (GTK_TREE_VIEW (fixture->tree_view), column);
-	gtk_container_add (GTK_CONTAINER (sw), fixture->tree_view);
+	btk_tree_view_append_column (BTK_TREE_VIEW (fixture->tree_view), column);
+	btk_container_add (BTK_CONTAINER (sw), fixture->tree_view);
 }
 
 /* sets up a fixture with a model with constant row heights */
@@ -163,19 +163,19 @@ static void
 scroll_fixture_single_setup (ScrollFixture *fixture,
 			     gconstpointer  test_data)
 {
-	GtkTreeStore *store;
-	GtkTreeIter iter, child;
+	BtkTreeStore *store;
+	BtkTreeIter iter, child;
 
-	store = gtk_tree_store_new (1, G_TYPE_STRING);
+	store = btk_tree_store_new (1, G_TYPE_STRING);
 
-	gtk_tree_store_append (store, &iter, NULL);
-	gtk_tree_store_set (store, &iter, 0, "Foo", -1);
+	btk_tree_store_append (store, &iter, NULL);
+	btk_tree_store_set (store, &iter, 0, "Foo", -1);
 
-	gtk_tree_store_append (store, &child, &iter);
-	gtk_tree_store_set (store, &child, 0, "Two\nLines", -1);
+	btk_tree_store_append (store, &child, &iter);
+	btk_tree_store_set (store, &child, 0, "Two\nLines", -1);
 
 	/* The teardown will also destroy the model */
-	scroll_fixture_setup (fixture, GTK_TREE_MODEL (store), test_data);
+	scroll_fixture_setup (fixture, BTK_TREE_MODEL (store), test_data);
 }
 
 /* sets up a fixture with a tree store */
@@ -183,34 +183,34 @@ static void
 scroll_fixture_tree_setup (ScrollFixture *fixture,
 			   gconstpointer   test_data)
 {
-	GtkTreeStore *store;
-	GtkTreeIter iter, child;
+	BtkTreeStore *store;
+	BtkTreeIter iter, child;
 	int i;
 
-	store = gtk_tree_store_new (1, G_TYPE_STRING);
+	store = btk_tree_store_new (1, G_TYPE_STRING);
 
-	gtk_tree_store_append (store, &iter, NULL);
-	gtk_tree_store_set (store, &iter, 0, "Root node", -1);
+	btk_tree_store_append (store, &iter, NULL);
+	btk_tree_store_set (store, &iter, 0, "Root node", -1);
 
 	for (i = 0; i < 5; i++) {
-		gtk_tree_store_append (store, &child, &iter);
-		gtk_tree_store_set (store, &child, 0, "Child node", -1);
+		btk_tree_store_append (store, &child, &iter);
+		btk_tree_store_set (store, &child, 0, "Child node", -1);
 	}
 
 	for (i = 0; i < 5; i++) {
-		gtk_tree_store_append (store, &iter, NULL);
-		gtk_tree_store_set (store, &iter, 0, "Other node", -1);
+		btk_tree_store_append (store, &iter, NULL);
+		btk_tree_store_set (store, &iter, 0, "Other node", -1);
 	}
 
 	/* The teardown will also destroy the model */
-	scroll_fixture_setup (fixture, GTK_TREE_MODEL (store), test_data);
+	scroll_fixture_setup (fixture, BTK_TREE_MODEL (store), test_data);
 }
 
 static void
 scroll_fixture_teardown (ScrollFixture *fixture,
 			 gconstpointer  test_data)
 {
-	gtk_widget_destroy (fixture->window);
+	btk_widget_destroy (fixture->window);
 }
 
 /*
@@ -224,21 +224,21 @@ enum Pos
 };
 
 static int
-get_row_start_for_index (GtkTreeView *tree_view, int index)
+get_row_start_for_index (BtkTreeView *tree_view, int index)
 {
 	gint height1, height2;
 	gint row_start;
-	GtkTreePath *path;
-	GdkRectangle rect;
+	BtkTreePath *path;
+	BdkRectangle rect;
 
-	path = gtk_tree_path_new_from_indices (0, -1);
-	gtk_tree_view_get_background_area (tree_view, path, NULL, &rect);
+	path = btk_tree_path_new_from_indices (0, -1);
+	btk_tree_view_get_background_area (tree_view, path, NULL, &rect);
 	height1 = rect.height;
 
-	gtk_tree_path_next (path);
-	gtk_tree_view_get_background_area (tree_view, path, NULL, &rect);
+	btk_tree_path_next (path);
+	btk_tree_view_get_background_area (tree_view, path, NULL, &rect);
 	height2 = rect.height;
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 
 	row_start = (index / 2) * height1 + (index / 2) * height2;
 	if (index % 2)
@@ -248,15 +248,15 @@ get_row_start_for_index (GtkTreeView *tree_view, int index)
 }
 
 static enum Pos
-get_pos_from_path (GtkTreeView   *tree_view,
-		   GtkTreePath   *path,
+get_pos_from_path (BtkTreeView   *tree_view,
+		   BtkTreePath   *path,
 		   gint           row_height,
-		   GtkAdjustment *vadj)
+		   BtkAdjustment *vadj)
 {
 	int row_start;
 
 	row_start = get_row_start_for_index (tree_view,
-					     gtk_tree_path_get_indices (path)[0]);
+					     btk_tree_path_get_indices (path)[0]);
 
 	if (row_start + row_height < vadj->page_size)
 		return POS_TOP;
@@ -268,7 +268,7 @@ get_pos_from_path (GtkTreeView   *tree_view,
 }
 
 static gboolean
-test_position_with_align (GtkTreeView  *tree_view,
+test_position_with_align (BtkTreeView  *tree_view,
 			  enum Pos      pos,
 			  gint          row_y,
 			  gint          row_start,
@@ -276,7 +276,7 @@ test_position_with_align (GtkTreeView  *tree_view,
 			  gfloat        row_align)
 {
 	gboolean passed = TRUE;
-	GtkAdjustment *vadj = gtk_tree_view_get_vadjustment (tree_view);
+	BtkAdjustment *vadj = btk_tree_view_get_vadjustment (tree_view);
 
 	/* Switch on row-align: 0.0, 0.5, 1.0 */
 	switch ((int)(row_align * 2.)) {
@@ -371,11 +371,11 @@ test_position_with_align (GtkTreeView  *tree_view,
 }
 
 static gboolean
-test_position_without_align (GtkTreeView *tree_view,
+test_position_without_align (BtkTreeView *tree_view,
 			     gint         row_start,
 			     gint         row_height)
 {
-	GtkAdjustment *vadj = gtk_tree_view_get_vadjustment (tree_view);
+	BtkAdjustment *vadj = btk_tree_view_get_vadjustment (tree_view);
 
 	/* Without align the tree view does as less work as possible,
 	 * so basically we only have to check whether the row
@@ -389,47 +389,47 @@ test_position_without_align (GtkTreeView *tree_view,
 }
 
 static void
-test_position (GtkTreeView *tree_view,
-	       GtkTreePath *path,
+test_position (BtkTreeView *tree_view,
+	       BtkTreePath *path,
 	       gboolean     use_align,
 	       gfloat       row_align,
 	       gfloat       col_align)
 {
 	gint pos;
 	gchar *path_str;
-	GdkRectangle rect;
-	GtkTreeModel *model;
+	BdkRectangle rect;
+	BtkTreeModel *model;
 	gint row_start;
 
 	/* Get the location of the path we scrolled to */
-	gtk_tree_view_get_background_area (GTK_TREE_VIEW (tree_view),
+	btk_tree_view_get_background_area (BTK_TREE_VIEW (tree_view),
 					   path, NULL, &rect);
 
-	row_start = get_row_start_for_index (GTK_TREE_VIEW (tree_view),
-					     gtk_tree_path_get_indices (path)[0]);
+	row_start = get_row_start_for_index (BTK_TREE_VIEW (tree_view),
+					     btk_tree_path_get_indices (path)[0]);
 
 	/* Ugh */
-	pos = get_pos_from_path (GTK_TREE_VIEW (tree_view),
+	pos = get_pos_from_path (BTK_TREE_VIEW (tree_view),
 				 path, rect.height,
-			         gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (tree_view)));
+			         btk_tree_view_get_vadjustment (BTK_TREE_VIEW (tree_view)));
 
 	/* This is only tested for during test_single() */
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
-	if (gtk_tree_model_iter_n_children (model, NULL) == 1) {
-		GtkTreePath *tmppath;
+	model = btk_tree_view_get_model (BTK_TREE_VIEW (tree_view));
+	if (btk_tree_model_iter_n_children (model, NULL) == 1) {
+		BtkTreePath *tmppath;
 
 		/* Test nothing is dangling at the bottom; read
 		 * description for test_single() for more information.
 		 */
 
 		/* FIXME: hardcoded width */
-		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view), 0, GTK_WIDGET (tree_view)->allocation.height - 30, &tmppath, NULL, NULL, NULL)) {
+		if (btk_tree_view_get_path_at_pos (BTK_TREE_VIEW (tree_view), 0, BTK_WIDGET (tree_view)->allocation.height - 30, &tmppath, NULL, NULL, NULL)) {
 			g_assert_not_reached ();
-			gtk_tree_path_free (tmppath);
+			btk_tree_path_free (tmppath);
 		}
 	}
 
-	path_str = gtk_tree_path_to_string (path);
+	path_str = btk_tree_path_to_string (path);
 	if (use_align) {
 		g_assert (test_position_with_align (tree_view, pos, rect.y,
 						    row_start, rect.height, row_align));
@@ -449,22 +449,22 @@ test_position (GtkTreeView *tree_view,
 
 static void
 scroll (ScrollFixture *fixture,
-	GtkTreePath   *path,
+	BtkTreePath   *path,
 	gboolean       use_align,
 	gfloat         row_align)
 {
-	gtk_tree_view_set_cursor (GTK_TREE_VIEW (fixture->tree_view), path,
+	btk_tree_view_set_cursor (BTK_TREE_VIEW (fixture->tree_view), path,
 				  NULL, FALSE);
-	gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (fixture->tree_view),
+	btk_tree_view_scroll_to_cell (BTK_TREE_VIEW (fixture->tree_view),
 				      path, NULL,
 				      use_align, row_align, 0.0);
 
-	gtk_widget_show_all (fixture->window);
+	btk_widget_show_all (fixture->window);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
-	test_position (GTK_TREE_VIEW (fixture->tree_view), path,
+	test_position (BTK_TREE_VIEW (fixture->tree_view), path,
 		       use_align, row_align, 0.0);
 }
 
@@ -472,68 +472,68 @@ static void
 scroll_no_align (ScrollFixture *fixture,
 		 gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll (fixture, path, FALSE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_align_0_0 (ScrollFixture *fixture,
 		  gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll (fixture, path, TRUE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_align_0_5 (ScrollFixture *fixture,
 		  gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll (fixture, path, TRUE, 0.5);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_align_1_0 (ScrollFixture *fixture,
 		  gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll (fixture, path, TRUE, 1.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 
 static void
 scroll_after_realize (ScrollFixture *fixture,
-		      GtkTreePath   *path,
+		      BtkTreePath   *path,
 		      gboolean       use_align,
 		      gfloat         row_align)
 {
-	gtk_widget_show_all (fixture->window);
+	btk_widget_show_all (fixture->window);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
-	gtk_tree_view_set_cursor (GTK_TREE_VIEW (fixture->tree_view), path,
+	btk_tree_view_set_cursor (BTK_TREE_VIEW (fixture->tree_view), path,
 				  NULL, FALSE);
-	gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (fixture->tree_view),
+	btk_tree_view_scroll_to_cell (BTK_TREE_VIEW (fixture->tree_view),
 				      path, NULL,
 				      use_align, row_align, 0.0);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
-	test_position (GTK_TREE_VIEW (fixture->tree_view), path,
+	test_position (BTK_TREE_VIEW (fixture->tree_view), path,
 		       use_align, row_align, 0.0);
 }
 
@@ -541,81 +541,81 @@ static void
 scroll_after_no_align (ScrollFixture *fixture,
 		       gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_after_realize (fixture, path, FALSE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_after_align_0_0 (ScrollFixture *fixture,
 		        gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_after_realize (fixture, path, TRUE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_after_align_0_5 (ScrollFixture *fixture,
 		        gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_after_realize (fixture, path, TRUE, 0.5);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_after_align_1_0 (ScrollFixture *fixture,
 		        gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_after_realize (fixture, path, TRUE, 1.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 
 static void
 scroll_both_realize (ScrollFixture *fixture,
-		     GtkTreePath   *path,
+		     BtkTreePath   *path,
 		     gboolean       use_align,
 		     gfloat         row_align)
 {
-	GtkTreePath *end;
+	BtkTreePath *end;
 
-	gtk_widget_show_all (fixture->window);
+	btk_widget_show_all (fixture->window);
 
 	/* Scroll to end */
-	end = gtk_tree_path_new_from_indices (999, -1);
+	end = btk_tree_path_new_from_indices (999, -1);
 
-	gtk_tree_view_set_cursor (GTK_TREE_VIEW (fixture->tree_view), end,
+	btk_tree_view_set_cursor (BTK_TREE_VIEW (fixture->tree_view), end,
 				  NULL, FALSE);
-	gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (fixture->tree_view),
+	btk_tree_view_scroll_to_cell (BTK_TREE_VIEW (fixture->tree_view),
 				      end, NULL,
 				      use_align, row_align, 0.0);
-	gtk_tree_path_free (end);
+	btk_tree_path_free (end);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
 	/* Scroll to final position */
-	gtk_tree_view_set_cursor (GTK_TREE_VIEW (fixture->tree_view), path,
+	btk_tree_view_set_cursor (BTK_TREE_VIEW (fixture->tree_view), path,
 				  NULL, FALSE);
-	gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (fixture->tree_view),
+	btk_tree_view_scroll_to_cell (BTK_TREE_VIEW (fixture->tree_view),
 				      path, NULL,
 				      use_align, row_align, 0.0);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
-	test_position (GTK_TREE_VIEW (fixture->tree_view), path,
+	test_position (BTK_TREE_VIEW (fixture->tree_view), path,
 		       use_align, row_align, 0.0);
 }
 
@@ -623,105 +623,105 @@ static void
 scroll_both_no_align (ScrollFixture *fixture,
 		      gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_both_realize (fixture, path, FALSE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_both_align_0_0 (ScrollFixture *fixture,
 		       gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_both_realize (fixture, path, TRUE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_both_align_0_5 (ScrollFixture *fixture,
 		       gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_both_realize (fixture, path, TRUE, 0.5);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 static void
 scroll_both_align_1_0 (ScrollFixture *fixture,
 		       gconstpointer  test_data)
 {
-	GtkTreePath *path;
+	BtkTreePath *path;
 
-	path = gtk_tree_path_new_from_string (test_data);
+	path = btk_tree_path_new_from_string (test_data);
 	scroll_both_realize (fixture, path, TRUE, 1.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 }
 
 /* Testing scrolling to a newly created row */
 static void
-create_new_row (GtkListStore *store,
+create_new_row (BtkListStore *store,
 		int           n,
-		GtkTreeIter  *iter)
+		BtkTreeIter  *iter)
 {
 	switch (n) {
 		case 0:
 			/* Prepend a row */
-			gtk_list_store_prepend (store, iter);
+			btk_list_store_prepend (store, iter);
 			break;
 
 		case 4:
 			/* Add a row in the middle of the visible area */
-			gtk_list_store_insert (store, iter, 4);
+			btk_list_store_insert (store, iter, 4);
 			break;
 
 		case 8:
 			/* Add a row which is not completely visible */
-			gtk_list_store_insert (store, iter, 8);
+			btk_list_store_insert (store, iter, 8);
 			break;
 
 		case 500:
 			/* Add a row in the middle */
-			gtk_list_store_insert (store, iter, 500);
+			btk_list_store_insert (store, iter, 500);
 			break;
 
 		case 999:
 			/* Append a row */
-			gtk_list_store_append (store, iter);
+			btk_list_store_append (store, iter);
 			break;
 	}
 
-	gtk_list_store_set (store, iter, 0, "New...", -1);
+	btk_list_store_set (store, iter, 0, "New...", -1);
 }
 
 static void
-scroll_new_row_editing_started (GtkCellRenderer *cell,
-				GtkCellEditable *editable,
+scroll_new_row_editing_started (BtkCellRenderer *cell,
+				BtkCellEditable *editable,
 				const char      *path,
 				gpointer         user_data)
 {
-	GtkWidget **widget = user_data;
+	BtkWidget **widget = user_data;
 
-	*widget = GTK_WIDGET (editable);
+	*widget = BTK_WIDGET (editable);
 }
 
 static void
-test_editable_position (GtkWidget   *tree_view,
-			GtkWidget   *editable,
-			GtkTreePath *cursor_path)
+test_editable_position (BtkWidget   *tree_view,
+			BtkWidget   *editable,
+			BtkTreePath *cursor_path)
 {
-	GdkRectangle rect;
-	GtkAdjustment *vadj;
+	BdkRectangle rect;
+	BtkAdjustment *vadj;
 
-	gtk_tree_view_get_background_area (GTK_TREE_VIEW (tree_view),
+	btk_tree_view_get_background_area (BTK_TREE_VIEW (tree_view),
 					   cursor_path, NULL, &rect);
 
-	vadj = gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (tree_view));
+	vadj = btk_tree_view_get_vadjustment (BTK_TREE_VIEW (tree_view));
 
 	/* There are all in bin_window coordinates */
 	g_assert (editable->allocation.y == rect.y + ((rect.height - editable->allocation.height) / 2));
@@ -731,12 +731,12 @@ static void
 scroll_new_row (ScrollFixture *fixture,
 		gconstpointer  test_data)
 {
-	GtkTreeIter scroll_iter;
-	GtkTreePath *scroll_path;
-	GtkTreeModel *model;
+	BtkTreeIter scroll_iter;
+	BtkTreePath *scroll_path;
+	BtkTreeModel *model;
 	GList *renderers;
-	GtkTreeViewColumn *column;
-	GtkWidget *editable;
+	BtkTreeViewColumn *column;
+	BtkWidget *editable;
 
 	/* The aim of this test is creating a new row at several places,
 	 * and immediately put the cursor on it.  TreeView should correctly
@@ -747,48 +747,48 @@ scroll_new_row (ScrollFixture *fixture,
 
 	g_test_bug ("81627");
 
-	gtk_widget_show_all (fixture->window);
+	btk_widget_show_all (fixture->window);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
 	/* Create the new row and scroll to it */
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (fixture->tree_view));
-	create_new_row (GTK_LIST_STORE (model), GPOINTER_TO_INT (test_data),
+	model = btk_tree_view_get_model (BTK_TREE_VIEW (fixture->tree_view));
+	create_new_row (BTK_LIST_STORE (model), GPOINTER_TO_INT (test_data),
 			&scroll_iter);
 
 	/* Set up a signal handler to acquire the editable widget */
-	column = gtk_tree_view_get_column (GTK_TREE_VIEW (fixture->tree_view), 0);
-	renderers = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (column));
+	column = btk_tree_view_get_column (BTK_TREE_VIEW (fixture->tree_view), 0);
+	renderers = btk_cell_layout_get_cells (BTK_CELL_LAYOUT (column));
 
 	g_signal_connect (G_OBJECT (renderers->data), "editing-started",
 			  G_CALLBACK (scroll_new_row_editing_started),
 			  &editable);
 
 	/* Now set the cursor on the path and start editing */
-	scroll_path = gtk_tree_model_get_path (model, &scroll_iter);
-	gtk_tree_view_set_cursor (GTK_TREE_VIEW (fixture->tree_view),
+	scroll_path = btk_tree_model_get_path (model, &scroll_iter);
+	btk_tree_view_set_cursor (BTK_TREE_VIEW (fixture->tree_view),
 				  scroll_path,
 				  column,
 				  TRUE);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
 	/* Test position */
-	test_position (GTK_TREE_VIEW (fixture->tree_view), scroll_path,
+	test_position (BTK_TREE_VIEW (fixture->tree_view), scroll_path,
 		       FALSE, 0.0, 0.0);
 	test_editable_position (fixture->tree_view, editable, scroll_path);
 
-	gtk_tree_path_free (scroll_path);
+	btk_tree_path_free (scroll_path);
 }
 
 static void
 scroll_new_row_tree (ScrollFixture *fixture,
 		     gconstpointer  test_data)
 {
-	GtkTreeModel *model;
-	GtkAdjustment *vadjustment;
+	BtkTreeModel *model;
+	BtkAdjustment *vadjustment;
 	int i;
 
 	/* The goal of this test is to append new rows at the end of a tree
@@ -797,36 +797,36 @@ scroll_new_row_tree (ScrollFixture *fixture,
 	 * this used to lead to unexpected results due to a bug.
 	 *
 	 * This issue has been reported by Miroslav Rajcic on
-	 * gtk-app-devel-list:
-	 * http://mail.gnome.org/archives/gtk-app-devel-list/2008-December/msg00068.html
+	 * btk-app-devel-list:
+	 * http://mail.gnome.org/archives/btk-app-devel-list/2008-December/msg00068.html
 	 */
 
-	gtk_widget_show_all (fixture->window);
+	btk_widget_show_all (fixture->window);
 
-	gtk_tree_view_expand_all (GTK_TREE_VIEW (fixture->tree_view));
+	btk_tree_view_expand_all (BTK_TREE_VIEW (fixture->tree_view));
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (fixture->tree_view));
-	vadjustment = gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (fixture->tree_view));
+	model = btk_tree_view_get_model (BTK_TREE_VIEW (fixture->tree_view));
+	vadjustment = btk_tree_view_get_vadjustment (BTK_TREE_VIEW (fixture->tree_view));
 
 	for (i = 0; i < 5; i++) {
-		GtkTreeIter scroll_iter;
-		GtkTreePath *scroll_path;
+		BtkTreeIter scroll_iter;
+		BtkTreePath *scroll_path;
 
-		gtk_tree_store_append (GTK_TREE_STORE (model), &scroll_iter,
+		btk_tree_store_append (BTK_TREE_STORE (model), &scroll_iter,
 				       NULL);
-		gtk_tree_store_set (GTK_TREE_STORE (model), &scroll_iter,
+		btk_tree_store_set (BTK_TREE_STORE (model), &scroll_iter,
 				    0, "New node", -1);
 
-		scroll_path = gtk_tree_model_get_path (model, &scroll_iter);
-		gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (fixture->tree_view),
+		scroll_path = btk_tree_model_get_path (model, &scroll_iter);
+		btk_tree_view_scroll_to_cell (BTK_TREE_VIEW (fixture->tree_view),
 					      scroll_path, NULL, FALSE, 0.0, 0.0);
-		gtk_tree_path_free (scroll_path);
+		btk_tree_path_free (scroll_path);
 
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
+		while (btk_events_pending ())
+			btk_main_iteration ();
 
 		/* Test position, the scroll bar must be at the end */
 		g_assert (vadjustment->value == vadjustment->upper - vadjustment->page_size);
@@ -840,10 +840,10 @@ static void
 test_bug316689 (ScrollFixture *fixture,
 		gconstpointer  test_data)
 {
-	GtkTreeIter iter;
-	GtkTreePath *path;
-	GtkAdjustment *vadj;
-	GtkTreeModel *model;
+	BtkTreeIter iter;
+	BtkTreePath *path;
+	BtkAdjustment *vadj;
+	BtkTreeModel *model;
 
 	/* The aim of this test is to scroll to the bottom of a TreeView,
 	 * remove at least one page_size of items and check if TreeView
@@ -855,24 +855,24 @@ test_bug316689 (ScrollFixture *fixture,
 	g_test_bug ("316689");
 
 	/* Scroll to some place close to the end */
-	path = gtk_tree_path_new_from_indices (N_ROWS - 4, -1);
+	path = btk_tree_path_new_from_indices (N_ROWS - 4, -1);
 	scroll (fixture, path, FALSE, 0.0);
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 
 	/* No need for a while events pending loop here, scroll() does this for us.
 	 *
 	 * We now remove a bunch of rows, wait for events to process and then
 	 * check the adjustments to see if the TreeView gracefully recovered.
 	 */
-	model = gtk_tree_view_get_model (GTK_TREE_VIEW (fixture->tree_view));
+	model = btk_tree_view_get_model (BTK_TREE_VIEW (fixture->tree_view));
 
-	while (gtk_tree_model_iter_nth_child (model, &iter, NULL, N_ROWS - 15))
-		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+	while (btk_tree_model_iter_nth_child (model, &iter, NULL, N_ROWS - 15))
+		btk_list_store_remove (BTK_LIST_STORE (model), &iter);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
-	vadj = gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (fixture->tree_view));
+	vadj = btk_tree_view_get_vadjustment (BTK_TREE_VIEW (fixture->tree_view));
 
 	g_assert (vadj->value + vadj->page_size <= vadj->upper);
 	g_assert (vadj->value == vadj->upper - vadj->page_size);
@@ -885,56 +885,56 @@ test_bug359231 (void)
 {
 	int i;
 	int height1, height2;
-	GtkTreePath *path;
-	GtkTreeIter iter, child;
-	GtkTreeStore *store;
-	GdkRectangle rect;
+	BtkTreePath *path;
+	BtkTreeIter iter, child;
+	BtkTreeStore *store;
+	BdkRectangle rect;
 	ScrollFixture *fixture;
 
 	/* See #359231. */
 	g_test_bug ("359231");
 
-	/* Create model (GtkTreeStore in this case) */
-	store = gtk_tree_store_new (1, G_TYPE_STRING);
+	/* Create model (BtkTreeStore in this case) */
+	store = btk_tree_store_new (1, G_TYPE_STRING);
 
-	gtk_tree_store_append (store, &iter, NULL);
-	gtk_tree_store_set (store, &iter, 0, "Foo", -1);
+	btk_tree_store_append (store, &iter, NULL);
+	btk_tree_store_set (store, &iter, 0, "Foo", -1);
 
 	for (i = 0; i < 4; i++) {
-		gtk_tree_store_append (store, &child, &iter);
-		gtk_tree_store_set (store, &child, 0, "Two\nLines", -1);
+		btk_tree_store_append (store, &child, &iter);
+		btk_tree_store_set (store, &child, 0, "Two\nLines", -1);
 	}
 	
 	fixture = g_new0 (ScrollFixture, 1);
-	scroll_fixture_setup (fixture, GTK_TREE_MODEL (store), NULL);
-	gtk_widget_show_all (fixture->window);
+	scroll_fixture_setup (fixture, BTK_TREE_MODEL (store), NULL);
+	btk_widget_show_all (fixture->window);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
 	/* Prepend some rows at the top, expand */
-	gtk_tree_store_prepend (store, &iter, NULL);
-	gtk_tree_store_set (store, &iter, 0, "Foo", -1);
+	btk_tree_store_prepend (store, &iter, NULL);
+	btk_tree_store_set (store, &iter, 0, "Foo", -1);
 
-	gtk_tree_store_prepend (store, &child, &iter);
-	gtk_tree_store_set (store, &child, 0, "Two\nLines", -1);
+	btk_tree_store_prepend (store, &child, &iter);
+	btk_tree_store_set (store, &child, 0, "Two\nLines", -1);
 
-	gtk_tree_view_expand_all (GTK_TREE_VIEW (fixture->tree_view));
+	btk_tree_view_expand_all (BTK_TREE_VIEW (fixture->tree_view));
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (btk_events_pending ())
+		btk_main_iteration ();
 
 	/* Test if height of row 0:0 is correct */
-	path = gtk_tree_path_new_from_indices (0, -1);
-	gtk_tree_view_get_background_area (GTK_TREE_VIEW (fixture->tree_view),
+	path = btk_tree_path_new_from_indices (0, -1);
+	btk_tree_view_get_background_area (BTK_TREE_VIEW (fixture->tree_view),
 					   path, NULL, &rect);
 	height1 = rect.height;
 
-	gtk_tree_path_down (path);
-	gtk_tree_view_get_background_area (GTK_TREE_VIEW (fixture->tree_view),
+	btk_tree_path_down (path);
+	btk_tree_view_get_background_area (BTK_TREE_VIEW (fixture->tree_view),
 					   path, NULL, &rect);
 	height2 = rect.height;
-	gtk_tree_path_free (path);
+	btk_tree_path_free (path);
 
 	g_assert (height2 > height1);
 
@@ -1042,7 +1042,7 @@ add_tests (gboolean mixed,
 int
 main (int argc, char **argv)
 {
-	gtk_test_init (&argc, &argv);
+	btk_test_init (&argc, &argv);
 
 	/* Scrolls before realization */
 	add_tests (FALSE, BEFORE, FALSE, 0.0, scroll_no_align);

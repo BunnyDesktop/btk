@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,76 +18,76 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_VIEWPORT_H__
-#define __GTK_VIEWPORT_H__
+#ifndef __BTK_VIEWPORT_H__
+#define __BTK_VIEWPORT_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkadjustment.h>
-#include <gtk/gtkbin.h>
+#include <btk/btkadjustment.h>
+#include <btk/btkbin.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_VIEWPORT            (gtk_viewport_get_type ())
-#define GTK_VIEWPORT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_VIEWPORT, GtkViewport))
-#define GTK_VIEWPORT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_VIEWPORT, GtkViewportClass))
-#define GTK_IS_VIEWPORT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_VIEWPORT))
-#define GTK_IS_VIEWPORT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_VIEWPORT))
-#define GTK_VIEWPORT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_VIEWPORT, GtkViewportClass))
+#define BTK_TYPE_VIEWPORT            (btk_viewport_get_type ())
+#define BTK_VIEWPORT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VIEWPORT, BtkViewport))
+#define BTK_VIEWPORT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VIEWPORT, BtkViewportClass))
+#define BTK_IS_VIEWPORT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VIEWPORT))
+#define BTK_IS_VIEWPORT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VIEWPORT))
+#define BTK_VIEWPORT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VIEWPORT, BtkViewportClass))
 
 
-typedef struct _GtkViewport       GtkViewport;
-typedef struct _GtkViewportClass  GtkViewportClass;
+typedef struct _BtkViewport       BtkViewport;
+typedef struct _BtkViewportClass  BtkViewportClass;
 
-struct _GtkViewport
+struct _BtkViewport
 {
-  GtkBin bin;
+  BtkBin bin;
 
-  GtkShadowType GSEAL (shadow_type);
-  GdkWindow *GSEAL (view_window);
-  GdkWindow *GSEAL (bin_window);
-  GtkAdjustment *GSEAL (hadjustment);
-  GtkAdjustment *GSEAL (vadjustment);
+  BtkShadowType GSEAL (shadow_type);
+  BdkWindow *GSEAL (view_window);
+  BdkWindow *GSEAL (bin_window);
+  BtkAdjustment *GSEAL (hadjustment);
+  BtkAdjustment *GSEAL (vadjustment);
 };
 
-struct _GtkViewportClass
+struct _BtkViewportClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
-  void	(*set_scroll_adjustments)	(GtkViewport	*viewport,
-					 GtkAdjustment	*hadjustment,
-					 GtkAdjustment	*vadjustment);
+  void	(*set_scroll_adjustments)	(BtkViewport	*viewport,
+					 BtkAdjustment	*hadjustment,
+					 BtkAdjustment	*vadjustment);
 };
 
 
-GType          gtk_viewport_get_type        (void) G_GNUC_CONST;
-GtkWidget*     gtk_viewport_new             (GtkAdjustment *hadjustment,
-					     GtkAdjustment *vadjustment);
-GtkAdjustment* gtk_viewport_get_hadjustment (GtkViewport   *viewport);
-GtkAdjustment* gtk_viewport_get_vadjustment (GtkViewport   *viewport);
-void           gtk_viewport_set_hadjustment (GtkViewport   *viewport,
-					     GtkAdjustment *adjustment);
-void           gtk_viewport_set_vadjustment (GtkViewport   *viewport,
-					     GtkAdjustment *adjustment);
-void           gtk_viewport_set_shadow_type (GtkViewport   *viewport,
-					     GtkShadowType  type);
-GtkShadowType  gtk_viewport_get_shadow_type (GtkViewport   *viewport);
-GdkWindow*     gtk_viewport_get_bin_window  (GtkViewport   *viewport);
-GdkWindow*     gtk_viewport_get_view_window (GtkViewport   *viewport);
+GType          btk_viewport_get_type        (void) G_GNUC_CONST;
+BtkWidget*     btk_viewport_new             (BtkAdjustment *hadjustment,
+					     BtkAdjustment *vadjustment);
+BtkAdjustment* btk_viewport_get_hadjustment (BtkViewport   *viewport);
+BtkAdjustment* btk_viewport_get_vadjustment (BtkViewport   *viewport);
+void           btk_viewport_set_hadjustment (BtkViewport   *viewport,
+					     BtkAdjustment *adjustment);
+void           btk_viewport_set_vadjustment (BtkViewport   *viewport,
+					     BtkAdjustment *adjustment);
+void           btk_viewport_set_shadow_type (BtkViewport   *viewport,
+					     BtkShadowType  type);
+BtkShadowType  btk_viewport_get_shadow_type (BtkViewport   *viewport);
+BdkWindow*     btk_viewport_get_bin_window  (BtkViewport   *viewport);
+BdkWindow*     btk_viewport_get_view_window (BtkViewport   *viewport);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_VIEWPORT_H__ */
+#endif /* __BTK_VIEWPORT_H__ */

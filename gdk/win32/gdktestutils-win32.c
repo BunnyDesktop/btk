@@ -1,4 +1,4 @@
-/* Gtk+ testing utilities
+/* Btk+ testing utilities
  * Copyright (C) 2007 Imendio AB
  * Authors: Tim Janik
  *
@@ -17,31 +17,31 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include <gdk/gdktestutils.h>
-#include <gdk/gdkkeysyms.h>
-#include <win32/gdkwin32.h>
-#include "gdkalias.h"
+#include <bdk/bdktestutils.h>
+#include <bdk/bdkkeysyms.h>
+#include <win32/bdkwin32.h>
+#include "bdkalias.h"
 
 void
-gdk_test_render_sync (GdkWindow *window)
+bdk_test_render_sync (BdkWindow *window)
 {
 }
 
 gboolean
-gdk_test_simulate_key (GdkWindow      *window,
+bdk_test_simulate_key (BdkWindow      *window,
                        gint            x,
                        gint            y,
                        guint           keyval,
-                       GdkModifierType modifiers,
-                       GdkEventType    key_pressrelease)
+                       BdkModifierType modifiers,
+                       BdkEventType    key_pressrelease)
 {
   gboolean      success = FALSE;
-  GdkKeymapKey *keys    = NULL;
+  BdkKeymapKey *keys    = NULL;
   gint          n_keys  = 0;
   INPUT         ip;
   gint          i;
 
-  g_return_val_if_fail (key_pressrelease == GDK_KEY_PRESS || key_pressrelease == GDK_KEY_RELEASE, FALSE);
+  g_return_val_if_fail (key_pressrelease == BDK_KEY_PRESS || key_pressrelease == BDK_KEY_RELEASE, FALSE);
   g_return_val_if_fail (window != NULL, FALSE);
 
   ip.type = INPUT_KEYBOARD;
@@ -51,21 +51,21 @@ gdk_test_simulate_key (GdkWindow      *window,
 
   switch (key_pressrelease)
     {
-    case GDK_KEY_PRESS:
+    case BDK_KEY_PRESS:
       ip.ki.dwFlags = 0;
       break;
-    case GDK_KEY_RELEASE:
+    case BDK_KEY_RELEASE:
       ip.ki.dwFlags = KEYEVENTF_KEYUP;
       break;
     default:
       /* Not a key event. */
       return FALSE;
     }
-  if (gdk_keymap_get_entries_for_keyval (gdk_keymap_get_default (), keyval, &keys, &n_keys))
+  if (bdk_keymap_get_entries_for_keyval (bdk_keymap_get_default (), keyval, &keys, &n_keys))
     {
       for (i = 0; i < n_keys; i++)
         {
-          if (key_pressrelease == GDK_KEY_PRESS)
+          if (key_pressrelease == BDK_KEY_PRESS)
             {
               /* AltGr press. */
               if (keys[i].group)
@@ -78,7 +78,7 @@ gdk_test_simulate_key (GdkWindow      *window,
                   SendInput(1, &ip, sizeof(INPUT));
                 }
               /* Shift press. */
-              if (keys[i].level || (modifiers & GDK_SHIFT_MASK))
+              if (keys[i].level || (modifiers & BDK_SHIFT_MASK))
                 {
                   ip.ki.wVk = VK_SHIFT;
                   SendInput(1, &ip, sizeof(INPUT));
@@ -89,10 +89,10 @@ gdk_test_simulate_key (GdkWindow      *window,
           ip.ki.wVk = keys[i].keycode;
           SendInput(1, &ip, sizeof(INPUT));
 
-          if (key_pressrelease == GDK_KEY_RELEASE)
+          if (key_pressrelease == BDK_KEY_RELEASE)
             {
               /* Shift release. */
-              if (keys[i].level || (modifiers & GDK_SHIFT_MASK))
+              if (keys[i].level || (modifiers & BDK_SHIFT_MASK))
                 {
                   ip.ki.wVk = VK_SHIFT;
                   SendInput(1, &ip, sizeof(INPUT));
@@ -118,14 +118,14 @@ gdk_test_simulate_key (GdkWindow      *window,
 }
 
 gboolean
-gdk_test_simulate_button (GdkWindow      *window,
+bdk_test_simulate_button (BdkWindow      *window,
                           gint            x,
                           gint            y,
                           guint           button, /*1..3*/
-                          GdkModifierType modifiers,
-                          GdkEventType    button_pressrelease)
+                          BdkModifierType modifiers,
+                          BdkEventType    button_pressrelease)
 {
-  g_return_val_if_fail (button_pressrelease == GDK_BUTTON_PRESS || button_pressrelease == GDK_BUTTON_RELEASE, FALSE);
+  g_return_val_if_fail (button_pressrelease == BDK_BUTTON_PRESS || button_pressrelease == BDK_BUTTON_RELEASE, FALSE);
   g_return_val_if_fail (window != NULL, FALSE);
 
   return FALSE;

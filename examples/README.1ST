@@ -1,8 +1,8 @@
-GTK Example Code - Tony Gale <gale@gtk.org> 980623
+BTK Example Code - Tony Gale <gale@btk.org> 980623
 --------------------------------------------------
 
 I have written an awk script to automatically extract the code
-examples from the GTK Tutorial (in sgml), so they only have to be
+examples from the BTK Tutorial (in sgml), so they only have to be
 changed in one place.
 
 It's called 'extract.awk', and there is a shell wrapper to invoke
@@ -19,8 +19,8 @@ exist.
 
 Without the -f switch, all code examples will be extracted.
 
-The shell wrapper assumes that the GTK Tutorial is in the 
-file "../docs/gtk_tut.sgml"
+The shell wrapper assumes that the BTK Tutorial is in the 
+file "../docs/btk_tut.sgml"
 
 It works by looking for sections of text in the tutorial surrounded
 by, for example:

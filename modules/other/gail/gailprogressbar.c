@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,153 +21,153 @@
 
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-#include "gailprogressbar.h"
-#include "gailadjustment.h"
+#include "bailprogressbar.h"
+#include "bailadjustment.h"
 
-static void	 gail_progress_bar_class_init        (GailProgressBarClass *klass);
-static void	 gail_progress_bar_init              (GailProgressBar *bar);
-static void      gail_progress_bar_real_initialize   (AtkObject      *obj,
+static void	 bail_progress_bar_class_init        (BailProgressBarClass *klass);
+static void	 bail_progress_bar_init              (BailProgressBar *bar);
+static void      bail_progress_bar_real_initialize   (BatkObject      *obj,
                                                       gpointer       data);
-static void      gail_progress_bar_finalize          (GObject        *object);
+static void      bail_progress_bar_finalize          (GObject        *object);
 
 
-static void	 atk_value_interface_init            (AtkValueIface  *iface);
+static void	 batk_value_interface_init            (BatkValueIface  *iface);
 
 
-static void      gail_progress_bar_real_notify_gtk   (GObject        *obj,
+static void      bail_progress_bar_real_notify_btk   (GObject        *obj,
                                                       GParamSpec     *pspec);
 
-static void	 gail_progress_bar_get_current_value (AtkValue       *obj,
+static void	 bail_progress_bar_get_current_value (BatkValue       *obj,
                                            	      GValue         *value);
-static void	 gail_progress_bar_get_maximum_value (AtkValue       *obj,
+static void	 bail_progress_bar_get_maximum_value (BatkValue       *obj,
                                             	      GValue         *value);
-static void	 gail_progress_bar_get_minimum_value (AtkValue       *obj,
+static void	 bail_progress_bar_get_minimum_value (BatkValue       *obj,
                                            	      GValue         *value);
-static void      gail_progress_bar_value_changed     (GtkAdjustment  *adjustment,
+static void      bail_progress_bar_value_changed     (BtkAdjustment  *adjustment,
                                                       gpointer       data);
 
-G_DEFINE_TYPE_WITH_CODE (GailProgressBar, gail_progress_bar, GAIL_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailProgressBar, bail_progress_bar, BAIL_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init))
 
 static void	 
-gail_progress_bar_class_init		(GailProgressBarClass *klass)
+bail_progress_bar_class_init		(BailProgressBarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
-  GailWidgetClass *widget_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
+  BailWidgetClass *widget_class;
 
-  widget_class = (GailWidgetClass*)klass;
+  widget_class = (BailWidgetClass*)klass;
 
-  widget_class->notify_gtk = gail_progress_bar_real_notify_gtk;
+  widget_class->notify_btk = bail_progress_bar_real_notify_btk;
 
-  class->initialize = gail_progress_bar_real_initialize;
+  class->initialize = bail_progress_bar_real_initialize;
 
-  gobject_class->finalize = gail_progress_bar_finalize;
+  bobject_class->finalize = bail_progress_bar_finalize;
 }
 
 static void
-gail_progress_bar_init (GailProgressBar *bar)
+bail_progress_bar_init (BailProgressBar *bar)
 {
 }
 
 static void
-gail_progress_bar_real_initialize (AtkObject *obj,
+bail_progress_bar_real_initialize (BatkObject *obj,
                                    gpointer  data)
 {
-  GailProgressBar *progress_bar = GAIL_PROGRESS_BAR (obj);
-  GtkProgress *gtk_progress;
+  BailProgressBar *progress_bar = BAIL_PROGRESS_BAR (obj);
+  BtkProgress *btk_progress;
 
-  ATK_OBJECT_CLASS (gail_progress_bar_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_progress_bar_parent_class)->initialize (obj, data);
 
-  gtk_progress = GTK_PROGRESS (data);
+  btk_progress = BTK_PROGRESS (data);
   /*
-   * If a GtkAdjustment already exists for the spin_button,
-   * create the GailAdjustment
+   * If a BtkAdjustment already exists for the spin_button,
+   * create the BailAdjustment
    */
-  if (gtk_progress->adjustment)
+  if (btk_progress->adjustment)
     {
-      progress_bar->adjustment = gail_adjustment_new (gtk_progress->adjustment);
-      g_signal_connect (gtk_progress->adjustment,
+      progress_bar->adjustment = bail_adjustment_new (btk_progress->adjustment);
+      g_signal_connect (btk_progress->adjustment,
                         "value-changed",
-                        G_CALLBACK (gail_progress_bar_value_changed),
+                        G_CALLBACK (bail_progress_bar_value_changed),
                         obj);
     }
   else
     progress_bar->adjustment = NULL;
 
-  obj->role = ATK_ROLE_PROGRESS_BAR;
+  obj->role = BATK_ROLE_PROGRESS_BAR;
 }
 
 static void	 
-atk_value_interface_init (AtkValueIface *iface)
+batk_value_interface_init (BatkValueIface *iface)
 {
-  iface->get_current_value = gail_progress_bar_get_current_value;
-  iface->get_maximum_value = gail_progress_bar_get_maximum_value;
-  iface->get_minimum_value = gail_progress_bar_get_minimum_value;
+  iface->get_current_value = bail_progress_bar_get_current_value;
+  iface->get_maximum_value = bail_progress_bar_get_maximum_value;
+  iface->get_minimum_value = bail_progress_bar_get_minimum_value;
 }
 
 static void	 
-gail_progress_bar_get_current_value (AtkValue   *obj,
+bail_progress_bar_get_current_value (BatkValue   *obj,
                                      GValue     *value)
 {
-  GailProgressBar *progress_bar;
+  BailProgressBar *progress_bar;
 
-  g_return_if_fail (GAIL_IS_PROGRESS_BAR (obj));
+  g_return_if_fail (BAIL_IS_PROGRESS_BAR (obj));
 
-  progress_bar = GAIL_PROGRESS_BAR (obj);
+  progress_bar = BAIL_PROGRESS_BAR (obj);
   if (progress_bar->adjustment == NULL)
     /*
      * Adjustment has not been specified
      */
     return;
 
-  atk_value_get_current_value (ATK_VALUE (progress_bar->adjustment), value);
+  batk_value_get_current_value (BATK_VALUE (progress_bar->adjustment), value);
 }
 
 static void	 
-gail_progress_bar_get_maximum_value (AtkValue   *obj,
+bail_progress_bar_get_maximum_value (BatkValue   *obj,
                                      GValue     *value)
 {
-  GailProgressBar *progress_bar;
+  BailProgressBar *progress_bar;
 
-  g_return_if_fail (GAIL_IS_PROGRESS_BAR (obj));
+  g_return_if_fail (BAIL_IS_PROGRESS_BAR (obj));
 
-  progress_bar = GAIL_PROGRESS_BAR (obj);
+  progress_bar = BAIL_PROGRESS_BAR (obj);
   if (progress_bar->adjustment == NULL)
     /*
      * Adjustment has not been specified
      */
     return;
 
-  atk_value_get_maximum_value (ATK_VALUE (progress_bar->adjustment), value);
+  batk_value_get_maximum_value (BATK_VALUE (progress_bar->adjustment), value);
 }
 
 static void	 
-gail_progress_bar_get_minimum_value (AtkValue    *obj,
+bail_progress_bar_get_minimum_value (BatkValue    *obj,
                               	     GValue      *value)
 {
-  GailProgressBar *progress_bar;
+  BailProgressBar *progress_bar;
 
-  g_return_if_fail (GAIL_IS_PROGRESS_BAR (obj));
+  g_return_if_fail (BAIL_IS_PROGRESS_BAR (obj));
 
-  progress_bar = GAIL_PROGRESS_BAR (obj);
+  progress_bar = BAIL_PROGRESS_BAR (obj);
   if (progress_bar->adjustment == NULL)
     /*
      * Adjustment has not been specified
      */
     return;
 
-  atk_value_get_minimum_value (ATK_VALUE (progress_bar->adjustment), value);
+  batk_value_get_minimum_value (BATK_VALUE (progress_bar->adjustment), value);
 }
 
 static void
-gail_progress_bar_finalize (GObject            *object)
+bail_progress_bar_finalize (GObject            *object)
 {
-  GailProgressBar *progress_bar = GAIL_PROGRESS_BAR (object);
+  BailProgressBar *progress_bar = BAIL_PROGRESS_BAR (object);
 
   if (progress_bar->adjustment)
     {
@@ -175,21 +175,21 @@ gail_progress_bar_finalize (GObject            *object)
       progress_bar->adjustment = NULL;
     }
 
-  G_OBJECT_CLASS (gail_progress_bar_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_progress_bar_parent_class)->finalize (object);
 }
 
 
 static void
-gail_progress_bar_real_notify_gtk (GObject           *obj,
+bail_progress_bar_real_notify_btk (GObject           *obj,
                                    GParamSpec        *pspec)
 {
-  GtkWidget *widget = GTK_WIDGET (obj);
-  GailProgressBar *progress_bar = GAIL_PROGRESS_BAR (gtk_widget_get_accessible (widget));
+  BtkWidget *widget = BTK_WIDGET (obj);
+  BailProgressBar *progress_bar = BAIL_PROGRESS_BAR (btk_widget_get_accessible (widget));
 
   if (strcmp (pspec->name, "adjustment") == 0)
     {
       /*
-       * Get rid of the GailAdjustment for the GtkAdjustment
+       * Get rid of the BailAdjustment for the BtkAdjustment
        * which was associated with the progress_bar.
        */
       if (progress_bar->adjustment)
@@ -198,29 +198,29 @@ gail_progress_bar_real_notify_gtk (GObject           *obj,
           progress_bar->adjustment = NULL;
         }
       /*
-       * Create the GailAdjustment when notify for "adjustment" property
+       * Create the BailAdjustment when notify for "adjustment" property
        * is received
        */
-      progress_bar->adjustment = gail_adjustment_new (GTK_PROGRESS (widget)->adjustment);
-      g_signal_connect (GTK_PROGRESS (widget)->adjustment,
+      progress_bar->adjustment = bail_adjustment_new (BTK_PROGRESS (widget)->adjustment);
+      g_signal_connect (BTK_PROGRESS (widget)->adjustment,
                         "value-changed",
-                        G_CALLBACK (gail_progress_bar_value_changed),
+                        G_CALLBACK (bail_progress_bar_value_changed),
                         progress_bar);
     }
   else
-    GAIL_WIDGET_CLASS (gail_progress_bar_parent_class)->notify_gtk (obj, pspec);
+    BAIL_WIDGET_CLASS (bail_progress_bar_parent_class)->notify_btk (obj, pspec);
 }
 
 static void
-gail_progress_bar_value_changed (GtkAdjustment    *adjustment,
+bail_progress_bar_value_changed (BtkAdjustment    *adjustment,
                                  gpointer         data)
 {
-  GailProgressBar *progress_bar;
+  BailProgressBar *progress_bar;
 
   g_return_if_fail (adjustment != NULL);
   g_return_if_fail (data != NULL);
 
-  progress_bar = GAIL_PROGRESS_BAR (data);
+  progress_bar = BAIL_PROGRESS_BAR (data);
 
   g_object_notify (G_OBJECT (progress_bar), "accessible-value");
 }

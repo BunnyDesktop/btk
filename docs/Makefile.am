@@ -17,7 +17,7 @@ EXTRA_DIST += \
 	widget_geometry.txt		\
 	widget_system.txt 		\
 	generation.txt			\
-	gtkdocs_fix			\
+	btkdocs_fix			\
 	RELEASE-HOWTO
 
 -include $(top_srcdir)/git.mk

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,51 +18,51 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_TOOLTIPS_H__
-#define __GTK_TOOLTIPS_H__
+#ifndef __BTK_TOOLTIPS_H__
+#define __BTK_TOOLTIPS_H__
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkwindow.h>
+#include <btk/btkwidget.h>
+#include <btk/btkwindow.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TOOLTIPS                  (gtk_tooltips_get_type ())
-#define GTK_TOOLTIPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TOOLTIPS, GtkTooltips))
-#define GTK_TOOLTIPS_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TOOLTIPS, GtkTooltipsClass))
-#define GTK_IS_TOOLTIPS(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TOOLTIPS))
-#define GTK_IS_TOOLTIPS_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TOOLTIPS))
-#define GTK_TOOLTIPS_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TOOLTIPS, GtkTooltipsClass))
+#define BTK_TYPE_TOOLTIPS                  (btk_tooltips_get_type ())
+#define BTK_TOOLTIPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIPS, BtkTooltips))
+#define BTK_TOOLTIPS_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOOLTIPS, BtkTooltipsClass))
+#define BTK_IS_TOOLTIPS(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIPS))
+#define BTK_IS_TOOLTIPS_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOOLTIPS))
+#define BTK_TOOLTIPS_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOLTIPS, BtkTooltipsClass))
 
 
-typedef struct _GtkTooltips	 GtkTooltips;
-typedef struct _GtkTooltipsClass GtkTooltipsClass;
-typedef struct _GtkTooltipsData	 GtkTooltipsData;
+typedef struct _BtkTooltips	 BtkTooltips;
+typedef struct _BtkTooltipsClass BtkTooltipsClass;
+typedef struct _BtkTooltipsData	 BtkTooltipsData;
 
-struct _GtkTooltipsData
+struct _BtkTooltipsData
 {
-  GtkTooltips *tooltips;
-  GtkWidget *widget;
+  BtkTooltips *tooltips;
+  BtkWidget *widget;
   gchar *tip_text;
   gchar *tip_private;
 };
 
-struct _GtkTooltips
+struct _BtkTooltips
 {
-  GtkObject parent_instance;
+  BtkObject parent_instance;
 
   /*< private >*/
-  GtkWidget *tip_window;
-  GtkWidget *tip_label;
-  GtkTooltipsData *active_tips_data;
+  BtkWidget *tip_window;
+  BtkWidget *tip_label;
+  BtkTooltipsData *active_tips_data;
   GList *tips_data_list; /* unused */
 
   guint   delay : 30;
@@ -73,37 +73,37 @@ struct _GtkTooltips
   GTimeVal last_popdown;
 };
 
-struct _GtkTooltipsClass
+struct _BtkTooltipsClass
 {
-  GtkObjectClass parent_class;
+  BtkObjectClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType		 gtk_tooltips_get_type	   (void) G_GNUC_CONST;
-GtkTooltips*	 gtk_tooltips_new	   (void);
+GType		 btk_tooltips_get_type	   (void) G_GNUC_CONST;
+BtkTooltips*	 btk_tooltips_new	   (void);
 
-void		 gtk_tooltips_enable	   (GtkTooltips   *tooltips);
-void		 gtk_tooltips_disable	   (GtkTooltips   *tooltips);
-void		 gtk_tooltips_set_delay	   (GtkTooltips   *tooltips,
+void		 btk_tooltips_enable	   (BtkTooltips   *tooltips);
+void		 btk_tooltips_disable	   (BtkTooltips   *tooltips);
+void		 btk_tooltips_set_delay	   (BtkTooltips   *tooltips,
 					    guint	   delay);
-void		 gtk_tooltips_set_tip	   (GtkTooltips   *tooltips,
-					    GtkWidget	  *widget,
+void		 btk_tooltips_set_tip	   (BtkTooltips   *tooltips,
+					    BtkWidget	  *widget,
 					    const gchar   *tip_text,
 					    const gchar   *tip_private);
-GtkTooltipsData* gtk_tooltips_data_get	   (GtkWidget	  *widget);
-void             gtk_tooltips_force_window (GtkTooltips   *tooltips);
+BtkTooltipsData* btk_tooltips_data_get	   (BtkWidget	  *widget);
+void             btk_tooltips_force_window (BtkTooltips   *tooltips);
 
-gboolean         gtk_tooltips_get_info_from_tip_window (GtkWindow    *tip_window,
-                                                        GtkTooltips **tooltips,
-                                                        GtkWidget   **current_widget);
+gboolean         btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window,
+                                                        BtkTooltips **tooltips,
+                                                        BtkWidget   **current_widget);
 
 G_END_DECLS
 
-#endif /* __GTK_TOOLTIPS_H__ */
+#endif /* __BTK_TOOLTIPS_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

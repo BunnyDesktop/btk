@@ -1,4 +1,4 @@
-/* GdkQuartzWindow.h
+/* BdkQuartzWindow.h
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -20,9 +20,9 @@
 
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
-#include <glib.h>
+#include <bunnylib.h>
 
-@interface GdkQuartzWindow : NSWindow {
+@interface BdkQuartzWindow : NSWindow {
   BOOL    inMove;
   BOOL    inShowOrHide;
   BOOL    initialPositionKnown;

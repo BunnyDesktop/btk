@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2006 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  */
 
 #include <string.h>
-#include <glib.h>
-#include "gdksettings.c"
+#include <bunnylib.h>
+#include "bdksettings.c"
 
 int
 main (int   argc,
@@ -27,14 +27,14 @@ main (int   argc,
 {
   guint i, accu = 0;
 
-  for (i = 0; i < GDK_SETTINGS_N_ELEMENTS(); i++)
+  for (i = 0; i < BDK_SETTINGS_N_ELEMENTS(); i++)
     {
-      if (gdk_settings_map[i].xsettings_offset != accu)
+      if (bdk_settings_map[i].xsettings_offset != accu)
         g_error ("settings_map[%u].xsettings_offset != %u\n", i, accu);
-      accu += strlen (gdk_settings_names + accu) + 1;
-      if (gdk_settings_map[i].gdk_offset != accu)
-        g_error ("settings_map[%u].gdk_offset != %u\n", i, accu);
-      accu += strlen (gdk_settings_names + accu) + 1;
+      accu += strlen (bdk_settings_names + accu) + 1;
+      if (bdk_settings_map[i].bdk_offset != accu)
+        g_error ("settings_map[%u].bdk_offset != %u\n", i, accu);
+      accu += strlen (bdk_settings_names + accu) + 1;
       // g_print ("%u) ok.\n", i);
     }
 

@@ -119,12 +119,12 @@ if ($gen_defs) {
 }
 
 if ($gen_includes) {
-  print "#ifndef __GDK_ENUM_TYPES_H__\n";
-  print "#define __GDK_ENUM_TYPES_H__\n";
+  print "#ifndef __BDK_ENUM_TYPES_H__\n";
+  print "#define __BDK_ENUM_TYPES_H__\n";
 }
 
 if ($gen_cfile) {
-  print "#include \"gdk.h\"\n";
+  print "#include \"bdk.h\"\n";
 }
 
 ENUMERATION:
@@ -208,7 +208,7 @@ while (<>) {
         $typemacro =~ s/([^A-Z])([A-Z])/$1_$2/g;
         $typemacro =~ s/([A-Z][A-Z])([A-Z][0-9a-z])/$1_$2/g;
         $typemacro = uc($valuename);
-        $typemacro =~ s/GDK_/GDK_TYPE_/g;
+        $typemacro =~ s/BDK_/BDK_TYPE_/g;
 
 	if ($gen_defs) {
 	    if ($firstenum) {
@@ -226,7 +226,7 @@ while (<>) {
 
 	} elsif ($gen_arrays) {
 
-	    print "static const GtkEnumValue _${valuename}_values[] = {\n";
+	    print "static const BtkEnumValue _${valuename}_values[] = {\n";
 	    for (@entries) {
 		my ($name,$nick) = @{$_};
 		print qq(  { $name, "$name", "$nick" },\n);
@@ -275,5 +275,5 @@ EOF
 
 
 if ($gen_includes) {
-  print "#endif /* __GDK_ENUMS_H__ */\n";
+  print "#endif /* __BDK_ENUMS_H__ */\n";
 }

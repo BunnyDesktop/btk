@@ -1,54 +1,54 @@
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* Our callback.
  * The data passed to this function is printed to stdout */
-static void callback( GtkWidget *widget,
+static void callback( BtkWidget *widget,
                       gpointer   data )
 {
     g_print ("Hello again - %s was pressed\n", (char *) data);
 }
 
 /* This callback quits the program */
-static gboolean delete_event( GtkWidget *widget,
-                              GdkEvent  *event,
+static gboolean delete_event( BtkWidget *widget,
+                              BdkEvent  *event,
                               gpointer   data )
 {
-    gtk_main_quit ();
+    btk_main_quit ();
     return FALSE;
 }
 
 int main( int   argc,
           char *argv[] )
 {
-    GtkWidget *window;
-    GtkWidget *button;
-    GtkWidget *table;
+    BtkWidget *window;
+    BtkWidget *button;
+    BtkWidget *table;
 
-    gtk_init (&argc, &argv);
+    btk_init (&argc, &argv);
 
     /* Create a new window */
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
     /* Set the window title */
-    gtk_window_set_title (GTK_WINDOW (window), "Table");
+    btk_window_set_title (BTK_WINDOW (window), "Table");
 
     /* Set a handler for delete_event that immediately
-     * exits GTK. */
+     * exits BTK. */
     g_signal_connect (window, "delete-event",
                       G_CALLBACK (delete_event), NULL);
 
     /* Sets the border width of the window. */
-    gtk_container_set_border_width (GTK_CONTAINER (window), 20);
+    btk_container_set_border_width (BTK_CONTAINER (window), 20);
 
     /* Create a 2x2 table */
-    table = gtk_table_new (2, 2, TRUE);
+    table = btk_table_new (2, 2, TRUE);
 
     /* Put the table in the main window */
-    gtk_container_add (GTK_CONTAINER (window), table);
+    btk_container_add (BTK_CONTAINER (window), table);
 
     /* Create first button */
-    button = gtk_button_new_with_label ("button 1");
+    button = btk_button_new_with_label ("button 1");
 
     /* When the button is clicked, we call the "callback" function
      * with a pointer to "button 1" as its argument */
@@ -57,25 +57,25 @@ int main( int   argc,
 
 
     /* Insert button 1 into the upper left quadrant of the table */
-    gtk_table_attach_defaults (GTK_TABLE (table), button, 0, 1, 0, 1);
+    btk_table_attach_defaults (BTK_TABLE (table), button, 0, 1, 0, 1);
 
-    gtk_widget_show (button);
+    btk_widget_show (button);
 
     /* Create second button */
 
-    button = gtk_button_new_with_label ("button 2");
+    button = btk_button_new_with_label ("button 2");
 
     /* When the button is clicked, we call the "callback" function
      * with a pointer to "button 2" as its argument */
     g_signal_connect (button, "clicked",
                       G_CALLBACK (callback), (gpointer) "button 2");
     /* Insert button 2 into the upper right quadrant of the table */
-    gtk_table_attach_defaults (GTK_TABLE (table), button, 1, 2, 0, 1);
+    btk_table_attach_defaults (BTK_TABLE (table), button, 1, 2, 0, 1);
 
-    gtk_widget_show (button);
+    btk_widget_show (button);
 
     /* Create "Quit" button */
-    button = gtk_button_new_with_label ("Quit");
+    button = btk_button_new_with_label ("Quit");
 
     /* When the button is clicked, we call the "delete_event" function
      * and the program exits */
@@ -84,14 +84,14 @@ int main( int   argc,
 
     /* Insert the quit button into the both
      * lower quadrants of the table */
-    gtk_table_attach_defaults (GTK_TABLE (table), button, 0, 2, 1, 2);
+    btk_table_attach_defaults (BTK_TABLE (table), button, 0, 2, 1, 2);
 
-    gtk_widget_show (button);
+    btk_widget_show (button);
 
-    gtk_widget_show (table);
-    gtk_widget_show (window);
+    btk_widget_show (table);
+    btk_widget_show (window);
 
-    gtk_main ();
+    btk_main ();
 
     return 0;
 }

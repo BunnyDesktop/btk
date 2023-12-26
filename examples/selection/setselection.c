@@ -1,25 +1,25 @@
 
 #include <stdlib.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <time.h>
 #include <string.h>
 
-GtkWidget *selection_button;
-GtkWidget *selection_widget;
+BtkWidget *selection_button;
+BtkWidget *selection_widget;
 
 /* Callback when the user toggles the selection */
-static void selection_toggled( GtkWidget *widget,
+static void selection_toggled( BtkWidget *widget,
                                gint      *have_selection )
 {
-  if (GTK_TOGGLE_BUTTON (widget)->active)
+  if (BTK_TOGGLE_BUTTON (widget)->active)
     {
-      *have_selection = gtk_selection_owner_set (selection_widget,
-						 GDK_SELECTION_PRIMARY,
-						 GDK_CURRENT_TIME);
+      *have_selection = btk_selection_owner_set (selection_widget,
+						 BDK_SELECTION_PRIMARY,
+						 BDK_CURRENT_TIME);
       /* if claiming the selection failed, we return the button to
 	 the out state */
       if (!*have_selection)
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), FALSE);
+	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (widget), FALSE);
     }
   else
     {
@@ -27,28 +27,28 @@ static void selection_toggled( GtkWidget *widget,
 	{
 	  /* Before clearing the selection by setting the owner to NULL,
 	     we check if we are the actual owner */
-	  if (gdk_selection_owner_get (GDK_SELECTION_PRIMARY) == widget->window)
-	    gtk_selection_owner_set (NULL, GDK_SELECTION_PRIMARY,
-				     GDK_CURRENT_TIME);
+	  if (bdk_selection_owner_get (BDK_SELECTION_PRIMARY) == widget->window)
+	    btk_selection_owner_set (NULL, BDK_SELECTION_PRIMARY,
+				     BDK_CURRENT_TIME);
 	  *have_selection = FALSE;
 	}
     }
 }
 
 /* Called when another application claims the selection */
-static gboolean selection_clear( GtkWidget         *widget,
-                                 GdkEventSelection *event,
+static gboolean selection_clear( BtkWidget         *widget,
+                                 BdkEventSelection *event,
                                  gint              *have_selection )
 {
   *have_selection = FALSE;
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (selection_button), FALSE);
+  btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (selection_button), FALSE);
 
   return TRUE;
 }
 
 /* Supplies the current time as the selection. */
-static void selection_handle( GtkWidget        *widget,
-                              GtkSelectionData *selection_data,
+static void selection_handle( BtkWidget        *widget,
+                              BtkSelectionData *selection_data,
                               guint             info,
                               guint             time_stamp,
                               gpointer          data )
@@ -61,51 +61,51 @@ static void selection_handle( GtkWidget        *widget,
   /* When we return a single string, it should not be null terminated.
      That will be done for us */
 
-  gtk_selection_data_set (selection_data, GDK_SELECTION_TYPE_STRING,
+  btk_selection_data_set (selection_data, BDK_SELECTION_TYPE_STRING,
 			  8, timestr, strlen (timestr));
 }
 
 int main( int   argc,
           char *argv[] )
 {
-  GtkWidget *window;
+  BtkWidget *window;
 
   static int have_selection = FALSE;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   /* Create the toplevel window */
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "Event Box");
-  gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_window_set_title (BTK_WINDOW (window), "Event Box");
+  btk_container_set_border_width (BTK_CONTAINER (window), 10);
 
   g_signal_connect (window, "destroy",
 		    G_CALLBACK (exit), NULL);
 
   /* Create a toggle button to act as the selection */
 
-  selection_widget = gtk_invisible_new ();
-  selection_button = gtk_toggle_button_new_with_label ("Claim Selection");
-  gtk_container_add (GTK_CONTAINER (window), selection_button);
-  gtk_widget_show (selection_button);
+  selection_widget = btk_invisible_new ();
+  selection_button = btk_toggle_button_new_with_label ("Claim Selection");
+  btk_container_add (BTK_CONTAINER (window), selection_button);
+  btk_widget_show (selection_button);
 
   g_signal_connect (selection_button, "toggled",
 		    G_CALLBACK (selection_toggled), &have_selection);
   g_signal_connect (selection_widget, "selection-clear-event",
 		    G_CALLBACK (selection_clear), &have_selection);
 
-  gtk_selection_add_target (selection_widget,
-			    GDK_SELECTION_PRIMARY,
-			    GDK_SELECTION_TYPE_STRING,
+  btk_selection_add_target (selection_widget,
+			    BDK_SELECTION_PRIMARY,
+			    BDK_SELECTION_TYPE_STRING,
 		            1);
   g_signal_connect (selection_widget, "selection-get",
 		    G_CALLBACK (selection_handle), &have_selection);
 
-  gtk_widget_show (selection_button);
-  gtk_widget_show (window);
+  btk_widget_show (selection_button);
+  btk_widget_show (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

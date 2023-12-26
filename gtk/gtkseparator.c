@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,19 +18,19 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkorientable.h"
-#include "gtkseparator.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkorientable.h"
+#include "btkseparator.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 enum {
@@ -39,82 +39,82 @@ enum {
 };
 
 
-typedef struct _GtkSeparatorPrivate GtkSeparatorPrivate;
+typedef struct _BtkSeparatorPrivate BtkSeparatorPrivate;
 
-struct _GtkSeparatorPrivate
+struct _BtkSeparatorPrivate
 {
-  GtkOrientation orientation;
+  BtkOrientation orientation;
 };
 
-#define GTK_SEPARATOR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_SEPARATOR, GtkSeparatorPrivate))
+#define BTK_SEPARATOR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SEPARATOR, BtkSeparatorPrivate))
 
 
-static void       gtk_separator_set_property (GObject        *object,
+static void       btk_separator_set_property (GObject        *object,
                                               guint           prop_id,
                                               const GValue   *value,
                                               GParamSpec     *pspec);
-static void       gtk_separator_get_property (GObject        *object,
+static void       btk_separator_get_property (GObject        *object,
                                               guint           prop_id,
                                               GValue         *value,
                                               GParamSpec     *pspec);
 
-static void       gtk_separator_size_request (GtkWidget      *widget,
-                                              GtkRequisition *requisition);
-static gboolean   gtk_separator_expose       (GtkWidget      *widget,
-                                              GdkEventExpose *event);
+static void       btk_separator_size_request (BtkWidget      *widget,
+                                              BtkRequisition *requisition);
+static gboolean   btk_separator_expose       (BtkWidget      *widget,
+                                              BdkEventExpose *event);
 
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkSeparator, gtk_separator, GTK_TYPE_WIDGET,
-                                  G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE,
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkSeparator, btk_separator, BTK_TYPE_WIDGET,
+                                  G_IMPLEMENT_INTERFACE (BTK_TYPE_ORIENTABLE,
                                                          NULL))
 
 
 static void
-gtk_separator_class_init (GtkSeparatorClass *class)
+btk_separator_class_init (BtkSeparatorClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
+  BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
-  object_class->set_property = gtk_separator_set_property;
-  object_class->get_property = gtk_separator_get_property;
+  object_class->set_property = btk_separator_set_property;
+  object_class->get_property = btk_separator_get_property;
 
-  widget_class->size_request = gtk_separator_size_request;
-  widget_class->expose_event = gtk_separator_expose;
+  widget_class->size_request = btk_separator_size_request;
+  widget_class->expose_event = btk_separator_expose;
 
   g_object_class_override_property (object_class,
                                     PROP_ORIENTATION,
                                     "orientation");
 
-  g_type_class_add_private (object_class, sizeof (GtkSeparatorPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkSeparatorPrivate));
 }
 
 static void
-gtk_separator_init (GtkSeparator *separator)
+btk_separator_init (BtkSeparator *separator)
 {
-  GtkWidget *widget = GTK_WIDGET (separator);
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (separator);
+  BtkWidget *widget = BTK_WIDGET (separator);
+  BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (separator);
 
-  gtk_widget_set_has_window (GTK_WIDGET (separator), FALSE);
+  btk_widget_set_has_window (BTK_WIDGET (separator), FALSE);
 
-  private->orientation = GTK_ORIENTATION_HORIZONTAL;
+  private->orientation = BTK_ORIENTATION_HORIZONTAL;
 
   widget->requisition.width  = 1;
   widget->requisition.height = widget->style->ythickness;
 }
 
 static void
-gtk_separator_set_property (GObject      *object,
+btk_separator_set_property (GObject      *object,
                             guint         prop_id,
                             const GValue *value,
                             GParamSpec   *pspec)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (object);
+  BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
       private->orientation = g_value_get_enum (value);
-      gtk_widget_queue_resize (GTK_WIDGET (object));
+      btk_widget_queue_resize (BTK_WIDGET (object));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -123,12 +123,12 @@ gtk_separator_set_property (GObject      *object,
 }
 
 static void
-gtk_separator_get_property (GObject    *object,
+btk_separator_get_property (GObject    *object,
                             guint       prop_id,
                             GValue     *value,
                             GParamSpec *pspec)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (object);
+  BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (object);
 
   switch (prop_id)
     {
@@ -142,15 +142,15 @@ gtk_separator_get_property (GObject    *object,
 }
 
 static void
-gtk_separator_size_request (GtkWidget      *widget,
-                            GtkRequisition *requisition)
+btk_separator_size_request (BtkWidget      *widget,
+                            BtkRequisition *requisition)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (widget);
+  BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (widget);
   gboolean wide_separators;
   gint     separator_width;
   gint     separator_height;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "wide-separators",  &wide_separators,
                         "separator-width",  &separator_width,
                         "separator-height", &separator_height,
@@ -159,7 +159,7 @@ gtk_separator_size_request (GtkWidget      *widget,
   requisition->width  = 1;
   requisition->height = 1;
 
-  if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
     {
       if (wide_separators)
         requisition->height = separator_height;
@@ -176,28 +176,28 @@ gtk_separator_size_request (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_separator_expose (GtkWidget      *widget,
-                      GdkEventExpose *event)
+btk_separator_expose (BtkWidget      *widget,
+                      BdkEventExpose *event)
 {
-  GtkSeparatorPrivate *private = GTK_SEPARATOR_GET_PRIVATE (widget);
+  BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (widget);
   gboolean wide_separators;
   gint     separator_width;
   gint     separator_height;
 
-  if (!gtk_widget_is_drawable (widget))
+  if (!btk_widget_is_drawable (widget))
     return FALSE;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "wide-separators",  &wide_separators,
                         "separator-width",  &separator_width,
                         "separator-height", &separator_height,
                         NULL);
 
-  if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
     {
       if (wide_separators)
-        gtk_paint_box (widget->style, widget->window,
-                       gtk_widget_get_state (widget), GTK_SHADOW_ETCHED_OUT,
+        btk_paint_box (widget->style, widget->window,
+                       btk_widget_get_state (widget), BTK_SHADOW_ETCHED_OUT,
                        &event->area, widget, "hseparator",
                        widget->allocation.x,
                        widget->allocation.y + (widget->allocation.height -
@@ -205,8 +205,8 @@ gtk_separator_expose (GtkWidget      *widget,
                        widget->allocation.width,
                        separator_height);
       else
-        gtk_paint_hline (widget->style, widget->window,
-                         gtk_widget_get_state (widget),
+        btk_paint_hline (widget->style, widget->window,
+                         btk_widget_get_state (widget),
                          &event->area, widget, "hseparator",
                          widget->allocation.x,
                          widget->allocation.x + widget->allocation.width - 1,
@@ -216,8 +216,8 @@ gtk_separator_expose (GtkWidget      *widget,
   else
     {
       if (wide_separators)
-        gtk_paint_box (widget->style, widget->window,
-                       gtk_widget_get_state (widget), GTK_SHADOW_ETCHED_OUT,
+        btk_paint_box (widget->style, widget->window,
+                       btk_widget_get_state (widget), BTK_SHADOW_ETCHED_OUT,
                        &event->area, widget, "vseparator",
                        widget->allocation.x + (widget->allocation.width -
                                                separator_width) / 2,
@@ -225,8 +225,8 @@ gtk_separator_expose (GtkWidget      *widget,
                        separator_width,
                        widget->allocation.height);
       else
-        gtk_paint_vline (widget->style, widget->window,
-                         gtk_widget_get_state (widget),
+        btk_paint_vline (widget->style, widget->window,
+                         btk_widget_get_state (widget),
                          &event->area, widget, "vseparator",
                          widget->allocation.y,
                          widget->allocation.y + widget->allocation.height - 1,
@@ -239,24 +239,24 @@ gtk_separator_expose (GtkWidget      *widget,
 
 #if 0
 /**
- * gtk_separator_new:
+ * btk_separator_new:
  * @orientation: the separator's orientation.
  *
- * Creates a new #GtkSeparator with the given orientation.
+ * Creates a new #BtkSeparator with the given orientation.
  *
- * Return value: a new #GtkSeparator.
+ * Return value: a new #BtkSeparator.
  *
  * Since: 2.16
  **/
-GtkWidget *
-gtk_separator_new (GtkOrientation orientation)
+BtkWidget *
+btk_separator_new (BtkOrientation orientation)
 {
-  return g_object_new (GTK_TYPE_SEPARATOR,
+  return g_object_new (BTK_TYPE_SEPARATOR,
                        "orientation", orientation,
                        NULL);
 }
 #endif
 
 
-#define __GTK_SEPARATOR_C__
-#include "gtkaliasdef.c"
+#define __BTK_SEPARATOR_C__
+#include "btkaliasdef.c"

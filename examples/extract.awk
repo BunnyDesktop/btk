@@ -1,6 +1,6 @@
-# extract - extract C source files from GTK Tutorial
+# extract - extract C source files from BTK Tutorial
 # Copyright (C) Tony Gale 1998
-# Contact: gale@gtk.org
+# Contact: gale@btk.org
 #
 # Command Switches:
 # -c : Just do checking rather than output files

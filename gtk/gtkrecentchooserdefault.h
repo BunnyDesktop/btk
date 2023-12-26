@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkrecentchooserdefault.h
+/* BTK - The GIMP Toolkit
+ * btkrecentchooserdefault.h
  * Copyright (C) 2006 Emmanuele Bassi
  * 
  * This library is free software; you can redistribute it and/or
@@ -18,25 +18,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_RECENT_CHOOSER_DEFAULT_H__
-#define __GTK_RECENT_CHOOSER_DEFAULT_H__
+#ifndef __BTK_RECENT_CHOOSER_DEFAULT_H__
+#define __BTK_RECENT_CHOOSER_DEFAULT_H__
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_RECENT_CHOOSER_DEFAULT    (_gtk_recent_chooser_default_get_type ())
-#define GTK_RECENT_CHOOSER_DEFAULT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_RECENT_CHOOSER_DEFAULT, GtkRecentChooserDefault))
-#define GTK_IS_RECENT_CHOOSER_DEFAULT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_RECENT_CHOOSER_DEFAULT))
+#define BTK_TYPE_RECENT_CHOOSER_DEFAULT    (_btk_recent_chooser_default_get_type ())
+#define BTK_RECENT_CHOOSER_DEFAULT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_DEFAULT, BtkRecentChooserDefault))
+#define BTK_IS_RECENT_CHOOSER_DEFAULT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER_DEFAULT))
 
 
-typedef struct _GtkRecentChooserDefault GtkRecentChooserDefault;
+typedef struct _BtkRecentChooserDefault BtkRecentChooserDefault;
 
-GType      _gtk_recent_chooser_default_get_type (void) G_GNUC_CONST;
-GtkWidget *_gtk_recent_chooser_default_new      (GtkRecentManager *recent_manager);
+GType      _btk_recent_chooser_default_get_type (void) G_GNUC_CONST;
+BtkWidget *_btk_recent_chooser_default_new      (BtkRecentManager *recent_manager);
 
 
 G_END_DECLS
 
-#endif /* __GTK_RECENT_CHOOSER_DEFAULT_H__ */
+#endif /* __BTK_RECENT_CHOOSER_DEFAULT_H__ */

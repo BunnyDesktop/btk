@@ -20,40 +20,40 @@
  * Based on nautilus-search-engine-beagle.h
  */
 
-#ifndef __GTK_SEARCH_ENGINE_BEAGLE_H__
-#define __GTK_SEARCH_ENGINE_BEAGLE_H__
+#ifndef __BTK_SEARCH_ENGINE_BEAGLE_H__
+#define __BTK_SEARCH_ENGINE_BEAGLE_H__
 
-#include "gtksearchengine.h"
+#include "btksearchengine.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SEARCH_ENGINE_BEAGLE		(_gtk_search_engine_beagle_get_type ())
-#define GTK_SEARCH_ENGINE_BEAGLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SEARCH_ENGINE_BEAGLE, GtkSearchEngineBeagle))
-#define GTK_SEARCH_ENGINE_BEAGLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SEARCH_ENGINE_BEAGLE, GtkSearchEngineBeagleClass))
-#define GTK_IS_SEARCH_ENGINE_BEAGLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SEARCH_ENGINE_BEAGLE))
-#define GTK_IS_SEARCH_ENGINE_BEAGLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SEARCH_ENGINE_BEAGLE))
-#define GTK_SEARCH_ENGINE_BEAGLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SEARCH_ENGINE_BEAGLE, GtkSearchEngineBeagleClass))
+#define BTK_TYPE_SEARCH_ENGINE_BEAGLE		(_btk_search_engine_beagle_get_type ())
+#define BTK_SEARCH_ENGINE_BEAGLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE_BEAGLE, BtkSearchEngineBeagle))
+#define BTK_SEARCH_ENGINE_BEAGLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE_BEAGLE, BtkSearchEngineBeagleClass))
+#define BTK_IS_SEARCH_ENGINE_BEAGLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE_BEAGLE))
+#define BTK_IS_SEARCH_ENGINE_BEAGLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE_BEAGLE))
+#define BTK_SEARCH_ENGINE_BEAGLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE_BEAGLE, BtkSearchEngineBeagleClass))
 
-typedef struct _GtkSearchEngineBeagle GtkSearchEngineBeagle;
-typedef struct _GtkSearchEngineBeagleClass GtkSearchEngineBeagleClass;
-typedef struct _GtkSearchEngineBeaglePrivate GtkSearchEngineBeaglePrivate;
+typedef struct _BtkSearchEngineBeagle BtkSearchEngineBeagle;
+typedef struct _BtkSearchEngineBeagleClass BtkSearchEngineBeagleClass;
+typedef struct _BtkSearchEngineBeaglePrivate BtkSearchEngineBeaglePrivate;
 
-struct _GtkSearchEngineBeagle 
+struct _BtkSearchEngineBeagle 
 {
-  GtkSearchEngine parent;
+  BtkSearchEngine parent;
 
-  GtkSearchEngineBeaglePrivate *priv;
+  BtkSearchEngineBeaglePrivate *priv;
 };
 
-struct _GtkSearchEngineBeagleClass 
+struct _BtkSearchEngineBeagleClass 
 {
-  GtkSearchEngineClass parent_class;
+  BtkSearchEngineClass parent_class;
 };
 
-GType            _gtk_search_engine_beagle_get_type (void);
+GType            _btk_search_engine_beagle_get_type (void);
 
-GtkSearchEngine* _gtk_search_engine_beagle_new      (void);
+BtkSearchEngine* _btk_search_engine_beagle_new      (void);
 
 G_END_DECLS
 
-#endif /* __GTK_SEARCH_ENGINE_BEAGLE_H__ */
+#endif /* __BTK_SEARCH_ENGINE_BEAGLE_H__ */

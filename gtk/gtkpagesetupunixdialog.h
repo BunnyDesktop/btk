@@ -1,4 +1,4 @@
-/* GtkPageSetupUnixDialog
+/* BtkPageSetupUnixDialog
  * Copyright (C) 2006 Alexander Larsson <alexl@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,60 +17,60 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PAGE_SETUP_UNIX_DIALOG_H__
-#define __GTK_PAGE_SETUP_UNIX_DIALOG_H__
+#ifndef __BTK_PAGE_SETUP_UNIX_DIALOG_H__
+#define __BTK_PAGE_SETUP_UNIX_DIALOG_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_UNIX_PRINT_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtkunixprint.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_UNIX_PRINT_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btkunixprint.h> can be included directly."
 #endif
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PAGE_SETUP_UNIX_DIALOG                  (gtk_page_setup_unix_dialog_get_type ())
-#define GTK_PAGE_SETUP_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PAGE_SETUP_UNIX_DIALOG, GtkPageSetupUnixDialog))
-#define GTK_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PAGE_SETUP_UNIX_DIALOG, GtkPageSetupUnixDialogClass))
-#define GTK_IS_PAGE_SETUP_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
-#define GTK_IS_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
-#define GTK_PAGE_SETUP_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PAGE_SETUP_UNIX_DIALOG, GtkPageSetupUnixDialogClass))
+#define BTK_TYPE_PAGE_SETUP_UNIX_DIALOG                  (btk_page_setup_unix_dialog_get_type ())
+#define BTK_PAGE_SETUP_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialog))
+#define BTK_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
+#define BTK_IS_PAGE_SETUP_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
+#define BTK_IS_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
+#define BTK_PAGE_SETUP_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
 
 
-typedef struct _GtkPageSetupUnixDialog         GtkPageSetupUnixDialog;
-typedef struct _GtkPageSetupUnixDialogClass    GtkPageSetupUnixDialogClass;
-typedef struct GtkPageSetupUnixDialogPrivate   GtkPageSetupUnixDialogPrivate;
+typedef struct _BtkPageSetupUnixDialog         BtkPageSetupUnixDialog;
+typedef struct _BtkPageSetupUnixDialogClass    BtkPageSetupUnixDialogClass;
+typedef struct BtkPageSetupUnixDialogPrivate   BtkPageSetupUnixDialogPrivate;
 
-struct _GtkPageSetupUnixDialog
+struct _BtkPageSetupUnixDialog
 {
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
-  GtkPageSetupUnixDialogPrivate *GSEAL (priv);
+  BtkPageSetupUnixDialogPrivate *GSEAL (priv);
 };
 
-struct _GtkPageSetupUnixDialogClass
+struct _BtkPageSetupUnixDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
-  void (*_gtk_reserved6) (void);
-  void (*_gtk_reserved7) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
+  void (*_btk_reserved6) (void);
+  void (*_btk_reserved7) (void);
 };
 
-GType 		  gtk_page_setup_unix_dialog_get_type	        (void) G_GNUC_CONST;
-GtkWidget *       gtk_page_setup_unix_dialog_new                (const gchar            *title,
-								 GtkWindow              *parent);
-void              gtk_page_setup_unix_dialog_set_page_setup     (GtkPageSetupUnixDialog *dialog,
-								 GtkPageSetup           *page_setup);
-GtkPageSetup *    gtk_page_setup_unix_dialog_get_page_setup     (GtkPageSetupUnixDialog *dialog);
-void              gtk_page_setup_unix_dialog_set_print_settings (GtkPageSetupUnixDialog *dialog,
-								 GtkPrintSettings       *print_settings);
-GtkPrintSettings *gtk_page_setup_unix_dialog_get_print_settings (GtkPageSetupUnixDialog *dialog);
+GType 		  btk_page_setup_unix_dialog_get_type	        (void) G_GNUC_CONST;
+BtkWidget *       btk_page_setup_unix_dialog_new                (const gchar            *title,
+								 BtkWindow              *parent);
+void              btk_page_setup_unix_dialog_set_page_setup     (BtkPageSetupUnixDialog *dialog,
+								 BtkPageSetup           *page_setup);
+BtkPageSetup *    btk_page_setup_unix_dialog_get_page_setup     (BtkPageSetupUnixDialog *dialog);
+void              btk_page_setup_unix_dialog_set_print_settings (BtkPageSetupUnixDialog *dialog,
+								 BtkPrintSettings       *print_settings);
+BtkPrintSettings *btk_page_setup_unix_dialog_get_print_settings (BtkPageSetupUnixDialog *dialog);
 
 G_END_DECLS
 
-#endif /* __GTK_PAGE_SETUP_UNIX_DIALOG_H__ */
+#endif /* __BTK_PAGE_SETUP_UNIX_DIALOG_H__ */

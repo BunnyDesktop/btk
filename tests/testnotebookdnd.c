@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-file-style: "gnu"; tab-width: 8 -*- */
 /* 
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 2006  Carlos Garnacho Parro <carlosg@gnome.org>
  *
  * All rights reserved.
@@ -20,7 +20,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 enum {
   PACK_START,
@@ -63,185 +63,185 @@ gchar *tabs4 [] = {
   NULL
 };
 
-static const GtkTargetEntry button_targets[] = {
-  { "GTK_NOTEBOOK_TAB", GTK_TARGET_SAME_APP, 0 },
+static const BtkTargetEntry button_targets[] = {
+  { "BTK_NOTEBOOK_TAB", BTK_TARGET_SAME_APP, 0 },
 };
 
-static GtkNotebook*
-window_creation_function (GtkNotebook *source_notebook,
-			  GtkWidget   *child,
+static BtkNotebook*
+window_creation_function (BtkNotebook *source_notebook,
+			  BtkWidget   *child,
 			  gint         x,
 			  gint         y,
 			  gpointer     data)
 {
-  GtkWidget *window, *notebook;
+  BtkWidget *window, *notebook;
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  notebook = gtk_notebook_new ();
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  notebook = btk_notebook_new ();
   g_signal_connect (notebook, "create-window",
                     G_CALLBACK (window_creation_function), NULL);
 
-  gtk_notebook_set_group_name (GTK_NOTEBOOK (notebook),
-			  gtk_notebook_get_group_name (source_notebook));
+  btk_notebook_set_group_name (BTK_NOTEBOOK (notebook),
+			  btk_notebook_get_group_name (source_notebook));
 
-  gtk_container_add (GTK_CONTAINER (window), notebook);
+  btk_container_add (BTK_CONTAINER (window), notebook);
 
-  gtk_window_set_default_size (GTK_WINDOW (window), 300, 300);
-  gtk_window_move (GTK_WINDOW (window), x, y);
-  gtk_widget_show_all (window);
+  btk_window_set_default_size (BTK_WINDOW (window), 300, 300);
+  btk_window_move (BTK_WINDOW (window), x, y);
+  btk_widget_show_all (window);
 
-  return GTK_NOTEBOOK (notebook);
+  return BTK_NOTEBOOK (notebook);
 }
 
 static void
-on_page_reordered (GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer data)
+on_page_reordered (BtkNotebook *notebook, BtkWidget *child, guint page_num, gpointer data)
 {
   g_print ("page %d reordered\n", page_num);
 }
 
 static void
-on_notebook_drag_begin (GtkWidget      *widget,
-			GdkDragContext *context,
+on_notebook_drag_begin (BtkWidget      *widget,
+			BdkDragContext *context,
 			gpointer        data)
 {
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   guint page_num;
 
-  page_num = gtk_notebook_get_current_page (GTK_NOTEBOOK (widget));
+  page_num = btk_notebook_get_current_page (BTK_NOTEBOOK (widget));
 
   if (page_num > 2)
     {
-      pixbuf = gtk_widget_render_icon (widget,
-  				   (page_num % 2) ? GTK_STOCK_HELP : GTK_STOCK_STOP,
-				   GTK_ICON_SIZE_DND, NULL);
+      pixbuf = btk_widget_render_icon (widget,
+  				   (page_num % 2) ? BTK_STOCK_HELP : BTK_STOCK_STOP,
+				   BTK_ICON_SIZE_DND, NULL);
 
-      gtk_drag_set_icon_pixbuf (context, pixbuf, 0, 0);
+      btk_drag_set_icon_pixbuf (context, pixbuf, 0, 0);
       g_object_unref (pixbuf);
     }
 }
 
 static void
-on_button_drag_data_received (GtkWidget        *widget,
-			      GdkDragContext   *context,
+on_button_drag_data_received (BtkWidget        *widget,
+			      BdkDragContext   *context,
 			      gint              x,
 			      gint              y,
-			      GtkSelectionData *data,
+			      BtkSelectionData *data,
 			      guint             info,
 			      guint             time,
 			      gpointer          user_data)
 {
-  GtkWidget *source, *tab_label;
-  GtkWidget **child;
+  BtkWidget *source, *tab_label;
+  BtkWidget **child;
 
-  source = gtk_drag_get_source_widget (context);
+  source = btk_drag_get_source_widget (context);
   child = (void*) data->data;
 
-  tab_label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (source), *child);
-  g_print ("Removing tab: %s\n", gtk_label_get_text (GTK_LABEL (tab_label)));
+  tab_label = btk_notebook_get_tab_label (BTK_NOTEBOOK (source), *child);
+  g_print ("Removing tab: %s\n", btk_label_get_text (BTK_LABEL (tab_label)));
 
-  gtk_container_remove (GTK_CONTAINER (source), *child);
+  btk_container_remove (BTK_CONTAINER (source), *child);
 }
 
-static GtkWidget*
+static BtkWidget*
 create_notebook (gchar           **labels,
 		 gpointer          group,
 		 gint              packing,
-		 GtkPositionType   pos)
+		 BtkPositionType   pos)
 {
-  GtkWidget *notebook, *title, *page;
+  BtkWidget *notebook, *title, *page;
   gint count = 0;
 
-  notebook = gtk_notebook_new ();
+  notebook = btk_notebook_new ();
   g_signal_connect (notebook, "create-window",
                     G_CALLBACK (window_creation_function), NULL);
 
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), pos);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook), TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (notebook), 6);
-  gtk_notebook_set_group_name (GTK_NOTEBOOK (notebook), group);
+  btk_notebook_set_tab_pos (BTK_NOTEBOOK (notebook), pos);
+  btk_notebook_set_scrollable (BTK_NOTEBOOK (notebook), TRUE);
+  btk_container_set_border_width (BTK_CONTAINER (notebook), 6);
+  btk_notebook_set_group_name (BTK_NOTEBOOK (notebook), group);
 
   while (*labels)
     {
-      page = gtk_entry_new ();
-      gtk_entry_set_text (GTK_ENTRY (page), *labels);
+      page = btk_entry_new ();
+      btk_entry_set_text (BTK_ENTRY (page), *labels);
 
-      title = gtk_label_new (*labels);
+      title = btk_label_new (*labels);
 
-      gtk_notebook_append_page (GTK_NOTEBOOK (notebook), page, title);
-      gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (notebook), page, TRUE);
-      gtk_notebook_set_tab_detachable (GTK_NOTEBOOK (notebook), page, TRUE);
+      btk_notebook_append_page (BTK_NOTEBOOK (notebook), page, title);
+      btk_notebook_set_tab_reorderable (BTK_NOTEBOOK (notebook), page, TRUE);
+      btk_notebook_set_tab_detachable (BTK_NOTEBOOK (notebook), page, TRUE);
 
       if (packing == PACK_END ||
 	  (packing == PACK_ALTERNATE && count % 2 == 1))
-	gtk_container_child_set (GTK_CONTAINER (notebook), page, "tab-pack", GTK_PACK_END, NULL);
+	btk_container_child_set (BTK_CONTAINER (notebook), page, "tab-pack", BTK_PACK_END, NULL);
 
       count++;
       labels++;
     }
 
-  g_signal_connect (GTK_NOTEBOOK (notebook), "page-reordered",
+  g_signal_connect (BTK_NOTEBOOK (notebook), "page-reordered",
 		    G_CALLBACK (on_page_reordered), NULL);
   g_signal_connect_after (G_OBJECT (notebook), "drag-begin",
 			  G_CALLBACK (on_notebook_drag_begin), NULL);
   return notebook;
 }
 
-static GtkWidget*
+static BtkWidget*
 create_notebook_with_notebooks (gchar           **labels,
 			        gpointer          group,
 			        gint              packing,
-			        GtkPositionType   pos)
+			        BtkPositionType   pos)
 {
-  GtkWidget *notebook, *title, *page;
+  BtkWidget *notebook, *title, *page;
   gint count = 0;
 
-  notebook = gtk_notebook_new ();
+  notebook = btk_notebook_new ();
   g_signal_connect (notebook, "create-window",
                     G_CALLBACK (window_creation_function), NULL);
 
-  gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), pos);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (notebook), TRUE);
-  gtk_container_set_border_width (GTK_CONTAINER (notebook), 6);
-  gtk_notebook_set_group_name (GTK_NOTEBOOK (notebook), group);
+  btk_notebook_set_tab_pos (BTK_NOTEBOOK (notebook), pos);
+  btk_notebook_set_scrollable (BTK_NOTEBOOK (notebook), TRUE);
+  btk_container_set_border_width (BTK_CONTAINER (notebook), 6);
+  btk_notebook_set_group_name (BTK_NOTEBOOK (notebook), group);
 
   while (*labels)
     {
       page = create_notebook (labels, group, packing, pos);
-      gtk_notebook_popup_enable (GTK_NOTEBOOK (page));
+      btk_notebook_popup_enable (BTK_NOTEBOOK (page));
       
-      title = gtk_label_new (*labels);
+      title = btk_label_new (*labels);
 
-      gtk_notebook_append_page (GTK_NOTEBOOK (notebook), page, title);
-      gtk_notebook_set_tab_reorderable (GTK_NOTEBOOK (notebook), page, TRUE);
-      gtk_notebook_set_tab_detachable (GTK_NOTEBOOK (notebook), page, TRUE);
+      btk_notebook_append_page (BTK_NOTEBOOK (notebook), page, title);
+      btk_notebook_set_tab_reorderable (BTK_NOTEBOOK (notebook), page, TRUE);
+      btk_notebook_set_tab_detachable (BTK_NOTEBOOK (notebook), page, TRUE);
       
       if (packing == PACK_END ||
 	  (packing == PACK_ALTERNATE && count % 2 == 1))
-	gtk_container_child_set (GTK_CONTAINER (notebook), page, "tab-pack", GTK_PACK_END, NULL);
+	btk_container_child_set (BTK_CONTAINER (notebook), page, "tab-pack", BTK_PACK_END, NULL);
 
       count++;
       labels++;
     }
 
-  g_signal_connect (GTK_NOTEBOOK (notebook), "page-reordered",
+  g_signal_connect (BTK_NOTEBOOK (notebook), "page-reordered",
 		    G_CALLBACK (on_page_reordered), NULL);
   g_signal_connect_after (G_OBJECT (notebook), "drag-begin",
 			  G_CALLBACK (on_notebook_drag_begin), NULL);
   return notebook;
 }
 
-static GtkWidget*
+static BtkWidget*
 create_trash_button (void)
 {
-  GtkWidget *button;
+  BtkWidget *button;
 
-  button = gtk_button_new_from_stock (GTK_STOCK_DELETE);
+  button = btk_button_new_from_stock (BTK_STOCK_DELETE);
 
-  gtk_drag_dest_set (button,
-		     GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
+  btk_drag_dest_set (button,
+		     BTK_DEST_DEFAULT_MOTION | BTK_DEST_DEFAULT_DROP,
 		     button_targets,
 		     G_N_ELEMENTS (button_targets),
-		     GDK_ACTION_MOVE);
+		     BDK_ACTION_MOVE);
 
   g_signal_connect_after (G_OBJECT (button), "drag-data-received",
 			  G_CALLBACK (on_button_drag_data_received), NULL);
@@ -251,38 +251,38 @@ create_trash_button (void)
 gint
 main (gint argc, gchar *argv[])
 {
-  GtkWidget *window, *table;
+  BtkWidget *window, *table;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  table = gtk_table_new (3, 2, FALSE);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  table = btk_table_new (3, 2, FALSE);
 
-  gtk_table_attach_defaults (GTK_TABLE (table),
-			     create_notebook (tabs1, GROUP_A, PACK_ALTERNATE, GTK_POS_TOP),
+  btk_table_attach_defaults (BTK_TABLE (table),
+			     create_notebook (tabs1, GROUP_A, PACK_ALTERNATE, BTK_POS_TOP),
 			     0, 1, 0, 1);
 
-  gtk_table_attach_defaults (GTK_TABLE (table),
-			     create_notebook (tabs2, GROUP_B, PACK_ALTERNATE, GTK_POS_BOTTOM),
+  btk_table_attach_defaults (BTK_TABLE (table),
+			     create_notebook (tabs2, GROUP_B, PACK_ALTERNATE, BTK_POS_BOTTOM),
 			     0, 1, 1, 2);
 
-  gtk_table_attach_defaults (GTK_TABLE (table),
-			     create_notebook (tabs3, GROUP_B, PACK_END, GTK_POS_LEFT),
+  btk_table_attach_defaults (BTK_TABLE (table),
+			     create_notebook (tabs3, GROUP_B, PACK_END, BTK_POS_LEFT),
 			     1, 2, 0, 1);
 
-  gtk_table_attach_defaults (GTK_TABLE (table),
-			     create_notebook_with_notebooks (tabs4, GROUP_A, PACK_ALTERNATE, GTK_POS_RIGHT),
+  btk_table_attach_defaults (BTK_TABLE (table),
+			     create_notebook_with_notebooks (tabs4, GROUP_A, PACK_ALTERNATE, BTK_POS_RIGHT),
 			     1, 2, 1, 2);
 
-  gtk_table_attach (GTK_TABLE (table),
+  btk_table_attach (BTK_TABLE (table),
 		    create_trash_button (), 1, 2, 2, 3,
-		    GTK_EXPAND | GTK_FILL, GTK_SHRINK, 0, 0);
+		    BTK_EXPAND | BTK_FILL, BTK_SHRINK, 0, 0);
 
-  gtk_container_add (GTK_CONTAINER (window), table);
-  gtk_window_set_default_size (GTK_WINDOW (window), 400, 400);
-  gtk_widget_show_all (window);
+  btk_container_add (BTK_CONTAINER (window), table);
+  btk_window_set_default_size (BTK_WINDOW (window), 400, 400);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

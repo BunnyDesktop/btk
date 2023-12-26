@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,26 +17,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_COMBO_H__
-#define __GAIL_COMBO_H__
+#ifndef __BAIL_COMBO_H__
+#define __BAIL_COMBO_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_COMBO                      (gail_combo_get_type ())
-#define GAIL_COMBO(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_COMBO, GailCombo))
-#define GAIL_COMBO_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_COMBO, GailComboClass))
-#define GAIL_IS_COMBO(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_COMBO))
-#define GAIL_IS_COMBO_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_COMBO))
-#define GAIL_COMBO_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_COMBO, GailComboClass))
+#define BAIL_TYPE_COMBO                      (bail_combo_get_type ())
+#define BAIL_COMBO(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO, BailCombo))
+#define BAIL_COMBO_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO, BailComboClass))
+#define BAIL_IS_COMBO(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO))
+#define BAIL_IS_COMBO_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO))
+#define BAIL_COMBO_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO, BailComboClass))
 
-typedef struct _GailCombo              GailCombo;
-typedef struct _GailComboClass         GailComboClass;
+typedef struct _BailCombo              BailCombo;
+typedef struct _BailComboClass         BailComboClass;
 
-struct _GailCombo
+struct _BailCombo
 {
-  GailContainer parent;
+  BailContainer parent;
 
   gpointer      old_selection;
   gchar         *press_description;
@@ -46,13 +46,13 @@ struct _GailCombo
   guint         deselect_idle_handler;
 };
 
-GType gail_combo_get_type (void);
+GType bail_combo_get_type (void);
 
-struct _GailComboClass
+struct _BailComboClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_COMBO_H__ */
+#endif /* __BAIL_COMBO_H__ */

@@ -1,18 +1,18 @@
-# NMake Makefile to build Introspection Files for GTK+
+# NMake Makefile to build Introspection Files for BTK+
 
 !include detectenv-msvc.mak
 
 APIVERSION = 2.0
 
-CHECK_PACKAGE = gdk-pixbuf-2.0 atk pangocairo gio-2.0
+CHECK_PACKAGE = bdk-pixbuf-2.0 batk bangobairo bunnyio-2.0
 
 built_install_girs =	\
-	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Gdk-$(APIVERSION).gir	\
-	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Gtk-$(APIVERSION).gir
+	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Bdk-$(APIVERSION).gir	\
+	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Btk-$(APIVERSION).gir
 
 built_install_typelibs =	\
-	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Gdk-$(APIVERSION).typelib	\
-	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Gtk-$(APIVERSION).typelib
+	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Bdk-$(APIVERSION).typelib	\
+	vs$(VSVER)\$(CFG)\$(PLAT)\bin\Btk-$(APIVERSION).typelib
 
 !include introspection-msvc.mak
 
@@ -27,7 +27,7 @@ AT_PLAT=i686
 all: setgirbuildenv $(built_install_girs) $(built_install_typelibs)
 
 setgirbuildenv:
-	@set PYTHONPATH=$(PREFIX)\lib\gobject-introspection
+	@set PYTHONPATH=$(PREFIX)\lib\bobject-introspection
 	@set PATH=vs$(VSVER)\$(CFG)\$(PLAT)\bin;$(PREFIX)\bin;$(PATH)
 	@set PKG_CONFIG_PATH=$(PKG_CONFIG_PATH)
 	@set LIB=vs$(VSVER)\$(CFG)\$(PLAT)\bin;$(LIB)

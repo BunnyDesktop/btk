@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,20 +18,20 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include "gtkitem.h"
-#include "gtkmarshalers.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkitem.h"
+#include "btkmarshalers.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 enum {
@@ -42,29 +42,29 @@ enum {
 };
 
 
-static void gtk_item_realize    (GtkWidget        *widget);
-static gint gtk_item_enter      (GtkWidget        *widget,
-				 GdkEventCrossing *event);
-static gint gtk_item_leave      (GtkWidget        *widget,
-				 GdkEventCrossing *event);
+static void btk_item_realize    (BtkWidget        *widget);
+static gint btk_item_enter      (BtkWidget        *widget,
+				 BdkEventCrossing *event);
+static gint btk_item_leave      (BtkWidget        *widget,
+				 BdkEventCrossing *event);
 
 
 static guint item_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_ABSTRACT_TYPE (GtkItem, gtk_item, GTK_TYPE_BIN)
+G_DEFINE_ABSTRACT_TYPE (BtkItem, btk_item, BTK_TYPE_BIN)
 
 static void
-gtk_item_class_init (GtkItemClass *class)
+btk_item_class_init (BtkItemClass *class)
 {
   GObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  BtkWidgetClass *widget_class;
 
   object_class = (GObjectClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  widget_class = (BtkWidgetClass*) class;
 
-  widget_class->realize = gtk_item_realize;
-  widget_class->enter_notify_event = gtk_item_enter;
-  widget_class->leave_notify_event = gtk_item_leave;
+  widget_class->realize = btk_item_realize;
+  widget_class->enter_notify_event = btk_item_enter;
+  widget_class->leave_notify_event = btk_item_leave;
 
   class->select = NULL;
   class->deselect = NULL;
@@ -74,106 +74,106 @@ gtk_item_class_init (GtkItemClass *class)
     g_signal_new (I_("select"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkItemClass, select),
+		  G_STRUCT_OFFSET (BtkItemClass, select),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   item_signals[DESELECT] =
     g_signal_new (I_("deselect"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkItemClass, deselect),
+		  G_STRUCT_OFFSET (BtkItemClass, deselect),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   item_signals[TOGGLE] =
     g_signal_new (I_("toggle"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkItemClass, toggle),
+		  G_STRUCT_OFFSET (BtkItemClass, toggle),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   widget_class->activate_signal = item_signals[TOGGLE];
 }
 
 static void
-gtk_item_init (GtkItem *item)
+btk_item_init (BtkItem *item)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (item), TRUE);
+  btk_widget_set_has_window (BTK_WIDGET (item), TRUE);
 }
 
 void
-gtk_item_select (GtkItem *item)
+btk_item_select (BtkItem *item)
 {
   g_signal_emit (item, item_signals[SELECT], 0);
 }
 
 void
-gtk_item_deselect (GtkItem *item)
+btk_item_deselect (BtkItem *item)
 {
   g_signal_emit (item, item_signals[DESELECT], 0);
 }
 
 void
-gtk_item_toggle (GtkItem *item)
+btk_item_toggle (BtkItem *item)
 {
   g_signal_emit (item, item_signals[TOGGLE], 0);
 }
 
 
 static void
-gtk_item_realize (GtkWidget *widget)
+btk_item_realize (BtkWidget *widget)
 {
-  GdkWindowAttr attributes;
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
   attributes.width = widget->allocation.width;
   attributes.height = widget->allocation.height;
-  attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.visual = gtk_widget_get_visual (widget);
-  attributes.colormap = gtk_widget_get_colormap (widget);
-  attributes.event_mask = (gtk_widget_get_events (widget) |
-			   GDK_EXPOSURE_MASK |
-			   GDK_BUTTON_PRESS_MASK |
-			   GDK_BUTTON_RELEASE_MASK |
-			   GDK_ENTER_NOTIFY_MASK |
-			   GDK_LEAVE_NOTIFY_MASK |
-			   GDK_POINTER_MOTION_MASK);
+  attributes.window_type = BDK_WINDOW_CHILD;
+  attributes.wclass = BDK_INPUT_OUTPUT;
+  attributes.visual = btk_widget_get_visual (widget);
+  attributes.colormap = btk_widget_get_colormap (widget);
+  attributes.event_mask = (btk_widget_get_events (widget) |
+			   BDK_EXPOSURE_MASK |
+			   BDK_BUTTON_PRESS_MASK |
+			   BDK_BUTTON_RELEASE_MASK |
+			   BDK_ENTER_NOTIFY_MASK |
+			   BDK_LEAVE_NOTIFY_MASK |
+			   BDK_POINTER_MOTION_MASK);
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
-  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
-  gdk_window_set_user_data (widget->window, widget);
+  attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
+  widget->window = bdk_window_new (btk_widget_get_parent_window (widget), &attributes, attributes_mask);
+  bdk_window_set_user_data (widget->window, widget);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
-  gdk_window_set_back_pixmap (widget->window, NULL, TRUE);
+  widget->style = btk_style_attach (widget->style, widget->window);
+  btk_style_set_background (widget->style, widget->window, BTK_STATE_NORMAL);
+  bdk_window_set_back_pixmap (widget->window, NULL, TRUE);
 }
 
 static gint
-gtk_item_enter (GtkWidget        *widget,
-		GdkEventCrossing *event)
+btk_item_enter (BtkWidget        *widget,
+		BdkEventCrossing *event)
 {
-  g_return_val_if_fail (GTK_IS_ITEM (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_ITEM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  return gtk_widget_event (widget->parent, (GdkEvent*) event);
+  return btk_widget_event (widget->parent, (BdkEvent*) event);
 }
 
 static gint
-gtk_item_leave (GtkWidget        *widget,
-		GdkEventCrossing *event)
+btk_item_leave (BtkWidget        *widget,
+		BdkEventCrossing *event)
 {
-  g_return_val_if_fail (GTK_IS_ITEM (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_ITEM (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  return gtk_widget_event (widget->parent, (GdkEvent*) event);
+  return btk_widget_event (widget->parent, (BdkEvent*) event);
 }
 
-#define __GTK_ITEM_C__
-#include "gtkaliasdef.c"
+#define __BTK_ITEM_C__
+#include "btkaliasdef.c"

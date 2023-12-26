@@ -34,8 +34,8 @@
 #include <ftw.h>
 #endif
 
-#include "gtksearchenginesimple.h"
-#include "gtkprivate.h"
+#include "btksearchenginesimple.h"
+#include "btkprivate.h"
 
 #include <string.h>
 
@@ -43,7 +43,7 @@
 
 typedef struct 
 {
-  GtkSearchEngineSimple *engine;
+  BtkSearchEngineSimple *engine;
   
   gchar *path;
   gchar **words;
@@ -57,9 +57,9 @@ typedef struct
 } SearchThreadData;
 
 
-struct _GtkSearchEngineSimplePrivate 
+struct _BtkSearchEngineSimplePrivate 
 {
-  GtkQuery *query;
+  BtkQuery *query;
   
   SearchThreadData *active_search;
   
@@ -67,15 +67,15 @@ struct _GtkSearchEngineSimplePrivate
 };
 
 
-G_DEFINE_TYPE (GtkSearchEngineSimple, _gtk_search_engine_simple, GTK_TYPE_SEARCH_ENGINE);
+G_DEFINE_TYPE (BtkSearchEngineSimple, _btk_search_engine_simple, BTK_TYPE_SEARCH_ENGINE);
 
 static void
-gtk_search_engine_simple_dispose (GObject *object)
+btk_search_engine_simple_dispose (GObject *object)
 {
-  GtkSearchEngineSimple *simple;
-  GtkSearchEngineSimplePrivate *priv;
+  BtkSearchEngineSimple *simple;
+  BtkSearchEngineSimplePrivate *priv;
   
-  simple = GTK_SEARCH_ENGINE_SIMPLE (object);
+  simple = BTK_SEARCH_ENGINE_SIMPLE (object);
   priv = simple->priv;
   
   if (priv->query) 
@@ -90,12 +90,12 @@ gtk_search_engine_simple_dispose (GObject *object)
       priv->active_search = NULL;
     }
   
-  G_OBJECT_CLASS (_gtk_search_engine_simple_parent_class)->dispose (object);
+  G_OBJECT_CLASS (_btk_search_engine_simple_parent_class)->dispose (object);
 }
 
 static SearchThreadData *
-search_thread_data_new (GtkSearchEngineSimple *engine,
-			GtkQuery              *query)
+search_thread_data_new (BtkSearchEngineSimple *engine,
+			BtkQuery              *query)
 {
   SearchThreadData *data;
   char *text, *lower, *uri;
@@ -103,7 +103,7 @@ search_thread_data_new (GtkSearchEngineSimple *engine,
   data = g_new0 (SearchThreadData, 1);
   
   data->engine = g_object_ref (engine);
-  uri = _gtk_query_get_location (query);
+  uri = _btk_query_get_location (query);
   if (uri != NULL) 
     {
       data->path = g_filename_from_uri (uri, NULL, NULL);
@@ -112,7 +112,7 @@ search_thread_data_new (GtkSearchEngineSimple *engine,
   if (data->path == NULL)
     data->path = g_strdup (g_get_home_dir ());
 	
-  text = _gtk_query_get_text (query);
+  text = _btk_query_get_text (query);
   lower = g_ascii_strdown (text, -1);
   data->words = g_strsplit (lower, " ", -1);
   g_free (text);
@@ -138,7 +138,7 @@ search_thread_done_idle (gpointer user_data)
   data = user_data;
   
   if (!data->cancelled)
-    _gtk_search_engine_finished (GTK_SEARCH_ENGINE (data->engine));
+    _btk_search_engine_finished (BTK_SEARCH_ENGINE (data->engine));
      
   data->engine->priv->active_search = NULL;
   search_thread_data_free (data);
@@ -162,7 +162,7 @@ search_thread_add_hits_idle (gpointer user_data)
 
   if (!hits->thread_data->cancelled) 
     {
-      _gtk_search_engine_hits_added (GTK_SEARCH_ENGINE (hits->thread_data->engine),
+      _btk_search_engine_hits_added (BTK_SEARCH_ENGINE (hits->thread_data->engine),
 				    hits->uris);
     }
 
@@ -186,7 +186,7 @@ send_batch (SearchThreadData *data)
       hits->uris = data->uri_hits;
       hits->thread_data = data;
       
-      gdk_threads_add_idle (search_thread_add_hits_idle, hits);
+      bdk_threads_add_idle (search_thread_add_hits_idle, hits);
     }
   data->uri_hits = NULL;
 }
@@ -283,19 +283,19 @@ search_thread_func (gpointer user_data)
 
   send_batch (data);
   
-  gdk_threads_add_idle (search_thread_done_idle, data);
+  bdk_threads_add_idle (search_thread_done_idle, data);
 #endif /* HAVE_FTW_H */
   
   return NULL;
 }
 
 static void
-gtk_search_engine_simple_start (GtkSearchEngine *engine)
+btk_search_engine_simple_start (BtkSearchEngine *engine)
 {
-  GtkSearchEngineSimple *simple;
+  BtkSearchEngineSimple *simple;
   SearchThreadData *data;
   
-  simple = GTK_SEARCH_ENGINE_SIMPLE (engine);
+  simple = BTK_SEARCH_ENGINE_SIMPLE (engine);
   
   if (simple->priv->active_search != NULL)
     return;
@@ -311,11 +311,11 @@ gtk_search_engine_simple_start (GtkSearchEngine *engine)
 }
 
 static void
-gtk_search_engine_simple_stop (GtkSearchEngine *engine)
+btk_search_engine_simple_stop (BtkSearchEngine *engine)
 {
-  GtkSearchEngineSimple *simple;
+  BtkSearchEngineSimple *simple;
   
-  simple = GTK_SEARCH_ENGINE_SIMPLE (engine);
+  simple = BTK_SEARCH_ENGINE_SIMPLE (engine);
   
   if (simple->priv->active_search != NULL) 
     {
@@ -325,18 +325,18 @@ gtk_search_engine_simple_stop (GtkSearchEngine *engine)
 }
 
 static gboolean
-gtk_search_engine_simple_is_indexed (GtkSearchEngine *engine)
+btk_search_engine_simple_is_indexed (BtkSearchEngine *engine)
 {
   return FALSE;
 }
 
 static void
-gtk_search_engine_simple_set_query (GtkSearchEngine *engine, 
-				    GtkQuery        *query)
+btk_search_engine_simple_set_query (BtkSearchEngine *engine, 
+				    BtkQuery        *query)
 {
-  GtkSearchEngineSimple *simple;
+  BtkSearchEngineSimple *simple;
   
-  simple = GTK_SEARCH_ENGINE_SIMPLE (engine);
+  simple = BTK_SEARCH_ENGINE_SIMPLE (engine);
   
   if (query)
     g_object_ref (query);
@@ -348,34 +348,34 @@ gtk_search_engine_simple_set_query (GtkSearchEngine *engine,
 }
 
 static void
-_gtk_search_engine_simple_class_init (GtkSearchEngineSimpleClass *class)
+_btk_search_engine_simple_class_init (BtkSearchEngineSimpleClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkSearchEngineClass *engine_class;
+  GObjectClass *bobject_class;
+  BtkSearchEngineClass *engine_class;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  gobject_class->dispose = gtk_search_engine_simple_dispose;
+  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class->dispose = btk_search_engine_simple_dispose;
   
-  engine_class = GTK_SEARCH_ENGINE_CLASS (class);
-  engine_class->set_query = gtk_search_engine_simple_set_query;
-  engine_class->start = gtk_search_engine_simple_start;
-  engine_class->stop = gtk_search_engine_simple_stop;
-  engine_class->is_indexed = gtk_search_engine_simple_is_indexed;
+  engine_class = BTK_SEARCH_ENGINE_CLASS (class);
+  engine_class->set_query = btk_search_engine_simple_set_query;
+  engine_class->start = btk_search_engine_simple_start;
+  engine_class->stop = btk_search_engine_simple_stop;
+  engine_class->is_indexed = btk_search_engine_simple_is_indexed;
 
-  g_type_class_add_private (gobject_class, sizeof (GtkSearchEngineSimplePrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkSearchEngineSimplePrivate));
 }
 
 static void
-_gtk_search_engine_simple_init (GtkSearchEngineSimple *engine)
+_btk_search_engine_simple_init (BtkSearchEngineSimple *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, GTK_TYPE_SEARCH_ENGINE_SIMPLE, GtkSearchEngineSimplePrivate);
+  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_SIMPLE, BtkSearchEngineSimplePrivate);
 }
 
-GtkSearchEngine *
-_gtk_search_engine_simple_new (void)
+BtkSearchEngine *
+_btk_search_engine_simple_new (void)
 {
 #ifdef HAVE_FTW_H
-  return g_object_new (GTK_TYPE_SEARCH_ENGINE_SIMPLE, NULL);
+  return g_object_new (BTK_TYPE_SEARCH_ENGINE_SIMPLE, NULL);
 #else
   return NULL;
 #endif

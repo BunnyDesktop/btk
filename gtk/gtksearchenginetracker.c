@@ -25,12 +25,12 @@
 
 #include <string.h>
 
-#include <gio/gio.h>
-#include <gmodule.h>
-#include <gdk/gdk.h>
-#include <gtk/gtk.h>
+#include <bunnyio/bunnyio.h>
+#include <bmodule.h>
+#include <bdk/bdk.h>
+#include <btk/btk.h>
 
-#include "gtksearchenginetracker.h"
+#include "btksearchenginetracker.h"
 
 #define DBUS_SERVICE_RESOURCES   "org.freedesktop.Tracker1"
 #define DBUS_PATH_RESOURCES      "/org/freedesktop/Tracker1/Resources"
@@ -54,26 +54,26 @@
 #undef FTS_MATCHING
 
 /*
- * GtkSearchEngineTracker object
+ * BtkSearchEngineTracker object
  */
-struct _GtkSearchEngineTrackerPrivate
+struct _BtkSearchEngineTrackerPrivate
 {
   GDBusConnection *connection;
   GCancellable *cancellable;
-  GtkQuery *query;
+  BtkQuery *query;
   gboolean query_pending;
 };
 
-G_DEFINE_TYPE (GtkSearchEngineTracker, _gtk_search_engine_tracker, GTK_TYPE_SEARCH_ENGINE);
+G_DEFINE_TYPE (BtkSearchEngineTracker, _btk_search_engine_tracker, BTK_TYPE_SEARCH_ENGINE);
 
 static void
 finalize (GObject *object)
 {
-  GtkSearchEngineTracker *tracker;
+  BtkSearchEngineTracker *tracker;
 
-  g_debug ("Finalizing GtkSearchEngineTracker");
+  g_debug ("Finalizing BtkSearchEngineTracker");
 
-  tracker = GTK_SEARCH_ENGINE_TRACKER (object);
+  tracker = BTK_SEARCH_ENGINE_TRACKER (object);
 
   if (tracker->priv->cancellable)
     {
@@ -94,7 +94,7 @@ finalize (GObject *object)
       tracker->priv->connection = NULL;
     }
 
-  G_OBJECT_CLASS (_gtk_search_engine_tracker_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_search_engine_tracker_parent_class)->finalize (object);
 }
 
 static GDBusConnection *
@@ -105,7 +105,7 @@ get_connection (void)
   GVariant *reply;
 
   /* Normally I hate sync calls with UIs, but we need to return NULL
-   * or a GtkSearchEngine as a result of this function.
+   * or a BtkSearchEngine as a result of this function.
    */
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
 
@@ -155,7 +155,7 @@ get_connection (void)
 }
 
 static void
-get_query_results (GtkSearchEngineTracker *engine,
+get_query_results (BtkSearchEngineTracker *engine,
                    const gchar            *sparql,
                    GAsyncReadyCallback     callback,
                    gpointer                user_data)
@@ -275,7 +275,7 @@ query_callback (GObject      *object,
                 GAsyncResult *res,
                 gpointer      user_data)
 {
-  GtkSearchEngineTracker *tracker;
+  BtkSearchEngineTracker *tracker;
   GList *hits;
   GVariant *reply;
   GVariant *r;
@@ -284,25 +284,25 @@ query_callback (GObject      *object,
   GError *error = NULL;
   gint i, n;
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
-  tracker = GTK_SEARCH_ENGINE_TRACKER (user_data);
+  tracker = BTK_SEARCH_ENGINE_TRACKER (user_data);
 
   tracker->priv->query_pending = FALSE;
 
   reply = g_dbus_connection_call_finish (tracker->priv->connection, res, &error);
   if (error)
     {
-      _gtk_search_engine_error (GTK_SEARCH_ENGINE (tracker), error->message);
+      _btk_search_engine_error (BTK_SEARCH_ENGINE (tracker), error->message);
       g_error_free (error);
-      gdk_threads_leave ();
+      bdk_threads_leave ();
       return;
     }
 
   if (!reply)
     {
-      _gtk_search_engine_finished (GTK_SEARCH_ENGINE (tracker));
-      gdk_threads_leave ();
+      _btk_search_engine_finished (BTK_SEARCH_ENGINE (tracker));
+      bdk_threads_leave ();
       return;
     }
 
@@ -323,27 +323,27 @@ query_callback (GObject      *object,
 
   /* We iterate result by result, not n at a time. */
   hits = string_list_to_gslist (result);
-  _gtk_search_engine_hits_added (GTK_SEARCH_ENGINE (tracker), hits);
-  _gtk_search_engine_finished (GTK_SEARCH_ENGINE (tracker));
+  _btk_search_engine_hits_added (BTK_SEARCH_ENGINE (tracker), hits);
+  _btk_search_engine_finished (BTK_SEARCH_ENGINE (tracker));
   g_list_free (hits);
   g_free (result);
   g_variant_unref (reply);
   g_variant_unref (r);
 
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
-gtk_search_engine_tracker_start (GtkSearchEngine *engine)
+btk_search_engine_tracker_start (BtkSearchEngine *engine)
 {
-  GtkSearchEngineTracker *tracker;
+  BtkSearchEngineTracker *tracker;
   gchar *search_text;
 #ifdef FTS_MATCHING
   gchar *location_uri;
 #endif
   GString *sparql;
 
-  tracker = GTK_SEARCH_ENGINE_TRACKER (engine);
+  tracker = BTK_SEARCH_ENGINE_TRACKER (engine);
 
   if (tracker->priv->query_pending)
     {
@@ -353,14 +353,14 @@ gtk_search_engine_tracker_start (GtkSearchEngine *engine)
 
   if (tracker->priv->query == NULL)
     {
-      g_debug ("Attempt to start a new search with no GtkQuery, doing nothing");
+      g_debug ("Attempt to start a new search with no BtkQuery, doing nothing");
       return;
     }
 
-  search_text = _gtk_query_get_text (tracker->priv->query);
+  search_text = _btk_query_get_text (tracker->priv->query);
 
 #ifdef FTS_MATCHING
-  location_uri = _gtk_query_get_location (tracker->priv->query);
+  location_uri = _btk_query_get_location (tracker->priv->query);
   /* Using FTS: */
   sparql = g_string_new ("SELECT nie:url(?urn) "
                          "WHERE {"
@@ -400,11 +400,11 @@ gtk_search_engine_tracker_start (GtkSearchEngine *engine)
 }
 
 static void
-gtk_search_engine_tracker_stop (GtkSearchEngine *engine)
+btk_search_engine_tracker_stop (BtkSearchEngine *engine)
 {
-  GtkSearchEngineTracker *tracker;
+  BtkSearchEngineTracker *tracker;
 
-  tracker = GTK_SEARCH_ENGINE_TRACKER (engine);
+  tracker = BTK_SEARCH_ENGINE_TRACKER (engine);
 
   if (tracker->priv->query && tracker->priv->query_pending)
     {
@@ -414,18 +414,18 @@ gtk_search_engine_tracker_stop (GtkSearchEngine *engine)
 }
 
 static gboolean
-gtk_search_engine_tracker_is_indexed (GtkSearchEngine *engine)
+btk_search_engine_tracker_is_indexed (BtkSearchEngine *engine)
 {
   return TRUE;
 }
 
 static void
-gtk_search_engine_tracker_set_query (GtkSearchEngine *engine,
-                                     GtkQuery        *query)
+btk_search_engine_tracker_set_query (BtkSearchEngine *engine,
+                                     BtkQuery        *query)
 {
-  GtkSearchEngineTracker *tracker;
+  BtkSearchEngineTracker *tracker;
 
-  tracker = GTK_SEARCH_ENGINE_TRACKER (engine);
+  tracker = BTK_SEARCH_ENGINE_TRACKER (engine);
 
   if (query)
     g_object_ref (query);
@@ -437,37 +437,37 @@ gtk_search_engine_tracker_set_query (GtkSearchEngine *engine,
 }
 
 static void
-_gtk_search_engine_tracker_class_init (GtkSearchEngineTrackerClass *class)
+_btk_search_engine_tracker_class_init (BtkSearchEngineTrackerClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkSearchEngineClass *engine_class;
+  GObjectClass *bobject_class;
+  BtkSearchEngineClass *engine_class;
 
-  gobject_class = G_OBJECT_CLASS (class);
-  gobject_class->finalize = finalize;
+  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class->finalize = finalize;
 
-  engine_class = GTK_SEARCH_ENGINE_CLASS (class);
-  engine_class->set_query = gtk_search_engine_tracker_set_query;
-  engine_class->start = gtk_search_engine_tracker_start;
-  engine_class->stop = gtk_search_engine_tracker_stop;
-  engine_class->is_indexed = gtk_search_engine_tracker_is_indexed;
+  engine_class = BTK_SEARCH_ENGINE_CLASS (class);
+  engine_class->set_query = btk_search_engine_tracker_set_query;
+  engine_class->start = btk_search_engine_tracker_start;
+  engine_class->stop = btk_search_engine_tracker_stop;
+  engine_class->is_indexed = btk_search_engine_tracker_is_indexed;
 
-  g_type_class_add_private (gobject_class,
-                            sizeof (GtkSearchEngineTrackerPrivate));
+  g_type_class_add_private (bobject_class,
+                            sizeof (BtkSearchEngineTrackerPrivate));
 }
 
 static void
-_gtk_search_engine_tracker_init (GtkSearchEngineTracker *engine)
+_btk_search_engine_tracker_init (BtkSearchEngineTracker *engine)
 {
   engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine,
-                                              GTK_TYPE_SEARCH_ENGINE_TRACKER,
-                                              GtkSearchEngineTrackerPrivate);
+                                              BTK_TYPE_SEARCH_ENGINE_TRACKER,
+                                              BtkSearchEngineTrackerPrivate);
 }
 
 
-GtkSearchEngine *
-_gtk_search_engine_tracker_new (void)
+BtkSearchEngine *
+_btk_search_engine_tracker_new (void)
 {
-  GtkSearchEngineTracker *engine;
+  BtkSearchEngineTracker *engine;
   GDBusConnection *connection;
 
   g_debug ("--");
@@ -476,13 +476,13 @@ _gtk_search_engine_tracker_new (void)
   if (!connection)
     return NULL;
 
-  g_debug ("Creating GtkSearchEngineTracker...");
+  g_debug ("Creating BtkSearchEngineTracker...");
 
-  engine = g_object_new (GTK_TYPE_SEARCH_ENGINE_TRACKER, NULL);
+  engine = g_object_new (BTK_TYPE_SEARCH_ENGINE_TRACKER, NULL);
 
   engine->priv->connection = connection;
   engine->priv->cancellable = g_cancellable_new ();
   engine->priv->query_pending = FALSE;
 
-  return GTK_SEARCH_ENGINE (engine);
+  return BTK_SEARCH_ENGINE (engine);
 }

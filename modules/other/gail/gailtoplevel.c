@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,82 +22,82 @@
 #include <stdlib.h>
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-#include "gailtoplevel.h"
+#include "bailtoplevel.h"
 
-static void             gail_toplevel_class_init        (GailToplevelClass      *klass);
-static void             gail_toplevel_init              (GailToplevel           *toplevel);
-static void             gail_toplevel_initialize        (AtkObject              *accessible,
+static void             bail_toplevel_class_init        (BailToplevelClass      *klass);
+static void             bail_toplevel_init              (BailToplevel           *toplevel);
+static void             bail_toplevel_initialize        (BatkObject              *accessible,
                                                          gpointer                data);
-static void             gail_toplevel_object_finalize   (GObject                *obj);
+static void             bail_toplevel_object_finalize   (GObject                *obj);
 
-/* atkobject.h */
+/* batkobject.h */
 
-static gint             gail_toplevel_get_n_children    (AtkObject              *obj);
-static AtkObject*       gail_toplevel_ref_child         (AtkObject              *obj,
+static gint             bail_toplevel_get_n_children    (BatkObject              *obj);
+static BatkObject*       bail_toplevel_ref_child         (BatkObject              *obj,
                                                         gint                    i);
-static AtkObject*       gail_toplevel_get_parent        (AtkObject              *obj);
+static BatkObject*       bail_toplevel_get_parent        (BatkObject              *obj);
 
 /* Callbacks */
 
 
-static void             gail_toplevel_window_destroyed  (GtkWindow              *window,
-                                                        GailToplevel            *text);
-static gboolean         gail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
+static void             bail_toplevel_window_destroyed  (BtkWindow              *window,
+                                                        BailToplevel            *text);
+static gboolean         bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
                                                         guint                   n_param_values,
                                                         const GValue            *param_values,
                                                         gpointer                data);
-static gboolean         gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
+static gboolean         bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
                                                         guint                   n_param_values,
                                                         const GValue            *param_values,
                                                         gpointer                data);
 
 /* Misc */
 
-static void      _gail_toplevel_remove_child            (GailToplevel           *toplevel,
-                                                        GtkWindow               *window);
-static gboolean  is_attached_menu_window                (GtkWidget              *widget);
-static gboolean  is_combo_window                        (GtkWidget              *widget);
+static void      _bail_toplevel_remove_child            (BailToplevel           *toplevel,
+                                                        BtkWindow               *window);
+static gboolean  is_attached_menu_window                (BtkWidget              *widget);
+static gboolean  is_combo_window                        (BtkWidget              *widget);
 
 
-G_DEFINE_TYPE (GailToplevel, gail_toplevel, ATK_TYPE_OBJECT)
+G_DEFINE_TYPE (BailToplevel, bail_toplevel, BATK_TYPE_OBJECT)
 
 static void
-gail_toplevel_class_init (GailToplevelClass *klass)
+bail_toplevel_class_init (BailToplevelClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS(klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS(klass);
   GObjectClass *g_object_class = G_OBJECT_CLASS(klass);
 
-  class->initialize = gail_toplevel_initialize;
-  class->get_n_children = gail_toplevel_get_n_children;
-  class->ref_child = gail_toplevel_ref_child;
-  class->get_parent = gail_toplevel_get_parent;
+  class->initialize = bail_toplevel_initialize;
+  class->get_n_children = bail_toplevel_get_n_children;
+  class->ref_child = bail_toplevel_ref_child;
+  class->get_parent = bail_toplevel_get_parent;
 
-  g_object_class->finalize = gail_toplevel_object_finalize;
+  g_object_class->finalize = bail_toplevel_object_finalize;
 }
 
 static void
-gail_toplevel_init (GailToplevel *toplevel)
+bail_toplevel_init (BailToplevel *toplevel)
 {
-  GtkWindow *window;
-  GtkWidget *widget;
+  BtkWindow *window;
+  BtkWidget *widget;
   GList *l;
   guint signal_id;
   
-  l = toplevel->window_list = gtk_window_list_toplevels ();
+  l = toplevel->window_list = btk_window_list_toplevels ();
 
   while (l)
     {
-      window = GTK_WINDOW (l->data);
-      widget = GTK_WIDGET (window);
+      window = BTK_WINDOW (l->data);
+      widget = BTK_WIDGET (window);
       if (!window || 
-          !gtk_widget_get_visible (widget) ||
+          !btk_widget_get_visible (widget) ||
           is_attached_menu_window (widget) ||
-          GTK_WIDGET (window)->parent ||
-          GTK_IS_PLUG (window))
+          BTK_WIDGET (window)->parent ||
+          BTK_IS_PLUG (window))
         {
           GList *temp_l  = l->next;
 
@@ -108,121 +108,121 @@ gail_toplevel_init (GailToplevel *toplevel)
         {
           g_signal_connect (G_OBJECT (window), 
                             "destroy",
-                            G_CALLBACK (gail_toplevel_window_destroyed),
+                            G_CALLBACK (bail_toplevel_window_destroyed),
                             toplevel);
           l = l->next;
         }
     }
 
-  g_type_class_ref (GTK_TYPE_WINDOW);
+  g_type_class_ref (BTK_TYPE_WINDOW);
 
-  signal_id  = g_signal_lookup ("show", GTK_TYPE_WINDOW);
+  signal_id  = g_signal_lookup ("show", BTK_TYPE_WINDOW);
   g_signal_add_emission_hook (signal_id, 0,
-    gail_toplevel_show_event_watcher, toplevel, (GDestroyNotify) NULL);
+    bail_toplevel_show_event_watcher, toplevel, (GDestroyNotify) NULL);
 
-  signal_id  = g_signal_lookup ("hide", GTK_TYPE_WINDOW);
+  signal_id  = g_signal_lookup ("hide", BTK_TYPE_WINDOW);
   g_signal_add_emission_hook (signal_id, 0,
-    gail_toplevel_hide_event_watcher, toplevel, (GDestroyNotify) NULL);
+    bail_toplevel_hide_event_watcher, toplevel, (GDestroyNotify) NULL);
 }
 
 static void
-gail_toplevel_initialize (AtkObject *accessible,
+bail_toplevel_initialize (BatkObject *accessible,
                           gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_toplevel_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_toplevel_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_APPLICATION;
+  accessible->role = BATK_ROLE_APPLICATION;
   accessible->name = g_get_prgname();
   accessible->accessible_parent = NULL;
 }
 
 static void
-gail_toplevel_object_finalize (GObject *obj)
+bail_toplevel_object_finalize (GObject *obj)
 {
-  GailToplevel *toplevel = GAIL_TOPLEVEL (obj);
+  BailToplevel *toplevel = BAIL_TOPLEVEL (obj);
 
   if (toplevel->window_list)
     g_list_free (toplevel->window_list);
 
-  G_OBJECT_CLASS (gail_toplevel_parent_class)->finalize (obj);
+  G_OBJECT_CLASS (bail_toplevel_parent_class)->finalize (obj);
 }
 
-static AtkObject*
-gail_toplevel_get_parent (AtkObject *obj)
+static BatkObject*
+bail_toplevel_get_parent (BatkObject *obj)
 {
     return NULL;
 }
 
 static gint
-gail_toplevel_get_n_children (AtkObject *obj)
+bail_toplevel_get_n_children (BatkObject *obj)
 {
-  GailToplevel *toplevel = GAIL_TOPLEVEL (obj);
+  BailToplevel *toplevel = BAIL_TOPLEVEL (obj);
 
   gint rc = g_list_length (toplevel->window_list);
   return rc;
 }
 
-static AtkObject*
-gail_toplevel_ref_child (AtkObject *obj,
+static BatkObject*
+bail_toplevel_ref_child (BatkObject *obj,
                          gint      i)
 {
-  GailToplevel *toplevel;
+  BailToplevel *toplevel;
   gpointer ptr;
-  GtkWidget *widget;
-  AtkObject *atk_obj;
+  BtkWidget *widget;
+  BatkObject *batk_obj;
 
-  toplevel = GAIL_TOPLEVEL (obj);
+  toplevel = BAIL_TOPLEVEL (obj);
   ptr = g_list_nth_data (toplevel->window_list, i);
   if (!ptr)
     return NULL;
-  widget = GTK_WIDGET (ptr);
-  atk_obj = gtk_widget_get_accessible (widget);
+  widget = BTK_WIDGET (ptr);
+  batk_obj = btk_widget_get_accessible (widget);
 
-  g_object_ref (atk_obj);
-  return atk_obj;
+  g_object_ref (batk_obj);
+  return batk_obj;
 }
 
 /*
- * Window destroy events on GtkWindow cause a child to be removed
+ * Window destroy events on BtkWindow cause a child to be removed
  * from the toplevel
  */
 static void
-gail_toplevel_window_destroyed (GtkWindow    *window,
-                                GailToplevel *toplevel)
+bail_toplevel_window_destroyed (BtkWindow    *window,
+                                BailToplevel *toplevel)
 {
-  _gail_toplevel_remove_child (toplevel, window);
+  _bail_toplevel_remove_child (toplevel, window);
 }
 
 /*
  * Show events cause a child to be added to the toplevel
  */
 static gboolean
-gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
+bail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
                                   guint                  n_param_values,
                                   const GValue          *param_values,
                                   gpointer               data)
 {
-  GailToplevel *toplevel = GAIL_TOPLEVEL (data);
-  AtkObject *atk_obj = ATK_OBJECT (toplevel);
+  BailToplevel *toplevel = BAIL_TOPLEVEL (data);
+  BatkObject *batk_obj = BATK_OBJECT (toplevel);
   GObject *object;
-  GtkWidget *widget;
+  BtkWidget *widget;
   gint n_children;
-  AtkObject *child;
+  BatkObject *child;
 
   object = g_value_get_object (param_values + 0);
 
-  if (!GTK_IS_WINDOW (object))
+  if (!BTK_IS_WINDOW (object))
     return TRUE;
 
-  widget = GTK_WIDGET (object);
+  widget = BTK_WIDGET (object);
   if (widget->parent || 
       is_attached_menu_window (widget) ||
       is_combo_window (widget) ||
-      GTK_IS_PLUG (widget))
+      BTK_IS_PLUG (widget))
     return TRUE;
 
-  child = gtk_widget_get_accessible (widget);
-  if (atk_object_get_role (child) == ATK_ROLE_REDUNDANT_OBJECT)
+  child = btk_widget_get_accessible (widget);
+  if (batk_object_get_role (child) == BATK_ROLE_REDUNDANT_OBJECT)
     {
       return TRUE;
     }
@@ -231,7 +231,7 @@ gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
    * Add the window to the list & emit the signal.
    * Don't do this for tooltips (Bug #150649).
    */
-  if (atk_object_get_role (child) == ATK_ROLE_TOOL_TIP)
+  if (batk_object_get_role (child) == BATK_ROLE_TOOL_TIP)
     {
       return TRUE;
     }
@@ -244,72 +244,72 @@ gail_toplevel_show_event_watcher (GSignalInvocationHint *ihint,
    * Must subtract 1 from the n_children since the index is 0-based
    * but g_list_length is 1-based.
    */
-  atk_object_set_parent (child, atk_obj);
-  g_signal_emit_by_name (atk_obj, "children-changed::add",
+  batk_object_set_parent (child, batk_obj);
+  g_signal_emit_by_name (batk_obj, "children-changed::add",
                          n_children - 1, 
                          child, NULL);
 
   /* Connect destroy signal callback */
   g_signal_connect (G_OBJECT(object), 
                     "destroy",
-                    G_CALLBACK (gail_toplevel_window_destroyed),
+                    G_CALLBACK (bail_toplevel_window_destroyed),
                     toplevel);
 
   return TRUE;
 }
 
 /*
- * Hide events on GtkWindow cause a child to be removed from the toplevel
+ * Hide events on BtkWindow cause a child to be removed from the toplevel
  */
 static gboolean
-gail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
+bail_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
                                   guint                  n_param_values,
                                   const GValue          *param_values,
                                   gpointer               data)
 {
-  GailToplevel *toplevel = GAIL_TOPLEVEL (data);
+  BailToplevel *toplevel = BAIL_TOPLEVEL (data);
   GObject *object;
 
   object = g_value_get_object (param_values + 0);
 
-  if (!GTK_IS_WINDOW (object))
+  if (!BTK_IS_WINDOW (object))
     return TRUE;
 
-  _gail_toplevel_remove_child (toplevel, GTK_WINDOW (object));
+  _bail_toplevel_remove_child (toplevel, BTK_WINDOW (object));
   return TRUE;
 }
 
 /*
- * Common code used by destroy and hide events on GtkWindow
+ * Common code used by destroy and hide events on BtkWindow
  */
 static void
-_gail_toplevel_remove_child (GailToplevel *toplevel, 
-                             GtkWindow    *window)
+_bail_toplevel_remove_child (BailToplevel *toplevel, 
+                             BtkWindow    *window)
 {
-  AtkObject *atk_obj = ATK_OBJECT (toplevel);
+  BatkObject *batk_obj = BATK_OBJECT (toplevel);
   GList *l;
   guint window_count = 0;
-  AtkObject *child;
+  BatkObject *child;
 
   if (toplevel->window_list)
     {
-        GtkWindow *tmp_window;
+        BtkWindow *tmp_window;
 
         /* Must loop through them all */
         for (l = toplevel->window_list; l; l = l->next)
         {
-          tmp_window = GTK_WINDOW (l->data);
+          tmp_window = BTK_WINDOW (l->data);
 
           if (window == tmp_window)
             {
               /* Remove the window from the window_list & emit the signal */
               toplevel->window_list = g_list_remove (toplevel->window_list,
                                                      l->data);
-              child = gtk_widget_get_accessible (GTK_WIDGET (window));
-              g_signal_emit_by_name (atk_obj, "children-changed::remove",
+              child = btk_widget_get_accessible (BTK_WIDGET (window));
+              g_signal_emit_by_name (batk_obj, "children-changed::remove",
                                      window_count, 
                                      child, NULL);
-              atk_object_set_parent (child, NULL);
+              batk_object_set_parent (child, NULL);
               break;
             }
 
@@ -319,49 +319,49 @@ _gail_toplevel_remove_child (GailToplevel *toplevel,
 }
 
 static gboolean
-is_attached_menu_window (GtkWidget *widget)
+is_attached_menu_window (BtkWidget *widget)
 {
-  GtkWidget *child = GTK_BIN (widget)->child;
+  BtkWidget *child = BTK_BIN (widget)->child;
   gboolean ret = FALSE;
 
-  if (GTK_IS_MENU (child))
+  if (BTK_IS_MENU (child))
     {
-      GtkWidget *attach;
+      BtkWidget *attach;
 
-      attach = gtk_menu_get_attach_widget (GTK_MENU (child));
-      /* Allow for menu belonging to the Panel Menu, which is a GtkButton */
-      if (GTK_IS_MENU_ITEM (attach) ||
-          GTK_IS_OPTION_MENU (attach) ||
-          GTK_IS_BUTTON (attach))
+      attach = btk_menu_get_attach_widget (BTK_MENU (child));
+      /* Allow for menu belonging to the Panel Menu, which is a BtkButton */
+      if (BTK_IS_MENU_ITEM (attach) ||
+          BTK_IS_OPTION_MENU (attach) ||
+          BTK_IS_BUTTON (attach))
         ret = TRUE;
     }
   return ret;
 }
 
 static gboolean
-is_combo_window (GtkWidget *widget)
+is_combo_window (BtkWidget *widget)
 {
-  GtkWidget *child = GTK_BIN (widget)->child;
-  AtkObject *obj;
-  GtkAccessible *accessible;
+  BtkWidget *child = BTK_BIN (widget)->child;
+  BatkObject *obj;
+  BtkAccessible *accessible;
 
-  if (!GTK_IS_EVENT_BOX (child))
+  if (!BTK_IS_EVENT_BOX (child))
     return FALSE;
 
-  child = GTK_BIN (child)->child;
+  child = BTK_BIN (child)->child;
 
-  if (!GTK_IS_FRAME (child))
+  if (!BTK_IS_FRAME (child))
     return FALSE;
 
-  child = GTK_BIN (child)->child;
+  child = BTK_BIN (child)->child;
 
-  if (!GTK_IS_SCROLLED_WINDOW (child))
+  if (!BTK_IS_SCROLLED_WINDOW (child))
     return FALSE;
 
-  obj = gtk_widget_get_accessible (child);
-  obj = atk_object_get_parent (obj);
-  accessible = GTK_ACCESSIBLE (obj);
-  if (GTK_IS_COMBO (accessible->widget))
+  obj = btk_widget_get_accessible (child);
+  obj = batk_object_get_parent (obj);
+  accessible = BTK_ACCESSIBLE (obj);
+  if (BTK_IS_COMBO (accessible->widget))
     return TRUE;
 
   return  FALSE;

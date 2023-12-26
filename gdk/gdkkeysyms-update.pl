@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Updates http://git.gnome.org/cgit/gtk+/tree/gdk/gdkkeysyms.h from upstream (X.org 7.x),
+# Updates http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms.h from upstream (X.org 7.x),
 # from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
 # 
 # Author  : Simos Xenitellis <simos at gnome dot org>.
@@ -9,11 +9,11 @@
 #
 # Input   : http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
 # Input   : http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h
-# Output  : http://git.gnome.org/cgit/gtk+/tree/gdk/gdkkeysyms.h
+# Output  : http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms.h
 # 
 # Notes   : It downloads keysymdef.h from the Internet, if not found locally,
-# Notes   : and creates an updated gdkkeysyms.h
-# Notes   : This version updates the source of gdkkeysyms.h from CVS to the GIT server.
+# Notes   : and creates an updated bdkkeysyms.h
+# Notes   : This version updates the source of bdkkeysyms.h from CVS to the GIT server.
 
 use strict;
 
@@ -50,9 +50,9 @@ else
 	print "as found at http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob;f=XF86keysym.h\n\n";
 }
 
-if ( -f "gdkkeysyms.h" )
+if ( -f "bdkkeysyms.h" )
 {
-	print "There is already a gdkkeysyms.h file in this directory. We are not overwriting it.\n";
+	print "There is already a bdkkeysyms.h file in this directory. We are not overwriting it.\n";
 	print "Please move it somewhere else in order to run this script.\n";
 	die "Exiting...\n\n";
 }
@@ -60,14 +60,14 @@ if ( -f "gdkkeysyms.h" )
 # Source: http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob;f=keysymdef.h
 die "Could not open file keysymdef.h: $!\n" unless open(IN_KEYSYMDEF, "<:utf8", "keysymdef.h");
 
-# Output: gtk+/gdk/gdkkeysyms.h
-die "Could not open file gdkkeysyms.h: $!\n" unless open(OUT_GDKKEYSYMS, ">:utf8", "gdkkeysyms.h");
+# Output: btk+/bdk/bdkkeysyms.h
+die "Could not open file bdkkeysyms.h: $!\n" unless open(OUT_BDKKEYSYMS, ">:utf8", "bdkkeysyms.h");
 
-# Output: gtk+/gdk/gdkkeysyms-compat.h
-die "Could not open file gdkkeysyms-compat.h: $!\n" unless open(OUT_GDKKEYSYMS_COMPAT, ">:utf8", "gdkkeysyms-compat.h");
+# Output: btk+/bdk/bdkkeysyms-compat.h
+die "Could not open file bdkkeysyms-compat.h: $!\n" unless open(OUT_BDKKEYSYMS_COMPAT, ">:utf8", "bdkkeysyms-compat.h");
 
 my $LICENSE_HEADER= <<EOF;
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2005, 2006, 2007, 2009 GNOME Foundation
  *
@@ -89,13 +89,13 @@ my $LICENSE_HEADER= <<EOF;
 
 EOF
 
-print OUT_GDKKEYSYMS $LICENSE_HEADER;
-print OUT_GDKKEYSYMS_COMPAT $LICENSE_HEADER;
+print OUT_BDKKEYSYMS $LICENSE_HEADER;
+print OUT_BDKKEYSYMS_COMPAT $LICENSE_HEADER;
 
-print OUT_GDKKEYSYMS<<EOF;
+print OUT_BDKKEYSYMS<<EOF;
 
 /*
- * File auto-generated from script http://git.gnome.org/cgit/gtk+/tree/gdk/gdkkeysyms-update.pl
+ * File auto-generated from script http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms-update.pl
  * using the input file
  * http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
  * and
@@ -103,31 +103,31 @@ print OUT_GDKKEYSYMS<<EOF;
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2007.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2007.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_KEYSYMS_H__
-#define __GDK_KEYSYMS_H__
+#ifndef __BDK_KEYSYMS_H__
+#define __BDK_KEYSYMS_H__
 
-/* For GTK 2, we include compatibility defines by default. */
-#include <gdk/gdkkeysyms-compat.h> 
+/* For BTK 2, we include compatibility defines by default. */
+#include <bdk/bdkkeysyms-compat.h> 
 
 EOF
 
-print OUT_GDKKEYSYMS_COMPAT<<EOF;
+print OUT_BDKKEYSYMS_COMPAT<<EOF;
 /*
- * Compatibility version of gdkkeysyms.h.
+ * Compatibility version of bdkkeysyms.h.
  *
- * In GTK3, keysyms changed to have a KEY_ prefix.  This is a compatibility header
+ * In BTK3, keysyms changed to have a KEY_ prefix.  This is a compatibility header
  * your application can include to gain access to the old names as well.  Consider
  * porting to the new names instead.
  */
 
-#ifndef __GDK_KEYSYMS_COMPAT_H__
-#define __GDK_KEYSYMS_COMPAT_H__
+#ifndef __BDK_KEYSYMS_COMPAT_H__
+#define __BDK_KEYSYMS_COMPAT_H__
 
 EOF
 
@@ -146,17 +146,17 @@ while (<IN_KEYSYMDEF>)
 
 	my $element = $keysymelements[1];
 	my $binding = $element;
-	$binding =~ s/^XK_/GDK_KEY_/g;
+	$binding =~ s/^XK_/BDK_KEY_/g;
 	my $compat_binding = $element;
-	$compat_binding =~ s/^XK_/GDK_/g;
+	$compat_binding =~ s/^XK_/BDK_/g;
 
-	printf OUT_GDKKEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
-	printf OUT_GDKKEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
+	printf OUT_BDKKEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
+	printf OUT_BDKKEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
 }
 
 close IN_KEYSYMDEF;
 
-#$gdksyms{"0"} = "0000";
+#$bdksyms{"0"} = "0000";
 
 # Source: http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob;f=XF86keysym.h
 die "Could not open file XF86keysym.h: $!\n" unless open(IN_XF86KEYSYM, "<:utf8", "XF86keysym.h");
@@ -194,25 +194,25 @@ while (<IN_XF86KEYSYM>)
 
 	my $element = $keysymelements[1];
 	my $binding = $element;
-	$binding =~ s/^XF86XK_/GDK_KEY_/g;
+	$binding =~ s/^XF86XK_/BDK_KEY_/g;
 	my $compat_binding = $element;
-	$compat_binding =~ s/^XF86XK_/GDK_/g;
+	$compat_binding =~ s/^XF86XK_/BDK_/g;
 
-	printf OUT_GDKKEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
-	printf OUT_GDKKEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
+	printf OUT_BDKKEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
+	printf OUT_BDKKEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
 }
 
 close IN_XF86KEYSYM;
 
 
-print OUT_GDKKEYSYMS<<EOF;
+print OUT_BDKKEYSYMS<<EOF;
 
-#endif /* __GDK_KEYSYMS_H__ */
+#endif /* __BDK_KEYSYMS_H__ */
 EOF
 
-print OUT_GDKKEYSYMS_COMPAT<<EOF;
+print OUT_BDKKEYSYMS_COMPAT<<EOF;
 
-#endif /* __GDK_KEYSYMS_COMPAT_H__ */
+#endif /* __BDK_KEYSYMS_COMPAT_H__ */
 EOF
 
-printf "We just finished converting keysymdef.h to gdkkeysyms.h and gdkkeysyms-compat.h\nThank you\n";
+printf "We just finished converting keysymdef.h to bdkkeysyms.h and bdkkeysyms-compat.h\nThank you\n";

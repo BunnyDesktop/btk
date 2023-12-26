@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: Gail
+Name: Bail
 Description: GNOME Accessibility Implementation Library
 Version: @VERSION@
-Requires: atk gtk+-2.0 
-Libs: ${pc_top_builddir}/${pcfiledir}/modules/other/gail/libgail.la ${pc_top_builddir}/${pcfiledir}/modules/other/gail/libgail-util/libgailutil.la
-Cflags: -I${pc_top_builddir}/${pcfiledir}/modules/other/gail
+Requires: batk btk+-2.0 
+Libs: ${pc_top_builddir}/${pcfiledir}/modules/other/bail/libbail.la ${pc_top_builddir}/${pcfiledir}/modules/other/bail/libbail-util/libbailutil.la
+Cflags: -I${pc_top_builddir}/${pcfiledir}/modules/other/bail

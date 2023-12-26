@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
  *
@@ -19,28 +19,28 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gdkimage.h"
-#include "gdkpixmap.h"
-#include "gdkscreen.h" /* gdk_screen_get_default() */
-#include "gdkprivate-win32.h"
+#include "bdkimage.h"
+#include "bdkpixmap.h"
+#include "bdkscreen.h" /* bdk_screen_get_default() */
+#include "bdkprivate-win32.h"
 
 static GList *image_list = NULL;
 static gpointer parent_class = NULL;
 
-static void gdk_win32_image_destroy (GdkImage      *image);
-static void gdk_image_init          (GdkImage      *image);
-static void gdk_image_class_init    (GdkImageClass *klass);
-static void gdk_image_finalize      (GObject       *object);
+static void bdk_win32_image_destroy (BdkImage      *image);
+static void bdk_image_init          (BdkImage      *image);
+static void bdk_image_class_init    (BdkImageClass *klass);
+static void bdk_image_finalize      (GObject       *object);
 
 GType
-gdk_image_get_type (void)
+bdk_image_get_type (void)
 {
   static GType object_type = 0;
 
@@ -48,19 +48,19 @@ gdk_image_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkImageClass),
+        sizeof (BdkImageClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_image_class_init,
+        (GClassInitFunc) bdk_image_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkImage),
+        sizeof (BdkImage),
         0,              /* n_preallocs */
-        (GInstanceInitFunc) gdk_image_init,
+        (GInstanceInitFunc) bdk_image_init,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkImage",
+                                            "BdkImage",
                                             &object_info, 0);
     }
   
@@ -68,66 +68,66 @@ gdk_image_get_type (void)
 }
 
 static void
-gdk_image_init (GdkImage *image)
+bdk_image_init (BdkImage *image)
 {
   image->windowing_data = NULL;
 }
 
 static void
-gdk_image_class_init (GdkImageClass *klass)
+bdk_image_class_init (BdkImageClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_image_finalize;
+  object_class->finalize = bdk_image_finalize;
 }
 
 static void
-gdk_image_finalize (GObject *object)
+bdk_image_finalize (GObject *object)
 {
-  GdkImage *image = GDK_IMAGE (object);
+  BdkImage *image = BDK_IMAGE (object);
 
-  gdk_win32_image_destroy (image);
+  bdk_win32_image_destroy (image);
   
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 void
-_gdk_image_exit (void)
+_bdk_image_exit (void)
 {
-  GdkImage *image;
+  BdkImage *image;
 
   while (image_list)
     {
       image = image_list->data;
-      gdk_win32_image_destroy (image);
+      bdk_win32_image_destroy (image);
     }
 }
 
 /*
- * Create a GdkImage _without_ an associated GdkPixmap. The caller is
- * responsible for creating a GdkPixmap object and making the association.
+ * Create a BdkImage _without_ an associated BdkPixmap. The caller is
+ * responsible for creating a BdkPixmap object and making the association.
  */
 
-static GdkImage *
-_gdk_win32_new_image (GdkVisual *visual,
+static BdkImage *
+_bdk_win32_new_image (BdkVisual *visual,
 		      gint       width,
 		      gint       height,
 		      gint       depth,
 		      guchar    *bits)
 {
-  GdkImage *image;
+  BdkImage *image;
 
-  image = g_object_new (gdk_image_get_type (), NULL);
+  image = g_object_new (bdk_image_get_type (), NULL);
   image->windowing_data = NULL;
-  image->type = GDK_IMAGE_SHARED;
+  image->type = BDK_IMAGE_SHARED;
   image->visual = visual;
-  image->byte_order = GDK_LSB_FIRST;
+  image->byte_order = BDK_LSB_FIRST;
   image->width = width;
   image->height = height;
   image->depth = depth;
-  image->bits_per_pixel = _gdk_windowing_get_bits_for_depth (gdk_display_get_default (), depth);
+  image->bits_per_pixel = _bdk_windowing_get_bits_for_depth (bdk_display_get_default (), depth);
   switch (depth)
     {
     case 1:
@@ -149,7 +149,7 @@ _gdk_win32_new_image (GdkVisual *visual,
       image->bpp = 4;
       break;
     default:
-      g_warning ("_gdk_win32_new_image: depth=%d", image->depth);
+      g_warning ("_bdk_win32_new_image: depth=%d", image->depth);
       g_assert_not_reached ();
     }
   if (depth == 1)
@@ -163,28 +163,28 @@ _gdk_win32_new_image (GdkVisual *visual,
   return image;
 }
 
-GdkImage *
-gdk_image_new_bitmap (GdkVisual *visual,
+BdkImage *
+bdk_image_new_bitmap (BdkVisual *visual,
 		      gpointer   data,
 		      gint       w,
 		      gint       h)
 {
-  GdkPixmap *pixmap;
-  GdkImage *image;
+  BdkPixmap *pixmap;
+  BdkImage *image;
   guchar *bits;
   gint data_bpl = (w-1)/8 + 1;
   gint i;
 
-  pixmap = gdk_pixmap_new (NULL, w, h, 1);
+  pixmap = bdk_pixmap_new (NULL, w, h, 1);
 
   if (pixmap == NULL)
     return NULL;
 
-  GDK_NOTE (IMAGE, g_print ("gdk_image_new_bitmap: %dx%d=%p\n",
-			    w, h, GDK_PIXMAP_HBITMAP (pixmap)));
+  BDK_NOTE (IMAGE, g_print ("bdk_image_new_bitmap: %dx%d=%p\n",
+			    w, h, BDK_PIXMAP_HBITMAP (pixmap)));
 
-  bits = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
-  image = _gdk_win32_new_image (visual, w, h, 1, bits);
+  bits = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
+  image = _bdk_win32_new_image (visual, w, h, 1, bits);
   image->windowing_data = pixmap;
   
   if (data_bpl != image->bpl)
@@ -199,48 +199,48 @@ gdk_image_new_bitmap (GdkVisual *visual,
 }
 
 void
-_gdk_windowing_image_init (void)
+_bdk_windowing_image_init (void)
 {
   /* Nothing needed AFAIK */
 }
 
-GdkImage*
-_gdk_image_new_for_depth (GdkScreen    *screen,
-			  GdkImageType  type,
-			  GdkVisual    *visual,
+BdkImage*
+_bdk_image_new_for_depth (BdkScreen    *screen,
+			  BdkImageType  type,
+			  BdkVisual    *visual,
 			  gint          width,
 			  gint          height,
 			  gint          depth)
 {
-  GdkPixmap *pixmap;
-  GdkImage *image;
+  BdkPixmap *pixmap;
+  BdkImage *image;
   guchar *bits;
 
-  g_return_val_if_fail (!visual || GDK_IS_VISUAL (visual), NULL);
+  g_return_val_if_fail (!visual || BDK_IS_VISUAL (visual), NULL);
   g_return_val_if_fail (visual || depth != -1, NULL);
-  g_return_val_if_fail (screen == gdk_screen_get_default (), NULL);
+  g_return_val_if_fail (screen == bdk_screen_get_default (), NULL);
  
   if (visual)
     depth = visual->depth;
 
-  pixmap = gdk_pixmap_new (NULL, width, height, depth);
+  pixmap = bdk_pixmap_new (NULL, width, height, depth);
 
   if (pixmap == NULL)
     return NULL;
 
-  GDK_NOTE (IMAGE, g_print ("_gdk_image_new_for_depth: %dx%dx%d=%p\n",
-			    width, height, depth, GDK_PIXMAP_HBITMAP (pixmap)));
+  BDK_NOTE (IMAGE, g_print ("_bdk_image_new_for_depth: %dx%dx%d=%p\n",
+			    width, height, depth, BDK_PIXMAP_HBITMAP (pixmap)));
   
-  bits = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
-  image = _gdk_win32_new_image (visual, width, height, depth, bits);
+  bits = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
+  image = _bdk_win32_new_image (visual, width, height, depth, bits);
   image->windowing_data = pixmap;
   
   return image;
 }
 
-GdkImage*
-_gdk_win32_copy_to_image (GdkDrawable    *drawable,
-			  GdkImage       *image,
+BdkImage*
+_bdk_win32_copy_to_image (BdkDrawable    *drawable,
+			  BdkImage       *image,
 			  gint            src_x,
 			  gint            src_y,
 			  gint            dest_x,
@@ -248,23 +248,23 @@ _gdk_win32_copy_to_image (GdkDrawable    *drawable,
 			  gint            width,
 			  gint            height)
 {
-  GdkGC *gc;
-  GdkScreen *screen = gdk_drawable_get_screen (drawable);
+  BdkGC *gc;
+  BdkScreen *screen = bdk_drawable_get_screen (drawable);
   
-  g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_WIN32 (drawable), NULL);
+  g_return_val_if_fail (BDK_IS_DRAWABLE_IMPL_WIN32 (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
 
-  GDK_NOTE (IMAGE, g_print ("_gdk_win32_copy_to_image: %p\n",
-			    GDK_DRAWABLE_HANDLE (drawable)));
+  BDK_NOTE (IMAGE, g_print ("_bdk_win32_copy_to_image: %p\n",
+			    BDK_DRAWABLE_HANDLE (drawable)));
 
   if (!image)
-    image = _gdk_image_new_for_depth (screen, GDK_IMAGE_FASTEST, NULL, width, height,
-				      gdk_drawable_get_depth (drawable));
+    image = _bdk_image_new_for_depth (screen, BDK_IMAGE_FASTEST, NULL, width, height,
+				      bdk_drawable_get_depth (drawable));
 
-  gc = gdk_gc_new ((GdkDrawable *) image->windowing_data);
-  _gdk_win32_blit
+  gc = bdk_gc_new ((BdkDrawable *) image->windowing_data);
+  _bdk_win32_blit
     (FALSE,
-     GDK_DRAWABLE_IMPL_WIN32 (GDK_PIXMAP_OBJECT (image->windowing_data)->impl),
+     BDK_DRAWABLE_IMPL_WIN32 (BDK_PIXMAP_OBJECT (image->windowing_data)->impl),
      gc, drawable, src_x, src_y, dest_x, dest_y, width, height);
   g_object_unref (gc);
 
@@ -272,7 +272,7 @@ _gdk_win32_copy_to_image (GdkDrawable    *drawable,
 }
 
 guint32
-gdk_image_get_pixel (GdkImage *image,
+bdk_image_get_pixel (BdkImage *image,
 		     gint      x,
 		     gint      y)
 {
@@ -319,7 +319,7 @@ gdk_image_get_pixel (GdkImage *image,
 }
 
 void
-gdk_image_put_pixel (GdkImage *image,
+bdk_image_put_pixel (BdkImage *image,
 		     gint       x,
 		     gint       y,
 		     guint32    pixel)
@@ -374,33 +374,33 @@ gdk_image_put_pixel (GdkImage *image,
 }
 
 static void
-gdk_win32_image_destroy (GdkImage *image)
+bdk_win32_image_destroy (BdkImage *image)
 {
-  GdkPixmap *pixmap;
+  BdkPixmap *pixmap;
 
-  g_return_if_fail (GDK_IS_IMAGE (image));
+  g_return_if_fail (BDK_IS_IMAGE (image));
 
   pixmap = image->windowing_data;
 
-  if (pixmap == NULL)		/* This means that _gdk_image_exit()
+  if (pixmap == NULL)		/* This means that _bdk_image_exit()
 				 * destroyed the image already, and
 				 * now we're called a second time from
 				 * _finalize()
 				 */
     return;
   
-  GDK_NOTE (IMAGE, g_print ("gdk_win32_image_destroy: %p\n",
-			    GDK_PIXMAP_HBITMAP (pixmap)));
+  BDK_NOTE (IMAGE, g_print ("bdk_win32_image_destroy: %p\n",
+			    BDK_PIXMAP_HBITMAP (pixmap)));
 
   g_object_unref (pixmap);
   image->windowing_data = NULL;
 }
 
 gint
-_gdk_windowing_get_bits_for_depth (GdkDisplay *display,
+_bdk_windowing_get_bits_for_depth (BdkDisplay *display,
                                    gint        depth)
 {
-  g_return_val_if_fail (display == gdk_display_get_default (), 0);
+  g_return_val_if_fail (display == bdk_display_get_default (), 0);
 
   switch (depth)
     {

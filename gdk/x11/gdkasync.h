@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gdkasync.h: Utility functions using the Xlib asynchronous interfaces
+/* BTK - The GIMP Toolkit
+ * bdkasync.h: Utility functions using the Xlib asynchronous interfaces
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,24 +18,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_ASYNC_H__
-#define __GDK_ASYNC_H__
+#ifndef __BDK_ASYNC_H__
+#define __BDK_ASYNC_H__
 
 #include <X11/Xlib.h>
-#include "gdk.h"
+#include "bdk.h"
 
 G_BEGIN_DECLS
 
-typedef struct _GdkChildInfoX11 GdkChildInfoX11;
+typedef struct _BdkChildInfoX11 BdkChildInfoX11;
 
-typedef void (*GdkSendXEventCallback) (Window   window,
+typedef void (*BdkSendXEventCallback) (Window   window,
 				       gboolean success,
 				       gpointer data);
-typedef void (*GdkRoundTripCallback)  (GdkDisplay *display,
+typedef void (*BdkRoundTripCallback)  (BdkDisplay *display,
 				       gpointer data,
 				       gulong serial);
 
-struct _GdkChildInfoX11
+struct _BdkChildInfoX11
 {
   Window window;
   gint x;
@@ -47,29 +47,29 @@ struct _GdkChildInfoX11
   guint window_class : 2;
 };
 
-void _gdk_x11_send_client_message_async (GdkDisplay            *display,
+void _bdk_x11_send_client_message_async (BdkDisplay            *display,
 					 Window                 window,
 					 gboolean               propagate,
 					 glong                  event_mask,
 					 XClientMessageEvent   *event_send,
-					 GdkSendXEventCallback  callback,
+					 BdkSendXEventCallback  callback,
 					 gpointer               data);
-void _gdk_x11_set_input_focus_safe      (GdkDisplay            *display,
+void _bdk_x11_set_input_focus_safe      (BdkDisplay            *display,
 					 Window                 window,
 					 int                    revert_to,
 					 Time                   time);
 
-gboolean _gdk_x11_get_window_child_info (GdkDisplay       *display,
+gboolean _bdk_x11_get_window_child_info (BdkDisplay       *display,
 					 Window            window,
 					 gboolean          get_wm_state,
 					 gboolean         *win_has_wm_state,
-					 GdkChildInfoX11 **children,
+					 BdkChildInfoX11 **children,
 					 guint            *nchildren);
 
-void _gdk_x11_roundtrip_async           (GdkDisplay           *display, 
-					 GdkRoundTripCallback callback,
+void _bdk_x11_roundtrip_async           (BdkDisplay           *display, 
+					 BdkRoundTripCallback callback,
 					 gpointer              data);
 
 G_END_DECLS
 
-#endif /* __GDK_ASYNC_H__ */
+#endif /* __BDK_ASYNC_H__ */

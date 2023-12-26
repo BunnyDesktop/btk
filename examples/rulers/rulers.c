@@ -1,77 +1,77 @@
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-#define EVENT_METHOD(i, x) GTK_WIDGET_GET_CLASS(i)->x
+#define EVENT_METHOD(i, x) BTK_WIDGET_GET_CLASS(i)->x
 
 #define XSIZE  600
 #define YSIZE  400
 
 /* This routine gets control when the close button is clicked */
-static gboolean close_application( GtkWidget *widget,
-                                   GdkEvent  *event,
+static gboolean close_application( BtkWidget *widget,
+                                   BdkEvent  *event,
                                    gpointer   data )
 {
-    gtk_main_quit ();
+    btk_main_quit ();
     return FALSE;
 }
 
 /* The main routine */
 int main( int   argc,
           char *argv[] ) {
-    GtkWidget *window, *table, *area, *hrule, *vrule;
+    BtkWidget *window, *table, *area, *hrule, *vrule;
 
-    /* Initialize GTK and create the main window */
-    gtk_init (&argc, &argv);
+    /* Initialize BTK and create the main window */
+    btk_init (&argc, &argv);
 
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
     g_signal_connect (window, "delete-event",
                       G_CALLBACK (close_application), NULL);
-    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+    btk_container_set_border_width (BTK_CONTAINER (window), 10);
 
     /* Create a table for placing the ruler and the drawing area */
-    table = gtk_table_new (3, 2, FALSE);
-    gtk_container_add (GTK_CONTAINER (window), table);
+    table = btk_table_new (3, 2, FALSE);
+    btk_container_add (BTK_CONTAINER (window), table);
 
-    area = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (GTK_WIDGET (area), XSIZE, YSIZE);
-    gtk_table_attach (GTK_TABLE (table), area, 1, 2, 1, 2,
-                      GTK_EXPAND|GTK_FILL, GTK_FILL, 0, 0);
-    gtk_widget_set_events (area, GDK_POINTER_MOTION_MASK |
-                                 GDK_POINTER_MOTION_HINT_MASK);
+    area = btk_drawing_area_new ();
+    btk_widget_set_size_request (BTK_WIDGET (area), XSIZE, YSIZE);
+    btk_table_attach (BTK_TABLE (table), area, 1, 2, 1, 2,
+                      BTK_EXPAND|BTK_FILL, BTK_FILL, 0, 0);
+    btk_widget_set_events (area, BDK_POINTER_MOTION_MASK |
+                                 BDK_POINTER_MOTION_HINT_MASK);
 
     /* The horizontal ruler goes on top. As the mouse moves across the
      * drawing area, a motion_notify_event is passed to the
      * appropriate event handler for the ruler. */
-    hrule = gtk_hruler_new ();
-    gtk_ruler_set_metric (GTK_RULER (hrule), GTK_PIXELS);
-    gtk_ruler_set_range (GTK_RULER (hrule), 7, 13, 0, 20);
+    hrule = btk_hruler_new ();
+    btk_ruler_set_metric (BTK_RULER (hrule), BTK_PIXELS);
+    btk_ruler_set_range (BTK_RULER (hrule), 7, 13, 0, 20);
     g_signal_connect_swapped (area, "motion-notify-event",
                               G_CALLBACK (EVENT_METHOD (hrule,
                                                         motion_notify_event)),
                               hrule);
-    gtk_table_attach (GTK_TABLE (table), hrule, 1, 2, 0, 1,
-                      GTK_EXPAND|GTK_SHRINK|GTK_FILL, GTK_FILL, 0, 0);
+    btk_table_attach (BTK_TABLE (table), hrule, 1, 2, 0, 1,
+                      BTK_EXPAND|BTK_SHRINK|BTK_FILL, BTK_FILL, 0, 0);
 
     /* The vertical ruler goes on the left. As the mouse moves across
      * the drawing area, a motion_notify_event is passed to the
      * appropriate event handler for the ruler. */
-    vrule = gtk_vruler_new ();
-    gtk_ruler_set_metric (GTK_RULER (vrule), GTK_PIXELS);
-    gtk_ruler_set_range (GTK_RULER (vrule), 0, YSIZE, 10, YSIZE );
+    vrule = btk_vruler_new ();
+    btk_ruler_set_metric (BTK_RULER (vrule), BTK_PIXELS);
+    btk_ruler_set_range (BTK_RULER (vrule), 0, YSIZE, 10, YSIZE );
     g_signal_connect_swapped (area, "motion-notify-event",
                               G_CALLBACK (EVENT_METHOD (vrule,
                                                         motion_notify_event)),
                               vrule);
-    gtk_table_attach (GTK_TABLE (table), vrule, 0, 1, 1, 2,
-                      GTK_FILL, GTK_EXPAND|GTK_SHRINK|GTK_FILL, 0, 0);
+    btk_table_attach (BTK_TABLE (table), vrule, 0, 1, 1, 2,
+                      BTK_FILL, BTK_EXPAND|BTK_SHRINK|BTK_FILL, 0, 0);
 
     /* Now show everything */
-    gtk_widget_show (area);
-    gtk_widget_show (hrule);
-    gtk_widget_show (vrule);
-    gtk_widget_show (table);
-    gtk_widget_show (window);
-    gtk_main ();
+    btk_widget_show (area);
+    btk_widget_show (hrule);
+    btk_widget_show (vrule);
+    btk_widget_show (table);
+    btk_widget_show (window);
+    btk_main ();
 
     return 0;
 }

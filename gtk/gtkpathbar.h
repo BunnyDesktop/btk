@@ -1,4 +1,4 @@
-/* gtkpathbar.h
+/* btkpathbar.h
  * Copyright (C) 2004  Red Hat, Inc.,  Jonathan Blandford <jrb@gnome.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,47 +17,47 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PATH_BAR_H__
-#define __GTK_PATH_BAR_H__
+#ifndef __BTK_PATH_BAR_H__
+#define __BTK_PATH_BAR_H__
 
-#include "gtkcontainer.h"
-#include "gtkfilesystem.h"
+#include "btkcontainer.h"
+#include "btkfilesystem.h"
 
 G_BEGIN_DECLS
 
-typedef struct _GtkPathBar      GtkPathBar;
-typedef struct _GtkPathBarClass GtkPathBarClass;
+typedef struct _BtkPathBar      BtkPathBar;
+typedef struct _BtkPathBarClass BtkPathBarClass;
 
 
-#define GTK_TYPE_PATH_BAR                 (gtk_path_bar_get_type ())
-#define GTK_PATH_BAR(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PATH_BAR, GtkPathBar))
-#define GTK_PATH_BAR_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PATH_BAR, GtkPathBarClass))
-#define GTK_IS_PATH_BAR(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PATH_BAR))
-#define GTK_IS_PATH_BAR_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PATH_BAR))
-#define GTK_PATH_BAR_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PATH_BAR, GtkPathBarClass))
+#define BTK_TYPE_PATH_BAR                 (btk_path_bar_get_type ())
+#define BTK_PATH_BAR(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PATH_BAR, BtkPathBar))
+#define BTK_PATH_BAR_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PATH_BAR, BtkPathBarClass))
+#define BTK_IS_PATH_BAR(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PATH_BAR))
+#define BTK_IS_PATH_BAR_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PATH_BAR))
+#define BTK_PATH_BAR_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PATH_BAR, BtkPathBarClass))
 
-struct _GtkPathBar
+struct _BtkPathBar
 {
-  GtkContainer parent;
+  BtkContainer parent;
 
-  GtkFileSystem *file_system;
+  BtkFileSystem *file_system;
   GFile *root_file;
   GFile *home_file;
   GFile *desktop_file;
 
   GCancellable *get_info_cancellable;
 
-  GdkPixbuf *root_icon;
-  GdkPixbuf *home_icon;
-  GdkPixbuf *desktop_icon;
+  BdkPixbuf *root_icon;
+  BdkPixbuf *home_icon;
+  BdkPixbuf *desktop_icon;
 
-  GdkWindow *event_window;
+  BdkWindow *event_window;
 
   GList *button_list;
   GList *first_scrolled_button;
   GList *fake_root;
-  GtkWidget *up_slider_button;
-  GtkWidget *down_slider_button;
+  BtkWidget *up_slider_button;
+  BtkWidget *down_slider_button;
   guint settings_signal_id;
   gint icon_size;
   gint16 slider_width;
@@ -71,26 +71,26 @@ struct _GtkPathBar
   guint scrolling_down : 1;
 };
 
-struct _GtkPathBarClass
+struct _BtkPathBarClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 
-  void (* path_clicked) (GtkPathBar  *path_bar,
+  void (* path_clicked) (BtkPathBar  *path_bar,
 			 GFile       *file,
 			 GFile       *child_file,
 			 gboolean     child_is_hidden);
 };
 
-GType    gtk_path_bar_get_type (void) G_GNUC_CONST;
-void     _gtk_path_bar_set_file_system (GtkPathBar         *path_bar,
-					GtkFileSystem      *file_system);
-gboolean _gtk_path_bar_set_file        (GtkPathBar         *path_bar,
+GType    btk_path_bar_get_type (void) G_GNUC_CONST;
+void     _btk_path_bar_set_file_system (BtkPathBar         *path_bar,
+					BtkFileSystem      *file_system);
+gboolean _btk_path_bar_set_file        (BtkPathBar         *path_bar,
 					GFile              *file,
 					gboolean            keep_trail,
 					GError            **error);
-void     _gtk_path_bar_up              (GtkPathBar *path_bar);
-void     _gtk_path_bar_down            (GtkPathBar *path_bar);
+void     _btk_path_bar_up              (BtkPathBar *path_bar);
+void     _btk_path_bar_down            (BtkPathBar *path_bar);
 
 G_END_DECLS
 
-#endif /* __GTK_PATH_BAR_H__ */
+#endif /* __BTK_PATH_BAR_H__ */

@@ -1,5 +1,5 @@
 /* 
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 1999  Red Hat, Inc.
  * Copyright (C) 2002  Anders Carlsson <andersca@gnu.org>
  * Copyright (C) 2003  Matthias Clasen <mclasen@redhat.com>
@@ -23,154 +23,154 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_ASSISTANT_H__
-#define __GTK_ASSISTANT_H__
+#ifndef __BTK_ASSISTANT_H__
+#define __BTK_ASSISTANT_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwindow.h>
+#include <btk/btkwindow.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ASSISTANT         (gtk_assistant_get_type ())
-#define GTK_ASSISTANT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GTK_TYPE_ASSISTANT, GtkAssistant))
-#define GTK_ASSISTANT_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), GTK_TYPE_ASSISTANT, GtkAssistantClass))
-#define GTK_IS_ASSISTANT(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GTK_TYPE_ASSISTANT))
-#define GTK_IS_ASSISTANT_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), GTK_TYPE_ASSISTANT))
-#define GTK_ASSISTANT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), GTK_TYPE_ASSISTANT, GtkAssistantClass))
+#define BTK_TYPE_ASSISTANT         (btk_assistant_get_type ())
+#define BTK_ASSISTANT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_ASSISTANT, BtkAssistant))
+#define BTK_ASSISTANT_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_ASSISTANT, BtkAssistantClass))
+#define BTK_IS_ASSISTANT(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_ASSISTANT))
+#define BTK_IS_ASSISTANT_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_ASSISTANT))
+#define BTK_ASSISTANT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_ASSISTANT, BtkAssistantClass))
 
 /**
- * GtkAssistantPageType:
- * @GTK_ASSISTANT_PAGE_CONTENT: The page has regular contents.
- * @GTK_ASSISTANT_PAGE_INTRO: The page contains an introduction to the
+ * BtkAssistantPageType:
+ * @BTK_ASSISTANT_PAGE_CONTENT: The page has regular contents.
+ * @BTK_ASSISTANT_PAGE_INTRO: The page contains an introduction to the
  *  assistant task.
- * @GTK_ASSISTANT_PAGE_CONFIRM: The page lets the user confirm or deny the
+ * @BTK_ASSISTANT_PAGE_CONFIRM: The page lets the user confirm or deny the
  *  changes.
- * @GTK_ASSISTANT_PAGE_SUMMARY: The page informs the user of the changes
+ * @BTK_ASSISTANT_PAGE_SUMMARY: The page informs the user of the changes
  *  done.
- * @GTK_ASSISTANT_PAGE_PROGRESS: Used for tasks that take a long time to
+ * @BTK_ASSISTANT_PAGE_PROGRESS: Used for tasks that take a long time to
  *  complete, blocks the assistant until the page is marked as complete.
  *
- * An enum for determining the page role inside the #GtkAssistant. It's
+ * An enum for determining the page role inside the #BtkAssistant. It's
  * used to handle buttons sensitivity and visibility.
  *
  * Note that an assistant needs to end its page flow with a page of type
- * %GTK_ASSISTANT_PAGE_CONFIRM, %GTK_ASSISTANT_PAGE_SUMMARY or
- * %GTK_ASSISTANT_PAGE_PROGRESS to be correct.
+ * %BTK_ASSISTANT_PAGE_CONFIRM, %BTK_ASSISTANT_PAGE_SUMMARY or
+ * %BTK_ASSISTANT_PAGE_PROGRESS to be correct.
  */
 typedef enum
 {
-  GTK_ASSISTANT_PAGE_CONTENT,
-  GTK_ASSISTANT_PAGE_INTRO,
-  GTK_ASSISTANT_PAGE_CONFIRM,
-  GTK_ASSISTANT_PAGE_SUMMARY,
-  GTK_ASSISTANT_PAGE_PROGRESS
-} GtkAssistantPageType;
+  BTK_ASSISTANT_PAGE_CONTENT,
+  BTK_ASSISTANT_PAGE_INTRO,
+  BTK_ASSISTANT_PAGE_CONFIRM,
+  BTK_ASSISTANT_PAGE_SUMMARY,
+  BTK_ASSISTANT_PAGE_PROGRESS
+} BtkAssistantPageType;
 
-typedef struct _GtkAssistant        GtkAssistant;
-typedef struct _GtkAssistantPrivate GtkAssistantPrivate;
-typedef struct _GtkAssistantClass   GtkAssistantClass;
+typedef struct _BtkAssistant        BtkAssistant;
+typedef struct _BtkAssistantPrivate BtkAssistantPrivate;
+typedef struct _BtkAssistantClass   BtkAssistantClass;
 
-struct _GtkAssistant
+struct _BtkAssistant
 {
-  GtkWindow  parent;
+  BtkWindow  parent;
 
-  GtkWidget *GSEAL (cancel);
-  GtkWidget *GSEAL (forward);
-  GtkWidget *GSEAL (back);
-  GtkWidget *GSEAL (apply);
-  GtkWidget *GSEAL (close);
-  GtkWidget *GSEAL (last);
+  BtkWidget *GSEAL (cancel);
+  BtkWidget *GSEAL (forward);
+  BtkWidget *GSEAL (back);
+  BtkWidget *GSEAL (apply);
+  BtkWidget *GSEAL (close);
+  BtkWidget *GSEAL (last);
 
   /*< private >*/
-  GtkAssistantPrivate *GSEAL (priv);
+  BtkAssistantPrivate *GSEAL (priv);
 };
 
-struct _GtkAssistantClass
+struct _BtkAssistantClass
 {
-  GtkWindowClass parent_class;
+  BtkWindowClass parent_class;
 
-  void (* prepare) (GtkAssistant *assistant, GtkWidget *page);
-  void (* apply)   (GtkAssistant *assistant);
-  void (* close)   (GtkAssistant *assistant);
-  void (* cancel)  (GtkAssistant *assistant);
+  void (* prepare) (BtkAssistant *assistant, BtkWidget *page);
+  void (* apply)   (BtkAssistant *assistant);
+  void (* close)   (BtkAssistant *assistant);
+  void (* cancel)  (BtkAssistant *assistant);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
 };
 
 /**
- * GtkAssistantPageFunc:
+ * BtkAssistantPageFunc:
  * @current_page: The page number used to calculate the next page.
  * @data: user data.
  *
- * A function used by gtk_assistant_set_forward_page_func() to know which
+ * A function used by btk_assistant_set_forward_page_func() to know which
  * is the next page given a current one. It's called both for computing the
  * next page when the user presses the "forward" button and for handling
  * the behavior of the "last" button.
  *
  * Returns: The next page number.
  */
-typedef gint (*GtkAssistantPageFunc) (gint current_page, gpointer data);
+typedef gint (*BtkAssistantPageFunc) (gint current_page, gpointer data);
 
-GType                 gtk_assistant_get_type              (void) G_GNUC_CONST;
-GtkWidget            *gtk_assistant_new                   (void);
-gint                  gtk_assistant_get_current_page      (GtkAssistant         *assistant);
-void                  gtk_assistant_set_current_page      (GtkAssistant         *assistant,
+GType                 btk_assistant_get_type              (void) G_GNUC_CONST;
+BtkWidget            *btk_assistant_new                   (void);
+gint                  btk_assistant_get_current_page      (BtkAssistant         *assistant);
+void                  btk_assistant_set_current_page      (BtkAssistant         *assistant,
 							   gint                  page_num);
-gint                  gtk_assistant_get_n_pages           (GtkAssistant         *assistant);
-GtkWidget            *gtk_assistant_get_nth_page          (GtkAssistant         *assistant,
+gint                  btk_assistant_get_n_pages           (BtkAssistant         *assistant);
+BtkWidget            *btk_assistant_get_nth_page          (BtkAssistant         *assistant,
 							   gint                  page_num);
-gint                  gtk_assistant_prepend_page          (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-gint                  gtk_assistant_append_page           (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-gint                  gtk_assistant_insert_page           (GtkAssistant         *assistant,
-							   GtkWidget            *page,
+gint                  btk_assistant_prepend_page          (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+gint                  btk_assistant_append_page           (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+gint                  btk_assistant_insert_page           (BtkAssistant         *assistant,
+							   BtkWidget            *page,
 							   gint                  position);
-void                  gtk_assistant_set_forward_page_func (GtkAssistant         *assistant,
-							   GtkAssistantPageFunc  page_func,
+void                  btk_assistant_set_forward_page_func (BtkAssistant         *assistant,
+							   BtkAssistantPageFunc  page_func,
 							   gpointer              data,
 							   GDestroyNotify        destroy);
-void                  gtk_assistant_set_page_type         (GtkAssistant         *assistant,
-							   GtkWidget            *page,
-							   GtkAssistantPageType  type);
-GtkAssistantPageType  gtk_assistant_get_page_type         (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-void                  gtk_assistant_set_page_title        (GtkAssistant         *assistant,
-							   GtkWidget            *page,
+void                  btk_assistant_set_page_type         (BtkAssistant         *assistant,
+							   BtkWidget            *page,
+							   BtkAssistantPageType  type);
+BtkAssistantPageType  btk_assistant_get_page_type         (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+void                  btk_assistant_set_page_title        (BtkAssistant         *assistant,
+							   BtkWidget            *page,
 							   const gchar          *title);
-const gchar *         gtk_assistant_get_page_title        (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-void                  gtk_assistant_set_page_header_image (GtkAssistant         *assistant,
-							   GtkWidget            *page,
-							   GdkPixbuf            *pixbuf);
-GdkPixbuf            *gtk_assistant_get_page_header_image (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-void                  gtk_assistant_set_page_side_image   (GtkAssistant         *assistant,
-							   GtkWidget            *page,
-							   GdkPixbuf            *pixbuf);
-GdkPixbuf            *gtk_assistant_get_page_side_image   (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-void                  gtk_assistant_set_page_complete     (GtkAssistant         *assistant,
-							   GtkWidget            *page,
+const gchar *         btk_assistant_get_page_title        (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+void                  btk_assistant_set_page_header_image (BtkAssistant         *assistant,
+							   BtkWidget            *page,
+							   BdkPixbuf            *pixbuf);
+BdkPixbuf            *btk_assistant_get_page_header_image (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+void                  btk_assistant_set_page_side_image   (BtkAssistant         *assistant,
+							   BtkWidget            *page,
+							   BdkPixbuf            *pixbuf);
+BdkPixbuf            *btk_assistant_get_page_side_image   (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+void                  btk_assistant_set_page_complete     (BtkAssistant         *assistant,
+							   BtkWidget            *page,
 							   gboolean              complete);
-gboolean              gtk_assistant_get_page_complete     (GtkAssistant         *assistant,
-							   GtkWidget            *page);
-void                  gtk_assistant_add_action_widget     (GtkAssistant         *assistant,
-							   GtkWidget            *child);
-void                  gtk_assistant_remove_action_widget  (GtkAssistant         *assistant,
-							   GtkWidget            *child);
+gboolean              btk_assistant_get_page_complete     (BtkAssistant         *assistant,
+							   BtkWidget            *page);
+void                  btk_assistant_add_action_widget     (BtkAssistant         *assistant,
+							   BtkWidget            *child);
+void                  btk_assistant_remove_action_widget  (BtkAssistant         *assistant,
+							   BtkWidget            *child);
 
-void                  gtk_assistant_update_buttons_state  (GtkAssistant *assistant);
-void                  gtk_assistant_commit                (GtkAssistant *assistant);
+void                  btk_assistant_update_buttons_state  (BtkAssistant *assistant);
+void                  btk_assistant_commit                (BtkAssistant *assistant);
 
 G_END_DECLS
 
-#endif /* __GTK_ASSISTANT_H__ */
+#endif /* __BTK_ASSISTANT_H__ */

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat Software
  *
  * This library is free software; you can redistribute it and/or
@@ -17,62 +17,62 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_IM_MULTICONTEXT_H__
-#define __GTK_IM_MULTICONTEXT_H__
+#ifndef __BTK_IM_MULTICONTEXT_H__
+#define __BTK_IM_MULTICONTEXT_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkimcontext.h>
-#include <gtk/gtkmenushell.h>
+#include <btk/btkimcontext.h>
+#include <btk/btkmenushell.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_IM_MULTICONTEXT              (gtk_im_multicontext_get_type ())
-#define GTK_IM_MULTICONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_IM_MULTICONTEXT, GtkIMMulticontext))
-#define GTK_IM_MULTICONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_IM_MULTICONTEXT, GtkIMMulticontextClass))
-#define GTK_IS_IM_MULTICONTEXT(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_IM_MULTICONTEXT))
-#define GTK_IS_IM_MULTICONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_IM_MULTICONTEXT))
-#define GTK_IM_MULTICONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_IM_MULTICONTEXT, GtkIMMulticontextClass))
+#define BTK_TYPE_IM_MULTICONTEXT              (btk_im_multicontext_get_type ())
+#define BTK_IM_MULTICONTEXT(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontext))
+#define BTK_IM_MULTICONTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontextClass))
+#define BTK_IS_IM_MULTICONTEXT(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_MULTICONTEXT))
+#define BTK_IS_IM_MULTICONTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_MULTICONTEXT))
+#define BTK_IM_MULTICONTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontextClass))
 
 
-typedef struct _GtkIMMulticontext        GtkIMMulticontext;
-typedef struct _GtkIMMulticontextClass   GtkIMMulticontextClass;
-typedef struct _GtkIMMulticontextPrivate GtkIMMulticontextPrivate;
+typedef struct _BtkIMMulticontext        BtkIMMulticontext;
+typedef struct _BtkIMMulticontextClass   BtkIMMulticontextClass;
+typedef struct _BtkIMMulticontextPrivate BtkIMMulticontextPrivate;
 
-struct _GtkIMMulticontext
+struct _BtkIMMulticontext
 {
-  GtkIMContext object;
+  BtkIMContext object;
 
-  GtkIMContext *GSEAL (slave);
+  BtkIMContext *GSEAL (slave);
 
-  GtkIMMulticontextPrivate *GSEAL (priv);
+  BtkIMMulticontextPrivate *GSEAL (priv);
 
   gchar *GSEAL (context_id);
 };
 
-struct _GtkIMMulticontextClass
+struct _BtkIMMulticontextClass
 {
-  GtkIMContextClass parent_class;
+  BtkIMContextClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType         gtk_im_multicontext_get_type (void) G_GNUC_CONST;
-GtkIMContext *gtk_im_multicontext_new      (void);
+GType         btk_im_multicontext_get_type (void) G_GNUC_CONST;
+BtkIMContext *btk_im_multicontext_new      (void);
 
-void          gtk_im_multicontext_append_menuitems (GtkIMMulticontext *context,
-						    GtkMenuShell      *menushell);
-const char  * gtk_im_multicontext_get_context_id   (GtkIMMulticontext *context);
+void          btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
+						    BtkMenuShell      *menushell);
+const char  * btk_im_multicontext_get_context_id   (BtkIMMulticontext *context);
 
-void          gtk_im_multicontext_set_context_id   (GtkIMMulticontext *context,
+void          btk_im_multicontext_set_context_id   (BtkIMMulticontext *context,
                                                     const char        *context_id);
  
 G_END_DECLS
 
-#endif /* __GTK_IM_MULTICONTEXT_H__ */
+#endif /* __BTK_IM_MULTICONTEXT_H__ */

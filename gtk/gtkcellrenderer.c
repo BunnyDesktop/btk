@@ -1,4 +1,4 @@
-/* gtkcellrenderer.c
+/* btkcellrenderer.c
  * Copyright (C) 2000  Red Hat, Inc. Jonathan Blandford
  *
  * This library is free software; you can redistribute it and/or
@@ -18,31 +18,31 @@
  */
 
 #include "config.h"
-#include "gtkcellrenderer.h"
-#include "gtkintl.h"
-#include "gtkmarshalers.h"
-#include "gtkprivate.h"
-#include "gtktreeprivate.h"
-#include "gtkalias.h"
+#include "btkcellrenderer.h"
+#include "btkintl.h"
+#include "btkmarshalers.h"
+#include "btkprivate.h"
+#include "btktreeprivate.h"
+#include "btkalias.h"
 
-static void gtk_cell_renderer_get_property  (GObject              *object,
+static void btk_cell_renderer_get_property  (GObject              *object,
 					     guint                 param_id,
 					     GValue               *value,
 					     GParamSpec           *pspec);
-static void gtk_cell_renderer_set_property  (GObject              *object,
+static void btk_cell_renderer_set_property  (GObject              *object,
 					     guint                 param_id,
 					     const GValue         *value,
 					     GParamSpec           *pspec);
-static void set_cell_bg_color               (GtkCellRenderer      *cell,
-					     GdkColor             *color);
+static void set_cell_bg_color               (BtkCellRenderer      *cell,
+					     BdkColor             *color);
 
 
-#define GTK_CELL_RENDERER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_CELL_RENDERER, GtkCellRendererPrivate))
+#define BTK_CELL_RENDERER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER, BtkCellRendererPrivate))
 
-typedef struct _GtkCellRendererPrivate GtkCellRendererPrivate;
-struct _GtkCellRendererPrivate
+typedef struct _BtkCellRendererPrivate BtkCellRendererPrivate;
+struct _BtkCellRendererPrivate
 {
-  GdkColor cell_background;
+  BdkColor cell_background;
 };
 
 
@@ -60,7 +60,7 @@ enum {
   PROP_IS_EXPANDER,
   PROP_IS_EXPANDED,
   PROP_CELL_BACKGROUND,
-  PROP_CELL_BACKGROUND_GDK,
+  PROP_CELL_BACKGROUND_BDK,
   PROP_CELL_BACKGROUND_SET,
   PROP_EDITING
 };
@@ -74,12 +74,12 @@ enum {
 
 static guint cell_renderer_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_ABSTRACT_TYPE (GtkCellRenderer, gtk_cell_renderer, GTK_TYPE_OBJECT)
+G_DEFINE_ABSTRACT_TYPE (BtkCellRenderer, btk_cell_renderer, BTK_TYPE_OBJECT)
 
 static void
-gtk_cell_renderer_init (GtkCellRenderer *cell)
+btk_cell_renderer_init (BtkCellRenderer *cell)
 {
-  cell->mode = GTK_CELL_RENDERER_MODE_INERT;
+  cell->mode = BTK_CELL_RENDERER_MODE_INERT;
   cell->visible = TRUE;
   cell->width = -1;
   cell->height = -1;
@@ -94,25 +94,25 @@ gtk_cell_renderer_init (GtkCellRenderer *cell)
 }
 
 static void
-gtk_cell_renderer_class_init (GtkCellRendererClass *class)
+btk_cell_renderer_class_init (BtkCellRendererClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->get_property = gtk_cell_renderer_get_property;
-  object_class->set_property = gtk_cell_renderer_set_property;
+  object_class->get_property = btk_cell_renderer_get_property;
+  object_class->set_property = btk_cell_renderer_set_property;
 
   class->render = NULL;
   class->get_size = NULL;
 
   /**
-   * GtkCellRenderer::editing-canceled:
+   * BtkCellRenderer::editing-canceled:
    * @renderer: the object which received the signal
    *
    * This signal gets emitted when the user cancels the process of editing a
    * cell.  For example, an editable cell renderer could be written to cancel
    * editing when the user presses Escape. 
    *
-   * See also: gtk_cell_renderer_stop_editing().
+   * See also: btk_cell_renderer_stop_editing().
    *
    * Since: 2.4
    */
@@ -120,40 +120,40 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
     g_signal_new (I_("editing-canceled"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkCellRendererClass, editing_canceled),
+		  G_STRUCT_OFFSET (BtkCellRendererClass, editing_canceled),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
-   * GtkCellRenderer::editing-started:
+   * BtkCellRenderer::editing-started:
    * @renderer: the object which received the signal
-   * @editable: the #GtkCellEditable
+   * @editable: the #BtkCellEditable
    * @path: the path identifying the edited cell
    *
    * This signal gets emitted when a cell starts to be edited.
    * The intended use of this signal is to do special setup
-   * on @editable, e.g. adding a #GtkEntryCompletion or setting
-   * up additional columns in a #GtkComboBox.
+   * on @editable, e.g. adding a #BtkEntryCompletion or setting
+   * up additional columns in a #BtkComboBox.
    *
-   * Note that GTK+ doesn't guarantee that cell renderers will
+   * Note that BTK+ doesn't guarantee that cell renderers will
    * continue to use the same kind of widget for editing in future
    * releases, therefore you should check the type of @editable
    * before doing any specific setup, as in the following example:
    * |[
    * static void
-   * text_editing_started (GtkCellRenderer *cell,
-   *                       GtkCellEditable *editable,
+   * text_editing_started (BtkCellRenderer *cell,
+   *                       BtkCellEditable *editable,
    *                       const gchar     *path,
    *                       gpointer         data)
    * {
-   *   if (GTK_IS_ENTRY (editable)) 
+   *   if (BTK_IS_ENTRY (editable)) 
    *     {
-   *       GtkEntry *entry = GTK_ENTRY (editable);
+   *       BtkEntry *entry = BTK_ENTRY (editable);
    *       
-   *       /&ast; ... create a GtkEntryCompletion &ast;/
+   *       /&ast; ... create a BtkEntryCompletion &ast;/
    *       
-   *       gtk_entry_set_completion (entry, completion);
+   *       btk_entry_set_completion (entry, completion);
    *     }
    * }
    * ]|
@@ -164,11 +164,11 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
     g_signal_new (I_("editing-started"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkCellRendererClass, editing_started),
+		  G_STRUCT_OFFSET (BtkCellRendererClass, editing_started),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__OBJECT_STRING,
+		  _btk_marshal_VOID__OBJECT_STRING,
 		  G_TYPE_NONE, 2,
-		  GTK_TYPE_CELL_EDITABLE,
+		  BTK_TYPE_CELL_EDITABLE,
 		  G_TYPE_STRING);
 
   g_object_class_install_property (object_class,
@@ -176,9 +176,9 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 				   g_param_spec_enum ("mode",
 						      P_("mode"),
 						      P_("Editable mode of the CellRenderer"),
-						      GTK_TYPE_CELL_RENDERER_MODE,
-						      GTK_CELL_RENDERER_MODE_INERT,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_CELL_RENDERER_MODE,
+						      BTK_CELL_RENDERER_MODE_INERT,
+						      BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_VISIBLE,
@@ -186,14 +186,14 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 							 P_("visible"),
 							 P_("Display the cell"),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
   g_object_class_install_property (object_class,
 				   PROP_SENSITIVE,
 				   g_param_spec_boolean ("sensitive",
 							 P_("Sensitive"),
 							 P_("Display the cell sensitive"),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_XALIGN,
@@ -203,7 +203,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 						       0.0,
 						       1.0,
 						       0.5,
-						       GTK_PARAM_READWRITE));
+						       BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_YALIGN,
@@ -213,7 +213,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 						       0.0,
 						       1.0,
 						       0.5,
-						       GTK_PARAM_READWRITE));
+						       BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_XPAD,
@@ -223,7 +223,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 						      0,
 						      G_MAXUINT,
 						      0,
-						      GTK_PARAM_READWRITE));
+						      BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_YPAD,
@@ -233,7 +233,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 						      0,
 						      G_MAXUINT,
 						      0,
-						      GTK_PARAM_READWRITE));
+						      BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_WIDTH,
@@ -243,7 +243,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 						     -1,
 						     G_MAXINT,
 						     -1,
-						     GTK_PARAM_READWRITE));
+						     BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_HEIGHT,
@@ -253,7 +253,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 						     -1,
 						     G_MAXINT,
 						     -1,
-						     GTK_PARAM_READWRITE));
+						     BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_IS_EXPANDER,
@@ -261,7 +261,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 							 P_("Is Expander"),
 							 P_("Row has children"),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 
 
   g_object_class_install_property (object_class,
@@ -270,7 +270,7 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 							 P_("Is Expanded"),
 							 P_("Row is an expander row, and is expanded"),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_CELL_BACKGROUND,
@@ -278,15 +278,15 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 							P_("Cell background color name"),
 							P_("Cell background color as a string"),
 							NULL,
-							GTK_PARAM_WRITABLE));
+							BTK_PARAM_WRITABLE));
 
   g_object_class_install_property (object_class,
-				   PROP_CELL_BACKGROUND_GDK,
-				   g_param_spec_boxed ("cell-background-gdk",
+				   PROP_CELL_BACKGROUND_BDK,
+				   g_param_spec_boxed ("cell-background-bdk",
 						       P_("Cell background color"),
-						       P_("Cell background color as a GdkColor"),
-						       GDK_TYPE_COLOR,
-						       GTK_PARAM_READWRITE));
+						       P_("Cell background color as a BdkColor"),
+						       BDK_TYPE_COLOR,
+						       BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
 				   PROP_EDITING,
@@ -294,26 +294,26 @@ gtk_cell_renderer_class_init (GtkCellRendererClass *class)
 							 P_("Editing"),
 							 P_("Whether the cell renderer is currently in editing mode"),
 							 FALSE,
-							 GTK_PARAM_READABLE));
+							 BTK_PARAM_READABLE));
 
 
-#define ADD_SET_PROP(propname, propval, nick, blurb) g_object_class_install_property (object_class, propval, g_param_spec_boolean (propname, nick, blurb, FALSE, GTK_PARAM_READWRITE))
+#define ADD_SET_PROP(propname, propval, nick, blurb) g_object_class_install_property (object_class, propval, g_param_spec_boolean (propname, nick, blurb, FALSE, BTK_PARAM_READWRITE))
 
   ADD_SET_PROP ("cell-background-set", PROP_CELL_BACKGROUND_SET,
                 P_("Cell background set"),
                 P_("Whether this tag affects the cell background color"));
 
-  g_type_class_add_private (object_class, sizeof (GtkCellRendererPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkCellRendererPrivate));
 }
 
 static void
-gtk_cell_renderer_get_property (GObject     *object,
+btk_cell_renderer_get_property (GObject     *object,
 				guint        param_id,
 				GValue      *value,
 				GParamSpec  *pspec)
 {
-  GtkCellRenderer *cell = GTK_CELL_RENDERER (object);
-  GtkCellRendererPrivate *priv = GTK_CELL_RENDERER_GET_PRIVATE (object);
+  BtkCellRenderer *cell = BTK_CELL_RENDERER (object);
+  BtkCellRendererPrivate *priv = BTK_CELL_RENDERER_GET_PRIVATE (object);
 
   switch (param_id)
     {
@@ -353,9 +353,9 @@ gtk_cell_renderer_get_property (GObject     *object,
     case PROP_IS_EXPANDED:
       g_value_set_boolean (value, cell->is_expanded);
       break;
-    case PROP_CELL_BACKGROUND_GDK:
+    case PROP_CELL_BACKGROUND_BDK:
       {
-	GdkColor color;
+	BdkColor color;
 
 	color.red = priv->cell_background.red;
 	color.green = priv->cell_background.green;
@@ -376,12 +376,12 @@ gtk_cell_renderer_get_property (GObject     *object,
 }
 
 static void
-gtk_cell_renderer_set_property (GObject      *object,
+btk_cell_renderer_set_property (GObject      *object,
 				guint         param_id,
 				const GValue *value,
 				GParamSpec   *pspec)
 {
-  GtkCellRenderer *cell = GTK_CELL_RENDERER (object);
+  BtkCellRenderer *cell = BTK_CELL_RENDERER (object);
 
   switch (param_id)
     {
@@ -423,19 +423,19 @@ gtk_cell_renderer_set_property (GObject      *object,
       break;
     case PROP_CELL_BACKGROUND:
       {
-	GdkColor color;
+	BdkColor color;
 
 	if (!g_value_get_string (value))
 	  set_cell_bg_color (cell, NULL);
-	else if (gdk_color_parse (g_value_get_string (value), &color))
+	else if (bdk_color_parse (g_value_get_string (value), &color))
 	  set_cell_bg_color (cell, &color);
 	else
 	  g_warning ("Don't know color `%s'", g_value_get_string (value));
 
-	g_object_notify (object, "cell-background-gdk");
+	g_object_notify (object, "cell-background-bdk");
       }
       break;
-    case PROP_CELL_BACKGROUND_GDK:
+    case PROP_CELL_BACKGROUND_BDK:
       set_cell_bg_color (cell, g_value_get_boxed (value));
       break;
     case PROP_CELL_BACKGROUND_SET:
@@ -448,10 +448,10 @@ gtk_cell_renderer_set_property (GObject      *object,
 }
 
 static void
-set_cell_bg_color (GtkCellRenderer *cell,
-		   GdkColor        *color)
+set_cell_bg_color (BtkCellRenderer *cell,
+		   BdkColor        *color)
 {
-  GtkCellRendererPrivate *priv = GTK_CELL_RENDERER_GET_PRIVATE (cell);
+  BtkCellRendererPrivate *priv = BTK_CELL_RENDERER_GET_PRIVATE (cell);
 
   if (color)
     {
@@ -476,8 +476,8 @@ set_cell_bg_color (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_get_size:
- * @cell: a #GtkCellRenderer
+ * btk_cell_renderer_get_size:
+ * @cell: a #BtkCellRenderer
  * @widget: the widget the renderer is rendering to
  * @cell_area: (allow-none): The area a cell will be allocated, or %NULL
  * @x_offset: (out) (allow-none): location to return x offset of cell relative to @cell_area, or %NULL
@@ -487,16 +487,16 @@ set_cell_bg_color (GtkCellRenderer *cell,
  *
  * Obtains the width and height needed to render the cell. Used by view 
  * widgets to determine the appropriate size for the cell_area passed to
- * gtk_cell_renderer_render().  If @cell_area is not %NULL, fills in the
+ * btk_cell_renderer_render().  If @cell_area is not %NULL, fills in the
  * x and y offsets (if set) of the cell relative to this location. 
  *
  * Please note that the values set in @width and @height, as well as those 
  * in @x_offset and @y_offset are inclusive of the xpad and ypad properties.
  **/
 void
-gtk_cell_renderer_get_size (GtkCellRenderer    *cell,
-			    GtkWidget          *widget,
-			    const GdkRectangle *cell_area,
+btk_cell_renderer_get_size (BtkCellRenderer    *cell,
+			    BtkWidget          *widget,
+			    const BdkRectangle *cell_area,
 			    gint               *x_offset,
 			    gint               *y_offset,
 			    gint               *width,
@@ -505,8 +505,8 @@ gtk_cell_renderer_get_size (GtkCellRenderer    *cell,
   gint *real_width = width;
   gint *real_height = height;
 
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
-  g_return_if_fail (GTK_CELL_RENDERER_GET_CLASS (cell)->get_size != NULL);
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_CELL_RENDERER_GET_CLASS (cell)->get_size != NULL);
 
   if (width && cell->width != -1)
     {
@@ -519,9 +519,9 @@ gtk_cell_renderer_get_size (GtkCellRenderer    *cell,
       *height = cell->height;
     }
 
-  GTK_CELL_RENDERER_GET_CLASS (cell)->get_size (cell,
+  BTK_CELL_RENDERER_GET_CLASS (cell)->get_size (cell,
 						widget,
-						(GdkRectangle *) cell_area,
+						(BdkRectangle *) cell_area,
 						x_offset,
 						y_offset,
 						real_width,
@@ -529,9 +529,9 @@ gtk_cell_renderer_get_size (GtkCellRenderer    *cell,
 }
 
 /**
- * gtk_cell_renderer_render:
- * @cell: a #GtkCellRenderer
- * @window: a #GdkDrawable to draw to
+ * btk_cell_renderer_render:
+ * @cell: a #BtkCellRenderer
+ * @window: a #BdkDrawable to draw to
  * @widget: the widget owning @window
  * @background_area: entire cell area (including tree expanders and maybe 
  *    padding on the sides)
@@ -539,135 +539,135 @@ gtk_cell_renderer_get_size (GtkCellRenderer    *cell,
  * @expose_area: area that actually needs updating
  * @flags: flags that affect rendering
  *
- * Invokes the virtual render function of the #GtkCellRenderer. The three
+ * Invokes the virtual render function of the #BtkCellRenderer. The three
  * passed-in rectangles are areas of @window. Most renderers will draw within
- * @cell_area; the xalign, yalign, xpad, and ypad fields of the #GtkCellRenderer
+ * @cell_area; the xalign, yalign, xpad, and ypad fields of the #BtkCellRenderer
  * should be honored with respect to @cell_area. @background_area includes the
  * blank space around the cell, and also the area containing the tree expander;
  * so the @background_area rectangles for all cells tile to cover the entire
  * @window.  @expose_area is a clip rectangle.
  **/
 void
-gtk_cell_renderer_render (GtkCellRenderer      *cell,
-			  GdkWindow            *window,
-			  GtkWidget            *widget,
-			  const GdkRectangle   *background_area,
-			  const GdkRectangle   *cell_area,
-			  const GdkRectangle   *expose_area,
-			  GtkCellRendererState  flags)
+btk_cell_renderer_render (BtkCellRenderer      *cell,
+			  BdkWindow            *window,
+			  BtkWidget            *widget,
+			  const BdkRectangle   *background_area,
+			  const BdkRectangle   *cell_area,
+			  const BdkRectangle   *expose_area,
+			  BtkCellRendererState  flags)
 {
   gboolean selected = FALSE;
-  GtkCellRendererPrivate *priv = GTK_CELL_RENDERER_GET_PRIVATE (cell);
+  BtkCellRendererPrivate *priv = BTK_CELL_RENDERER_GET_PRIVATE (cell);
 
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
-  g_return_if_fail (GTK_CELL_RENDERER_GET_CLASS (cell)->render != NULL);
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_CELL_RENDERER_GET_CLASS (cell)->render != NULL);
 
-  selected = (flags & GTK_CELL_RENDERER_SELECTED) == GTK_CELL_RENDERER_SELECTED;
+  selected = (flags & BTK_CELL_RENDERER_SELECTED) == BTK_CELL_RENDERER_SELECTED;
 
   if (cell->cell_background_set && !selected)
     {
-      cairo_t *cr = gdk_cairo_create (window);
+      bairo_t *cr = bdk_bairo_create (window);
 
-      gdk_cairo_rectangle (cr, background_area);
-      gdk_cairo_set_source_color (cr, &priv->cell_background);
-      cairo_fill (cr);
+      bdk_bairo_rectangle (cr, background_area);
+      bdk_bairo_set_source_color (cr, &priv->cell_background);
+      bairo_fill (cr);
       
-      cairo_destroy (cr);
+      bairo_destroy (cr);
     }
 
-  GTK_CELL_RENDERER_GET_CLASS (cell)->render (cell,
+  BTK_CELL_RENDERER_GET_CLASS (cell)->render (cell,
 					      window,
 					      widget,
-					      (GdkRectangle *) background_area,
-					      (GdkRectangle *) cell_area,
-					      (GdkRectangle *) expose_area,
+					      (BdkRectangle *) background_area,
+					      (BdkRectangle *) cell_area,
+					      (BdkRectangle *) expose_area,
 					      flags);
 }
 
 /**
- * gtk_cell_renderer_activate:
- * @cell: a #GtkCellRenderer
- * @event: a #GdkEvent
+ * btk_cell_renderer_activate:
+ * @cell: a #BtkCellRenderer
+ * @event: a #BdkEvent
  * @widget: widget that received the event
  * @path: widget-dependent string representation of the event location; 
- *    e.g. for #GtkTreeView, a string representation of #GtkTreePath
- * @background_area: background area as passed to gtk_cell_renderer_render()
- * @cell_area: cell area as passed to gtk_cell_renderer_render()
+ *    e.g. for #BtkTreeView, a string representation of #BtkTreePath
+ * @background_area: background area as passed to btk_cell_renderer_render()
+ * @cell_area: cell area as passed to btk_cell_renderer_render()
  * @flags: render flags
  *
  * Passes an activate event to the cell renderer for possible processing.  
- * Some cell renderers may use events; for example, #GtkCellRendererToggle 
+ * Some cell renderers may use events; for example, #BtkCellRendererToggle 
  * toggles when it gets a mouse click.
  *
  * Return value: %TRUE if the event was consumed/handled
  **/
 gboolean
-gtk_cell_renderer_activate (GtkCellRenderer      *cell,
-			    GdkEvent             *event,
-			    GtkWidget            *widget,
+btk_cell_renderer_activate (BtkCellRenderer      *cell,
+			    BdkEvent             *event,
+			    BtkWidget            *widget,
 			    const gchar          *path,
-			    const GdkRectangle   *background_area,
-			    const GdkRectangle   *cell_area,
-			    GtkCellRendererState  flags)
+			    const BdkRectangle   *background_area,
+			    const BdkRectangle   *cell_area,
+			    BtkCellRendererState  flags)
 {
-  g_return_val_if_fail (GTK_IS_CELL_RENDERER (cell), FALSE);
+  g_return_val_if_fail (BTK_IS_CELL_RENDERER (cell), FALSE);
 
-  if (cell->mode != GTK_CELL_RENDERER_MODE_ACTIVATABLE)
+  if (cell->mode != BTK_CELL_RENDERER_MODE_ACTIVATABLE)
     return FALSE;
 
-  if (GTK_CELL_RENDERER_GET_CLASS (cell)->activate == NULL)
+  if (BTK_CELL_RENDERER_GET_CLASS (cell)->activate == NULL)
     return FALSE;
 
-  return GTK_CELL_RENDERER_GET_CLASS (cell)->activate (cell,
+  return BTK_CELL_RENDERER_GET_CLASS (cell)->activate (cell,
 						       event,
 						       widget,
 						       path,
-						       (GdkRectangle *) background_area,
-						       (GdkRectangle *) cell_area,
+						       (BdkRectangle *) background_area,
+						       (BdkRectangle *) cell_area,
 						       flags);
 }
 
 /**
- * gtk_cell_renderer_start_editing:
- * @cell: a #GtkCellRenderer
- * @event: a #GdkEvent
+ * btk_cell_renderer_start_editing:
+ * @cell: a #BtkCellRenderer
+ * @event: a #BdkEvent
  * @widget: widget that received the event
  * @path: widget-dependent string representation of the event location;
- *    e.g. for #GtkTreeView, a string representation of #GtkTreePath
- * @background_area: background area as passed to gtk_cell_renderer_render()
- * @cell_area: cell area as passed to gtk_cell_renderer_render()
+ *    e.g. for #BtkTreeView, a string representation of #BtkTreePath
+ * @background_area: background area as passed to btk_cell_renderer_render()
+ * @cell_area: cell area as passed to btk_cell_renderer_render()
  * @flags: render flags
  *
  * Passes an activate event to the cell renderer for possible processing.
  *
- * Return value: (transfer none): A new #GtkCellEditable, or %NULL
+ * Return value: (transfer none): A new #BtkCellEditable, or %NULL
  **/
-GtkCellEditable *
-gtk_cell_renderer_start_editing (GtkCellRenderer      *cell,
-				 GdkEvent             *event,
-				 GtkWidget            *widget,
+BtkCellEditable *
+btk_cell_renderer_start_editing (BtkCellRenderer      *cell,
+				 BdkEvent             *event,
+				 BtkWidget            *widget,
 				 const gchar          *path,
-				 const GdkRectangle   *background_area,
-				 const GdkRectangle   *cell_area,
-				 GtkCellRendererState  flags)
+				 const BdkRectangle   *background_area,
+				 const BdkRectangle   *cell_area,
+				 BtkCellRendererState  flags)
 
 {
-  GtkCellEditable *editable;
+  BtkCellEditable *editable;
 
-  g_return_val_if_fail (GTK_IS_CELL_RENDERER (cell), NULL);
+  g_return_val_if_fail (BTK_IS_CELL_RENDERER (cell), NULL);
 
-  if (cell->mode != GTK_CELL_RENDERER_MODE_EDITABLE)
+  if (cell->mode != BTK_CELL_RENDERER_MODE_EDITABLE)
     return NULL;
 
-  if (GTK_CELL_RENDERER_GET_CLASS (cell)->start_editing == NULL)
+  if (BTK_CELL_RENDERER_GET_CLASS (cell)->start_editing == NULL)
     return NULL;
 
-  editable = GTK_CELL_RENDERER_GET_CLASS (cell)->start_editing (cell,
+  editable = BTK_CELL_RENDERER_GET_CLASS (cell)->start_editing (cell,
 								event,
 								widget,
 								path,
-								(GdkRectangle *) background_area,
-								(GdkRectangle *) cell_area,
+								(BdkRectangle *) background_area,
+								(BdkRectangle *) cell_area,
 								flags);
 
   g_signal_emit (cell, 
@@ -680,19 +680,19 @@ gtk_cell_renderer_start_editing (GtkCellRenderer      *cell,
 }
 
 /**
- * gtk_cell_renderer_set_fixed_size:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_set_fixed_size:
+ * @cell: A #BtkCellRenderer
  * @width: the width of the cell renderer, or -1
  * @height: the height of the cell renderer, or -1
  *
  * Sets the renderer size to be explicit, independent of the properties set.
  **/
 void
-gtk_cell_renderer_set_fixed_size (GtkCellRenderer *cell,
+btk_cell_renderer_set_fixed_size (BtkCellRenderer *cell,
 				  gint             width,
 				  gint             height)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
   g_return_if_fail (width >= -1 && height >= -1);
 
   if ((width != cell->width) || (height != cell->height))
@@ -716,19 +716,19 @@ gtk_cell_renderer_set_fixed_size (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_get_fixed_size:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_get_fixed_size:
+ * @cell: A #BtkCellRenderer
  * @width: (out) (allow-none): location to fill in with the fixed width of the cell, or %NULL
  * @height: (out) (allow-none): location to fill in with the fixed height of the cell, or %NULL
  *
  * Fills in @width and @height with the appropriate size of @cell.
  **/
 void
-gtk_cell_renderer_get_fixed_size (GtkCellRenderer *cell,
+btk_cell_renderer_get_fixed_size (BtkCellRenderer *cell,
 				  gint            *width,
 				  gint            *height)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
   if (width)
     *width = cell->width;
@@ -737,8 +737,8 @@ gtk_cell_renderer_get_fixed_size (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_set_alignment:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_set_alignment:
+ * @cell: A #BtkCellRenderer
  * @xalign: the x alignment of the cell renderer
  * @yalign: the y alignment of the cell renderer
  *
@@ -747,11 +747,11 @@ gtk_cell_renderer_get_fixed_size (GtkCellRenderer *cell,
  * Since: 2.18
  **/
 void
-gtk_cell_renderer_set_alignment (GtkCellRenderer *cell,
+btk_cell_renderer_set_alignment (BtkCellRenderer *cell,
                                  gfloat           xalign,
                                  gfloat           yalign)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
   g_return_if_fail (xalign >= 0.0 && xalign <= 1.0);
   g_return_if_fail (yalign >= 0.0 && yalign <= 1.0);
 
@@ -776,8 +776,8 @@ gtk_cell_renderer_set_alignment (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_get_alignment:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_get_alignment:
+ * @cell: A #BtkCellRenderer
  * @xalign: (out) (allow-none): location to fill in with the x alignment of the cell, or %NULL
  * @yalign: (out) (allow-none): location to fill in with the y alignment of the cell, or %NULL
  *
@@ -786,11 +786,11 @@ gtk_cell_renderer_set_alignment (GtkCellRenderer *cell,
  * Since: 2.18
  **/
 void
-gtk_cell_renderer_get_alignment (GtkCellRenderer *cell,
+btk_cell_renderer_get_alignment (BtkCellRenderer *cell,
                                  gfloat          *xalign,
                                  gfloat          *yalign)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
   if (xalign)
     *xalign = cell->xalign;
@@ -799,8 +799,8 @@ gtk_cell_renderer_get_alignment (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_set_padding:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_set_padding:
+ * @cell: A #BtkCellRenderer
  * @xpad: the x padding of the cell renderer
  * @ypad: the y padding of the cell renderer
  *
@@ -809,11 +809,11 @@ gtk_cell_renderer_get_alignment (GtkCellRenderer *cell,
  * Since: 2.18
  **/
 void
-gtk_cell_renderer_set_padding (GtkCellRenderer *cell,
+btk_cell_renderer_set_padding (BtkCellRenderer *cell,
                                gint             xpad,
                                gint             ypad)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
   g_return_if_fail (xpad >= 0 && xpad >= 0);
 
   if ((xpad != cell->xpad) || (ypad != cell->ypad))
@@ -837,8 +837,8 @@ gtk_cell_renderer_set_padding (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_get_padding:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_get_padding:
+ * @cell: A #BtkCellRenderer
  * @xpad: (out) (allow-none): location to fill in with the x padding of the cell, or %NULL
  * @ypad: (out) (allow-none): location to fill in with the y padding of the cell, or %NULL
  *
@@ -847,11 +847,11 @@ gtk_cell_renderer_set_padding (GtkCellRenderer *cell,
  * Since: 2.18
  **/
 void
-gtk_cell_renderer_get_padding (GtkCellRenderer *cell,
+btk_cell_renderer_get_padding (BtkCellRenderer *cell,
                                gint            *xpad,
                                gint            *ypad)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
   if (xpad)
     *xpad = cell->xpad;
@@ -860,8 +860,8 @@ gtk_cell_renderer_get_padding (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_set_visible:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_set_visible:
+ * @cell: A #BtkCellRenderer
  * @visible: the visibility of the cell
  *
  * Sets the cell renderer's visibility.
@@ -869,10 +869,10 @@ gtk_cell_renderer_get_padding (GtkCellRenderer *cell,
  * Since: 2.18
  **/
 void
-gtk_cell_renderer_set_visible (GtkCellRenderer *cell,
+btk_cell_renderer_set_visible (BtkCellRenderer *cell,
                                gboolean         visible)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
   if (cell->visible != visible)
     {
@@ -882,8 +882,8 @@ gtk_cell_renderer_set_visible (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_get_visible:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_get_visible:
+ * @cell: A #BtkCellRenderer
  *
  * Returns the cell renderer's visibility.
  *
@@ -892,16 +892,16 @@ gtk_cell_renderer_set_visible (GtkCellRenderer *cell,
  * Since: 2.18
  */
 gboolean
-gtk_cell_renderer_get_visible (GtkCellRenderer *cell)
+btk_cell_renderer_get_visible (BtkCellRenderer *cell)
 {
-  g_return_val_if_fail (GTK_IS_CELL_RENDERER (cell), FALSE);
+  g_return_val_if_fail (BTK_IS_CELL_RENDERER (cell), FALSE);
 
   return cell->visible;
 }
 
 /**
- * gtk_cell_renderer_set_sensitive:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_set_sensitive:
+ * @cell: A #BtkCellRenderer
  * @sensitive: the sensitivity of the cell
  *
  * Sets the cell renderer's sensitivity.
@@ -909,10 +909,10 @@ gtk_cell_renderer_get_visible (GtkCellRenderer *cell)
  * Since: 2.18
  **/
 void
-gtk_cell_renderer_set_sensitive (GtkCellRenderer *cell,
+btk_cell_renderer_set_sensitive (BtkCellRenderer *cell,
                                  gboolean         sensitive)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
   if (cell->sensitive != sensitive)
     {
@@ -922,8 +922,8 @@ gtk_cell_renderer_set_sensitive (GtkCellRenderer *cell,
 }
 
 /**
- * gtk_cell_renderer_get_sensitive:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_get_sensitive:
+ * @cell: A #BtkCellRenderer
  *
  * Returns the cell renderer's sensitivity.
  *
@@ -932,18 +932,18 @@ gtk_cell_renderer_set_sensitive (GtkCellRenderer *cell,
  * Since: 2.18
  */
 gboolean
-gtk_cell_renderer_get_sensitive (GtkCellRenderer *cell)
+btk_cell_renderer_get_sensitive (BtkCellRenderer *cell)
 {
-  g_return_val_if_fail (GTK_IS_CELL_RENDERER (cell), FALSE);
+  g_return_val_if_fail (BTK_IS_CELL_RENDERER (cell), FALSE);
 
   return cell->sensitive;
 }
 
 /**
- * gtk_cell_renderer_editing_canceled:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_editing_canceled:
+ * @cell: A #BtkCellRenderer
  * 
- * Causes the cell renderer to emit the #GtkCellRenderer::editing-canceled 
+ * Causes the cell renderer to emit the #BtkCellRenderer::editing-canceled 
  * signal.  
  *
  * This function is for use only by implementations of cell renderers that 
@@ -951,36 +951,36 @@ gtk_cell_renderer_get_sensitive (GtkCellRenderer *cell)
  * and the changes were not committed.
  *
  * Since: 2.4
- * Deprecated: 2.6: Use gtk_cell_renderer_stop_editing() instead
+ * Deprecated: 2.6: Use btk_cell_renderer_stop_editing() instead
  **/
 void
-gtk_cell_renderer_editing_canceled (GtkCellRenderer *cell)
+btk_cell_renderer_editing_canceled (BtkCellRenderer *cell)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
-  gtk_cell_renderer_stop_editing (cell, TRUE);
+  btk_cell_renderer_stop_editing (cell, TRUE);
 }
 
 /**
- * gtk_cell_renderer_stop_editing:
- * @cell: A #GtkCellRenderer
+ * btk_cell_renderer_stop_editing:
+ * @cell: A #BtkCellRenderer
  * @canceled: %TRUE if the editing has been canceled
  * 
  * Informs the cell renderer that the editing is stopped.
  * If @canceled is %TRUE, the cell renderer will emit the 
- * #GtkCellRenderer::editing-canceled signal. 
+ * #BtkCellRenderer::editing-canceled signal. 
  *
  * This function should be called by cell renderer implementations 
- * in response to the #GtkCellEditable::editing-done signal of 
- * #GtkCellEditable.
+ * in response to the #BtkCellEditable::editing-done signal of 
+ * #BtkCellEditable.
  *
  * Since: 2.6
  **/
 void
-gtk_cell_renderer_stop_editing (GtkCellRenderer *cell,
+btk_cell_renderer_stop_editing (BtkCellRenderer *cell,
 				gboolean         canceled)
 {
-  g_return_if_fail (GTK_IS_CELL_RENDERER (cell));
+  g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
 
   if (cell->editing)
     {
@@ -990,5 +990,5 @@ gtk_cell_renderer_stop_editing (GtkCellRenderer *cell,
     }
 }
 
-#define __GTK_CELL_RENDERER_C__
-#include "gtkaliasdef.c"
+#define __BTK_CELL_RENDERER_C__
+#include "btkaliasdef.c"

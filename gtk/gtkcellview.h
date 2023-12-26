@@ -1,5 +1,5 @@
-/* gtkcellview.h
- * Copyright (C) 2002, 2003  Kristian Rietveld <kris@gtk.org>
+/* btkcellview.h
+ * Copyright (C) 2002, 2003  Kristian Rietveld <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,65 +17,65 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_CELL_VIEW_H__
-#define __GTK_CELL_VIEW_H__
+#ifndef __BTK_CELL_VIEW_H__
+#define __BTK_CELL_VIEW_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkcellrenderer.h>
-#include <gtk/gtktreemodel.h>
+#include <btk/btkwidget.h>
+#include <btk/btkcellrenderer.h>
+#include <btk/btktreemodel.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CELL_VIEW                (gtk_cell_view_get_type ())
-#define GTK_CELL_VIEW(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_VIEW, GtkCellView))
-#define GTK_CELL_VIEW_CLASS(vtable)       (G_TYPE_CHECK_CLASS_CAST ((vtable), GTK_TYPE_CELL_VIEW, GtkCellViewClass))
-#define GTK_IS_CELL_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CELL_VIEW))
-#define GTK_IS_CELL_VIEW_CLASS(vtable)    (G_TYPE_CHECK_CLASS_TYPE ((vtable), GTK_TYPE_CELL_VIEW))
-#define GTK_CELL_VIEW_GET_CLASS(inst)     (G_TYPE_INSTANCE_GET_CLASS ((inst), GTK_TYPE_CELL_VIEW, GtkCellViewClass))
+#define BTK_TYPE_CELL_VIEW                (btk_cell_view_get_type ())
+#define BTK_CELL_VIEW(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_VIEW, BtkCellView))
+#define BTK_CELL_VIEW_CLASS(vtable)       (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
+#define BTK_IS_CELL_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_VIEW))
+#define BTK_IS_CELL_VIEW_CLASS(vtable)    (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_CELL_VIEW))
+#define BTK_CELL_VIEW_GET_CLASS(inst)     (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
 
-typedef struct _GtkCellView             GtkCellView;
-typedef struct _GtkCellViewClass        GtkCellViewClass;
-typedef struct _GtkCellViewPrivate      GtkCellViewPrivate;
+typedef struct _BtkCellView             BtkCellView;
+typedef struct _BtkCellViewClass        BtkCellViewClass;
+typedef struct _BtkCellViewPrivate      BtkCellViewPrivate;
 
-struct _GtkCellView
+struct _BtkCellView
 {
-  GtkWidget parent_instance;
+  BtkWidget parent_instance;
 
   /*< private >*/
-  GtkCellViewPrivate *GSEAL (priv);
+  BtkCellViewPrivate *GSEAL (priv);
 };
 
-struct _GtkCellViewClass
+struct _BtkCellViewClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 };
 
-GType             gtk_cell_view_get_type               (void) G_GNUC_CONST;
-GtkWidget        *gtk_cell_view_new                    (void);
-GtkWidget        *gtk_cell_view_new_with_text          (const gchar     *text);
-GtkWidget        *gtk_cell_view_new_with_markup        (const gchar     *markup);
-GtkWidget        *gtk_cell_view_new_with_pixbuf        (GdkPixbuf       *pixbuf);
+GType             btk_cell_view_get_type               (void) G_GNUC_CONST;
+BtkWidget        *btk_cell_view_new                    (void);
+BtkWidget        *btk_cell_view_new_with_text          (const gchar     *text);
+BtkWidget        *btk_cell_view_new_with_markup        (const gchar     *markup);
+BtkWidget        *btk_cell_view_new_with_pixbuf        (BdkPixbuf       *pixbuf);
 
-void              gtk_cell_view_set_model               (GtkCellView     *cell_view,
-                                                         GtkTreeModel    *model);
-GtkTreeModel     *gtk_cell_view_get_model               (GtkCellView     *cell_view);
-void              gtk_cell_view_set_displayed_row       (GtkCellView     *cell_view,
-                                                         GtkTreePath     *path);
-GtkTreePath      *gtk_cell_view_get_displayed_row       (GtkCellView     *cell_view);
-gboolean          gtk_cell_view_get_size_of_row         (GtkCellView     *cell_view,
-                                                         GtkTreePath     *path,
-                                                         GtkRequisition  *requisition);
+void              btk_cell_view_set_model               (BtkCellView     *cell_view,
+                                                         BtkTreeModel    *model);
+BtkTreeModel     *btk_cell_view_get_model               (BtkCellView     *cell_view);
+void              btk_cell_view_set_displayed_row       (BtkCellView     *cell_view,
+                                                         BtkTreePath     *path);
+BtkTreePath      *btk_cell_view_get_displayed_row       (BtkCellView     *cell_view);
+gboolean          btk_cell_view_get_size_of_row         (BtkCellView     *cell_view,
+                                                         BtkTreePath     *path,
+                                                         BtkRequisition  *requisition);
 
-void              gtk_cell_view_set_background_color    (GtkCellView     *cell_view,
-                                                         const GdkColor  *color);
-#ifndef GTK_DISABLE_DEPRECATED
-GList            *gtk_cell_view_get_cell_renderers      (GtkCellView     *cell_view);
+void              btk_cell_view_set_background_color    (BtkCellView     *cell_view,
+                                                         const BdkColor  *color);
+#ifndef BTK_DISABLE_DEPRECATED
+GList            *btk_cell_view_get_cell_renderers      (BtkCellView     *cell_view);
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_CELL_VIEW_H__ */
+#endif /* __BTK_CELL_VIEW_H__ */

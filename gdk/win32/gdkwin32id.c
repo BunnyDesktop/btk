@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,21 +18,21 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include <gdk/gdk.h>
+#include <bdk/bdk.h>
 
-#include "gdkprivate-win32.h"
+#include "bdkprivate-win32.h"
 
 static GHashTable *handle_ht = NULL;
 
 static guint
-gdk_handle_hash (HANDLE *handle)
+bdk_handle_hash (HANDLE *handle)
 {
 #ifdef _WIN64
   return ((guint *) handle)[0] ^ ((guint *) handle)[1];
@@ -42,37 +42,37 @@ gdk_handle_hash (HANDLE *handle)
 }
 
 static gint
-gdk_handle_equal (HANDLE *a,
+bdk_handle_equal (HANDLE *a,
 		  HANDLE *b)
 {
   return (*a == *b);
 }
 
 void
-gdk_win32_handle_table_insert (HANDLE  *handle,
+bdk_win32_handle_table_insert (HANDLE  *handle,
 			       gpointer data)
 {
   g_return_if_fail (handle != NULL);
 
   if (!handle_ht)
-    handle_ht = g_hash_table_new ((GHashFunc) gdk_handle_hash,
-				  (GEqualFunc) gdk_handle_equal);
+    handle_ht = g_hash_table_new ((GHashFunc) bdk_handle_hash,
+				  (GEqualFunc) bdk_handle_equal);
 
   g_hash_table_insert (handle_ht, handle, data);
 }
 
 void
-gdk_win32_handle_table_remove (HANDLE handle)
+bdk_win32_handle_table_remove (HANDLE handle)
 {
   if (!handle_ht)
-    handle_ht = g_hash_table_new ((GHashFunc) gdk_handle_hash,
-				  (GEqualFunc) gdk_handle_equal);
+    handle_ht = g_hash_table_new ((GHashFunc) bdk_handle_hash,
+				  (GEqualFunc) bdk_handle_equal);
 
   g_hash_table_remove (handle_ht, &handle);
 }
 
 gpointer
-gdk_win32_handle_table_lookup (GdkNativeWindow handle)
+bdk_win32_handle_table_lookup (BdkNativeWindow handle)
 {
   gpointer data = NULL;
 

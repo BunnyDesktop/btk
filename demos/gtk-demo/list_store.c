@@ -1,16 +1,16 @@
 /* Tree View/List Store
  *
- * The GtkListStore is used to store data in list form, to be used
- * later on by a GtkTreeView to display it. This demo builds a
- * simple GtkListStore and displays it. See the Stock Browser
+ * The BtkListStore is used to store data in list form, to be used
+ * later on by a BtkTreeView to display it. This demo builds a
+ * simple BtkListStore and displays it. See the Stock Browser
  * demo for a more advanced example.
  *
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget *window = NULL;
-static GtkTreeModel *model = NULL;
+static BtkWidget *window = NULL;
+static BtkTreeModel *model = NULL;
 static guint timeout = 0;
 
 typedef struct
@@ -36,17 +36,17 @@ enum
 static Bug data[] =
 {
   { FALSE, 60482, "Normal",     "scrollable notebooks and hidden tabs" },
-  { FALSE, 60620, "Critical",   "gdk_window_clear_area (gdkwindow-win32.c) is not thread-safe" },
+  { FALSE, 60620, "Critical",   "bdk_window_clear_area (bdkwindow-win32.c) is not thread-safe" },
   { FALSE, 50214, "Major",      "Xft support does not clean up correctly" },
-  { TRUE,  52877, "Major",      "GtkFileSelection needs a refresh method. " },
+  { TRUE,  52877, "Major",      "BtkFileSelection needs a refresh method. " },
   { FALSE, 56070, "Normal",     "Can't click button after setting in sensitive" },
-  { TRUE,  56355, "Normal",     "GtkLabel - Not all changes propagate correctly" },
+  { TRUE,  56355, "Normal",     "BtkLabel - Not all changes propagate correctly" },
   { FALSE, 50055, "Normal",     "Rework width/height computations for TreeView" },
-  { FALSE, 58278, "Normal",     "gtk_dialog_set_response_sensitive () doesn't work" },
+  { FALSE, 58278, "Normal",     "btk_dialog_set_response_sensitive () doesn't work" },
   { FALSE, 55767, "Normal",     "Getters for all setters" },
-  { FALSE, 56925, "Normal",     "Gtkcalender size" },
+  { FALSE, 56925, "Normal",     "Btkcalender size" },
   { FALSE, 56221, "Normal",     "Selectable label needs right-click copy menu" },
-  { TRUE,  50939, "Normal",     "Add shift clicking to GtkTextView" },
+  { TRUE,  50939, "Normal",     "Add shift clicking to BtkTextView" },
   { FALSE, 6112,  "Enhancement","netscape-like collapsable toolbars" },
   { FALSE, 1,     "Normal",     "First bug :=)" },
 };
@@ -54,14 +54,14 @@ static Bug data[] =
 static gboolean
 spinner_timeout (gpointer data)
 {
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   guint pulse;
 
   if (model == NULL)
     return FALSE;
 
-  gtk_tree_model_get_iter_first (model, &iter);
-  gtk_tree_model_get (model, &iter,
+  btk_tree_model_get_iter_first (model, &iter);
+  btk_tree_model_get (model, &iter,
                       COLUMN_PULSE, &pulse,
                       -1);
   if (pulse == G_MAXUINT)
@@ -69,7 +69,7 @@ spinner_timeout (gpointer data)
   else
     pulse++;
 
-  gtk_list_store_set (GTK_LIST_STORE (model),
+  btk_list_store_set (BTK_LIST_STORE (model),
                       &iter,
                       COLUMN_PULSE, pulse,
                       COLUMN_ACTIVE, TRUE,
@@ -78,15 +78,15 @@ spinner_timeout (gpointer data)
   return TRUE;
 }
 
-static GtkTreeModel *
+static BtkTreeModel *
 create_model (void)
 {
   gint i = 0;
-  GtkListStore *store;
-  GtkTreeIter iter;
+  BtkListStore *store;
+  BtkTreeIter iter;
 
   /* create list store */
-  store = gtk_list_store_new (NUM_COLUMNS,
+  store = btk_list_store_new (NUM_COLUMNS,
                               G_TYPE_BOOLEAN,
                               G_TYPE_UINT,
                               G_TYPE_STRING,
@@ -97,8 +97,8 @@ create_model (void)
   /* add data to the list store */
   for (i = 0; i < G_N_ELEMENTS (data); i++)
     {
-      gtk_list_store_append (store, &iter);
-      gtk_list_store_set (store, &iter,
+      btk_list_store_append (store, &iter);
+      btk_list_store_set (store, &iter,
                           COLUMN_FIXED, data[i].fixed,
                           COLUMN_NUMBER, data[i].number,
                           COLUMN_SEVERITY, data[i].severity,
@@ -108,102 +108,102 @@ create_model (void)
                           -1);
     }
 
-  return GTK_TREE_MODEL (store);
+  return BTK_TREE_MODEL (store);
 }
 
 static void
-fixed_toggled (GtkCellRendererToggle *cell,
+fixed_toggled (BtkCellRendererToggle *cell,
                gchar                 *path_str,
                gpointer               data)
 {
-  GtkTreeModel *model = (GtkTreeModel *)data;
-  GtkTreeIter  iter;
-  GtkTreePath *path = gtk_tree_path_new_from_string (path_str);
+  BtkTreeModel *model = (BtkTreeModel *)data;
+  BtkTreeIter  iter;
+  BtkTreePath *path = btk_tree_path_new_from_string (path_str);
   gboolean fixed;
 
   /* get toggled iter */
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, COLUMN_FIXED, &fixed, -1);
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_tree_model_get (model, &iter, COLUMN_FIXED, &fixed, -1);
 
   /* do something with the value */
   fixed ^= 1;
 
   /* set new value */
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter, COLUMN_FIXED, fixed, -1);
+  btk_list_store_set (BTK_LIST_STORE (model), &iter, COLUMN_FIXED, fixed, -1);
 
   /* clean up */
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 }
 
 static void
-add_columns (GtkTreeView *treeview)
+add_columns (BtkTreeView *treeview)
 {
-  GtkCellRenderer *renderer;
-  GtkTreeViewColumn *column;
-  GtkTreeModel *model = gtk_tree_view_get_model (treeview);
+  BtkCellRenderer *renderer;
+  BtkTreeViewColumn *column;
+  BtkTreeModel *model = btk_tree_view_get_model (treeview);
 
   /* column for fixed toggles */
-  renderer = gtk_cell_renderer_toggle_new ();
+  renderer = btk_cell_renderer_toggle_new ();
   g_signal_connect (renderer, "toggled",
                     G_CALLBACK (fixed_toggled), model);
 
-  column = gtk_tree_view_column_new_with_attributes ("Fixed?",
+  column = btk_tree_view_column_new_with_attributes ("Fixed?",
                                                      renderer,
                                                      "active", COLUMN_FIXED,
                                                      NULL);
 
   /* set this column to a fixed sizing (of 50 pixels) */
-  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
-                                   GTK_TREE_VIEW_COLUMN_FIXED);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 50);
-  gtk_tree_view_append_column (treeview, column);
+  btk_tree_view_column_set_sizing (BTK_TREE_VIEW_COLUMN (column),
+                                   BTK_TREE_VIEW_COLUMN_FIXED);
+  btk_tree_view_column_set_fixed_width (BTK_TREE_VIEW_COLUMN (column), 50);
+  btk_tree_view_append_column (treeview, column);
 
   /* column for bug numbers */
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Bug number",
+  renderer = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("Bug number",
                                                      renderer,
                                                      "text",
                                                      COLUMN_NUMBER,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_NUMBER);
-  gtk_tree_view_append_column (treeview, column);
+  btk_tree_view_column_set_sort_column_id (column, COLUMN_NUMBER);
+  btk_tree_view_append_column (treeview, column);
 
   /* column for severities */
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Severity",
+  renderer = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("Severity",
                                                      renderer,
                                                      "text",
                                                      COLUMN_SEVERITY,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_SEVERITY);
-  gtk_tree_view_append_column (treeview, column);
+  btk_tree_view_column_set_sort_column_id (column, COLUMN_SEVERITY);
+  btk_tree_view_append_column (treeview, column);
 
   /* column for description */
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Description",
+  renderer = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("Description",
                                                      renderer,
                                                      "text",
                                                      COLUMN_DESCRIPTION,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_DESCRIPTION);
-  gtk_tree_view_append_column (treeview, column);
+  btk_tree_view_column_set_sort_column_id (column, COLUMN_DESCRIPTION);
+  btk_tree_view_append_column (treeview, column);
 
   /* column for spinner */
-  renderer = gtk_cell_renderer_spinner_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Spinning",
+  renderer = btk_cell_renderer_spinner_new ();
+  column = btk_tree_view_column_new_with_attributes ("Spinning",
                                                      renderer,
                                                      "pulse",
                                                      COLUMN_PULSE,
                                                      "active",
                                                      COLUMN_ACTIVE,
                                                      NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_PULSE);
-  gtk_tree_view_append_column (treeview, column);
+  btk_tree_view_column_set_sort_column_id (column, COLUMN_PULSE);
+  btk_tree_view_append_column (treeview, column);
 }
 
 static gboolean
-window_closed (GtkWidget *widget,
-               GdkEvent  *event,
+window_closed (BtkWidget *widget,
+               BdkEvent  *event,
                gpointer   user_data)
 {
   model = NULL;
@@ -216,65 +216,65 @@ window_closed (GtkWidget *widget,
   return FALSE;
 }
 
-GtkWidget *
-do_list_store (GtkWidget *do_widget)
+BtkWidget *
+do_list_store (BtkWidget *do_widget)
 {
   if (!window)
     {
-      GtkWidget *vbox;
-      GtkWidget *label;
-      GtkWidget *sw;
-      GtkWidget *treeview;
+      BtkWidget *vbox;
+      BtkWidget *label;
+      BtkWidget *sw;
+      BtkWidget *treeview;
 
       /* create window, etc */
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_screen (GTK_WINDOW (window),
-                             gtk_widget_get_screen (do_widget));
-      gtk_window_set_title (GTK_WINDOW (window), "GtkListStore demo");
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      btk_window_set_screen (BTK_WINDOW (window),
+                             btk_widget_get_screen (do_widget));
+      btk_window_set_title (BTK_WINDOW (window), "BtkListStore demo");
 
       g_signal_connect (window, "destroy",
-                        G_CALLBACK (gtk_widget_destroyed), &window);
-      gtk_container_set_border_width (GTK_CONTAINER (window), 8);
+                        G_CALLBACK (btk_widget_destroyed), &window);
+      btk_container_set_border_width (BTK_CONTAINER (window), 8);
 
-      vbox = gtk_vbox_new (FALSE, 8);
-      gtk_container_add (GTK_CONTAINER (window), vbox);
+      vbox = btk_vbox_new (FALSE, 8);
+      btk_container_add (BTK_CONTAINER (window), vbox);
 
-      label = gtk_label_new ("This is the bug list (note: not based on real data, it would be nice to have a nice ODBC interface to bugzilla or so, though).");
-      gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+      label = btk_label_new ("This is the bug list (note: not based on real data, it would be nice to have a nice ODBC interface to bugzilla or so, though).");
+      btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-      sw = gtk_scrolled_window_new (NULL, NULL);
-      gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
-                                           GTK_SHADOW_ETCHED_IN);
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-                                      GTK_POLICY_NEVER,
-                                      GTK_POLICY_AUTOMATIC);
-      gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+      sw = btk_scrolled_window_new (NULL, NULL);
+      btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (sw),
+                                           BTK_SHADOW_ETCHED_IN);
+      btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (sw),
+                                      BTK_POLICY_NEVER,
+                                      BTK_POLICY_AUTOMATIC);
+      btk_box_pack_start (BTK_BOX (vbox), sw, TRUE, TRUE, 0);
 
       /* create tree model */
       model = create_model ();
 
       /* create tree view */
-      treeview = gtk_tree_view_new_with_model (model);
-      gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (treeview), TRUE);
-      gtk_tree_view_set_search_column (GTK_TREE_VIEW (treeview),
+      treeview = btk_tree_view_new_with_model (model);
+      btk_tree_view_set_rules_hint (BTK_TREE_VIEW (treeview), TRUE);
+      btk_tree_view_set_search_column (BTK_TREE_VIEW (treeview),
                                        COLUMN_DESCRIPTION);
 
       g_object_unref (model);
 
-      gtk_container_add (GTK_CONTAINER (sw), treeview);
+      btk_container_add (BTK_CONTAINER (sw), treeview);
 
       /* add columns to the tree view */
-      add_columns (GTK_TREE_VIEW (treeview));
+      add_columns (BTK_TREE_VIEW (treeview));
 
       /* finish & show */
-      gtk_window_set_default_size (GTK_WINDOW (window), 280, 250);
+      btk_window_set_default_size (BTK_WINDOW (window), 280, 250);
       g_signal_connect (window, "delete-event",
                         G_CALLBACK (window_closed), NULL);
     }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show_all (window);
+      btk_widget_show_all (window);
       if (timeout == 0) {
         /* FIXME this should use the animation-duration instead */
         timeout = g_timeout_add (80, spinner_timeout, NULL);
@@ -282,7 +282,7 @@ do_list_store (GtkWidget *do_widget)
     }
   else
     {
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
       if (timeout != 0)
         {

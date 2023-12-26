@@ -137,7 +137,7 @@ UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
 
 case "$UNAME_SYSTEM" in
 Linux|GNU|GNU/*)
-	# If the system lacks a compiler, then just pick glibc.
+	# If the system lacks a compiler, then just pick bunnylibc.
 	# We could probably try harder.
 	LIBC=gnu
 

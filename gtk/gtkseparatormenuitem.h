@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,51 +18,51 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_SEPARATOR_MENU_ITEM_H__
-#define __GTK_SEPARATOR_MENU_ITEM_H__
+#ifndef __BTK_SEPARATOR_MENU_ITEM_H__
+#define __BTK_SEPARATOR_MENU_ITEM_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkmenuitem.h>
+#include <btk/btkmenuitem.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SEPARATOR_MENU_ITEM            (gtk_separator_menu_item_get_type ())
-#define GTK_SEPARATOR_MENU_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SEPARATOR_MENU_ITEM, GtkSeparatorMenuItem))
-#define GTK_SEPARATOR_MENU_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SEPARATOR_MENU_ITEM, GtkSeparatorMenuItemClass))
-#define GTK_IS_SEPARATOR_MENU_ITEM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SEPARATOR_MENU_ITEM))
-#define GTK_IS_SEPARATOR_MENU_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SEPARATOR_MENU_ITEM))
-#define GTK_SEPARATOR_MENU_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SEPARATOR_MENU_ITEM, GtkSeparatorMenuItemClass))
+#define BTK_TYPE_SEPARATOR_MENU_ITEM            (btk_separator_menu_item_get_type ())
+#define BTK_SEPARATOR_MENU_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR_MENU_ITEM, BtkSeparatorMenuItem))
+#define BTK_SEPARATOR_MENU_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEPARATOR_MENU_ITEM, BtkSeparatorMenuItemClass))
+#define BTK_IS_SEPARATOR_MENU_ITEM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEPARATOR_MENU_ITEM))
+#define BTK_IS_SEPARATOR_MENU_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEPARATOR_MENU_ITEM))
+#define BTK_SEPARATOR_MENU_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEPARATOR_MENU_ITEM, BtkSeparatorMenuItemClass))
 
 
-typedef struct _GtkSeparatorMenuItem       GtkSeparatorMenuItem;
-typedef struct _GtkSeparatorMenuItemClass  GtkSeparatorMenuItemClass;
+typedef struct _BtkSeparatorMenuItem       BtkSeparatorMenuItem;
+typedef struct _BtkSeparatorMenuItemClass  BtkSeparatorMenuItemClass;
 
-struct _GtkSeparatorMenuItem
+struct _BtkSeparatorMenuItem
 {
-  GtkMenuItem menu_item;
+  BtkMenuItem menu_item;
 };
 
-struct _GtkSeparatorMenuItemClass
+struct _BtkSeparatorMenuItemClass
 {
-  GtkMenuItemClass parent_class;
+  BtkMenuItemClass parent_class;
 };
 
 
-GType	   gtk_separator_menu_item_get_type	   (void) G_GNUC_CONST;
-GtkWidget* gtk_separator_menu_item_new	           (void);
+GType	   btk_separator_menu_item_get_type	   (void) G_GNUC_CONST;
+BtkWidget* btk_separator_menu_item_new	           (void);
 
 
 G_END_DECLS
 
-#endif /* __GTK_SEPARATOR_MENU_ITEM_H__ */
+#endif /* __BTK_SEPARATOR_MENU_ITEM_H__ */

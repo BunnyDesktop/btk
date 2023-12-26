@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,41 +18,41 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2001.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TEXT_UTIL_H__
-#define __GTK_TEXT_UTIL_H__
+#ifndef __BTK_TEXT_UTIL_H__
+#define __BTK_TEXT_UTIL_H__
 
 G_BEGIN_DECLS
 
 /* This is a private uninstalled header shared between
- * GtkTextView and GtkEntry
+ * BtkTextView and BtkEntry
  */
 
-typedef void (* GtkTextUtilCharChosenFunc) (const char *text,
+typedef void (* BtkTextUtilCharChosenFunc) (const char *text,
                                             gpointer    data);
 
-void _gtk_text_util_append_special_char_menuitems (GtkMenuShell              *menushell,
-                                                   GtkTextUtilCharChosenFunc  func,
+void _btk_text_util_append_special_char_menuitems (BtkMenuShell              *menushell,
+                                                   BtkTextUtilCharChosenFunc  func,
                                                    gpointer                   data);
 
-GdkPixmap* _gtk_text_util_create_drag_icon      (GtkWidget     *widget,
+BdkPixmap* _btk_text_util_create_drag_icon      (BtkWidget     *widget,
                                                  gchar         *text,
                                                  gsize          len);
-GdkPixmap* _gtk_text_util_create_rich_drag_icon (GtkWidget     *widget,
-                                                 GtkTextBuffer *buffer,
-                                                 GtkTextIter   *start,
-                                                 GtkTextIter   *end);
+BdkPixmap* _btk_text_util_create_rich_drag_icon (BtkWidget     *widget,
+                                                 BtkTextBuffer *buffer,
+                                                 BtkTextIter   *start,
+                                                 BtkTextIter   *end);
 
-gboolean _gtk_text_util_get_block_cursor_location (PangoLayout    *layout,
+gboolean _btk_text_util_get_block_cursor_location (BangoLayout    *layout,
 						   gint            index_,
-						   PangoRectangle *rectangle,
+						   BangoRectangle *rectangle,
 						   gboolean       *at_line_end);
 
 G_END_DECLS
 
-#endif /* __GTK_TEXT_UTIL_H__ */
+#endif /* __BTK_TEXT_UTIL_H__ */

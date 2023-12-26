@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,37 +17,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_SPIN_BUTTON_H__
-#define __GAIL_SPIN_BUTTON_H__
+#ifndef __BAIL_SPIN_BUTTON_H__
+#define __BAIL_SPIN_BUTTON_H__
 
-#include <gail/gailentry.h>
+#include <bail/bailentry.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_SPIN_BUTTON                      (gail_spin_button_get_type ())
-#define GAIL_SPIN_BUTTON(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_SPIN_BUTTON, GailSpinButton))
-#define GAIL_SPIN_BUTTON_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_SPIN_BUTTON, GailSpinButtonClass))
-#define GAIL_IS_SPIN_BUTTON(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_SPIN_BUTTON))
-#define GAIL_IS_SPIN_BUTTON_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_SPIN_BUTTON))
-#define GAIL_SPIN_BUTTON_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_SPIN_BUTTON, GailSpinButtonClass))
+#define BAIL_TYPE_SPIN_BUTTON                      (bail_spin_button_get_type ())
+#define BAIL_SPIN_BUTTON(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SPIN_BUTTON, BailSpinButton))
+#define BAIL_SPIN_BUTTON_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SPIN_BUTTON, BailSpinButtonClass))
+#define BAIL_IS_SPIN_BUTTON(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SPIN_BUTTON))
+#define BAIL_IS_SPIN_BUTTON_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SPIN_BUTTON))
+#define BAIL_SPIN_BUTTON_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SPIN_BUTTON, BailSpinButtonClass))
 
-typedef struct _GailSpinButton              GailSpinButton;
-typedef struct _GailSpinButtonClass         GailSpinButtonClass;
+typedef struct _BailSpinButton              BailSpinButton;
+typedef struct _BailSpinButtonClass         BailSpinButtonClass;
 
-struct _GailSpinButton
+struct _BailSpinButton
 {
-  GailEntry parent;
+  BailEntry parent;
 
-  AtkObject *adjustment;
+  BatkObject *adjustment;
 };
 
-GType gail_spin_button_get_type (void);
+GType bail_spin_button_get_type (void);
 
-struct _GailSpinButtonClass
+struct _BailSpinButtonClass
 {
-  GailEntryClass parent_class;
+  BailEntryClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_SPIN_BUTTON_H__ */
+#endif /* __BAIL_SPIN_BUTTON_H__ */

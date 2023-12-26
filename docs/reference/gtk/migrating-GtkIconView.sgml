@@ -2,21 +2,21 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<chapter id="gtk-migrating-GtkIconView">
+<chapter id="btk-migrating-BtkIconView">
 
-  <title>Migrating from GnomeIconList to GtkIconView</title>
+  <title>Migrating from GnomeIconList to BtkIconView</title>
 
   <para>
-    Since version 2.6, GTK+ provides the #GtkIconView widget. It is similar in 
+    Since version 2.6, BTK+ provides the #BtkIconView widget. It is similar in 
     functionality to the <structname>GnomeIconList</structname> widget in the 
     libgnomeui library, both widgets provide a way to lay out named icons in 
-    a grid. The distinctive feature of the GTK+ widget is that it follows the 
+    a grid. The distinctive feature of the BTK+ widget is that it follows the 
     model-view pattern, allowing it to share the actual data (i.e. the names 
     and images of the icons) with other views.
   </para>
 
   <para>
-    #GtkIconView currently doesn't support some features found in 
+    #BtkIconView currently doesn't support some features found in 
     <structname>GnomeIconList</structname>. Icons can not be positioned freely, 
     the spacing is not customizable, and it is not possible to edit the names of 
     icons. 
@@ -24,7 +24,7 @@
 
   <para>
     To convert an application that uses <structname>GnomeIconList</structname> 
-    to #GtkIconView, the first step is to organize your data in a #GtkTreeModel. 
+    to #BtkIconView, the first step is to organize your data in a #BtkTreeModel. 
     <structname>GnomeIconList</structname> lets you directly insert data with 
     gnome_icon_list_insert() and gnome_icon_list_insert_pixbuf() and their
     append variants. So, if you previously had a function to fill your icon 
@@ -52,19 +52,19 @@
       };
  
       void 
-      fill_model (GtkListStore *store)
+      fill_model (BtkListStore *store)
       {
-        GtkTreeIter iter;
-        GdkPixbuf *pixbuf;
+        BtkTreeIter iter;
+        BdkPixbuf *pixbuf;
 
-        gtk_list_store_append (store, &amp;iter);
-        pixbuf = gdk_pixbuf_new_from_file ("file1.png", NULL);
-        gtk_list_store_set (store, &amp;iter, PIXBUF_COLUMN, pixbuf, TEXT_COLUMN, "Icon 1", -1);
+        btk_list_store_append (store, &amp;iter);
+        pixbuf = bdk_pixbuf_new_from_file ("file1.png", NULL);
+        btk_list_store_set (store, &amp;iter, PIXBUF_COLUMN, pixbuf, TEXT_COLUMN, "Icon 1", -1);
         g_object_unref (pixbuf);
 
-        gtk_list_store_append (store, &amp;iter);
-        pixbuf = gdk_pixbuf_new_from_file ("file2.png", NULL);
-        gtk_list_store_set (store, &amp;iter, PIXBUF_COLUMN, pixbuf, TEXT_COLUMN, "Icon 2", -1);
+        btk_list_store_append (store, &amp;iter);
+        pixbuf = bdk_pixbuf_new_from_file ("file2.png", NULL);
+        btk_list_store_set (store, &amp;iter, PIXBUF_COLUMN, pixbuf, TEXT_COLUMN, "Icon 2", -1);
         g_object_unref (pixbuf);
 
         /* more icons ... */ 
@@ -73,27 +73,27 @@
       int 
       main (int argc, char *argv[])
       {
-        GtkWidget *icon_view;
-        GtkListStore *store;
+        BtkWidget *icon_view;
+        BtkListStore *store;
 
-        gtk_init (&amp;argc, &amp;argv);
+        btk_init (&amp;argc, &amp;argv);
 
         /* do other initialization... */
 
-        /* construct the GtkIconView */
-        icon_view = gtk_icon_view_new (<!-- -->);
-        store = gtk_list_store_new (3, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_POINTER);
+        /* construct the BtkIconView */
+        icon_view = btk_icon_view_new (<!-- -->);
+        store = btk_list_store_new (3, BDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_POINTER);
 
-        gtk_icon_view_set_pixbuf_column (GTK_ICON_VIEW (icon_view), PIXBUF_COLUMN);
-        gtk_icon_view_set_text_column (GTK_ICON_VIEW (icon_view), TEXT_COLUMN);
-        gtk_icon_view_set_model (GTK_ICON_VIEW (icon_view), GTK_TREE_MODEL (store));
+        btk_icon_view_set_pixbuf_column (BTK_ICON_VIEW (icon_view), PIXBUF_COLUMN);
+        btk_icon_view_set_text_column (BTK_ICON_VIEW (icon_view), TEXT_COLUMN);
+        btk_icon_view_set_model (BTK_ICON_VIEW (icon_view), BTK_TREE_MODEL (store));
 
         fill_model (store);
 
         /* ... */
       }
     </programlisting></informalexample>
-    This example uses a #GtkListStore as model, but part of the elegance of the 
+    This example uses a #BtkListStore as model, but part of the elegance of the 
     model-view pattern is that you can easily use another tree model implementation, 
     or even write your own custom tree model.
   </para>
@@ -101,22 +101,22 @@
   <para>
     Your application may make use of extra data attached to the icons in the 
     <structname>GnomeIconList</structname> via gnome_icon_list_set_icon_data() and 
-    gnome_icon_list_get_icon_data(). With #GtkIconView such data is most 
+    gnome_icon_list_get_icon_data(). With #BtkIconView such data is most 
     conveniently stored in an extra column in the tree model, so you would 
     call a function like
     <informalexample><programlisting>
     void 
-    set_icon_data (GtkIconView *icon_view,
+    set_icon_data (BtkIconView *icon_view,
                    gint         idx,
                    gpointer     data)
     {
-       GtkTreeModel *model;
-       GtkTreeIter iter;
+       BtkTreeModel *model;
+       BtkTreeIter iter;
 
-       model = gtk_icon_view_get_model (icon_view);
+       model = btk_icon_view_get_model (icon_view);
     
-       if (gtk_tree_model_iter_nth_child (model, &amp;iter, NULL, idx))
-         gtk_list_store_set (GTK_LIST_STORE (model), &amp;iter, 
+       if (btk_tree_model_iter_nth_child (model, &amp;iter, NULL, idx))
+         btk_list_store_set (BTK_LIST_STORE (model), &amp;iter, 
                              DATA_COLUMN, data, -1);
     }
     </programlisting></informalexample>
@@ -127,18 +127,18 @@
   <para>
     There is a number of minor API differences between 
     <structname>GnomeIconList</structname> and 
-    <structname>GtkIconView</structname>:
+    <structname>BtkIconView</structname>:
     <itemizedlist> 
      <listitem><para>
        <type>GnomeIconListMode</type> is replaced by the 
-       <link linkend="GtkIconView--orientation">orientation</link> 
-       property of <structname>GtkIconView</structname>
+       <link linkend="BtkIconView--orientation">orientation</link> 
+       property of <structname>BtkIconView</structname>
      </para></listitem>
      <listitem><para>
-       <structname>GtkIconView</structname> can not be frozen in the same 
+       <structname>BtkIconView</structname> can not be frozen in the same 
        way as <structname>GnomeIconList</structname> can with 
        gnome_icon_list_freeze() and gnome_icon_list_thaw(). Instead you can 
-       replace the whole model of a <structname>GtkIconView</structname>, 
+       replace the whole model of a <structname>BtkIconView</structname>, 
        instead of doing many small changes to the existing model.
      </para></listitem>
     </itemizedlist>
@@ -148,6 +148,6 @@
 <!--
 Local variables:
 mode: sgml
-sgml-parent-document: ("gtk-docs.sgml" "book" "part" "chapter")
+sgml-parent-document: ("btk-docs.sgml" "book" "part" "chapter")
 End:
 -->

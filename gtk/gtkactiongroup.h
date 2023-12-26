@@ -1,5 +1,5 @@
 /*
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 1998, 1999 Red Hat, Inc.
  * All rights reserved.
  *
@@ -22,62 +22,62 @@
 /*
  * Author: James Henstridge <james@daa.com.au>
  *
- * Modified by the GTK+ Team and others 2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ACTION_GROUP_H__
-#define __GTK_ACTION_GROUP_H__
+#ifndef __BTK_ACTION_GROUP_H__
+#define __BTK_ACTION_GROUP_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkaction.h>
-#include <gtk/gtktypeutils.h> /* for GtkTranslateFunc */
+#include <btk/btkaction.h>
+#include <btk/btktypeutils.h> /* for BtkTranslateFunc */
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ACTION_GROUP              (gtk_action_group_get_type ())
-#define GTK_ACTION_GROUP(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ACTION_GROUP, GtkActionGroup))
-#define GTK_ACTION_GROUP_CLASS(vtable)     (G_TYPE_CHECK_CLASS_CAST ((vtable), GTK_TYPE_ACTION_GROUP, GtkActionGroupClass))
-#define GTK_IS_ACTION_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ACTION_GROUP))
-#define GTK_IS_ACTION_GROUP_CLASS(vtable)  (G_TYPE_CHECK_CLASS_TYPE ((vtable), GTK_TYPE_ACTION_GROUP))
-#define GTK_ACTION_GROUP_GET_CLASS(inst)   (G_TYPE_INSTANCE_GET_CLASS ((inst), GTK_TYPE_ACTION_GROUP, GtkActionGroupClass))
+#define BTK_TYPE_ACTION_GROUP              (btk_action_group_get_type ())
+#define BTK_ACTION_GROUP(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION_GROUP, BtkActionGroup))
+#define BTK_ACTION_GROUP_CLASS(vtable)     (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_ACTION_GROUP, BtkActionGroupClass))
+#define BTK_IS_ACTION_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION_GROUP))
+#define BTK_IS_ACTION_GROUP_CLASS(vtable)  (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_ACTION_GROUP))
+#define BTK_ACTION_GROUP_GET_CLASS(inst)   (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_ACTION_GROUP, BtkActionGroupClass))
 
-typedef struct _GtkActionGroup        GtkActionGroup;
-typedef struct _GtkActionGroupPrivate GtkActionGroupPrivate;
-typedef struct _GtkActionGroupClass   GtkActionGroupClass;
-typedef struct _GtkActionEntry        GtkActionEntry;
-typedef struct _GtkToggleActionEntry  GtkToggleActionEntry;
-typedef struct _GtkRadioActionEntry   GtkRadioActionEntry;
+typedef struct _BtkActionGroup        BtkActionGroup;
+typedef struct _BtkActionGroupPrivate BtkActionGroupPrivate;
+typedef struct _BtkActionGroupClass   BtkActionGroupClass;
+typedef struct _BtkActionEntry        BtkActionEntry;
+typedef struct _BtkToggleActionEntry  BtkToggleActionEntry;
+typedef struct _BtkRadioActionEntry   BtkRadioActionEntry;
 
-struct _GtkActionGroup
+struct _BtkActionGroup
 {
   GObject parent;
 
   /*< private >*/
 
-  GtkActionGroupPrivate *GSEAL (private_data);
+  BtkActionGroupPrivate *GSEAL (private_data);
 };
 
-struct _GtkActionGroupClass
+struct _BtkActionGroupClass
 {
   GObjectClass parent_class;
 
-  GtkAction *(* get_action) (GtkActionGroup *action_group,
+  BtkAction *(* get_action) (BtkActionGroup *action_group,
                              const gchar    *action_name);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-struct _GtkActionEntry 
+struct _BtkActionEntry 
 {
   const gchar     *name;
   const gchar     *stock_id;
@@ -87,7 +87,7 @@ struct _GtkActionEntry
   GCallback  callback;
 };
 
-struct _GtkToggleActionEntry 
+struct _BtkToggleActionEntry 
 {
   const gchar     *name;
   const gchar     *stock_id;
@@ -98,7 +98,7 @@ struct _GtkToggleActionEntry
   gboolean   is_active;
 };
 
-struct _GtkRadioActionEntry 
+struct _BtkRadioActionEntry 
 {
   const gchar *name;
   const gchar *stock_id;
@@ -108,77 +108,77 @@ struct _GtkRadioActionEntry
   gint   value; 
 };
 
-GType           gtk_action_group_get_type                (void) G_GNUC_CONST;
-GtkActionGroup *gtk_action_group_new                     (const gchar                *name);
-const gchar *gtk_action_group_get_name          (GtkActionGroup             *action_group);
-gboolean        gtk_action_group_get_sensitive           (GtkActionGroup             *action_group);
-void            gtk_action_group_set_sensitive           (GtkActionGroup             *action_group,
+GType           btk_action_group_get_type                (void) G_GNUC_CONST;
+BtkActionGroup *btk_action_group_new                     (const gchar                *name);
+const gchar *btk_action_group_get_name          (BtkActionGroup             *action_group);
+gboolean        btk_action_group_get_sensitive           (BtkActionGroup             *action_group);
+void            btk_action_group_set_sensitive           (BtkActionGroup             *action_group,
 							  gboolean                    sensitive);
-gboolean        gtk_action_group_get_visible             (GtkActionGroup             *action_group);
-void            gtk_action_group_set_visible             (GtkActionGroup             *action_group,
+gboolean        btk_action_group_get_visible             (BtkActionGroup             *action_group);
+void            btk_action_group_set_visible             (BtkActionGroup             *action_group,
 							  gboolean                    visible);
-GtkAction      *gtk_action_group_get_action              (GtkActionGroup             *action_group,
+BtkAction      *btk_action_group_get_action              (BtkActionGroup             *action_group,
 							  const gchar                *action_name);
-GList          *gtk_action_group_list_actions            (GtkActionGroup             *action_group);
-void            gtk_action_group_add_action              (GtkActionGroup             *action_group,
-							  GtkAction                  *action);
-void            gtk_action_group_add_action_with_accel   (GtkActionGroup             *action_group,
-							  GtkAction                  *action,
+GList          *btk_action_group_list_actions            (BtkActionGroup             *action_group);
+void            btk_action_group_add_action              (BtkActionGroup             *action_group,
+							  BtkAction                  *action);
+void            btk_action_group_add_action_with_accel   (BtkActionGroup             *action_group,
+							  BtkAction                  *action,
 							  const gchar                *accelerator);
-void            gtk_action_group_remove_action           (GtkActionGroup             *action_group,
-							  GtkAction                  *action);
-void            gtk_action_group_add_actions             (GtkActionGroup             *action_group,
-							  const GtkActionEntry       *entries,
+void            btk_action_group_remove_action           (BtkActionGroup             *action_group,
+							  BtkAction                  *action);
+void            btk_action_group_add_actions             (BtkActionGroup             *action_group,
+							  const BtkActionEntry       *entries,
 							  guint                       n_entries,
 							  gpointer                    user_data);
-void            gtk_action_group_add_toggle_actions      (GtkActionGroup             *action_group,
-							  const GtkToggleActionEntry *entries,
+void            btk_action_group_add_toggle_actions      (BtkActionGroup             *action_group,
+							  const BtkToggleActionEntry *entries,
 							  guint                       n_entries,
 							  gpointer                    user_data);
-void            gtk_action_group_add_radio_actions       (GtkActionGroup             *action_group,
-							  const GtkRadioActionEntry  *entries,
+void            btk_action_group_add_radio_actions       (BtkActionGroup             *action_group,
+							  const BtkRadioActionEntry  *entries,
 							  guint                       n_entries,
 							  gint                        value,
 							  GCallback                   on_change,
 							  gpointer                    user_data);
-void            gtk_action_group_add_actions_full        (GtkActionGroup             *action_group,
-							  const GtkActionEntry       *entries,
+void            btk_action_group_add_actions_full        (BtkActionGroup             *action_group,
+							  const BtkActionEntry       *entries,
 							  guint                       n_entries,
 							  gpointer                    user_data,
 							  GDestroyNotify              destroy);
-void            gtk_action_group_add_toggle_actions_full (GtkActionGroup             *action_group,
-							  const GtkToggleActionEntry *entries,
+void            btk_action_group_add_toggle_actions_full (BtkActionGroup             *action_group,
+							  const BtkToggleActionEntry *entries,
 							  guint                       n_entries,
 							  gpointer                    user_data,
 							  GDestroyNotify              destroy);
-void            gtk_action_group_add_radio_actions_full  (GtkActionGroup             *action_group,
-							  const GtkRadioActionEntry  *entries,
+void            btk_action_group_add_radio_actions_full  (BtkActionGroup             *action_group,
+							  const BtkRadioActionEntry  *entries,
 							  guint                       n_entries,
 							  gint                        value,
 							  GCallback                   on_change,
 							  gpointer                    user_data,
 							  GDestroyNotify              destroy);
-void            gtk_action_group_set_translate_func      (GtkActionGroup             *action_group,
-							  GtkTranslateFunc            func,
+void            btk_action_group_set_translate_func      (BtkActionGroup             *action_group,
+							  BtkTranslateFunc            func,
 							  gpointer                    data,
 							  GDestroyNotify              notify);
-void            gtk_action_group_set_translation_domain  (GtkActionGroup             *action_group,
+void            btk_action_group_set_translation_domain  (BtkActionGroup             *action_group,
 							  const gchar                *domain);
-const gchar *gtk_action_group_translate_string  (GtkActionGroup             *action_group,
+const gchar *btk_action_group_translate_string  (BtkActionGroup             *action_group,
   	                                                  const gchar                *string);
 
-/* Protected for use by GtkAction */
-void _gtk_action_group_emit_connect_proxy    (GtkActionGroup *action_group,
-                                              GtkAction      *action,
-                                              GtkWidget      *proxy);
-void _gtk_action_group_emit_disconnect_proxy (GtkActionGroup *action_group,
-                                              GtkAction      *action,
-                                              GtkWidget      *proxy);
-void _gtk_action_group_emit_pre_activate     (GtkActionGroup *action_group,
-                                              GtkAction      *action);
-void _gtk_action_group_emit_post_activate    (GtkActionGroup *action_group,
-                                              GtkAction      *action);
+/* Protected for use by BtkAction */
+void _btk_action_group_emit_connect_proxy    (BtkActionGroup *action_group,
+                                              BtkAction      *action,
+                                              BtkWidget      *proxy);
+void _btk_action_group_emit_disconnect_proxy (BtkActionGroup *action_group,
+                                              BtkAction      *action,
+                                              BtkWidget      *proxy);
+void _btk_action_group_emit_pre_activate     (BtkActionGroup *action_group,
+                                              BtkAction      *action);
+void _btk_action_group_emit_post_activate    (BtkActionGroup *action_group,
+                                              BtkAction      *action);
 
 G_END_DECLS
 
-#endif  /* __GTK_ACTION_GROUP_H__ */
+#endif  /* __BTK_ACTION_GROUP_H__ */

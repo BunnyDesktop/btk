@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechoosersettings.c: Internal settings for the GtkFileChooser widget
+/* BTK - The GIMP Toolkit
+ * btkfilechoosersettings.c: Internal settings for the BtkFileChooser widget
  * Copyright (C) 2006, Novell, Inc.
  *
  * Authors: Federico Mena-Quintero <federico@novell.com>
@@ -32,10 +32,10 @@
 #include "config.h"
 #include <errno.h>
 #include <string.h>
-#include <glib.h>
-#include <glib/gi18n-lib.h>
-#include "gtkfilechoosersettings.h"
-#include "gtkalias.h"
+#include <bunnylib.h>
+#include <bunnylib/gi18n-lib.h>
+#include "btkfilechoosersettings.h"
+#include "btkalias.h"
 
 #define SETTINGS_GROUP		"Filechooser Settings"
 #define LOCATION_MODE_KEY	"LocationMode"
@@ -66,13 +66,13 @@
 static char *
 get_config_dirname (void)
 {
-  return g_build_filename (g_get_user_config_dir (), "gtk-2.0", NULL);
+  return g_build_filename (g_get_user_config_dir (), "btk-2.0", NULL);
 }
 
 static char *
 get_config_filename (void)
 {
-  return g_build_filename (g_get_user_config_dir (), "gtk-2.0", "gtkfilechooser.ini", NULL);
+  return g_build_filename (g_get_user_config_dir (), "btk-2.0", "btkfilechooser.ini", NULL);
 }
 
 static void
@@ -110,7 +110,7 @@ get_int_key (GKeyFile *key_file, const char *group, const char *key, int *out_va
 }
 
 static void
-ensure_settings_read (GtkFileChooserSettings *settings)
+ensure_settings_read (BtkFileChooserSettings *settings)
 {
   GError *error;
   GKeyFile *key_file;
@@ -210,9 +210,9 @@ ensure_settings_read (GtkFileChooserSettings *settings)
   if (sort_order)
     {
       if (EQ (SORT_ASCENDING_STRING, sort_order))
-	settings->sort_order = GTK_SORT_ASCENDING;
+	settings->sort_order = BTK_SORT_ASCENDING;
       else if (EQ (SORT_DESCENDING_STRING, sort_order))
-	settings->sort_order = GTK_SORT_DESCENDING;
+	settings->sort_order = BTK_SORT_DESCENDING;
       else
 	g_warning ("Unknown sort column order '%s' encountered in filechooser settings",
 		   sort_order);
@@ -245,18 +245,18 @@ ensure_settings_read (GtkFileChooserSettings *settings)
   settings->settings_read = TRUE;
 }
 
-G_DEFINE_TYPE (GtkFileChooserSettings, _gtk_file_chooser_settings, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkFileChooserSettings, _btk_file_chooser_settings, G_TYPE_OBJECT)
 
 static void
-_gtk_file_chooser_settings_class_init (GtkFileChooserSettingsClass *class)
+_btk_file_chooser_settings_class_init (BtkFileChooserSettingsClass *class)
 {
 }
 
 static void
-_gtk_file_chooser_settings_init (GtkFileChooserSettings *settings)
+_btk_file_chooser_settings_init (BtkFileChooserSettings *settings)
 {
   settings->location_mode = LOCATION_MODE_PATH_BAR;
-  settings->sort_order = GTK_SORT_ASCENDING;
+  settings->sort_order = BTK_SORT_ASCENDING;
   settings->sort_column = FILE_LIST_COL_NAME;
   settings->show_hidden = FALSE;
   settings->show_size_column = TRUE;
@@ -267,56 +267,56 @@ _gtk_file_chooser_settings_init (GtkFileChooserSettings *settings)
   settings->startup_mode = STARTUP_MODE_RECENT;
 }
 
-GtkFileChooserSettings *
-_gtk_file_chooser_settings_new (void)
+BtkFileChooserSettings *
+_btk_file_chooser_settings_new (void)
 {
-  return g_object_new (GTK_FILE_CHOOSER_SETTINGS_TYPE, NULL);
+  return g_object_new (BTK_FILE_CHOOSER_SETTINGS_TYPE, NULL);
 }
 
 LocationMode
-_gtk_file_chooser_settings_get_location_mode (GtkFileChooserSettings *settings)
+_btk_file_chooser_settings_get_location_mode (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
   return settings->location_mode;
 }
 
 void
-_gtk_file_chooser_settings_set_location_mode (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_set_location_mode (BtkFileChooserSettings *settings,
 					      LocationMode location_mode)
 {
   settings->location_mode = location_mode;
 }
 
 gboolean
-_gtk_file_chooser_settings_get_show_hidden (GtkFileChooserSettings *settings)
+_btk_file_chooser_settings_get_show_hidden (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
   return settings->show_hidden;
 }
 
 void
-_gtk_file_chooser_settings_set_show_hidden (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_set_show_hidden (BtkFileChooserSettings *settings,
 					    gboolean show_hidden)
 {
   settings->show_hidden = show_hidden != FALSE;
 }
 
 void
-_gtk_file_chooser_settings_set_show_size_column (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_set_show_size_column (BtkFileChooserSettings *settings,
 					         gboolean show_column)
 {
   settings->show_size_column = show_column != FALSE;
 }
 
 gboolean
-_gtk_file_chooser_settings_get_show_size_column (GtkFileChooserSettings *settings)
+_btk_file_chooser_settings_get_show_size_column (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
   return settings->show_size_column;
 }
 
 void
-_gtk_file_chooser_settings_get_geometry (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_get_geometry (BtkFileChooserSettings *settings,
 					 int                    *out_x,
 					 int                    *out_y,
 					 int                    *out_width,
@@ -331,7 +331,7 @@ _gtk_file_chooser_settings_get_geometry (GtkFileChooserSettings *settings,
 }
 
 void
-_gtk_file_chooser_settings_set_geometry (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_set_geometry (BtkFileChooserSettings *settings,
 					 int                     x,
 					 int                     y,
 					 int                     width,
@@ -344,49 +344,49 @@ _gtk_file_chooser_settings_set_geometry (GtkFileChooserSettings *settings,
 }
 
 gint
-_gtk_file_chooser_settings_get_sort_column (GtkFileChooserSettings *settings)
+_btk_file_chooser_settings_get_sort_column (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
   return settings->sort_column;
 }
 
 void
-_gtk_file_chooser_settings_set_sort_column (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_set_sort_column (BtkFileChooserSettings *settings,
 					    gint sort_column)
 {
   settings->sort_column = sort_column;
 }
 
-GtkSortType
-_gtk_file_chooser_settings_get_sort_order (GtkFileChooserSettings *settings)
+BtkSortType
+_btk_file_chooser_settings_get_sort_order (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
   return settings->sort_order;
 }
 
 void
-_gtk_file_chooser_settings_set_sort_order (GtkFileChooserSettings *settings,
-					   GtkSortType sort_order)
+_btk_file_chooser_settings_set_sort_order (BtkFileChooserSettings *settings,
+					   BtkSortType sort_order)
 {
   settings->sort_order = sort_order;
 }
 
 void
-_gtk_file_chooser_settings_set_startup_mode (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_set_startup_mode (BtkFileChooserSettings *settings,
 					     StartupMode             startup_mode)
 {
   settings->startup_mode = startup_mode;
 }
 
 StartupMode
-_gtk_file_chooser_settings_get_startup_mode (GtkFileChooserSettings *settings)
+_btk_file_chooser_settings_get_startup_mode (BtkFileChooserSettings *settings)
 {
   ensure_settings_read (settings);
   return settings->startup_mode;
 }
 
 gboolean
-_gtk_file_chooser_settings_save (GtkFileChooserSettings *settings,
+_btk_file_chooser_settings_save (BtkFileChooserSettings *settings,
 				 GError                **error)
 {
   const gchar *location_mode_str;
@@ -438,11 +438,11 @@ _gtk_file_chooser_settings_save (GtkFileChooserSettings *settings,
 
   switch (settings->sort_order)
     {
-    case GTK_SORT_ASCENDING:
+    case BTK_SORT_ASCENDING:
       sort_order = SORT_ASCENDING_STRING;
       break;
 
-    case GTK_SORT_DESCENDING:
+    case BTK_SORT_DESCENDING:
       sort_order = SORT_DESCENDING_STRING;
       break;
 

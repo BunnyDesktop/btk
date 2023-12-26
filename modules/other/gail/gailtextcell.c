@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The GNOME Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,85 +19,85 @@
 
 #include "config.h"
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailtextcell.h"
-#include "gailcontainercell.h"
-#include "gailcellparent.h"
-#include <libgail-util/gailmisc.h>
-#include "gail-private-macros.h"
+#include <btk/btk.h>
+#include "bailtextcell.h"
+#include "bailcontainercell.h"
+#include "bailcellparent.h"
+#include <libbail-util/bailmisc.h>
+#include "bail-private-macros.h"
 
-static void      gail_text_cell_class_init		(GailTextCellClass *klass);
-static void      gail_text_cell_init			(GailTextCell	*text_cell);
-static void      gail_text_cell_finalize		(GObject	*object);
+static void      bail_text_cell_class_init		(BailTextCellClass *klass);
+static void      bail_text_cell_init			(BailTextCell	*text_cell);
+static void      bail_text_cell_finalize		(GObject	*object);
 
-static const gchar* gail_text_cell_get_name    (AtkObject      *atk_obj);
+static const gchar* bail_text_cell_get_name    (BatkObject      *batk_obj);
 
-static void      atk_text_interface_init		(AtkTextIface	*iface);
+static void      batk_text_interface_init		(BatkTextIface	*iface);
 
-/* atktext.h */
+/* batktext.h */
 
-static gchar*    gail_text_cell_get_text		(AtkText	*text,
+static gchar*    bail_text_cell_get_text		(BatkText	*text,
 							gint		start_pos,
 							gint		end_pos);
-static gunichar gail_text_cell_get_character_at_offset	(AtkText	*text,
+static gunichar bail_text_cell_get_character_at_offset	(BatkText	*text,
 							 gint		offset);
-static gchar*	gail_text_cell_get_text_before_offset	(AtkText	*text,
+static gchar*	bail_text_cell_get_text_before_offset	(BatkText	*text,
 							 gint		offset,
-							 AtkTextBoundary boundary_type,
+							 BatkTextBoundary boundary_type,
 							 gint		*start_offset,
 							 gint		*end_offset);
-static gchar*	gail_text_cell_get_text_at_offset	(AtkText	*text,
+static gchar*	bail_text_cell_get_text_at_offset	(BatkText	*text,
 							 gint		offset,
-							 AtkTextBoundary boundary_type,
+							 BatkTextBoundary boundary_type,
 							 gint		*start_offset,
 							 gint		*end_offset);
-static gchar*	gail_text_cell_get_text_after_offset	(AtkText	*text,
+static gchar*	bail_text_cell_get_text_after_offset	(BatkText	*text,
 							 gint		offset,
-							 AtkTextBoundary boundary_type,
+							 BatkTextBoundary boundary_type,
 							 gint		*start_offset,
 							 gint		*end_offset);
-static gint      gail_text_cell_get_character_count	(AtkText	*text);
-static gint      gail_text_cell_get_caret_offset	(AtkText	*text);
-static gboolean  gail_text_cell_set_caret_offset	(AtkText	*text,
+static gint      bail_text_cell_get_character_count	(BatkText	*text);
+static gint      bail_text_cell_get_caret_offset	(BatkText	*text);
+static gboolean  bail_text_cell_set_caret_offset	(BatkText	*text,
 							 gint		offset);
-static void      gail_text_cell_get_character_extents	(AtkText	*text,
+static void      bail_text_cell_get_character_extents	(BatkText	*text,
 							 gint		offset,
 							 gint		*x,
 							 gint		*y,
 							 gint		*width,
 							 gint		*height,
-							 AtkCoordType	coords);
-static gint      gail_text_cell_get_offset_at_point	(AtkText	*text,
+							 BatkCoordType	coords);
+static gint      bail_text_cell_get_offset_at_point	(BatkText	*text,
 							 gint		x,
 							 gint		y,
-							 AtkCoordType	coords);
-static AtkAttributeSet* gail_text_cell_get_run_attributes 
-                                                        (AtkText	*text,
+							 BatkCoordType	coords);
+static BatkAttributeSet* bail_text_cell_get_run_attributes 
+                                                        (BatkText	*text,
 							 gint		offset,
 							 gint		*start_offset,      
 							 gint		*end_offset); 
-static AtkAttributeSet* gail_text_cell_get_default_attributes 
-                                                        (AtkText        *text);
+static BatkAttributeSet* bail_text_cell_get_default_attributes 
+                                                        (BatkText        *text);
 
-static PangoLayout*     create_pango_layout             (GtkCellRendererText *gtk_renderer,
-                                                         GtkWidget           *widget);
-static void             add_attr                        (PangoAttrList  *attr_list,
-                                                         PangoAttribute *attr);
+static BangoLayout*     create_bango_layout             (BtkCellRendererText *btk_renderer,
+                                                         BtkWidget           *widget);
+static void             add_attr                        (BangoAttrList  *attr_list,
+                                                         BangoAttribute *attr);
 
 /* Misc */
 
-static gboolean gail_text_cell_update_cache		(GailRendererCell *cell,
+static gboolean bail_text_cell_update_cache		(BailRendererCell *cell,
 							 gboolean	emit_change_signal);
 
-gchar *gail_text_cell_property_list[] = {
+gchar *bail_text_cell_property_list[] = {
   /* Set font_desc first since it resets other values if it is NULL */
   "font_desc",
 
   "attributes",
-  "background_gdk",
+  "background_bdk",
   "editable",
   "family",
-  "foreground_gdk",
+  "foreground_bdk",
   "rise",
   "scale",
   "size",
@@ -127,88 +127,88 @@ gchar *gail_text_cell_property_list[] = {
   NULL
 };
 
-G_DEFINE_TYPE_WITH_CODE (GailTextCell, gail_text_cell, GAIL_TYPE_RENDERER_CELL,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT, atk_text_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailTextCell, bail_text_cell, BAIL_TYPE_RENDERER_CELL,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_TEXT, batk_text_interface_init))
 
 static void 
-gail_text_cell_class_init (GailTextCellClass *klass)
+bail_text_cell_class_init (BailTextCellClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *atk_object_class = ATK_OBJECT_CLASS (klass);
-  GailRendererCellClass *renderer_cell_class = GAIL_RENDERER_CELL_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass *batk_object_class = BATK_OBJECT_CLASS (klass);
+  BailRendererCellClass *renderer_cell_class = BAIL_RENDERER_CELL_CLASS (klass);
 
-  renderer_cell_class->update_cache = gail_text_cell_update_cache;
-  renderer_cell_class->property_list = gail_text_cell_property_list;
+  renderer_cell_class->update_cache = bail_text_cell_update_cache;
+  renderer_cell_class->property_list = bail_text_cell_property_list;
 
-  atk_object_class->get_name = gail_text_cell_get_name;
+  batk_object_class->get_name = bail_text_cell_get_name;
 
-  gobject_class->finalize = gail_text_cell_finalize;
+  bobject_class->finalize = bail_text_cell_finalize;
 }
 
-/* atktext.h */
+/* batktext.h */
 
 static void
-gail_text_cell_init (GailTextCell *text_cell)
+bail_text_cell_init (BailTextCell *text_cell)
 {
   text_cell->cell_text = NULL;
   text_cell->caret_pos = 0;
   text_cell->cell_length = 0;
-  text_cell->textutil = gail_text_util_new ();
-  atk_state_set_add_state (GAIL_CELL (text_cell)->state_set,
-                           ATK_STATE_SINGLE_LINE);
+  text_cell->textutil = bail_text_util_new ();
+  batk_state_set_add_state (BAIL_CELL (text_cell)->state_set,
+                           BATK_STATE_SINGLE_LINE);
 }
 
-AtkObject* 
-gail_text_cell_new (void)
+BatkObject* 
+bail_text_cell_new (void)
 {
   GObject *object;
-  AtkObject *atk_object;
-  GailRendererCell *cell;
+  BatkObject *batk_object;
+  BailRendererCell *cell;
 
-  object = g_object_new (GAIL_TYPE_TEXT_CELL, NULL);
+  object = g_object_new (BAIL_TYPE_TEXT_CELL, NULL);
 
   g_return_val_if_fail (object != NULL, NULL);
 
-  atk_object = ATK_OBJECT (object);
-  atk_object->role = ATK_ROLE_TABLE_CELL;
+  batk_object = BATK_OBJECT (object);
+  batk_object->role = BATK_ROLE_TABLE_CELL;
 
-  cell = GAIL_RENDERER_CELL(object);
+  cell = BAIL_RENDERER_CELL(object);
 
-  cell->renderer = gtk_cell_renderer_text_new ();
+  cell->renderer = btk_cell_renderer_text_new ();
   g_object_ref_sink (cell->renderer);
-  return atk_object;
+  return batk_object;
 }
 
 static void
-gail_text_cell_finalize (GObject            *object)
+bail_text_cell_finalize (GObject            *object)
 {
-  GailTextCell *text_cell = GAIL_TEXT_CELL (object);
+  BailTextCell *text_cell = BAIL_TEXT_CELL (object);
 
   g_object_unref (text_cell->textutil);
   g_free (text_cell->cell_text);
 
-  G_OBJECT_CLASS (gail_text_cell_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_text_cell_parent_class)->finalize (object);
 }
 
 static const gchar*
-gail_text_cell_get_name (AtkObject *atk_obj)
+bail_text_cell_get_name (BatkObject *batk_obj)
 {
-  if (atk_obj->name)
-    return atk_obj->name;
+  if (batk_obj->name)
+    return batk_obj->name;
   else
     {
-      GailTextCell *text_cell = GAIL_TEXT_CELL (atk_obj);
+      BailTextCell *text_cell = BAIL_TEXT_CELL (batk_obj);
 
       return text_cell->cell_text;
     }
 }
 
 static gboolean
-gail_text_cell_update_cache (GailRendererCell *cell,
+bail_text_cell_update_cache (BailRendererCell *cell,
                              gboolean         emit_change_signal)
 {
-  GailTextCell *text_cell = GAIL_TEXT_CELL (cell);
-  AtkObject *obj = ATK_OBJECT (cell);
+  BailTextCell *text_cell = BAIL_TEXT_CELL (cell);
+  BatkObject *obj = BATK_OBJECT (cell);
   gboolean rv = FALSE;
   gint temp_length;
   gchar *new_cache;
@@ -256,7 +256,7 @@ gail_text_cell_update_cache (GailRendererCell *cell,
     }
 
   g_free (new_cache);
-  gail_text_util_text_setup (text_cell->textutil, text_cell->cell_text);
+  bail_text_util_text_setup (text_cell->textutil, text_cell->cell_text);
   
   if (rv)
     {
@@ -273,89 +273,89 @@ gail_text_cell_update_cache (GailRendererCell *cell,
 }
 
 static void
-atk_text_interface_init (AtkTextIface *iface)
+batk_text_interface_init (BatkTextIface *iface)
 {
-  iface->get_text = gail_text_cell_get_text;
-  iface->get_character_at_offset = gail_text_cell_get_character_at_offset;
-  iface->get_text_before_offset = gail_text_cell_get_text_before_offset;
-  iface->get_text_at_offset = gail_text_cell_get_text_at_offset;
-  iface->get_text_after_offset = gail_text_cell_get_text_after_offset;
-  iface->get_character_count = gail_text_cell_get_character_count;
-  iface->get_caret_offset = gail_text_cell_get_caret_offset;
-  iface->set_caret_offset = gail_text_cell_set_caret_offset;
-  iface->get_run_attributes = gail_text_cell_get_run_attributes;
-  iface->get_default_attributes = gail_text_cell_get_default_attributes;
-  iface->get_character_extents = gail_text_cell_get_character_extents;
-  iface->get_offset_at_point = gail_text_cell_get_offset_at_point;
+  iface->get_text = bail_text_cell_get_text;
+  iface->get_character_at_offset = bail_text_cell_get_character_at_offset;
+  iface->get_text_before_offset = bail_text_cell_get_text_before_offset;
+  iface->get_text_at_offset = bail_text_cell_get_text_at_offset;
+  iface->get_text_after_offset = bail_text_cell_get_text_after_offset;
+  iface->get_character_count = bail_text_cell_get_character_count;
+  iface->get_caret_offset = bail_text_cell_get_caret_offset;
+  iface->set_caret_offset = bail_text_cell_set_caret_offset;
+  iface->get_run_attributes = bail_text_cell_get_run_attributes;
+  iface->get_default_attributes = bail_text_cell_get_default_attributes;
+  iface->get_character_extents = bail_text_cell_get_character_extents;
+  iface->get_offset_at_point = bail_text_cell_get_offset_at_point;
 }
 
 static gchar* 
-gail_text_cell_get_text (AtkText *text, 
+bail_text_cell_get_text (BatkText *text, 
                          gint    start_pos,
                          gint    end_pos)
 {
-  if (GAIL_TEXT_CELL (text)->cell_text)
-    return gail_text_util_get_substring (GAIL_TEXT_CELL (text)->textutil,
+  if (BAIL_TEXT_CELL (text)->cell_text)
+    return bail_text_util_get_substring (BAIL_TEXT_CELL (text)->textutil,
               start_pos, end_pos);
   else
     return g_strdup ("");
 }
 
 static gchar* 
-gail_text_cell_get_text_before_offset (AtkText         *text,
+bail_text_cell_get_text_before_offset (BatkText         *text,
                                        gint            offset,
-                                       AtkTextBoundary boundary_type,
+                                       BatkTextBoundary boundary_type,
                                        gint            *start_offset,
                                        gint            *end_offset)
 {
-  return gail_text_util_get_text (GAIL_TEXT_CELL (text)->textutil,
-        NULL, GAIL_BEFORE_OFFSET, boundary_type, offset, start_offset,
+  return bail_text_util_get_text (BAIL_TEXT_CELL (text)->textutil,
+        NULL, BAIL_BEFORE_OFFSET, boundary_type, offset, start_offset,
         end_offset);
 }
 
 static gchar* 
-gail_text_cell_get_text_at_offset (AtkText         *text,
+bail_text_cell_get_text_at_offset (BatkText         *text,
                                    gint            offset,
-                                   AtkTextBoundary boundary_type,
+                                   BatkTextBoundary boundary_type,
                                    gint            *start_offset,
                                    gint            *end_offset)
 {
-  return gail_text_util_get_text (GAIL_TEXT_CELL (text)->textutil,
-        NULL, GAIL_AT_OFFSET, boundary_type, offset, start_offset, end_offset);
+  return bail_text_util_get_text (BAIL_TEXT_CELL (text)->textutil,
+        NULL, BAIL_AT_OFFSET, boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar* 
-gail_text_cell_get_text_after_offset (AtkText         *text,
+bail_text_cell_get_text_after_offset (BatkText         *text,
                                       gint            offset,
-                                      AtkTextBoundary boundary_type,
+                                      BatkTextBoundary boundary_type,
                                       gint            *start_offset,
                                       gint            *end_offset)
 {
-  return gail_text_util_get_text (GAIL_TEXT_CELL (text)->textutil,
-        NULL, GAIL_AFTER_OFFSET, boundary_type, offset, start_offset,
+  return bail_text_util_get_text (BAIL_TEXT_CELL (text)->textutil,
+        NULL, BAIL_AFTER_OFFSET, boundary_type, offset, start_offset,
         end_offset);
 }
 
 static gint 
-gail_text_cell_get_character_count (AtkText *text)
+bail_text_cell_get_character_count (BatkText *text)
 {
-  if (GAIL_TEXT_CELL (text)->cell_text != NULL)
-    return GAIL_TEXT_CELL (text)->cell_length;
+  if (BAIL_TEXT_CELL (text)->cell_text != NULL)
+    return BAIL_TEXT_CELL (text)->cell_length;
   else
     return 0;
 }
 
 static gint 
-gail_text_cell_get_caret_offset (AtkText *text)
+bail_text_cell_get_caret_offset (BatkText *text)
 {
-  return GAIL_TEXT_CELL (text)->caret_pos;
+  return BAIL_TEXT_CELL (text)->caret_pos;
 }
 
 static gboolean 
-gail_text_cell_set_caret_offset (AtkText *text,
+bail_text_cell_set_caret_offset (BatkText *text,
                                  gint    offset)
 {
-  GailTextCell *text_cell = GAIL_TEXT_CELL (text);
+  BailTextCell *text_cell = BAIL_TEXT_CELL (text);
 
   if (text_cell->cell_text == NULL)
     return FALSE;
@@ -378,31 +378,31 @@ gail_text_cell_set_caret_offset (AtkText *text,
     }
 }
 
-static AtkAttributeSet*
-gail_text_cell_get_run_attributes (AtkText *text,
+static BatkAttributeSet*
+bail_text_cell_get_run_attributes (BatkText *text,
                                   gint     offset,
                                   gint     *start_offset,
                                   gint     *end_offset) 
 {
-  GailRendererCell *gail_renderer; 
-  GtkCellRendererText *gtk_renderer;
-  AtkAttributeSet *attrib_set = NULL;
-  PangoLayout *layout;
-  AtkObject *parent;
-  GtkWidget *widget;
+  BailRendererCell *bail_renderer; 
+  BtkCellRendererText *btk_renderer;
+  BatkAttributeSet *attrib_set = NULL;
+  BangoLayout *layout;
+  BatkObject *parent;
+  BtkWidget *widget;
 
-  gail_renderer = GAIL_RENDERER_CELL (text);
-  gtk_renderer = GTK_CELL_RENDERER_TEXT (gail_renderer->renderer);
+  bail_renderer = BAIL_RENDERER_CELL (text);
+  btk_renderer = BTK_CELL_RENDERER_TEXT (bail_renderer->renderer);
 
-  parent = atk_object_get_parent (ATK_OBJECT (text));
-  if (GAIL_IS_CONTAINER_CELL (parent))
-    parent = atk_object_get_parent (parent);
-  g_return_val_if_fail (GAIL_IS_CELL_PARENT (parent), NULL);
-  widget = GTK_ACCESSIBLE (parent)->widget;
-  layout = create_pango_layout (gtk_renderer, widget),
-  attrib_set = gail_misc_layout_get_run_attributes (attrib_set, 
+  parent = batk_object_get_parent (BATK_OBJECT (text));
+  if (BAIL_IS_CONTAINER_CELL (parent))
+    parent = batk_object_get_parent (parent);
+  g_return_val_if_fail (BAIL_IS_CELL_PARENT (parent), NULL);
+  widget = BTK_ACCESSIBLE (parent)->widget;
+  layout = create_bango_layout (btk_renderer, widget),
+  attrib_set = bail_misc_layout_get_run_attributes (attrib_set, 
                                                     layout,
-                                                    gtk_renderer->text,
+                                                    btk_renderer->text,
                                                     offset,
                                                     start_offset,
                                                     end_offset);
@@ -411,27 +411,27 @@ gail_text_cell_get_run_attributes (AtkText *text,
   return attrib_set;
 }
 
-static AtkAttributeSet*
-gail_text_cell_get_default_attributes (AtkText	*text)
+static BatkAttributeSet*
+bail_text_cell_get_default_attributes (BatkText	*text)
 {
-  GailRendererCell *gail_renderer; 
-  GtkCellRendererText *gtk_renderer;
-  AtkAttributeSet *attrib_set = NULL;
-  PangoLayout *layout;
-  AtkObject *parent;
-  GtkWidget *widget;
+  BailRendererCell *bail_renderer; 
+  BtkCellRendererText *btk_renderer;
+  BatkAttributeSet *attrib_set = NULL;
+  BangoLayout *layout;
+  BatkObject *parent;
+  BtkWidget *widget;
 
-  gail_renderer = GAIL_RENDERER_CELL (text);
-  gtk_renderer = GTK_CELL_RENDERER_TEXT (gail_renderer->renderer);
+  bail_renderer = BAIL_RENDERER_CELL (text);
+  btk_renderer = BTK_CELL_RENDERER_TEXT (bail_renderer->renderer);
 
-  parent = atk_object_get_parent (ATK_OBJECT (text));
-  if (GAIL_IS_CONTAINER_CELL (parent))
-    parent = atk_object_get_parent (parent);
-  g_return_val_if_fail (GAIL_IS_CELL_PARENT (parent), NULL);
-  widget = GTK_ACCESSIBLE (parent)->widget;
-  layout = create_pango_layout (gtk_renderer, widget),
+  parent = batk_object_get_parent (BATK_OBJECT (text));
+  if (BAIL_IS_CONTAINER_CELL (parent))
+    parent = batk_object_get_parent (parent);
+  g_return_val_if_fail (BAIL_IS_CELL_PARENT (parent), NULL);
+  widget = BTK_ACCESSIBLE (parent)->widget;
+  layout = create_bango_layout (btk_renderer, widget),
 
-  attrib_set = gail_misc_get_default_attributes (attrib_set, 
+  attrib_set = bail_misc_get_default_attributes (attrib_set, 
                                                  layout,
                                                  widget);
   g_object_unref (G_OBJECT (layout));
@@ -439,212 +439,212 @@ gail_text_cell_get_default_attributes (AtkText	*text)
 }
 
 /* 
- * This function is used by gail_text_cell_get_offset_at_point()
- * and gail_text_cell_get_character_extents(). There is no 
- * cached PangoLayout for gailtextcell so we must create a temporary
+ * This function is used by bail_text_cell_get_offset_at_point()
+ * and bail_text_cell_get_character_extents(). There is no 
+ * cached BangoLayout for bailtextcell so we must create a temporary
  * one using this function.
  */ 
-static PangoLayout*
-create_pango_layout(GtkCellRendererText *gtk_renderer,
-                    GtkWidget           *widget)
+static BangoLayout*
+create_bango_layout(BtkCellRendererText *btk_renderer,
+                    BtkWidget           *widget)
 {
-  PangoAttrList *attr_list;
-  PangoLayout *layout;
-  PangoUnderline uline;
-  PangoFontMask mask;
+  BangoAttrList *attr_list;
+  BangoLayout *layout;
+  BangoUnderline uline;
+  BangoFontMask mask;
 
-  layout = gtk_widget_create_pango_layout (widget, gtk_renderer->text);
+  layout = btk_widget_create_bango_layout (widget, btk_renderer->text);
 
-  if (gtk_renderer->extra_attrs)
-    attr_list = pango_attr_list_copy (gtk_renderer->extra_attrs);
+  if (btk_renderer->extra_attrs)
+    attr_list = bango_attr_list_copy (btk_renderer->extra_attrs);
   else
-    attr_list = pango_attr_list_new ();
+    attr_list = bango_attr_list_new ();
 
-  if (gtk_renderer->foreground_set)
+  if (btk_renderer->foreground_set)
     {
-      PangoColor color;
-      color = gtk_renderer->foreground;
-      add_attr (attr_list, pango_attr_foreground_new (color.red,
+      BangoColor color;
+      color = btk_renderer->foreground;
+      add_attr (attr_list, bango_attr_foreground_new (color.red,
                                                       color.green, color.blue));
     }
 
-  if (gtk_renderer->strikethrough_set)
+  if (btk_renderer->strikethrough_set)
     add_attr (attr_list,
-              pango_attr_strikethrough_new (gtk_renderer->strikethrough));
+              bango_attr_strikethrough_new (btk_renderer->strikethrough));
 
-  mask = pango_font_description_get_set_fields (gtk_renderer->font);
+  mask = bango_font_description_get_set_fields (btk_renderer->font);
 
-  if (mask & PANGO_FONT_MASK_FAMILY)
+  if (mask & BANGO_FONT_MASK_FAMILY)
     add_attr (attr_list,
-      pango_attr_family_new (pango_font_description_get_family (gtk_renderer->font)));
+      bango_attr_family_new (bango_font_description_get_family (btk_renderer->font)));
 
-  if (mask & PANGO_FONT_MASK_STYLE)
-    add_attr (attr_list, pango_attr_style_new (pango_font_description_get_style (gtk_renderer->font)));
+  if (mask & BANGO_FONT_MASK_STYLE)
+    add_attr (attr_list, bango_attr_style_new (bango_font_description_get_style (btk_renderer->font)));
 
-  if (mask & PANGO_FONT_MASK_VARIANT)
-    add_attr (attr_list, pango_attr_variant_new (pango_font_description_get_variant (gtk_renderer->font)));
+  if (mask & BANGO_FONT_MASK_VARIANT)
+    add_attr (attr_list, bango_attr_variant_new (bango_font_description_get_variant (btk_renderer->font)));
 
-  if (mask & PANGO_FONT_MASK_WEIGHT)
-    add_attr (attr_list, pango_attr_weight_new (pango_font_description_get_weight (gtk_renderer->font)));
+  if (mask & BANGO_FONT_MASK_WEIGHT)
+    add_attr (attr_list, bango_attr_weight_new (bango_font_description_get_weight (btk_renderer->font)));
 
-  if (mask & PANGO_FONT_MASK_STRETCH)
-    add_attr (attr_list, pango_attr_stretch_new (pango_font_description_get_stretch (gtk_renderer->font)));
+  if (mask & BANGO_FONT_MASK_STRETCH)
+    add_attr (attr_list, bango_attr_stretch_new (bango_font_description_get_stretch (btk_renderer->font)));
 
-  if (mask & PANGO_FONT_MASK_SIZE)
-    add_attr (attr_list, pango_attr_size_new (pango_font_description_get_size (gtk_renderer->font)));
+  if (mask & BANGO_FONT_MASK_SIZE)
+    add_attr (attr_list, bango_attr_size_new (bango_font_description_get_size (btk_renderer->font)));
 
-  if (gtk_renderer->scale_set &&
-      gtk_renderer->font_scale != 1.0)
-    add_attr (attr_list, pango_attr_scale_new (gtk_renderer->font_scale));
+  if (btk_renderer->scale_set &&
+      btk_renderer->font_scale != 1.0)
+    add_attr (attr_list, bango_attr_scale_new (btk_renderer->font_scale));
 
-  if (gtk_renderer->underline_set)
-    uline = gtk_renderer->underline_style;
+  if (btk_renderer->underline_set)
+    uline = btk_renderer->underline_style;
   else
-    uline = PANGO_UNDERLINE_NONE;
+    uline = BANGO_UNDERLINE_NONE;
 
-  if (uline != PANGO_UNDERLINE_NONE)
+  if (uline != BANGO_UNDERLINE_NONE)
     add_attr (attr_list,
-      pango_attr_underline_new (gtk_renderer->underline_style));
+      bango_attr_underline_new (btk_renderer->underline_style));
 
-  if (gtk_renderer->rise_set)
-    add_attr (attr_list, pango_attr_rise_new (gtk_renderer->rise));
+  if (btk_renderer->rise_set)
+    add_attr (attr_list, bango_attr_rise_new (btk_renderer->rise));
 
-  pango_layout_set_attributes (layout, attr_list);
-  pango_layout_set_width (layout, -1);
-  pango_attr_list_unref (attr_list);
+  bango_layout_set_attributes (layout, attr_list);
+  bango_layout_set_width (layout, -1);
+  bango_attr_list_unref (attr_list);
 
   return layout;
 }
 
 static void 
-add_attr (PangoAttrList  *attr_list,
-         PangoAttribute *attr)
+add_attr (BangoAttrList  *attr_list,
+         BangoAttribute *attr)
 {
   attr->start_index = 0;
   attr->end_index = G_MAXINT;
-  pango_attr_list_insert (attr_list, attr);
+  bango_attr_list_insert (attr_list, attr);
 }
 
 static void      
-gail_text_cell_get_character_extents (AtkText          *text,
+bail_text_cell_get_character_extents (BatkText          *text,
                                       gint             offset,
                                       gint             *x,
                                       gint             *y,
                                       gint             *width,
                                       gint             *height,
-                                      AtkCoordType     coords)
+                                      BatkCoordType     coords)
 {
-  GailRendererCell *gail_renderer; 
-  GtkCellRendererText *gtk_renderer;
-  GdkRectangle rendered_rect;
-  GtkWidget *widget;
-  AtkObject *parent;
-  PangoRectangle char_rect;
-  PangoLayout *layout;
+  BailRendererCell *bail_renderer; 
+  BtkCellRendererText *btk_renderer;
+  BdkRectangle rendered_rect;
+  BtkWidget *widget;
+  BatkObject *parent;
+  BangoRectangle char_rect;
+  BangoLayout *layout;
   gint x_offset, y_offset, index, cell_height, cell_width;
 
-  if (!GAIL_TEXT_CELL (text)->cell_text)
+  if (!BAIL_TEXT_CELL (text)->cell_text)
     {
       *x = *y = *height = *width = 0;
       return;
     }
-  if (offset < 0 || offset >= GAIL_TEXT_CELL (text)->cell_length)
+  if (offset < 0 || offset >= BAIL_TEXT_CELL (text)->cell_length)
     {
       *x = *y = *height = *width = 0;
       return;
     }
-  gail_renderer = GAIL_RENDERER_CELL (text);
-  gtk_renderer = GTK_CELL_RENDERER_TEXT (gail_renderer->renderer);
+  bail_renderer = BAIL_RENDERER_CELL (text);
+  btk_renderer = BTK_CELL_RENDERER_TEXT (bail_renderer->renderer);
   /*
    * Thus would be inconsistent with the cache
    */
-  gail_return_if_fail (gtk_renderer->text);
+  bail_return_if_fail (btk_renderer->text);
 
-  parent = atk_object_get_parent (ATK_OBJECT (text));
-  if (GAIL_IS_CONTAINER_CELL (parent))
-    parent = atk_object_get_parent (parent);
-  widget = GTK_ACCESSIBLE (parent)->widget;
-  g_return_if_fail (GAIL_IS_CELL_PARENT (parent));
-  gail_cell_parent_get_cell_area (GAIL_CELL_PARENT (parent), GAIL_CELL (text),
+  parent = batk_object_get_parent (BATK_OBJECT (text));
+  if (BAIL_IS_CONTAINER_CELL (parent))
+    parent = batk_object_get_parent (parent);
+  widget = BTK_ACCESSIBLE (parent)->widget;
+  g_return_if_fail (BAIL_IS_CELL_PARENT (parent));
+  bail_cell_parent_get_cell_area (BAIL_CELL_PARENT (parent), BAIL_CELL (text),
                                   &rendered_rect);
 
-  gtk_cell_renderer_get_size (GTK_CELL_RENDERER (gtk_renderer), widget,
+  btk_cell_renderer_get_size (BTK_CELL_RENDERER (btk_renderer), widget,
     &rendered_rect, &x_offset, &y_offset, &cell_width, &cell_height);
-  layout = create_pango_layout (gtk_renderer, widget);
+  layout = create_bango_layout (btk_renderer, widget);
 
-  index = g_utf8_offset_to_pointer (gtk_renderer->text,
-    offset) - gtk_renderer->text;
-  pango_layout_index_to_pos (layout, index, &char_rect); 
+  index = g_utf8_offset_to_pointer (btk_renderer->text,
+    offset) - btk_renderer->text;
+  bango_layout_index_to_pos (layout, index, &char_rect); 
 
-  gail_misc_get_extents_from_pango_rectangle (widget,
+  bail_misc_get_extents_from_bango_rectangle (widget,
       &char_rect,
-      x_offset + rendered_rect.x + gail_renderer->renderer->xpad,
-      y_offset + rendered_rect.y + gail_renderer->renderer->ypad,
+      x_offset + rendered_rect.x + bail_renderer->renderer->xpad,
+      y_offset + rendered_rect.y + bail_renderer->renderer->ypad,
       x, y, width, height, coords);
   g_object_unref (layout);
   return;
 } 
 
 static gint      
-gail_text_cell_get_offset_at_point (AtkText          *text,
+bail_text_cell_get_offset_at_point (BatkText          *text,
                                     gint             x,
                                     gint             y,
-                                    AtkCoordType     coords)
+                                    BatkCoordType     coords)
 {
-  AtkObject *parent;
-  GailRendererCell *gail_renderer; 
-  GtkCellRendererText *gtk_renderer;
-  GtkWidget *widget;
-  GdkRectangle rendered_rect;
-  PangoLayout *layout;
+  BatkObject *parent;
+  BailRendererCell *bail_renderer; 
+  BtkCellRendererText *btk_renderer;
+  BtkWidget *widget;
+  BdkRectangle rendered_rect;
+  BangoLayout *layout;
   gint x_offset, y_offset, index;
  
-  if (!GAIL_TEXT_CELL (text)->cell_text)
+  if (!BAIL_TEXT_CELL (text)->cell_text)
     return -1;
 
-  gail_renderer = GAIL_RENDERER_CELL (text);
-  gtk_renderer = GTK_CELL_RENDERER_TEXT (gail_renderer->renderer);
-  parent = atk_object_get_parent (ATK_OBJECT (text));
+  bail_renderer = BAIL_RENDERER_CELL (text);
+  btk_renderer = BTK_CELL_RENDERER_TEXT (bail_renderer->renderer);
+  parent = batk_object_get_parent (BATK_OBJECT (text));
 
-  g_return_val_if_fail (gtk_renderer->text, -1);
-  if (GAIL_IS_CONTAINER_CELL (parent))
-    parent = atk_object_get_parent (parent);
+  g_return_val_if_fail (btk_renderer->text, -1);
+  if (BAIL_IS_CONTAINER_CELL (parent))
+    parent = batk_object_get_parent (parent);
 
-  widget = GTK_ACCESSIBLE (parent)->widget;
+  widget = BTK_ACCESSIBLE (parent)->widget;
 
-  g_return_val_if_fail (GAIL_IS_CELL_PARENT (parent), -1);
-  gail_cell_parent_get_cell_area (GAIL_CELL_PARENT (parent), GAIL_CELL (text),
+  g_return_val_if_fail (BAIL_IS_CELL_PARENT (parent), -1);
+  bail_cell_parent_get_cell_area (BAIL_CELL_PARENT (parent), BAIL_CELL (text),
                                   &rendered_rect);
-  gtk_cell_renderer_get_size (GTK_CELL_RENDERER (gtk_renderer), widget,
+  btk_cell_renderer_get_size (BTK_CELL_RENDERER (btk_renderer), widget,
      &rendered_rect, &x_offset, &y_offset, NULL, NULL);
 
-  layout = create_pango_layout (gtk_renderer, widget);
+  layout = create_bango_layout (btk_renderer, widget);
    
-  index = gail_misc_get_index_at_point_in_layout (widget, layout,
-        x_offset + rendered_rect.x + gail_renderer->renderer->xpad,
-        y_offset + rendered_rect.y + gail_renderer->renderer->ypad,
+  index = bail_misc_get_index_at_point_in_layout (widget, layout,
+        x_offset + rendered_rect.x + bail_renderer->renderer->xpad,
+        y_offset + rendered_rect.y + bail_renderer->renderer->ypad,
         x, y, coords);
   g_object_unref (layout);
   if (index == -1)
     {
-      if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
-        return g_utf8_strlen (gtk_renderer->text, -1);
+      if (coords == BATK_XY_WINDOW || coords == BATK_XY_SCREEN)
+        return g_utf8_strlen (btk_renderer->text, -1);
     
       return index;  
     }
   else
-    return g_utf8_pointer_to_offset (gtk_renderer->text,
-       gtk_renderer->text + index);  
+    return g_utf8_pointer_to_offset (btk_renderer->text,
+       btk_renderer->text + index);  
 }
 
 static gunichar 
-gail_text_cell_get_character_at_offset (AtkText       *text,
+bail_text_cell_get_character_at_offset (BatkText       *text,
                                         gint          offset)
 {
   gchar *index;
   gchar *string;
 
-  string = GAIL_TEXT_CELL(text)->cell_text;
+  string = BAIL_TEXT_CELL(text)->cell_text;
 
   if (!string)
     return '\0';

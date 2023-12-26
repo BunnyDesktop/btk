@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2000 Red Hat, Inc. 
  *
  * This library is free software; you can redistribute it and/or
@@ -17,115 +17,115 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_PANGO_H__
-#define __GDK_PANGO_H__
+#ifndef __BDK_BANGO_H__
+#define __BDK_BANGO_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
-/* Pango interaction */
+/* Bango interaction */
 
-typedef struct _GdkPangoRenderer        GdkPangoRenderer;
-typedef struct _GdkPangoRendererClass   GdkPangoRendererClass;
-typedef struct _GdkPangoRendererPrivate GdkPangoRendererPrivate;
+typedef struct _BdkBangoRenderer        BdkBangoRenderer;
+typedef struct _BdkBangoRendererClass   BdkBangoRendererClass;
+typedef struct _BdkBangoRendererPrivate BdkBangoRendererPrivate;
 
-#define GDK_TYPE_PANGO_RENDERER            (gdk_pango_renderer_get_type())
-#define GDK_PANGO_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_PANGO_RENDERER, GdkPangoRenderer))
-#define GDK_IS_PANGO_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_PANGO_RENDERER))
-#define GDK_PANGO_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_PANGO_RENDERER, GdkPangoRendererClass))
-#define GDK_IS_PANGO_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_PANGO_RENDERER))
-#define GDK_PANGO_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_PANGO_RENDERER, GdkPangoRendererClass))
+#define BDK_TYPE_BANGO_RENDERER            (bdk_bango_renderer_get_type())
+#define BDK_BANGO_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_BANGO_RENDERER, BdkBangoRenderer))
+#define BDK_IS_BANGO_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_BANGO_RENDERER))
+#define BDK_BANGO_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_BANGO_RENDERER, BdkBangoRendererClass))
+#define BDK_IS_BANGO_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_BANGO_RENDERER))
+#define BDK_BANGO_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_BANGO_RENDERER, BdkBangoRendererClass))
 
 /**
- * GdkPangoRenderer:
+ * BdkBangoRenderer:
  *
- * #GdkPangoRenderer is a subclass of #PangoRenderer used for rendering
- * Pango objects into GDK drawables. The default renderer for a particular
- * screen is obtained with gdk_pango_renderer_get_default(); Pango
- * functions like pango_renderer_draw_layout() and
- * pango_renderer_draw_layout_line() are then used to draw objects with
+ * #BdkBangoRenderer is a subclass of #BangoRenderer used for rendering
+ * Bango objects into BDK drawables. The default renderer for a particular
+ * screen is obtained with bdk_bango_renderer_get_default(); Bango
+ * functions like bango_renderer_draw_layout() and
+ * bango_renderer_draw_layout_line() are then used to draw objects with
  * the renderer.
  *
- * In most simple cases, applications can just use gdk_draw_layout(), and
- * don't need to directly use #GdkPangoRenderer at all. Using the
- * #GdkPangoRenderer directly is most useful when working with a
- * transformation such as a rotation, because the Pango drawing functions
+ * In most simple cases, applications can just use bdk_draw_layout(), and
+ * don't need to directly use #BdkBangoRenderer at all. Using the
+ * #BdkBangoRenderer directly is most useful when working with a
+ * transformation such as a rotation, because the Bango drawing functions
  * take user space coordinates (coordinates before the transformation)
  * instead of device coordinates.
  *
- * In certain cases it can be useful to subclass #GdkPangoRenderer. Examples
+ * In certain cases it can be useful to subclass #BdkBangoRenderer. Examples
  * of reasons to do this are to add handling of custom attributes by
  * overriding 'prepare_run' or to do custom drawing of embedded objects
  * by overriding 'draw_shape'.
  *
  * Since: 2.6
  **/
-struct _GdkPangoRenderer
+struct _BdkBangoRenderer
 {
   /*< private >*/
-  PangoRenderer parent_instance;
+  BangoRenderer parent_instance;
 
-  GdkPangoRendererPrivate *priv;
+  BdkBangoRendererPrivate *priv;
 };
 
 /**
- * GdkPangoRendererClass:
+ * BdkBangoRendererClass:
  *
- * #GdkPangoRenderer is the class structure for #GdkPangoRenderer.
+ * #BdkBangoRenderer is the class structure for #BdkBangoRenderer.
  *
  * Since: 2.6
  **/
-struct _GdkPangoRendererClass
+struct _BdkBangoRendererClass
 {
   /*< private >*/
-  PangoRendererClass parent_class;
+  BangoRendererClass parent_class;
 };
 
-GType gdk_pango_renderer_get_type (void) G_GNUC_CONST;
+GType bdk_bango_renderer_get_type (void) G_GNUC_CONST;
 
-PangoRenderer *gdk_pango_renderer_new         (GdkScreen *screen);
-PangoRenderer *gdk_pango_renderer_get_default (GdkScreen *screen);
+BangoRenderer *bdk_bango_renderer_new         (BdkScreen *screen);
+BangoRenderer *bdk_bango_renderer_get_default (BdkScreen *screen);
 
-void gdk_pango_renderer_set_drawable       (GdkPangoRenderer *gdk_renderer,
-					    GdkDrawable      *drawable);
-void gdk_pango_renderer_set_gc             (GdkPangoRenderer *gdk_renderer,
-					    GdkGC            *gc);
-void gdk_pango_renderer_set_stipple        (GdkPangoRenderer *gdk_renderer,
-					    PangoRenderPart   part,
-					    GdkBitmap        *stipple);
-void gdk_pango_renderer_set_override_color (GdkPangoRenderer *gdk_renderer,
-					    PangoRenderPart   part,
-					    const GdkColor   *color);
+void bdk_bango_renderer_set_drawable       (BdkBangoRenderer *bdk_renderer,
+					    BdkDrawable      *drawable);
+void bdk_bango_renderer_set_gc             (BdkBangoRenderer *bdk_renderer,
+					    BdkGC            *gc);
+void bdk_bango_renderer_set_stipple        (BdkBangoRenderer *bdk_renderer,
+					    BangoRenderPart   part,
+					    BdkBitmap        *stipple);
+void bdk_bango_renderer_set_override_color (BdkBangoRenderer *bdk_renderer,
+					    BangoRenderPart   part,
+					    const BdkColor   *color);
 
 /************************************************************************/
 
-PangoContext *gdk_pango_context_get_for_screen (GdkScreen    *screen);
-#ifndef GDK_MULTIHEAD_SAFE
-PangoContext *gdk_pango_context_get            (void);
+BangoContext *bdk_bango_context_get_for_screen (BdkScreen    *screen);
+#ifndef BDK_MULTIHEAD_SAFE
+BangoContext *bdk_bango_context_get            (void);
 #endif
-#ifndef GDK_DISABLE_DEPRECATED
-void          gdk_pango_context_set_colormap   (PangoContext *context,
-                                                GdkColormap  *colormap);
+#ifndef BDK_DISABLE_DEPRECATED
+void          bdk_bango_context_set_colormap   (BangoContext *context,
+                                                BdkColormap  *colormap);
 #endif 
 
 
-/* Get a clip region to draw only part of a layout or
+/* Get a clip rebunnyion to draw only part of a layout or
  * line. index_ranges contains alternating range starts/stops. The
- * region is the region which contains the given ranges, i.e. if you
- * draw with the region as clip, only the given ranges are drawn.
+ * rebunnyion is the rebunnyion which contains the given ranges, i.e. if you
+ * draw with the rebunnyion as clip, only the given ranges are drawn.
  */
 
-GdkRegion    *gdk_pango_layout_line_get_clip_region (PangoLayoutLine *line,
+BdkRebunnyion    *bdk_bango_layout_line_get_clip_rebunnyion (BangoLayoutLine *line,
                                                      gint             x_origin,
                                                      gint             y_origin,
                                                      const gint      *index_ranges,
                                                      gint             n_ranges);
-GdkRegion    *gdk_pango_layout_get_clip_region      (PangoLayout     *layout,
+BdkRebunnyion    *bdk_bango_layout_get_clip_rebunnyion      (BangoLayout     *layout,
                                                      gint             x_origin,
                                                      gint             y_origin,
                                                      const gint      *index_ranges,
@@ -133,34 +133,34 @@ GdkRegion    *gdk_pango_layout_get_clip_region      (PangoLayout     *layout,
 
 
 
-/* Attributes use to render insensitive text in GTK+. */
+/* Attributes use to render insensitive text in BTK+. */
 
-typedef struct _GdkPangoAttrStipple GdkPangoAttrStipple;
-typedef struct _GdkPangoAttrEmbossed GdkPangoAttrEmbossed;
-typedef struct _GdkPangoAttrEmbossColor GdkPangoAttrEmbossColor;
+typedef struct _BdkBangoAttrStipple BdkBangoAttrStipple;
+typedef struct _BdkBangoAttrEmbossed BdkBangoAttrEmbossed;
+typedef struct _BdkBangoAttrEmbossColor BdkBangoAttrEmbossColor;
 
-struct _GdkPangoAttrStipple
+struct _BdkBangoAttrStipple
 {
-  PangoAttribute attr;
-  GdkBitmap *stipple;
+  BangoAttribute attr;
+  BdkBitmap *stipple;
 };
 
-struct _GdkPangoAttrEmbossed
+struct _BdkBangoAttrEmbossed
 {
-  PangoAttribute attr;
+  BangoAttribute attr;
   gboolean embossed;
 };
 
-struct _GdkPangoAttrEmbossColor
+struct _BdkBangoAttrEmbossColor
 {
-  PangoAttribute attr;
-  PangoColor color;
+  BangoAttribute attr;
+  BangoColor color;
 };
 
-PangoAttribute *gdk_pango_attr_stipple_new  (GdkBitmap *stipple);
-PangoAttribute *gdk_pango_attr_embossed_new (gboolean embossed);
-PangoAttribute *gdk_pango_attr_emboss_color_new (const GdkColor *color);
+BangoAttribute *bdk_bango_attr_stipple_new  (BdkBitmap *stipple);
+BangoAttribute *bdk_bango_attr_embossed_new (gboolean embossed);
+BangoAttribute *bdk_bango_attr_emboss_color_new (const BdkColor *color);
 
 G_END_DECLS
 
-#endif /* __GDK_FONT_H__ */
+#endif /* __BDK_FONT_H__ */

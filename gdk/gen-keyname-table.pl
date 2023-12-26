@@ -53,9 +53,9 @@ print <<EOT;
 typedef struct {
     guint  keyval;
     guint  offset;
-} gdk_key;
+} bdk_key;
 
-static const gdk_key gdk_keys_by_keyval[] = {
+static const bdk_key bdk_keys_by_keyval[] = {
 EOT
 
 $i = 0;
@@ -77,7 +77,7 @@ print "\n};\n\n";
 
 
 print <<EOT;
-static const gdk_key gdk_keys_by_name[] = {
+static const bdk_key bdk_keys_by_name[] = {
 EOT
 
 $i = 0;

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2001 Red Hat, Inc.
  *
@@ -19,52 +19,52 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkhscrollbar.h"
-#include "gtkorientable.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkhscrollbar.h"
+#include "btkorientable.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-G_DEFINE_TYPE (GtkHScrollbar, gtk_hscrollbar, GTK_TYPE_SCROLLBAR)
+G_DEFINE_TYPE (BtkHScrollbar, btk_hscrollbar, BTK_TYPE_SCROLLBAR)
 
 static void
-gtk_hscrollbar_class_init (GtkHScrollbarClass *class)
+btk_hscrollbar_class_init (BtkHScrollbarClass *class)
 {
-  GTK_RANGE_CLASS (class)->stepper_detail = "hscrollbar";
+  BTK_RANGE_CLASS (class)->stepper_detail = "hscrollbar";
 }
 
 static void
-gtk_hscrollbar_init (GtkHScrollbar *hscrollbar)
+btk_hscrollbar_init (BtkHScrollbar *hscrollbar)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (hscrollbar),
-                                  GTK_ORIENTATION_HORIZONTAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (hscrollbar),
+                                  BTK_ORIENTATION_HORIZONTAL);
 }
 
 /**
- * gtk_hscrollbar_new:
- * @adjustment: (allow-none): the #GtkAdjustment to use, or %NULL to create a new adjustment
+ * btk_hscrollbar_new:
+ * @adjustment: (allow-none): the #BtkAdjustment to use, or %NULL to create a new adjustment
  *
  * Creates a new horizontal scrollbar.
  *
- * Returns: the new #GtkHScrollbar
+ * Returns: the new #BtkHScrollbar
  */
-GtkWidget *
-gtk_hscrollbar_new (GtkAdjustment *adjustment)
+BtkWidget *
+btk_hscrollbar_new (BtkAdjustment *adjustment)
 {
-  g_return_val_if_fail (adjustment == NULL || GTK_IS_ADJUSTMENT (adjustment),
+  g_return_val_if_fail (adjustment == NULL || BTK_IS_ADJUSTMENT (adjustment),
                         NULL);
 
-  return g_object_new (GTK_TYPE_HSCROLLBAR,
+  return g_object_new (BTK_TYPE_HSCROLLBAR,
                        "adjustment", adjustment,
                        NULL);
 }
 
-#define __GTK_HSCROLLBAR_C__
-#include "gtkaliasdef.c"
+#define __BTK_HSCROLLBAR_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2007  Openismus GmbH
  *
  * This library is free software; you can redistribute it and/or
@@ -20,72 +20,72 @@
  *   Mathias Hasselmann
  */
 
-#ifndef __GTK_TOOL_SHELL_H__
-#define __GTK_TOOL_SHELL_H__
+#ifndef __BTK_TOOL_SHELL_H__
+#define __BTK_TOOL_SHELL_H__
 
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkenums.h>
-#include <pango/pango.h>
-#include <gtk/gtksizegroup.h>
+#include <btk/btkenums.h>
+#include <bango/bango.h>
+#include <btk/btksizegroup.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TOOL_SHELL            (gtk_tool_shell_get_type ())
-#define GTK_TOOL_SHELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TOOL_SHELL, GtkToolShell))
-#define GTK_IS_TOOL_SHELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TOOL_SHELL))
-#define GTK_TOOL_SHELL_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GTK_TYPE_TOOL_SHELL, GtkToolShellIface))
+#define BTK_TYPE_TOOL_SHELL            (btk_tool_shell_get_type ())
+#define BTK_TOOL_SHELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOL_SHELL, BtkToolShell))
+#define BTK_IS_TOOL_SHELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOL_SHELL))
+#define BTK_TOOL_SHELL_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_TOOL_SHELL, BtkToolShellIface))
 
-typedef struct _GtkToolShell           GtkToolShell; /* dummy typedef */
-typedef struct _GtkToolShellIface      GtkToolShellIface;
+typedef struct _BtkToolShell           BtkToolShell; /* dummy typedef */
+typedef struct _BtkToolShellIface      BtkToolShellIface;
 
 /**
- * GtkToolShellIface:
- * @get_icon_size:        mandatory implementation of gtk_tool_shell_get_icon_size().
- * @get_orientation:      mandatory implementation of gtk_tool_shell_get_orientation().
- * @get_style:            mandatory implementation of gtk_tool_shell_get_style().
- * @get_relief_style:     optional implementation of gtk_tool_shell_get_relief_style().
- * @rebuild_menu:         optional implementation of gtk_tool_shell_rebuild_menu().
- * @get_text_orientation: optional implementation of gtk_tool_shell_get_text_orientation().
- * @get_text_alignment:   optional implementation of gtk_tool_shell_get_text_alignment().
- * @get_ellipsize_mode:   optional implementation of gtk_tool_shell_get_ellipsize_mode().
- * @get_text_size_group:  optional implementation of gtk_tool_shell_get_text_size_group().
+ * BtkToolShellIface:
+ * @get_icon_size:        mandatory implementation of btk_tool_shell_get_icon_size().
+ * @get_orientation:      mandatory implementation of btk_tool_shell_get_orientation().
+ * @get_style:            mandatory implementation of btk_tool_shell_get_style().
+ * @get_relief_style:     optional implementation of btk_tool_shell_get_relief_style().
+ * @rebuild_menu:         optional implementation of btk_tool_shell_rebuild_menu().
+ * @get_text_orientation: optional implementation of btk_tool_shell_get_text_orientation().
+ * @get_text_alignment:   optional implementation of btk_tool_shell_get_text_alignment().
+ * @get_ellipsize_mode:   optional implementation of btk_tool_shell_get_ellipsize_mode().
+ * @get_text_size_group:  optional implementation of btk_tool_shell_get_text_size_group().
  *
- * Virtual function table for the #GtkToolShell interface.
+ * Virtual function table for the #BtkToolShell interface.
  */
-struct _GtkToolShellIface
+struct _BtkToolShellIface
 {
   /*< private >*/
   GTypeInterface g_iface;
 
   /*< public >*/
-  GtkIconSize        (*get_icon_size)        (GtkToolShell *shell);
-  GtkOrientation     (*get_orientation)      (GtkToolShell *shell);
-  GtkToolbarStyle    (*get_style)            (GtkToolShell *shell);
-  GtkReliefStyle     (*get_relief_style)     (GtkToolShell *shell);
-  void               (*rebuild_menu)         (GtkToolShell *shell);
-  GtkOrientation     (*get_text_orientation) (GtkToolShell *shell);
-  gfloat             (*get_text_alignment)   (GtkToolShell *shell);
-  PangoEllipsizeMode (*get_ellipsize_mode)   (GtkToolShell *shell);
-  GtkSizeGroup *     (*get_text_size_group)  (GtkToolShell *shell);
+  BtkIconSize        (*get_icon_size)        (BtkToolShell *shell);
+  BtkOrientation     (*get_orientation)      (BtkToolShell *shell);
+  BtkToolbarStyle    (*get_style)            (BtkToolShell *shell);
+  BtkReliefStyle     (*get_relief_style)     (BtkToolShell *shell);
+  void               (*rebuild_menu)         (BtkToolShell *shell);
+  BtkOrientation     (*get_text_orientation) (BtkToolShell *shell);
+  gfloat             (*get_text_alignment)   (BtkToolShell *shell);
+  BangoEllipsizeMode (*get_ellipsize_mode)   (BtkToolShell *shell);
+  BtkSizeGroup *     (*get_text_size_group)  (BtkToolShell *shell);
 };
 
-GType              gtk_tool_shell_get_type             (void) G_GNUC_CONST;
+GType              btk_tool_shell_get_type             (void) G_GNUC_CONST;
 
-GtkIconSize        gtk_tool_shell_get_icon_size        (GtkToolShell *shell);
-GtkOrientation     gtk_tool_shell_get_orientation      (GtkToolShell *shell);
-GtkToolbarStyle    gtk_tool_shell_get_style            (GtkToolShell *shell);
-GtkReliefStyle     gtk_tool_shell_get_relief_style     (GtkToolShell *shell);
-void               gtk_tool_shell_rebuild_menu         (GtkToolShell *shell);
-GtkOrientation     gtk_tool_shell_get_text_orientation (GtkToolShell *shell);
-gfloat             gtk_tool_shell_get_text_alignment   (GtkToolShell *shell);
-PangoEllipsizeMode gtk_tool_shell_get_ellipsize_mode   (GtkToolShell *shell);
-GtkSizeGroup *     gtk_tool_shell_get_text_size_group  (GtkToolShell *shell);
+BtkIconSize        btk_tool_shell_get_icon_size        (BtkToolShell *shell);
+BtkOrientation     btk_tool_shell_get_orientation      (BtkToolShell *shell);
+BtkToolbarStyle    btk_tool_shell_get_style            (BtkToolShell *shell);
+BtkReliefStyle     btk_tool_shell_get_relief_style     (BtkToolShell *shell);
+void               btk_tool_shell_rebuild_menu         (BtkToolShell *shell);
+BtkOrientation     btk_tool_shell_get_text_orientation (BtkToolShell *shell);
+gfloat             btk_tool_shell_get_text_alignment   (BtkToolShell *shell);
+BangoEllipsizeMode btk_tool_shell_get_ellipsize_mode   (BtkToolShell *shell);
+BtkSizeGroup *     btk_tool_shell_get_text_size_group  (BtkToolShell *shell);
 
 G_END_DECLS
 
-#endif /* __GTK_TOOL_SHELL_H__ */
+#endif /* __BTK_TOOL_SHELL_H__ */

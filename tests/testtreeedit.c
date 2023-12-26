@@ -19,7 +19,7 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 typedef struct {
   const gchar *string;
@@ -45,30 +45,30 @@ static ListEntry model_strings[] =
   { NULL }
 };
 
-static GtkTreeModel *
+static BtkTreeModel *
 create_model (void)
 {
-  GtkTreeStore *model;
-  GtkTreeIter iter;
+  BtkTreeStore *model;
+  BtkTreeIter iter;
   gint i;
-  GdkPixbuf *foo;
-  GtkWidget *blah;
+  BdkPixbuf *foo;
+  BtkWidget *blah;
 
-  blah = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  foo = gtk_widget_render_icon (blah, GTK_STOCK_NEW, GTK_ICON_SIZE_MENU, NULL);
-  gtk_widget_destroy (blah);
+  blah = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  foo = btk_widget_render_icon (blah, BTK_STOCK_NEW, BTK_ICON_SIZE_MENU, NULL);
+  btk_widget_destroy (blah);
   
-  model = gtk_tree_store_new (NUM_COLUMNS,
+  model = btk_tree_store_new (NUM_COLUMNS,
 			      G_TYPE_STRING,
 			      G_TYPE_BOOLEAN,
-			      GDK_TYPE_PIXBUF,
+			      BDK_TYPE_PIXBUF,
 			      G_TYPE_INT);
 
   for (i = 0; model_strings[i].string != NULL; i++)
     {
-      gtk_tree_store_append (model, &iter, NULL);
+      btk_tree_store_append (model, &iter, NULL);
 
-      gtk_tree_store_set (model, &iter,
+      btk_tree_store_set (model, &iter,
 			  STRING_COLUMN, model_strings[i].string,
 			  IS_EDITABLE_COLUMN, model_strings[i].is_editable,
 			  PIXBUF_COLUMN, foo,
@@ -76,52 +76,52 @@ create_model (void)
 			  -1);
     }
   
-  return GTK_TREE_MODEL (model);
+  return BTK_TREE_MODEL (model);
 }
 
 static void
-toggled (GtkCellRendererToggle *cell,
+toggled (BtkCellRendererToggle *cell,
 	 gchar                 *path_string,
 	 gpointer               data)
 {
-  GtkTreeModel *model = GTK_TREE_MODEL (data);
-  GtkTreeIter iter;
-  GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
+  BtkTreeModel *model = BTK_TREE_MODEL (data);
+  BtkTreeIter iter;
+  BtkTreePath *path = btk_tree_path_new_from_string (path_string);
   gboolean value;
 
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, IS_EDITABLE_COLUMN, &value, -1);
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_tree_model_get (model, &iter, IS_EDITABLE_COLUMN, &value, -1);
 
   value = !value;
-  gtk_tree_store_set (GTK_TREE_STORE (model), &iter, IS_EDITABLE_COLUMN, value, -1);
+  btk_tree_store_set (BTK_TREE_STORE (model), &iter, IS_EDITABLE_COLUMN, value, -1);
 
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 }
 
 static void
-edited (GtkCellRendererText *cell,
+edited (BtkCellRendererText *cell,
 	gchar               *path_string,
 	gchar               *new_text,
 	gpointer             data)
 {
-  GtkTreeModel *model = GTK_TREE_MODEL (data);
-  GtkTreeIter iter;
-  GtkTreePath *path = gtk_tree_path_new_from_string (path_string);
+  BtkTreeModel *model = BTK_TREE_MODEL (data);
+  BtkTreeIter iter;
+  BtkTreePath *path = btk_tree_path_new_from_string (path_string);
 
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_store_set (GTK_TREE_STORE (model), &iter, STRING_COLUMN, new_text, -1);
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_tree_store_set (BTK_TREE_STORE (model), &iter, STRING_COLUMN, new_text, -1);
 
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 }
 
 static gboolean
-button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer callback_data)
+button_press_event (BtkWidget *widget, BdkEventButton *event, gpointer callback_data)
 {
 	/* Deselect if people click outside any row. */
-	if (event->window == gtk_tree_view_get_bin_window (GTK_TREE_VIEW (widget))
-	    && !gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
+	if (event->window == btk_tree_view_get_bin_window (BTK_TREE_VIEW (widget))
+	    && !btk_tree_view_get_path_at_pos (BTK_TREE_VIEW (widget),
 					       event->x, event->y, NULL, NULL, NULL, NULL)) {
-		gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (GTK_TREE_VIEW (widget)));
+		btk_tree_selection_unselect_all (btk_tree_view_get_selection (BTK_TREE_VIEW (widget)));
 	}
 
 	/* Let the default code run in any case; it won't reselect anything. */
@@ -131,91 +131,91 @@ button_press_event (GtkWidget *widget, GdkEventButton *event, gpointer callback_
 gint
 main (gint argc, gchar **argv)
 {
-  GtkWidget *window;
-  GtkWidget *scrolled_window;
-  GtkWidget *tree_view;
-  GtkTreeModel *tree_model;
-  GtkCellRenderer *renderer;
-  GtkTreeViewColumn *column;
+  BtkWidget *window;
+  BtkWidget *scrolled_window;
+  BtkWidget *tree_view;
+  BtkTreeModel *tree_model;
+  BtkCellRenderer *renderer;
+  BtkTreeViewColumn *column;
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   if (g_getenv ("RTL"))
-    gtk_widget_set_default_direction (GTK_TEXT_DIR_RTL);
+    btk_widget_set_default_direction (BTK_TEXT_DIR_RTL);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "GtkTreeView editing sample");
-  g_signal_connect (window, "destroy", gtk_main_quit, NULL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_window_set_title (BTK_WINDOW (window), "BtkTreeView editing sample");
+  g_signal_connect (window, "destroy", btk_main_quit, NULL);
 
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window), GTK_SHADOW_ETCHED_IN);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (window), scrolled_window);
+  scrolled_window = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (scrolled_window), BTK_SHADOW_ETCHED_IN);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window), BTK_POLICY_AUTOMATIC, BTK_POLICY_AUTOMATIC);
+  btk_container_add (BTK_CONTAINER (window), scrolled_window);
 
   tree_model = create_model ();
-  tree_view = gtk_tree_view_new_with_model (tree_model);
+  tree_view = btk_tree_view_new_with_model (tree_model);
   g_signal_connect (tree_view, "button_press_event", G_CALLBACK (button_press_event), NULL);
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), TRUE);
+  btk_tree_view_set_rules_hint (BTK_TREE_VIEW (tree_view), TRUE);
+  btk_tree_view_set_headers_visible (BTK_TREE_VIEW (tree_view), TRUE);
 
-  column = gtk_tree_view_column_new ();
-  gtk_tree_view_column_set_title (column, "String");
+  column = btk_tree_view_column_new ();
+  btk_tree_view_column_set_title (column, "String");
 
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (column, renderer, TRUE);
-  gtk_tree_view_column_set_attributes (column, renderer,
+  renderer = btk_cell_renderer_pixbuf_new ();
+  btk_tree_view_column_pack_start (column, renderer, TRUE);
+  btk_tree_view_column_set_attributes (column, renderer,
 				       "pixbuf", PIXBUF_COLUMN, NULL);
 
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_tree_view_column_pack_start (column, renderer, TRUE);
-  gtk_tree_view_column_set_attributes (column, renderer,
+  renderer = btk_cell_renderer_text_new ();
+  btk_tree_view_column_pack_start (column, renderer, TRUE);
+  btk_tree_view_column_set_attributes (column, renderer,
 				       "text", STRING_COLUMN,
 				       "editable", IS_EDITABLE_COLUMN,
 				       NULL);
   g_signal_connect (renderer, "edited",
 		    G_CALLBACK (edited), tree_model);
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_tree_view_column_pack_start (column, renderer, TRUE);
-  gtk_tree_view_column_set_attributes (column, renderer,
+  renderer = btk_cell_renderer_text_new ();
+  btk_tree_view_column_pack_start (column, renderer, TRUE);
+  btk_tree_view_column_set_attributes (column, renderer,
 		  		       "text", STRING_COLUMN,
 				       "editable", IS_EDITABLE_COLUMN,
 				       NULL);
   g_signal_connect (renderer, "edited",
 		    G_CALLBACK (edited), tree_model);
 
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (column, renderer, TRUE);
-  gtk_tree_view_column_set_attributes (column, renderer,
+  renderer = btk_cell_renderer_pixbuf_new ();
+  btk_tree_view_column_pack_start (column, renderer, TRUE);
+  btk_tree_view_column_set_attributes (column, renderer,
 				       "pixbuf", PIXBUF_COLUMN, NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  btk_tree_view_append_column (BTK_TREE_VIEW (tree_view), column);
 
-  renderer = gtk_cell_renderer_toggle_new ();
+  renderer = btk_cell_renderer_toggle_new ();
   g_signal_connect (renderer, "toggled",
 		    G_CALLBACK (toggled), tree_model);
   
   g_object_set (renderer,
 		"xalign", 0.0,
 		NULL);
-  gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree_view),
+  btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (tree_view),
 					       -1, "Editable",
 					       renderer,
 					       "active", IS_EDITABLE_COLUMN,
 					       NULL);
 
-  renderer = gtk_cell_renderer_progress_new ();
-  gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree_view),
+  renderer = btk_cell_renderer_progress_new ();
+  btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (tree_view),
 					       -1, "Progress",
 					       renderer,
 					       "value", PROGRESS_COLUMN,
 					       NULL);
 
-  gtk_container_add (GTK_CONTAINER (scrolled_window), tree_view);
+  btk_container_add (BTK_CONTAINER (scrolled_window), tree_view);
   
-  gtk_window_set_default_size (GTK_WINDOW (window),
+  btk_window_set_default_size (BTK_WINDOW (window),
 			       800, 175);
 
-  gtk_widget_show_all (window);
-  gtk_main ();
+  btk_widget_show_all (window);
+  btk_main ();
 
   return 0;
 }

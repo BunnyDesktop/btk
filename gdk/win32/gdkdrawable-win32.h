@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,57 +18,57 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_DRAWABLE_WIN32_H__
-#define __GDK_DRAWABLE_WIN32_H__
+#ifndef __BDK_DRAWABLE_WIN32_H__
+#define __BDK_DRAWABLE_WIN32_H__
 
-#include <gdk/gdkdrawable.h>
-#include <gdk/win32/gdkwin32.h>
+#include <bdk/bdkdrawable.h>
+#include <bdk/win32/bdkwin32.h>
 
 G_BEGIN_DECLS
 
 /* Drawable implementation for Win32
  */
 
-typedef struct _GdkDrawableImplWin32 GdkDrawableImplWin32;
-typedef struct _GdkDrawableImplWin32Class GdkDrawableImplWin32Class;
+typedef struct _BdkDrawableImplWin32 BdkDrawableImplWin32;
+typedef struct _BdkDrawableImplWin32Class BdkDrawableImplWin32Class;
 
-#define GDK_TYPE_DRAWABLE_IMPL_WIN32              (_gdk_drawable_impl_win32_get_type ())
-#define GDK_DRAWABLE_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DRAWABLE_IMPL_WIN32, GdkDrawableImplWin32))
-#define GDK_DRAWABLE_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DRAWABLE_IMPL_WIN32, GdkDrawableImplWin32Class))
-#define GDK_IS_DRAWABLE_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DRAWABLE_IMPL_WIN32))
-#define GDK_IS_DRAWABLE_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DRAWABLE_IMPL_WIN32))
-#define GDK_DRAWABLE_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DRAWABLE_IMPL_WIN32, GdkDrawableImplWin32Class))
+#define BDK_TYPE_DRAWABLE_IMPL_WIN32              (_bdk_drawable_impl_win32_get_type ())
+#define BDK_DRAWABLE_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32))
+#define BDK_DRAWABLE_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32Class))
+#define BDK_IS_DRAWABLE_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_WIN32))
+#define BDK_IS_DRAWABLE_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_WIN32))
+#define BDK_DRAWABLE_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32Class))
 
-struct _GdkDrawableImplWin32
+struct _BdkDrawableImplWin32
 {
-  GdkDrawable parent_instance;
-  GdkDrawable *wrapper;
-  GdkColormap *colormap;
+  BdkDrawable parent_instance;
+  BdkDrawable *wrapper;
+  BdkColormap *colormap;
   HANDLE handle;
 
   guint hdc_count;
   HDC hdc;
   HBITMAP saved_dc_bitmap;	/* Original bitmap for dc */
-  cairo_surface_t *cairo_surface;
+  bairo_surface_t *bairo_surface;
 };
  
-struct _GdkDrawableImplWin32Class 
+struct _BdkDrawableImplWin32Class 
 {
-  GdkDrawableClass parent_class;
+  BdkDrawableClass parent_class;
 };
 
-GType _gdk_drawable_impl_win32_get_type (void);
+GType _bdk_drawable_impl_win32_get_type (void);
 
-HDC  _gdk_win32_drawable_acquire_dc (GdkDrawable *drawable);
-void _gdk_win32_drawable_release_dc (GdkDrawable *drawable);
-void _gdk_win32_drawable_finish     (GdkDrawable *drawable);
+HDC  _bdk_win32_drawable_acquire_dc (BdkDrawable *drawable);
+void _bdk_win32_drawable_release_dc (BdkDrawable *drawable);
+void _bdk_win32_drawable_finish     (BdkDrawable *drawable);
 
 G_END_DECLS
 
-#endif /* __GDK_DRAWABLE_WIN32_H__ */
+#endif /* __BDK_DRAWABLE_WIN32_H__ */

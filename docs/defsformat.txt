@@ -16,23 +16,23 @@ Defined types and their attributes:
 (module module-name
   (submodule-of module-name)) ;; submodule is optional
 
-Ex: (module Gtk)
+Ex: (module Btk)
 Ex: (module Rgb
-      (submodule-of Gdk))
+      (submodule-of Bdk))
 
 modules are later referred to with a list of module names, like 
-(Gdk Rgb) or (Gtk)
+(Bdk Rgb) or (Btk)
 
 Object and boxed type definitions automatically create a submodule.
-For example, GtkCList creates the module (module CList (submodule-of
-(Gtk))) which is referred to as module (Gtk CList).
+For example, BtkCList creates the module (module CList (submodule-of
+(Btk))) which is referred to as module (Btk CList).
 
 ===
 
 (type
  (alias some-unique-identifier)
  (in-module module-name)   ;; optional, gchar* is not in a module
- (gtk-type-id gtk-type-system-id) ;; optional, absent if this is not
+ (btk-type-id btk-type-system-id) ;; optional, absent if this is not
                                   ;; in the type system
  (is-parametric boolean)          ;; optional default to #f
  (in-c-name name-of-symbol-in-C)
@@ -41,31 +41,31 @@ For example, GtkCList creates the module (module CList (submodule-of
 
 Ex: (type
      (alias string)
-     (gtk-type-id GTK_TYPE_STRING)
+     (btk-type-id BTK_TYPE_STRING)
      (in-c-name "const gchar*")
      (out-c-name "gchar**")      ;; actually I'm not sure how strings work out/inout
      (inout-c-name "gchar*"))
 
  (type
      (alias list)
-     (gtk-type-id GTK_TYPE_POINTER)
+     (btk-type-id BTK_TYPE_POINTER)
      (is-parametric #t)
      (in-c-name "GList*")
      (out-c-name "GList**")
      (inout-c-name "GList**"))
 
 
- ;; This one would be implied by the (object) def for GtkWidget I
+ ;; This one would be implied by the (object) def for BtkWidget I
  ;; think - (type) is only required for types that are not implied
  ;; by other definitions, such as int/boolean/etc.
  
     (type
-     (alias GtkWidget)
-     (in-module (Gtk))
-     (gtk-type-id GTK_TYPE_WIDGET)
-     (in-c-name "GtkWidget*")
-     (inout-c-name "GtkWidget*")
-     (out-c-name "GtkWidget**"))
+     (alias BtkWidget)
+     (in-module (Btk))
+     (btk-type-id BTK_TYPE_WIDGET)
+     (in-c-name "BtkWidget*")
+     (inout-c-name "BtkWidget*")
+     (out-c-name "BtkWidget**"))
 
 "Type" bindings are automatically assumed for objects, boxed types,
 etc. as defined below.
@@ -97,11 +97,11 @@ stuff.
    
 
 Ex: (object Widget
-      (in-module (Gtk))
-      (parent Object)      ;; could say (parent Object (Gtk))
+      (in-module (Btk))
+      (parent Object)      ;; could say (parent Object (Btk))
       (abstract #t)
-      (c-name GtkWidget)
-      (field (type-and-name GdkWindow* window) (access read)))
+      (c-name BtkWidget)
+      (field (type-and-name BdkWindow* window) (access read)))
 
 An "object" declaration automatically implies the type definition:
 
@@ -112,14 +112,14 @@ An "object" declaration automatically implies the type definition:
   (inout-c-name pointer-to-c-name))
 
 Ex: 
- (type (alias GtkWidget) 
-       (in-c-name GtkWidget*) 
-       (out-c-name GtkWidget**) 
-       (inout-c-name GtkWidget*))
+ (type (alias BtkWidget) 
+       (in-c-name BtkWidget*) 
+       (out-c-name BtkWidget**) 
+       (inout-c-name BtkWidget*))
 
 It also implies a module that is the name broken into parts:
  (module CTree
-   (submodule-of Gtk))
+   (submodule-of Btk))
 
 ===
 
@@ -141,15 +141,15 @@ It also implies a module that is the name broken into parts:
 
 Ex:
   (function init
-    (in-module (Gdk Rgb)
-    (c-name gdk_rgb_init)))
+    (in-module (Bdk Rgb)
+    (c-name bdk_rgb_init)))
 
 Ex: 
   (function new
-    (in-module (Gdk Rgb Cmap))
-    (is-constructor-of GdkRgbCmap)
-    (c-name gdk_rgb_cmap_new)
-    (return-type GdkRgbCmap)
+    (in-module (Bdk Rgb Cmap))
+    (is-constructor-of BdkRgbCmap)
+    (c-name bdk_rgb_cmap_new)
+    (return-type BdkRgbCmap)
     (caller-owns-return #t)   ;; perhaps this could be implied by is-constructor-of
     (parameter in (type-and-name array-of-guint32 colors))
     (parameter in (type-and-name gint n_colors)))
@@ -171,13 +171,13 @@ Ex:
  
 Ex:
   (method set_text
-     (of-object Label (Gtk))
+     (of-object Label (Btk))
      (parameter (type-and-name const-gchar* str)))
 
 ===
 (object-argument arg-name
    (of-object object-we-are-an-argument-of optional-objects-module)
-   (type-id argument-type)       ;; GTK_TYPE_OBJECT etc.
+   (type-id argument-type)       ;; BTK_TYPE_OBJECT etc.
    ;; flags all default to #f
    (readable bool-value)
    (writeable bool-value)
@@ -185,8 +185,8 @@ Ex:
 
 Ex:
   (object-argument label
-     (of-object Label (Gtk))
-     (type GTK_TYPE_STRING)
+     (of-object Label (Btk))
+     (type BTK_TYPE_STRING)
      (readable #t)
      (writeable #t))
 
@@ -204,12 +204,12 @@ Ex:
 
 Ex:
   (signal select_row
-     (of-object CList (Gtk))
+     (of-object CList (Btk))
      (run-first #t)
      ;; return type defaults to void
      (parameter in (type-and-name gint row))
      (parameter in (type-and-name gint column))
-     (parameter in (type-and-name GdkEvent* event)))
+     (parameter in (type-and-name BdkEvent* event)))
 
 === 
 (enum enum-name
@@ -220,21 +220,21 @@ Ex:
 Ex:
 
   (enum DirectionType
-    (in-module Gtk)
-    (c-name GtkDirectionType)
-    (value (nick tab-forward) (c-name GTK_DIR_TAB_FORWARD))
-    (value (nick tab-backward) (c-name GTK_DIR_TAB_BACKWARD))
-    (value (nick up) (c-name GTK_DIR_UP))
-    (value (nick down) (c-name GTK_DIR_DOWN))
-    (value (nick left) (c-name GTK_DIR_LEFT))
-    (value (nick right) (c-name GTK_DIR_RIGHT)))
+    (in-module Btk)
+    (c-name BtkDirectionType)
+    (value (nick tab-forward) (c-name BTK_DIR_TAB_FORWARD))
+    (value (nick tab-backward) (c-name BTK_DIR_TAB_BACKWARD))
+    (value (nick up) (c-name BTK_DIR_UP))
+    (value (nick down) (c-name BTK_DIR_DOWN))
+    (value (nick left) (c-name BTK_DIR_LEFT))
+    (value (nick right) (c-name BTK_DIR_RIGHT)))
 
   (enum Pos
-    (in-module (Gtk CTree))
-    (c-name GtkCTreePos)
-    (value (nick before) (c-name GTK_CTREE_POS_BEFORE))
-    (value (nick as-child) (c-name GTK_CTREE_POS_AS_CHILD))
-    (value (nick after) (c-name GTK_CTREE_POS_AFTER)))
+    (in-module (Btk CTree))
+    (c-name BtkCTreePos)
+    (value (nick before) (c-name BTK_CTREE_POS_BEFORE))
+    (value (nick as-child) (c-name BTK_CTREE_POS_AS_CHILD))
+    (value (nick after) (c-name BTK_CTREE_POS_AFTER)))
 
 ===
 (flags) is just like enum, but some bindings may wrap enums and flags differently.
@@ -255,8 +255,8 @@ malloc()/free() to alloc/free one.
 Ex:
 
  (boxed Pixmap
-   (in-module (Gdk))
-   (c-name GdkPixmap)
+   (in-module (Bdk))
+   (c-name BdkPixmap)
    (ref-func pixmap_ref)
    (release-func pixmap_unref))
 
@@ -269,10 +269,10 @@ An "object" declaration automatically implies the type definition:
   (inout-c-name pointer-to-c-name))
 
 Ex: 
- (type (alias GdkPixmap) 
-       (in-c-name GdkPixmap*) 
-       (out-c-name GdkPixmap**) 
-       (inout-c-name GdkPixmap*))
+ (type (alias BdkPixmap) 
+       (in-c-name BdkPixmap*) 
+       (out-c-name BdkPixmap**) 
+       (inout-c-name BdkPixmap*))
 
 
 ===
@@ -287,19 +287,19 @@ allocated on the stack or with g_malloc().
 
 Ex:
  (struct Rectangle
-   (in-module (Gdk))
-   (c-name GdkRectangle)
+   (in-module (Bdk))
+   (c-name BdkRectangle)
    (field (type-and-name gint16 x) (access readwrite))
    (field (type-and-name gint16 y) (access readwrite))
    (field (type-and-name guint16 width) (access readwrite))
    (field (type-and-name guint16 height) (access readwrite)))
 
-Implies GdkRectangle type alias:
+Implies BdkRectangle type alias:
 
- (type (alias GdkRectangle) 
-       (in-c-name GdkRectangle*) 
-       (out-c-name GdkRectangle*)    ;; note - not the same as boxed types 
-       (inout-c-name GdkRectangle*))
+ (type (alias BdkRectangle) 
+       (in-c-name BdkRectangle*) 
+       (out-c-name BdkRectangle*)    ;; note - not the same as boxed types 
+       (inout-c-name BdkRectangle*))
 
 ===
 
@@ -312,7 +312,7 @@ Implies GdkRectangle type alias:
 Ex:
 
  (user-function PrintFunc
-    (in-module (Gtk))
+    (in-module (Btk))
     (parameter in (type-and-name gpointer func_data))
     (parameter in (type-and-name gchar* str)))
 
@@ -326,8 +326,8 @@ Ex:
 Ex:
 
  (typedef Type
-   (in-module (Gtk))
-   (c-name GtkType)
+   (in-module (Btk))
+   (c-name BtkType)
    (orig-type guint))
 
 

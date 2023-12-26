@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * Copyright (C) 2007 John Stowers, Neil Jagdish Patel.
  * Copyright (C) 2009 Bastien Nocera, David Zeuthen
@@ -22,44 +22,44 @@
  * by Christian Hergert <christian.hergert@gmail.com>
  */
 
-#ifndef __GTK_SPINNER_H__
-#define __GTK_SPINNER_H__
+#ifndef __BTK_SPINNER_H__
+#define __BTK_SPINNER_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkdrawingarea.h>
+#include <btk/btkdrawingarea.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SPINNER           (gtk_spinner_get_type ())
-#define GTK_SPINNER(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SPINNER, GtkSpinner))
-#define GTK_SPINNER_CLASS(obj)     (G_TYPE_CHECK_CLASS_CAST ((obj), GTK_SPINNER,  GtkSpinnerClass))
-#define GTK_IS_SPINNER(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SPINNER))
-#define GTK_IS_SPINNER_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE ((obj), GTK_TYPE_SPINNER))
-#define GTK_SPINNER_GET_CLASS      (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SPINNER, GtkSpinnerClass))
+#define BTK_TYPE_SPINNER           (btk_spinner_get_type ())
+#define BTK_SPINNER(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPINNER, BtkSpinner))
+#define BTK_SPINNER_CLASS(obj)     (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_SPINNER,  BtkSpinnerClass))
+#define BTK_IS_SPINNER(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPINNER))
+#define BTK_IS_SPINNER_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE ((obj), BTK_TYPE_SPINNER))
+#define BTK_SPINNER_GET_CLASS      (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPINNER, BtkSpinnerClass))
 
-typedef struct _GtkSpinner      GtkSpinner;
-typedef struct _GtkSpinnerClass GtkSpinnerClass;
-typedef struct _GtkSpinnerPrivate  GtkSpinnerPrivate;
+typedef struct _BtkSpinner      BtkSpinner;
+typedef struct _BtkSpinnerClass BtkSpinnerClass;
+typedef struct _BtkSpinnerPrivate  BtkSpinnerPrivate;
 
-struct _GtkSpinner
+struct _BtkSpinner
 {
-  GtkDrawingArea parent;
-  GtkSpinnerPrivate *priv;
+  BtkDrawingArea parent;
+  BtkSpinnerPrivate *priv;
 };
 
-struct _GtkSpinnerClass
+struct _BtkSpinnerClass
 {
-  GtkDrawingAreaClass parent_class;
+  BtkDrawingAreaClass parent_class;
 };
 
-GType      gtk_spinner_get_type  (void) G_GNUC_CONST;
-GtkWidget *gtk_spinner_new (void);
-void       gtk_spinner_start      (GtkSpinner *spinner);
-void       gtk_spinner_stop       (GtkSpinner *spinner);
+GType      btk_spinner_get_type  (void) G_GNUC_CONST;
+BtkWidget *btk_spinner_new (void);
+void       btk_spinner_start      (BtkSpinner *spinner);
+void       btk_spinner_stop       (BtkSpinner *spinner);
 
 G_END_DECLS
 
-#endif /* __GTK_SPINNER_H__ */
+#endif /* __BTK_SPINNER_H__ */

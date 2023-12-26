@@ -17,33 +17,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <math.h>
 
 static void
-spin_ythickness_cb (GtkSpinButton *spin, gpointer user_data)
+spin_ythickness_cb (BtkSpinButton *spin, gpointer user_data)
 {
-  GtkWidget *frame = user_data;
-  GtkRcStyle *rcstyle;
+  BtkWidget *frame = user_data;
+  BtkRcStyle *rcstyle;
 
-  rcstyle = gtk_rc_style_new ();
-  rcstyle->xthickness = GTK_WIDGET (frame)->style->xthickness;
-  rcstyle->ythickness = gtk_spin_button_get_value (spin);
-  gtk_widget_modify_style (frame, rcstyle);
+  rcstyle = btk_rc_style_new ();
+  rcstyle->xthickness = BTK_WIDGET (frame)->style->xthickness;
+  rcstyle->ythickness = btk_spin_button_get_value (spin);
+  btk_widget_modify_style (frame, rcstyle);
 
   g_object_unref (rcstyle);
 }
 
 static void
-spin_xthickness_cb (GtkSpinButton *spin, gpointer user_data)
+spin_xthickness_cb (BtkSpinButton *spin, gpointer user_data)
 {
-  GtkWidget *frame = user_data;
-  GtkRcStyle *rcstyle;
+  BtkWidget *frame = user_data;
+  BtkRcStyle *rcstyle;
 
-  rcstyle = gtk_rc_style_new ();
-  rcstyle->xthickness = gtk_spin_button_get_value (spin);
-  rcstyle->ythickness = GTK_WIDGET (frame)->style->ythickness;
-  gtk_widget_modify_style (frame, rcstyle);
+  rcstyle = btk_rc_style_new ();
+  rcstyle->xthickness = btk_spin_button_get_value (spin);
+  rcstyle->ythickness = BTK_WIDGET (frame)->style->ythickness;
+  btk_widget_modify_style (frame, rcstyle);
 
   g_object_unref (rcstyle);
 }
@@ -65,83 +65,83 @@ double_normalize (gdouble n)
 }
 
 static void
-spin_xalign_cb (GtkSpinButton *spin, GtkFrame *frame)
+spin_xalign_cb (BtkSpinButton *spin, BtkFrame *frame)
 {
-  gdouble xalign = double_normalize (gtk_spin_button_get_value (spin));
-  gtk_frame_set_label_align (frame, xalign, frame->label_yalign);
+  gdouble xalign = double_normalize (btk_spin_button_get_value (spin));
+  btk_frame_set_label_align (frame, xalign, frame->label_yalign);
 }
 
 static void
-spin_yalign_cb (GtkSpinButton *spin, GtkFrame *frame)
+spin_yalign_cb (BtkSpinButton *spin, BtkFrame *frame)
 {
-  gdouble yalign = double_normalize (gtk_spin_button_get_value (spin));
-  gtk_frame_set_label_align (frame, frame->label_xalign, yalign);
+  gdouble yalign = double_normalize (btk_spin_button_get_value (spin));
+  btk_frame_set_label_align (frame, frame->label_xalign, yalign);
 }
 
 int main (int argc, char **argv)
 {
-  GtkWidget *window, *frame, *xthickness_spin, *ythickness_spin, *vbox;
-  GtkWidget *xalign_spin, *yalign_spin, *button, *table, *label;
+  BtkWidget *window, *frame, *xthickness_spin, *ythickness_spin, *vbox;
+  BtkWidget *xalign_spin, *yalign_spin, *button, *table, *label;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-  gtk_window_set_default_size (GTK_WINDOW (window), 300, 300);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_container_set_border_width (BTK_CONTAINER (window), 5);
+  btk_window_set_default_size (BTK_WINDOW (window), 300, 300);
 
-  g_signal_connect (G_OBJECT (window), "delete-event", gtk_main_quit, NULL);
+  g_signal_connect (G_OBJECT (window), "delete-event", btk_main_quit, NULL);
 
-  vbox = gtk_vbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  vbox = btk_vbox_new (FALSE, 5);
+  btk_container_add (BTK_CONTAINER (window), vbox);
 
-  frame = gtk_frame_new ("Testing");
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  frame = btk_frame_new ("Testing");
+  btk_box_pack_start (BTK_BOX (vbox), frame, TRUE, TRUE, 0);
 
-  button = gtk_button_new_with_label ("Hello!");
-  gtk_container_add (GTK_CONTAINER (frame), button);
+  button = btk_button_new_with_label ("Hello!");
+  btk_container_add (BTK_CONTAINER (frame), button);
 
-  table = gtk_table_new (4, 2, FALSE);
-  gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
+  table = btk_table_new (4, 2, FALSE);
+  btk_box_pack_start (BTK_BOX (vbox), table, FALSE, FALSE, 0);
 
   /* Spin to control xthickness */
-  label = gtk_label_new ("xthickness: ");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);
+  label = btk_label_new ("xthickness: ");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 0, 1);
 
-  xthickness_spin = gtk_spin_button_new_with_range (0, 250, 1);
+  xthickness_spin = btk_spin_button_new_with_range (0, 250, 1);
   g_signal_connect (G_OBJECT (xthickness_spin), "value-changed", G_CALLBACK (spin_xthickness_cb), frame);
-  gtk_spin_button_set_value (GTK_SPIN_BUTTON (xthickness_spin), frame->style->xthickness);
-  gtk_table_attach_defaults (GTK_TABLE (table), xthickness_spin, 1, 2, 0, 1);
+  btk_spin_button_set_value (BTK_SPIN_BUTTON (xthickness_spin), frame->style->xthickness);
+  btk_table_attach_defaults (BTK_TABLE (table), xthickness_spin, 1, 2, 0, 1);
 
   /* Spin to control ythickness */
-  label = gtk_label_new ("ythickness: ");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2);
+  label = btk_label_new ("ythickness: ");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 1, 2);
 
-  ythickness_spin = gtk_spin_button_new_with_range (0, 250, 1);
+  ythickness_spin = btk_spin_button_new_with_range (0, 250, 1);
   g_signal_connect (G_OBJECT (ythickness_spin), "value-changed", G_CALLBACK (spin_ythickness_cb), frame);
-  gtk_spin_button_set_value (GTK_SPIN_BUTTON (ythickness_spin), frame->style->ythickness);
-  gtk_table_attach_defaults (GTK_TABLE (table), ythickness_spin, 1, 2, 1, 2);
+  btk_spin_button_set_value (BTK_SPIN_BUTTON (ythickness_spin), frame->style->ythickness);
+  btk_table_attach_defaults (BTK_TABLE (table), ythickness_spin, 1, 2, 1, 2);
 
   /* Spin to control label xalign */
-  label = gtk_label_new ("xalign: ");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);
+  label = btk_label_new ("xalign: ");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 2, 3);
 
-  xalign_spin = gtk_spin_button_new_with_range (0.0, 1.0, 0.1);
+  xalign_spin = btk_spin_button_new_with_range (0.0, 1.0, 0.1);
   g_signal_connect (G_OBJECT (xalign_spin), "value-changed", G_CALLBACK (spin_xalign_cb), frame);
-  gtk_spin_button_set_value (GTK_SPIN_BUTTON (xalign_spin), GTK_FRAME (frame)->label_xalign);
-  gtk_table_attach_defaults (GTK_TABLE (table), xalign_spin, 1, 2, 2, 3);
+  btk_spin_button_set_value (BTK_SPIN_BUTTON (xalign_spin), BTK_FRAME (frame)->label_xalign);
+  btk_table_attach_defaults (BTK_TABLE (table), xalign_spin, 1, 2, 2, 3);
 
   /* Spin to control label yalign */
-  label = gtk_label_new ("yalign: ");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 3, 4);
+  label = btk_label_new ("yalign: ");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 3, 4);
 
-  yalign_spin = gtk_spin_button_new_with_range (0.0, 1.0, 0.1);
+  yalign_spin = btk_spin_button_new_with_range (0.0, 1.0, 0.1);
   g_signal_connect (G_OBJECT (yalign_spin), "value-changed", G_CALLBACK (spin_yalign_cb), frame);
-  gtk_spin_button_set_value (GTK_SPIN_BUTTON (yalign_spin), GTK_FRAME (frame)->label_yalign);
-  gtk_table_attach_defaults (GTK_TABLE (table), yalign_spin, 1, 2, 3, 4);
+  btk_spin_button_set_value (BTK_SPIN_BUTTON (yalign_spin), BTK_FRAME (frame)->label_yalign);
+  btk_table_attach_defaults (BTK_TABLE (table), yalign_spin, 1, 2, 3, 4);
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

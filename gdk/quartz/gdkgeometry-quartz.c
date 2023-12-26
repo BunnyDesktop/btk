@@ -1,4 +1,4 @@
-/* gdkgeometry-quartz.c
+/* bdkgeometry-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,46 +20,46 @@
 
 #include "config.h"
 
-#include "gdkprivate-quartz.h"
+#include "bdkprivate-quartz.h"
 
 void
-_gdk_quartz_window_queue_translation (GdkWindow *window,
-				      GdkGC     *gc,
-                                      GdkRegion *area,
+_bdk_quartz_window_queue_translation (BdkWindow *window,
+				      BdkGC     *gc,
+                                      BdkRebunnyion *area,
                                       gint       dx,
                                       gint       dy)
 {
-  GdkWindowObject *private = (GdkWindowObject *)window;
-  GdkWindowImplQuartz *impl = (GdkWindowImplQuartz *)private->impl;
+  BdkWindowObject *private = (BdkWindowObject *)window;
+  BdkWindowImplQuartz *impl = (BdkWindowImplQuartz *)private->impl;
 
   int i, n_rects;
-  GdkRegion *intersection;
-  GdkRectangle *rects;
+  BdkRebunnyion *intersection;
+  BdkRectangle *rects;
 
-  /* We will intersect the known region that needs display with the given
+  /* We will intersect the known rebunnyion that needs display with the given
    * area.  This intersection will be translated by dx, dy.  For the end
    * result, we will also set that it needs display.
    */
 
-  if (!impl->needs_display_region)
+  if (!impl->needs_display_rebunnyion)
     return;
 
-  intersection = gdk_region_copy (impl->needs_display_region);
-  gdk_region_intersect (intersection, area);
-  gdk_region_offset (intersection, dx, dy);
+  intersection = bdk_rebunnyion_copy (impl->needs_display_rebunnyion);
+  bdk_rebunnyion_intersect (intersection, area);
+  bdk_rebunnyion_offset (intersection, dx, dy);
 
-  gdk_region_get_rectangles (intersection, &rects, &n_rects);
+  bdk_rebunnyion_get_rectangles (intersection, &rects, &n_rects);
 
   for (i = 0; i < n_rects; i++)
-    _gdk_quartz_window_set_needs_display_in_rect (window, &rects[i]);
+    _bdk_quartz_window_set_needs_display_in_rect (window, &rects[i]);
 
   g_free (rects);
-  gdk_region_destroy (intersection);
+  bdk_rebunnyion_destroy (intersection);
 }
 
 gboolean
-_gdk_quartz_window_queue_antiexpose (GdkWindow *window,
-                                     GdkRegion *area)
+_bdk_quartz_window_queue_antiexpose (BdkWindow *window,
+                                     BdkRebunnyion *area)
 {
   return FALSE;
 }

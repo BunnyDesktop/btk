@@ -1,7 +1,7 @@
-## Makefile for building the Gtk+ dlls with Microsoft C
+## Makefile for building the Btk+ dlls with Microsoft C
 ## Use: nmake -f makefile.msc
 
-PARTS = gdk gtk tests
+PARTS = bdk btk tests
 
 all : \
 	config.h \

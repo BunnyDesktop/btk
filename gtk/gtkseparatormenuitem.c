@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,34 +18,34 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
-#include "gtkseparatormenuitem.h"
-#include "gtkalias.h"
+#include "btkseparatormenuitem.h"
+#include "btkalias.h"
 
-G_DEFINE_TYPE (GtkSeparatorMenuItem, gtk_separator_menu_item, GTK_TYPE_MENU_ITEM)
+G_DEFINE_TYPE (BtkSeparatorMenuItem, btk_separator_menu_item, BTK_TYPE_MENU_ITEM)
 
 static void
-gtk_separator_menu_item_class_init (GtkSeparatorMenuItemClass *class)
+btk_separator_menu_item_class_init (BtkSeparatorMenuItemClass *class)
 {
-  GTK_CONTAINER_CLASS (class)->child_type = NULL;
+  BTK_CONTAINER_CLASS (class)->child_type = NULL;
 }
 
 static void 
-gtk_separator_menu_item_init (GtkSeparatorMenuItem *item)
+btk_separator_menu_item_init (BtkSeparatorMenuItem *item)
 {
 }
 
-GtkWidget *
-gtk_separator_menu_item_new (void)
+BtkWidget *
+btk_separator_menu_item_new (void)
 {
-  return g_object_new (GTK_TYPE_SEPARATOR_MENU_ITEM, NULL);
+  return g_object_new (BTK_TYPE_SEPARATOR_MENU_ITEM, NULL);
 }
 
-#define __GTK_SEPARATOR_MENU_ITEM_C__
-#include "gtkaliasdef.c"
+#define __BTK_SEPARATOR_MENU_ITEM_C__
+#include "btkaliasdef.c"

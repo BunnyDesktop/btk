@@ -1,6 +1,6 @@
-/* gtkkeyhash.h: Keymap aware matching of key bindings
+/* btkkeyhash.h: Keymap aware matching of key bindings
  *
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 2002, Red Hat Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,33 +19,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_KEY_HASH_H__
-#define __GTK_KEY_HASH_H__
+#ifndef __BTK_KEY_HASH_H__
+#define __BTK_KEY_HASH_H__
 
-#include <gdk/gdk.h>
+#include <bdk/bdk.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GtkKeyHash GtkKeyHash;
+typedef struct _BtkKeyHash BtkKeyHash;
 
-GtkKeyHash *_gtk_key_hash_new           (GdkKeymap       *keymap,
+BtkKeyHash *_btk_key_hash_new           (BdkKeymap       *keymap,
 					 GDestroyNotify   item_destroy_notify);
-void        _gtk_key_hash_add_entry     (GtkKeyHash      *key_hash,
+void        _btk_key_hash_add_entry     (BtkKeyHash      *key_hash,
 					 guint            keyval,
-					 GdkModifierType  modifiers,
+					 BdkModifierType  modifiers,
 					 gpointer         value);
-void        _gtk_key_hash_remove_entry  (GtkKeyHash      *key_hash,
+void        _btk_key_hash_remove_entry  (BtkKeyHash      *key_hash,
 					 gpointer         value);
-GSList *    _gtk_key_hash_lookup        (GtkKeyHash      *key_hash,
+GSList *    _btk_key_hash_lookup        (BtkKeyHash      *key_hash,
 					 guint16          hardware_keycode,
-					 GdkModifierType  state,
-					 GdkModifierType  mask,
+					 BdkModifierType  state,
+					 BdkModifierType  mask,
 					 gint             group);
-GSList *    _gtk_key_hash_lookup_keyval (GtkKeyHash      *key_hash,
+GSList *    _btk_key_hash_lookup_keyval (BtkKeyHash      *key_hash,
 					 guint            keyval,
-					 GdkModifierType  modifiers);
-void        _gtk_key_hash_free          (GtkKeyHash      *key_hash);
+					 BdkModifierType  modifiers);
+void        _btk_key_hash_free          (BtkKeyHash      *key_hash);
 
 G_END_DECLS
 
-#endif /* __GTK_KEY_HASH_H__ */
+#endif /* __BTK_KEY_HASH_H__ */

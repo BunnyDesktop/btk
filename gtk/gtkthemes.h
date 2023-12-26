@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * Themes added by The Rasterman <raster@redhat.com>
@@ -19,30 +19,30 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_THEMES_H__
-#define __GTK_THEMES_H__
+#ifndef __BTK_THEMES_H__
+#define __BTK_THEMES_H__
 
 
-#include <gtk/gtkstyle.h>
-#include <gtk/gtkwidget.h>
+#include <btk/btkstyle.h>
+#include <btk/btkwidget.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_THEME_ENGINE             (gtk_theme_engine_get_type ())
-#define GTK_THEME_ENGINE(theme_engine)    (G_TYPE_CHECK_INSTANCE_CAST ((theme_engine), GTK_TYPE_THEME_ENGINE, GtkThemeEngine))
-#define GTK_IS_THEME_ENGINE(theme_engine) (G_TYPE_CHECK_INSTANCE_TYPE ((theme_engine), GTK_TYPE_THEME_ENGINE))
+#define BTK_TYPE_THEME_ENGINE             (btk_theme_engine_get_type ())
+#define BTK_THEME_ENGINE(theme_engine)    (G_TYPE_CHECK_INSTANCE_CAST ((theme_engine), BTK_TYPE_THEME_ENGINE, BtkThemeEngine))
+#define BTK_IS_THEME_ENGINE(theme_engine) (G_TYPE_CHECK_INSTANCE_TYPE ((theme_engine), BTK_TYPE_THEME_ENGINE))
 
-GType           gtk_theme_engine_get_type        (void) G_GNUC_CONST;
-GtkThemeEngine *gtk_theme_engine_get             (const gchar     *name);
-GtkRcStyle     *gtk_theme_engine_create_rc_style (GtkThemeEngine  *engine);
+GType           btk_theme_engine_get_type        (void) G_GNUC_CONST;
+BtkThemeEngine *btk_theme_engine_get             (const gchar     *name);
+BtkRcStyle     *btk_theme_engine_create_rc_style (BtkThemeEngine  *engine);
 
 G_END_DECLS
 
-#endif /* __GTK_THEMES_H__ */
+#endif /* __BTK_THEMES_H__ */

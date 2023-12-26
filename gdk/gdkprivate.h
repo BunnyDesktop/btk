@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,43 +18,43 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_PRIVATE_H__
-#define __GDK_PRIVATE_H__
+#ifndef __BDK_PRIVATE_H__
+#define __BDK_PRIVATE_H__
 
-#include <gdk/gdk.h>
+#include <bdk/bdk.h>
 
 G_BEGIN_DECLS
 
-#define GDK_PARENT_RELATIVE_BG ((GdkPixmap *)1L)
-#define GDK_NO_BG ((GdkPixmap *)2L)
+#define BDK_PARENT_RELATIVE_BG ((BdkPixmap *)1L)
+#define BDK_NO_BG ((BdkPixmap *)2L)
 
-#ifndef GDK_COMPILATION
-#define GDK_WINDOW_TYPE(d) (gdk_window_get_window_type (GDK_WINDOW (d)))
-#define GDK_WINDOW_DESTROYED(d) (gdk_window_is_destroyed (GDK_WINDOW (d)))
+#ifndef BDK_COMPILATION
+#define BDK_WINDOW_TYPE(d) (bdk_window_get_window_type (BDK_WINDOW (d)))
+#define BDK_WINDOW_DESTROYED(d) (bdk_window_is_destroyed (BDK_WINDOW (d)))
 #endif
 
-void gdk_window_destroy_notify	     (GdkWindow *window);
+void bdk_window_destroy_notify	     (BdkWindow *window);
 
-void gdk_synthesize_window_state (GdkWindow     *window,
-                                  GdkWindowState unset_flags,
-                                  GdkWindowState set_flags);
+void bdk_synthesize_window_state (BdkWindow     *window,
+                                  BdkWindowState unset_flags,
+                                  BdkWindowState set_flags);
 
-/* Tests whether a pair of x,y may cause overflows when converted to Pango
- * units (multiplied by PANGO_SCALE).  We don't allow the entire range, leave
+/* Tests whether a pair of x,y may cause overflows when converted to Bango
+ * units (multiplied by BANGO_SCALE).  We don't allow the entire range, leave
  * some space for additions afterwards, to be safe...
  */
-#define GDK_PANGO_UNITS_OVERFLOWS(x,y) (G_UNLIKELY ( \
-	(y) >= PANGO_PIXELS (G_MAXINT-PANGO_SCALE)/2 || \
-	(x) >= PANGO_PIXELS (G_MAXINT-PANGO_SCALE)/2 || \
-	(y) <=-PANGO_PIXELS (G_MAXINT-PANGO_SCALE)/2 || \
-	(x) <=-PANGO_PIXELS (G_MAXINT-PANGO_SCALE)/2))
+#define BDK_BANGO_UNITS_OVERFLOWS(x,y) (G_UNLIKELY ( \
+	(y) >= BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
+	(x) >= BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
+	(y) <=-BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2 || \
+	(x) <=-BANGO_PIXELS (G_MAXINT-BANGO_SCALE)/2))
 
 G_END_DECLS
 
-#endif /* __GDK_PRIVATE_H__ */
+#endif /* __BDK_PRIVATE_H__ */

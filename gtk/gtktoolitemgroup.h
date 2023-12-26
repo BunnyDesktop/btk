@@ -1,4 +1,4 @@
-/* GtkToolPalette -- A tool palette with categories and DnD support
+/* BtkToolPalette -- A tool palette with categories and DnD support
  * Copyright (C) 2008  Openismus GmbH
  *
  * This library is free software; you can redistribute it and/or
@@ -19,81 +19,81 @@
  *      Mathias Hasselmann
  */
 
-#ifndef __GTK_TOOL_ITEM_GROUP_H__
-#define __GTK_TOOL_ITEM_GROUP_H__
+#ifndef __BTK_TOOL_ITEM_GROUP_H__
+#define __BTK_TOOL_ITEM_GROUP_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtktoolitem.h>
+#include <btk/btkcontainer.h>
+#include <btk/btktoolitem.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TOOL_ITEM_GROUP           (gtk_tool_item_group_get_type ())
-#define GTK_TOOL_ITEM_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, GTK_TYPE_TOOL_ITEM_GROUP, GtkToolItemGroup))
-#define GTK_TOOL_ITEM_GROUP_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST (cls, GTK_TYPE_TOOL_ITEM_GROUP, GtkToolItemGroupClass))
-#define GTK_IS_TOOL_ITEM_GROUP(obj)        (G_TYPE_CHECK_INSTANCE_TYPE (obj, GTK_TYPE_TOOL_ITEM_GROUP))
-#define GTK_IS_TOOL_ITEM_GROUP_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE (obj, GTK_TYPE_TOOL_ITEM_GROUP))
-#define GTK_TOOL_ITEM_GROUP_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TOOL_ITEM_GROUP, GtkToolItemGroupClass))
+#define BTK_TYPE_TOOL_ITEM_GROUP           (btk_tool_item_group_get_type ())
+#define BTK_TOOL_ITEM_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroup))
+#define BTK_TOOL_ITEM_GROUP_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
+#define BTK_IS_TOOL_ITEM_GROUP(obj)        (G_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
+#define BTK_IS_TOOL_ITEM_GROUP_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
+#define BTK_TOOL_ITEM_GROUP_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
 
-typedef struct _GtkToolItemGroup        GtkToolItemGroup;
-typedef struct _GtkToolItemGroupClass   GtkToolItemGroupClass;
-typedef struct _GtkToolItemGroupPrivate GtkToolItemGroupPrivate;
+typedef struct _BtkToolItemGroup        BtkToolItemGroup;
+typedef struct _BtkToolItemGroupClass   BtkToolItemGroupClass;
+typedef struct _BtkToolItemGroupPrivate BtkToolItemGroupPrivate;
 
 /**
- * GtkToolItemGroup:
+ * BtkToolItemGroup:
  *
  * This should not be accessed directly. Use the accessor functions below.
  */
-struct _GtkToolItemGroup
+struct _BtkToolItemGroup
 {
-  GtkContainer parent_instance;
-  GtkToolItemGroupPrivate *priv;
+  BtkContainer parent_instance;
+  BtkToolItemGroupPrivate *priv;
 };
 
-struct _GtkToolItemGroupClass
+struct _BtkToolItemGroupClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 };
 
-GType                 gtk_tool_item_group_get_type          (void) G_GNUC_CONST;
-GtkWidget*            gtk_tool_item_group_new               (const gchar        *label);
+GType                 btk_tool_item_group_get_type          (void) G_GNUC_CONST;
+BtkWidget*            btk_tool_item_group_new               (const gchar        *label);
 
-void                  gtk_tool_item_group_set_label         (GtkToolItemGroup   *group,
+void                  btk_tool_item_group_set_label         (BtkToolItemGroup   *group,
                                                              const gchar        *label);
-void                  gtk_tool_item_group_set_label_widget  (GtkToolItemGroup   *group,
-                                                             GtkWidget          *label_widget);
-void                  gtk_tool_item_group_set_collapsed      (GtkToolItemGroup  *group,
+void                  btk_tool_item_group_set_label_widget  (BtkToolItemGroup   *group,
+                                                             BtkWidget          *label_widget);
+void                  btk_tool_item_group_set_collapsed      (BtkToolItemGroup  *group,
                                                              gboolean            collapsed);
-void                  gtk_tool_item_group_set_ellipsize     (GtkToolItemGroup   *group,
-                                                             PangoEllipsizeMode  ellipsize);
-void                  gtk_tool_item_group_set_header_relief (GtkToolItemGroup   *group,
-                                                             GtkReliefStyle      style);
+void                  btk_tool_item_group_set_ellipsize     (BtkToolItemGroup   *group,
+                                                             BangoEllipsizeMode  ellipsize);
+void                  btk_tool_item_group_set_header_relief (BtkToolItemGroup   *group,
+                                                             BtkReliefStyle      style);
 
-const gchar *         gtk_tool_item_group_get_label         (GtkToolItemGroup   *group);
-GtkWidget            *gtk_tool_item_group_get_label_widget  (GtkToolItemGroup   *group);
-gboolean              gtk_tool_item_group_get_collapsed     (GtkToolItemGroup   *group);
-PangoEllipsizeMode    gtk_tool_item_group_get_ellipsize     (GtkToolItemGroup   *group);
-GtkReliefStyle        gtk_tool_item_group_get_header_relief (GtkToolItemGroup   *group);
+const gchar *         btk_tool_item_group_get_label         (BtkToolItemGroup   *group);
+BtkWidget            *btk_tool_item_group_get_label_widget  (BtkToolItemGroup   *group);
+gboolean              btk_tool_item_group_get_collapsed     (BtkToolItemGroup   *group);
+BangoEllipsizeMode    btk_tool_item_group_get_ellipsize     (BtkToolItemGroup   *group);
+BtkReliefStyle        btk_tool_item_group_get_header_relief (BtkToolItemGroup   *group);
 
-void                  gtk_tool_item_group_insert            (GtkToolItemGroup   *group,
-                                                             GtkToolItem        *item,
+void                  btk_tool_item_group_insert            (BtkToolItemGroup   *group,
+                                                             BtkToolItem        *item,
                                                              gint                position);
-void                  gtk_tool_item_group_set_item_position (GtkToolItemGroup   *group,
-                                                             GtkToolItem        *item,
+void                  btk_tool_item_group_set_item_position (BtkToolItemGroup   *group,
+                                                             BtkToolItem        *item,
                                                              gint                position);
-gint                  gtk_tool_item_group_get_item_position (GtkToolItemGroup   *group,
-                                                             GtkToolItem        *item);
+gint                  btk_tool_item_group_get_item_position (BtkToolItemGroup   *group,
+                                                             BtkToolItem        *item);
 
-guint                 gtk_tool_item_group_get_n_items       (GtkToolItemGroup   *group);
-GtkToolItem*          gtk_tool_item_group_get_nth_item      (GtkToolItemGroup   *group,
+guint                 btk_tool_item_group_get_n_items       (BtkToolItemGroup   *group);
+BtkToolItem*          btk_tool_item_group_get_nth_item      (BtkToolItemGroup   *group,
                                                              guint               index);
-GtkToolItem*          gtk_tool_item_group_get_drop_item     (GtkToolItemGroup   *group,
+BtkToolItem*          btk_tool_item_group_get_drop_item     (BtkToolItemGroup   *group,
                                                              gint                x,
                                                              gint                y);
 
 G_END_DECLS
 
-#endif /* __GTK_TOOL_ITEM_GROUP_H__ */
+#endif /* __BTK_TOOL_ITEM_GROUP_H__ */

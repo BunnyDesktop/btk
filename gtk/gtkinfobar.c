@@ -1,6 +1,6 @@
 /*
- * gtkinfobar.c
- * This file is part of GTK+
+ * btkinfobar.c
+ * This file is part of BTK+
  *
  * Copyright (C) 2005 - Paolo Maggi
  *
@@ -22,10 +22,10 @@
 
 /*
  * Modified by the gedit Team, 2005. See the AUTHORS file for a
- * list of people on the gtk Team.
+ * list of people on the btk Team.
  * See the gedit ChangeLog files for a list of changes.
  *
- * Modified by the GTK+ team, 2008-2009.
+ * Modified by the BTK+ team, 2008-2009.
  */
 
 
@@ -33,86 +33,86 @@
 
 #include <stdlib.h>
 
-#include "gtkinfobar.h"
-#include "gtkaccessible.h"
-#include "gtkbuildable.h"
-#include "gtkbox.h"
-#include "gtkvbbox.h"
-#include "gtklabel.h"
-#include "gtkbutton.h"
-#include "gtkenums.h"
-#include "gtkbindings.h"
-#include "gtkdialog.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
-#include "gtkstock.h"
-#include "gdkkeysyms.h"
-#include "gtkalias.h"
+#include "btkinfobar.h"
+#include "btkaccessible.h"
+#include "btkbuildable.h"
+#include "btkbox.h"
+#include "btkvbbox.h"
+#include "btklabel.h"
+#include "btkbutton.h"
+#include "btkenums.h"
+#include "btkbindings.h"
+#include "btkdialog.h"
+#include "btkintl.h"
+#include "btkprivate.h"
+#include "btkstock.h"
+#include "bdkkeysyms.h"
+#include "btkalias.h"
 
 
 /**
- * SECTION:gtkinfobar
+ * SECTION:btkinfobar
  * @short_description: Report important messages to the user
- * @include: gtk/gtk.h
- * @see_also: #GtkStatusbar, #GtkMessageDialog
+ * @include: btk/btk.h
+ * @see_also: #BtkStatusbar, #BtkMessageDialog
  *
- * #GtkInfoBar is a widget that can be used to show messages to
+ * #BtkInfoBar is a widget that can be used to show messages to
  * the user without showing a dialog. It is often temporarily shown
- * at the top or bottom of a document. In contrast to #GtkDialog, which
- * has a horizontal action area at the bottom, #GtkInfoBar has a
+ * at the top or bottom of a document. In contrast to #BtkDialog, which
+ * has a horizontal action area at the bottom, #BtkInfoBar has a
  * vertical action area at the side.
  *
- * The API of #GtkInfoBar is very similar to #GtkDialog, allowing you
- * to add buttons to the action area with gtk_info_bar_add_button() or
- * gtk_info_bar_new_with_buttons(). The sensitivity of action widgets
- * can be controlled with gtk_info_bar_set_response_sensitive().
- * To add widgets to the main content area of a #GtkInfoBar, use
- * gtk_info_bar_get_content_area() and add your widgets to the container.
+ * The API of #BtkInfoBar is very similar to #BtkDialog, allowing you
+ * to add buttons to the action area with btk_info_bar_add_button() or
+ * btk_info_bar_new_with_buttons(). The sensitivity of action widgets
+ * can be controlled with btk_info_bar_set_response_sensitive().
+ * To add widgets to the main content area of a #BtkInfoBar, use
+ * btk_info_bar_get_content_area() and add your widgets to the container.
  *
- * Similar to #GtkMessageDialog, the contents of a #GtkInfoBar can by
+ * Similar to #BtkMessageDialog, the contents of a #BtkInfoBar can by
  * classified as error message, warning, informational message, etc,
- * by using gtk_info_bar_set_message_type(). GTK+ uses the message type
+ * by using btk_info_bar_set_message_type(). BTK+ uses the message type
  * to determine the background color of the message area.
  *
  * <example>
- * <title>Simple GtkInfoBar usage.</title>
+ * <title>Simple BtkInfoBar usage.</title>
  * <programlisting>
  * /&ast; set up info bar &ast;/
- * info_bar = gtk_info_bar_new ();
- * gtk_widget_set_no_show_all (info_bar, TRUE);
- * message_label = gtk_label_new ("");
- * gtk_widget_show (message_label);
- * content_area = gtk_info_bar_get_content_area (GTK_INFO_BAR (info_bar));
- * gtk_container_add (GTK_CONTAINER (content_area), message_label);
- * gtk_info_bar_add_button (GTK_INFO_BAR (info_bar),
- *                          GTK_STOCK_OK, GTK_RESPONSE_OK);
+ * info_bar = btk_info_bar_new ();
+ * btk_widget_set_no_show_all (info_bar, TRUE);
+ * message_label = btk_label_new ("");
+ * btk_widget_show (message_label);
+ * content_area = btk_info_bar_get_content_area (BTK_INFO_BAR (info_bar));
+ * btk_container_add (BTK_CONTAINER (content_area), message_label);
+ * btk_info_bar_add_button (BTK_INFO_BAR (info_bar),
+ *                          BTK_STOCK_OK, BTK_RESPONSE_OK);
  * g_signal_connect (info_bar, "response",
- *                   G_CALLBACK (gtk_widget_hide), NULL);
- * gtk_table_attach (GTK_TABLE (table),
+ *                   G_CALLBACK (btk_widget_hide), NULL);
+ * btk_table_attach (BTK_TABLE (table),
  *                   info_bar,
  *                   0, 1, 2, 3,
- *                   GTK_EXPAND | GTK_FILL,  0,
+ *                   BTK_EXPAND | BTK_FILL,  0,
  *                   0,                      0);
  *
  * /&ast; ... &ast;/
  *
  * /&ast; show an error message &ast;/
- * gtk_label_set_text (GTK_LABEL (message_label), error_message);
- * gtk_info_bar_set_message_type (GTK_INFO_BAR (info_bar),
- *                                GTK_MESSAGE_ERROR);
- * gtk_widget_show (info_bar);
+ * btk_label_set_text (BTK_LABEL (message_label), error_message);
+ * btk_info_bar_set_message_type (BTK_INFO_BAR (info_bar),
+ *                                BTK_MESSAGE_ERROR);
+ * btk_widget_show (info_bar);
  * </programlisting>
  * </example>
  *
- * <refsect2 id="GtkInfoBar-BUILDER-UI">
- * <title>GtkInfoBar as GtkBuildable</title>
+ * <refsect2 id="BtkInfoBar-BUILDER-UI">
+ * <title>BtkInfoBar as BtkBuildable</title>
  * <para>
- * The GtkInfoBar implementation of the GtkBuildable interface exposes
+ * The BtkInfoBar implementation of the BtkBuildable interface exposes
  * the content area and action area as internal children with the names
  * "content_area" and "action_area".
  * </para>
  * <para>
- * GtkInfoBar supports a custom &lt;action-widgets&gt; element, which
+ * BtkInfoBar supports a custom &lt;action-widgets&gt; element, which
  * can contain multiple &lt;action-widget&gt; elements. The "response"
  * attribute specifies a numeric response, and the content of the element
  * is the id of widget (which should be a child of the dialogs @action_area).
@@ -120,10 +120,10 @@
  * </refsect2>
  */
 
-#define GTK_INFO_BAR_GET_PRIVATE(object) \
+#define BTK_INFO_BAR_GET_PRIVATE(object) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((object), \
-                                GTK_TYPE_INFO_BAR, \
-                                GtkInfoBarPrivate))
+                                BTK_TYPE_INFO_BAR, \
+                                BtkInfoBarPrivate))
 
 enum
 {
@@ -131,12 +131,12 @@ enum
   PROP_MESSAGE_TYPE
 };
 
-struct _GtkInfoBarPrivate
+struct _BtkInfoBarPrivate
 {
-  GtkWidget *content_area;
-  GtkWidget *action_area;
+  BtkWidget *content_area;
+  BtkWidget *action_area;
 
-  GtkMessageType message_type;
+  BtkMessageType message_type;
 };
 
 typedef struct _ResponseData ResponseData;
@@ -156,55 +156,55 @@ enum
 static guint signals[LAST_SIGNAL];
 
 
-static void     gtk_info_bar_set_property (GObject        *object,
+static void     btk_info_bar_set_property (GObject        *object,
                                            guint           prop_id,
                                            const GValue   *value,
                                            GParamSpec     *pspec);
-static void     gtk_info_bar_get_property (GObject        *object,
+static void     btk_info_bar_get_property (GObject        *object,
                                            guint           prop_id,
                                            GValue         *value,
                                            GParamSpec     *pspec);
-static void     gtk_info_bar_style_set    (GtkWidget      *widget,
-                                           GtkStyle       *prev_style);
-static gboolean gtk_info_bar_expose       (GtkWidget      *widget,
-                                           GdkEventExpose *event);
-static void     gtk_info_bar_buildable_interface_init     (GtkBuildableIface *iface);
-static GObject *gtk_info_bar_buildable_get_internal_child (GtkBuildable  *buildable,
-                                                           GtkBuilder    *builder,
+static void     btk_info_bar_style_set    (BtkWidget      *widget,
+                                           BtkStyle       *prev_style);
+static gboolean btk_info_bar_expose       (BtkWidget      *widget,
+                                           BdkEventExpose *event);
+static void     btk_info_bar_buildable_interface_init     (BtkBuildableIface *iface);
+static GObject *btk_info_bar_buildable_get_internal_child (BtkBuildable  *buildable,
+                                                           BtkBuilder    *builder,
                                                            const gchar   *childname);
-static gboolean  gtk_info_bar_buildable_custom_tag_start   (GtkBuildable  *buildable,
-                                                            GtkBuilder    *builder,
+static gboolean  btk_info_bar_buildable_custom_tag_start   (BtkBuildable  *buildable,
+                                                            BtkBuilder    *builder,
                                                             GObject       *child,
                                                             const gchar   *tagname,
                                                             GMarkupParser *parser,
                                                             gpointer      *data);
-static void      gtk_info_bar_buildable_custom_finished    (GtkBuildable  *buildable,
-                                                            GtkBuilder    *builder,
+static void      btk_info_bar_buildable_custom_finished    (BtkBuildable  *buildable,
+                                                            BtkBuilder    *builder,
                                                             GObject       *child,
                                                             const gchar   *tagname,
                                                             gpointer       user_data);
 
 
-G_DEFINE_TYPE_WITH_CODE (GtkInfoBar, gtk_info_bar, GTK_TYPE_HBOX,
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                                                gtk_info_bar_buildable_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BtkInfoBar, btk_info_bar, BTK_TYPE_HBOX,
+                         G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+                                                btk_info_bar_buildable_interface_init))
 
 static void
-gtk_info_bar_set_property (GObject      *object,
+btk_info_bar_set_property (GObject      *object,
                            guint         prop_id,
                            const GValue *value,
                            GParamSpec   *pspec)
 {
-  GtkInfoBar *info_bar;
-  GtkInfoBarPrivate *priv;
+  BtkInfoBar *info_bar;
+  BtkInfoBarPrivate *priv;
 
-  info_bar = GTK_INFO_BAR (object);
-  priv = GTK_INFO_BAR_GET_PRIVATE (info_bar);
+  info_bar = BTK_INFO_BAR (object);
+  priv = BTK_INFO_BAR_GET_PRIVATE (info_bar);
 
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      gtk_info_bar_set_message_type (info_bar, g_value_get_enum (value));
+      btk_info_bar_set_message_type (info_bar, g_value_get_enum (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -213,21 +213,21 @@ gtk_info_bar_set_property (GObject      *object,
 }
 
 static void
-gtk_info_bar_get_property (GObject    *object,
+btk_info_bar_get_property (GObject    *object,
                            guint       prop_id,
                            GValue     *value,
                            GParamSpec *pspec)
 {
-  GtkInfoBar *info_bar;
-  GtkInfoBarPrivate *priv;
+  BtkInfoBar *info_bar;
+  BtkInfoBarPrivate *priv;
 
-  info_bar = GTK_INFO_BAR (object);
-  priv = GTK_INFO_BAR_GET_PRIVATE (info_bar);
+  info_bar = BTK_INFO_BAR (object);
+  priv = BTK_INFO_BAR_GET_PRIVATE (info_bar);
 
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      g_value_set_enum (value, gtk_info_bar_get_message_type (info_bar));
+      g_value_set_enum (value, btk_info_bar_get_message_type (info_bar));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -236,9 +236,9 @@ gtk_info_bar_get_property (GObject    *object,
 }
 
 static void
-gtk_info_bar_finalize (GObject *object)
+btk_info_bar_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (gtk_info_bar_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_info_bar_parent_class)->finalize (object);
 }
 
 static void
@@ -248,18 +248,18 @@ response_data_free (gpointer data)
 }
 
 static ResponseData *
-get_response_data (GtkWidget *widget,
+get_response_data (BtkWidget *widget,
                    gboolean   create)
 {
   ResponseData *ad = g_object_get_data (G_OBJECT (widget),
-                                        "gtk-info-bar-response-data");
+                                        "btk-info-bar-response-data");
 
   if (ad == NULL && create)
     {
       ad = g_slice_new (ResponseData);
 
       g_object_set_data_full (G_OBJECT (widget),
-                              I_("gtk-info-bar-response-data"),
+                              I_("btk-info-bar-response-data"),
                               ad,
                               response_data_free);
     }
@@ -267,14 +267,14 @@ get_response_data (GtkWidget *widget,
   return ad;
 }
 
-static GtkWidget *
-find_button (GtkInfoBar *info_bar,
+static BtkWidget *
+find_button (BtkInfoBar *info_bar,
              gint        response_id)
 {
   GList *children, *list;
-  GtkWidget *child = NULL;
+  BtkWidget *child = NULL;
 
-  children = gtk_container_get_children (GTK_CONTAINER (info_bar->priv->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (info_bar->priv->action_area));
 
   for (list = children; list; list = list->next)
     {
@@ -293,20 +293,20 @@ find_button (GtkInfoBar *info_bar,
 }
 
 static void
-gtk_info_bar_close (GtkInfoBar *info_bar)
+btk_info_bar_close (BtkInfoBar *info_bar)
 {
-  if (!find_button (info_bar, GTK_RESPONSE_CANCEL))
+  if (!find_button (info_bar, BTK_RESPONSE_CANCEL))
     return;
 
-  gtk_info_bar_response (GTK_INFO_BAR (info_bar),
-                         GTK_RESPONSE_CANCEL);
+  btk_info_bar_response (BTK_INFO_BAR (info_bar),
+                         BTK_RESPONSE_CANCEL);
 }
 
 static gboolean
-gtk_info_bar_expose (GtkWidget      *widget,
-                     GdkEventExpose *event)
+btk_info_bar_expose (BtkWidget      *widget,
+                     BdkEventExpose *event)
 {
-  GtkInfoBarPrivate *priv = GTK_INFO_BAR_GET_PRIVATE (widget);
+  BtkInfoBarPrivate *priv = BTK_INFO_BAR_GET_PRIVATE (widget);
   const char* type_detail[] = {
     "infobar-info",
     "infobar-warning",
@@ -315,16 +315,16 @@ gtk_info_bar_expose (GtkWidget      *widget,
     "infobar"
   };
 
-  if (priv->message_type != GTK_MESSAGE_OTHER)
+  if (priv->message_type != BTK_MESSAGE_OTHER)
     {
       const char *detail;
 
       detail = type_detail[priv->message_type];
 
-      gtk_paint_box (widget->style,
+      btk_paint_box (widget->style,
                      widget->window,
-                     GTK_STATE_NORMAL,
-                     GTK_SHADOW_OUT,
+                     BTK_STATE_NORMAL,
+                     BTK_SHADOW_OUT,
                      NULL,
                      widget,
                      detail,
@@ -334,33 +334,33 @@ gtk_info_bar_expose (GtkWidget      *widget,
                      widget->allocation.height);
     }
 
-  if (GTK_WIDGET_CLASS (gtk_info_bar_parent_class)->expose_event)
-    GTK_WIDGET_CLASS (gtk_info_bar_parent_class)->expose_event (widget, event);
+  if (BTK_WIDGET_CLASS (btk_info_bar_parent_class)->expose_event)
+    BTK_WIDGET_CLASS (btk_info_bar_parent_class)->expose_event (widget, event);
 
   return FALSE;
 }
 
 static void
-gtk_info_bar_class_init (GtkInfoBarClass *klass)
+btk_info_bar_class_init (BtkInfoBarClass *klass)
 {
-  GtkWidgetClass *widget_class;
+  BtkWidgetClass *widget_class;
   GObjectClass *object_class;
-  GtkBindingSet *binding_set;
+  BtkBindingSet *binding_set;
 
-  widget_class = GTK_WIDGET_CLASS (klass);
+  widget_class = BTK_WIDGET_CLASS (klass);
   object_class = G_OBJECT_CLASS (klass);
 
-  object_class->get_property = gtk_info_bar_get_property;
-  object_class->set_property = gtk_info_bar_set_property;
-  object_class->finalize = gtk_info_bar_finalize;
+  object_class->get_property = btk_info_bar_get_property;
+  object_class->set_property = btk_info_bar_set_property;
+  object_class->finalize = btk_info_bar_finalize;
 
-  widget_class->style_set = gtk_info_bar_style_set;
-  widget_class->expose_event = gtk_info_bar_expose;
+  widget_class->style_set = btk_info_bar_style_set;
+  widget_class->expose_event = btk_info_bar_expose;
 
-  klass->close = gtk_info_bar_close;
+  klass->close = btk_info_bar_close;
 
   /**
-   * GtkInfoBar:message-type:
+   * BtkInfoBar:message-type:
    *
    * The type of the message.
    *
@@ -373,7 +373,7 @@ gtk_info_bar_class_init (GtkInfoBarClass *klass)
    * "error_fg_color", "error_bg_color".
    * "other_fg_color", "other_bg_color".
    *
-   * If the type is #GTK_MESSAGE_OTHER, no info bar is painted but the
+   * If the type is #BTK_MESSAGE_OTHER, no info bar is painted but the
    * colors are still set.
    *
    * Since: 2.18
@@ -383,16 +383,16 @@ gtk_info_bar_class_init (GtkInfoBarClass *klass)
                                    g_param_spec_enum ("message-type",
                                                       P_("Message Type"),
                                                       P_("The type of message"),
-                                                      GTK_TYPE_MESSAGE_TYPE,
-                                                      GTK_MESSAGE_INFO,
-                                                      GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+                                                      BTK_TYPE_MESSAGE_TYPE,
+                                                      BTK_MESSAGE_INFO,
+                                                      BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
   /**
-   * GtkInfoBar::response:
+   * BtkInfoBar::response:
    * @info_bar: the object on which the signal is emitted
    * @response_id: the response ID
    *
    * Emitted when an action widget is clicked or the application programmer
-   * calls gtk_dialog_response(). The @response_id depends on which action
+   * calls btk_dialog_response(). The @response_id depends on which action
    * widget was clicked.
    *
    * Since: 2.18
@@ -400,14 +400,14 @@ gtk_info_bar_class_init (GtkInfoBarClass *klass)
   signals[RESPONSE] = g_signal_new (I_("response"),
                                     G_OBJECT_CLASS_TYPE (klass),
                                     G_SIGNAL_RUN_LAST,
-                                    G_STRUCT_OFFSET (GtkInfoBarClass, response),
+                                    G_STRUCT_OFFSET (BtkInfoBarClass, response),
                                     NULL, NULL,
                                     g_cclosure_marshal_VOID__INT,
                                     G_TYPE_NONE, 1,
                                     G_TYPE_INT);
 
   /**
-   * GtkInfoBar::close:
+   * BtkInfoBar::close:
    *
    * The ::close signal is a
    * <link linkend="keybinding-signals">keybinding signal</link>
@@ -421,102 +421,102 @@ gtk_info_bar_class_init (GtkInfoBarClass *klass)
   signals[CLOSE] =  g_signal_new (I_("close"),
                                   G_OBJECT_CLASS_TYPE (klass),
                                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                                  G_STRUCT_OFFSET (GtkInfoBarClass, close),
+                                  G_STRUCT_OFFSET (BtkInfoBarClass, close),
                                   NULL, NULL,
                                   g_cclosure_marshal_VOID__VOID,
                                   G_TYPE_NONE, 0);
 
   /**
-   * GtkInfoBar:content-area-border:
+   * BtkInfoBar:content-area-border:
    *
    * The width of the border around the content
    * content area of the info bar.
    *
    * Since: 2.18
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("content-area-border",
                                                              P_("Content area border"),
                                                              P_("Width of border around the content area"),
                                                              0,
                                                              G_MAXINT,
                                                              8,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
 
   /**
-   * GtkInfoBar:content-area-spacing:
+   * BtkInfoBar:content-area-spacing:
    *
    * The default spacing used between elements of the
    * content area of the info bar.
    *
    * Since: 2.18
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("content-area-spacing",
                                                              P_("Content area spacing"),
                                                              P_("Spacing between elements of the area"),
                                                              0,
                                                              G_MAXINT,
                                                              16,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
 
   /**
-   * GtkInfoBar:button-spacing:
+   * BtkInfoBar:button-spacing:
    *
    * Spacing between buttons in the action area of the info bar.
    *
    * Since: 2.18
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("button-spacing",
                                                              P_("Button spacing"),
                                                              P_("Spacing between buttons"),
                                                              0,
                                                              G_MAXINT,
                                                              6,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
 
   /**
-   * GtkInfoBar:action-area-border:
+   * BtkInfoBar:action-area-border:
    *
    * Width of the border around the action area of the info bar.
    *
    * Since: 2.18
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("action-area-border",
                                                              P_("Action area border"),
                                                              P_("Width of border around the action area"),
                                                              0,
                                                              G_MAXINT,
                                                              5,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
 
-  binding_set = gtk_binding_set_by_class (klass);
+  binding_set = btk_binding_set_by_class (klass);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_Escape, 0, "close", 0);
+  btk_binding_entry_add_signal (binding_set, BDK_Escape, 0, "close", 0);
 
-  g_type_class_add_private (object_class, sizeof (GtkInfoBarPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkInfoBarPrivate));
 }
 
 static void
-gtk_info_bar_update_colors (GtkInfoBar *info_bar)
+btk_info_bar_update_colors (BtkInfoBar *info_bar)
 {
-  GtkWidget *widget = (GtkWidget*)info_bar;
-  GtkInfoBarPrivate *priv;
-  GdkColor info_default_border_color     = { 0, 0xb800, 0xad00, 0x9d00 };
-  GdkColor info_default_fill_color       = { 0, 0xff00, 0xff00, 0xbf00 };
-  GdkColor warning_default_border_color  = { 0, 0xb000, 0x7a00, 0x2b00 };
-  GdkColor warning_default_fill_color    = { 0, 0xfc00, 0xaf00, 0x3e00 };
-  GdkColor question_default_border_color = { 0, 0x6200, 0x7b00, 0xd960 };
-  GdkColor question_default_fill_color   = { 0, 0x8c00, 0xb000, 0xd700 };
-  GdkColor error_default_border_color    = { 0, 0xa800, 0x2700, 0x2700 };
-  GdkColor error_default_fill_color      = { 0, 0xf000, 0x3800, 0x3800 };
-  GdkColor other_default_border_color    = { 0, 0xb800, 0xad00, 0x9d00 };
-  GdkColor other_default_fill_color      = { 0, 0xff00, 0xff00, 0xbf00 };
-  GdkColor *fg, *bg;
-  GdkColor sym_fg, sym_bg;
-  GtkStyle *style;
+  BtkWidget *widget = (BtkWidget*)info_bar;
+  BtkInfoBarPrivate *priv;
+  BdkColor info_default_border_color     = { 0, 0xb800, 0xad00, 0x9d00 };
+  BdkColor info_default_fill_color       = { 0, 0xff00, 0xff00, 0xbf00 };
+  BdkColor warning_default_border_color  = { 0, 0xb000, 0x7a00, 0x2b00 };
+  BdkColor warning_default_fill_color    = { 0, 0xfc00, 0xaf00, 0x3e00 };
+  BdkColor question_default_border_color = { 0, 0x6200, 0x7b00, 0xd960 };
+  BdkColor question_default_fill_color   = { 0, 0x8c00, 0xb000, 0xd700 };
+  BdkColor error_default_border_color    = { 0, 0xa800, 0x2700, 0x2700 };
+  BdkColor error_default_fill_color      = { 0, 0xf000, 0x3800, 0x3800 };
+  BdkColor other_default_border_color    = { 0, 0xb800, 0xad00, 0x9d00 };
+  BdkColor other_default_fill_color      = { 0, 0xff00, 0xff00, 0xbf00 };
+  BdkColor *fg, *bg;
+  BdkColor sym_fg, sym_bg;
+  BtkStyle *style;
   const char* fg_color_name[] = {
     "info_fg_color",
     "warning_fg_color",
@@ -532,11 +532,11 @@ gtk_info_bar_update_colors (GtkInfoBar *info_bar)
     "other_bg_color"
   };
 
-  priv = GTK_INFO_BAR_GET_PRIVATE (info_bar);
-  style = gtk_widget_get_style (widget);
+  priv = BTK_INFO_BAR_GET_PRIVATE (info_bar);
+  style = btk_widget_get_style (widget);
 
-  if (gtk_style_lookup_color (style, fg_color_name[priv->message_type], &sym_fg) &&
-      gtk_style_lookup_color (style, bg_color_name[priv->message_type], &sym_bg))
+  if (btk_style_lookup_color (style, fg_color_name[priv->message_type], &sym_fg) &&
+      btk_style_lookup_color (style, bg_color_name[priv->message_type], &sym_bg))
     {
       fg = &sym_fg;
       bg = &sym_bg;
@@ -545,27 +545,27 @@ gtk_info_bar_update_colors (GtkInfoBar *info_bar)
     {
       switch (priv->message_type)
         {
-        case GTK_MESSAGE_INFO:
+        case BTK_MESSAGE_INFO:
           fg = &info_default_border_color;
           bg = &info_default_fill_color;
           break;
 
-        case GTK_MESSAGE_WARNING:
+        case BTK_MESSAGE_WARNING:
           fg = &warning_default_border_color;
           bg = &warning_default_fill_color;
           break;
 
-        case GTK_MESSAGE_QUESTION:
+        case BTK_MESSAGE_QUESTION:
           fg = &question_default_border_color;
           bg = &question_default_fill_color;
           break;
 
-        case GTK_MESSAGE_ERROR:
+        case BTK_MESSAGE_ERROR:
           fg = &error_default_border_color;
           bg = &error_default_fill_color;
           break;
 
-        case GTK_MESSAGE_OTHER:
+        case BTK_MESSAGE_OTHER:
           fg = &other_default_border_color;
           bg = &other_default_fill_color;
           break;
@@ -577,87 +577,87 @@ gtk_info_bar_update_colors (GtkInfoBar *info_bar)
         }
     }
 
-  if (!gdk_color_equal (bg, &widget->style->bg[GTK_STATE_NORMAL]))
-    gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, bg);
-  if (!gdk_color_equal (fg, &widget->style->fg[GTK_STATE_NORMAL]))
-    gtk_widget_modify_fg (widget, GTK_STATE_NORMAL, fg);
+  if (!bdk_color_equal (bg, &widget->style->bg[BTK_STATE_NORMAL]))
+    btk_widget_modify_bg (widget, BTK_STATE_NORMAL, bg);
+  if (!bdk_color_equal (fg, &widget->style->fg[BTK_STATE_NORMAL]))
+    btk_widget_modify_fg (widget, BTK_STATE_NORMAL, fg);
 }
 
 static void
-gtk_info_bar_style_set (GtkWidget *widget,
-                        GtkStyle  *prev_style)
+btk_info_bar_style_set (BtkWidget *widget,
+                        BtkStyle  *prev_style)
 {
-  GtkInfoBar *info_bar = GTK_INFO_BAR (widget);
+  BtkInfoBar *info_bar = BTK_INFO_BAR (widget);
   gint button_spacing;
   gint action_area_border;
   gint content_area_spacing;
   gint content_area_border;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "button-spacing", &button_spacing,
                         "action-area-border", &action_area_border,
                         "content-area-spacing", &content_area_spacing,
                         "content-area-border", &content_area_border,
                         NULL);
 
-  gtk_box_set_spacing (GTK_BOX (info_bar->priv->action_area), button_spacing);
-  gtk_container_set_border_width (GTK_CONTAINER (info_bar->priv->action_area),
+  btk_box_set_spacing (BTK_BOX (info_bar->priv->action_area), button_spacing);
+  btk_container_set_border_width (BTK_CONTAINER (info_bar->priv->action_area),
                                   action_area_border);
-  gtk_box_set_spacing (GTK_BOX (info_bar->priv->content_area), content_area_spacing);
-  gtk_container_set_border_width (GTK_CONTAINER (info_bar->priv->content_area),
+  btk_box_set_spacing (BTK_BOX (info_bar->priv->content_area), content_area_spacing);
+  btk_container_set_border_width (BTK_CONTAINER (info_bar->priv->content_area),
                                   content_area_border);
 
-  gtk_info_bar_update_colors (info_bar);
+  btk_info_bar_update_colors (info_bar);
 }
 
 static void
-gtk_info_bar_init (GtkInfoBar *info_bar)
+btk_info_bar_init (BtkInfoBar *info_bar)
 {
-  GtkWidget *content_area;
-  GtkWidget *action_area;
+  BtkWidget *content_area;
+  BtkWidget *action_area;
 
-  gtk_widget_push_composite_child ();
+  btk_widget_push_composite_child ();
 
-  info_bar->priv = GTK_INFO_BAR_GET_PRIVATE (info_bar);
+  info_bar->priv = BTK_INFO_BAR_GET_PRIVATE (info_bar);
 
-  content_area = gtk_hbox_new (FALSE, 0);
-  gtk_widget_show (content_area);
-  gtk_box_pack_start (GTK_BOX (info_bar), content_area, TRUE, TRUE, 0);
+  content_area = btk_hbox_new (FALSE, 0);
+  btk_widget_show (content_area);
+  btk_box_pack_start (BTK_BOX (info_bar), content_area, TRUE, TRUE, 0);
 
-  action_area = gtk_vbutton_box_new ();
-  gtk_widget_show (action_area);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (action_area), GTK_BUTTONBOX_END);
-  gtk_box_pack_start (GTK_BOX (info_bar), action_area, FALSE, TRUE, 0);
+  action_area = btk_vbutton_box_new ();
+  btk_widget_show (action_area);
+  btk_button_box_set_layout (BTK_BUTTON_BOX (action_area), BTK_BUTTONBOX_END);
+  btk_box_pack_start (BTK_BOX (info_bar), action_area, FALSE, TRUE, 0);
 
-  gtk_widget_set_app_paintable (GTK_WIDGET (info_bar), TRUE);
-  gtk_widget_set_redraw_on_allocate (GTK_WIDGET (info_bar), TRUE);
+  btk_widget_set_app_paintable (BTK_WIDGET (info_bar), TRUE);
+  btk_widget_set_redraw_on_allocate (BTK_WIDGET (info_bar), TRUE);
 
   info_bar->priv->content_area = content_area;
   info_bar->priv->action_area = action_area;
 
-  gtk_widget_pop_composite_child ();
+  btk_widget_pop_composite_child ();
 }
 
-static GtkBuildableIface *parent_buildable_iface;
+static BtkBuildableIface *parent_buildable_iface;
 
 static void
-gtk_info_bar_buildable_interface_init (GtkBuildableIface *iface)
+btk_info_bar_buildable_interface_init (BtkBuildableIface *iface)
 {
   parent_buildable_iface = g_type_interface_peek_parent (iface);
-  iface->get_internal_child = gtk_info_bar_buildable_get_internal_child;
-  iface->custom_tag_start = gtk_info_bar_buildable_custom_tag_start;
-  iface->custom_finished = gtk_info_bar_buildable_custom_finished;
+  iface->get_internal_child = btk_info_bar_buildable_get_internal_child;
+  iface->custom_tag_start = btk_info_bar_buildable_custom_tag_start;
+  iface->custom_finished = btk_info_bar_buildable_custom_finished;
 }
 
 static GObject *
-gtk_info_bar_buildable_get_internal_child (GtkBuildable *buildable,
-                                           GtkBuilder   *builder,
+btk_info_bar_buildable_get_internal_child (BtkBuildable *buildable,
+                                           BtkBuilder   *builder,
                                            const gchar  *childname)
 {
   if (strcmp (childname, "content_area") == 0)
-    return G_OBJECT (GTK_INFO_BAR (buildable)->priv->content_area);
+    return G_OBJECT (BTK_INFO_BAR (buildable)->priv->content_area);
   else if (strcmp (childname, "action_area") == 0)
-    return G_OBJECT (GTK_INFO_BAR (buildable)->priv->action_area);
+    return G_OBJECT (BTK_INFO_BAR (buildable)->priv->action_area);
 
   return parent_buildable_iface->get_internal_child (buildable,
                                                      builder,
@@ -665,60 +665,60 @@ gtk_info_bar_buildable_get_internal_child (GtkBuildable *buildable,
 }
 
 static gint
-get_response_for_widget (GtkInfoBar *info_bar,
-                         GtkWidget  *widget)
+get_response_for_widget (BtkInfoBar *info_bar,
+                         BtkWidget  *widget)
 {
   ResponseData *rd;
 
   rd = get_response_data (widget, FALSE);
   if (!rd)
-    return GTK_RESPONSE_NONE;
+    return BTK_RESPONSE_NONE;
   else
     return rd->response_id;
 }
 
 static void
-action_widget_activated (GtkWidget  *widget,
-                         GtkInfoBar *info_bar)
+action_widget_activated (BtkWidget  *widget,
+                         BtkInfoBar *info_bar)
 {
   gint response_id;
 
   response_id = get_response_for_widget (info_bar, widget);
-  gtk_info_bar_response (info_bar, response_id);
+  btk_info_bar_response (info_bar, response_id);
 }
 
 /**
- * gtk_info_bar_add_action_widget:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_add_action_widget:
+ * @info_bar: a #BtkInfoBar
  * @child: an activatable widget
  * @response_id: response ID for @child
  *
- * Add an activatable widget to the action area of a #GtkInfoBar,
- * connecting a signal handler that will emit the #GtkInfoBar::response
+ * Add an activatable widget to the action area of a #BtkInfoBar,
+ * connecting a signal handler that will emit the #BtkInfoBar::response
  * signal on the message area when the widget is activated. The widget
  * is appended to the end of the message areas action area.
  *
  * Since: 2.18
  */
 void
-gtk_info_bar_add_action_widget (GtkInfoBar *info_bar,
-                                GtkWidget  *child,
+btk_info_bar_add_action_widget (BtkInfoBar *info_bar,
+                                BtkWidget  *child,
                                 gint        response_id)
 {
   ResponseData *ad;
   guint signal_id;
 
-  g_return_if_fail (GTK_IS_INFO_BAR (info_bar));
-  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
+  g_return_if_fail (BTK_IS_WIDGET (child));
 
   ad = get_response_data (child, TRUE);
 
   ad->response_id = response_id;
 
-  if (GTK_IS_BUTTON (child))
-    signal_id = g_signal_lookup ("clicked", GTK_TYPE_BUTTON);
+  if (BTK_IS_BUTTON (child))
+    signal_id = g_signal_lookup ("clicked", BTK_TYPE_BUTTON);
   else
-    signal_id = GTK_WIDGET_GET_CLASS (child)->activate_signal;
+    signal_id = BTK_WIDGET_GET_CLASS (child)->activate_signal;
 
   if (signal_id)
     {
@@ -729,18 +729,18 @@ gtk_info_bar_add_action_widget (GtkInfoBar *info_bar,
       g_signal_connect_closure_by_id (child, signal_id, 0, closure, FALSE);
     }
   else
-    g_warning ("Only 'activatable' widgets can be packed into the action area of a GtkInfoBar");
+    g_warning ("Only 'activatable' widgets can be packed into the action area of a BtkInfoBar");
 
-  gtk_box_pack_end (GTK_BOX (info_bar->priv->action_area),
+  btk_box_pack_end (BTK_BOX (info_bar->priv->action_area),
                     child, FALSE, FALSE, 0);
-  if (response_id == GTK_RESPONSE_HELP)
-    gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (info_bar->priv->action_area),
+  if (response_id == BTK_RESPONSE_HELP)
+    btk_button_box_set_child_secondary (BTK_BUTTON_BOX (info_bar->priv->action_area),
                                         child, TRUE);
 }
 
 /**
- * gtk_info_bar_get_action_area:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_get_action_area:
+ * @info_bar: a #BtkInfoBar
  *
  * Returns the action area of @info_bar.
  *
@@ -748,17 +748,17 @@ gtk_info_bar_add_action_widget (GtkInfoBar *info_bar,
  *
  * Since: 2.18
  */
-GtkWidget*
-gtk_info_bar_get_action_area (GtkInfoBar *info_bar)
+BtkWidget*
+btk_info_bar_get_action_area (BtkInfoBar *info_bar)
 {
-  g_return_val_if_fail (GTK_IS_INFO_BAR (info_bar), NULL);
+  g_return_val_if_fail (BTK_IS_INFO_BAR (info_bar), NULL);
 
   return info_bar->priv->action_area;
 }
 
 /**
- * gtk_info_bar_get_content_area:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_get_content_area:
+ * @info_bar: a #BtkInfoBar
  *
  * Returns the content area of @info_bar.
  *
@@ -766,17 +766,17 @@ gtk_info_bar_get_action_area (GtkInfoBar *info_bar)
  *
  * Since: 2.18
  */
-GtkWidget*
-gtk_info_bar_get_content_area (GtkInfoBar *info_bar)
+BtkWidget*
+btk_info_bar_get_content_area (BtkInfoBar *info_bar)
 {
-  g_return_val_if_fail (GTK_IS_INFO_BAR (info_bar), NULL);
+  g_return_val_if_fail (BTK_IS_INFO_BAR (info_bar), NULL);
 
   return info_bar->priv->content_area;
 }
 
 /**
- * gtk_info_bar_add_button:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_add_button:
+ * @info_bar: a #BtkInfoBar
  * @button_text: text of button, or stock ID
  * @response_id: response ID for the button
  *
@@ -790,36 +790,36 @@ gtk_info_bar_get_content_area (GtkInfoBar *info_bar)
  *
  * Since: 2.18
  */
-GtkWidget*
-gtk_info_bar_add_button (GtkInfoBar  *info_bar,
+BtkWidget*
+btk_info_bar_add_button (BtkInfoBar  *info_bar,
                          const gchar *button_text,
                          gint         response_id)
 {
-  GtkWidget *button;
+  BtkWidget *button;
 
-  g_return_val_if_fail (GTK_IS_INFO_BAR (info_bar), NULL);
+  g_return_val_if_fail (BTK_IS_INFO_BAR (info_bar), NULL);
   g_return_val_if_fail (button_text != NULL, NULL);
 
-  button = gtk_button_new_from_stock (button_text);
+  button = btk_button_new_from_stock (button_text);
 
-  gtk_widget_set_can_default (button, TRUE);
+  btk_widget_set_can_default (button, TRUE);
 
-  gtk_widget_show (button);
+  btk_widget_show (button);
 
-  gtk_info_bar_add_action_widget (info_bar, button, response_id);
+  btk_info_bar_add_action_widget (info_bar, button, response_id);
 
   return button;
 }
 
 static void
-add_buttons_valist (GtkInfoBar  *info_bar,
+add_buttons_valist (BtkInfoBar  *info_bar,
                     const gchar *first_button_text,
                     va_list      args)
 {
   const gchar* text;
   gint response_id;
 
-  g_return_if_fail (GTK_IS_INFO_BAR (info_bar));
+  g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
   if (first_button_text == NULL)
     return;
@@ -829,7 +829,7 @@ add_buttons_valist (GtkInfoBar  *info_bar,
 
   while (text != NULL)
     {
-      gtk_info_bar_add_button (info_bar, text, response_id);
+      btk_info_bar_add_button (info_bar, text, response_id);
 
       text = va_arg (args, gchar*);
       if (text == NULL)
@@ -840,21 +840,21 @@ add_buttons_valist (GtkInfoBar  *info_bar,
 }
 
 /**
- * gtk_info_bar_add_buttons:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_add_buttons:
+ * @info_bar: a #BtkInfoBar
  * @first_button_text: button text or stock ID
  * @...: response ID for first button, then more text-response_id pairs,
  *     ending with %NULL
  *
- * Adds more buttons, same as calling gtk_info_bar_add_button()
+ * Adds more buttons, same as calling btk_info_bar_add_button()
  * repeatedly. The variable argument list should be %NULL-terminated
- * as with gtk_info_bar_new_with_buttons(). Each button must have both
+ * as with btk_info_bar_new_with_buttons(). Each button must have both
  * text and response ID.
  *
  * Since: 2.18
  */
 void
-gtk_info_bar_add_buttons (GtkInfoBar  *info_bar,
+btk_info_bar_add_buttons (BtkInfoBar  *info_bar,
                           const gchar *first_button_text,
                           ...)
 {
@@ -866,90 +866,90 @@ gtk_info_bar_add_buttons (GtkInfoBar  *info_bar,
 }
 
 /**
- * gtk_info_bar_new:
+ * btk_info_bar_new:
  *
- * Creates a new #GtkInfoBar object.
+ * Creates a new #BtkInfoBar object.
  *
- * Returns: a new #GtkInfoBar object
+ * Returns: a new #BtkInfoBar object
  *
  * Since: 2.18
  */
-GtkWidget *
-gtk_info_bar_new (void)
+BtkWidget *
+btk_info_bar_new (void)
 {
-   return g_object_new (GTK_TYPE_INFO_BAR, NULL);
+   return g_object_new (BTK_TYPE_INFO_BAR, NULL);
 }
 
 /**
- * gtk_info_bar_new_with_buttons:
+ * btk_info_bar_new_with_buttons:
  * @first_button_text: (allow-none): stock ID or text to go in first button, or %NULL
  * @...: response ID for first button, then additional buttons, ending
  *    with %NULL
  *
- * Creates a new #GtkInfoBar with buttons. Button text/response ID
+ * Creates a new #BtkInfoBar with buttons. Button text/response ID
  * pairs should be listed, with a %NULL pointer ending the list.
- * Button text can be either a stock ID such as %GTK_STOCK_OK, or
+ * Button text can be either a stock ID such as %BTK_STOCK_OK, or
  * some arbitrary text. A response ID can be any positive number,
- * or one of the values in the #GtkResponseType enumeration. If the
- * user clicks one of these dialog buttons, GtkInfoBar will emit
+ * or one of the values in the #BtkResponseType enumeration. If the
+ * user clicks one of these dialog buttons, BtkInfoBar will emit
  * the "response" signal with the corresponding response ID.
  *
- * Returns: a new #GtkInfoBar
+ * Returns: a new #BtkInfoBar
  */
-GtkWidget*
-gtk_info_bar_new_with_buttons (const gchar *first_button_text,
+BtkWidget*
+btk_info_bar_new_with_buttons (const gchar *first_button_text,
                                ...)
 {
-  GtkInfoBar *info_bar;
+  BtkInfoBar *info_bar;
   va_list args;
 
-  info_bar = GTK_INFO_BAR (gtk_info_bar_new ());
+  info_bar = BTK_INFO_BAR (btk_info_bar_new ());
 
   va_start (args, first_button_text);
   add_buttons_valist (info_bar, first_button_text, args);
   va_end (args);
 
-  return GTK_WIDGET (info_bar);
+  return BTK_WIDGET (info_bar);
 }
 
 /**
- * gtk_info_bar_set_response_sensitive:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_set_response_sensitive:
+ * @info_bar: a #BtkInfoBar
  * @response_id: a response ID
  * @setting: TRUE for sensitive
  *
- * Calls gtk_widget_set_sensitive (widget, setting) for each
+ * Calls btk_widget_set_sensitive (widget, setting) for each
  * widget in the info bars's action area with the given response_id.
  * A convenient way to sensitize/desensitize dialog buttons.
  *
  * Since: 2.18
  */
 void
-gtk_info_bar_set_response_sensitive (GtkInfoBar *info_bar,
+btk_info_bar_set_response_sensitive (BtkInfoBar *info_bar,
                                      gint        response_id,
                                      gboolean    setting)
 {
   GList *children, *list;
 
-  g_return_if_fail (GTK_IS_INFO_BAR (info_bar));
+  g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
-  children = gtk_container_get_children (GTK_CONTAINER (info_bar->priv->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (info_bar->priv->action_area));
 
   for (list = children; list; list = list->next)
     {
-      GtkWidget *widget = list->data;
+      BtkWidget *widget = list->data;
       ResponseData *rd = get_response_data (widget, FALSE);
 
       if (rd && rd->response_id == response_id)
-        gtk_widget_set_sensitive (widget, setting);
+        btk_widget_set_sensitive (widget, setting);
     }
 
   g_list_free (children);
 }
 
 /**
- * gtk_info_bar_set_default_response:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_set_default_response:
+ * @info_bar: a #BtkInfoBar
  * @response_id: a response ID
  *
  * Sets the last widget in the info bar's action area with
@@ -962,30 +962,30 @@ gtk_info_bar_set_response_sensitive (GtkInfoBar *info_bar,
  * Since: 2.18
  */
 void
-gtk_info_bar_set_default_response (GtkInfoBar *info_bar,
+btk_info_bar_set_default_response (BtkInfoBar *info_bar,
                                    gint        response_id)
 {
   GList *children, *list;
 
-  g_return_if_fail (GTK_IS_INFO_BAR (info_bar));
+  g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
-  children = gtk_container_get_children (GTK_CONTAINER (info_bar->priv->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (info_bar->priv->action_area));
 
   for (list = children; list; list = list->next)
     {
-      GtkWidget *widget = list->data;
+      BtkWidget *widget = list->data;
       ResponseData *rd = get_response_data (widget, FALSE);
 
       if (rd && rd->response_id == response_id)
-        gtk_widget_grab_default (widget);
+        btk_widget_grab_default (widget);
     }
 
   g_list_free (children);
 }
 
 /**
- * gtk_info_bar_response:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_response:
+ * @info_bar: a #BtkInfoBar
  * @response_id: a response ID
  *
  * Emits the 'response' signal with the given @response_id.
@@ -993,10 +993,10 @@ gtk_info_bar_set_default_response (GtkInfoBar *info_bar,
  * Since: 2.18
  */
 void
-gtk_info_bar_response (GtkInfoBar *info_bar,
+btk_info_bar_response (BtkInfoBar *info_bar,
                        gint        response_id)
 {
-  g_return_if_fail (GTK_IS_INFO_BAR (info_bar));
+  g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
   g_signal_emit (info_bar, signals[RESPONSE], 0, response_id);
 }
@@ -1009,8 +1009,8 @@ typedef struct
 
 typedef struct
 {
-  GtkInfoBar *info_bar;
-  GtkBuilder *builder;
+  BtkInfoBar *info_bar;
+  BtkBuilder *builder;
   GSList *items;
   gchar *response;
 } ActionWidgetsSubParserData;
@@ -1035,7 +1035,7 @@ attributes_start_element (GMarkupParseContext  *context,
   else if (strcmp (element_name, "action-widgets") == 0)
     return;
   else
-    g_warning ("Unsupported tag for GtkInfoBar: %s\n", element_name);
+    g_warning ("Unsupported tag for BtkInfoBar: %s\n", element_name);
 }
 
 static void
@@ -1066,8 +1066,8 @@ static const GMarkupParser attributes_parser =
 };
 
 gboolean
-gtk_info_bar_buildable_custom_tag_start (GtkBuildable  *buildable,
-                                         GtkBuilder    *builder,
+btk_info_bar_buildable_custom_tag_start (BtkBuildable  *buildable,
+                                         BtkBuilder    *builder,
                                          GObject       *child,
                                          const gchar   *tagname,
                                          GMarkupParser *parser,
@@ -1081,7 +1081,7 @@ gtk_info_bar_buildable_custom_tag_start (GtkBuildable  *buildable,
   if (strcmp (tagname, "action-widgets") == 0)
     {
       parser_data = g_slice_new0 (ActionWidgetsSubParserData);
-      parser_data->info_bar = GTK_INFO_BAR (buildable);
+      parser_data->info_bar = BTK_INFO_BAR (buildable);
       parser_data->items = NULL;
 
       *parser = attributes_parser;
@@ -1094,8 +1094,8 @@ gtk_info_bar_buildable_custom_tag_start (GtkBuildable  *buildable,
 }
 
 static void
-gtk_info_bar_buildable_custom_finished (GtkBuildable *buildable,
-                                        GtkBuilder   *builder,
+btk_info_bar_buildable_custom_finished (BtkBuildable *buildable,
+                                        BtkBuilder   *builder,
                                         GObject      *child,
                                         const gchar  *tagname,
                                         gpointer      user_data)
@@ -1103,7 +1103,7 @@ gtk_info_bar_buildable_custom_finished (GtkBuildable *buildable,
   GSList *l;
   ActionWidgetsSubParserData *parser_data;
   GObject *object;
-  GtkInfoBar *info_bar;
+  BtkInfoBar *info_bar;
   ResponseData *ad;
   guint signal_id;
 
@@ -1114,7 +1114,7 @@ gtk_info_bar_buildable_custom_finished (GtkBuildable *buildable,
       return;
     }
 
-  info_bar = GTK_INFO_BAR (buildable);
+  info_bar = BTK_INFO_BAR (buildable);
   parser_data = (ActionWidgetsSubParserData*)user_data;
   parser_data->items = g_slist_reverse (parser_data->items);
 
@@ -1122,22 +1122,22 @@ gtk_info_bar_buildable_custom_finished (GtkBuildable *buildable,
     {
       ActionWidgetInfo *item = l->data;
 
-      object = gtk_builder_get_object (builder, item->widget_name);
+      object = btk_builder_get_object (builder, item->widget_name);
       if (!object)
         {
           g_warning ("Unknown object %s specified in action-widgets of %s",
                      item->widget_name,
-                     gtk_buildable_get_name (GTK_BUILDABLE (buildable)));
+                     btk_buildable_get_name (BTK_BUILDABLE (buildable)));
           continue;
         }
 
-      ad = get_response_data (GTK_WIDGET (object), TRUE);
+      ad = get_response_data (BTK_WIDGET (object), TRUE);
       ad->response_id = atoi (item->response_id);
 
-      if (GTK_IS_BUTTON (object))
-        signal_id = g_signal_lookup ("clicked", GTK_TYPE_BUTTON);
+      if (BTK_IS_BUTTON (object))
+        signal_id = g_signal_lookup ("clicked", BTK_TYPE_BUTTON);
       else
-        signal_id = GTK_WIDGET_GET_CLASS (object)->activate_signal;
+        signal_id = BTK_WIDGET_GET_CLASS (object)->activate_signal;
 
       if (signal_id)
         {
@@ -1152,9 +1152,9 @@ gtk_info_bar_buildable_custom_finished (GtkBuildable *buildable,
                                           FALSE);
         }
 
-      if (ad->response_id == GTK_RESPONSE_HELP)
-        gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (info_bar->priv->action_area),
-                                            GTK_WIDGET (object), TRUE);
+      if (ad->response_id == BTK_RESPONSE_HELP)
+        btk_button_box_set_child_secondary (BTK_BUTTON_BOX (info_bar->priv->action_area),
+                                            BTK_WIDGET (object), TRUE);
 
       g_free (item->widget_name);
       g_free (item->response_id);
@@ -1165,72 +1165,72 @@ gtk_info_bar_buildable_custom_finished (GtkBuildable *buildable,
 }
 
 /**
- * gtk_info_bar_set_message_type:
- * @info_bar: a #GtkInfoBar
- * @message_type: a #GtkMessageType
+ * btk_info_bar_set_message_type:
+ * @info_bar: a #BtkInfoBar
+ * @message_type: a #BtkMessageType
  *
  * Sets the message type of the message area.
- * GTK+ uses this type to determine what color to use
+ * BTK+ uses this type to determine what color to use
  * when drawing the message area.
  *
  * Since: 2.18
  */
 void
-gtk_info_bar_set_message_type (GtkInfoBar     *info_bar,
-                               GtkMessageType  message_type)
+btk_info_bar_set_message_type (BtkInfoBar     *info_bar,
+                               BtkMessageType  message_type)
 {
-  GtkInfoBarPrivate *priv;
-  AtkObject *atk_obj;
+  BtkInfoBarPrivate *priv;
+  BatkObject *batk_obj;
 
-  g_return_if_fail (GTK_IS_INFO_BAR (info_bar));
+  g_return_if_fail (BTK_IS_INFO_BAR (info_bar));
 
-  priv = GTK_INFO_BAR_GET_PRIVATE (info_bar);
+  priv = BTK_INFO_BAR_GET_PRIVATE (info_bar);
 
   if (priv->message_type != message_type)
     {
       priv->message_type = message_type;
 
-      gtk_info_bar_update_colors (info_bar);
-      gtk_widget_queue_draw (GTK_WIDGET (info_bar));
+      btk_info_bar_update_colors (info_bar);
+      btk_widget_queue_draw (BTK_WIDGET (info_bar));
 
-      atk_obj = gtk_widget_get_accessible (GTK_WIDGET (info_bar));
-      if (GTK_IS_ACCESSIBLE (atk_obj))
+      batk_obj = btk_widget_get_accessible (BTK_WIDGET (info_bar));
+      if (BTK_IS_ACCESSIBLE (batk_obj))
         {
-          GtkStockItem item;
+          BtkStockItem item;
           const char *stock_id = NULL;
 
-          atk_object_set_role (atk_obj, ATK_ROLE_ALERT);
+          batk_object_set_role (batk_obj, BATK_ROLE_ALERT);
 
           switch (message_type)
             {
-            case GTK_MESSAGE_INFO:
-              stock_id = GTK_STOCK_DIALOG_INFO;
+            case BTK_MESSAGE_INFO:
+              stock_id = BTK_STOCK_DIALOG_INFO;
               break;
 
-            case GTK_MESSAGE_QUESTION:
-              stock_id = GTK_STOCK_DIALOG_QUESTION;
+            case BTK_MESSAGE_QUESTION:
+              stock_id = BTK_STOCK_DIALOG_QUESTION;
               break;
 
-            case GTK_MESSAGE_WARNING:
-              stock_id = GTK_STOCK_DIALOG_WARNING;
+            case BTK_MESSAGE_WARNING:
+              stock_id = BTK_STOCK_DIALOG_WARNING;
               break;
 
-            case GTK_MESSAGE_ERROR:
-              stock_id = GTK_STOCK_DIALOG_ERROR;
+            case BTK_MESSAGE_ERROR:
+              stock_id = BTK_STOCK_DIALOG_ERROR;
               break;
 
-            case GTK_MESSAGE_OTHER:
+            case BTK_MESSAGE_OTHER:
               break;
 
             default:
-              g_warning ("Unknown GtkMessageType %u", message_type);
+              g_warning ("Unknown BtkMessageType %u", message_type);
               break;
             }
 
           if (stock_id)
             {
-              gtk_stock_lookup (stock_id, &item);
-              atk_object_set_name (atk_obj, item.label);
+              btk_stock_lookup (stock_id, &item);
+              batk_object_set_name (batk_obj, item.label);
             }
         }
 
@@ -1239,8 +1239,8 @@ gtk_info_bar_set_message_type (GtkInfoBar     *info_bar,
 }
 
 /**
- * gtk_info_bar_get_message_type:
- * @info_bar: a #GtkInfoBar
+ * btk_info_bar_get_message_type:
+ * @info_bar: a #BtkInfoBar
  *
  * Returns the message type of the message area.
  *
@@ -1248,18 +1248,18 @@ gtk_info_bar_set_message_type (GtkInfoBar     *info_bar,
  *
  * Since: 2.18
  */
-GtkMessageType
-gtk_info_bar_get_message_type (GtkInfoBar *info_bar)
+BtkMessageType
+btk_info_bar_get_message_type (BtkInfoBar *info_bar)
 {
-  GtkInfoBarPrivate *priv;
+  BtkInfoBarPrivate *priv;
 
-  g_return_val_if_fail (GTK_IS_INFO_BAR (info_bar), GTK_MESSAGE_OTHER);
+  g_return_val_if_fail (BTK_IS_INFO_BAR (info_bar), BTK_MESSAGE_OTHER);
 
-  priv = GTK_INFO_BAR_GET_PRIVATE (info_bar);
+  priv = BTK_INFO_BAR_GET_PRIVATE (info_bar);
 
   return priv->message_type;
 }
 
 
-#define __GTK_INFO_BAR_C__
-#include "gtkaliasdef.c"
+#define __BTK_INFO_BAR_C__
+#include "btkaliasdef.c"

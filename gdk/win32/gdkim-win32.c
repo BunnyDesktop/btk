@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2004 Tor Lillqvist
  *
@@ -19,10 +19,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -31,13 +31,13 @@
 #include <string.h>
 #include <locale.h>
 
-#include "gdkpixmap.h"
-#include "gdkinternals.h"
-#include "gdki18n.h"
-#include "gdkwin32.h"
+#include "bdkpixmap.h"
+#include "bdkinternals.h"
+#include "bdki18n.h"
+#include "bdkwin32.h"
 
 gchar*
-gdk_set_locale (void)
+bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL, ""))
     g_warning ("locale not supported by C library");
@@ -46,7 +46,7 @@ gdk_set_locale (void)
 }
 
 gchar *
-gdk_wcstombs (const GdkWChar *src)
+bdk_wcstombs (const BdkWChar *src)
 {
   const gchar *charset;
 
@@ -55,7 +55,7 @@ gdk_wcstombs (const GdkWChar *src)
 }
 
 gint
-gdk_mbstowcs (GdkWChar    *dest,
+bdk_mbstowcs (BdkWChar    *dest,
 	      const gchar *src,
 	      gint         dest_max)
 {
@@ -67,10 +67,10 @@ gdk_mbstowcs (GdkWChar    *dest,
 
   g_get_charset (&charset);
   ucs4 = (gunichar *) g_convert (src, -1, "UCS-4LE", charset, NULL, &nwritten, NULL);
-  n_ucs4 = nwritten * sizeof (GdkWChar);
+  n_ucs4 = nwritten * sizeof (BdkWChar);
 
   retval = MIN (dest_max, n_ucs4);
-  memmove (dest, ucs4, retval * sizeof (GdkWChar));
+  memmove (dest, ucs4, retval * sizeof (BdkWChar));
   g_free (ucs4);
 
   return retval;

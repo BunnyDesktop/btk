@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,61 +18,61 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_INVISIBLE_H__
-#define __GTK_INVISIBLE_H__
+#ifndef __BTK_INVISIBLE_H__
+#define __BTK_INVISIBLE_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_INVISIBLE		(gtk_invisible_get_type ())
-#define GTK_INVISIBLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_INVISIBLE, GtkInvisible))
-#define GTK_INVISIBLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_INVISIBLE, GtkInvisibleClass))
-#define GTK_IS_INVISIBLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_INVISIBLE))
-#define GTK_IS_INVISIBLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_INVISIBLE))
-#define GTK_INVISIBLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_INVISIBLE, GtkInvisibleClass))
+#define BTK_TYPE_INVISIBLE		(btk_invisible_get_type ())
+#define BTK_INVISIBLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_INVISIBLE, BtkInvisible))
+#define BTK_INVISIBLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_INVISIBLE, BtkInvisibleClass))
+#define BTK_IS_INVISIBLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_INVISIBLE))
+#define BTK_IS_INVISIBLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INVISIBLE))
+#define BTK_INVISIBLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_INVISIBLE, BtkInvisibleClass))
 
 
-typedef struct _GtkInvisible	   GtkInvisible;
-typedef struct _GtkInvisibleClass  GtkInvisibleClass;
+typedef struct _BtkInvisible	   BtkInvisible;
+typedef struct _BtkInvisibleClass  BtkInvisibleClass;
 
-struct _GtkInvisible
+struct _BtkInvisible
 {
-  GtkWidget widget;
+  BtkWidget widget;
 
   gboolean   GSEAL (has_user_ref_count);
-  GdkScreen *GSEAL (screen);
+  BdkScreen *GSEAL (screen);
 };
 
-struct _GtkInvisibleClass
+struct _BtkInvisibleClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType gtk_invisible_get_type (void) G_GNUC_CONST;
+GType btk_invisible_get_type (void) G_GNUC_CONST;
 
-GtkWidget* gtk_invisible_new            (void);
-GtkWidget* gtk_invisible_new_for_screen (GdkScreen    *screen);
-void	   gtk_invisible_set_screen	(GtkInvisible *invisible,
-					 GdkScreen    *screen);
-GdkScreen* gtk_invisible_get_screen	(GtkInvisible *invisible);
+BtkWidget* btk_invisible_new            (void);
+BtkWidget* btk_invisible_new_for_screen (BdkScreen    *screen);
+void	   btk_invisible_set_screen	(BtkInvisible *invisible,
+					 BdkScreen    *screen);
+BdkScreen* btk_invisible_get_screen	(BtkInvisible *invisible);
 
 G_END_DECLS
 
-#endif /* __GTK_INVISIBLE_H__ */
+#endif /* __BTK_INVISIBLE_H__ */

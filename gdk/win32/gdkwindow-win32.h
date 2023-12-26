@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,37 +18,37 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_WINDOW_WIN32_H__
-#define __GDK_WINDOW_WIN32_H__
+#ifndef __BDK_WINDOW_WIN32_H__
+#define __BDK_WINDOW_WIN32_H__
 
-#include <gdk/win32/gdkdrawable-win32.h>
+#include <bdk/win32/bdkdrawable-win32.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GdkWin32PositionInfo    GdkWin32PositionInfo;
+typedef struct _BdkWin32PositionInfo    BdkWin32PositionInfo;
 
 #if 0
-struct _GdkWin32PositionInfo
+struct _BdkWin32PositionInfo
 {
   gint x;
   gint y;
   gint width;
   gint height;
   gint x_offset;		/* Offsets to add to Win32 coordinates */
-  gint y_offset;		/* within window to get GDK coodinates */
+  gint y_offset;		/* within window to get BDK coodinates */
   guint big : 1;
   guint mapped : 1;
   guint no_bg : 1;	        /* Set when the window background
 				 * is temporarily unset during resizing
 				 * and scaling
 				 */
-  GdkRectangle clip_rect;	/* visible rectangle of window */
+  BdkRectangle clip_rect;	/* visible rectangle of window */
 };
 #endif
 
@@ -56,19 +56,19 @@ struct _GdkWin32PositionInfo
 /* Window implementation for Win32
  */
 
-typedef struct _GdkWindowImplWin32 GdkWindowImplWin32;
-typedef struct _GdkWindowImplWin32Class GdkWindowImplWin32Class;
+typedef struct _BdkWindowImplWin32 BdkWindowImplWin32;
+typedef struct _BdkWindowImplWin32Class BdkWindowImplWin32Class;
 
-#define GDK_TYPE_WINDOW_IMPL_WIN32              (_gdk_window_impl_win32_get_type ())
-#define GDK_WINDOW_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW_IMPL_WIN32, GdkWindowImplWin32))
-#define GDK_WINDOW_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW_IMPL_WIN32, GdkWindowImplWin32Class))
-#define GDK_IS_WINDOW_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_WINDOW_IMPL_WIN32))
-#define GDK_IS_WINDOW_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_WINDOW_IMPL_WIN32))
-#define GDK_WINDOW_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_WINDOW_IMPL_WIN32, GdkWindowImplWin32Class))
+#define BDK_TYPE_WINDOW_IMPL_WIN32              (_bdk_window_impl_win32_get_type ())
+#define BDK_WINDOW_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32))
+#define BDK_WINDOW_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32Class))
+#define BDK_IS_WINDOW_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_WIN32))
+#define BDK_IS_WINDOW_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_WIN32))
+#define BDK_WINDOW_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32Class))
 
-struct _GdkWindowImplWin32
+struct _BdkWindowImplWin32
 {
-  GdkDrawableImplWin32 parent_instance;
+  BdkDrawableImplWin32 parent_instance;
 
   gint8 toplevel_window_type;
 
@@ -86,15 +86,15 @@ struct _GdkWindowImplWin32
 
   /* Window size hints */
   gint hint_flags;
-  GdkGeometry hints;
+  BdkGeometry hints;
 
-  GdkEventMask native_event_mask;
+  BdkEventMask native_event_mask;
 
-  GdkWindowTypeHint type_hint;
+  BdkWindowTypeHint type_hint;
 
-  GdkEventMask extension_events_mask;
+  BdkEventMask extension_events_mask;
 
-  GdkWindow *transient_owner;
+  BdkWindow *transient_owner;
   GSList    *transient_children;
   gint       num_transients;
   gboolean   changing_state;
@@ -107,21 +107,21 @@ struct _GdkWindowImplWin32
   guint override_redirect : 1;
 };
  
-struct _GdkWindowImplWin32Class 
+struct _BdkWindowImplWin32Class 
 {
-  GdkDrawableImplWin32Class parent_class;
+  BdkDrawableImplWin32Class parent_class;
 };
 
-GType _gdk_window_impl_win32_get_type (void);
+GType _bdk_window_impl_win32_get_type (void);
 
-void  _gdk_win32_window_tmp_unset_bg  (GdkWindow *window,
+void  _bdk_win32_window_tmp_unset_bg  (BdkWindow *window,
 				       gboolean   recurse);
-void  _gdk_win32_window_tmp_reset_bg  (GdkWindow *window,
+void  _bdk_win32_window_tmp_reset_bg  (BdkWindow *window,
 				       gboolean   recurse);
 
-void  _gdk_win32_window_tmp_unset_parent_bg (GdkWindow *window);
-void  _gdk_win32_window_tmp_reset_parent_bg (GdkWindow *window);
+void  _bdk_win32_window_tmp_unset_parent_bg (BdkWindow *window);
+void  _bdk_win32_window_tmp_reset_parent_bg (BdkWindow *window);
 
 G_END_DECLS
 
-#endif /* __GDK_WINDOW_WIN32_H__ */
+#endif /* __BDK_WINDOW_WIN32_H__ */

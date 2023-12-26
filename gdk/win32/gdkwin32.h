@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,16 +18,16 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_WIN32_H__
-#define __GDK_WIN32_H__
+#ifndef __BDK_WIN32_H__
+#define __BDK_WIN32_H__
 
-#include <gdk/gdkprivate.h>
+#include <bdk/bdkprivate.h>
 
 #ifndef STRICT
 #define STRICT			/* We want strict type checks */
@@ -37,27 +37,27 @@
 
 G_BEGIN_DECLS
 
-#ifdef INSIDE_GDK_WIN32
+#ifdef INSIDE_BDK_WIN32
 
-#include "gdkprivate-win32.h"
+#include "bdkprivate-win32.h"
 
-#undef GDK_ROOT_PARENT /* internal access is direct */
-#define GDK_ROOT_PARENT()             ((GdkWindow *) _gdk_parent_root)
-#define GDK_WINDOW_HWND(win)          (GDK_DRAWABLE_IMPL_WIN32(((GdkWindowObject *)win)->impl)->handle)
-#define GDK_PIXMAP_HBITMAP(pixmap)    (GDK_DRAWABLE_IMPL_WIN32(((GdkPixmapObject *)pixmap)->impl)->handle)
-#define GDK_DRAWABLE_IMPL_WIN32_HANDLE(d) (((GdkDrawableImplWin32 *) d)->handle)
-#define GDK_DRAWABLE_HANDLE(win)      (GDK_IS_WINDOW (win) ? GDK_WINDOW_HWND (win) : (GDK_IS_PIXMAP (win) ? GDK_PIXMAP_HBITMAP (win) : (GDK_IS_DRAWABLE_IMPL_WIN32 (win) ? GDK_DRAWABLE_IMPL_WIN32_HANDLE (win) : 0)))
+#undef BDK_ROOT_PARENT /* internal access is direct */
+#define BDK_ROOT_PARENT()             ((BdkWindow *) _bdk_parent_root)
+#define BDK_WINDOW_HWND(win)          (BDK_DRAWABLE_IMPL_WIN32(((BdkWindowObject *)win)->impl)->handle)
+#define BDK_PIXMAP_HBITMAP(pixmap)    (BDK_DRAWABLE_IMPL_WIN32(((BdkPixmapObject *)pixmap)->impl)->handle)
+#define BDK_DRAWABLE_IMPL_WIN32_HANDLE(d) (((BdkDrawableImplWin32 *) d)->handle)
+#define BDK_DRAWABLE_HANDLE(win)      (BDK_IS_WINDOW (win) ? BDK_WINDOW_HWND (win) : (BDK_IS_PIXMAP (win) ? BDK_PIXMAP_HBITMAP (win) : (BDK_IS_DRAWABLE_IMPL_WIN32 (win) ? BDK_DRAWABLE_IMPL_WIN32_HANDLE (win) : 0)))
 #else
 /* definition for exported 'internals' go here */
-#define GDK_WINDOW_HWND(d) (gdk_win32_drawable_get_handle (d))
+#define BDK_WINDOW_HWND(d) (bdk_win32_drawable_get_handle (d))
 
 #endif
 
-#define GDK_ROOT_WINDOW()             ((guint32) HWND_DESKTOP)
-#define GDK_DISPLAY()                 NULL
+#define BDK_ROOT_WINDOW()             ((guint32) HWND_DESKTOP)
+#define BDK_DISPLAY()                 NULL
 
 
-/* These need to be here so gtkstatusicon.c can pick them up if needed. */
+/* These need to be here so btkstatusicon.c can pick them up if needed. */
 #ifndef WM_XBUTTONDOWN
 #define WM_XBUTTONDOWN 0x020B
 #endif
@@ -75,55 +75,55 @@ G_BEGIN_DECLS
 #endif
 
 
-/* Return true if the GdkWindow is a win32 implemented window */
-gboolean      gdk_win32_window_is_win32 (GdkWindow *window);
-HWND          gdk_win32_window_get_impl_hwnd (GdkWindow *window);
+/* Return true if the BdkWindow is a win32 implemented window */
+gboolean      bdk_win32_window_is_win32 (BdkWindow *window);
+HWND          bdk_win32_window_get_impl_hwnd (BdkWindow *window);
 
-/* Return the Gdk* for a particular HANDLE */
-gpointer      gdk_win32_handle_table_lookup (GdkNativeWindow handle);
+/* Return the Bdk* for a particular HANDLE */
+gpointer      bdk_win32_handle_table_lookup (BdkNativeWindow handle);
 
 /* Translate from drawable to Windows handle */
-HGDIOBJ       gdk_win32_drawable_get_handle (GdkDrawable *drawable);
+HGDIOBJ       bdk_win32_drawable_get_handle (BdkDrawable *drawable);
 
-/* Return a device context to draw in a drawable, given a GDK GC,
+/* Return a device context to draw in a drawable, given a BDK GC,
  * and a mask indicating which GC values might be used (for efficiency,
  * no need to muck around with text-related stuff if we aren't going
  * to output text, for instance).
  */
-HDC           gdk_win32_hdc_get      (GdkDrawable    *drawable,
-				      GdkGC          *gc,
-				      GdkGCValuesMask usage);
+HDC           bdk_win32_hdc_get      (BdkDrawable    *drawable,
+				      BdkGC          *gc,
+				      BdkGCValuesMask usage);
 
-/* Each HDC returned from gdk_win32_hdc_get must be released with
+/* Each HDC returned from bdk_win32_hdc_get must be released with
  * this function
  */
-void          gdk_win32_hdc_release  (GdkDrawable    *drawable,
-				      GdkGC          *gc,
-				      GdkGCValuesMask usage);
+void          bdk_win32_hdc_release  (BdkDrawable    *drawable,
+				      BdkGC          *gc,
+				      BdkGCValuesMask usage);
 
-void          gdk_win32_selection_add_targets (GdkWindow  *owner,
-					       GdkAtom     selection,
+void          bdk_win32_selection_add_targets (BdkWindow  *owner,
+					       BdkAtom     selection,
 					       gint	   n_targets,
-					       GdkAtom    *targets);
+					       BdkAtom    *targets);
 
-/* For internal GTK use only */
-GdkPixbuf    *gdk_win32_icon_to_pixbuf_libgtk_only (HICON hicon);
-HICON         gdk_win32_pixbuf_to_hicon_libgtk_only (GdkPixbuf *pixbuf);
-void          gdk_win32_set_modal_dialog_libgtk_only (HWND window);
+/* For internal BTK use only */
+BdkPixbuf    *bdk_win32_icon_to_pixbuf_libbtk_only (HICON hicon);
+HICON         bdk_win32_pixbuf_to_hicon_libbtk_only (BdkPixbuf *pixbuf);
+void          bdk_win32_set_modal_dialog_libbtk_only (HWND window);
 
-GdkDrawable  *gdk_win32_begin_direct_draw_libgtk_only (GdkDrawable *drawable,
-						       GdkGC *gc,
+BdkDrawable  *bdk_win32_begin_direct_draw_libbtk_only (BdkDrawable *drawable,
+						       BdkGC *gc,
 						       gpointer *priv_data,
 						       gint *x_offset_out,
 						       gint *y_offset_out);
-void          gdk_win32_end_direct_draw_libgtk_only (gpointer priv_data);
+void          bdk_win32_end_direct_draw_libbtk_only (gpointer priv_data);
 
-GdkWindow *   gdk_win32_window_foreign_new_for_display (GdkDisplay *display,
-                                                        GdkNativeWindow anid);
-GdkWindow *   gdk_win32_window_lookup_for_display (GdkDisplay *display,
-                                                   GdkNativeWindow anid);
+BdkWindow *   bdk_win32_window_foreign_new_for_display (BdkDisplay *display,
+                                                        BdkNativeWindow anid);
+BdkWindow *   bdk_win32_window_lookup_for_display (BdkDisplay *display,
+                                                   BdkNativeWindow anid);
 
 
 G_END_DECLS
 
-#endif /* __GDK_WIN32_H__ */
+#endif /* __BDK_WIN32_H__ */

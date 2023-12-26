@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * Insensitive pixmap building code by Eckehard Berns from GNOME Stock
@@ -21,101 +21,101 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <math.h>
 
-#undef GDK_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
-#define __GTK_PIXMAP_C__
+#undef BDK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
+#define __BTK_PIXMAP_C__
 
-#include "gtkcontainer.h"
-#include "gtkpixmap.h"
-#include "gtkintl.h"
+#include "btkcontainer.h"
+#include "btkpixmap.h"
+#include "btkintl.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 
-static gint gtk_pixmap_expose     (GtkWidget       *widget,
-				   GdkEventExpose  *event);
-static void gtk_pixmap_finalize   (GObject         *object);
-static void build_insensitive_pixmap (GtkPixmap *gtkpixmap);
+static gint btk_pixmap_expose     (BtkWidget       *widget,
+				   BdkEventExpose  *event);
+static void btk_pixmap_finalize   (GObject         *object);
+static void build_insensitive_pixmap (BtkPixmap *btkpixmap);
 
-G_DEFINE_TYPE (GtkPixmap, gtk_pixmap, GTK_TYPE_MISC)
+G_DEFINE_TYPE (BtkPixmap, btk_pixmap, BTK_TYPE_MISC)
 
 static void
-gtk_pixmap_class_init (GtkPixmapClass *class)
+btk_pixmap_class_init (BtkPixmapClass *class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-  GtkWidgetClass *widget_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BtkWidgetClass *widget_class;
 
-  widget_class = (GtkWidgetClass*) class;
+  widget_class = (BtkWidgetClass*) class;
 
-  gobject_class->finalize = gtk_pixmap_finalize;
+  bobject_class->finalize = btk_pixmap_finalize;
 
-  widget_class->expose_event = gtk_pixmap_expose;
+  widget_class->expose_event = btk_pixmap_expose;
 }
 
 static void
-gtk_pixmap_init (GtkPixmap *pixmap)
+btk_pixmap_init (BtkPixmap *pixmap)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (pixmap), FALSE);
+  btk_widget_set_has_window (BTK_WIDGET (pixmap), FALSE);
 
   pixmap->pixmap = NULL;
   pixmap->mask = NULL;
 }
 
 /**
- * gtk_pixmap_new:
+ * btk_pixmap_new:
  * @mask: (allow-none):
  */
-GtkWidget*
-gtk_pixmap_new (GdkPixmap *val,
-		GdkBitmap *mask)
+BtkWidget*
+btk_pixmap_new (BdkPixmap *val,
+		BdkBitmap *mask)
 {
-  GtkPixmap *pixmap;
+  BtkPixmap *pixmap;
    
   g_return_val_if_fail (val != NULL, NULL);
   
-  pixmap = gtk_type_new (gtk_pixmap_get_type ());
+  pixmap = btk_type_new (btk_pixmap_get_type ());
   
   pixmap->build_insensitive = TRUE;
-  gtk_pixmap_set (pixmap, val, mask);
+  btk_pixmap_set (pixmap, val, mask);
   
-  return GTK_WIDGET (pixmap);
+  return BTK_WIDGET (pixmap);
 }
 
 static void
-gtk_pixmap_finalize (GObject *object)
+btk_pixmap_finalize (GObject *object)
 {
-  gtk_pixmap_set (GTK_PIXMAP (object), NULL, NULL);
+  btk_pixmap_set (BTK_PIXMAP (object), NULL, NULL);
 
-  G_OBJECT_CLASS (gtk_pixmap_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_pixmap_parent_class)->finalize (object);
 }
 
 void
-gtk_pixmap_set (GtkPixmap *pixmap,
-		GdkPixmap *val,
-		GdkBitmap *mask)
+btk_pixmap_set (BtkPixmap *pixmap,
+		BdkPixmap *val,
+		BdkBitmap *mask)
 {
   gint width;
   gint height;
   gint oldwidth;
   gint oldheight;
 
-  g_return_if_fail (GTK_IS_PIXMAP (pixmap));
-  if(GDK_IS_DRAWABLE(val))
-    g_return_if_fail (gdk_colormap_get_visual (gtk_widget_get_colormap (GTK_WIDGET (pixmap)))->depth == gdk_drawable_get_depth (GDK_DRAWABLE (val)));
+  g_return_if_fail (BTK_IS_PIXMAP (pixmap));
+  if(BDK_IS_DRAWABLE(val))
+    g_return_if_fail (bdk_colormap_get_visual (btk_widget_get_colormap (BTK_WIDGET (pixmap)))->depth == bdk_drawable_get_depth (BDK_DRAWABLE (val)));
 
   if (pixmap->pixmap != val)
     {
-      oldwidth = GTK_WIDGET (pixmap)->requisition.width;
-      oldheight = GTK_WIDGET (pixmap)->requisition.height;
+      oldwidth = BTK_WIDGET (pixmap)->requisition.width;
+      oldheight = BTK_WIDGET (pixmap)->requisition.height;
       if (pixmap->pixmap)
 	g_object_unref (pixmap->pixmap);
       if (pixmap->pixmap_insensitive)
@@ -125,24 +125,24 @@ gtk_pixmap_set (GtkPixmap *pixmap,
       if (pixmap->pixmap)
 	{
 	  g_object_ref (pixmap->pixmap);
-	  gdk_drawable_get_size (pixmap->pixmap, &width, &height);
-	  GTK_WIDGET (pixmap)->requisition.width =
-	    width + GTK_MISC (pixmap)->xpad * 2;
-	  GTK_WIDGET (pixmap)->requisition.height =
-	    height + GTK_MISC (pixmap)->ypad * 2;
+	  bdk_drawable_get_size (pixmap->pixmap, &width, &height);
+	  BTK_WIDGET (pixmap)->requisition.width =
+	    width + BTK_MISC (pixmap)->xpad * 2;
+	  BTK_WIDGET (pixmap)->requisition.height =
+	    height + BTK_MISC (pixmap)->ypad * 2;
 	}
       else
 	{
-	  GTK_WIDGET (pixmap)->requisition.width = 0;
-	  GTK_WIDGET (pixmap)->requisition.height = 0;
+	  BTK_WIDGET (pixmap)->requisition.width = 0;
+	  BTK_WIDGET (pixmap)->requisition.height = 0;
 	}
-      if (gtk_widget_get_visible (GTK_WIDGET (pixmap)))
+      if (btk_widget_get_visible (BTK_WIDGET (pixmap)))
 	{
-	  if ((GTK_WIDGET (pixmap)->requisition.width != oldwidth) ||
-	      (GTK_WIDGET (pixmap)->requisition.height != oldheight))
-	    gtk_widget_queue_resize (GTK_WIDGET (pixmap));
+	  if ((BTK_WIDGET (pixmap)->requisition.width != oldwidth) ||
+	      (BTK_WIDGET (pixmap)->requisition.height != oldheight))
+	    btk_widget_queue_resize (BTK_WIDGET (pixmap));
 	  else
-	    gtk_widget_queue_draw (GTK_WIDGET (pixmap));
+	    btk_widget_queue_draw (BTK_WIDGET (pixmap));
 	}
     }
 
@@ -157,11 +157,11 @@ gtk_pixmap_set (GtkPixmap *pixmap,
 }
 
 void
-gtk_pixmap_get (GtkPixmap  *pixmap,
-		GdkPixmap **val,
-		GdkBitmap **mask)
+btk_pixmap_get (BtkPixmap  *pixmap,
+		BdkPixmap **val,
+		BdkBitmap **mask)
 {
-  g_return_if_fail (GTK_IS_PIXMAP (pixmap));
+  g_return_if_fail (BTK_IS_PIXMAP (pixmap));
 
   if (val)
     *val = pixmap->pixmap;
@@ -170,23 +170,23 @@ gtk_pixmap_get (GtkPixmap  *pixmap,
 }
 
 static gint
-gtk_pixmap_expose (GtkWidget      *widget,
-		   GdkEventExpose *event)
+btk_pixmap_expose (BtkWidget      *widget,
+		   BdkEventExpose *event)
 {
-  GtkPixmap *pixmap;
-  GtkMisc *misc;
+  BtkPixmap *pixmap;
+  BtkMisc *misc;
   gint x, y;
   gfloat xalign;
 
-  g_return_val_if_fail (GTK_IS_PIXMAP (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_PIXMAP (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (BTK_WIDGET_DRAWABLE (widget))
     {
-      pixmap = GTK_PIXMAP (widget);
-      misc = GTK_MISC (widget);
+      pixmap = BTK_PIXMAP (widget);
+      misc = BTK_MISC (widget);
 
-      if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+      if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_LTR)
 	xalign = misc->xalign;
       else
 	xalign = 1.0 - misc->xalign;
@@ -198,23 +198,23 @@ gtk_pixmap_expose (GtkWidget      *widget,
       
       if (pixmap->mask)
 	{
-	  gdk_gc_set_clip_mask (widget->style->black_gc, pixmap->mask);
-	  gdk_gc_set_clip_origin (widget->style->black_gc, x, y);
+	  bdk_gc_set_clip_mask (widget->style->black_gc, pixmap->mask);
+	  bdk_gc_set_clip_origin (widget->style->black_gc, x, y);
 	}
 
-      if (gtk_widget_get_state (widget) == GTK_STATE_INSENSITIVE
+      if (btk_widget_get_state (widget) == BTK_STATE_INSENSITIVE
           && pixmap->build_insensitive)
         {
 	  if (!pixmap->pixmap_insensitive)
 	    build_insensitive_pixmap (pixmap);
-          gdk_draw_drawable (widget->window,
+          bdk_draw_drawable (widget->window,
                              widget->style->black_gc,
                              pixmap->pixmap_insensitive,
                              0, 0, x, y, -1, -1);
         }
       else
 	{
-          gdk_draw_drawable (widget->window,
+          bdk_draw_drawable (widget->window,
                              widget->style->black_gc,
                              pixmap->pixmap,
                              0, 0, x, y, -1, -1);
@@ -222,66 +222,66 @@ gtk_pixmap_expose (GtkWidget      *widget,
 
       if (pixmap->mask)
 	{
-	  gdk_gc_set_clip_mask (widget->style->black_gc, NULL);
-	  gdk_gc_set_clip_origin (widget->style->black_gc, 0, 0);
+	  bdk_gc_set_clip_mask (widget->style->black_gc, NULL);
+	  bdk_gc_set_clip_origin (widget->style->black_gc, 0, 0);
 	}
     }
   return FALSE;
 }
 
 void
-gtk_pixmap_set_build_insensitive (GtkPixmap *pixmap, gboolean build)
+btk_pixmap_set_build_insensitive (BtkPixmap *pixmap, gboolean build)
 {
-  g_return_if_fail (GTK_IS_PIXMAP (pixmap));
+  g_return_if_fail (BTK_IS_PIXMAP (pixmap));
 
   pixmap->build_insensitive = build;
 
-  if (gtk_widget_get_visible (GTK_WIDGET (pixmap)))
+  if (btk_widget_get_visible (BTK_WIDGET (pixmap)))
     {
-      gtk_widget_queue_draw (GTK_WIDGET (pixmap));
+      btk_widget_queue_draw (BTK_WIDGET (pixmap));
     }
 }
 
 static void
-build_insensitive_pixmap (GtkPixmap *gtkpixmap)
+build_insensitive_pixmap (BtkPixmap *btkpixmap)
 {
-  GdkPixmap *pixmap = gtkpixmap->pixmap;
-  GdkPixmap *insensitive;
+  BdkPixmap *pixmap = btkpixmap->pixmap;
+  BdkPixmap *insensitive;
   gint w, h;
-  GdkPixbuf *pixbuf;
-  GdkPixbuf *stated;
+  BdkPixbuf *pixbuf;
+  BdkPixbuf *stated;
   
-  gdk_drawable_get_size (pixmap, &w, &h);
+  bdk_drawable_get_size (pixmap, &w, &h);
 
-  pixbuf = gdk_pixbuf_get_from_drawable (NULL,
+  pixbuf = bdk_pixbuf_get_from_drawable (NULL,
                                          pixmap,
-                                         gtk_widget_get_colormap (GTK_WIDGET (gtkpixmap)),
+                                         btk_widget_get_colormap (BTK_WIDGET (btkpixmap)),
                                          0, 0,
                                          0, 0,
                                          w, h);
   
-  stated = gdk_pixbuf_copy (pixbuf);
+  stated = bdk_pixbuf_copy (pixbuf);
   
-  gdk_pixbuf_saturate_and_pixelate (pixbuf, stated,
+  bdk_pixbuf_saturate_and_pixelate (pixbuf, stated,
                                     0.8, TRUE);
 
   g_object_unref (pixbuf);
   pixbuf = NULL;
   
-  insensitive = gdk_pixmap_new (GTK_WIDGET (gtkpixmap)->window, w, h, -1);
+  insensitive = bdk_pixmap_new (BTK_WIDGET (btkpixmap)->window, w, h, -1);
 
-  gdk_draw_pixbuf (insensitive,
-		   GTK_WIDGET (gtkpixmap)->style->white_gc,
+  bdk_draw_pixbuf (insensitive,
+		   BTK_WIDGET (btkpixmap)->style->white_gc,
 		   stated,
 		   0, 0,
 		   0, 0,
 		   w, h,
-		   GDK_RGB_DITHER_NORMAL,
+		   BDK_RGB_DITHER_NORMAL,
 		   0, 0);
 
-  gtkpixmap->pixmap_insensitive = insensitive;
+  btkpixmap->pixmap_insensitive = insensitive;
 
   g_object_unref (stated);
 }
 
-#include "gtkaliasdef.c"
+#include "btkaliasdef.c"

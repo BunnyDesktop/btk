@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) David Zeuthen <davidz@redhat.com>
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2005-2007 Vincent Untz
@@ -21,21 +21,21 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
 #include <string.h>
 #include <stdlib.h>
-#include <gio/gio.h>
-#include "x11/gdkx.h"
+#include <bunnyio/bunnyio.h>
+#include "x11/bdkx.h"
 #include <X11/Xatom.h>
-#include <gtk/gtkicontheme.h>
-#include "gtkintl.h"
+#include <btk/btkicontheme.h>
+#include "btkintl.h"
 
 /* for the kill(2) system call and errno - POSIX.1-2001 and later */
 #include <sys/types.h>
@@ -49,9 +49,9 @@
 #include <sys/sysctl.h>
 #endif
 
-#include "gtkmountoperationprivate.h"
+#include "btkmountoperationprivate.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -96,7 +96,7 @@ get_cardinal (Display *xdisplay,
 
   *val = 0;
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   type = None;
   result = XGetWindowProperty (xdisplay,
                                xwindow,
@@ -105,7 +105,7 @@ get_cardinal (Display *xdisplay,
                                False, XA_CARDINAL, &type, &format, &nitems,
                                &bytes_after, (void*)&num);
   XSync (xdisplay, False);
-  err = gdk_error_trap_pop ();
+  err = bdk_error_trap_pop ();
 
   if (err != Success ||
       result != Success)
@@ -138,9 +138,9 @@ get_utf8_property (Display *xdisplay,
   char *retval;
   Atom utf8_string;
 
-  utf8_string = gdk_x11_get_xatom_by_name ("UTF8_STRING");
+  utf8_string = bdk_x11_get_xatom_by_name ("UTF8_STRING");
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   type = None;
   val = NULL;
   result = XGetWindowProperty (xdisplay,
@@ -151,7 +151,7 @@ get_utf8_property (Display *xdisplay,
                                &type, &format, &nitems,
                                &bytes_after, (guchar **)&val);
   XSync (xdisplay, False);
-  err = gdk_error_trap_pop ();
+  err = bdk_error_trap_pop ();
 
   if (err != Success ||
       result != Success)
@@ -169,7 +169,7 @@ get_utf8_property (Display *xdisplay,
   if (!g_utf8_validate (val, nitems, NULL))
     {
       g_warning ("Property %s contained invalid UTF-8\n",
-                 gdk_x11_get_xatom_name (atom));
+                 bdk_x11_get_xatom_name (atom));
       XFree (val);
       return NULL;
     }
@@ -364,18 +364,18 @@ read_rgb_icon (Display   *xdisplay,
   gulong *best;
   int w, h;
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   type = None;
   data = NULL;
   result = XGetWindowProperty (xdisplay,
                                xwindow,
-                               gdk_x11_get_xatom_by_name ("_NET_WM_ICON"),
+                               bdk_x11_get_xatom_by_name ("_NET_WM_ICON"),
                                0, G_MAXLONG,
                                False, XA_CARDINAL, &type, &format, &nitems,
                                &bytes_after, (void*)&data);
 
   XSync (xdisplay, False);
-  err = gdk_error_trap_pop ();
+  err = bdk_error_trap_pop ();
 
   if (err != Success ||
       result != Success)
@@ -411,18 +411,18 @@ free_pixels (guchar *pixels, gpointer data)
   g_free (pixels);
 }
 
-static GdkPixbuf*
+static BdkPixbuf*
 scaled_from_pixdata (guchar *pixdata,
                      int     w,
                      int     h,
                      int     new_w,
                      int     new_h)
 {
-  GdkPixbuf *src;
-  GdkPixbuf *dest;
+  BdkPixbuf *src;
+  BdkPixbuf *dest;
 
-  src = gdk_pixbuf_new_from_data (pixdata,
-                                  GDK_COLORSPACE_RGB,
+  src = bdk_pixbuf_new_from_data (pixdata,
+                                  BDK_COLORSPACE_RGB,
                                   TRUE,
                                   8,
                                   w, h, w * 4,
@@ -434,17 +434,17 @@ scaled_from_pixdata (guchar *pixdata,
 
   if (w != h)
     {
-      GdkPixbuf *tmp;
+      BdkPixbuf *tmp;
       int size;
 
       size = MAX (w, h);
 
-      tmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, size, size);
+      tmp = bdk_pixbuf_new (BDK_COLORSPACE_RGB, TRUE, 8, size, size);
 
       if (tmp != NULL)
         {
-          gdk_pixbuf_fill (tmp, 0);
-          gdk_pixbuf_copy_area (src, 0, 0, w, h,
+          bdk_pixbuf_fill (tmp, 0);
+          bdk_pixbuf_copy_area (src, 0, 0, w, h,
                                 tmp,
                                 (size - w) / 2, (size - h) / 2);
 
@@ -455,7 +455,7 @@ scaled_from_pixdata (guchar *pixdata,
 
   if (w != new_w || h != new_h)
     {
-      dest = gdk_pixbuf_scale_simple (src, new_w, new_h, GDK_INTERP_BILINEAR);
+      dest = bdk_pixbuf_scale_simple (src, new_w, new_h, BDK_INTERP_BILINEAR);
 
       g_object_unref (G_OBJECT (src));
     }
@@ -484,7 +484,7 @@ get_window_list (Display  *xdisplay,
   *windows = NULL;
   *len = 0;
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   type = None;
   result = XGetWindowProperty (xdisplay,
                                xwindow,
@@ -493,7 +493,7 @@ get_window_list (Display  *xdisplay,
                                False, XA_WINDOW, &type, &format, &nitems,
                                &bytes_after, (void*)&data);
   XSync (xdisplay, False);
-  err = gdk_error_trap_pop ();
+  err = bdk_error_trap_pop ();
 
   if (err != Success ||
       result != Success)
@@ -517,7 +517,7 @@ get_window_list (Display  *xdisplay,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-struct _GtkMountOperationLookupContext
+struct _BtkMountOperationLookupContext
 {
   /* Hash from pid (gint) -> XID (gint)
    *
@@ -525,27 +525,27 @@ struct _GtkMountOperationLookupContext
    * x86_64 - that's just xlib brokenness. So it's safe to stuff the XID into a pointer.
    */
   GHashTable *pid_to_window;
-  GdkDisplay *display;
+  BdkDisplay *display;
 };
 
-GtkMountOperationLookupContext *
-_gtk_mount_operation_lookup_context_get (GdkDisplay *display)
+BtkMountOperationLookupContext *
+_btk_mount_operation_lookup_context_get (BdkDisplay *display)
 {
-  GtkMountOperationLookupContext *context;
+  BtkMountOperationLookupContext *context;
   Window *mapping;
   gint mapping_length;
   gint n;
 
-  context = g_new0 (GtkMountOperationLookupContext, 1);
+  context = g_new0 (BtkMountOperationLookupContext, 1);
 
   context->pid_to_window = g_hash_table_new (g_direct_hash, g_direct_equal);
   context->display = display;
 
   mapping = NULL;
   mapping_length = 0;
-  get_window_list (GDK_DISPLAY_XDISPLAY (context->display),
-                   GDK_ROOT_WINDOW(),
-                   gdk_x11_get_xatom_by_name_for_display (context->display,
+  get_window_list (BDK_DISPLAY_XDISPLAY (context->display),
+                   BDK_ROOT_WINDOW(),
+                   bdk_x11_get_xatom_by_name_for_display (context->display,
                                                           "_NET_CLIENT_LIST"),
                    &mapping,
                    &mapping_length);
@@ -553,9 +553,9 @@ _gtk_mount_operation_lookup_context_get (GdkDisplay *display)
     {
       gint pid;
 
-      if (!get_cardinal (GDK_DISPLAY_XDISPLAY (context->display),
+      if (!get_cardinal (BDK_DISPLAY_XDISPLAY (context->display),
                          mapping[n],
-                         gdk_x11_get_xatom_by_name_for_display (context->display,
+                         bdk_x11_get_xatom_by_name_for_display (context->display,
                                                                 "_NET_WM_PID"),
                          &pid))
         continue;
@@ -570,7 +570,7 @@ _gtk_mount_operation_lookup_context_get (GdkDisplay *display)
 }
 
 void
-_gtk_mount_operation_lookup_context_free (GtkMountOperationLookupContext *context)
+_btk_mount_operation_lookup_context_free (BtkMountOperationLookupContext *context)
 {
   g_hash_table_unref (context->pid_to_window);
   g_free (context);
@@ -752,7 +752,7 @@ pid_get_command_line (GPid pid)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gchar *
-get_name_for_window_with_pid (GtkMountOperationLookupContext *context,
+get_name_for_window_with_pid (BtkMountOperationLookupContext *context,
                               GPid                            pid)
 {
   Window window;
@@ -800,13 +800,13 @@ get_name_for_window_with_pid (GtkMountOperationLookupContext *context,
 
   if (window != None)
     {
-      ret = get_utf8_property (GDK_DISPLAY_XDISPLAY (context->display),
+      ret = get_utf8_property (BDK_DISPLAY_XDISPLAY (context->display),
                                window,
-                               gdk_x11_get_xatom_by_name_for_display (context->display,
+                               bdk_x11_get_xatom_by_name_for_display (context->display,
                                                                       "_NET_WM_NAME"));
       if (ret == NULL)
-        ret = get_utf8_property (GDK_DISPLAY_XDISPLAY (context->display),
-                                 window, gdk_x11_get_xatom_by_name_for_display (context->display,
+        ret = get_utf8_property (BDK_DISPLAY_XDISPLAY (context->display),
+                                 window, bdk_x11_get_xatom_by_name_for_display (context->display,
                                                                                 "_NET_WM_ICON_NAME"));
     }
 
@@ -815,13 +815,13 @@ get_name_for_window_with_pid (GtkMountOperationLookupContext *context,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static GdkPixbuf *
-get_pixbuf_for_window_with_pid (GtkMountOperationLookupContext *context,
+static BdkPixbuf *
+get_pixbuf_for_window_with_pid (BtkMountOperationLookupContext *context,
                                 GPid                            pid,
                                 gint                            size_pixels)
 {
   Window window;
-  GdkPixbuf *ret;
+  BdkPixbuf *ret;
 
   ret = NULL;
 
@@ -848,7 +848,7 @@ get_pixbuf_for_window_with_pid (GtkMountOperationLookupContext *context,
       gint    height;
       guchar *pixdata;
 
-      if (read_rgb_icon (GDK_DISPLAY_XDISPLAY (context->display),
+      if (read_rgb_icon (BDK_DISPLAY_XDISPLAY (context->display),
                          window,
                          size_pixels, size_pixels,
                          &width, &height,
@@ -878,12 +878,12 @@ static const gchar *well_known_commands[] =
 };
 
 gboolean
-_gtk_mount_operation_lookup_info (GtkMountOperationLookupContext *context,
+_btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
                                   GPid                            pid,
                                   gint                            size_pixels,
                                   gchar                         **out_name,
                                   gchar                         **out_command_line,
-                                  GdkPixbuf                     **out_pixbuf)
+                                  BdkPixbuf                     **out_pixbuf)
 {
   g_return_val_if_fail (out_name != NULL && *out_name == NULL, FALSE);
   g_return_val_if_fail (out_command_line != NULL && *out_command_line == NULL, FALSE);
@@ -950,7 +950,7 @@ _gtk_mount_operation_lookup_info (GtkMountOperationLookupContext *context,
 }
 
 gboolean
-_gtk_mount_operation_kill_process (GPid      pid,
+_btk_mount_operation_kill_process (GPid      pid,
                                    GError  **error)
 {
   gboolean ret;

@@ -1,5 +1,5 @@
 /*
- * gtkimcontextime.c
+ * btkimcontextime.c
  * Copyright (C) 2003 Takuro Ashie
  * Copyright (C) 2003-2004 Kazuki IWAMOTO
  *
@@ -25,31 +25,31 @@
  *  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/appendix/hh/appendix/imeimes2_35ph.asp
  */
 
-#include "gtkimcontextime.h"
+#include "btkimcontextime.h"
 
 #include "imm-extra.h"
 
-#include <gdk/gdkkeysyms.h>
-#include "gdk/win32/gdkwin32.h"
-#include "gdk/gdkkeysyms.h"
+#include <bdk/bdkkeysyms.h>
+#include "bdk/win32/bdkwin32.h"
+#include "bdk/bdkkeysyms.h"
 
-#include <pango/pango.h>
+#include <bango/bango.h>
 
 /* avoid warning */
 #ifdef STRICT
 # undef STRICT
-# include <pango/pangowin32.h>
+# include <bango/bangowin32.h>
 # ifndef STRICT
 #   define STRICT 1
 # endif
 #else /* STRICT */
-#   include <pango/pangowin32.h>
+#   include <bango/bangowin32.h>
 #endif /* STRICT */
 
 /* #define BUFSIZE 4096 */
 
 #define IS_DEAD_KEY(k) \
-    ((k) >= GDK_dead_grave && (k) <= (GDK_dead_dasia+1))
+    ((k) >= BDK_dead_grave && (k) <= (BDK_dead_dasia+1))
 
 #define FREE_PREEDIT_BUFFER(ctx) \
 {                                \
@@ -62,7 +62,7 @@
 }
 
 
-struct _GtkIMContextIMEPrivate
+struct _BtkIMContextIMEPrivate
 {
   /* save IME context when the client window is focused out */
   DWORD conversion_mode;
@@ -78,102 +78,102 @@ struct _GtkIMContextIMEPrivate
 
 
 /* GObject class methods */
-static void gtk_im_context_ime_class_init (GtkIMContextIMEClass *class);
-static void gtk_im_context_ime_init       (GtkIMContextIME      *context_ime);
-static void gtk_im_context_ime_dispose    (GObject              *obj);
-static void gtk_im_context_ime_finalize   (GObject              *obj);
+static void btk_im_context_ime_class_init (BtkIMContextIMEClass *class);
+static void btk_im_context_ime_init       (BtkIMContextIME      *context_ime);
+static void btk_im_context_ime_dispose    (GObject              *obj);
+static void btk_im_context_ime_finalize   (GObject              *obj);
 
-static void gtk_im_context_ime_set_property (GObject      *object,
+static void btk_im_context_ime_set_property (GObject      *object,
                                              guint         prop_id,
                                              const GValue *value,
                                              GParamSpec   *pspec);
-static void gtk_im_context_ime_get_property (GObject      *object,
+static void btk_im_context_ime_get_property (GObject      *object,
                                              guint         prop_id,
                                              GValue       *value,
                                              GParamSpec   *pspec);
 
-/* GtkIMContext's virtual functions */
-static void gtk_im_context_ime_set_client_window   (GtkIMContext *context,
-                                                    GdkWindow    *client_window);
-static gboolean gtk_im_context_ime_filter_keypress (GtkIMContext   *context,
-                                                    GdkEventKey    *event);
-static void gtk_im_context_ime_reset               (GtkIMContext   *context);
-static void gtk_im_context_ime_get_preedit_string  (GtkIMContext   *context,
+/* BtkIMContext's virtual functions */
+static void btk_im_context_ime_set_client_window   (BtkIMContext *context,
+                                                    BdkWindow    *client_window);
+static gboolean btk_im_context_ime_filter_keypress (BtkIMContext   *context,
+                                                    BdkEventKey    *event);
+static void btk_im_context_ime_reset               (BtkIMContext   *context);
+static void btk_im_context_ime_get_preedit_string  (BtkIMContext   *context,
                                                     gchar         **str,
-                                                    PangoAttrList **attrs,
+                                                    BangoAttrList **attrs,
                                                     gint           *cursor_pos);
-static void gtk_im_context_ime_focus_in            (GtkIMContext   *context);
-static void gtk_im_context_ime_focus_out           (GtkIMContext   *context);
-static void gtk_im_context_ime_set_cursor_location (GtkIMContext   *context,
-                                                    GdkRectangle   *area);
-static void gtk_im_context_ime_set_use_preedit     (GtkIMContext   *context,
+static void btk_im_context_ime_focus_in            (BtkIMContext   *context);
+static void btk_im_context_ime_focus_out           (BtkIMContext   *context);
+static void btk_im_context_ime_set_cursor_location (BtkIMContext   *context,
+                                                    BdkRectangle   *area);
+static void btk_im_context_ime_set_use_preedit     (BtkIMContext   *context,
                                                     gboolean        use_preedit);
 
-/* GtkIMContextIME's private functions */
-static void gtk_im_context_ime_set_preedit_font (GtkIMContext    *context);
+/* BtkIMContextIME's private functions */
+static void btk_im_context_ime_set_preedit_font (BtkIMContext    *context);
 
-static GdkFilterReturn
-gtk_im_context_ime_message_filter               (GdkXEvent       *xevent,
-                                                 GdkEvent        *event,
+static BdkFilterReturn
+btk_im_context_ime_message_filter               (BdkXEvent       *xevent,
+                                                 BdkEvent        *event,
                                                  gpointer         data);
-static void get_window_position                 (GdkWindow       *win,
+static void get_window_position                 (BdkWindow       *win,
                                                  gint            *x,
                                                  gint            *y);
-static void cb_client_widget_hierarchy_changed  (GtkWidget       *widget,
-                                                 GtkWidget       *widget2,
-                                                 GtkIMContextIME *context_ime);
+static void cb_client_widget_hierarchy_changed  (BtkWidget       *widget,
+                                                 BtkWidget       *widget2,
+                                                 BtkIMContextIME *context_ime);
 
-GType gtk_type_im_context_ime = 0;
+GType btk_type_im_context_ime = 0;
 static GObjectClass *parent_class;
 
 
 void
-gtk_im_context_ime_register_type (GTypeModule *type_module)
+btk_im_context_ime_register_type (GTypeModule *type_module)
 {
   const GTypeInfo im_context_ime_info = {
-    sizeof (GtkIMContextIMEClass),
+    sizeof (BtkIMContextIMEClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) gtk_im_context_ime_class_init,
+    (GClassInitFunc) btk_im_context_ime_class_init,
     NULL,                       /* class_finalize */
     NULL,                       /* class_data */
-    sizeof (GtkIMContextIME),
+    sizeof (BtkIMContextIME),
     0,
-    (GInstanceInitFunc) gtk_im_context_ime_init,
+    (GInstanceInitFunc) btk_im_context_ime_init,
   };
 
-  gtk_type_im_context_ime =
+  btk_type_im_context_ime =
     g_type_module_register_type (type_module,
-                                 GTK_TYPE_IM_CONTEXT,
-                                 "GtkIMContextIME", &im_context_ime_info, 0);
+                                 BTK_TYPE_IM_CONTEXT,
+                                 "BtkIMContextIME", &im_context_ime_info, 0);
 }
 
 static void
-gtk_im_context_ime_class_init (GtkIMContextIMEClass *class)
+btk_im_context_ime_class_init (BtkIMContextIMEClass *class)
 {
-  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
-  gobject_class->finalize     = gtk_im_context_ime_finalize;
-  gobject_class->dispose      = gtk_im_context_ime_dispose;
-  gobject_class->set_property = gtk_im_context_ime_set_property;
-  gobject_class->get_property = gtk_im_context_ime_get_property;
+  bobject_class->finalize     = btk_im_context_ime_finalize;
+  bobject_class->dispose      = btk_im_context_ime_dispose;
+  bobject_class->set_property = btk_im_context_ime_set_property;
+  bobject_class->get_property = btk_im_context_ime_get_property;
 
-  im_context_class->set_client_window   = gtk_im_context_ime_set_client_window;
-  im_context_class->filter_keypress     = gtk_im_context_ime_filter_keypress;
-  im_context_class->reset               = gtk_im_context_ime_reset;
-  im_context_class->get_preedit_string  = gtk_im_context_ime_get_preedit_string;
-  im_context_class->focus_in            = gtk_im_context_ime_focus_in;
-  im_context_class->focus_out           = gtk_im_context_ime_focus_out;
-  im_context_class->set_cursor_location = gtk_im_context_ime_set_cursor_location;
-  im_context_class->set_use_preedit     = gtk_im_context_ime_set_use_preedit;
+  im_context_class->set_client_window   = btk_im_context_ime_set_client_window;
+  im_context_class->filter_keypress     = btk_im_context_ime_filter_keypress;
+  im_context_class->reset               = btk_im_context_ime_reset;
+  im_context_class->get_preedit_string  = btk_im_context_ime_get_preedit_string;
+  im_context_class->focus_in            = btk_im_context_ime_focus_in;
+  im_context_class->focus_out           = btk_im_context_ime_focus_out;
+  im_context_class->set_cursor_location = btk_im_context_ime_set_cursor_location;
+  im_context_class->set_use_preedit     = btk_im_context_ime_set_use_preedit;
 }
 
 
 static void
-gtk_im_context_ime_init (GtkIMContextIME *context_ime)
+btk_im_context_ime_init (BtkIMContextIME *context_ime)
 {
   context_ime->client_window          = NULL;
   context_ime->toplevel               = NULL;
@@ -186,7 +186,7 @@ gtk_im_context_ime_init (GtkIMContextIME *context_ime)
   context_ime->cursor_location.width  = 0;
   context_ime->cursor_location.height = 0;
 
-  context_ime->priv = g_malloc0 (sizeof (GtkIMContextIMEPrivate));
+  context_ime->priv = g_malloc0 (sizeof (BtkIMContextIMEPrivate));
   context_ime->priv->conversion_mode  = 0;
   context_ime->priv->sentence_mode    = 0;
   context_ime->priv->comp_str         = NULL;
@@ -197,13 +197,13 @@ gtk_im_context_ime_init (GtkIMContextIME *context_ime)
 
 
 static void
-gtk_im_context_ime_dispose (GObject *obj)
+btk_im_context_ime_dispose (GObject *obj)
 {
-  GtkIMContext *context = GTK_IM_CONTEXT (obj);
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (obj);
+  BtkIMContext *context = BTK_IM_CONTEXT (obj);
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (obj);
 
   if (context_ime->client_window)
-    gtk_im_context_ime_set_client_window (context, NULL);
+    btk_im_context_ime_set_client_window (context, NULL);
 
   FREE_PREEDIT_BUFFER (context_ime);
 
@@ -213,10 +213,10 @@ gtk_im_context_ime_dispose (GObject *obj)
 
 
 static void
-gtk_im_context_ime_finalize (GObject *obj)
+btk_im_context_ime_finalize (GObject *obj)
 {
-  /* GtkIMContext *context = GTK_IM_CONTEXT (obj); */
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (obj);
+  /* BtkIMContext *context = BTK_IM_CONTEXT (obj); */
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (obj);
 
   g_free (context_ime->priv);
   context_ime->priv = NULL;
@@ -227,14 +227,14 @@ gtk_im_context_ime_finalize (GObject *obj)
 
 
 static void
-gtk_im_context_ime_set_property (GObject      *object,
+btk_im_context_ime_set_property (GObject      *object,
                                  guint         prop_id,
                                  const GValue *value,
                                  GParamSpec   *pspec)
 {
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (object);
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (object);
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context_ime));
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context_ime));
 
   switch (prop_id)
     {
@@ -245,14 +245,14 @@ gtk_im_context_ime_set_property (GObject      *object,
 
 
 static void
-gtk_im_context_ime_get_property (GObject    *object,
+btk_im_context_ime_get_property (GObject    *object,
                                  guint       prop_id,
                                  GValue     *value,
                                  GParamSpec *pspec)
 {
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (object);
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (object);
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context_ime));
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context_ime));
 
   switch (prop_id)
     {
@@ -262,28 +262,28 @@ gtk_im_context_ime_get_property (GObject    *object,
 }
 
 
-GtkIMContext *
-gtk_im_context_ime_new (void)
+BtkIMContext *
+btk_im_context_ime_new (void)
 {
-  return g_object_new (GTK_TYPE_IM_CONTEXT_IME, NULL);
+  return g_object_new (BTK_TYPE_IM_CONTEXT_IME, NULL);
 }
 
 
 static void
-gtk_im_context_ime_set_client_window (GtkIMContext *context,
-                                      GdkWindow    *client_window)
+btk_im_context_ime_set_client_window (BtkIMContext *context,
+                                      BdkWindow    *client_window)
 {
-  GtkIMContextIME *context_ime;
+  BtkIMContextIME *context_ime;
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context));
-  context_ime = GTK_IM_CONTEXT_IME (context);
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context));
+  context_ime = BTK_IM_CONTEXT_IME (context);
 
   if (client_window)
     {
       HIMC himc;
       HWND hwnd;
 
-      hwnd = gdk_win32_window_get_impl_hwnd (client_window);
+      hwnd = bdk_win32_window_get_impl_hwnd (client_window);
       himc = ImmGetContext (hwnd);
       if (himc)
 	{
@@ -296,20 +296,20 @@ gtk_im_context_ime_set_client_window (GtkIMContext *context,
     }
   else if (context_ime->focus)
     {
-      gtk_im_context_ime_focus_out (context);
+      btk_im_context_ime_focus_out (context);
     }
 
   context_ime->client_window = client_window;
 }
 
 static gunichar
-_gtk_im_context_ime_dead_key_unichar (guint    keyval,
+_btk_im_context_ime_dead_key_unichar (guint    keyval,
                                       gboolean spacing)
 {
   switch (keyval)
     {
 #define CASE(keysym, unicode, spacing_unicode) \
-      case GDK_dead_##keysym: return (spacing) ? spacing_unicode : unicode;
+      case BDK_dead_##keysym: return (spacing) ? spacing_unicode : unicode;
 
       CASE (grave, 0x0300, 0x0060);
       CASE (acute, 0x0301, 0x00b4);
@@ -338,7 +338,7 @@ _gtk_im_context_ime_dead_key_unichar (guint    keyval,
 }
 
 static void
-_gtk_im_context_ime_commit_unichar (GtkIMContextIME *context_ime,
+_btk_im_context_ime_commit_unichar (BtkIMContextIME *context_ime,
                                     gunichar         c)
 {
   gchar utf8[10];
@@ -349,7 +349,7 @@ _gtk_im_context_ime_commit_unichar (GtkIMContextIME *context_ime,
       gunichar combining;
 
       combining =
-        _gtk_im_context_ime_dead_key_unichar (context_ime->priv->dead_key_keyval,
+        _btk_im_context_ime_dead_key_unichar (context_ime->priv->dead_key_keyval,
                                               FALSE);
       g_unichar_compose (c, combining, &c);
     }
@@ -362,59 +362,59 @@ _gtk_im_context_ime_commit_unichar (GtkIMContextIME *context_ime,
 }
 
 static gboolean
-gtk_im_context_ime_filter_keypress (GtkIMContext *context,
-                                    GdkEventKey  *event)
+btk_im_context_ime_filter_keypress (BtkIMContext *context,
+                                    BdkEventKey  *event)
 {
-  GtkIMContextIME *context_ime;
+  BtkIMContextIME *context_ime;
   gboolean retval = FALSE;
   guint32 c;
 
-  g_return_val_if_fail (GTK_IS_IM_CONTEXT_IME (context), FALSE);
+  g_return_val_if_fail (BTK_IS_IM_CONTEXT_IME (context), FALSE);
   g_return_val_if_fail (event, FALSE);
 
-  if (event->type == GDK_KEY_RELEASE)
+  if (event->type == BDK_KEY_RELEASE)
     return FALSE;
 
-  if (event->state & GDK_CONTROL_MASK)
+  if (event->state & BDK_CONTROL_MASK)
     return FALSE;
 
-  context_ime = GTK_IM_CONTEXT_IME (context);
+  context_ime = BTK_IM_CONTEXT_IME (context);
 
   if (!context_ime->focus)
     return FALSE;
 
-  if (!GDK_IS_WINDOW (context_ime->client_window))
+  if (!BDK_IS_WINDOW (context_ime->client_window))
     return FALSE;
 
-  if (event->keyval == GDK_space &&
+  if (event->keyval == BDK_space &&
       context_ime->priv->dead_key_keyval != 0)
     {
-      c = _gtk_im_context_ime_dead_key_unichar (context_ime->priv->dead_key_keyval, TRUE);
+      c = _btk_im_context_ime_dead_key_unichar (context_ime->priv->dead_key_keyval, TRUE);
       context_ime->priv->dead_key_keyval = 0;
-      _gtk_im_context_ime_commit_unichar (context_ime, c);
+      _btk_im_context_ime_commit_unichar (context_ime, c);
       return TRUE;
     }
 
-  c = gdk_keyval_to_unicode (event->keyval);
+  c = bdk_keyval_to_unicode (event->keyval);
 
   if (c)
     {
-      _gtk_im_context_ime_commit_unichar (context_ime, c);
+      _btk_im_context_ime_commit_unichar (context_ime, c);
       retval = TRUE;
     }
   else if (IS_DEAD_KEY (event->keyval))
     {
       gunichar dead_key;
 
-      dead_key = _gtk_im_context_ime_dead_key_unichar (event->keyval, FALSE);
+      dead_key = _btk_im_context_ime_dead_key_unichar (event->keyval, FALSE);
 
       /* Emulate double input of dead keys */
       if (dead_key && event->keyval == context_ime->priv->dead_key_keyval)
         {
-          c = _gtk_im_context_ime_dead_key_unichar (context_ime->priv->dead_key_keyval, TRUE);
+          c = _btk_im_context_ime_dead_key_unichar (context_ime->priv->dead_key_keyval, TRUE);
           context_ime->priv->dead_key_keyval = 0;
-          _gtk_im_context_ime_commit_unichar (context_ime, c);
-          _gtk_im_context_ime_commit_unichar (context_ime, c);
+          _btk_im_context_ime_commit_unichar (context_ime, c);
+          _btk_im_context_ime_commit_unichar (context_ime, c);
         }
       else
         context_ime->priv->dead_key_keyval = event->keyval;
@@ -425,16 +425,16 @@ gtk_im_context_ime_filter_keypress (GtkIMContext *context,
 
 
 static void
-gtk_im_context_ime_reset (GtkIMContext *context)
+btk_im_context_ime_reset (BtkIMContext *context)
 {
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (context);
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (context);
   HWND hwnd;
   HIMC himc;
 
   if (!context_ime->client_window)
     return;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return;
@@ -453,7 +453,7 @@ gtk_im_context_ime_reset (GtkIMContext *context)
 
 
 static gchar *
-get_utf8_preedit_string (GtkIMContextIME *context_ime, gint *pos_ret)
+get_utf8_preedit_string (BtkIMContextIME *context_ime, gint *pos_ret)
 {
   gchar *utf8str = NULL;
   HWND hwnd;
@@ -466,7 +466,7 @@ get_utf8_preedit_string (GtkIMContextIME *context_ime, gint *pos_ret)
   if (!context_ime->client_window)
     return g_strdup ("");
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return g_strdup ("");
@@ -518,17 +518,17 @@ get_utf8_preedit_string (GtkIMContextIME *context_ime, gint *pos_ret)
 }
 
 
-static PangoAttrList *
-get_pango_attr_list (GtkIMContextIME *context_ime, const gchar *utf8str)
+static BangoAttrList *
+get_bango_attr_list (BtkIMContextIME *context_ime, const gchar *utf8str)
 {
-  PangoAttrList *attrs = pango_attr_list_new ();
+  BangoAttrList *attrs = bango_attr_list_new ();
   HWND hwnd;
   HIMC himc;
 
   if (!context_ime->client_window)
     return attrs;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return attrs;
@@ -539,7 +539,7 @@ get_pango_attr_list (GtkIMContextIME *context_ime, const gchar *utf8str)
       guint8 *buf;
       guint16 f_red, f_green, f_blue, b_red, b_green, b_blue;
       glong len, spos = 0, epos, sidx = 0, eidx;
-      PangoAttribute *attr;
+      BangoAttribute *attr;
 
       /*
        *  get attributes list of IME.
@@ -567,17 +567,17 @@ get_pango_attr_list (GtkIMContextIME *context_ime, const gchar *utf8str)
           eidx = echr - utf8str;
 
           /*
-           *  convert attributes list to PangoAttriute.
+           *  convert attributes list to BangoAttriute.
            */
           if (*echr == '\0' || buf[spos] != buf[epos])
             {
               switch (buf[spos])
                 {
                 case ATTR_TARGET_CONVERTED:
-                  attr = pango_attr_underline_new (PANGO_UNDERLINE_DOUBLE);
+                  attr = bango_attr_underline_new (BANGO_UNDERLINE_DOUBLE);
                   attr->start_index = sidx;
                   attr->end_index = eidx;
-                  pango_attr_list_change (attrs, attr);
+                  bango_attr_list_change (attrs, attr);
                   f_red = f_green = f_blue = 0;
                   b_red = b_green = b_blue = 0xffff;
                   break;
@@ -590,21 +590,21 @@ get_pango_attr_list (GtkIMContextIME *context_ime, const gchar *utf8str)
                   b_red = b_green = b_blue = 0x7fff;
                   break;
                 default:        /* ATTR_INPUT,ATTR_CONVERTED,ATTR_FIXEDCONVERTED */
-                  attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+                  attr = bango_attr_underline_new (BANGO_UNDERLINE_SINGLE);
                   attr->start_index = sidx;
                   attr->end_index = eidx;
-                  pango_attr_list_change (attrs, attr);
+                  bango_attr_list_change (attrs, attr);
                   f_red = f_green = f_blue = 0;
                   b_red = b_green = b_blue = 0xffff;
                 }
-              attr = pango_attr_foreground_new (f_red, f_green, f_blue);
+              attr = bango_attr_foreground_new (f_red, f_green, f_blue);
               attr->start_index = sidx;
               attr->end_index = eidx;
-              pango_attr_list_change (attrs, attr);
-              attr = pango_attr_background_new (b_red, b_green, b_blue);
+              bango_attr_list_change (attrs, attr);
+              attr = bango_attr_background_new (b_red, b_green, b_blue);
               attr->start_index = sidx;
               attr->end_index = eidx;
-              pango_attr_list_change (attrs, attr);
+              bango_attr_list_change (attrs, attr);
 
               schr = echr;
               spos = epos;
@@ -620,21 +620,21 @@ get_pango_attr_list (GtkIMContextIME *context_ime, const gchar *utf8str)
 
 
 static void
-gtk_im_context_ime_get_preedit_string (GtkIMContext   *context,
+btk_im_context_ime_get_preedit_string (BtkIMContext   *context,
                                        gchar         **str,
-                                       PangoAttrList **attrs,
+                                       BangoAttrList **attrs,
                                        gint           *cursor_pos)
 {
   gchar *utf8str = NULL;
   gint pos = 0;
-  GtkIMContextIME *context_ime;
+  BtkIMContextIME *context_ime;
 
-  context_ime = GTK_IM_CONTEXT_IME (context);
+  context_ime = BTK_IM_CONTEXT_IME (context);
 
   utf8str = get_utf8_preedit_string (context_ime, &pos);
 
   if (attrs)
-    *attrs = get_pango_attr_list (context_ime, utf8str);
+    *attrs = get_bango_attr_list (context_ime, utf8str);
 
   if (str)
     {
@@ -652,44 +652,44 @@ gtk_im_context_ime_get_preedit_string (GtkIMContext   *context,
 
 
 static void
-gtk_im_context_ime_focus_in (GtkIMContext *context)
+btk_im_context_ime_focus_in (BtkIMContext *context)
 {
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (context);
-  GdkWindow *toplevel;
-  GtkWidget *widget = NULL;
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (context);
+  BdkWindow *toplevel;
+  BtkWidget *widget = NULL;
   HWND hwnd, top_hwnd;
   HIMC himc;
 
-  if (!GDK_IS_WINDOW (context_ime->client_window))
+  if (!BDK_IS_WINDOW (context_ime->client_window))
     return;
 
   /* swtich current context */
   context_ime->focus = TRUE;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return;
 
-  toplevel = gdk_window_get_toplevel (context_ime->client_window);
-  if (GDK_IS_WINDOW (toplevel))
+  toplevel = bdk_window_get_toplevel (context_ime->client_window);
+  if (BDK_IS_WINDOW (toplevel))
     {
-      gdk_window_add_filter (toplevel,
-                             gtk_im_context_ime_message_filter, context_ime);
-      top_hwnd = gdk_win32_window_get_impl_hwnd (toplevel);
+      bdk_window_add_filter (toplevel,
+                             btk_im_context_ime_message_filter, context_ime);
+      top_hwnd = bdk_win32_window_get_impl_hwnd (toplevel);
 
       context_ime->toplevel = toplevel;
     }
   else
     {
-      g_warning ("gtk_im_context_ime_focus_in(): "
+      g_warning ("btk_im_context_ime_focus_in(): "
                  "cannot find toplevel window.");
       return;
     }
 
   /* trace reparenting (probably no need) */
-  gdk_window_get_user_data (context_ime->client_window, (gpointer) & widget);
-  if (GTK_IS_WIDGET (widget))
+  bdk_window_get_user_data (context_ime->client_window, (gpointer) & widget);
+  if (BTK_IS_WIDGET (widget))
     {
       g_signal_connect (widget, "hierarchy-changed",
                         G_CALLBACK (cb_client_widget_hierarchy_changed),
@@ -725,21 +725,21 @@ gtk_im_context_ime_focus_in (GtkIMContext *context)
 
 
 static void
-gtk_im_context_ime_focus_out (GtkIMContext *context)
+btk_im_context_ime_focus_out (BtkIMContext *context)
 {
-  GtkIMContextIME *context_ime = GTK_IM_CONTEXT_IME (context);
-  GdkWindow *toplevel;
-  GtkWidget *widget = NULL;
+  BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (context);
+  BdkWindow *toplevel;
+  BtkWidget *widget = NULL;
   HWND hwnd, top_hwnd;
   HIMC himc;
 
-  if (!GDK_IS_WINDOW (context_ime->client_window))
+  if (!BDK_IS_WINDOW (context_ime->client_window))
     return;
 
   /* swtich current context */
   context_ime->focus = FALSE;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return;
@@ -786,8 +786,8 @@ gtk_im_context_ime_focus_out (GtkIMContext *context)
     }
 
   /* remove signal handler */
-  gdk_window_get_user_data (context_ime->client_window, (gpointer) & widget);
-  if (GTK_IS_WIDGET (widget))
+  bdk_window_get_user_data (context_ime->client_window, (gpointer) & widget);
+  if (BTK_IS_WIDGET (widget))
     {
       g_signal_handlers_disconnect_by_func
         (G_OBJECT (widget),
@@ -795,19 +795,19 @@ gtk_im_context_ime_focus_out (GtkIMContext *context)
     }
 
   /* remove event fileter */
-  toplevel = gdk_window_get_toplevel (context_ime->client_window);
-  if (GDK_IS_WINDOW (toplevel))
+  toplevel = bdk_window_get_toplevel (context_ime->client_window);
+  if (BDK_IS_WINDOW (toplevel))
     {
-      gdk_window_remove_filter (toplevel,
-                                gtk_im_context_ime_message_filter,
+      bdk_window_remove_filter (toplevel,
+                                btk_im_context_ime_message_filter,
                                 context_ime);
-      top_hwnd = gdk_win32_window_get_impl_hwnd (toplevel);
+      top_hwnd = bdk_win32_window_get_impl_hwnd (toplevel);
 
       context_ime->toplevel = NULL;
     }
   else
     {
-      g_warning ("gtk_im_context_ime_focus_out(): "
+      g_warning ("btk_im_context_ime_focus_out(): "
                  "cannot find toplevel window.");
     }
 
@@ -817,25 +817,25 @@ gtk_im_context_ime_focus_out (GtkIMContext *context)
 
 
 static void
-gtk_im_context_ime_set_cursor_location (GtkIMContext *context,
-                                        GdkRectangle *area)
+btk_im_context_ime_set_cursor_location (BtkIMContext *context,
+                                        BdkRectangle *area)
 {
   gint wx = 0, wy = 0;
-  GtkIMContextIME *context_ime;
+  BtkIMContextIME *context_ime;
   COMPOSITIONFORM cf;
   HWND hwnd;
   HIMC himc;
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context));
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context));
 
-  context_ime = GTK_IM_CONTEXT_IME (context);
+  context_ime = BTK_IM_CONTEXT_IME (context);
   if (area)
     context_ime->cursor_location = *area;
 
   if (!context_ime->client_window)
     return;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return;
@@ -851,13 +851,13 @@ gtk_im_context_ime_set_cursor_location (GtkIMContext *context,
 
 
 static void
-gtk_im_context_ime_set_use_preedit (GtkIMContext *context,
+btk_im_context_ime_set_use_preedit (BtkIMContext *context,
                                     gboolean      use_preedit)
 {
-  GtkIMContextIME *context_ime;
+  BtkIMContextIME *context_ime;
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context));
-  context_ime = GTK_IM_CONTEXT_IME (context);
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context));
+  context_ime = BTK_IM_CONTEXT_IME (context);
 
   context_ime->use_preedit = use_preedit;
   if (context_ime->preediting)
@@ -865,7 +865,7 @@ gtk_im_context_ime_set_use_preedit (GtkIMContext *context,
       HWND hwnd;
       HIMC himc;
 
-      hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+      hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
       himc = ImmGetContext (hwnd);
       if (!himc)
         return;
@@ -878,37 +878,37 @@ gtk_im_context_ime_set_use_preedit (GtkIMContext *context,
 
 
 static void
-gtk_im_context_ime_set_preedit_font (GtkIMContext *context)
+btk_im_context_ime_set_preedit_font (BtkIMContext *context)
 {
-  GtkIMContextIME *context_ime;
-  GtkWidget *widget = NULL;
+  BtkIMContextIME *context_ime;
+  BtkWidget *widget = NULL;
   HWND hwnd;
   HIMC himc;
   HKL ime = GetKeyboardLayout (0);
   const gchar *lang;
   gunichar wc;
-  PangoContext *pango_context;
-  PangoFont *font;
+  BangoContext *bango_context;
+  BangoFont *font;
   LOGFONT *logfont;
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context));
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context));
 
-  context_ime = GTK_IM_CONTEXT_IME (context);
+  context_ime = BTK_IM_CONTEXT_IME (context);
   if (!context_ime->client_window)
     return;
 
-  gdk_window_get_user_data (context_ime->client_window, (gpointer) &widget);
-  if (!GTK_IS_WIDGET (widget))
+  bdk_window_get_user_data (context_ime->client_window, (gpointer) &widget);
+  if (!BTK_IS_WIDGET (widget))
     return;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return;
 
   /* set font */
-  pango_context = gtk_widget_get_pango_context (widget);
-  if (!pango_context)
+  bango_context = btk_widget_get_bango_context (widget);
+  if (!bango_context)
     goto ERROR_OUT;
 
   /* Try to make sure we use a font that actually can show the
@@ -947,13 +947,13 @@ gtk_im_context_ime_set_preedit_font (GtkIMContext *context)
       /* We know what language it is. Look for a character, any
        * character, that language needs.
        */
-      PangoLanguage *pango_lang = pango_language_from_string (lang);
-      PangoFontset *fontset =
-	pango_context_load_fontset (pango_context,
+      BangoLanguage *bango_lang = bango_language_from_string (lang);
+      BangoFontset *fontset =
+	bango_context_load_fontset (bango_context,
 				    widget->style->font_desc,
-				    pango_lang);
+				    bango_lang);
       gunichar *sample =
-	g_utf8_to_ucs4 (pango_language_get_sample_string (pango_lang),
+	g_utf8_to_ucs4 (bango_language_get_sample_string (bango_lang),
 			-1, NULL, NULL, NULL);
       wc = 0x4E00;		/* In all CJK languages? */
       if (sample != NULL)
@@ -968,16 +968,16 @@ gtk_im_context_ime_set_preedit_font (GtkIMContext *context)
 	      }
 	  g_free (sample);
 	}
-      font = pango_fontset_get_font (fontset, wc);
+      font = bango_fontset_get_font (fontset, wc);
       g_object_unref (fontset);
     }
   else
-    font = pango_context_load_font (pango_context, widget->style->font_desc);
+    font = bango_context_load_font (bango_context, widget->style->font_desc);
 
   if (!font)
     goto ERROR_OUT;
 
-  logfont = pango_win32_font_logfont (font);
+  logfont = bango_win32_font_logfont (font);
   if (logfont)
     ImmSetCompositionFont (himc, logfont);
 
@@ -989,26 +989,26 @@ ERROR_OUT:
 }
 
 
-static GdkFilterReturn
-gtk_im_context_ime_message_filter (GdkXEvent *xevent,
-                                   GdkEvent  *event,
+static BdkFilterReturn
+btk_im_context_ime_message_filter (BdkXEvent *xevent,
+                                   BdkEvent  *event,
                                    gpointer   data)
 {
-  GtkIMContext *context;
-  GtkIMContextIME *context_ime;
+  BtkIMContext *context;
+  BtkIMContextIME *context_ime;
   HWND hwnd;
   HIMC himc;
   MSG *msg = (MSG *) xevent;
-  GdkFilterReturn retval = GDK_FILTER_CONTINUE;
+  BdkFilterReturn retval = BDK_FILTER_CONTINUE;
 
-  g_return_val_if_fail (GTK_IS_IM_CONTEXT_IME (data), retval);
+  g_return_val_if_fail (BTK_IS_IM_CONTEXT_IME (data), retval);
 
-  context = GTK_IM_CONTEXT (data);
-  context_ime = GTK_IM_CONTEXT_IME (data);
+  context = BTK_IM_CONTEXT (data);
+  context_ime = BTK_IM_CONTEXT_IME (data);
   if (!context_ime->focus)
     return retval;
 
-  hwnd = gdk_win32_window_get_impl_hwnd (context_ime->client_window);
+  hwnd = bdk_win32_window_get_impl_hwnd (context_ime->client_window);
   himc = ImmGetContext (hwnd);
   if (!himc)
     return retval;
@@ -1028,7 +1028,7 @@ gtk_im_context_ime_message_filter (GdkXEvent *xevent,
           RECT rc;
 
           hwnd_top =
-            gdk_win32_window_get_impl_hwnd (gdk_window_get_toplevel
+            bdk_win32_window_get_impl_hwnd (bdk_window_get_toplevel
                                             (context_ime->client_window));
           GetWindowRect (hwnd_top, &rc);
           pt.x = wx;
@@ -1083,7 +1083,7 @@ gtk_im_context_ime_message_filter (GdkXEvent *xevent,
 
     case WM_IME_STARTCOMPOSITION:
       context_ime->preediting = TRUE;
-      gtk_im_context_ime_set_cursor_location (context, NULL);
+      btk_im_context_ime_set_cursor_location (context, NULL);
       g_signal_emit_by_name (context, "preedit-start");
       if (context_ime->use_preedit)
         retval = TRUE;
@@ -1102,7 +1102,7 @@ gtk_im_context_ime_message_filter (GdkXEvent *xevent,
         {
         case IMN_SETOPENSTATUS:
           context_ime->opened = ImmGetOpenStatus (himc);
-          gtk_im_context_ime_set_preedit_font (context);
+          btk_im_context_ime_set_preedit_font (context);
           break;
 
         default:
@@ -1122,19 +1122,19 @@ gtk_im_context_ime_message_filter (GdkXEvent *xevent,
  * x and y must be initialized to 0.
  */
 static void
-get_window_position (GdkWindow *win, gint *x, gint *y)
+get_window_position (BdkWindow *win, gint *x, gint *y)
 {
-  GdkWindow *parent, *toplevel;
+  BdkWindow *parent, *toplevel;
   gint wx, wy;
 
-  g_return_if_fail (GDK_IS_WINDOW (win));
+  g_return_if_fail (BDK_IS_WINDOW (win));
   g_return_if_fail (x && y);
 
-  gdk_window_get_position (win, &wx, &wy);
+  bdk_window_get_position (win, &wx, &wy);
   *x += wx;
   *y += wy;
-  parent = gdk_window_get_parent (win);
-  toplevel = gdk_window_get_toplevel (win);
+  parent = bdk_window_get_parent (win);
+  toplevel = bdk_window_get_toplevel (win);
 
   if (parent && parent != toplevel)
     get_window_position (parent, x, y);
@@ -1145,29 +1145,29 @@ get_window_position (GdkWindow *win, gint *x, gint *y)
  *  probably, this handler isn't needed.
  */
 static void
-cb_client_widget_hierarchy_changed (GtkWidget       *widget,
-                                    GtkWidget       *widget2,
-                                    GtkIMContextIME *context_ime)
+cb_client_widget_hierarchy_changed (BtkWidget       *widget,
+                                    BtkWidget       *widget2,
+                                    BtkIMContextIME *context_ime)
 {
-  GdkWindow *new_toplevel;
+  BdkWindow *new_toplevel;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GTK_IS_IM_CONTEXT_IME (context_ime));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_IM_CONTEXT_IME (context_ime));
 
   if (!context_ime->client_window)
     return;
   if (!context_ime->focus)
     return;
 
-  new_toplevel = gdk_window_get_toplevel (context_ime->client_window);
+  new_toplevel = bdk_window_get_toplevel (context_ime->client_window);
   if (context_ime->toplevel == new_toplevel)
     return;
 
   /* remove filter from old toplevel */
-  if (GDK_IS_WINDOW (context_ime->toplevel))
+  if (BDK_IS_WINDOW (context_ime->toplevel))
     {
-      gdk_window_remove_filter (context_ime->toplevel,
-                                gtk_im_context_ime_message_filter,
+      bdk_window_remove_filter (context_ime->toplevel,
+                                btk_im_context_ime_message_filter,
                                 context_ime);
     }
   else
@@ -1175,10 +1175,10 @@ cb_client_widget_hierarchy_changed (GtkWidget       *widget,
     }
 
   /* add filter to new toplevel */
-  if (GDK_IS_WINDOW (new_toplevel))
+  if (BDK_IS_WINDOW (new_toplevel))
     {
-      gdk_window_add_filter (new_toplevel,
-                             gtk_im_context_ime_message_filter, context_ime);
+      bdk_window_add_filter (new_toplevel,
+                             btk_im_context_ime_message_filter, context_ime);
     }
   else
     {

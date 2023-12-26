@@ -1,26 +1,26 @@
 #include <string.h>
 #include <stdlib.h>
-#include <atk/atk.h>
-#include <gtk/gtk.h>
+#include <batk/batk.h>
+#include <btk/btk.h>
 #include <testlib.h>
 
-static void _traverse_children (AtkObject *obj);
-static void _add_handler (AtkObject *obj);
-static void _check_properties (AtkObject *obj);
-static void _property_change_handler (AtkObject   *obj,
-                                      AtkPropertyValues *values);
-static void _state_changed (AtkObject   *obj,
+static void _traverse_children (BatkObject *obj);
+static void _add_handler (BatkObject *obj);
+static void _check_properties (BatkObject *obj);
+static void _property_change_handler (BatkObject   *obj,
+                                      BatkPropertyValues *values);
+static void _state_changed (BatkObject   *obj,
                             const gchar *name,
                             gboolean    set);
-static void _selection_changed (AtkObject   *obj);
-static void _visible_data_changed (AtkObject   *obj);
-static void _model_changed (AtkObject   *obj);
+static void _selection_changed (BatkObject   *obj);
+static void _visible_data_changed (BatkObject   *obj);
+static void _model_changed (BatkObject   *obj);
 static void _create_event_watcher (void);
 
 static guint id;
 
 static void 
-_state_changed (AtkObject   *obj,
+_state_changed (BatkObject   *obj,
                 const gchar *name,
                 gboolean    set)
 {
@@ -30,13 +30,13 @@ _state_changed (AtkObject   *obj,
 }
 
 static void 
-_selection_changed (AtkObject   *obj)
+_selection_changed (BatkObject   *obj)
 {
   gchar *type;
 
-  if (ATK_IS_TEXT (obj))
+  if (BATK_IS_TEXT (obj))
     type = "text";
-  else if (ATK_IS_SELECTION (obj))
+  else if (BATK_IS_SELECTION (obj))
     type = "child selection";
   else
     {
@@ -49,25 +49,25 @@ _selection_changed (AtkObject   *obj)
 }
 
 static void 
-_visible_data_changed (AtkObject   *obj)
+_visible_data_changed (BatkObject   *obj)
 {
   g_print ("In visible_data_changed signal handler, object type: %s\n",
            g_type_name (G_OBJECT_TYPE (obj)));
 }
 
 static void 
-_model_changed (AtkObject   *obj)
+_model_changed (BatkObject   *obj)
 {
   g_print ("In model_changed signal handler, object type: %s\n",
            g_type_name (G_OBJECT_TYPE (obj)));
 }
 
 static void 
-_property_change_handler (AtkObject   *obj,
-                          AtkPropertyValues   *values)
+_property_change_handler (BatkObject   *obj,
+                          BatkPropertyValues   *values)
 {
   const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
-  const gchar *name = atk_object_get_name (obj);
+  const gchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
            type_name ? type_name : "NULL");
@@ -115,23 +115,23 @@ _property_change_handler (AtkObject   *obj,
 }
 
 static void 
-_traverse_children (AtkObject *obj)
+_traverse_children (BatkObject *obj)
 {
   gint n_children, i;
-  AtkRole role;
+  BatkRole role;
  
-  role = atk_object_get_role (obj);
+  role = batk_object_get_role (obj);
 
-  if ((role == ATK_ROLE_TABLE) ||
-      (role == ATK_ROLE_TREE_TABLE))
+  if ((role == BATK_ROLE_TABLE) ||
+      (role == BATK_ROLE_TREE_TABLE))
     return;
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
     {
-      AtkObject *child;
+      BatkObject *child;
 
-      child = atk_object_ref_accessible_child (obj, i);
+      child = batk_object_ref_accessible_child (obj, i);
       _add_handler (child);
       _traverse_children (child);
       g_object_unref (G_OBJECT (child));
@@ -139,7 +139,7 @@ _traverse_children (AtkObject *obj)
 }
 
 static void 
-_add_handler (AtkObject *obj)
+_add_handler (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
   gboolean found = FALSE;
@@ -165,16 +165,16 @@ _add_handler (AtkObject *obj)
     }
   if (!found)
     {
-      atk_object_connect_property_change_handler (obj,
-                   (AtkPropertyChangeHandler*) _property_change_handler);
+      batk_object_connect_property_change_handler (obj,
+                   (BatkPropertyChangeHandler*) _property_change_handler);
       g_signal_connect (obj, "state-change", 
                         (GCallback) _state_changed, NULL);
-      if (ATK_IS_SELECTION (obj))
+      if (BATK_IS_SELECTION (obj))
         g_signal_connect (obj, "selection_changed", 
                           (GCallback) _selection_changed, NULL);
       g_signal_connect (obj, "visible_data_changed", 
                         (GCallback) _visible_data_changed, NULL);
-      if (ATK_IS_TABLE (obj))
+      if (BATK_IS_TABLE (obj))
         g_signal_connect (obj, "model_changed", 
                         (GCallback) _model_changed, NULL);
       g_ptr_array_add (obj_array, obj);
@@ -182,18 +182,18 @@ _add_handler (AtkObject *obj)
 }
  
 static void 
-_check_properties (AtkObject *obj)
+_check_properties (BatkObject *obj)
 {
-  AtkRole role;
+  BatkRole role;
 
   g_print ("Start of _check_properties: %s\n", 
            g_type_name (G_OBJECT_TYPE (obj)));
 
   _add_handler (obj);
 
-  role = atk_object_get_role (obj);
-  if (role == ATK_ROLE_FRAME ||
-      role == ATK_ROLE_DIALOG)
+  role = batk_object_get_role (obj);
+  if (role == BATK_ROLE_FRAME ||
+      role == BATK_ROLE_DIALOG)
     {
       /*
        * Add handlers to all children.
@@ -206,11 +206,11 @@ _check_properties (AtkObject *obj)
 static void
 _create_event_watcher (void)
 {
-  id = atk_add_focus_tracker (_check_properties);
+  id = batk_add_focus_tracker (_check_properties);
 }
 
 int
-gtk_module_init(gint argc, char* argv[])
+btk_module_init(gint argc, char* argv[])
 {
   g_print("testprops Module loaded\n");
 

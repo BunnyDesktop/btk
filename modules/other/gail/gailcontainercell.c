@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The GNOME Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,67 +19,67 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailcontainercell.h"
+#include <btk/btk.h>
+#include "bailcontainercell.h"
 
-static void       gail_container_cell_class_init          (GailContainerCellClass *klass);
-static void       gail_container_cell_init                (GailContainerCell   *cell);
-static void       gail_container_cell_finalize            (GObject             *obj);
+static void       bail_container_cell_class_init          (BailContainerCellClass *klass);
+static void       bail_container_cell_init                (BailContainerCell   *cell);
+static void       bail_container_cell_finalize            (GObject             *obj);
 
 
-static void       _gail_container_cell_recompute_child_indices 
-                                                          (GailContainerCell *container);
+static void       _bail_container_cell_recompute_child_indices 
+                                                          (BailContainerCell *container);
 
-static void       gail_container_cell_refresh_child_index (GailCell *cell);
+static void       bail_container_cell_refresh_child_index (BailCell *cell);
 
-static gint       gail_container_cell_get_n_children      (AtkObject *obj);
+static gint       bail_container_cell_get_n_children      (BatkObject *obj);
 
-static AtkObject* gail_container_cell_ref_child           (AtkObject *obj,
+static BatkObject* bail_container_cell_ref_child           (BatkObject *obj,
                                                            gint      child);
 
-G_DEFINE_TYPE (GailContainerCell, gail_container_cell, GAIL_TYPE_CELL)
+G_DEFINE_TYPE (BailContainerCell, bail_container_cell, BAIL_TYPE_CELL)
 
 static void 
-gail_container_cell_class_init (GailContainerCellClass *klass)
+bail_container_cell_class_init (BailContainerCellClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS(klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS(klass);
   GObjectClass *g_object_class = G_OBJECT_CLASS (klass);
 
-  g_object_class->finalize = gail_container_cell_finalize;
+  g_object_class->finalize = bail_container_cell_finalize;
 
-  class->get_n_children = gail_container_cell_get_n_children;
-  class->ref_child = gail_container_cell_ref_child;
+  class->get_n_children = bail_container_cell_get_n_children;
+  class->ref_child = bail_container_cell_ref_child;
 }
 
 static void
-gail_container_cell_init (GailContainerCell   *cell)
+bail_container_cell_init (BailContainerCell   *cell)
 {
 }
 
-GailContainerCell * 
-gail_container_cell_new (void)
+BailContainerCell * 
+bail_container_cell_new (void)
 {
   GObject *object;
-  AtkObject *atk_object;
-  GailContainerCell *container;
+  BatkObject *batk_object;
+  BailContainerCell *container;
 
-  object = g_object_new (GAIL_TYPE_CONTAINER_CELL, NULL);
+  object = g_object_new (BAIL_TYPE_CONTAINER_CELL, NULL);
 
   g_return_val_if_fail (object != NULL, NULL);
 
-  atk_object = ATK_OBJECT (object);
-  atk_object->role = ATK_ROLE_TABLE_CELL;
+  batk_object = BATK_OBJECT (object);
+  batk_object->role = BATK_ROLE_TABLE_CELL;
 
-  container = GAIL_CONTAINER_CELL(object);
+  container = BAIL_CONTAINER_CELL(object);
   container->children = NULL;
   container->NChildren = 0;
   return container;
 }
 
 static void
-gail_container_cell_finalize (GObject *obj)
+bail_container_cell_finalize (GObject *obj)
 {
-  GailContainerCell *container = GAIL_CONTAINER_CELL (obj);
+  BailContainerCell *container = BAIL_CONTAINER_CELL (obj);
   GList *list;
 
   list = container->children;
@@ -90,92 +90,92 @@ gail_container_cell_finalize (GObject *obj)
   }
   g_list_free (container->children);
   
-  G_OBJECT_CLASS (gail_container_cell_parent_class)->finalize (obj);
+  G_OBJECT_CLASS (bail_container_cell_parent_class)->finalize (obj);
 }
 
 
 void
-gail_container_cell_add_child (GailContainerCell *container,
-			       GailCell *child)
+bail_container_cell_add_child (BailContainerCell *container,
+			       BailCell *child)
 {
   gint child_index;
 
-  g_return_if_fail (GAIL_IS_CONTAINER_CELL(container));
-  g_return_if_fail (GAIL_IS_CELL(child));
+  g_return_if_fail (BAIL_IS_CONTAINER_CELL(container));
+  g_return_if_fail (BAIL_IS_CELL(child));
 
   child_index = container->NChildren++;
   container->children = g_list_append (container->children, (gpointer) child);
   child->index = child_index;
-  atk_object_set_parent (ATK_OBJECT (child), ATK_OBJECT (container));
-  child->refresh_index = gail_container_cell_refresh_child_index;
+  batk_object_set_parent (BATK_OBJECT (child), BATK_OBJECT (container));
+  child->refresh_index = bail_container_cell_refresh_child_index;
 }
 
 
 void
-gail_container_cell_remove_child (GailContainerCell *container,
-				  GailCell *child)
+bail_container_cell_remove_child (BailContainerCell *container,
+				  BailCell *child)
 {
-  g_return_if_fail (GAIL_IS_CONTAINER_CELL(container));
-  g_return_if_fail (GAIL_IS_CELL(child));
+  g_return_if_fail (BAIL_IS_CONTAINER_CELL(container));
+  g_return_if_fail (BAIL_IS_CELL(child));
   g_return_if_fail (container->NChildren > 0);
 
   container->children = g_list_remove (container->children, (gpointer) child);
-  _gail_container_cell_recompute_child_indices (container);
+  _bail_container_cell_recompute_child_indices (container);
   container->NChildren--;
 }
 
 
 static void
-_gail_container_cell_recompute_child_indices (GailContainerCell *container)
+_bail_container_cell_recompute_child_indices (BailContainerCell *container)
 {
   gint cur_index = 0;
   GList *temp_list;
 
-  g_return_if_fail (GAIL_IS_CONTAINER_CELL(container));
+  g_return_if_fail (BAIL_IS_CONTAINER_CELL(container));
 
   for (temp_list = container->children; temp_list; temp_list = temp_list->next)
     {
-      GAIL_CELL(temp_list->data)->index = cur_index;
+      BAIL_CELL(temp_list->data)->index = cur_index;
       cur_index++;
     }
 }
 
 
 static void
-gail_container_cell_refresh_child_index (GailCell *cell)
+bail_container_cell_refresh_child_index (BailCell *cell)
 {
-  GailContainerCell *container;
-  g_return_if_fail (GAIL_IS_CELL(cell));
-  container = GAIL_CONTAINER_CELL (atk_object_get_parent (ATK_OBJECT(cell)));
-  g_return_if_fail (GAIL_IS_CONTAINER_CELL (container));
-  _gail_container_cell_recompute_child_indices (container);
+  BailContainerCell *container;
+  g_return_if_fail (BAIL_IS_CELL(cell));
+  container = BAIL_CONTAINER_CELL (batk_object_get_parent (BATK_OBJECT(cell)));
+  g_return_if_fail (BAIL_IS_CONTAINER_CELL (container));
+  _bail_container_cell_recompute_child_indices (container);
 }
 
 
 
 static gint
-gail_container_cell_get_n_children (AtkObject *obj)
+bail_container_cell_get_n_children (BatkObject *obj)
 {
-  GailContainerCell *cell;
-  g_return_val_if_fail (GAIL_IS_CONTAINER_CELL(obj), 0);
-  cell = GAIL_CONTAINER_CELL(obj);
+  BailContainerCell *cell;
+  g_return_val_if_fail (BAIL_IS_CONTAINER_CELL(obj), 0);
+  cell = BAIL_CONTAINER_CELL(obj);
   return cell->NChildren;
 }
 
 
-static AtkObject *
-gail_container_cell_ref_child (AtkObject *obj,
+static BatkObject *
+bail_container_cell_ref_child (BatkObject *obj,
 			       gint       child)
 {
-  GailContainerCell *cell;
+  BailContainerCell *cell;
   GList *list_node;
 
-  g_return_val_if_fail (GAIL_IS_CONTAINER_CELL(obj), NULL);
-  cell = GAIL_CONTAINER_CELL(obj);
+  g_return_val_if_fail (BAIL_IS_CONTAINER_CELL(obj), NULL);
+  cell = BAIL_CONTAINER_CELL(obj);
   
   list_node = g_list_nth (cell->children, child);
   if (!list_node)
     return NULL;
 
-  return g_object_ref (ATK_OBJECT (list_node->data));
+  return g_object_ref (BATK_OBJECT (list_node->data));
 }

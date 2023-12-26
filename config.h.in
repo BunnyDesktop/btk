@@ -7,10 +7,10 @@
 #undef GETTEXT_PACKAGE
 
 /* Define if debugging is enabled */
-#undef GTK_COMPILED_WITH_DEBUGGING
+#undef BTK_COMPILED_WITH_DEBUGGING
 
 /* Define the location where the catalogs will be installed */
-#undef GTK_LOCALEDIR
+#undef BTK_LOCALEDIR
 
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #undef HAVE_BIND_TEXTDOMAIN_CODESET
@@ -261,8 +261,8 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Define to 1 if gmodule works and should be used */
-#undef USE_GMODULE
+/* Define to 1 if bmodule works and should be used */
+#undef USE_BMODULE
 
 /* Define to 1 if medialib is available and should be used */
 #undef USE_MEDIALIB

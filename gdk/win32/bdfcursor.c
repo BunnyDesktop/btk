@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2001 Stefan Ondrejicka
  *
  * This library is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include <glib.h>
+#include <bunnylib.h>
 
 typedef struct {
 	gchar	*name;

@@ -3,123 +3,123 @@
  * The Button Box widgets are used to arrange buttons with padding.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget *
+static BtkWidget *
 create_bbox (gint  horizontal,
 	     char *title, 
 	     gint  spacing,
 	     gint  layout)
 {
-  GtkWidget *frame;
-  GtkWidget *bbox;
-  GtkWidget *button;
+  BtkWidget *frame;
+  BtkWidget *bbox;
+  BtkWidget *button;
 	
-  frame = gtk_frame_new (title);
+  frame = btk_frame_new (title);
 
   if (horizontal)
-    bbox = gtk_hbutton_box_new ();
+    bbox = btk_hbutton_box_new ();
   else
-    bbox = gtk_vbutton_box_new ();
+    bbox = btk_vbutton_box_new ();
 
-  gtk_container_set_border_width (GTK_CONTAINER (bbox), 5);
-  gtk_container_add (GTK_CONTAINER (frame), bbox);
+  btk_container_set_border_width (BTK_CONTAINER (bbox), 5);
+  btk_container_add (BTK_CONTAINER (frame), bbox);
 
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), layout);
-  gtk_box_set_spacing (GTK_BOX (bbox), spacing);
+  btk_button_box_set_layout (BTK_BUTTON_BOX (bbox), layout);
+  btk_box_set_spacing (BTK_BOX (bbox), spacing);
   
-  button = gtk_button_new_from_stock (GTK_STOCK_OK);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
+  button = btk_button_new_from_stock (BTK_STOCK_OK);
+  btk_container_add (BTK_CONTAINER (bbox), button);
   
-  button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
+  button = btk_button_new_from_stock (BTK_STOCK_CANCEL);
+  btk_container_add (BTK_CONTAINER (bbox), button);
   
-  button = gtk_button_new_from_stock (GTK_STOCK_HELP);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
+  button = btk_button_new_from_stock (BTK_STOCK_HELP);
+  btk_container_add (BTK_CONTAINER (bbox), button);
 
   return frame;
 }
 
-GtkWidget *
-do_button_box (GtkWidget *do_widget)
+BtkWidget *
+do_button_box (BtkWidget *do_widget)
 {
-  static GtkWidget *window = NULL;
-  GtkWidget *main_vbox;
-  GtkWidget *vbox;
-  GtkWidget *hbox;
-  GtkWidget *frame_horz;
-  GtkWidget *frame_vert;
+  static BtkWidget *window = NULL;
+  BtkWidget *main_vbox;
+  BtkWidget *vbox;
+  BtkWidget *hbox;
+  BtkWidget *frame_horz;
+  BtkWidget *frame_vert;
 	
   if (!window)
   {
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_screen (GTK_WINDOW (window),
-			   gtk_widget_get_screen (do_widget));
-    gtk_window_set_title (GTK_WINDOW (window), "Button Boxes");
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_window_set_screen (BTK_WINDOW (window),
+			   btk_widget_get_screen (do_widget));
+    btk_window_set_title (BTK_WINDOW (window), "Button Boxes");
     
     g_signal_connect (window, "destroy",
-		      G_CALLBACK (gtk_widget_destroyed),
+		      G_CALLBACK (btk_widget_destroyed),
 		      &window);
     
-    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+    btk_container_set_border_width (BTK_CONTAINER (window), 10);
 
-    main_vbox = gtk_vbox_new (FALSE, 0);
-    gtk_container_add (GTK_CONTAINER (window), main_vbox);
+    main_vbox = btk_vbox_new (FALSE, 0);
+    btk_container_add (BTK_CONTAINER (window), main_vbox);
     
-    frame_horz = gtk_frame_new ("Horizontal Button Boxes");
-    gtk_box_pack_start (GTK_BOX (main_vbox), frame_horz, TRUE, TRUE, 10);
+    frame_horz = btk_frame_new ("Horizontal Button Boxes");
+    btk_box_pack_start (BTK_BOX (main_vbox), frame_horz, TRUE, TRUE, 10);
     
-    vbox = gtk_vbox_new (FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 10);
-    gtk_container_add (GTK_CONTAINER (frame_horz), vbox);
+    vbox = btk_vbox_new (FALSE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (vbox), 10);
+    btk_container_add (BTK_CONTAINER (frame_horz), vbox);
 
-    gtk_box_pack_start (GTK_BOX (vbox), 
-			create_bbox (TRUE, "Spread", 40, GTK_BUTTONBOX_SPREAD),
+    btk_box_pack_start (BTK_BOX (vbox), 
+			create_bbox (TRUE, "Spread", 40, BTK_BUTTONBOX_SPREAD),
 			TRUE, TRUE, 0);
 
-    gtk_box_pack_start (GTK_BOX (vbox), 
-			create_bbox (TRUE, "Edge", 40, GTK_BUTTONBOX_EDGE),
+    btk_box_pack_start (BTK_BOX (vbox), 
+			create_bbox (TRUE, "Edge", 40, BTK_BUTTONBOX_EDGE),
 			TRUE, TRUE, 5);
     
-    gtk_box_pack_start (GTK_BOX (vbox), 
-			create_bbox (TRUE, "Start", 40, GTK_BUTTONBOX_START),
+    btk_box_pack_start (BTK_BOX (vbox), 
+			create_bbox (TRUE, "Start", 40, BTK_BUTTONBOX_START),
 			TRUE, TRUE, 5);
     
-    gtk_box_pack_start (GTK_BOX (vbox), 
-			create_bbox (TRUE, "End", 40, GTK_BUTTONBOX_END),
+    btk_box_pack_start (BTK_BOX (vbox), 
+			create_bbox (TRUE, "End", 40, BTK_BUTTONBOX_END),
 			TRUE, TRUE, 5);
 
-    frame_vert = gtk_frame_new ("Vertical Button Boxes");
-    gtk_box_pack_start (GTK_BOX (main_vbox), frame_vert, TRUE, TRUE, 10);
+    frame_vert = btk_frame_new ("Vertical Button Boxes");
+    btk_box_pack_start (BTK_BOX (main_vbox), frame_vert, TRUE, TRUE, 10);
     
-    hbox = gtk_hbox_new (FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
-    gtk_container_add (GTK_CONTAINER (frame_vert), hbox);
+    hbox = btk_hbox_new (FALSE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (hbox), 10);
+    btk_container_add (BTK_CONTAINER (frame_vert), hbox);
 
-    gtk_box_pack_start (GTK_BOX (hbox), 
-			create_bbox (FALSE, "Spread", 30, GTK_BUTTONBOX_SPREAD),
+    btk_box_pack_start (BTK_BOX (hbox), 
+			create_bbox (FALSE, "Spread", 30, BTK_BUTTONBOX_SPREAD),
 			TRUE, TRUE, 0);
 
-    gtk_box_pack_start (GTK_BOX (hbox), 
-			create_bbox (FALSE, "Edge", 30, GTK_BUTTONBOX_EDGE),
+    btk_box_pack_start (BTK_BOX (hbox), 
+			create_bbox (FALSE, "Edge", 30, BTK_BUTTONBOX_EDGE),
 			TRUE, TRUE, 5);
 
-    gtk_box_pack_start (GTK_BOX (hbox), 
-			create_bbox (FALSE, "Start", 30, GTK_BUTTONBOX_START),
+    btk_box_pack_start (BTK_BOX (hbox), 
+			create_bbox (FALSE, "Start", 30, BTK_BUTTONBOX_START),
 			TRUE, TRUE, 5);
 
-    gtk_box_pack_start (GTK_BOX (hbox), 
-			create_bbox (FALSE, "End", 30, GTK_BUTTONBOX_END),
+    btk_box_pack_start (BTK_BOX (hbox), 
+			create_bbox (FALSE, "End", 30, BTK_BUTTONBOX_END),
 			TRUE, TRUE, 5);
   }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show_all (window);
+      btk_widget_show_all (window);
     }
   else
     {	 
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 

@@ -1,15 +1,15 @@
 /* Icon View/Icon View Basics
  *
- * The GtkIconView widget is used to display and manipulate icons.
- * It uses a GtkTreeModel for data storage, so the list store
+ * The BtkIconView widget is used to display and manipulate icons.
+ * It uses a BtkTreeModel for data storage, so the list store
  * example might be helpful.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <string.h>
 #include "demo-common.h"
 
-static GtkWidget *window = NULL;
+static BtkWidget *window = NULL;
 
 #define FOLDER_NAME "gnome-fs-directory.png"
 #define FILE_NAME "gnome-fs-regular.png"
@@ -24,9 +24,9 @@ enum
 };
 
 
-static GdkPixbuf *file_pixbuf, *folder_pixbuf;
+static BdkPixbuf *file_pixbuf, *folder_pixbuf;
 gchar *parent;
-GtkToolItem *up_button;
+BtkToolItem *up_button;
 
 /* Loads the images for the demo and returns whether the operation succeeded */
 static gboolean
@@ -38,14 +38,14 @@ load_pixbufs (GError **error)
     return TRUE; /* already loaded earlier */
 
   /* demo_find_file() looks in the current directory first,
-   * so you can run gtk-demo without installing GTK, then looks
+   * so you can run btk-demo without installing BTK, then looks
    * in the location where the file is installed.
    */
   filename = demo_find_file (FILE_NAME, error);
   if (!filename)
     return FALSE; /* note that "error" was filled in and returned */
 
-  file_pixbuf = gdk_pixbuf_new_from_file (filename, error);
+  file_pixbuf = bdk_pixbuf_new_from_file (filename, error);
   g_free (filename);
 
   if (!file_pixbuf)
@@ -55,21 +55,21 @@ load_pixbufs (GError **error)
   if (!filename)
     return FALSE; /* note that "error" was filled in and returned */
 
-  folder_pixbuf = gdk_pixbuf_new_from_file (filename, error);
+  folder_pixbuf = bdk_pixbuf_new_from_file (filename, error);
   g_free (filename);
 
   return TRUE;
 }
 
 static void
-fill_store (GtkListStore *store)
+fill_store (BtkListStore *store)
 {
   GDir *dir;
   const gchar *name;
-  GtkTreeIter iter;
+  BtkTreeIter iter;
 
   /* First clear the store */
-  gtk_list_store_clear (store);
+  btk_list_store_clear (store);
 
   /* Now go through the directory and extract all the file
    * information */
@@ -92,8 +92,8 @@ fill_store (GtkListStore *store)
 
 	  display_name = g_filename_to_utf8 (name, -1, NULL, NULL, NULL);
 
-	  gtk_list_store_append (store, &iter);
-	  gtk_list_store_set (store, &iter,
+	  btk_list_store_append (store, &iter);
+	  btk_list_store_set (store, &iter,
 			      COL_PATH, path,
 			      COL_DISPLAY_NAME, display_name,
 			      COL_IS_DIRECTORY, is_dir,
@@ -109,9 +109,9 @@ fill_store (GtkListStore *store)
 }
 
 static gint
-sort_func (GtkTreeModel *model,
-	   GtkTreeIter  *a,
-	   GtkTreeIter  *b,
+sort_func (BtkTreeModel *model,
+	   BtkTreeIter  *a,
+	   BtkTreeIter  *b,
 	   gpointer      user_data)
 {
   gboolean is_dir_a, is_dir_b;
@@ -123,12 +123,12 @@ sort_func (GtkTreeModel *model,
    */
 
 
-  gtk_tree_model_get (model, a,
+  btk_tree_model_get (model, a,
 		      COL_IS_DIRECTORY, &is_dir_a,
 		      COL_DISPLAY_NAME, &name_a,
 		      -1);
 
-  gtk_tree_model_get (model, b,
+  btk_tree_model_get (model, b,
 		      COL_IS_DIRECTORY, &is_dir_b,
 		      COL_DISPLAY_NAME, &name_b,
 		      -1);
@@ -148,43 +148,43 @@ sort_func (GtkTreeModel *model,
   return ret;
 }
 
-static GtkListStore *
+static BtkListStore *
 create_store (void)
 {
-  GtkListStore *store;
+  BtkListStore *store;
 
-  store = gtk_list_store_new (NUM_COLS,
+  store = btk_list_store_new (NUM_COLS,
 			      G_TYPE_STRING,
 			      G_TYPE_STRING,
-			      GDK_TYPE_PIXBUF,
+			      BDK_TYPE_PIXBUF,
 			      G_TYPE_BOOLEAN);
 
   /* Set sort column and function */
-  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (store),
+  btk_tree_sortable_set_default_sort_func (BTK_TREE_SORTABLE (store),
 					   sort_func,
 					   NULL, NULL);
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store),
-					GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
-					GTK_SORT_ASCENDING);
+  btk_tree_sortable_set_sort_column_id (BTK_TREE_SORTABLE (store),
+					BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID,
+					BTK_SORT_ASCENDING);
 
   return store;
 }
 
 static void
-item_activated (GtkIconView *icon_view,
-		GtkTreePath *tree_path,
+item_activated (BtkIconView *icon_view,
+		BtkTreePath *tree_path,
 		gpointer     user_data)
 {
-  GtkListStore *store;
+  BtkListStore *store;
   gchar *path;
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   gboolean is_dir;
 
-  store = GTK_LIST_STORE (user_data);
+  store = BTK_LIST_STORE (user_data);
 
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (store),
+  btk_tree_model_get_iter (BTK_TREE_MODEL (store),
 			   &iter, tree_path);
-  gtk_tree_model_get (GTK_TREE_MODEL (store), &iter,
+  btk_tree_model_get (BTK_TREE_MODEL (store), &iter,
 		      COL_PATH, &path,
 		      COL_IS_DIRECTORY, &is_dir,
 		      -1);
@@ -202,17 +202,17 @@ item_activated (GtkIconView *icon_view,
   fill_store (store);
 
   /* Sensitize the up button */
-  gtk_widget_set_sensitive (GTK_WIDGET (up_button), TRUE);
+  btk_widget_set_sensitive (BTK_WIDGET (up_button), TRUE);
 }
 
 static void
-up_clicked (GtkToolItem *item,
+up_clicked (BtkToolItem *item,
 	    gpointer     user_data)
 {
-  GtkListStore *store;
+  BtkListStore *store;
   gchar *dir_name;
 
-  store = GTK_LIST_STORE (user_data);
+  store = BTK_LIST_STORE (user_data);
 
   dir_name = g_path_get_dirname (parent);
   g_free (parent);
@@ -222,17 +222,17 @@ up_clicked (GtkToolItem *item,
   fill_store (store);
 
   /* Maybe de-sensitize the up button */
-  gtk_widget_set_sensitive (GTK_WIDGET (up_button),
+  btk_widget_set_sensitive (BTK_WIDGET (up_button),
 			    strcmp (parent, "/") != 0);
 }
 
 static void
-home_clicked (GtkToolItem *item,
+home_clicked (BtkToolItem *item,
 	      gpointer     user_data)
 {
-  GtkListStore *store;
+  BtkListStore *store;
 
-  store = GTK_LIST_STORE (user_data);
+  store = BTK_LIST_STORE (user_data);
 
   g_free (parent);
   parent = g_strdup (g_get_home_dir ());
@@ -240,13 +240,13 @@ home_clicked (GtkToolItem *item,
   fill_store (store);
 
   /* Sensitize the up button */
-  gtk_widget_set_sensitive (GTK_WIDGET (up_button),
+  btk_widget_set_sensitive (BTK_WIDGET (up_button),
 			    TRUE);
 }
 
 static void close_window(void)
 {
-  gtk_widget_destroy (window);
+  btk_widget_destroy (window);
   window = NULL;
 
   g_object_unref (file_pixbuf);
@@ -256,19 +256,19 @@ static void close_window(void)
   folder_pixbuf = NULL;
 }
 
-GtkWidget *
-do_iconview (GtkWidget *do_widget)
+BtkWidget *
+do_iconview (BtkWidget *do_widget)
 {
   if (!window)
     {
       GError *error;
 
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_default_size (GTK_WINDOW (window), 650, 400);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      btk_window_set_default_size (BTK_WINDOW (window), 650, 400);
 
-      gtk_window_set_screen (GTK_WINDOW (window),
-			     gtk_widget_get_screen (do_widget));
-      gtk_window_set_title (GTK_WINDOW (window), "GtkIconView demo");
+      btk_window_set_screen (BTK_WINDOW (window),
+			     btk_widget_get_screen (do_widget));
+      btk_window_set_title (BTK_WINDOW (window), "BtkIconView demo");
 
       g_signal_connect (window, "destroy",
 			G_CALLBACK (close_window), NULL);
@@ -276,64 +276,64 @@ do_iconview (GtkWidget *do_widget)
       error = NULL;
       if (!load_pixbufs (&error))
 	{
-	  GtkWidget *dialog;
+	  BtkWidget *dialog;
 
-	  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-					   GTK_DIALOG_DESTROY_WITH_PARENT,
-					   GTK_MESSAGE_ERROR,
-					   GTK_BUTTONS_CLOSE,
+	  dialog = btk_message_dialog_new (BTK_WINDOW (window),
+					   BTK_DIALOG_DESTROY_WITH_PARENT,
+					   BTK_MESSAGE_ERROR,
+					   BTK_BUTTONS_CLOSE,
 					   "Failed to load an image: %s",
 					   error->message);
 
 	  g_error_free (error);
 
 	  g_signal_connect (dialog, "response",
-			    G_CALLBACK (gtk_widget_destroy), NULL);
+			    G_CALLBACK (btk_widget_destroy), NULL);
 
-	  gtk_widget_show (dialog);
+	  btk_widget_show (dialog);
 	}
       else
 	{
-	  GtkWidget *sw;
-	  GtkWidget *icon_view;
-	  GtkListStore *store;
-	  GtkWidget *vbox;
-	  GtkWidget *tool_bar;
-	  GtkToolItem *home_button;
+	  BtkWidget *sw;
+	  BtkWidget *icon_view;
+	  BtkListStore *store;
+	  BtkWidget *vbox;
+	  BtkWidget *tool_bar;
+	  BtkToolItem *home_button;
 
-	  vbox = gtk_vbox_new (FALSE, 0);
-	  gtk_container_add (GTK_CONTAINER (window), vbox);
+	  vbox = btk_vbox_new (FALSE, 0);
+	  btk_container_add (BTK_CONTAINER (window), vbox);
 
-	  tool_bar = gtk_toolbar_new ();
-	  gtk_box_pack_start (GTK_BOX (vbox), tool_bar, FALSE, FALSE, 0);
+	  tool_bar = btk_toolbar_new ();
+	  btk_box_pack_start (BTK_BOX (vbox), tool_bar, FALSE, FALSE, 0);
 
-	  up_button = gtk_tool_button_new_from_stock (GTK_STOCK_GO_UP);
-	  gtk_tool_item_set_is_important (up_button, TRUE);
-	  gtk_widget_set_sensitive (GTK_WIDGET (up_button), FALSE);
-	  gtk_toolbar_insert (GTK_TOOLBAR (tool_bar), up_button, -1);
+	  up_button = btk_tool_button_new_from_stock (BTK_STOCK_GO_UP);
+	  btk_tool_item_set_is_important (up_button, TRUE);
+	  btk_widget_set_sensitive (BTK_WIDGET (up_button), FALSE);
+	  btk_toolbar_insert (BTK_TOOLBAR (tool_bar), up_button, -1);
 
-	  home_button = gtk_tool_button_new_from_stock (GTK_STOCK_HOME);
-	  gtk_tool_item_set_is_important (home_button, TRUE);
-	  gtk_toolbar_insert (GTK_TOOLBAR (tool_bar), home_button, -1);
+	  home_button = btk_tool_button_new_from_stock (BTK_STOCK_HOME);
+	  btk_tool_item_set_is_important (home_button, TRUE);
+	  btk_toolbar_insert (BTK_TOOLBAR (tool_bar), home_button, -1);
 
 
-	  sw = gtk_scrolled_window_new (NULL, NULL);
-	  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
-					       GTK_SHADOW_ETCHED_IN);
-	  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-					  GTK_POLICY_AUTOMATIC,
-					  GTK_POLICY_AUTOMATIC);
+	  sw = btk_scrolled_window_new (NULL, NULL);
+	  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (sw),
+					       BTK_SHADOW_ETCHED_IN);
+	  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (sw),
+					  BTK_POLICY_AUTOMATIC,
+					  BTK_POLICY_AUTOMATIC);
 
-	  gtk_box_pack_start (GTK_BOX (vbox), sw, TRUE, TRUE, 0);
+	  btk_box_pack_start (BTK_BOX (vbox), sw, TRUE, TRUE, 0);
 
 	  /* Create the store and fill it with the contents of '/' */
 	  parent = g_strdup ("/");
 	  store = create_store ();
 	  fill_store (store);
 
-	  icon_view = gtk_icon_view_new_with_model (GTK_TREE_MODEL (store));
-	  gtk_icon_view_set_selection_mode (GTK_ICON_VIEW (icon_view),
-					    GTK_SELECTION_MULTIPLE);
+	  icon_view = btk_icon_view_new_with_model (BTK_TREE_MODEL (store));
+	  btk_icon_view_set_selection_mode (BTK_ICON_VIEW (icon_view),
+					    BTK_SELECTION_MULTIPLE);
 	  g_object_unref (store);
 
 	  /* Connect to the "clicked" signal of the "Up" tool button */
@@ -347,23 +347,23 @@ do_iconview (GtkWidget *do_widget)
 	  /* We now set which model columns that correspond to the text
 	   * and pixbuf of each item
 	   */
-	  gtk_icon_view_set_text_column (GTK_ICON_VIEW (icon_view), COL_DISPLAY_NAME);
-	  gtk_icon_view_set_pixbuf_column (GTK_ICON_VIEW (icon_view), COL_PIXBUF);
+	  btk_icon_view_set_text_column (BTK_ICON_VIEW (icon_view), COL_DISPLAY_NAME);
+	  btk_icon_view_set_pixbuf_column (BTK_ICON_VIEW (icon_view), COL_PIXBUF);
 
 	  /* Connect to the "item-activated" signal */
 	  g_signal_connect (icon_view, "item-activated",
 			    G_CALLBACK (item_activated), store);
-	  gtk_container_add (GTK_CONTAINER (sw), icon_view);
+	  btk_container_add (BTK_CONTAINER (sw), icon_view);
 
-	  gtk_widget_grab_focus (icon_view);
+	  btk_widget_grab_focus (icon_view);
 	}
     }
 
-  if (!gtk_widget_get_visible (window))
-    gtk_widget_show_all (window);
+  if (!btk_widget_get_visible (window))
+    btk_widget_show_all (window);
   else
     {
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 

@@ -1,7 +1,7 @@
-## Makefile.am for gtk+/demos
+## Makefile.am for btk+/demos
 include $(top_srcdir)/Makefile.decl
 
-democodedir=$(datadir)/gtk-2.0/demo
+democodedir=$(datadir)/btk-2.0/demo
 
 ## These should be in the order you want them to appear in the
 ## demo app, which means alphabetized by demo title, not filename
@@ -48,23 +48,23 @@ demos =						\
 INCLUDES = \
 	-DDEMOCODEDIR="\"$(democodedir)\""	\
 	-I$(top_srcdir) 			\
-	-I$(top_builddir)/gdk			\
-	-DGDK_DISABLE_DEPRECATED		\
-	-DGTK_DISABLE_DEPRECATED 		\
-	$(GTK_DEBUG_FLAGS)			\
-	$(GTK_DEP_CFLAGS)
+	-I$(top_builddir)/bdk			\
+	-DBDK_DISABLE_DEPRECATED		\
+	-DBTK_DISABLE_DEPRECATED 		\
+	$(BTK_DEBUG_FLAGS)			\
+	$(BTK_DEP_CFLAGS)
 
 DEPS = \
-	$(top_builddir)/gdk/$(gdktargetlib) 				\
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(top_builddir)/bdk/$(bdktargetlib) 				\
+	$(top_builddir)/btk/$(btktargetlib)
 
 LDADDS = \
-	$(top_builddir)/gdk/$(gdktargetlib)        			\
-	$(top_builddir)/gtk/$(gtktargetlib)				\
-	$(GTK_DEP_LIBS) 						\
+	$(top_builddir)/bdk/$(bdktargetlib)        			\
+	$(top_builddir)/btk/$(btktargetlib)				\
+	$(BTK_DEP_LIBS) 						\
 	-lm
 
-bin_PROGRAMS = gtk-demo
+bin_PROGRAMS = btk-demo
 
 BUILT_SOURCES = demos.h
 
@@ -75,15 +75,15 @@ EXTRA_DIST += 		\
 demos.h: @REBUILD@ $(demos) geninclude.pl
 	(here=`pwd` ; cd $(srcdir) && $(PERL) $$here/geninclude.pl $(demos)) > demos.h
 
-gtk_demo_SOURCES = 		\
+btk_demo_SOURCES = 		\
 	$(demos)		\
 	demo-common.h		\
 	main.c			\
 	demos.h
 
-gtk_demo_DEPENDENCIES = $(DEPS)
-gtk_demo_LDADD = $(LDADDS)
-gtk_demo_LDFLAGS = -export-dynamic
+btk_demo_DEPENDENCIES = $(DEPS)
+btk_demo_LDADD = $(LDADDS)
+btk_demo_LDFLAGS = -export-dynamic
 
 IMAGEFILES=	alphatest.png		\
 	        apple-red.png		\
@@ -98,19 +98,19 @@ IMAGEFILES=	alphatest.png		\
 		gnome-gmush.png		\
 		gnome-gsame.png		\
 		gnu-keys.png		\
-		gtk-logo-rgb.gif		
+		btk-logo-rgb.gif		
 
 democode_DATA = $(demos) $(IMAGEFILES) demo.ui
 
 # ------------------- MSVC Projects --------------------
-MSVCPROJS = gtk-demo
+MSVCPROJS = btk-demo
 
-gtk_demo_FILES = $(gtk_demo_SOURCES)
-gtk_demo_EXCLUDES = gtkdemodummy
+btk_demo_FILES = $(btk_demo_SOURCES)
+btk_demo_EXCLUDES = btkdemodummy
 
 include $(top_srcdir)/build/Makefile.msvcproj
 
-dist-hook: $(top_builddir)/build/win32/vs9/gtk-demo.vcproj
+dist-hook: $(top_builddir)/build/win32/vs9/btk-demo.vcproj
 
 DISTCLEANFILES = demos.h
 

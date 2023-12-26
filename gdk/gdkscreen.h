@@ -1,5 +1,5 @@
 /*
- * gdkscreen.h
+ * bdkscreen.h
  * 
  * Copyright 2001 Sun Microsystems Inc. 
  *
@@ -21,112 +21,112 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_SCREEN_H__
-#define __GDK_SCREEN_H__
+#ifndef __BDK_SCREEN_H__
+#define __BDK_SCREEN_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <cairo.h>
-#include "gdk/gdktypes.h"
-#include "gdk/gdkdisplay.h"
+#include <bairo.h>
+#include "bdk/bdktypes.h"
+#include "bdk/bdkdisplay.h"
 
 G_BEGIN_DECLS
 
-typedef struct _GdkScreenClass GdkScreenClass;
+typedef struct _BdkScreenClass BdkScreenClass;
 
-#define GDK_TYPE_SCREEN            (gdk_screen_get_type ())
-#define GDK_SCREEN(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_SCREEN, GdkScreen))
-#define GDK_SCREEN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_SCREEN, GdkScreenClass))
-#define GDK_IS_SCREEN(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_SCREEN))
-#define GDK_IS_SCREEN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_SCREEN))
-#define GDK_SCREEN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_SCREEN, GdkScreenClass))
+#define BDK_TYPE_SCREEN            (bdk_screen_get_type ())
+#define BDK_SCREEN(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN, BdkScreen))
+#define BDK_SCREEN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN, BdkScreenClass))
+#define BDK_IS_SCREEN(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN))
+#define BDK_IS_SCREEN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN))
+#define BDK_SCREEN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN, BdkScreenClass))
 
-struct _GdkScreen
+struct _BdkScreen
 {
   GObject parent_instance;
 
   guint GSEAL (closed) : 1;
 
-  GdkGC *GSEAL (normal_gcs[32]);
-  GdkGC *GSEAL (exposure_gcs[32]);
-  GdkGC *GSEAL (subwindow_gcs[32]);
+  BdkGC *GSEAL (normal_gcs[32]);
+  BdkGC *GSEAL (exposure_gcs[32]);
+  BdkGC *GSEAL (subwindow_gcs[32]);
 
-  cairo_font_options_t *GSEAL (font_options);
+  bairo_font_options_t *GSEAL (font_options);
   double GSEAL (resolution);	/* pixels/points scale factor for fonts */
 };
 
-struct _GdkScreenClass
+struct _BdkScreenClass
 {
   GObjectClass parent_class;
 
-  void (*size_changed) (GdkScreen *screen);
-  void (*composited_changed) (GdkScreen *screen);
-  void (*monitors_changed) (GdkScreen *screen);
+  void (*size_changed) (BdkScreen *screen);
+  void (*composited_changed) (BdkScreen *screen);
+  void (*monitors_changed) (BdkScreen *screen);
 };
 
-GType        gdk_screen_get_type              (void) G_GNUC_CONST;
-GdkColormap *gdk_screen_get_default_colormap  (GdkScreen   *screen);
-void         gdk_screen_set_default_colormap  (GdkScreen   *screen,
-					       GdkColormap *colormap);
-GdkColormap* gdk_screen_get_system_colormap   (GdkScreen   *screen);
-GdkVisual*   gdk_screen_get_system_visual     (GdkScreen   *screen);
-GdkColormap *gdk_screen_get_rgb_colormap      (GdkScreen   *screen);
-GdkVisual *  gdk_screen_get_rgb_visual        (GdkScreen   *screen);
-GdkColormap *gdk_screen_get_rgba_colormap     (GdkScreen   *screen);
-GdkVisual *  gdk_screen_get_rgba_visual       (GdkScreen   *screen);
-gboolean     gdk_screen_is_composited	      (GdkScreen   *screen);
+GType        bdk_screen_get_type              (void) G_GNUC_CONST;
+BdkColormap *bdk_screen_get_default_colormap  (BdkScreen   *screen);
+void         bdk_screen_set_default_colormap  (BdkScreen   *screen,
+					       BdkColormap *colormap);
+BdkColormap* bdk_screen_get_system_colormap   (BdkScreen   *screen);
+BdkVisual*   bdk_screen_get_system_visual     (BdkScreen   *screen);
+BdkColormap *bdk_screen_get_rgb_colormap      (BdkScreen   *screen);
+BdkVisual *  bdk_screen_get_rgb_visual        (BdkScreen   *screen);
+BdkColormap *bdk_screen_get_rgba_colormap     (BdkScreen   *screen);
+BdkVisual *  bdk_screen_get_rgba_visual       (BdkScreen   *screen);
+gboolean     bdk_screen_is_composited	      (BdkScreen   *screen);
 
-GdkWindow *  gdk_screen_get_root_window       (GdkScreen   *screen);
-GdkDisplay * gdk_screen_get_display           (GdkScreen   *screen);
-gint         gdk_screen_get_number            (GdkScreen   *screen);
-gint         gdk_screen_get_width             (GdkScreen   *screen);
-gint         gdk_screen_get_height            (GdkScreen   *screen);
-gint         gdk_screen_get_width_mm          (GdkScreen   *screen);
-gint         gdk_screen_get_height_mm         (GdkScreen   *screen);
+BdkWindow *  bdk_screen_get_root_window       (BdkScreen   *screen);
+BdkDisplay * bdk_screen_get_display           (BdkScreen   *screen);
+gint         bdk_screen_get_number            (BdkScreen   *screen);
+gint         bdk_screen_get_width             (BdkScreen   *screen);
+gint         bdk_screen_get_height            (BdkScreen   *screen);
+gint         bdk_screen_get_width_mm          (BdkScreen   *screen);
+gint         bdk_screen_get_height_mm         (BdkScreen   *screen);
 
-GList *      gdk_screen_list_visuals          (GdkScreen   *screen);
-GList *      gdk_screen_get_toplevel_windows  (GdkScreen   *screen);
-gchar *      gdk_screen_make_display_name     (GdkScreen   *screen);
+GList *      bdk_screen_list_visuals          (BdkScreen   *screen);
+GList *      bdk_screen_get_toplevel_windows  (BdkScreen   *screen);
+gchar *      bdk_screen_make_display_name     (BdkScreen   *screen);
 
-gint          gdk_screen_get_n_monitors        (GdkScreen *screen);
-gint          gdk_screen_get_primary_monitor   (GdkScreen *screen);
-void          gdk_screen_get_monitor_geometry  (GdkScreen *screen,
+gint          bdk_screen_get_n_monitors        (BdkScreen *screen);
+gint          bdk_screen_get_primary_monitor   (BdkScreen *screen);
+void          bdk_screen_get_monitor_geometry  (BdkScreen *screen,
 						gint       monitor_num,
-						GdkRectangle *dest);
-gint          gdk_screen_get_monitor_at_point  (GdkScreen *screen,
+						BdkRectangle *dest);
+gint          bdk_screen_get_monitor_at_point  (BdkScreen *screen,
 						gint       x,
 						gint       y);
-gint          gdk_screen_get_monitor_at_window (GdkScreen *screen,
-						GdkWindow *window);
-gint          gdk_screen_get_monitor_width_mm  (GdkScreen *screen,
+gint          bdk_screen_get_monitor_at_window (BdkScreen *screen,
+						BdkWindow *window);
+gint          bdk_screen_get_monitor_width_mm  (BdkScreen *screen,
                                                 gint       monitor_num);
-gint          gdk_screen_get_monitor_height_mm (GdkScreen *screen,
+gint          bdk_screen_get_monitor_height_mm (BdkScreen *screen,
                                                 gint       monitor_num);
-gchar *       gdk_screen_get_monitor_plug_name (GdkScreen *screen,
+gchar *       bdk_screen_get_monitor_plug_name (BdkScreen *screen,
                                                 gint       monitor_num);
 
-void          gdk_screen_broadcast_client_message  (GdkScreen       *screen,
-						    GdkEvent        *event);
+void          bdk_screen_broadcast_client_message  (BdkScreen       *screen,
+						    BdkEvent        *event);
 
-GdkScreen *gdk_screen_get_default (void);
+BdkScreen *bdk_screen_get_default (void);
 
-gboolean   gdk_screen_get_setting (GdkScreen   *screen,
+gboolean   bdk_screen_get_setting (BdkScreen   *screen,
 				   const gchar *name,
 				   GValue      *value);
 
-void                        gdk_screen_set_font_options (GdkScreen                  *screen,
-							 const cairo_font_options_t *options);
-const cairo_font_options_t *gdk_screen_get_font_options (GdkScreen                  *screen);
+void                        bdk_screen_set_font_options (BdkScreen                  *screen,
+							 const bairo_font_options_t *options);
+const bairo_font_options_t *bdk_screen_get_font_options (BdkScreen                  *screen);
 
-void    gdk_screen_set_resolution (GdkScreen *screen,
+void    bdk_screen_set_resolution (BdkScreen *screen,
 				   gdouble    dpi);
-gdouble gdk_screen_get_resolution (GdkScreen *screen);
+gdouble bdk_screen_get_resolution (BdkScreen *screen);
 
-GdkWindow *gdk_screen_get_active_window (GdkScreen *screen);
-GList     *gdk_screen_get_window_stack  (GdkScreen *screen);
+BdkWindow *bdk_screen_get_active_window (BdkScreen *screen);
+GList     *bdk_screen_get_window_stack  (BdkScreen *screen);
 
 G_END_DECLS
 
-#endif				/* __GDK_SCREEN_H__ */
+#endif				/* __BDK_SCREEN_H__ */

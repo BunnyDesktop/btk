@@ -1,4 +1,4 @@
-/* gtktreeviewcolumn.h
+/* btktreeviewcolumn.h
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,66 +17,66 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TREE_VIEW_COLUMN_H__
-#define __GTK_TREE_VIEW_COLUMN_H__
+#ifndef __BTK_TREE_VIEW_COLUMN_H__
+#define __BTK_TREE_VIEW_COLUMN_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcellrenderer.h>
-#include <gtk/gtktreemodel.h>
-#include <gtk/gtktreesortable.h>
+#include <btk/btkcellrenderer.h>
+#include <btk/btktreemodel.h>
+#include <btk/btktreesortable.h>
 
 /* Not needed, retained for compatibility -Yosh */
-#include <gtk/gtkobject.h>
+#include <btk/btkobject.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_TREE_VIEW_COLUMN	     (gtk_tree_view_column_get_type ())
-#define GTK_TREE_VIEW_COLUMN(obj)	     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TREE_VIEW_COLUMN, GtkTreeViewColumn))
-#define GTK_TREE_VIEW_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TREE_VIEW_COLUMN, GtkTreeViewColumnClass))
-#define GTK_IS_TREE_VIEW_COLUMN(obj)	     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TREE_VIEW_COLUMN))
-#define GTK_IS_TREE_VIEW_COLUMN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TREE_VIEW_COLUMN))
-#define GTK_TREE_VIEW_COLUMN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TREE_VIEW_COLUMN, GtkTreeViewColumnClass))
+#define BTK_TYPE_TREE_VIEW_COLUMN	     (btk_tree_view_column_get_type ())
+#define BTK_TREE_VIEW_COLUMN(obj)	     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_VIEW_COLUMN, BtkTreeViewColumn))
+#define BTK_TREE_VIEW_COLUMN_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_VIEW_COLUMN, BtkTreeViewColumnClass))
+#define BTK_IS_TREE_VIEW_COLUMN(obj)	     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_VIEW_COLUMN))
+#define BTK_IS_TREE_VIEW_COLUMN_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_VIEW_COLUMN))
+#define BTK_TREE_VIEW_COLUMN_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_VIEW_COLUMN, BtkTreeViewColumnClass))
 
 typedef enum
 {
-  GTK_TREE_VIEW_COLUMN_GROW_ONLY,
-  GTK_TREE_VIEW_COLUMN_AUTOSIZE,
-  GTK_TREE_VIEW_COLUMN_FIXED
-} GtkTreeViewColumnSizing;
+  BTK_TREE_VIEW_COLUMN_GROW_ONLY,
+  BTK_TREE_VIEW_COLUMN_AUTOSIZE,
+  BTK_TREE_VIEW_COLUMN_FIXED
+} BtkTreeViewColumnSizing;
 
-typedef struct _GtkTreeViewColumn      GtkTreeViewColumn;
-typedef struct _GtkTreeViewColumnClass GtkTreeViewColumnClass;
+typedef struct _BtkTreeViewColumn      BtkTreeViewColumn;
+typedef struct _BtkTreeViewColumnClass BtkTreeViewColumnClass;
 
-typedef void (* GtkTreeCellDataFunc) (GtkTreeViewColumn *tree_column,
-				      GtkCellRenderer   *cell,
-				      GtkTreeModel      *tree_model,
-				      GtkTreeIter       *iter,
+typedef void (* BtkTreeCellDataFunc) (BtkTreeViewColumn *tree_column,
+				      BtkCellRenderer   *cell,
+				      BtkTreeModel      *tree_model,
+				      BtkTreeIter       *iter,
 				      gpointer           data);
 
 
-struct _GtkTreeViewColumn
+struct _BtkTreeViewColumn
 {
-  GtkObject parent;
+  BtkObject parent;
 
-  GtkWidget *GSEAL (tree_view);
-  GtkWidget *GSEAL (button);
-  GtkWidget *GSEAL (child);
-  GtkWidget *GSEAL (arrow);
-  GtkWidget *GSEAL (alignment);
-  GdkWindow *GSEAL (window);
-  GtkCellEditable *GSEAL (editable_widget);
+  BtkWidget *GSEAL (tree_view);
+  BtkWidget *GSEAL (button);
+  BtkWidget *GSEAL (child);
+  BtkWidget *GSEAL (arrow);
+  BtkWidget *GSEAL (alignment);
+  BdkWindow *GSEAL (window);
+  BtkCellEditable *GSEAL (editable_widget);
   gfloat GSEAL (xalign);
   guint GSEAL (property_changed_signal);
   gint GSEAL (spacing);
 
   /* Sizing fields */
-  /* see gtk+/doc/tree-column-sizing.txt for more information on them */
-  GtkTreeViewColumnSizing GSEAL (column_type);
+  /* see btk+/doc/tree-column-sizing.txt for more information on them */
+  BtkTreeViewColumnSizing GSEAL (column_type);
   gint GSEAL (requested_width);
   gint GSEAL (button_request);
   gint GSEAL (resized_width);
@@ -96,7 +96,7 @@ struct _GtkTreeViewColumn
   guint GSEAL (sort_clicked_signal);
   guint GSEAL (sort_column_changed_signal);
   gint GSEAL (sort_column_id);
-  GtkSortType GSEAL (sort_order);
+  BtkSortType GSEAL (sort_order);
 
   /* Flags */
   guint GSEAL (visible)             : 1;
@@ -110,136 +110,136 @@ struct _GtkTreeViewColumn
   guint GSEAL (expand)              : 1;
 };
 
-struct _GtkTreeViewColumnClass
+struct _BtkTreeViewColumnClass
 {
-  GtkObjectClass parent_class;
+  BtkObjectClass parent_class;
 
-  void (*clicked) (GtkTreeViewColumn *tree_column);
+  void (*clicked) (BtkTreeViewColumn *tree_column);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType                   gtk_tree_view_column_get_type            (void) G_GNUC_CONST;
-GtkTreeViewColumn      *gtk_tree_view_column_new                 (void);
-GtkTreeViewColumn      *gtk_tree_view_column_new_with_attributes (const gchar             *title,
-								  GtkCellRenderer         *cell,
+GType                   btk_tree_view_column_get_type            (void) G_GNUC_CONST;
+BtkTreeViewColumn      *btk_tree_view_column_new                 (void);
+BtkTreeViewColumn      *btk_tree_view_column_new_with_attributes (const gchar             *title,
+								  BtkCellRenderer         *cell,
 								  ...) G_GNUC_NULL_TERMINATED;
-void                    gtk_tree_view_column_pack_start          (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell,
+void                    btk_tree_view_column_pack_start          (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell,
 								  gboolean                 expand);
-void                    gtk_tree_view_column_pack_end            (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell,
+void                    btk_tree_view_column_pack_end            (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell,
 								  gboolean                 expand);
-void                    gtk_tree_view_column_clear               (GtkTreeViewColumn       *tree_column);
-#ifndef GTK_DISABLE_DEPRECATED
-GList                  *gtk_tree_view_column_get_cell_renderers  (GtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_clear               (BtkTreeViewColumn       *tree_column);
+#ifndef BTK_DISABLE_DEPRECATED
+GList                  *btk_tree_view_column_get_cell_renderers  (BtkTreeViewColumn       *tree_column);
 #endif
-void                    gtk_tree_view_column_add_attribute       (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell_renderer,
+void                    btk_tree_view_column_add_attribute       (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell_renderer,
 								  const gchar             *attribute,
 								  gint                     column);
-void                    gtk_tree_view_column_set_attributes      (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell_renderer,
+void                    btk_tree_view_column_set_attributes      (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell_renderer,
 								  ...) G_GNUC_NULL_TERMINATED;
-void                    gtk_tree_view_column_set_cell_data_func  (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell_renderer,
-								  GtkTreeCellDataFunc      func,
+void                    btk_tree_view_column_set_cell_data_func  (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell_renderer,
+								  BtkTreeCellDataFunc      func,
 								  gpointer                 func_data,
 								  GDestroyNotify           destroy);
-void                    gtk_tree_view_column_clear_attributes    (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell_renderer);
-void                    gtk_tree_view_column_set_spacing         (GtkTreeViewColumn       *tree_column,
+void                    btk_tree_view_column_clear_attributes    (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell_renderer);
+void                    btk_tree_view_column_set_spacing         (BtkTreeViewColumn       *tree_column,
 								  gint                     spacing);
-gint                    gtk_tree_view_column_get_spacing         (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_visible         (GtkTreeViewColumn       *tree_column,
+gint                    btk_tree_view_column_get_spacing         (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_visible         (BtkTreeViewColumn       *tree_column,
 								  gboolean                 visible);
-gboolean                gtk_tree_view_column_get_visible         (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_resizable       (GtkTreeViewColumn       *tree_column,
+gboolean                btk_tree_view_column_get_visible         (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_resizable       (BtkTreeViewColumn       *tree_column,
 								  gboolean                 resizable);
-gboolean                gtk_tree_view_column_get_resizable       (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_sizing          (GtkTreeViewColumn       *tree_column,
-								  GtkTreeViewColumnSizing  type);
-GtkTreeViewColumnSizing gtk_tree_view_column_get_sizing          (GtkTreeViewColumn       *tree_column);
-gint                    gtk_tree_view_column_get_width           (GtkTreeViewColumn       *tree_column);
-gint                    gtk_tree_view_column_get_fixed_width     (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_fixed_width     (GtkTreeViewColumn       *tree_column,
+gboolean                btk_tree_view_column_get_resizable       (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_sizing          (BtkTreeViewColumn       *tree_column,
+								  BtkTreeViewColumnSizing  type);
+BtkTreeViewColumnSizing btk_tree_view_column_get_sizing          (BtkTreeViewColumn       *tree_column);
+gint                    btk_tree_view_column_get_width           (BtkTreeViewColumn       *tree_column);
+gint                    btk_tree_view_column_get_fixed_width     (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_fixed_width     (BtkTreeViewColumn       *tree_column,
 								  gint                     fixed_width);
-void                    gtk_tree_view_column_set_min_width       (GtkTreeViewColumn       *tree_column,
+void                    btk_tree_view_column_set_min_width       (BtkTreeViewColumn       *tree_column,
 								  gint                     min_width);
-gint                    gtk_tree_view_column_get_min_width       (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_max_width       (GtkTreeViewColumn       *tree_column,
+gint                    btk_tree_view_column_get_min_width       (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_max_width       (BtkTreeViewColumn       *tree_column,
 								  gint                     max_width);
-gint                    gtk_tree_view_column_get_max_width       (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_clicked             (GtkTreeViewColumn       *tree_column);
+gint                    btk_tree_view_column_get_max_width       (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_clicked             (BtkTreeViewColumn       *tree_column);
 
 
 
 /* Options for manipulating the column headers
  */
-void                    gtk_tree_view_column_set_title           (GtkTreeViewColumn       *tree_column,
+void                    btk_tree_view_column_set_title           (BtkTreeViewColumn       *tree_column,
 								  const gchar             *title);
-const gchar *           gtk_tree_view_column_get_title           (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_expand          (GtkTreeViewColumn       *tree_column,
+const gchar *           btk_tree_view_column_get_title           (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_expand          (BtkTreeViewColumn       *tree_column,
 								  gboolean                 expand);
-gboolean                gtk_tree_view_column_get_expand          (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_clickable       (GtkTreeViewColumn       *tree_column,
+gboolean                btk_tree_view_column_get_expand          (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_clickable       (BtkTreeViewColumn       *tree_column,
 								  gboolean                 clickable);
-gboolean                gtk_tree_view_column_get_clickable       (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_widget          (GtkTreeViewColumn       *tree_column,
-								  GtkWidget               *widget);
-GtkWidget              *gtk_tree_view_column_get_widget          (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_alignment       (GtkTreeViewColumn       *tree_column,
+gboolean                btk_tree_view_column_get_clickable       (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_widget          (BtkTreeViewColumn       *tree_column,
+								  BtkWidget               *widget);
+BtkWidget              *btk_tree_view_column_get_widget          (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_alignment       (BtkTreeViewColumn       *tree_column,
 								  gfloat                   xalign);
-gfloat                  gtk_tree_view_column_get_alignment       (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_reorderable     (GtkTreeViewColumn       *tree_column,
+gfloat                  btk_tree_view_column_get_alignment       (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_reorderable     (BtkTreeViewColumn       *tree_column,
 								  gboolean                 reorderable);
-gboolean                gtk_tree_view_column_get_reorderable     (GtkTreeViewColumn       *tree_column);
+gboolean                btk_tree_view_column_get_reorderable     (BtkTreeViewColumn       *tree_column);
 
 
 
-/* You probably only want to use gtk_tree_view_column_set_sort_column_id.  The
+/* You probably only want to use btk_tree_view_column_set_sort_column_id.  The
  * other sorting functions exist primarily to let others do their own custom sorting.
  */
-void                    gtk_tree_view_column_set_sort_column_id  (GtkTreeViewColumn       *tree_column,
+void                    btk_tree_view_column_set_sort_column_id  (BtkTreeViewColumn       *tree_column,
 								  gint                     sort_column_id);
-gint                    gtk_tree_view_column_get_sort_column_id  (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_sort_indicator  (GtkTreeViewColumn       *tree_column,
+gint                    btk_tree_view_column_get_sort_column_id  (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_sort_indicator  (BtkTreeViewColumn       *tree_column,
 								  gboolean                 setting);
-gboolean                gtk_tree_view_column_get_sort_indicator  (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_set_sort_order      (GtkTreeViewColumn       *tree_column,
-								  GtkSortType              order);
-GtkSortType             gtk_tree_view_column_get_sort_order      (GtkTreeViewColumn       *tree_column);
+gboolean                btk_tree_view_column_get_sort_indicator  (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_set_sort_order      (BtkTreeViewColumn       *tree_column,
+								  BtkSortType              order);
+BtkSortType             btk_tree_view_column_get_sort_order      (BtkTreeViewColumn       *tree_column);
 
 
-/* These functions are meant primarily for interaction between the GtkTreeView and the column.
+/* These functions are meant primarily for interaction between the BtkTreeView and the column.
  */
-void                    gtk_tree_view_column_cell_set_cell_data  (GtkTreeViewColumn       *tree_column,
-								  GtkTreeModel            *tree_model,
-								  GtkTreeIter             *iter,
+void                    btk_tree_view_column_cell_set_cell_data  (BtkTreeViewColumn       *tree_column,
+								  BtkTreeModel            *tree_model,
+								  BtkTreeIter             *iter,
 								  gboolean                 is_expander,
 								  gboolean                 is_expanded);
-void                    gtk_tree_view_column_cell_get_size       (GtkTreeViewColumn       *tree_column,
-								  const GdkRectangle      *cell_area,
+void                    btk_tree_view_column_cell_get_size       (BtkTreeViewColumn       *tree_column,
+								  const BdkRectangle      *cell_area,
 								  gint                    *x_offset,
 								  gint                    *y_offset,
 								  gint                    *width,
 								  gint                    *height);
-gboolean                gtk_tree_view_column_cell_is_visible     (GtkTreeViewColumn       *tree_column);
-void                    gtk_tree_view_column_focus_cell          (GtkTreeViewColumn       *tree_column,
-								  GtkCellRenderer         *cell);
-gboolean                gtk_tree_view_column_cell_get_position   (GtkTreeViewColumn       *tree_column,
-					                          GtkCellRenderer         *cell_renderer,
+gboolean                btk_tree_view_column_cell_is_visible     (BtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_focus_cell          (BtkTreeViewColumn       *tree_column,
+								  BtkCellRenderer         *cell);
+gboolean                btk_tree_view_column_cell_get_position   (BtkTreeViewColumn       *tree_column,
+					                          BtkCellRenderer         *cell_renderer,
 					                          gint                    *start_pos,
 					                          gint                    *width);
-void                    gtk_tree_view_column_queue_resize        (GtkTreeViewColumn       *tree_column);
-GtkWidget              *gtk_tree_view_column_get_tree_view       (GtkTreeViewColumn       *tree_column);
+void                    btk_tree_view_column_queue_resize        (BtkTreeViewColumn       *tree_column);
+BtkWidget              *btk_tree_view_column_get_tree_view       (BtkTreeViewColumn       *tree_column);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_TREE_VIEW_COLUMN_H__ */
+#endif /* __BTK_TREE_VIEW_COLUMN_H__ */

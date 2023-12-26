@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat Software
  *
  * This library is free software; you can redistribute it and/or
@@ -17,16 +17,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_IM_MODULE_H__
-#define __GTK_IM_MODULE_H__
+#ifndef __BTK_IM_MODULE_H__
+#define __BTK_IM_MODULE_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GtkIMContextInfo GtkIMContextInfo;
+typedef struct _BtkIMContextInfo BtkIMContextInfo;
 
-struct _GtkIMContextInfo
+struct _BtkIMContextInfo
 {
   const gchar *context_id;
   const gchar *context_name;
@@ -35,24 +35,24 @@ struct _GtkIMContextInfo
   const gchar *default_locales;
 };
 
-/* Functions for use within GTK+
+/* Functions for use within BTK+
  */
-void           _gtk_im_module_list                   (const GtkIMContextInfo ***contexts,
+void           _btk_im_module_list                   (const BtkIMContextInfo ***contexts,
 						      guint                    *n_contexts);
-GtkIMContext * _gtk_im_module_create                 (const gchar              *context_id);
-const gchar  * _gtk_im_module_get_default_context_id (GdkWindow                *client_window);
+BtkIMContext * _btk_im_module_create                 (const gchar              *context_id);
+const gchar  * _btk_im_module_get_default_context_id (BdkWindow                *client_window);
 
 /* The following entry points are exported by each input method module
  */
 
 /*
-void          im_module_list   (const GtkIMContextInfo ***contexts,
+void          im_module_list   (const BtkIMContextInfo ***contexts,
 				guint                    *n_contexts);
-void          im_module_init   (GtkModule                *module);
+void          im_module_init   (BtkModule                *module);
 void          im_module_exit   (void);
-GtkIMContext *im_module_create (const gchar              *context_id);
+BtkIMContext *im_module_create (const gchar              *context_id);
 */
 
 G_END_DECLS
 
-#endif /* __GTK_IM_MODULE_H__ */
+#endif /* __BTK_IM_MODULE_H__ */

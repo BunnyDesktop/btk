@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,16 +21,16 @@
  * Authors: Alexander Larsson <alexl@redhat.com>
  */
 
-#ifndef __GTK_WINDOW_DECORATE_H__
-#define __GTK_WINDOW_DECORATE_H__
+#ifndef __BTK_WINDOW_DECORATE_H__
+#define __BTK_WINDOW_DECORATE_H__
 
 G_BEGIN_DECLS
 
-void gtk_decorated_window_init                 (GtkWindow   *window);
-void gtk_decorated_window_calculate_frame_size (GtkWindow   *window);
-void gtk_decorated_window_set_title            (GtkWindow   *window,
+void btk_decorated_window_init                 (BtkWindow   *window);
+void btk_decorated_window_calculate_frame_size (BtkWindow   *window);
+void btk_decorated_window_set_title            (BtkWindow   *window,
 						const gchar *title);
-void gtk_decorated_window_move_resize_window   (GtkWindow   *window,
+void btk_decorated_window_move_resize_window   (BtkWindow   *window,
 						gint         x,
 						gint         y,
 						gint         width,
@@ -38,4 +38,4 @@ void gtk_decorated_window_move_resize_window   (GtkWindow   *window,
 
 G_END_DECLS
 
-#endif /* __GTK_WINDOW_DECORATE_H__ */
+#endif /* __BTK_WINDOW_DECORATE_H__ */

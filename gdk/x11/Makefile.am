@@ -1,86 +1,86 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-libgdkincludedir = $(includedir)/gtk-2.0/gdk
+libbdkincludedir = $(includedir)/btk-2.0/bdk
 
 INCLUDES = 			\
-	-DG_LOG_DOMAIN=\"Gdk\"	\
-	-DGDK_COMPILATION	\
+	-DG_LOG_DOMAIN=\"Bdk\"	\
+	-DBDK_COMPILATION	\
 	-I$(top_srcdir)		\
-	-I$(top_srcdir)/gdk	\
-	-I$(top_builddir)/gdk	\
-	$(GTK_DEBUG_FLAGS) 	\
-	$(GDK_DEP_CFLAGS)
+	-I$(top_srcdir)/bdk	\
+	-I$(top_builddir)/bdk	\
+	$(BTK_DEBUG_FLAGS) 	\
+	$(BDK_DEP_CFLAGS)
 
-LDADDS = $(GDK_DEP_LIBS)
+LDADDS = $(BDK_DEP_LIBS)
 
-noinst_LTLIBRARIES = libgdk-x11.la
+noinst_LTLIBRARIES = libbdk-x11.la
 
-libgdk_x11_la_SOURCES =    	\
+libbdk_x11_la_SOURCES =    	\
 	MwmUtil.h	   	\
-	gdkapplaunchcontext-x11.c \
-	gdkasync.c		\
-	gdkasync.h		\
-	gdkcolor-x11.c	   	\
-	gdkcursor-x11.c	   	\
-	gdkdisplay-x11.c	\
-	gdkdisplay-x11.h	\
-	gdkdnd-x11.c	   	\
-	gdkdrawable-x11.c  	\
-	gdkdrawable-x11.h	\
-	gdkevents-x11.c	   	\
-	gdkfont-x11.c	   	\
-	gdkgc-x11.c 	   	\
-	gdkgeometry-x11.c  	\
-	gdkglobals-x11.c   	\
-	gdkim-x11.c	   	\
-	gdkimage-x11.c	   	\
-	gdkinput.c	   	\
-	gdkkeys-x11.c		\
-	gdkmain-x11.c	   	\
-	gdkpixmap-x11.c	   	\
-	gdkpixmap-x11.h		\
-	gdkproperty-x11.c  	\
-	gdkscreen-x11.c		\
-	gdkscreen-x11.h		\
-	gdkselection-x11.c 	\
-	gdkspawn-x11.c		\
-	gdktestutils-x11.c	\
-	gdkvisual-x11.c	   	\
-	gdkwindow-x11.c    	\
-	gdkwindow-x11.h		\
-	gdkxftdefaults.c	\
-	gdkxid.c	   	\
-	gdkx.h		   	\
-	gdkprivate-x11.h   	\
-	gdkinputprivate.h  	\
+	bdkapplaunchcontext-x11.c \
+	bdkasync.c		\
+	bdkasync.h		\
+	bdkcolor-x11.c	   	\
+	bdkcursor-x11.c	   	\
+	bdkdisplay-x11.c	\
+	bdkdisplay-x11.h	\
+	bdkdnd-x11.c	   	\
+	bdkdrawable-x11.c  	\
+	bdkdrawable-x11.h	\
+	bdkevents-x11.c	   	\
+	bdkfont-x11.c	   	\
+	bdkgc-x11.c 	   	\
+	bdkgeometry-x11.c  	\
+	bdkglobals-x11.c   	\
+	bdkim-x11.c	   	\
+	bdkimage-x11.c	   	\
+	bdkinput.c	   	\
+	bdkkeys-x11.c		\
+	bdkmain-x11.c	   	\
+	bdkpixmap-x11.c	   	\
+	bdkpixmap-x11.h		\
+	bdkproperty-x11.c  	\
+	bdkscreen-x11.c		\
+	bdkscreen-x11.h		\
+	bdkselection-x11.c 	\
+	bdkspawn-x11.c		\
+	bdktestutils-x11.c	\
+	bdkvisual-x11.c	   	\
+	bdkwindow-x11.c    	\
+	bdkwindow-x11.h		\
+	bdkxftdefaults.c	\
+	bdkxid.c	   	\
+	bdkx.h		   	\
+	bdkprivate-x11.h   	\
+	bdkinputprivate.h  	\
 	xsettings-client.h	\
 	xsettings-client.c	\
 	xsettings-common.h	\
 	xsettings-common.c
 
 if XINPUT_XFREE
-libgdk_x11_la_SOURCES += gdkinput-x11.c gdkinput-xfree.c
+libbdk_x11_la_SOURCES += bdkinput-x11.c bdkinput-xfree.c
 else
-libgdk_x11_la_SOURCES += gdkinput-none.c
+libbdk_x11_la_SOURCES += bdkinput-none.c
 endif
 
 
-libgdkinclude_HEADERS = 	\
-	gdkx.h
+libbdkinclude_HEADERS = 	\
+	bdkx.h
 
 
 noinst_PROGRAMS = checksettings
-checksettings_LDADD = libgdk-x11.la $(GLIB_LIBS)
+checksettings_LDADD = libbdk-x11.la $(BUNNYLIB_LIBS)
 
 TESTS = checksettings
 
 # We need to include all these C files here since the conditionals
 # don't seem to be correctly expanded for the dist files.
 EXTRA_DIST += 			\
-	gdkinput-x11.c		\
-	gdkinput-xfree.c	\
-	gdkinput-none.c		\
-	gdksettings.c
+	bdkinput-x11.c		\
+	bdkinput-xfree.c	\
+	bdkinput-none.c		\
+	bdksettings.c
 
 -include $(top_srcdir)/git.mk

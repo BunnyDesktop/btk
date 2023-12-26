@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat Software
  *
  * This library is free software; you can redistribute it and/or
@@ -23,37 +23,37 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtk/gtk.h"
-#include "gdk/gdkkeysyms.h"
+#include "btk/btk.h"
+#include "bdk/bdkkeysyms.h"
 
-#include "gtk/gtkimmodule.h"
-#include "gtk/gtkintl.h"
+#include "btk/btkimmodule.h"
+#include "btk/btkintl.h"
 
 GType type_ipa = 0;
 
-static void ipa_class_init (GtkIMContextSimpleClass *class);
-static void ipa_init (GtkIMContextSimple *im_context);
+static void ipa_class_init (BtkIMContextSimpleClass *class);
+static void ipa_init (BtkIMContextSimple *im_context);
 
 static void
 ipa_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
   {
-    sizeof (GtkIMContextSimpleClass),
+    sizeof (BtkIMContextSimpleClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
     (GClassInitFunc) ipa_class_init,
     NULL,           /* class_finalize */
     NULL,           /* class_data */
-    sizeof (GtkIMContextSimple),
+    sizeof (BtkIMContextSimple),
     0,
     (GInstanceInitFunc) ipa_init,
   };
 
   type_ipa = 
     g_type_module_register_type (module,
-				 GTK_TYPE_IM_CONTEXT_SIMPLE,
-				 "GtkIMContextIpa",
+				 BTK_TYPE_IM_CONTEXT_SIMPLE,
+				 "BtkIMContextIpa",
 				 &object_info, 0);
 }
 
@@ -62,100 +62,100 @@ ipa_register_type (GTypeModule *module)
  * in iso-8859-5
  */
 static guint16 ipa_compose_seqs[] = {
-  GDK_ampersand, 0,           0,      0,      0,      0x263, 	/* LATIN SMALL LETTER GAMMA */
-  GDK_apostrophe, 0,          0,      0,      0,      0x2C8, 	/* MODIFIER LETTER VERTICAL LINE */
-  GDK_slash,  GDK_apostrophe, 0,      0,      0,      0x2CA, 	/* MODIFIER LETTER ACUTE ACCENT */
-  GDK_slash,  GDK_slash,      0,      0,      0,      0x02F, 	/* SOLIDUS */
-  GDK_slash,  GDK_3,          0,      0,      0,      0x25B, 	/* LATIN SMALL LETTER OPEN E */
-  GDK_slash,  GDK_A,          0,      0,      0,      0x252, 	/* LATIN LETTER TURNED ALPHA */
-  GDK_slash,  GDK_R,          0,      0,      0,      0x281, 	/* LATIN LETTER SMALL CAPITAL INVERTED R */
-  GDK_slash,  GDK_a,          0,      0,      0,      0x250, 	/* LATIN SMALL LETTER TURNED A */
-  GDK_slash,  GDK_c,          0,      0,      0,      0x254, 	/* LATIN SMALL LETTER OPEN O */
-  GDK_slash,  GDK_e,          0,      0,      0,      0x259, 	/* LATIN SMALL LETTER SCHWA */
-  GDK_slash,  GDK_h,          0,      0,      0,      0x265, 	/* LATIN SMALL LETTER TURNED H */
-  GDK_slash,  GDK_m,          0,      0,      0,      0x26F, 	/* LATIN SMALL LETTER TURNED M */
-  GDK_slash,  GDK_r,          0,      0,      0,      0x279, 	/* LATIN SMALL LETTER TURNED R */
-  GDK_slash,  GDK_v,          0,      0,      0,      0x28C, 	/* LATIN SMALL LETTER TURNED V */
-  GDK_slash,  GDK_w,          0,      0,      0,      0x28D, 	/* LATIN SMALL LETTER TURNED W */
-  GDK_slash,  GDK_y,          0,      0,      0,      0x28E, 	/* LATIN SMALL LETTER TRUEND Y*/
-  GDK_3,      0,              0,      0,      0,      0x292, 	/* LATIN SMALL LETTER EZH */
-  GDK_colon,  0,              0,      0,      0,      0x2D0, 	/* MODIFIER LETTER TRIANGULAR COLON */
-  GDK_A,      0,              0,      0,      0,      0x251, 	/* LATIN SMALL LETTER ALPHA */
-  GDK_E,      0,              0,      0,      0,      0x25B, 	/* LATIN SMALL LETTER OPEN E */
-  GDK_I,      0,              0,      0,      0,      0x26A, 	/* LATIN LETTER SMALL CAPITAL I */
-  GDK_L,      0,              0,      0,      0,      0x29F, 	/* LATIN LETTER SMALL CAPITAL L */
-  GDK_M,      0,              0,      0,      0,      0x28D, 	/* LATIN SMALL LETTER TURNED W */
-  GDK_O,      0,              0,      0,      0,      0x04F, 	/* LATIN LETTER SMALL CAPITAL OE */
-  GDK_O,      GDK_E,          0,      0,      0,      0x276, 	/* LATIN LETTER SMALL CAPITAL OE */
-  GDK_R,      0,              0,      0,      0,      0x280, 	/* LATIN LETTER SMALL CAPITAL R */
-  GDK_U,      0,              0,      0,      0,      0x28A, 	/* LATIN SMALL LETTER UPSILON */
-  GDK_Y,      0,              0,      0,      0,      0x28F, 	/* LATIN LETTER SMALL CAPITAL Y */
-  GDK_grave,  0,              0,      0,      0,      0x2CC, 	/* MODIFIER LETTER LOW VERTICAL LINE */
-  GDK_a,      0,              0,      0,      0,      0x061, 	/* LATIN SMALL LETTER A */
-  GDK_a,      GDK_e,          0,      0,      0,      0x0E6, 	/* LATIN SMALL LETTER AE */
-  GDK_c,      0,              0,      0,      0,      0x063,    /* LATIN SMALL LETTER C */
-  GDK_c,      GDK_comma,      0,      0,      0,      0x0E7,    /* LATIN SMALL LETTER C WITH CEDILLA */
-  GDK_d,      0,              0,      0,      0,      0x064, 	/* LATIN SMALL LETTER E */
-  GDK_d,      GDK_apostrophe, 0,      0,      0,      0x064, 	/* LATIN SMALL LETTER D */
-  GDK_d,      GDK_h,          0,      0,      0,      0x0F0, 	/* LATIN SMALL LETTER ETH */
-  GDK_e,      0,              0,      0,      0,      0x065, 	/* LATIN SMALL LETTER E */
-  GDK_e,      GDK_minus,      0,      0,      0,      0x25A, 	/* LATIN SMALL LETTER SCHWA WITH HOOK */
-  GDK_e,      GDK_bar,        0,      0,      0,      0x25A, 	/* LATIN SMALL LETTER SCHWA WITH HOOK */
-  GDK_g,      0,              0,      0,      0,      0x067, 	/* LATIN SMALL LETTER G */
-  GDK_g,      GDK_n,          0,      0,      0,      0x272, 	/* LATIN SMALL LETTER N WITH LEFT HOOK */
-  GDK_i,      0,              0,      0,      0,      0x069, 	/* LATIN SMALL LETTER I */
-  GDK_i,      GDK_minus,      0,      0,      0,      0x268, 	/* LATIN SMALL LETTER I WITH STROKE */
-  GDK_n,      0,              0,      0,      0,      0x06e, 	/* LATIN SMALL LETTER N */
-  GDK_n,      GDK_g,          0,      0,      0,      0x14B, 	/* LATIN SMALL LETTER ENG */
-  GDK_o,      0,              0,      0,      0,      0x06f, 	/* LATIN SMALL LETTER O */
-  GDK_o,      GDK_minus,      0,      0,      0,      0x275, 	/* LATIN LETTER BARRED O */
-  GDK_o,      GDK_slash,      0,      0,      0,      0x0F8, 	/* LATIN SMALL LETTER O WITH STROKE */
-  GDK_o,      GDK_e,          0,      0,      0,      0x153, 	/* LATIN SMALL LIGATURE OE */
-  GDK_o,      GDK_bar,        0,      0,      0,      0x251, 	/* LATIN SMALL LETTER ALPHA */
-  GDK_s,      0,              0,      0,      0,      0x073, 	/* LATIN SMALL LETTER_ESH */
-  GDK_s,      GDK_h,          0,      0,      0,      0x283, 	/* LATIN SMALL LETTER_ESH */
-  GDK_t,      0,              0,      0,      0,      0x074, 	/* LATIN SMALL LETTER T */
-  GDK_t,      GDK_h,          0,      0,      0,      0x3B8, 	/* GREEK SMALL LETTER THETA */
-  GDK_u,      0,              0,      0,      0,      0x075, 	/* LATIN SMALL LETTER U */
-  GDK_u,      GDK_minus,      0,      0,      0,      0x289, 	/* LATIN LETTER U BAR */
-  GDK_z,      0,              0,      0,      0,      0x07A, 	/* LATIN SMALL LETTER Z */
-  GDK_z,      GDK_h,          0,      0,      0,      0x292, 	/* LATIN SMALL LETTER EZH */
-  GDK_bar,    GDK_o,          0,      0,      0,      0x252, 	/* LATIN LETTER TURNED ALPHA */
+  BDK_ampersand, 0,           0,      0,      0,      0x263, 	/* LATIN SMALL LETTER GAMMA */
+  BDK_apostrophe, 0,          0,      0,      0,      0x2C8, 	/* MODIFIER LETTER VERTICAL LINE */
+  BDK_slash,  BDK_apostrophe, 0,      0,      0,      0x2CA, 	/* MODIFIER LETTER ACUTE ACCENT */
+  BDK_slash,  BDK_slash,      0,      0,      0,      0x02F, 	/* SOLIDUS */
+  BDK_slash,  BDK_3,          0,      0,      0,      0x25B, 	/* LATIN SMALL LETTER OPEN E */
+  BDK_slash,  BDK_A,          0,      0,      0,      0x252, 	/* LATIN LETTER TURNED ALPHA */
+  BDK_slash,  BDK_R,          0,      0,      0,      0x281, 	/* LATIN LETTER SMALL CAPITAL INVERTED R */
+  BDK_slash,  BDK_a,          0,      0,      0,      0x250, 	/* LATIN SMALL LETTER TURNED A */
+  BDK_slash,  BDK_c,          0,      0,      0,      0x254, 	/* LATIN SMALL LETTER OPEN O */
+  BDK_slash,  BDK_e,          0,      0,      0,      0x259, 	/* LATIN SMALL LETTER SCHWA */
+  BDK_slash,  BDK_h,          0,      0,      0,      0x265, 	/* LATIN SMALL LETTER TURNED H */
+  BDK_slash,  BDK_m,          0,      0,      0,      0x26F, 	/* LATIN SMALL LETTER TURNED M */
+  BDK_slash,  BDK_r,          0,      0,      0,      0x279, 	/* LATIN SMALL LETTER TURNED R */
+  BDK_slash,  BDK_v,          0,      0,      0,      0x28C, 	/* LATIN SMALL LETTER TURNED V */
+  BDK_slash,  BDK_w,          0,      0,      0,      0x28D, 	/* LATIN SMALL LETTER TURNED W */
+  BDK_slash,  BDK_y,          0,      0,      0,      0x28E, 	/* LATIN SMALL LETTER TRUEND Y*/
+  BDK_3,      0,              0,      0,      0,      0x292, 	/* LATIN SMALL LETTER EZH */
+  BDK_colon,  0,              0,      0,      0,      0x2D0, 	/* MODIFIER LETTER TRIANGULAR COLON */
+  BDK_A,      0,              0,      0,      0,      0x251, 	/* LATIN SMALL LETTER ALPHA */
+  BDK_E,      0,              0,      0,      0,      0x25B, 	/* LATIN SMALL LETTER OPEN E */
+  BDK_I,      0,              0,      0,      0,      0x26A, 	/* LATIN LETTER SMALL CAPITAL I */
+  BDK_L,      0,              0,      0,      0,      0x29F, 	/* LATIN LETTER SMALL CAPITAL L */
+  BDK_M,      0,              0,      0,      0,      0x28D, 	/* LATIN SMALL LETTER TURNED W */
+  BDK_O,      0,              0,      0,      0,      0x04F, 	/* LATIN LETTER SMALL CAPITAL OE */
+  BDK_O,      BDK_E,          0,      0,      0,      0x276, 	/* LATIN LETTER SMALL CAPITAL OE */
+  BDK_R,      0,              0,      0,      0,      0x280, 	/* LATIN LETTER SMALL CAPITAL R */
+  BDK_U,      0,              0,      0,      0,      0x28A, 	/* LATIN SMALL LETTER UPSILON */
+  BDK_Y,      0,              0,      0,      0,      0x28F, 	/* LATIN LETTER SMALL CAPITAL Y */
+  BDK_grave,  0,              0,      0,      0,      0x2CC, 	/* MODIFIER LETTER LOW VERTICAL LINE */
+  BDK_a,      0,              0,      0,      0,      0x061, 	/* LATIN SMALL LETTER A */
+  BDK_a,      BDK_e,          0,      0,      0,      0x0E6, 	/* LATIN SMALL LETTER AE */
+  BDK_c,      0,              0,      0,      0,      0x063,    /* LATIN SMALL LETTER C */
+  BDK_c,      BDK_comma,      0,      0,      0,      0x0E7,    /* LATIN SMALL LETTER C WITH CEDILLA */
+  BDK_d,      0,              0,      0,      0,      0x064, 	/* LATIN SMALL LETTER E */
+  BDK_d,      BDK_apostrophe, 0,      0,      0,      0x064, 	/* LATIN SMALL LETTER D */
+  BDK_d,      BDK_h,          0,      0,      0,      0x0F0, 	/* LATIN SMALL LETTER ETH */
+  BDK_e,      0,              0,      0,      0,      0x065, 	/* LATIN SMALL LETTER E */
+  BDK_e,      BDK_minus,      0,      0,      0,      0x25A, 	/* LATIN SMALL LETTER SCHWA WITH HOOK */
+  BDK_e,      BDK_bar,        0,      0,      0,      0x25A, 	/* LATIN SMALL LETTER SCHWA WITH HOOK */
+  BDK_g,      0,              0,      0,      0,      0x067, 	/* LATIN SMALL LETTER G */
+  BDK_g,      BDK_n,          0,      0,      0,      0x272, 	/* LATIN SMALL LETTER N WITH LEFT HOOK */
+  BDK_i,      0,              0,      0,      0,      0x069, 	/* LATIN SMALL LETTER I */
+  BDK_i,      BDK_minus,      0,      0,      0,      0x268, 	/* LATIN SMALL LETTER I WITH STROKE */
+  BDK_n,      0,              0,      0,      0,      0x06e, 	/* LATIN SMALL LETTER N */
+  BDK_n,      BDK_g,          0,      0,      0,      0x14B, 	/* LATIN SMALL LETTER ENG */
+  BDK_o,      0,              0,      0,      0,      0x06f, 	/* LATIN SMALL LETTER O */
+  BDK_o,      BDK_minus,      0,      0,      0,      0x275, 	/* LATIN LETTER BARRED O */
+  BDK_o,      BDK_slash,      0,      0,      0,      0x0F8, 	/* LATIN SMALL LETTER O WITH STROKE */
+  BDK_o,      BDK_e,          0,      0,      0,      0x153, 	/* LATIN SMALL LIGATURE OE */
+  BDK_o,      BDK_bar,        0,      0,      0,      0x251, 	/* LATIN SMALL LETTER ALPHA */
+  BDK_s,      0,              0,      0,      0,      0x073, 	/* LATIN SMALL LETTER_ESH */
+  BDK_s,      BDK_h,          0,      0,      0,      0x283, 	/* LATIN SMALL LETTER_ESH */
+  BDK_t,      0,              0,      0,      0,      0x074, 	/* LATIN SMALL LETTER T */
+  BDK_t,      BDK_h,          0,      0,      0,      0x3B8, 	/* GREEK SMALL LETTER THETA */
+  BDK_u,      0,              0,      0,      0,      0x075, 	/* LATIN SMALL LETTER U */
+  BDK_u,      BDK_minus,      0,      0,      0,      0x289, 	/* LATIN LETTER U BAR */
+  BDK_z,      0,              0,      0,      0,      0x07A, 	/* LATIN SMALL LETTER Z */
+  BDK_z,      BDK_h,          0,      0,      0,      0x292, 	/* LATIN SMALL LETTER EZH */
+  BDK_bar,    BDK_o,          0,      0,      0,      0x252, 	/* LATIN LETTER TURNED ALPHA */
 
-  GDK_asciitilde, 0,          0,      0,      0,      0x303,    /* COMBINING TILDE */
+  BDK_asciitilde, 0,          0,      0,      0,      0x303,    /* COMBINING TILDE */
 
 };
 
 static void
-ipa_class_init (GtkIMContextSimpleClass *class)
+ipa_class_init (BtkIMContextSimpleClass *class)
 {
 }
 
 static void
-ipa_init (GtkIMContextSimple *im_context)
+ipa_init (BtkIMContextSimple *im_context)
 {
-  gtk_im_context_simple_add_table (im_context,
+  btk_im_context_simple_add_table (im_context,
 				   ipa_compose_seqs,
 				   4,
 				   G_N_ELEMENTS (ipa_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo ipa_info = { 
+static const BtkIMContextInfo ipa_info = { 
   "ipa",		   /* ID */
   N_("IPA"),                       /* Human readable name */
   GETTEXT_PACKAGE,		   /* Translation domain */
-   GTK_LOCALEDIR,		   /* Dir for bindtextdomain (not strictly needed for "gtk+") */
+   BTK_LOCALEDIR,		   /* Dir for bindtextdomain (not strictly needed for "btk+") */
   ""			           /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &ipa_info
 };
 
 #ifndef INCLUDE_IM_ipa
 #define MODULE_ENTRY(type, function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_ipa_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_ipa_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *module)
@@ -167,14 +167,14 @@ MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, "ipa") == 0)
     return g_object_new (type_ipa, NULL);

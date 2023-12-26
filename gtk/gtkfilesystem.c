@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilesystem.c: Filesystem abstraction functions.
+/* BTK - The GIMP Toolkit
+ * btkfilesystem.c: Filesystem abstraction functions.
  * Copyright (C) 2003, Red Hat, Inc.
  * Copyright (C) 2007-2008 Carlos Garnacho
  *
@@ -24,14 +24,14 @@
 
 #include <string.h>
 
-#include <glib/gi18n-lib.h>
+#include <bunnylib/gi18n-lib.h>
 
-#include "gtkfilechooser.h"
-#include "gtkfilesystem.h"
-#include "gtkicontheme.h"
-#include "gtkprivate.h"
+#include "btkfilechooser.h"
+#include "btkfilesystem.h"
+#include "btkicontheme.h"
+#include "btkprivate.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 /* #define DEBUG_MODE */
 #ifdef DEBUG_MODE
@@ -40,11 +40,11 @@
 #define DEBUG(x)
 #endif
 
-#define GTK_FILE_SYSTEM_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_FILE_SYSTEM, GtkFileSystemPrivate))
-#define GTK_FOLDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_FOLDER, GtkFolderPrivate))
+#define BTK_FILE_SYSTEM_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_FILE_SYSTEM, BtkFileSystemPrivate))
+#define BTK_FOLDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_FOLDER, BtkFolderPrivate))
 #define FILES_PER_QUERY 100
 
-/* The pointers we return for a GtkFileSystemVolume are opaque tokens; they are
+/* The pointers we return for a BtkFileSystemVolume are opaque tokens; they are
  * really pointers to GDrive, GVolume or GMount objects.  We need an extra
  * token for the fake "File System" volume.  So, we'll return a pointer to
  * this particular string.
@@ -77,11 +77,11 @@ enum {
 static guint fs_signals [FS_LAST_SIGNAL] = { 0, };
 static guint folder_signals [FOLDER_LAST_SIGNAL] = { 0, };
 
-typedef struct GtkFileSystemPrivate GtkFileSystemPrivate;
-typedef struct GtkFolderPrivate GtkFolderPrivate;
+typedef struct BtkFileSystemPrivate BtkFileSystemPrivate;
+typedef struct BtkFolderPrivate BtkFolderPrivate;
 typedef struct AsyncFuncData AsyncFuncData;
 
-struct GtkFileSystemPrivate
+struct BtkFileSystemPrivate
 {
   GVolumeMonitor *volume_monitor;
 
@@ -90,14 +90,14 @@ struct GtkFileSystemPrivate
    */
   GSList *volumes;
 
-  /* This list contains GtkFileSystemBookmark structs */
+  /* This list contains BtkFileSystemBookmark structs */
   GSList *bookmarks;
   GFile *bookmarks_file;
 
   GFileMonitor *bookmarks_monitor;
 };
 
-struct GtkFolderPrivate
+struct BtkFolderPrivate
 {
   GFile *folder_file;
   GHashTable *children;
@@ -111,7 +111,7 @@ struct GtkFolderPrivate
 
 struct AsyncFuncData
 {
-  GtkFileSystem *file_system;
+  BtkFileSystem *file_system;
   GFile *file;
   GCancellable *cancellable;
   gchar *attributes;
@@ -120,56 +120,56 @@ struct AsyncFuncData
   gpointer data;
 };
 
-struct GtkFileSystemBookmark
+struct BtkFileSystemBookmark
 {
   GFile *file;
   gchar *label;
 };
 
-G_DEFINE_TYPE (GtkFileSystem, _gtk_file_system, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkFileSystem, _btk_file_system, G_TYPE_OBJECT)
 
-G_DEFINE_TYPE (GtkFolder, _gtk_folder, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkFolder, _btk_folder, G_TYPE_OBJECT)
 
 
-static void gtk_folder_set_finished_loading (GtkFolder *folder,
+static void btk_folder_set_finished_loading (BtkFolder *folder,
 					     gboolean   finished_loading);
-static void gtk_folder_add_file             (GtkFolder *folder,
+static void btk_folder_add_file             (BtkFolder *folder,
 					     GFile     *file,
 					     GFileInfo *info);
 
 
-/* GtkFileSystemBookmark methods */
+/* BtkFileSystemBookmark methods */
 void
-_gtk_file_system_bookmark_free (GtkFileSystemBookmark *bookmark)
+_btk_file_system_bookmark_free (BtkFileSystemBookmark *bookmark)
 {
   g_object_unref (bookmark->file);
   g_free (bookmark->label);
-  g_slice_free (GtkFileSystemBookmark, bookmark);
+  g_slice_free (BtkFileSystemBookmark, bookmark);
 }
 
-/* GtkFileSystem methods */
+/* BtkFileSystem methods */
 static void
 volumes_changed (GVolumeMonitor *volume_monitor,
 		 gpointer        volume,
 		 gpointer        user_data)
 {
-  GtkFileSystem *file_system;
+  BtkFileSystem *file_system;
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
-  file_system = GTK_FILE_SYSTEM (user_data);
+  file_system = BTK_FILE_SYSTEM (user_data);
   g_signal_emit (file_system, fs_signals[VOLUMES_CHANGED], 0, volume);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
-gtk_file_system_dispose (GObject *object)
+btk_file_system_dispose (GObject *object)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
 
   DEBUG ("dispose");
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (object);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (object);
 
   if (priv->volumes)
     {
@@ -185,46 +185,46 @@ gtk_file_system_dispose (GObject *object)
       priv->volume_monitor = NULL;
     }
 
-  G_OBJECT_CLASS (_gtk_file_system_parent_class)->dispose (object);
+  G_OBJECT_CLASS (_btk_file_system_parent_class)->dispose (object);
 }
 
 static void
-gtk_file_system_finalize (GObject *object)
+btk_file_system_finalize (GObject *object)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
 
   DEBUG ("finalize");
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (object);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (object);
 
   if (priv->bookmarks_monitor)
     g_object_unref (priv->bookmarks_monitor);
 
   if (priv->bookmarks)
     {
-      g_slist_foreach (priv->bookmarks, (GFunc) _gtk_file_system_bookmark_free, NULL);
+      g_slist_foreach (priv->bookmarks, (GFunc) _btk_file_system_bookmark_free, NULL);
       g_slist_free (priv->bookmarks);
     }
 
   if (priv->bookmarks_file)
     g_object_unref (priv->bookmarks_file);
 
-  G_OBJECT_CLASS (_gtk_file_system_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_file_system_parent_class)->finalize (object);
 }
 
 static void
-_gtk_file_system_class_init (GtkFileSystemClass *class)
+_btk_file_system_class_init (BtkFileSystemClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->dispose = gtk_file_system_dispose;
-  object_class->finalize = gtk_file_system_finalize;
+  object_class->dispose = btk_file_system_dispose;
+  object_class->finalize = btk_file_system_finalize;
 
   fs_signals[BOOKMARKS_CHANGED] =
     g_signal_new ("bookmarks-changed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFileSystemClass, bookmarks_changed),
+		  G_STRUCT_OFFSET (BtkFileSystemClass, bookmarks_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
@@ -233,12 +233,12 @@ _gtk_file_system_class_init (GtkFileSystemClass *class)
     g_signal_new ("volumes-changed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFileSystemClass, volumes_changed),
+		  G_STRUCT_OFFSET (BtkFileSystemClass, volumes_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
-  g_type_class_add_private (object_class, sizeof (GtkFileSystemPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkFileSystemPrivate));
 }
 
 static GFile *
@@ -247,7 +247,7 @@ get_legacy_bookmarks_file (void)
   GFile *file;
   gchar *filename;
 
-  filename = g_build_filename (g_get_home_dir (), ".gtk-bookmarks", NULL);
+  filename = g_build_filename (g_get_home_dir (), ".btk-bookmarks", NULL);
   file = g_file_new_for_path (filename);
   g_free (filename);
 
@@ -260,7 +260,7 @@ get_bookmarks_file (void)
   GFile *file;
   gchar *filename;
 
-  filename = g_build_filename (g_get_user_config_dir (), "gtk-3.0", "bookmarks", NULL);
+  filename = g_build_filename (g_get_user_config_dir (), "btk-3.0", "bookmarks", NULL);
   file = g_file_new_for_path (filename);
   g_free (filename);
 
@@ -283,7 +283,7 @@ read_bookmarks (GFile *file)
 
   for (i = 0; lines[i]; i++)
     {
-      GtkFileSystemBookmark *bookmark;
+      BtkFileSystemBookmark *bookmark;
 
       if (!*lines[i])
 	continue;
@@ -291,7 +291,7 @@ read_bookmarks (GFile *file)
       if (!g_utf8_validate (lines[i], -1, NULL))
 	continue;
 
-      bookmark = g_slice_new0 (GtkFileSystemBookmark);
+      bookmark = g_slice_new0 (BtkFileSystemBookmark);
 
       if ((space = strchr (lines[i], ' ')) != NULL)
 	{
@@ -324,7 +324,7 @@ save_bookmarks (GFile  *bookmarks_file,
 
   for (l = bookmarks; l; l = l->next)
     {
-      GtkFileSystemBookmark *bookmark = l->data;
+      BtkFileSystemBookmark *bookmark = l->data;
       gchar *uri;
 
       uri = g_file_get_uri (bookmark->file);
@@ -366,9 +366,9 @@ bookmarks_file_changed (GFileMonitor      *monitor,
 			GFileMonitorEvent  event,
 			gpointer           data)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (data);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (data);
 
   switch (event)
     {
@@ -376,14 +376,14 @@ bookmarks_file_changed (GFileMonitor      *monitor,
     case G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT:
     case G_FILE_MONITOR_EVENT_CREATED:
     case G_FILE_MONITOR_EVENT_DELETED:
-      g_slist_foreach (priv->bookmarks, (GFunc) _gtk_file_system_bookmark_free, NULL);
+      g_slist_foreach (priv->bookmarks, (GFunc) _btk_file_system_bookmark_free, NULL);
       g_slist_free (priv->bookmarks);
 
       priv->bookmarks = read_bookmarks (file);
 
-      gdk_threads_enter ();
+      bdk_threads_enter ();
       g_signal_emit (data, fs_signals[BOOKMARKS_CHANGED], 0);
-      gdk_threads_leave ();
+      bdk_threads_leave ();
       break;
     default:
       /* ignore at the moment */
@@ -425,9 +425,9 @@ mount_referenced_by_volume_activation_root (GList *volumes, GMount *mount)
 }
 
 static void
-get_volumes_list (GtkFileSystem *file_system)
+get_volumes_list (BtkFileSystem *file_system)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   GList *l, *ll;
   GList *drives;
   GList *volumes;
@@ -436,7 +436,7 @@ get_volumes_list (GtkFileSystem *file_system)
   GVolume *volume;
   GMount *mount;
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
 
   if (priv->volumes)
     {
@@ -568,15 +568,15 @@ get_volumes_list (GtkFileSystem *file_system)
 }
 
 static void
-_gtk_file_system_init (GtkFileSystem *file_system)
+_btk_file_system_init (BtkFileSystem *file_system)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   GFile *bookmarks_file;
   GError *error = NULL;
 
   DEBUG ("init");
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
 
   /* Volumes */
   priv->volume_monitor = g_volume_monitor_get ();
@@ -626,25 +626,25 @@ _gtk_file_system_init (GtkFileSystem *file_system)
   priv->bookmarks_file = g_object_ref (bookmarks_file);
 }
 
-/* GtkFileSystem public methods */
-GtkFileSystem *
-_gtk_file_system_new (void)
+/* BtkFileSystem public methods */
+BtkFileSystem *
+_btk_file_system_new (void)
 {
-  return g_object_new (GTK_TYPE_FILE_SYSTEM, NULL);
+  return g_object_new (BTK_TYPE_FILE_SYSTEM, NULL);
 }
 
 GSList *
-_gtk_file_system_list_volumes (GtkFileSystem *file_system)
+_btk_file_system_list_volumes (BtkFileSystem *file_system)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   GSList *list;
 
   DEBUG ("list_volumes");
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM (file_system), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM (file_system), NULL);
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
-  get_volumes_list (GTK_FILE_SYSTEM (file_system));
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  get_volumes_list (BTK_FILE_SYSTEM (file_system));
 
   list = g_slist_copy (priv->volumes);
 
@@ -657,19 +657,19 @@ _gtk_file_system_list_volumes (GtkFileSystem *file_system)
 }
 
 GSList *
-_gtk_file_system_list_bookmarks (GtkFileSystem *file_system)
+_btk_file_system_list_bookmarks (BtkFileSystem *file_system)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   GSList *bookmarks, *files = NULL;
 
   DEBUG ("list_bookmarks");
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
   bookmarks = priv->bookmarks;
 
   while (bookmarks)
     {
-      GtkFileSystemBookmark *bookmark;
+      BtkFileSystemBookmark *bookmark;
 
       bookmark = bookmarks->data;
       bookmarks = bookmarks->next;
@@ -709,10 +709,10 @@ query_info_callback (GObject      *source_object,
 
   if (async_data->callback)
     {
-      gdk_threads_enter ();
-      ((GtkFileSystemGetInfoCallback) async_data->callback) (async_data->cancellable,
+      bdk_threads_enter ();
+      ((BtkFileSystemGetInfoCallback) async_data->callback) (async_data->cancellable,
 							     file_info, error, async_data->data);
-      gdk_threads_leave ();
+      bdk_threads_leave ();
     }
 
   if (file_info)
@@ -725,16 +725,16 @@ query_info_callback (GObject      *source_object,
 }
 
 GCancellable *
-_gtk_file_system_get_info (GtkFileSystem                *file_system,
+_btk_file_system_get_info (BtkFileSystem                *file_system,
 			   GFile                        *file,
 			   const gchar                  *attributes,
-			   GtkFileSystemGetInfoCallback  callback,
+			   BtkFileSystemGetInfoCallback  callback,
 			   gpointer                      data)
 {
   GCancellable *cancellable;
   AsyncFuncData *async_data;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM (file_system), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM (file_system), NULL);
   g_return_val_if_fail (G_IS_FILE (file), NULL);
 
   cancellable = g_cancellable_new ();
@@ -769,11 +769,11 @@ drive_poll_for_media_cb (GObject      *source_object,
   g_drive_poll_for_media_finish (G_DRIVE (source_object), result, &error);
   async_data = (AsyncFuncData *) user_data;
 
-  gdk_threads_enter ();
-  ((GtkFileSystemVolumeMountCallback) async_data->callback) (async_data->cancellable,
-							     (GtkFileSystemVolume *) source_object,
+  bdk_threads_enter ();
+  ((BtkFileSystemVolumeMountCallback) async_data->callback) (async_data->cancellable,
+							     (BtkFileSystemVolume *) source_object,
 							     error, async_data->data);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 
   if (error)
     g_error_free (error);
@@ -790,21 +790,21 @@ volume_mount_cb (GObject      *source_object,
   g_volume_mount_finish (G_VOLUME (source_object), result, &error);
   async_data = (AsyncFuncData *) user_data;
 
-  gdk_threads_enter ();
-  ((GtkFileSystemVolumeMountCallback) async_data->callback) (async_data->cancellable,
-							     (GtkFileSystemVolume *) source_object,
+  bdk_threads_enter ();
+  ((BtkFileSystemVolumeMountCallback) async_data->callback) (async_data->cancellable,
+							     (BtkFileSystemVolume *) source_object,
 							     error, async_data->data);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 
   if (error)
     g_error_free (error);
 }
 
 GCancellable *
-_gtk_file_system_mount_volume (GtkFileSystem                    *file_system,
-			       GtkFileSystemVolume              *volume,
+_btk_file_system_mount_volume (BtkFileSystem                    *file_system,
+			       BtkFileSystemVolume              *volume,
 			       GMountOperation                  *mount_operation,
-			       GtkFileSystemVolumeMountCallback  callback,
+			       BtkFileSystemVolumeMountCallback  callback,
 			       gpointer                          data)
 {
   GCancellable *cancellable;
@@ -848,41 +848,41 @@ enclosing_volume_mount_cb (GObject      *source_object,
 			   GAsyncResult *result,
 			   gpointer      user_data)
 {
-  GtkFileSystemVolume *volume;
+  BtkFileSystemVolume *volume;
   AsyncFuncData *async_data;
   GError *error = NULL;
 
   async_data = (AsyncFuncData *) user_data;
   g_file_mount_enclosing_volume_finish (G_FILE (source_object), result, &error);
-  volume = _gtk_file_system_get_volume_for_file (async_data->file_system, G_FILE (source_object));
+  volume = _btk_file_system_get_volume_for_file (async_data->file_system, G_FILE (source_object));
 
   /* Silently drop G_IO_ERROR_ALREADY_MOUNTED error for gvfs backends without visible mounts. */
   /* Better than doing query_info with additional I/O every time. */
   if (error && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_ALREADY_MOUNTED))
     g_clear_error (&error);
 
-  gdk_threads_enter ();
-  ((GtkFileSystemVolumeMountCallback) async_data->callback) (async_data->cancellable, volume,
+  bdk_threads_enter ();
+  ((BtkFileSystemVolumeMountCallback) async_data->callback) (async_data->cancellable, volume,
 							     error, async_data->data);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 
   if (error)
     g_error_free (error);
 
-  _gtk_file_system_volume_unref (volume);
+  _btk_file_system_volume_unref (volume);
 }
 
 GCancellable *
-_gtk_file_system_mount_enclosing_volume (GtkFileSystem                     *file_system,
+_btk_file_system_mount_enclosing_volume (BtkFileSystem                     *file_system,
 					 GFile                             *file,
 					 GMountOperation                   *mount_operation,
-					 GtkFileSystemVolumeMountCallback   callback,
+					 BtkFileSystemVolumeMountCallback   callback,
 					 gpointer                           data)
 {
   GCancellable *cancellable;
   AsyncFuncData *async_data;
 
-  g_return_val_if_fail (GTK_IS_FILE_SYSTEM (file_system), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SYSTEM (file_system), NULL);
   g_return_val_if_fail (G_IS_FILE (file), NULL);
 
   DEBUG ("mount_enclosing_volume");
@@ -907,17 +907,17 @@ _gtk_file_system_mount_enclosing_volume (GtkFileSystem                     *file
 }
 
 gboolean
-_gtk_file_system_insert_bookmark (GtkFileSystem  *file_system,
+_btk_file_system_insert_bookmark (BtkFileSystem  *file_system,
 				  GFile          *file,
 				  gint            position,
 				  GError        **error)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   GSList *bookmarks;
-  GtkFileSystemBookmark *bookmark;
+  BtkFileSystemBookmark *bookmark;
   gboolean result = TRUE;
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
   bookmarks = priv->bookmarks;
 
   while (bookmarks)
@@ -938,8 +938,8 @@ _gtk_file_system_insert_bookmark (GtkFileSystem  *file_system,
       gchar *uri = g_file_get_uri (file);
 
       g_set_error (error,
-		   GTK_FILE_CHOOSER_ERROR,
-		   GTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS,
+		   BTK_FILE_CHOOSER_ERROR,
+		   BTK_FILE_CHOOSER_ERROR_ALREADY_EXISTS,
 		   "%s already exists in the bookmarks list",
 		   uri);
 
@@ -948,7 +948,7 @@ _gtk_file_system_insert_bookmark (GtkFileSystem  *file_system,
       return FALSE;
     }
 
-  bookmark = g_slice_new0 (GtkFileSystemBookmark);
+  bookmark = g_slice_new0 (BtkFileSystemBookmark);
   bookmark->file = g_object_ref (file);
 
   priv->bookmarks = g_slist_insert (priv->bookmarks, bookmark, position);
@@ -960,16 +960,16 @@ _gtk_file_system_insert_bookmark (GtkFileSystem  *file_system,
 }
 
 gboolean
-_gtk_file_system_remove_bookmark (GtkFileSystem  *file_system,
+_btk_file_system_remove_bookmark (BtkFileSystem  *file_system,
 				  GFile          *file,
 				  GError        **error)
 {
-  GtkFileSystemPrivate *priv;
-  GtkFileSystemBookmark *bookmark;
+  BtkFileSystemPrivate *priv;
+  BtkFileSystemBookmark *bookmark;
   GSList *bookmarks;
   gboolean result = FALSE;
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
 
   if (!priv->bookmarks)
     return FALSE;
@@ -984,7 +984,7 @@ _gtk_file_system_remove_bookmark (GtkFileSystem  *file_system,
 	{
 	  result = TRUE;
 	  priv->bookmarks = g_slist_remove_link (priv->bookmarks, bookmarks);
-	  _gtk_file_system_bookmark_free (bookmark);
+	  _btk_file_system_bookmark_free (bookmark);
 	  g_slist_free_1 (bookmarks);
 	  break;
 	}
@@ -997,8 +997,8 @@ _gtk_file_system_remove_bookmark (GtkFileSystem  *file_system,
       gchar *uri = g_file_get_uri (file);
 
       g_set_error (error,
-		   GTK_FILE_CHOOSER_ERROR,
-		   GTK_FILE_CHOOSER_ERROR_NONEXISTENT,
+		   BTK_FILE_CHOOSER_ERROR,
+		   BTK_FILE_CHOOSER_ERROR_NONEXISTENT,
 		   "%s does not exist in the bookmarks list",
 		   uri);
 
@@ -1015,21 +1015,21 @@ _gtk_file_system_remove_bookmark (GtkFileSystem  *file_system,
 }
 
 gchar *
-_gtk_file_system_get_bookmark_label (GtkFileSystem *file_system,
+_btk_file_system_get_bookmark_label (BtkFileSystem *file_system,
 				     GFile         *file)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   GSList *bookmarks;
   gchar *label = NULL;
 
   DEBUG ("get_bookmark_label");
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
   bookmarks = priv->bookmarks;
 
   while (bookmarks)
     {
-      GtkFileSystemBookmark *bookmark;
+      BtkFileSystemBookmark *bookmark;
 
       bookmark = bookmarks->data;
       bookmarks = bookmarks->next;
@@ -1045,22 +1045,22 @@ _gtk_file_system_get_bookmark_label (GtkFileSystem *file_system,
 }
 
 void
-_gtk_file_system_set_bookmark_label (GtkFileSystem *file_system,
+_btk_file_system_set_bookmark_label (BtkFileSystem *file_system,
 				     GFile         *file,
 				     const gchar   *label)
 {
-  GtkFileSystemPrivate *priv;
+  BtkFileSystemPrivate *priv;
   gboolean changed = FALSE;
   GSList *bookmarks;
 
   DEBUG ("set_bookmark_label");
 
-  priv = GTK_FILE_SYSTEM_GET_PRIVATE (file_system);
+  priv = BTK_FILE_SYSTEM_GET_PRIVATE (file_system);
   bookmarks = priv->bookmarks;
 
   while (bookmarks)
     {
-      GtkFileSystemBookmark *bookmark;
+      BtkFileSystemBookmark *bookmark;
 
       bookmark = bookmarks->data;
       bookmarks = bookmarks->next;
@@ -1080,8 +1080,8 @@ _gtk_file_system_set_bookmark_label (GtkFileSystem *file_system,
     g_signal_emit_by_name (file_system, "bookmarks-changed", 0);
 }
 
-GtkFileSystemVolume *
-_gtk_file_system_get_volume_for_file (GtkFileSystem *file_system,
+BtkFileSystemVolume *
+_btk_file_system_get_volume_for_file (BtkFileSystem *file_system,
 				      GFile         *file)
 {
   GMount *mount;
@@ -1091,21 +1091,21 @@ _gtk_file_system_get_volume_for_file (GtkFileSystem *file_system,
   mount = g_file_find_enclosing_mount (file, NULL, NULL);
 
   if (!mount && g_file_is_native (file))
-    return (GtkFileSystemVolume *) root_volume_token;
+    return (BtkFileSystemVolume *) root_volume_token;
 
-  return (GtkFileSystemVolume *) mount;
+  return (BtkFileSystemVolume *) mount;
 }
 
-/* GtkFolder methods */
+/* BtkFolder methods */
 static void
-gtk_folder_set_property (GObject      *object,
+btk_folder_set_property (GObject      *object,
 			 guint         prop_id,
 			 const GValue *value,
 			 GParamSpec   *pspec)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (object);
+  priv = BTK_FOLDER_GET_PRIVATE (object);
 
   switch (prop_id)
     {
@@ -1125,14 +1125,14 @@ gtk_folder_set_property (GObject      *object,
 }
 
 static void
-gtk_folder_get_property (GObject    *object,
+btk_folder_get_property (GObject    *object,
 			 guint       prop_id,
 			 GValue     *value,
 			 GParamSpec *pspec)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (object);
+  priv = BTK_FOLDER_GET_PRIVATE (object);
 
   switch (prop_id)
     {
@@ -1159,7 +1159,7 @@ query_created_file_info_callback (GObject      *source_object,
   GFile *file = G_FILE (source_object);
   GError *error = NULL;
   GFileInfo *info;
-  GtkFolder *folder;
+  BtkFolder *folder;
   GSList *files;
 
   info = g_file_query_info_finish (file, result, &error);
@@ -1170,17 +1170,17 @@ query_created_file_info_callback (GObject      *source_object,
       return;
     }
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
-  folder = GTK_FOLDER (user_data);
-  gtk_folder_add_file (folder, file, info);
+  folder = BTK_FOLDER (user_data);
+  btk_folder_add_file (folder, file, info);
 
   files = g_slist_prepend (NULL, file);
   g_signal_emit (folder, folder_signals[FILES_ADDED], 0, files);
   g_slist_free (files);
 
   g_object_unref (info);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
@@ -1190,15 +1190,15 @@ directory_monitor_changed (GFileMonitor      *monitor,
 			   GFileMonitorEvent  event,
 			   gpointer           data)
 {
-  GtkFolderPrivate *priv;
-  GtkFolder *folder;
+  BtkFolderPrivate *priv;
+  BtkFolder *folder;
   GSList *files;
 
-  folder = GTK_FOLDER (data);
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  folder = BTK_FOLDER (data);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
   files = g_slist_prepend (NULL, file);
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
 
   switch (event)
     {
@@ -1221,7 +1221,7 @@ directory_monitor_changed (GFileMonitor      *monitor,
       break;
     }
 
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 
   g_slist_free (files);
 }
@@ -1232,8 +1232,8 @@ enumerator_files_callback (GObject      *source_object,
 			   gpointer      user_data)
 {
   GFileEnumerator *enumerator;
-  GtkFolderPrivate *priv;
-  GtkFolder *folder;
+  BtkFolderPrivate *priv;
+  BtkFolder *folder;
   GError *error = NULL;
   GSList *files = NULL;
   GList *file_infos, *f;
@@ -1250,8 +1250,8 @@ enumerator_files_callback (GObject      *source_object,
       return;
     }
 
-  folder = GTK_FOLDER (user_data);
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  folder = BTK_FOLDER (user_data);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
 
   if (!file_infos)
     {
@@ -1259,7 +1259,7 @@ enumerator_files_callback (GObject      *source_object,
 				     G_PRIORITY_DEFAULT,
 				     NULL, NULL, NULL);
 
-      gtk_folder_set_finished_loading (folder, TRUE);
+      btk_folder_set_finished_loading (folder, TRUE);
       return;
     }
 
@@ -1276,13 +1276,13 @@ enumerator_files_callback (GObject      *source_object,
 
       info = f->data;
       child_file = g_file_get_child (priv->folder_file, g_file_info_get_name (info));
-      gtk_folder_add_file (folder, child_file, info);
+      btk_folder_add_file (folder, child_file, info);
       files = g_slist_prepend (files, child_file);
     }
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
   g_signal_emit (folder, folder_signals[FILES_ADDED], 0, files);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 
   g_list_foreach (file_infos, (GFunc) g_object_unref, NULL);
   g_list_free (file_infos);
@@ -1292,12 +1292,12 @@ enumerator_files_callback (GObject      *source_object,
 }
 
 static void
-gtk_folder_constructed (GObject *object)
+btk_folder_constructed (GObject *object)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
   GError *error = NULL;
 
-  priv = GTK_FOLDER_GET_PRIVATE (object);
+  priv = BTK_FOLDER_GET_PRIVATE (object);
   priv->directory_monitor = g_file_monitor_directory (priv->folder_file, G_FILE_MONITOR_NONE, NULL, &error);
 
   if (error)
@@ -1321,11 +1321,11 @@ gtk_folder_constructed (GObject *object)
 }
 
 static void
-gtk_folder_finalize (GObject *object)
+btk_folder_finalize (GObject *object)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (object);
+  priv = BTK_FOLDER_GET_PRIVATE (object);
 
   g_hash_table_unref (priv->children);
 
@@ -1339,18 +1339,18 @@ gtk_folder_finalize (GObject *object)
   g_object_unref (priv->cancellable);
   g_free (priv->attributes);
 
-  G_OBJECT_CLASS (_gtk_folder_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_folder_parent_class)->finalize (object);
 }
 
 static void
-_gtk_folder_class_init (GtkFolderClass *class)
+_btk_folder_class_init (BtkFolderClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
-  object_class->set_property = gtk_folder_set_property;
-  object_class->get_property = gtk_folder_get_property;
-  object_class->constructed = gtk_folder_constructed;
-  object_class->finalize = gtk_folder_finalize;
+  object_class->set_property = btk_folder_set_property;
+  object_class->get_property = btk_folder_get_property;
+  object_class->constructed = btk_folder_constructed;
+  object_class->finalize = btk_folder_finalize;
 
   g_object_class_install_property (object_class,
 				   PROP_FILE,
@@ -1358,26 +1358,26 @@ _gtk_folder_class_init (GtkFolderClass *class)
 							"File",
 							"GFile for the folder",
 							G_TYPE_FILE,
-							GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+							BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (object_class,
 				   PROP_ENUMERATOR,
 				   g_param_spec_object ("enumerator",
 							"Enumerator",
 							"GFileEnumerator to list files",
 							G_TYPE_FILE_ENUMERATOR,
-							GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+							BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (object_class,
 				   PROP_ATTRIBUTES,
 				   g_param_spec_string ("attributes",
 							"Attributes",
 							"Attributes to query for",
 							NULL,
-							GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
+							BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
   folder_signals[FILES_ADDED] =
     g_signal_new ("files-added",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFolderClass, files_added),
+		  G_STRUCT_OFFSET (BtkFolderClass, files_added),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
 		  G_TYPE_NONE, 1, G_TYPE_POINTER);
@@ -1385,7 +1385,7 @@ _gtk_folder_class_init (GtkFolderClass *class)
     g_signal_new ("files-removed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFolderClass, files_removed),
+		  G_STRUCT_OFFSET (BtkFolderClass, files_removed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
 		  G_TYPE_NONE, 1, G_TYPE_POINTER);
@@ -1393,7 +1393,7 @@ _gtk_folder_class_init (GtkFolderClass *class)
     g_signal_new ("files-changed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFolderClass, files_changed),
+		  G_STRUCT_OFFSET (BtkFolderClass, files_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__POINTER,
 		  G_TYPE_NONE, 1, G_TYPE_POINTER);
@@ -1401,7 +1401,7 @@ _gtk_folder_class_init (GtkFolderClass *class)
     g_signal_new ("finished-loading",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFolderClass, finished_loading),
+		  G_STRUCT_OFFSET (BtkFolderClass, finished_loading),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
@@ -1409,20 +1409,20 @@ _gtk_folder_class_init (GtkFolderClass *class)
     g_signal_new ("deleted",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkFolderClass, deleted),
+		  G_STRUCT_OFFSET (BtkFolderClass, deleted),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
-  g_type_class_add_private (object_class, sizeof (GtkFolderPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkFolderPrivate));
 }
 
 static void
-_gtk_folder_init (GtkFolder *folder)
+_btk_folder_init (BtkFolder *folder)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
 
   priv->children = g_hash_table_new_full (g_file_hash,
 					  (GEqualFunc) g_file_equal,
@@ -1432,27 +1432,27 @@ _gtk_folder_init (GtkFolder *folder)
 }
 
 static void
-gtk_folder_set_finished_loading (GtkFolder *folder,
+btk_folder_set_finished_loading (BtkFolder *folder,
 				 gboolean   finished_loading)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
   priv->finished_loading = (finished_loading == TRUE);
 
-  gdk_threads_enter ();
+  bdk_threads_enter ();
   g_signal_emit (folder, folder_signals[FINISHED_LOADING], 0);
-  gdk_threads_leave ();
+  bdk_threads_leave ();
 }
 
 static void
-gtk_folder_add_file (GtkFolder *folder,
+btk_folder_add_file (BtkFolder *folder,
 		     GFile     *file,
 		     GFileInfo *info)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
 
   g_hash_table_insert (priv->children,
 		       g_object_ref (file),
@@ -1460,13 +1460,13 @@ gtk_folder_add_file (GtkFolder *folder,
 }
 
 GSList *
-_gtk_folder_list_children (GtkFolder *folder)
+_btk_folder_list_children (BtkFolder *folder)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
   GList *files, *elem;
   GSList *children = NULL;
 
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
   files = g_hash_table_get_keys (priv->children);
   children = NULL;
 
@@ -1479,13 +1479,13 @@ _gtk_folder_list_children (GtkFolder *folder)
 }
 
 GFileInfo *
-_gtk_folder_get_info (GtkFolder  *folder,
+_btk_folder_get_info (BtkFolder  *folder,
 		      GFile      *file)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
   GFileInfo *info;
 
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
   info = g_hash_table_lookup (priv->children, file);
 
   if (!info)
@@ -1495,18 +1495,18 @@ _gtk_folder_get_info (GtkFolder  *folder,
 }
 
 gboolean
-_gtk_folder_is_finished_loading (GtkFolder *folder)
+_btk_folder_is_finished_loading (BtkFolder *folder)
 {
-  GtkFolderPrivate *priv;
+  BtkFolderPrivate *priv;
 
-  priv = GTK_FOLDER_GET_PRIVATE (folder);
+  priv = BTK_FOLDER_GET_PRIVATE (folder);
 
   return priv->finished_loading;
 }
 
-/* GtkFileSystemVolume public methods */
+/* BtkFileSystemVolume public methods */
 gchar *
-_gtk_file_system_volume_get_display_name (GtkFileSystemVolume *volume)
+_btk_file_system_volume_get_display_name (BtkFileSystemVolume *volume)
 {
   DEBUG ("volume_get_display_name");
 
@@ -1523,7 +1523,7 @@ _gtk_file_system_volume_get_display_name (GtkFileSystemVolume *volume)
 }
 
 gboolean
-_gtk_file_system_volume_is_mounted (GtkFileSystemVolume *volume)
+_btk_file_system_volume_is_mounted (BtkFileSystemVolume *volume)
 {
   gboolean mounted;
 
@@ -1553,7 +1553,7 @@ _gtk_file_system_volume_is_mounted (GtkFileSystemVolume *volume)
 }
 
 GFile *
-_gtk_file_system_volume_get_root (GtkFileSystemVolume *volume)
+_btk_file_system_volume_get_root (BtkFileSystemVolume *volume)
 {
   GFile *file = NULL;
 
@@ -1580,42 +1580,42 @@ _gtk_file_system_volume_get_root (GtkFileSystemVolume *volume)
   return file;
 }
 
-static GdkPixbuf *
+static BdkPixbuf *
 get_pixbuf_from_gicon (GIcon      *icon,
-		       GtkWidget  *widget,
+		       BtkWidget  *widget,
 		       gint        icon_size,
 		       GError    **error)
 {
-  GdkScreen *screen;
-  GtkIconTheme *icon_theme;
-  GtkIconInfo *icon_info;
-  GdkPixbuf *pixbuf;
+  BdkScreen *screen;
+  BtkIconTheme *icon_theme;
+  BtkIconInfo *icon_info;
+  BdkPixbuf *pixbuf;
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (widget));
-  icon_theme = gtk_icon_theme_get_for_screen (screen);
+  screen = btk_widget_get_screen (BTK_WIDGET (widget));
+  icon_theme = btk_icon_theme_get_for_screen (screen);
 
-  icon_info = gtk_icon_theme_lookup_by_gicon (icon_theme,
+  icon_info = btk_icon_theme_lookup_by_gicon (icon_theme,
 					      icon,
 					      icon_size,
-					      GTK_ICON_LOOKUP_USE_BUILTIN);
+					      BTK_ICON_LOOKUP_USE_BUILTIN);
 
   if (!icon_info)
     return NULL;
 
-  pixbuf = gtk_icon_info_load_icon (icon_info, error);
-  gtk_icon_info_free (icon_info);
+  pixbuf = btk_icon_info_load_icon (icon_info, error);
+  btk_icon_info_free (icon_info);
 
   return pixbuf;
 }
 
-GdkPixbuf *
-_gtk_file_system_volume_render_icon (GtkFileSystemVolume  *volume,
-				     GtkWidget            *widget,
+BdkPixbuf *
+_btk_file_system_volume_render_icon (BtkFileSystemVolume  *volume,
+				     BtkWidget            *widget,
 				     gint                  icon_size,
 				     GError              **error)
 {
   GIcon *icon = NULL;
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
 
   DEBUG ("volume_get_icon_name");
 
@@ -1638,8 +1638,8 @@ _gtk_file_system_volume_render_icon (GtkFileSystemVolume  *volume,
   return pixbuf;
 }
 
-GtkFileSystemVolume *
-_gtk_file_system_volume_ref (GtkFileSystemVolume *volume)
+BtkFileSystemVolume *
+_btk_file_system_volume_ref (BtkFileSystemVolume *volume)
 {
   if (IS_ROOT_VOLUME (volume))
     return volume;
@@ -1653,7 +1653,7 @@ _gtk_file_system_volume_ref (GtkFileSystemVolume *volume)
 }
 
 void
-_gtk_file_system_volume_unref (GtkFileSystemVolume *volume)
+_btk_file_system_volume_unref (BtkFileSystemVolume *volume)
 {
   /* Root volume doesn't need to be freed */
   if (IS_ROOT_VOLUME (volume))
@@ -1666,19 +1666,19 @@ _gtk_file_system_volume_unref (GtkFileSystemVolume *volume)
 }
 
 /* GFileInfo helper functions */
-GdkPixbuf *
-_gtk_file_info_render_icon (GFileInfo *info,
-			   GtkWidget *widget,
+BdkPixbuf *
+_btk_file_info_render_icon (GFileInfo *info,
+			   BtkWidget *widget,
 			   gint       icon_size)
 {
   GIcon *icon;
-  GdkPixbuf *pixbuf = NULL;
+  BdkPixbuf *pixbuf = NULL;
   const gchar *thumbnail_path;
 
   thumbnail_path = g_file_info_get_attribute_byte_string (info, G_FILE_ATTRIBUTE_THUMBNAIL_PATH);
 
   if (thumbnail_path)
-    pixbuf = gdk_pixbuf_new_from_file_at_size (thumbnail_path,
+    pixbuf = bdk_pixbuf_new_from_file_at_size (thumbnail_path,
 					       icon_size, icon_size,
 					       NULL);
 
@@ -1702,7 +1702,7 @@ _gtk_file_info_render_icon (GFileInfo *info,
 }
 
 gboolean
-_gtk_file_info_consider_as_directory (GFileInfo *info)
+_btk_file_info_consider_as_directory (GFileInfo *info)
 {
   GFileType type = g_file_info_get_file_type (info);
   
@@ -1712,7 +1712,7 @@ _gtk_file_info_consider_as_directory (GFileInfo *info)
 }
 
 gboolean
-_gtk_file_has_native_path (GFile *file)
+_btk_file_has_native_path (GFile *file)
 {
   char *local_file_path;
   gboolean has_native_path;

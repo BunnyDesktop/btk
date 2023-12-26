@@ -2,31 +2,31 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<chapter id="gtk-migrating-entry-icons">
+<chapter id="btk-migrating-entry-icons">
 
-  <title>Migrating from SexyIconEntry to GtkEntry</title>
+  <title>Migrating from SexyIconEntry to BtkEntry</title>
 
   <para>
-    GTK+ 2.16 supports showing icons inside a #GtkEntry, similar to
-    SexyIconEntry. Porting from SexyIconEntry to GtkEntry is relatively
+    BTK+ 2.16 supports showing icons inside a #BtkEntry, similar to
+    SexyIconEntry. Porting from SexyIconEntry to BtkEntry is relatively
     straightforward. The main difference between the two APIs is that
-    SexyIconEntry uses #GtkImage widgets in a somewhat awkward way as
-    storage vehicles for icons, while GtkEntry allows to specify icons
+    SexyIconEntry uses #BtkImage widgets in a somewhat awkward way as
+    storage vehicles for icons, while BtkEntry allows to specify icons
     via pixbufs, stock ids, icon names or #GIcons. So, if your code uses
     e.g.:
 <informalexample><programlisting>
-image = gtk_image_new_from_stock (GTK_STOCK_NEW, GTK_ICON_SIZE_MENU);
+image = btk_image_new_from_stock (BTK_STOCK_NEW, BTK_ICON_SIZE_MENU);
 sexy_icon_entry_set_icon (entry, SEXY_ICON_ENTRY_PRIMARY, image);
 </programlisting></informalexample>
     you can get rid of the @image, and directly write:
 <informalexample><programlisting>
-gtk_entry_set_icon_from_stock (entry, GTK_ENTRY_ICON_PRIMARY, GTK_STOCK_NEW);
+btk_entry_set_icon_from_stock (entry, BTK_ENTRY_ICON_PRIMARY, BTK_STOCK_NEW);
 </programlisting></informalexample>
   </para>
 
   <para>
     The signals SexyIconEntry::icon-pressed and SexyIconEntry::icon-released
-    have been renamed to #GtkEntry::icon-press and #GtkEntry::icon-release
+    have been renamed to #BtkEntry::icon-press and #BtkEntry::icon-release
     to avoid problems due to signal name clashes. Also, the signature of the
     signals has changed from
 <informalexample><programlisting>
@@ -36,12 +36,12 @@ void (*icon_pressed) (SexyIconEntry         *entry,
 </programlisting></informalexample>
 to
 <informalexample><programlisting>
-void (*icon_press) (GtkEntry              *entry, 
-                    GtkEntryIconPosition  icon_pos,
-                    GdkEventButton       *event)
+void (*icon_press) (BtkEntry              *entry, 
+                    BtkEntryIconPosition  icon_pos,
+                    BdkEventButton       *event)
 </programlisting></informalexample>
     The new signature has the advantage that the signal handler can use
-    the timestamp of the event, e.g. for passing it to gtk_menu_popup().
+    the timestamp of the event, e.g. for passing it to btk_menu_popup().
     When adapting an existing signal handler to the new signature, you 
     should note that the button number is easily available as @event->button,
     as shown in the following example:
@@ -52,25 +52,25 @@ icon_pressed_cb (SexyIconEntry         *entry,
                  int                    button,
                  gpointer               data)
 {
-  GtkMenu *menu = data;
+  BtkMenu *menu = data;
 
   if (position == SEXY_ICON_ENTRY_PRIMARY)
-    gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-                    button, GDK_CURRENT_TIME);
+    btk_menu_popup (BTK_MENU (menu), NULL, NULL, NULL, NULL,
+                    button, BDK_CURRENT_TIME);
 } 
 </programlisting></informalexample>
     can be ported as:
 <informalexample><programlisting>
 static void
-icon_press_cb (GtkEntry             *entry,
-               GtkEntryIconPosition  position,
-               GdkEventButton       *event,
+icon_press_cb (BtkEntry             *entry,
+               BtkEntryIconPosition  position,
+               BdkEventButton       *event,
                gpointer              data)
 {
-  GtkMenu *menu = data;
+  BtkMenu *menu = data;
 
-  if (position == GTK_ENTRY_ICON_PRIMARY)
-    gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+  if (position == BTK_ENTRY_ICON_PRIMARY)
+    btk_menu_popup (BTK_MENU (menu), NULL, NULL, NULL, NULL,
                     event->button, event->time);
 } 
 </programlisting></informalexample>
@@ -79,7 +79,7 @@ icon_press_cb (GtkEntry             *entry,
   <para>
     Another difference is that SexyIconEntry offers manual control of
     the icon prelighting, via sexy_icon_entry_set_icon_highlight(). 
-    #GtkEntry prelights automatically when appropriate, depending on 
+    #BtkEntry prelights automatically when appropriate, depending on 
     whether the icon is activatable and sensitive. You should make
     sure that your icons are properly marked as activatable or nonactivatable
     and sensitive or insensitive:
@@ -96,30 +96,30 @@ icon_press_cb (GtkEntry             *entry,
   </para>
 
   <para>
-    GtkEntry has no direct equivalent of the special-purpose function
+    BtkEntry has no direct equivalent of the special-purpose function
     sexy_icon_entry_add_clear_button(). If you need this functionality,
     the following code works:
 <informalexample><programlisting>
 static void
-icon_pressed_cb (GtkEntry       *entry,
+icon_pressed_cb (BtkEntry       *entry,
                  gint            position,
-                 GdkEventButton *event,
+                 BdkEventButton *event,
                  gpointer        data)
 {
-  if (position == GTK_ENTRY_ICON_SECONDARY)
-    gtk_entry_set_text (entry, "");
+  if (position == BTK_ENTRY_ICON_SECONDARY)
+    btk_entry_set_text (entry, "");
 }
 
 static void
-text_changed_cb (GtkEntry   *entry,
+text_changed_cb (BtkEntry   *entry,
                  GParamSpec *pspec,
-                 GtkWidget  *button)
+                 BtkWidget  *button)
 {
   gboolean has_text;
 
-  has_text = gtk_entry_get_text_length (entry) > 0;
-  gtk_entry_set_icon_sensitive (entry,
-                                GTK_ENTRY_ICON_SECONDARY,
+  has_text = btk_entry_get_text_length (entry) > 0;
+  btk_entry_set_icon_sensitive (entry,
+                                BTK_ENTRY_ICON_SECONDARY,
                                 has_text);
 }
 
@@ -127,9 +127,9 @@ text_changed_cb (GtkEntry   *entry,
   /* ... */
  
   /* Set up the clear icon */
-  gtk_entry_set_icon_from_stock (GTK_ENTRY (entry),
-                                 GTK_ENTRY_ICON_SECONDARY,
-                                 GTK_STOCK_CLEAR);
+  btk_entry_set_icon_from_stock (BTK_ENTRY (entry),
+                                 BTK_ENTRY_ICON_SECONDARY,
+                                 BTK_STOCK_CLEAR);
   g_signal_connect (entry, "icon-press",
                     G_CALLBACK (icon_pressed_cb), NULL);
   g_signal_connect (entry, "notify::text",

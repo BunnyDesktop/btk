@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackendfile.c: Default implementation of GtkPrintBackend 
+/* BTK - The GIMP Toolkit
+ * btkprintbackendfile.c: Default implementation of BtkPrintBackend 
  * for printing to a file
  * Copyright (C) 2003, Red Hat, Inc.
  *
@@ -29,36 +29,36 @@
 #include <string.h>
 
 #include <errno.h>
-#include <cairo.h>
-#include <cairo-pdf.h>
-#include <cairo-ps.h>
-#include <cairo-svg.h>
+#include <bairo.h>
+#include <bairo-pdf.h>
+#include <bairo-ps.h>
+#include <bairo-svg.h>
 
-#include <glib/gi18n-lib.h>
+#include <bunnylib/gi18n-lib.h>
 
-#include "gtk/gtk.h"
-#include "gtk/gtkprinter-private.h"
+#include "btk/btk.h"
+#include "btk/btkprinter-private.h"
 
-#include "gtkprintbackendfile.h"
+#include "btkprintbackendfile.h"
 
-typedef struct _GtkPrintBackendFileClass GtkPrintBackendFileClass;
+typedef struct _BtkPrintBackendFileClass BtkPrintBackendFileClass;
 
-#define GTK_PRINT_BACKEND_FILE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINT_BACKEND_FILE, GtkPrintBackendFileClass))
-#define GTK_IS_PRINT_BACKEND_FILE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINT_BACKEND_FILE))
-#define GTK_PRINT_BACKEND_FILE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINT_BACKEND_FILE, GtkPrintBackendFileClass))
+#define BTK_PRINT_BACKEND_FILE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFileClass))
+#define BTK_IS_PRINT_BACKEND_FILE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_FILE))
+#define BTK_PRINT_BACKEND_FILE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFileClass))
 
 #define _STREAM_MAX_CHUNK_SIZE 8192
 
 static GType print_backend_file_type = 0;
 
-struct _GtkPrintBackendFileClass
+struct _BtkPrintBackendFileClass
 {
-  GtkPrintBackendClass parent_class;
+  BtkPrintBackendClass parent_class;
 };
 
-struct _GtkPrintBackendFile
+struct _BtkPrintBackendFile
 {
-  GtkPrintBackend parent_instance;
+  BtkPrintBackend parent_instance;
 };
 
 typedef enum
@@ -78,60 +78,60 @@ static const gchar* formats[N_FORMATS] =
 
 static GObjectClass *backend_parent_class;
 
-static void                 gtk_print_backend_file_class_init      (GtkPrintBackendFileClass *class);
-static void                 gtk_print_backend_file_init            (GtkPrintBackendFile      *impl);
-static void                 file_printer_get_settings_from_options (GtkPrinter              *printer,
-								    GtkPrinterOptionSet     *options,
-								    GtkPrintSettings        *settings);
-static GtkPrinterOptionSet *file_printer_get_options               (GtkPrinter              *printer,
-								    GtkPrintSettings        *settings,
-								    GtkPageSetup            *page_setup,
-								    GtkPrintCapabilities     capabilities);
-static void                 file_printer_prepare_for_print         (GtkPrinter              *printer,
-								    GtkPrintJob             *print_job,
-								    GtkPrintSettings        *settings,
-								    GtkPageSetup            *page_setup);
-static void                 gtk_print_backend_file_print_stream    (GtkPrintBackend         *print_backend,
-								    GtkPrintJob             *job,
-								    GIOChannel              *data_io,
-								    GtkPrintJobCompleteFunc  callback,
+static void                 btk_print_backend_file_class_init      (BtkPrintBackendFileClass *class);
+static void                 btk_print_backend_file_init            (BtkPrintBackendFile      *impl);
+static void                 file_printer_get_settings_from_options (BtkPrinter              *printer,
+								    BtkPrinterOptionSet     *options,
+								    BtkPrintSettings        *settings);
+static BtkPrinterOptionSet *file_printer_get_options               (BtkPrinter              *printer,
+								    BtkPrintSettings        *settings,
+								    BtkPageSetup            *page_setup,
+								    BtkPrintCapabilities     capabilities);
+static void                 file_printer_prepare_for_print         (BtkPrinter              *printer,
+								    BtkPrintJob             *print_job,
+								    BtkPrintSettings        *settings,
+								    BtkPageSetup            *page_setup);
+static void                 btk_print_backend_file_print_stream    (BtkPrintBackend         *print_backend,
+								    BtkPrintJob             *job,
+								    BUNNYIOChannel              *data_io,
+								    BtkPrintJobCompleteFunc  callback,
 								    gpointer                 user_data,
 								    GDestroyNotify           dnotify);
-static cairo_surface_t *    file_printer_create_cairo_surface      (GtkPrinter              *printer,
-								    GtkPrintSettings        *settings,
+static bairo_surface_t *    file_printer_create_bairo_surface      (BtkPrinter              *printer,
+								    BtkPrintSettings        *settings,
 								    gdouble                  width,
 								    gdouble                  height,
-								    GIOChannel              *cache_io);
+								    BUNNYIOChannel              *cache_io);
 
-static GList *              file_printer_list_papers               (GtkPrinter              *printer);
-static GtkPageSetup *       file_printer_get_default_page_size     (GtkPrinter              *printer);
+static GList *              file_printer_list_papers               (BtkPrinter              *printer);
+static BtkPageSetup *       file_printer_get_default_page_size     (BtkPrinter              *printer);
 
 static void
-gtk_print_backend_file_register_type (GTypeModule *module)
+btk_print_backend_file_register_type (GTypeModule *module)
 {
   const GTypeInfo print_backend_file_info =
   {
-    sizeof (GtkPrintBackendFileClass),
+    sizeof (BtkPrintBackendFileClass),
     NULL,		/* base_init */
     NULL,		/* base_finalize */
-    (GClassInitFunc) gtk_print_backend_file_class_init,
+    (GClassInitFunc) btk_print_backend_file_class_init,
     NULL,		/* class_finalize */
     NULL,		/* class_data */
-    sizeof (GtkPrintBackendFile),
+    sizeof (BtkPrintBackendFile),
     0,		/* n_preallocs */
-    (GInstanceInitFunc) gtk_print_backend_file_init,
+    (GInstanceInitFunc) btk_print_backend_file_init,
   };
 
   print_backend_file_type = g_type_module_register_type (module,
-                                                         GTK_TYPE_PRINT_BACKEND,
-                                                         "GtkPrintBackendFile",
+                                                         BTK_TYPE_PRINT_BACKEND,
+                                                         "BtkPrintBackendFile",
                                                          &print_backend_file_info, 0);
 }
 
 G_MODULE_EXPORT void 
 pb_module_init (GTypeModule *module)
 {
-  gtk_print_backend_file_register_type (module);
+  btk_print_backend_file_register_type (module);
 }
 
 G_MODULE_EXPORT void 
@@ -140,45 +140,45 @@ pb_module_exit (void)
 
 }
   
-G_MODULE_EXPORT GtkPrintBackend * 
+G_MODULE_EXPORT BtkPrintBackend * 
 pb_module_create (void)
 {
-  return gtk_print_backend_file_new ();
+  return btk_print_backend_file_new ();
 }
 
 /*
- * GtkPrintBackendFile
+ * BtkPrintBackendFile
  */
 GType
-gtk_print_backend_file_get_type (void)
+btk_print_backend_file_get_type (void)
 {
   return print_backend_file_type;
 }
 
 /**
- * gtk_print_backend_file_new:
+ * btk_print_backend_file_new:
  *
- * Creates a new #GtkPrintBackendFile object. #GtkPrintBackendFile
- * implements the #GtkPrintBackend interface with direct access to
+ * Creates a new #BtkPrintBackendFile object. #BtkPrintBackendFile
+ * implements the #BtkPrintBackend interface with direct access to
  * the filesystem using Unix/Linux API calls
  *
- * Return value: the new #GtkPrintBackendFile object
+ * Return value: the new #BtkPrintBackendFile object
  **/
-GtkPrintBackend *
-gtk_print_backend_file_new (void)
+BtkPrintBackend *
+btk_print_backend_file_new (void)
 {
-  return g_object_new (GTK_TYPE_PRINT_BACKEND_FILE, NULL);
+  return g_object_new (BTK_TYPE_PRINT_BACKEND_FILE, NULL);
 }
 
 static void
-gtk_print_backend_file_class_init (GtkPrintBackendFileClass *class)
+btk_print_backend_file_class_init (BtkPrintBackendFileClass *class)
 {
-  GtkPrintBackendClass *backend_class = GTK_PRINT_BACKEND_CLASS (class);
+  BtkPrintBackendClass *backend_class = BTK_PRINT_BACKEND_CLASS (class);
 
   backend_parent_class = g_type_class_peek_parent (class);
 
-  backend_class->print_stream = gtk_print_backend_file_print_stream;
-  backend_class->printer_create_cairo_surface = file_printer_create_cairo_surface;
+  backend_class->print_stream = btk_print_backend_file_print_stream;
+  backend_class->printer_create_bairo_surface = file_printer_create_bairo_surface;
   backend_class->printer_get_options = file_printer_get_options;
   backend_class->printer_get_settings_from_options = file_printer_get_settings_from_options;
   backend_class->printer_prepare_for_print = file_printer_prepare_for_print;
@@ -188,7 +188,7 @@ gtk_print_backend_file_class_init (GtkPrintBackendFileClass *class)
 
 /* return N_FORMATS if no explicit format in the settings */
 static OutputFormat
-format_from_settings (GtkPrintSettings *settings)
+format_from_settings (BtkPrintSettings *settings)
 {
   const gchar *value;
   gint i;
@@ -196,8 +196,8 @@ format_from_settings (GtkPrintSettings *settings)
   if (settings == NULL)
     return N_FORMATS;
 
-  value = gtk_print_settings_get (settings,
-                                  GTK_PRINT_SETTINGS_OUTPUT_FILE_FORMAT);
+  value = btk_print_settings_get (settings,
+                                  BTK_PRINT_SETTINGS_OUTPUT_FILE_FORMAT);
   if (value == NULL)
     return N_FORMATS;
 
@@ -211,13 +211,13 @@ format_from_settings (GtkPrintSettings *settings)
 }
 
 static gchar *
-output_file_from_settings (GtkPrintSettings *settings,
+output_file_from_settings (BtkPrintSettings *settings,
 			   const gchar      *default_format)
 {
   gchar *uri = NULL;
   
   if (settings)
-    uri = g_strdup (gtk_print_settings_get (settings, GTK_PRINT_SETTINGS_OUTPUT_URI));
+    uri = g_strdup (btk_print_settings_get (settings, BTK_PRINT_SETTINGS_OUTPUT_URI));
 
   if (uri == NULL)
     { 
@@ -266,18 +266,18 @@ output_file_from_settings (GtkPrintSettings *settings,
   return uri;
 }
 
-static cairo_status_t
-_cairo_write (void                *closure,
+static bairo_status_t
+_bairo_write (void                *closure,
               const unsigned char *data,
               unsigned int         length)
 {
-  GIOChannel *io = (GIOChannel *)closure;
+  BUNNYIOChannel *io = (BUNNYIOChannel *)closure;
   gsize written;
   GError *error;
 
   error = NULL;
 
-  GTK_NOTE (PRINTING,
+  BTK_NOTE (PRINTING,
             g_print ("FILE Backend: Writting %i byte chunk to temp file\n", length));
 
   while (length > 0) 
@@ -286,34 +286,34 @@ _cairo_write (void                *closure,
 
       if (error != NULL)
 	{
-	  GTK_NOTE (PRINTING,
+	  BTK_NOTE (PRINTING,
                      g_print ("FILE Backend: Error writting to temp file, %s\n", error->message));
 
           g_error_free (error);
-	  return CAIRO_STATUS_WRITE_ERROR;
+	  return BAIRO_STATUS_WRITE_ERROR;
 	}    
 
-      GTK_NOTE (PRINTING,
+      BTK_NOTE (PRINTING,
                 g_print ("FILE Backend: Wrote %i bytes to temp file\n", written));
       
       data += written;
       length -= written;
     }
 
-  return CAIRO_STATUS_SUCCESS;
+  return BAIRO_STATUS_SUCCESS;
 }
 
 
-static cairo_surface_t *
-file_printer_create_cairo_surface (GtkPrinter       *printer,
-				   GtkPrintSettings *settings,
+static bairo_surface_t *
+file_printer_create_bairo_surface (BtkPrinter       *printer,
+				   BtkPrintSettings *settings,
 				   gdouble           width, 
 				   gdouble           height,
-				   GIOChannel       *cache_io)
+				   BUNNYIOChannel       *cache_io)
 {
-  cairo_surface_t *surface;
+  bairo_surface_t *surface;
   OutputFormat format;
-  const cairo_svg_version_t *versions;
+  const bairo_svg_version_t *versions;
   int num_versions = 0;
 
   format = format_from_settings (settings);
@@ -322,43 +322,43 @@ file_printer_create_cairo_surface (GtkPrinter       *printer,
     {
       default:
       case FORMAT_PDF:
-        surface = cairo_pdf_surface_create_for_stream (_cairo_write, cache_io, width, height);
+        surface = bairo_pdf_surface_create_for_stream (_bairo_write, cache_io, width, height);
         break;
       case FORMAT_PS:
-        surface = cairo_ps_surface_create_for_stream (_cairo_write, cache_io, width, height);
+        surface = bairo_ps_surface_create_for_stream (_bairo_write, cache_io, width, height);
         break;
       case FORMAT_SVG:
-        surface = cairo_svg_surface_create_for_stream (_cairo_write, cache_io, width, height);
-        cairo_svg_get_versions (&versions, &num_versions);
+        surface = bairo_svg_surface_create_for_stream (_bairo_write, cache_io, width, height);
+        bairo_svg_get_versions (&versions, &num_versions);
         if (num_versions > 0)
-          cairo_svg_surface_restrict_to_version (surface, versions[num_versions - 1]);
+          bairo_svg_surface_restrict_to_version (surface, versions[num_versions - 1]);
         break;
     }
 
-  cairo_surface_set_fallback_resolution (surface,
-                                         2.0 * gtk_print_settings_get_printer_lpi (settings),
-                                         2.0 * gtk_print_settings_get_printer_lpi (settings));
+  bairo_surface_set_fallback_resolution (surface,
+                                         2.0 * btk_print_settings_get_printer_lpi (settings),
+                                         2.0 * btk_print_settings_get_printer_lpi (settings));
 
   return surface;
 }
 
 typedef struct {
-  GtkPrintBackend *backend;
-  GtkPrintJobCompleteFunc callback;
-  GtkPrintJob *job;
+  BtkPrintBackend *backend;
+  BtkPrintJobCompleteFunc callback;
+  BtkPrintJob *job;
   GFileOutputStream *target_io_stream;
   gpointer user_data;
   GDestroyNotify dnotify;
 } _PrintStreamData;
 
 static void
-file_print_cb (GtkPrintBackendFile *print_backend,
+file_print_cb (BtkPrintBackendFile *print_backend,
                GError              *error,
                gpointer            user_data)
 {
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
-  GDK_THREADS_ENTER ();
+  BDK_THREADS_ENTER ();
 
   if (ps->target_io_stream != NULL)
     g_output_stream_close (G_OUTPUT_STREAM (ps->target_io_stream), NULL, NULL);
@@ -369,26 +369,26 @@ file_print_cb (GtkPrintBackendFile *print_backend,
   if (ps->dnotify)
     ps->dnotify (ps->user_data);
 
-  gtk_print_job_set_status (ps->job,
-			    (error != NULL)?GTK_PRINT_STATUS_FINISHED_ABORTED:GTK_PRINT_STATUS_FINISHED);
+  btk_print_job_set_status (ps->job,
+			    (error != NULL)?BTK_PRINT_STATUS_FINISHED_ABORTED:BTK_PRINT_STATUS_FINISHED);
 
   if (ps->job)
     g_object_unref (ps->job);
  
   g_free (ps);
 
-  GDK_THREADS_LEAVE ();
+  BDK_THREADS_LEAVE ();
 }
 
 static gboolean
-file_write (GIOChannel   *source,
-            GIOCondition  con,
+file_write (BUNNYIOChannel   *source,
+            BUNNYIOCondition  con,
             gpointer      user_data)
 {
   gchar buf[_STREAM_MAX_CHUNK_SIZE];
   gsize bytes_read;
   GError *error;
-  GIOStatus read_status;
+  BUNNYIOStatus read_status;
   _PrintStreamData *ps = (_PrintStreamData *) user_data;
 
   error = NULL;
@@ -414,11 +414,11 @@ file_write (GIOChannel   *source,
 
   if (error != NULL || read_status == G_IO_STATUS_EOF)
     {
-      file_print_cb (GTK_PRINT_BACKEND_FILE (ps->backend), error, user_data);
+      file_print_cb (BTK_PRINT_BACKEND_FILE (ps->backend), error, user_data);
 
       if (error != NULL)
         {
-          GTK_NOTE (PRINTING,
+          BTK_NOTE (PRINTING,
                     g_print ("FILE Backend: %s\n", error->message));
 
           g_error_free (error);
@@ -427,27 +427,27 @@ file_write (GIOChannel   *source,
       return FALSE;
     }
 
-  GTK_NOTE (PRINTING,
+  BTK_NOTE (PRINTING,
             g_print ("FILE Backend: Writting %i byte chunk to target file\n", bytes_read));
 
   return TRUE;
 }
 
 static void
-gtk_print_backend_file_print_stream (GtkPrintBackend        *print_backend,
-				     GtkPrintJob            *job,
-				     GIOChannel             *data_io,
-				     GtkPrintJobCompleteFunc callback,
+btk_print_backend_file_print_stream (BtkPrintBackend        *print_backend,
+				     BtkPrintJob            *job,
+				     BUNNYIOChannel             *data_io,
+				     BtkPrintJobCompleteFunc callback,
 				     gpointer                user_data,
 				     GDestroyNotify          dnotify)
 {
   GError *internal_error = NULL;
   _PrintStreamData *ps;
-  GtkPrintSettings *settings;
+  BtkPrintSettings *settings;
   gchar *uri;
   GFile *file = NULL;
 
-  settings = gtk_print_job_get_settings (job);
+  settings = btk_print_job_get_settings (job);
 
   ps = g_new0 (_PrintStreamData, 1);
   ps->callback = callback;
@@ -471,7 +471,7 @@ gtk_print_backend_file_print_stream (GtkPrintBackend        *print_backend,
 error:
   if (internal_error != NULL)
     {
-      file_print_cb (GTK_PRINT_BACKEND_FILE (print_backend),
+      file_print_cb (BTK_PRINT_BACKEND_FILE (print_backend),
                     internal_error, ps);
 
       g_error_free (internal_error);
@@ -480,46 +480,46 @@ error:
 
   g_io_add_watch (data_io, 
                   G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP,
-                  (GIOFunc) file_write,
+                  (BUNNYIOFunc) file_write,
                   ps);
 }
 
 static void
-gtk_print_backend_file_init (GtkPrintBackendFile *backend)
+btk_print_backend_file_init (BtkPrintBackendFile *backend)
 {
-  GtkPrinter *printer;
+  BtkPrinter *printer;
   
-  printer = g_object_new (GTK_TYPE_PRINTER,
+  printer = g_object_new (BTK_TYPE_PRINTER,
 			  "name", _("Print to File"),
 			  "backend", backend,
 			  "is-virtual", TRUE,
 			  "accepts-pdf", TRUE,
 			  NULL); 
 
-  gtk_printer_set_has_details (printer, TRUE);
-  gtk_printer_set_icon_name (printer, "gtk-save");
-  gtk_printer_set_is_active (printer, TRUE);
+  btk_printer_set_has_details (printer, TRUE);
+  btk_printer_set_icon_name (printer, "btk-save");
+  btk_printer_set_is_active (printer, TRUE);
 
-  gtk_print_backend_add_printer (GTK_PRINT_BACKEND (backend), printer);
+  btk_print_backend_add_printer (BTK_PRINT_BACKEND (backend), printer);
   g_object_unref (printer);
 
-  gtk_print_backend_set_list_done (GTK_PRINT_BACKEND (backend));
+  btk_print_backend_set_list_done (BTK_PRINT_BACKEND (backend));
 }
 
 typedef struct {
-  GtkPrinter          *printer;
-  GtkPrinterOptionSet *set;
+  BtkPrinter          *printer;
+  BtkPrinterOptionSet *set;
 } _OutputFormatChangedData;
 
 static void
-set_printer_format_from_option_set (GtkPrinter          *printer,
-				    GtkPrinterOptionSet *set)
+set_printer_format_from_option_set (BtkPrinter          *printer,
+				    BtkPrinterOptionSet *set)
 {
-  GtkPrinterOption *format_option;
+  BtkPrinterOption *format_option;
   const gchar *value;
   gint i;
 
-  format_option = gtk_printer_option_set_lookup (set, "output-file-format");
+  format_option = btk_printer_option_set_lookup (set, "output-file-format");
   if (format_option && format_option->value)
     {
       value = format_option->value;
@@ -534,17 +534,17 @@ set_printer_format_from_option_set (GtkPrinter          *printer,
 	  switch (i)
 	    {
 	      case FORMAT_PDF:
-		gtk_printer_set_accepts_pdf (printer, TRUE);
-		gtk_printer_set_accepts_ps (printer, FALSE);
+		btk_printer_set_accepts_pdf (printer, TRUE);
+		btk_printer_set_accepts_ps (printer, FALSE);
 		break;
 	      case FORMAT_PS:
-		gtk_printer_set_accepts_pdf (printer, FALSE);
-		gtk_printer_set_accepts_ps (printer, TRUE);
+		btk_printer_set_accepts_pdf (printer, FALSE);
+		btk_printer_set_accepts_ps (printer, TRUE);
 		break;
 	      case FORMAT_SVG:
 	      default:
-		gtk_printer_set_accepts_pdf (printer, FALSE);
-		gtk_printer_set_accepts_ps (printer, FALSE);
+		btk_printer_set_accepts_pdf (printer, FALSE);
+		btk_printer_set_accepts_ps (printer, FALSE);
 		break;
 	    }
 	}
@@ -552,18 +552,18 @@ set_printer_format_from_option_set (GtkPrinter          *printer,
 }
 
 static void
-file_printer_output_file_format_changed (GtkPrinterOption    *format_option,
+file_printer_output_file_format_changed (BtkPrinterOption    *format_option,
 					 gpointer             user_data)
 {
-  GtkPrinterOption *uri_option;
+  BtkPrinterOption *uri_option;
   gchar            *base = NULL;
   _OutputFormatChangedData *data = (_OutputFormatChangedData *) user_data;
 
   if (! format_option->value)
     return;
 
-  uri_option = gtk_printer_option_set_lookup (data->set,
-                                              "gtk-main-page-custom-input");
+  uri_option = btk_printer_option_set_lookup (data->set,
+                                              "btk-main-page-custom-input");
 
   if (uri_option && uri_option->value)
     {
@@ -598,7 +598,7 @@ file_printer_output_file_format_changed (GtkPrinterOption    *format_option,
     {
       gchar *tmp = g_strdup_printf ("%s.%s", base, format_option->value);
 
-      gtk_printer_option_set (uri_option, tmp);
+      btk_printer_option_set (uri_option, tmp);
       g_free (tmp);
       g_free (base);
     }
@@ -606,14 +606,14 @@ file_printer_output_file_format_changed (GtkPrinterOption    *format_option,
   set_printer_format_from_option_set (data->printer, data->set);
 }
 
-static GtkPrinterOptionSet *
-file_printer_get_options (GtkPrinter           *printer,
-			  GtkPrintSettings     *settings,
-			  GtkPageSetup         *page_setup,
-			  GtkPrintCapabilities  capabilities)
+static BtkPrinterOptionSet *
+file_printer_get_options (BtkPrinter           *printer,
+			  BtkPrintSettings     *settings,
+			  BtkPageSetup         *page_setup,
+			  BtkPrintCapabilities  capabilities)
 {
-  GtkPrinterOptionSet *set;
-  GtkPrinterOption *option;
+  BtkPrinterOptionSet *set;
+  BtkPrinterOption *option;
   const gchar *n_up[] = {"1", "2", "4", "6", "9", "16" };
   const gchar *pages_per_sheet = NULL;
   const gchar *format_names[N_FORMATS] = { N_("PDF"), N_("Postscript"), N_("SVG") };
@@ -627,23 +627,23 @@ file_printer_get_options (GtkPrinter           *printer,
 
   format = format_from_settings (settings);
 
-  set = gtk_printer_option_set_new ();
+  set = btk_printer_option_set_new ();
 
-  option = gtk_printer_option_new ("gtk-n-up", _("Pages per _sheet:"), GTK_PRINTER_OPTION_TYPE_PICKONE);
-  gtk_printer_option_choices_from_array (option, G_N_ELEMENTS (n_up),
+  option = btk_printer_option_new ("btk-n-up", _("Pages per _sheet:"), BTK_PRINTER_OPTION_TYPE_PICKONE);
+  btk_printer_option_choices_from_array (option, G_N_ELEMENTS (n_up),
 					 (char **) n_up, (char **) n_up /* FIXME i18n (localised digits)! */);
   if (settings)
-    pages_per_sheet = gtk_print_settings_get (settings, GTK_PRINT_SETTINGS_NUMBER_UP);
+    pages_per_sheet = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_NUMBER_UP);
   if (pages_per_sheet)
-    gtk_printer_option_set (option, pages_per_sheet);
+    btk_printer_option_set (option, pages_per_sheet);
   else
-    gtk_printer_option_set (option, "1");
-  gtk_printer_option_set_add (set, option);
+    btk_printer_option_set (option, "1");
+  btk_printer_option_set_add (set, option);
   g_object_unref (option);
 
-  if (capabilities & (GTK_PRINT_CAPABILITY_GENERATE_PDF | GTK_PRINT_CAPABILITY_GENERATE_PS))
+  if (capabilities & (BTK_PRINT_CAPABILITY_GENERATE_PDF | BTK_PRINT_CAPABILITY_GENERATE_PS))
     {
-      if (capabilities & GTK_PRINT_CAPABILITY_GENERATE_PDF)
+      if (capabilities & BTK_PRINT_CAPABILITY_GENERATE_PDF)
         {
 	  if (format == FORMAT_PDF || format == N_FORMATS)
             {
@@ -654,7 +654,7 @@ file_printer_get_options (GtkPrinter           *printer,
 	  display_format_names[n_formats] = _(format_names[FORMAT_PDF]);
 	  n_formats++;
 	}
-      if (capabilities & GTK_PRINT_CAPABILITY_GENERATE_PS)
+      if (capabilities & BTK_PRINT_CAPABILITY_GENERATE_PS)
         {
 	  if (format == FORMAT_PS || format == N_FORMATS)
 	    current_format = n_formats;
@@ -688,25 +688,25 @@ file_printer_get_options (GtkPrinter           *printer,
 
   uri = output_file_from_settings (settings, supported_formats[current_format]);
 
-  option = gtk_printer_option_new ("gtk-main-page-custom-input", _("File"), 
-				   GTK_PRINTER_OPTION_TYPE_FILESAVE);
-  gtk_printer_option_set_activates_default (option, TRUE);
-  gtk_printer_option_set (option, uri);
+  option = btk_printer_option_new ("btk-main-page-custom-input", _("File"), 
+				   BTK_PRINTER_OPTION_TYPE_FILESAVE);
+  btk_printer_option_set_activates_default (option, TRUE);
+  btk_printer_option_set (option, uri);
   g_free (uri);
-  option->group = g_strdup ("GtkPrintDialogExtension");
-  gtk_printer_option_set_add (set, option);
+  option->group = g_strdup ("BtkPrintDialogExtension");
+  btk_printer_option_set_add (set, option);
 
   if (n_formats > 1)
     {
-      option = gtk_printer_option_new ("output-file-format", _("_Output format"), 
-				       GTK_PRINTER_OPTION_TYPE_ALTERNATIVE);
-      option->group = g_strdup ("GtkPrintDialogExtension");
+      option = btk_printer_option_new ("output-file-format", _("_Output format"), 
+				       BTK_PRINTER_OPTION_TYPE_ALTERNATIVE);
+      option->group = g_strdup ("BtkPrintDialogExtension");
 
-      gtk_printer_option_choices_from_array (option, n_formats,
+      btk_printer_option_choices_from_array (option, n_formats,
 					     (char **) supported_formats,
 					     display_format_names);
-      gtk_printer_option_set (option, supported_formats[current_format]);
-      gtk_printer_option_set_add (set, option);
+      btk_printer_option_set (option, supported_formats[current_format]);
+      btk_printer_option_set_add (set, option);
 
       set_printer_format_from_option_set (printer, set);
       format_changed_data = g_new (_OutputFormatChangedData, 1);
@@ -723,75 +723,75 @@ file_printer_get_options (GtkPrinter           *printer,
 }
 
 static void
-file_printer_get_settings_from_options (GtkPrinter          *printer,
-					GtkPrinterOptionSet *options,
-					GtkPrintSettings    *settings)
+file_printer_get_settings_from_options (BtkPrinter          *printer,
+					BtkPrinterOptionSet *options,
+					BtkPrintSettings    *settings)
 {
-  GtkPrinterOption *option;
+  BtkPrinterOption *option;
 
-  option = gtk_printer_option_set_lookup (options, "gtk-main-page-custom-input");
-  gtk_print_settings_set (settings, GTK_PRINT_SETTINGS_OUTPUT_URI, option->value);
+  option = btk_printer_option_set_lookup (options, "btk-main-page-custom-input");
+  btk_print_settings_set (settings, BTK_PRINT_SETTINGS_OUTPUT_URI, option->value);
 
-  option = gtk_printer_option_set_lookup (options, "output-file-format");
+  option = btk_printer_option_set_lookup (options, "output-file-format");
   if (option)
-    gtk_print_settings_set (settings, GTK_PRINT_SETTINGS_OUTPUT_FILE_FORMAT, option->value);
+    btk_print_settings_set (settings, BTK_PRINT_SETTINGS_OUTPUT_FILE_FORMAT, option->value);
 
-  option = gtk_printer_option_set_lookup (options, "gtk-n-up");
+  option = btk_printer_option_set_lookup (options, "btk-n-up");
   if (option)
-    gtk_print_settings_set (settings, GTK_PRINT_SETTINGS_NUMBER_UP, option->value);
+    btk_print_settings_set (settings, BTK_PRINT_SETTINGS_NUMBER_UP, option->value);
 
-  option = gtk_printer_option_set_lookup (options, "gtk-n-up-layout");
+  option = btk_printer_option_set_lookup (options, "btk-n-up-layout");
   if (option)
-    gtk_print_settings_set (settings, GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT, option->value);
+    btk_print_settings_set (settings, BTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT, option->value);
 }
 
 static void
-file_printer_prepare_for_print (GtkPrinter       *printer,
-				GtkPrintJob      *print_job,
-				GtkPrintSettings *settings,
-				GtkPageSetup     *page_setup)
+file_printer_prepare_for_print (BtkPrinter       *printer,
+				BtkPrintJob      *print_job,
+				BtkPrintSettings *settings,
+				BtkPageSetup     *page_setup)
 {
   gdouble scale;
 
-  print_job->print_pages = gtk_print_settings_get_print_pages (settings);
+  print_job->print_pages = btk_print_settings_get_print_pages (settings);
   print_job->page_ranges = NULL;
   print_job->num_page_ranges = 0;
   
-  if (print_job->print_pages == GTK_PRINT_PAGES_RANGES)
+  if (print_job->print_pages == BTK_PRINT_PAGES_RANGES)
     print_job->page_ranges =
-      gtk_print_settings_get_page_ranges (settings,
+      btk_print_settings_get_page_ranges (settings,
 					  &print_job->num_page_ranges);
   
-  print_job->collate = gtk_print_settings_get_collate (settings);
-  print_job->reverse = gtk_print_settings_get_reverse (settings);
-  print_job->num_copies = gtk_print_settings_get_n_copies (settings);
-  print_job->number_up = gtk_print_settings_get_number_up (settings);
-  print_job->number_up_layout = gtk_print_settings_get_number_up_layout (settings);
+  print_job->collate = btk_print_settings_get_collate (settings);
+  print_job->reverse = btk_print_settings_get_reverse (settings);
+  print_job->num_copies = btk_print_settings_get_n_copies (settings);
+  print_job->number_up = btk_print_settings_get_number_up (settings);
+  print_job->number_up_layout = btk_print_settings_get_number_up_layout (settings);
 
-  scale = gtk_print_settings_get_scale (settings);
+  scale = btk_print_settings_get_scale (settings);
   if (scale != 100.0)
     print_job->scale = scale/100.0;
 
-  print_job->page_set = gtk_print_settings_get_page_set (settings);
+  print_job->page_set = btk_print_settings_get_page_set (settings);
   print_job->rotate_to_orientation = TRUE;
 }
 
 static GList *
-file_printer_list_papers (GtkPrinter *printer)
+file_printer_list_papers (BtkPrinter *printer)
 {
   GList *result = NULL;
   GList *papers, *p;
-  GtkPageSetup *page_setup;
+  BtkPageSetup *page_setup;
 
-  papers = gtk_paper_size_get_paper_sizes (TRUE);
+  papers = btk_paper_size_get_paper_sizes (TRUE);
 
   for (p = papers; p; p = p->next)
     {
-      GtkPaperSize *paper_size = p->data;
+      BtkPaperSize *paper_size = p->data;
 
-      page_setup = gtk_page_setup_new ();
-      gtk_page_setup_set_paper_size (page_setup, paper_size);
-      gtk_paper_size_free (paper_size);
+      page_setup = btk_page_setup_new ();
+      btk_page_setup_set_paper_size (page_setup, paper_size);
+      btk_paper_size_free (paper_size);
       result = g_list_prepend (result, page_setup);
     }
 
@@ -800,10 +800,10 @@ file_printer_list_papers (GtkPrinter *printer)
   return g_list_reverse (result);
 }
 
-static GtkPageSetup *
-file_printer_get_default_page_size (GtkPrinter *printer)
+static BtkPageSetup *
+file_printer_get_default_page_size (BtkPrinter *printer)
 {
-  GtkPageSetup *result = NULL;
+  BtkPageSetup *result = NULL;
 
   return result;
 }

@@ -2,25 +2,25 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<refentry id="gtk-windows" revision="4 Feb 2001">
+<refentry id="btk-windows" revision="4 Feb 2001">
 <refmeta>
-<refentrytitle>Using GTK+ on Windows</refentrytitle>
+<refentrytitle>Using BTK+ on Windows</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>GTK Library</refmiscinfo>
+<refmiscinfo>BTK Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>Using GTK+ on Windows</refname>
+<refname>Using BTK+ on Windows</refname>
 <refpurpose>
-Windows-specific aspects of using GTK+
+Windows-specific aspects of using BTK+
 </refpurpose>
 </refnamediv>
 
 <refsect1>
-<title>Using GTK+ on Windows</title>
+<title>Using BTK+ on Windows</title>
 
 <para>
-The Windows port of GTK+ is an implementation of GDK (and therefore GTK+) 
+The Windows port of BTK+ is an implementation of BDK (and therefore BTK+) 
 on top of the Win32 API. 
 </para>
 
@@ -28,7 +28,7 @@ on top of the Win32 API.
 <title>Windows-specific commandline options</title>
 
 <para>
-The Windows GDK backend can be influenced with some
+The Windows BDK backend can be influenced with some
 additional command line arguments.
 </para>
 
@@ -73,30 +73,30 @@ the specified number of colors. This option is obsolete.
 <title>Windows-specific environment variables</title>
 
 <para>
-The Win32 GDK backend can be influenced with some
+The Win32 BDK backend can be influenced with some
 additional environment variables.
 </para>
 
 <formalpara>
-<title><envar>GDK_IGNORE_WINTAB</envar></title>
+<title><envar>BDK_IGNORE_WINTAB</envar></title>
 
 <para>
-If this variable is set, GTK+ doesn't use 
+If this variable is set, BTK+ doesn't use 
 the Wintab API for tablet support.
 </para>
 </formalpara>
 
 <formalpara>
-<title><envar>GDK_USE_WINTAB</envar></title>
+<title><envar>BDK_USE_WINTAB</envar></title>
 
 <para>
-If this variable is set, GTK+ uses the Wintab API for 
+If this variable is set, BTK+ uses the Wintab API for 
 tablet support.  This is the default.
 </para>
 </formalpara>
 
 <formalpara>
-<title><envar>GDK_WIN32_MAX_COLORS</envar></title>
+<title><envar>BDK_WIN32_MAX_COLORS</envar></title>
 
 <para>
 Specifies the size of the color palette used

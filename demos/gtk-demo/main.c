@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
-#include <glib/gstdio.h>
+#include <btk/btk.h>
+#include <bunnylib/gstdio.h>
 
 #include "demos.h"
 
-static GtkTextBuffer *info_buffer;
-static GtkTextBuffer *source_buffer;
+static BtkTextBuffer *info_buffer;
+static BtkTextBuffer *source_buffer;
 
 static gchar *current_file = NULL;
 
@@ -26,8 +26,8 @@ enum {
 typedef struct _CallbackData CallbackData;
 struct _CallbackData
 {
-  GtkTreeModel *model;
-  GtkTreePath *path;
+  BtkTreeModel *model;
+  BtkTreePath *path;
 };
 
 #ifdef G_OS_WIN32
@@ -45,7 +45,7 @@ get_democodedir (void)
       if (result == NULL)
 	result = "unknown-location";
 
-      result = g_strconcat (result, "\\share\\gtk-2.0\\demo", NULL);
+      result = g_strconcat (result, "\\share\\btk-2.0\\demo", NULL);
     }
 
   return result;
@@ -61,7 +61,7 @@ get_democodedir (void)
  * @err:  location to store error, or %NULL.
  * 
  * Looks for @base first in the current directory, then in the
- * location GTK+ where it will be installed on make install,
+ * location BTK+ where it will be installed on make install,
  * returns the first file found.
  * 
  * Return value: the filename, if found or %NULL
@@ -72,7 +72,7 @@ demo_find_file (const char *base,
 {
   g_return_val_if_fail (err == NULL || *err == NULL, NULL);
   
-  if (g_file_test ("gtk-logo-rgb.gif", G_FILE_TEST_EXISTS) &&
+  if (g_file_test ("btk-logo-rgb.gif", G_FILE_TEST_EXISTS) &&
       g_file_test (base, G_FILE_TEST_EXISTS))
     return g_strdup (base);
   else
@@ -90,22 +90,22 @@ demo_find_file (const char *base,
 }
 
 static void
-window_closed_cb (GtkWidget *window, gpointer data)
+window_closed_cb (BtkWidget *window, gpointer data)
 {
   CallbackData *cbdata = data;
-  GtkTreeIter iter;
-  PangoStyle style;
+  BtkTreeIter iter;
+  BangoStyle style;
 
-  gtk_tree_model_get_iter (cbdata->model, &iter, cbdata->path);
-  gtk_tree_model_get (GTK_TREE_MODEL (cbdata->model), &iter,
+  btk_tree_model_get_iter (cbdata->model, &iter, cbdata->path);
+  btk_tree_model_get (BTK_TREE_MODEL (cbdata->model), &iter,
 		      STYLE_COLUMN, &style,
 		      -1);
-  if (style == PANGO_STYLE_ITALIC)
-    gtk_tree_store_set (GTK_TREE_STORE (cbdata->model), &iter,
-			STYLE_COLUMN, PANGO_STYLE_NORMAL,
+  if (style == BANGO_STYLE_ITALIC)
+    btk_tree_store_set (BTK_TREE_STORE (cbdata->model), &iter,
+			STYLE_COLUMN, BANGO_STYLE_NORMAL,
 			-1);
 
-  gtk_tree_path_free (cbdata->path);
+  btk_tree_path_free (cbdata->path);
   g_free (cbdata);
 }
 
@@ -223,99 +223,99 @@ static gchar *types[] =
   "FALSE",
   "TRUE",
   "FILE ",
-  "GtkObject ",
-  "GtkColorSelection ",
-  "GtkWidget ",
-  "GtkButton ",
-  "GdkColor ",
-  "GdkRectangle ",
-  "GdkEventExpose ",
-  "GdkGC ",
-  "GdkPixbufLoader ",
-  "GdkPixbuf ",
+  "BtkObject ",
+  "BtkColorSelection ",
+  "BtkWidget ",
+  "BtkButton ",
+  "BdkColor ",
+  "BdkRectangle ",
+  "BdkEventExpose ",
+  "BdkGC ",
+  "BdkPixbufLoader ",
+  "BdkPixbuf ",
   "GError",
   "size_t",
-  "GtkAboutDialog ",
-  "GtkAction ",
-  "GtkActionEntry ",
-  "GtkRadioActionEntry ",
-  "GtkIconFactory ",
-  "GtkStockItem ",
-  "GtkIconSet ",
-  "GtkTextBuffer ",
-  "GtkStatusbar ",
-  "GtkTextIter ",
-  "GtkTextMark ",
-  "GdkEventWindowState ",
-  "GtkActionGroup ",
-  "GtkUIManager ",
-  "GtkRadioAction ",
-  "GtkActionClass ",
-  "GtkToggleActionEntry ",
-  "GtkAssistant ",
-  "GtkBuilder ",
-  "GtkSizeGroup ",
-  "GtkTreeModel ",
-  "GtkTreeSelection ",
-  "GdkDisplay ",
-  "GdkScreen ",
-  "GdkWindow ",
-  "GdkEventButton ",
-  "GdkCursor ",
-  "GtkTreeIter ",
-  "GtkTreeViewColumn ",
-  "GdkDisplayManager ",
-  "GtkClipboard ",
-  "GtkIconSize ",
-  "GtkImage ",
-  "GdkDragContext ",
-  "GtkSelectionData ",
-  "GtkDialog ",
-  "GtkMenuItem ",
-  "GtkListStore ",
-  "GtkCellLayout ",
-  "GtkCellRenderer ",
-  "GtkTreePath ",
-  "GtkTreeStore ",
-  "GtkEntry ",
-  "GtkEditable ",
-  "GtkEditableClass ",
-  "GdkPixmap ",
-  "GdkEventConfigure ",
-  "GdkEventMotion ",
-  "GdkModifierType ",
-  "GtkEntryCompletion ",
-  "GtkToolItem ",
+  "BtkAboutDialog ",
+  "BtkAction ",
+  "BtkActionEntry ",
+  "BtkRadioActionEntry ",
+  "BtkIconFactory ",
+  "BtkStockItem ",
+  "BtkIconSet ",
+  "BtkTextBuffer ",
+  "BtkStatusbar ",
+  "BtkTextIter ",
+  "BtkTextMark ",
+  "BdkEventWindowState ",
+  "BtkActionGroup ",
+  "BtkUIManager ",
+  "BtkRadioAction ",
+  "BtkActionClass ",
+  "BtkToggleActionEntry ",
+  "BtkAssistant ",
+  "BtkBuilder ",
+  "BtkSizeGroup ",
+  "BtkTreeModel ",
+  "BtkTreeSelection ",
+  "BdkDisplay ",
+  "BdkScreen ",
+  "BdkWindow ",
+  "BdkEventButton ",
+  "BdkCursor ",
+  "BtkTreeIter ",
+  "BtkTreeViewColumn ",
+  "BdkDisplayManager ",
+  "BtkClipboard ",
+  "BtkIconSize ",
+  "BtkImage ",
+  "BdkDragContext ",
+  "BtkSelectionData ",
+  "BtkDialog ",
+  "BtkMenuItem ",
+  "BtkListStore ",
+  "BtkCellLayout ",
+  "BtkCellRenderer ",
+  "BtkTreePath ",
+  "BtkTreeStore ",
+  "BtkEntry ",
+  "BtkEditable ",
+  "BtkEditableClass ",
+  "BdkPixmap ",
+  "BdkEventConfigure ",
+  "BdkEventMotion ",
+  "BdkModifierType ",
+  "BtkEntryCompletion ",
+  "BtkToolItem ",
   "GDir ",
-  "GtkIconView ",
-  "GtkCellRendererText ",
-  "GtkContainer ",
-  "GtkAccelGroup ",
-  "GtkPaned ",
-  "GtkPrintOperation ",
-  "GtkPrintContext ",
-  "cairo_t ",
-  "PangoLayout "
-  "PangoFontDescription ",
-  "PangoRenderer ",
-  "PangoMatrix ",
-  "PangoContext ",
-  "PangoLayout ",
-  "GtkTable ",
-  "GtkToggleButton ",
+  "BtkIconView ",
+  "BtkCellRendererText ",
+  "BtkContainer ",
+  "BtkAccelGroup ",
+  "BtkPaned ",
+  "BtkPrintOperation ",
+  "BtkPrintContext ",
+  "bairo_t ",
+  "BangoLayout "
+  "BangoFontDescription ",
+  "BangoRenderer ",
+  "BangoMatrix ",
+  "BangoContext ",
+  "BangoLayout ",
+  "BtkTable ",
+  "BtkToggleButton ",
   "GString ",
-  "GtkIconSize ",
-  "GtkTreeView ",
-  "GtkTextTag ",
-  "GdkEvent ",
-  "GdkEventKey ",
-  "GtkTextView ",
-  "GdkEventVisibility ",
-  "GdkBitmap ",
-  "GtkTextChildAnchor ",
+  "BtkIconSize ",
+  "BtkTreeView ",
+  "BtkTextTag ",
+  "BdkEvent ",
+  "BdkEventKey ",
+  "BtkTextView ",
+  "BdkEventVisibility ",
+  "BdkBitmap ",
+  "BtkTextChildAnchor ",
   "GArray ",
-  "GtkCellEditable ",
-  "GtkCellRendererToggle ",
+  "BtkCellEditable ",
+  "BtkCellRendererToggle ",
   NULL
 };
 
@@ -472,7 +472,7 @@ parse_chars (gchar     *text,
 static void
 fontify (void)
 {
-  GtkTextIter start_iter, next_iter, tmp_iter;
+  BtkTextIter start_iter, next_iter, tmp_iter;
   gint state;
   gchar *text;
   gchar *start_ptr, *end_ptr;
@@ -480,13 +480,13 @@ fontify (void)
 
   state = STATE_NORMAL;
 
-  gtk_text_buffer_get_iter_at_offset (source_buffer, &start_iter, 0);
+  btk_text_buffer_get_iter_at_offset (source_buffer, &start_iter, 0);
 
   next_iter = start_iter;
-  while (gtk_text_iter_forward_line (&next_iter))
+  while (btk_text_iter_forward_line (&next_iter))
     {
       gboolean start = TRUE;
-      start_ptr = text = gtk_text_iter_get_text (&start_iter, &next_iter);
+      start_ptr = text = btk_text_iter_get_text (&start_iter, &next_iter);
 
       do
 	{
@@ -496,14 +496,14 @@ fontify (void)
 	  if (end_ptr)
 	    {
 	      tmp_iter = start_iter;
-	      gtk_text_iter_forward_chars (&tmp_iter, end_ptr - start_ptr);
+	      btk_text_iter_forward_chars (&tmp_iter, end_ptr - start_ptr);
 	    }
 	  else
 	    {
 	      tmp_iter = next_iter;
 	    }
 	  if (tag)
-	    gtk_text_buffer_apply_tag_by_name (source_buffer, tag, &start_iter, &tmp_iter);
+	    btk_text_buffer_apply_tag_by_name (source_buffer, tag, &start_iter, &tmp_iter);
 
 	  start_iter = tmp_iter;
 	  start_ptr = end_ptr;
@@ -519,7 +519,7 @@ void
 load_file (const gchar *filename)
 {
   FILE *file;
-  GtkTextIter start, end;
+  BtkTextIter start, end;
   char *full_filename;
   GError *err = NULL;
   GString *buffer = g_string_new (NULL);
@@ -535,11 +535,11 @@ load_file (const gchar *filename)
   g_free (current_file);
   current_file = g_strdup (filename);
   
-  gtk_text_buffer_get_bounds (info_buffer, &start, &end);
-  gtk_text_buffer_delete (info_buffer, &start, &end);
+  btk_text_buffer_get_bounds (info_buffer, &start, &end);
+  btk_text_buffer_delete (info_buffer, &start, &end);
 
-  gtk_text_buffer_get_bounds (source_buffer, &start, &end);
-  gtk_text_buffer_delete (source_buffer, &start, &end);
+  btk_text_buffer_get_bounds (source_buffer, &start, &end);
+  btk_text_buffer_delete (source_buffer, &start, &end);
 
   full_filename = demo_find_file (filename, &err);
   if (!full_filename)
@@ -559,7 +559,7 @@ load_file (const gchar *filename)
   if (!file)
     return;
 
-  gtk_text_buffer_get_iter_at_offset (info_buffer, &start, 0);
+  btk_text_buffer_get_iter_at_offset (info_buffer, &start, 0);
   while (read_line (file, buffer))
     {
       gchar *p = buffer->str;
@@ -588,11 +588,11 @@ load_file (const gchar *filename)
 	      end = start;
 
 	      g_assert (strlen (p) >= q - p);
-	      gtk_text_buffer_insert (info_buffer, &end, p, q - p);
+	      btk_text_buffer_insert (info_buffer, &end, p, q - p);
 	      start = end;
 
-	      gtk_text_iter_backward_chars (&start, len_chars);
-	      gtk_text_buffer_apply_tag_by_name (info_buffer, "title", &start, &end);
+	      btk_text_iter_backward_chars (&start, len_chars);
+	      btk_text_buffer_apply_tag_by_name (info_buffer, "title", &start, &end);
 
 	      start = end;
 	      
@@ -606,7 +606,7 @@ load_file (const gchar *filename)
 	    p++;
 	  if (*p == '*' && *(p + 1) == '/')
 	    {
-	      gtk_text_buffer_get_iter_at_offset (source_buffer, &start, 0);
+	      btk_text_buffer_get_iter_at_offset (source_buffer, &start, 0);
 	      state++;
 	    }
 	  else
@@ -623,15 +623,15 @@ load_file (const gchar *filename)
 	      if (len > 0)
 		{
 		  if (in_para)
-		    gtk_text_buffer_insert (info_buffer, &start, " ", 1);
+		    btk_text_buffer_insert (info_buffer, &start, " ", 1);
 
 		  g_assert (strlen (p) >= len);
-		  gtk_text_buffer_insert (info_buffer, &start, p, len);
+		  btk_text_buffer_insert (info_buffer, &start, p, len);
 		  in_para = 1;
 		}
 	      else
 		{
-		  gtk_text_buffer_insert (info_buffer, &start, "\n", 1);
+		  btk_text_buffer_insert (info_buffer, &start, "\n", 1);
 		  in_para = 0;
 		}
 	    }
@@ -652,8 +652,8 @@ load_file (const gchar *filename)
 	  
 	case 3:
 	  /* Reading program body */
-	  gtk_text_buffer_insert (source_buffer, &start, p, -1);
-	  gtk_text_buffer_insert (source_buffer, &start, "\n", 1);
+	  btk_text_buffer_insert (source_buffer, &start, p, -1);
+	  btk_text_buffer_insert (source_buffer, &start, "\n", 1);
 	  break;
 	}
     }
@@ -666,20 +666,20 @@ load_file (const gchar *filename)
 }
 
 void
-row_activated_cb (GtkTreeView       *tree_view,
-                  GtkTreePath       *path,
-		  GtkTreeViewColumn *column)
+row_activated_cb (BtkTreeView       *tree_view,
+                  BtkTreePath       *path,
+		  BtkTreeViewColumn *column)
 {
-  GtkTreeIter iter;
-  PangoStyle style;
+  BtkTreeIter iter;
+  BangoStyle style;
   GDoDemoFunc func;
-  GtkWidget *window;
-  GtkTreeModel *model;
+  BtkWidget *window;
+  BtkTreeModel *model;
 
-  model = gtk_tree_view_get_model (tree_view);
+  model = btk_tree_view_get_model (tree_view);
   
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (GTK_TREE_MODEL (model),
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_tree_model_get (BTK_TREE_MODEL (model),
 		      &iter,
 		      FUNC_COLUMN, &func,
 		      STYLE_COLUMN, &style,
@@ -687,11 +687,11 @@ row_activated_cb (GtkTreeView       *tree_view,
 
   if (func)
     {
-      gtk_tree_store_set (GTK_TREE_STORE (model),
+      btk_tree_store_set (BTK_TREE_STORE (model),
 			  &iter,
-			  STYLE_COLUMN, (style == PANGO_STYLE_ITALIC ? PANGO_STYLE_NORMAL : PANGO_STYLE_ITALIC),
+			  STYLE_COLUMN, (style == BANGO_STYLE_ITALIC ? BANGO_STYLE_NORMAL : BANGO_STYLE_ITALIC),
 			  -1);
-      window = (func) (gtk_widget_get_toplevel (GTK_WIDGET (tree_view)));
+      window = (func) (btk_widget_get_toplevel (BTK_WIDGET (tree_view)));
       
       if (window != NULL)
 	{
@@ -699,7 +699,7 @@ row_activated_cb (GtkTreeView       *tree_view,
 	  
 	  cbdata = g_new (CallbackData, 1);
 	  cbdata->model = model;
-	  cbdata->path = gtk_tree_path_copy (path);
+	  cbdata->path = btk_tree_path_copy (path);
 	  
 	  g_signal_connect (window, "destroy",
 			    G_CALLBACK (window_closed_cb), cbdata);
@@ -708,16 +708,16 @@ row_activated_cb (GtkTreeView       *tree_view,
 }
 
 static void
-selection_cb (GtkTreeSelection *selection,
-	      GtkTreeModel     *model)
+selection_cb (BtkTreeSelection *selection,
+	      BtkTreeModel     *model)
 {
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   GValue value = {0, };
 
-  if (! gtk_tree_selection_get_selected (selection, NULL, &iter))
+  if (! btk_tree_selection_get_selected (selection, NULL, &iter))
     return;
 
-  gtk_tree_model_get_value (model, &iter,
+  btk_tree_model_get_value (model, &iter,
 			    FILENAME_COLUMN,
 			    &value);
   if (g_value_get_string (&value))
@@ -725,74 +725,74 @@ selection_cb (GtkTreeSelection *selection,
   g_value_unset (&value);
 }
 
-static GtkWidget *
-create_text (GtkTextBuffer **buffer,
+static BtkWidget *
+create_text (BtkTextBuffer **buffer,
 	     gboolean        is_source)
 {
-  GtkWidget *scrolled_window;
-  GtkWidget *text_view;
-  PangoFontDescription *font_desc;
+  BtkWidget *scrolled_window;
+  BtkWidget *text_view;
+  BangoFontDescription *font_desc;
 
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_window),
-				       GTK_SHADOW_IN);
+  scrolled_window = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+				  BTK_POLICY_AUTOMATIC,
+				  BTK_POLICY_AUTOMATIC);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (scrolled_window),
+				       BTK_SHADOW_IN);
   
-  text_view = gtk_text_view_new ();
+  text_view = btk_text_view_new ();
   
-  *buffer = gtk_text_buffer_new (NULL);
-  gtk_text_view_set_buffer (GTK_TEXT_VIEW (text_view), *buffer);
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), FALSE);
-  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_view), FALSE);
+  *buffer = btk_text_buffer_new (NULL);
+  btk_text_view_set_buffer (BTK_TEXT_VIEW (text_view), *buffer);
+  btk_text_view_set_editable (BTK_TEXT_VIEW (text_view), FALSE);
+  btk_text_view_set_cursor_visible (BTK_TEXT_VIEW (text_view), FALSE);
 
-  gtk_container_add (GTK_CONTAINER (scrolled_window), text_view);
+  btk_container_add (BTK_CONTAINER (scrolled_window), text_view);
   
   if (is_source)
     {
-      font_desc = pango_font_description_from_string ("monospace");
-      gtk_widget_modify_font (text_view, font_desc);
-      pango_font_description_free (font_desc);
+      font_desc = bango_font_description_from_string ("monospace");
+      btk_widget_modify_font (text_view, font_desc);
+      bango_font_description_free (font_desc);
 
-      gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_view),
-                                   GTK_WRAP_NONE);
+      btk_text_view_set_wrap_mode (BTK_TEXT_VIEW (text_view),
+                                   BTK_WRAP_NONE);
     }
   else
     {
       /* Make it a bit nicer for text. */
-      gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text_view),
-                                   GTK_WRAP_WORD);
-      gtk_text_view_set_pixels_above_lines (GTK_TEXT_VIEW (text_view),
+      btk_text_view_set_wrap_mode (BTK_TEXT_VIEW (text_view),
+                                   BTK_WRAP_WORD);
+      btk_text_view_set_pixels_above_lines (BTK_TEXT_VIEW (text_view),
                                             2);
-      gtk_text_view_set_pixels_below_lines (GTK_TEXT_VIEW (text_view),
+      btk_text_view_set_pixels_below_lines (BTK_TEXT_VIEW (text_view),
                                             2);
     }
   
   return scrolled_window;
 }
 
-static GtkWidget *
+static BtkWidget *
 create_tree (void)
 {
-  GtkTreeSelection *selection;
-  GtkCellRenderer *cell;
-  GtkWidget *tree_view;
-  GtkTreeViewColumn *column;
-  GtkTreeStore *model;
-  GtkTreeIter iter;
-  GtkWidget *box, *label, *scrolled_window;
+  BtkTreeSelection *selection;
+  BtkCellRenderer *cell;
+  BtkWidget *tree_view;
+  BtkTreeViewColumn *column;
+  BtkTreeStore *model;
+  BtkTreeIter iter;
+  BtkWidget *box, *label, *scrolled_window;
 
-  Demo *d = testgtk_demos;
+  Demo *d = testbtk_demos;
 
-  model = gtk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
-  tree_view = gtk_tree_view_new ();
-  gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (model));
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  model = btk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
+  tree_view = btk_tree_view_new ();
+  btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (model));
+  selection = btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view));
 
-  gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection),
-			       GTK_SELECTION_BROWSE);
-  gtk_widget_set_size_request (tree_view, 200, -1);
+  btk_tree_selection_set_mode (BTK_TREE_SELECTION (selection),
+			       BTK_SELECTION_BROWSE);
+  btk_widget_set_size_request (tree_view, 200, -1);
 
   /* this code only supports 1 level of children. If we
    * want more we probably have to use a recursing function.
@@ -801,14 +801,14 @@ create_tree (void)
     {
       Demo *children = d->children;
 
-      gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+      btk_tree_store_append (BTK_TREE_STORE (model), &iter, NULL);
 
-      gtk_tree_store_set (GTK_TREE_STORE (model),
+      btk_tree_store_set (BTK_TREE_STORE (model),
 			  &iter,
 			  TITLE_COLUMN, d->title,
 			  FILENAME_COLUMN, d->filename,
 			  FUNC_COLUMN, d->func,
-			  STYLE_COLUMN, PANGO_STYLE_NORMAL,
+			  STYLE_COLUMN, BANGO_STYLE_NORMAL,
 			  -1);
 
       d++;
@@ -818,54 +818,54 @@ create_tree (void)
       
       while (children->title)
 	{
-	  GtkTreeIter child_iter;
+	  BtkTreeIter child_iter;
 
-	  gtk_tree_store_append (GTK_TREE_STORE (model), &child_iter, &iter);
+	  btk_tree_store_append (BTK_TREE_STORE (model), &child_iter, &iter);
 	  
-	  gtk_tree_store_set (GTK_TREE_STORE (model),
+	  btk_tree_store_set (BTK_TREE_STORE (model),
 			      &child_iter,
 			      TITLE_COLUMN, children->title,
 			      FILENAME_COLUMN, children->filename,
 			      FUNC_COLUMN, children->func,
-			      STYLE_COLUMN, PANGO_STYLE_NORMAL,
+			      STYLE_COLUMN, BANGO_STYLE_NORMAL,
 			      -1);
 	  
 	  children++;
 	}
     }
 
-  cell = gtk_cell_renderer_text_new ();
+  cell = btk_cell_renderer_text_new ();
 
-  column = gtk_tree_view_column_new_with_attributes ("Widget (double click for demo)",
+  column = btk_tree_view_column_new_with_attributes ("Widget (double click for demo)",
 						     cell,
 						     "text", TITLE_COLUMN,
 						     "style", STYLE_COLUMN,
 						     NULL);
   
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view),
-			       GTK_TREE_VIEW_COLUMN (column));
+  btk_tree_view_append_column (BTK_TREE_VIEW (tree_view),
+			       BTK_TREE_VIEW_COLUMN (column));
 
-  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
-  gtk_tree_selection_select_iter (GTK_TREE_SELECTION (selection), &iter);
+  btk_tree_model_get_iter_first (BTK_TREE_MODEL (model), &iter);
+  btk_tree_selection_select_iter (BTK_TREE_SELECTION (selection), &iter);
 
   g_signal_connect (selection, "changed", G_CALLBACK (selection_cb), model);
   g_signal_connect (tree_view, "row_activated", G_CALLBACK (row_activated_cb), model);
 
-  gtk_tree_view_collapse_all (GTK_TREE_VIEW (tree_view));
-  gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
+  btk_tree_view_collapse_all (BTK_TREE_VIEW (tree_view));
+  btk_tree_view_set_headers_visible (BTK_TREE_VIEW (tree_view), FALSE);
   				    
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				  GTK_POLICY_NEVER,
-				  GTK_POLICY_AUTOMATIC);
-  gtk_container_add (GTK_CONTAINER (scrolled_window), tree_view);
+  scrolled_window = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+				  BTK_POLICY_NEVER,
+				  BTK_POLICY_AUTOMATIC);
+  btk_container_add (BTK_CONTAINER (scrolled_window), tree_view);
 
-  label = gtk_label_new ("Widget (double click for demo)");
+  label = btk_label_new ("Widget (double click for demo)");
 
-  box = gtk_notebook_new ();
-  gtk_notebook_append_page (GTK_NOTEBOOK (box), scrolled_window, label);
+  box = btk_notebook_new ();
+  btk_notebook_append_page (BTK_NOTEBOOK (box), scrolled_window, label);
 
-  gtk_widget_grab_focus (tree_view);
+  btk_widget_grab_focus (tree_view);
 
    g_object_unref (model);
 
@@ -875,17 +875,17 @@ create_tree (void)
 static void
 setup_default_icon (void)
 {
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   char *filename;
   GError *err;
 
   err = NULL;
 
   pixbuf = NULL;
-  filename = demo_find_file ("gtk-logo-rgb.gif", &err);
+  filename = demo_find_file ("btk-logo-rgb.gif", &err);
   if (filename)
     {
-      pixbuf = gdk_pixbuf_new_from_file (filename, &err);
+      pixbuf = bdk_pixbuf_new_from_file (filename, &err);
       g_free (filename);
     }
 
@@ -895,30 +895,30 @@ setup_default_icon (void)
    */
   if (err)
     {
-      GtkWidget *dialog;
+      BtkWidget *dialog;
       
-      dialog = gtk_message_dialog_new (NULL, 0,
-				       GTK_MESSAGE_ERROR,
-				       GTK_BUTTONS_CLOSE,
+      dialog = btk_message_dialog_new (NULL, 0,
+				       BTK_MESSAGE_ERROR,
+				       BTK_BUTTONS_CLOSE,
 				       "Failed to read icon file: %s",
 				       err->message);
       g_error_free (err);
 
       g_signal_connect (dialog, "response",
-			G_CALLBACK (gtk_widget_destroy), NULL);
+			G_CALLBACK (btk_widget_destroy), NULL);
     }
 
   if (pixbuf)
     {
       GList *list;      
-      GdkPixbuf *transparent;
+      BdkPixbuf *transparent;
 
-      /* The gtk-logo-rgb icon has a white background, make it transparent */
-      transparent = gdk_pixbuf_add_alpha (pixbuf, TRUE, 0xff, 0xff, 0xff);
+      /* The btk-logo-rgb icon has a white background, make it transparent */
+      transparent = bdk_pixbuf_add_alpha (pixbuf, TRUE, 0xff, 0xff, 0xff);
 
       list = NULL;
       list = g_list_append (list, transparent);
-      gtk_window_set_default_icon_list (list);
+      btk_window_set_default_icon_list (list);
       g_list_free (list);
       g_object_unref (pixbuf);
       g_object_unref (transparent);
@@ -928,86 +928,86 @@ setup_default_icon (void)
 int
 main (int argc, char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *notebook;
-  GtkWidget *hbox;
-  GtkWidget *tree;
-  GtkTextTag *tag;
+  BtkWidget *window;
+  BtkWidget *notebook;
+  BtkWidget *hbox;
+  BtkWidget *tree;
+  BtkTextTag *tag;
 
-  /* Most code in gtk-demo is intended to be exemplary, but not
-   * these few lines, which are just a hack so gtk-demo will work
-   * in the GTK tree without installing it.
+  /* Most code in btk-demo is intended to be exemplary, but not
+   * these few lines, which are just a hack so btk-demo will work
+   * in the BTK tree without installing it.
    */
-  if (g_file_test ("../../gdk-pixbuf/libpixbufloader-pnm.la",
+  if (g_file_test ("../../bdk-pixbuf/libpixbufloader-pnm.la",
                    G_FILE_TEST_EXISTS))
     {
-      g_setenv ("GDK_PIXBUF_MODULE_FILE", "../../gdk-pixbuf/gdk-pixbuf.loaders", TRUE);
-      g_setenv ("GTK_IM_MODULE_FILE", "../../modules/input/immodules.cache", TRUE);
+      g_setenv ("BDK_PIXBUF_MODULE_FILE", "../../bdk-pixbuf/bdk-pixbuf.loaders", TRUE);
+      g_setenv ("BTK_IM_MODULE_FILE", "../../modules/input/immodules.cache", TRUE);
     }
   /* -- End of hack -- */
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   setup_default_icon ();
   
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "GTK+ Code Demos");
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_window_set_title (BTK_WINDOW (window), "BTK+ Code Demos");
   g_signal_connect_after (window, "destroy",
-		    G_CALLBACK (gtk_main_quit), NULL);
+		    G_CALLBACK (btk_main_quit), NULL);
 
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (window), hbox);
+  hbox = btk_hbox_new (FALSE, 0);
+  btk_container_add (BTK_CONTAINER (window), hbox);
 
   tree = create_tree ();
-  gtk_box_pack_start (GTK_BOX (hbox), tree, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), tree, FALSE, FALSE, 0);
 
-  notebook = gtk_notebook_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), notebook, TRUE, TRUE, 0);
+  notebook = btk_notebook_new ();
+  btk_box_pack_start (BTK_BOX (hbox), notebook, TRUE, TRUE, 0);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+  btk_notebook_append_page (BTK_NOTEBOOK (notebook),
 			    create_text (&info_buffer, FALSE),
-			    gtk_label_new_with_mnemonic ("_Info"));
+			    btk_label_new_with_mnemonic ("_Info"));
 
-  tag = gtk_text_buffer_create_tag (info_buffer, "title",
+  tag = btk_text_buffer_create_tag (info_buffer, "title",
                                     "font", "Sans 18",
                                     NULL);
    g_object_unref (info_buffer);
 
-  gtk_notebook_append_page (GTK_NOTEBOOK (notebook),
+  btk_notebook_append_page (BTK_NOTEBOOK (notebook),
 			    create_text (&source_buffer, TRUE),
-			    gtk_label_new_with_mnemonic ("_Source"));
+			    btk_label_new_with_mnemonic ("_Source"));
 
 
-  tag = gtk_text_buffer_create_tag (source_buffer, "comment",
+  tag = btk_text_buffer_create_tag (source_buffer, "comment",
 				    "foreground", "DodgerBlue",
                                     NULL);
-  tag = gtk_text_buffer_create_tag (source_buffer, "type",
+  tag = btk_text_buffer_create_tag (source_buffer, "type",
 				    "foreground", "ForestGreen",
                                     NULL);
-  tag = gtk_text_buffer_create_tag (source_buffer, "string",
+  tag = btk_text_buffer_create_tag (source_buffer, "string",
 				    "foreground", "RosyBrown",
-				    "weight", PANGO_WEIGHT_BOLD,
+				    "weight", BANGO_WEIGHT_BOLD,
                                     NULL);
-  tag = gtk_text_buffer_create_tag (source_buffer, "control",
+  tag = btk_text_buffer_create_tag (source_buffer, "control",
 				    "foreground", "purple",
                                     NULL);
-  tag = gtk_text_buffer_create_tag (source_buffer, "preprocessor",
-				    "style", PANGO_STYLE_OBLIQUE,
+  tag = btk_text_buffer_create_tag (source_buffer, "preprocessor",
+				    "style", BANGO_STYLE_OBLIQUE,
  				    "foreground", "burlywood4",
                                     NULL);
-  tag = gtk_text_buffer_create_tag (source_buffer, "function",
-				    "weight", PANGO_WEIGHT_BOLD,
+  tag = btk_text_buffer_create_tag (source_buffer, "function",
+				    "weight", BANGO_WEIGHT_BOLD,
  				    "foreground", "DarkGoldenrod4",
                                     NULL);
    g_object_unref (source_buffer);
   
-  gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
-  gtk_widget_show_all (window);
+  btk_window_set_default_size (BTK_WINDOW (window), 600, 400);
+  btk_widget_show_all (window);
   
 
-  load_file (testgtk_demos[0].filename);
+  load_file (testbtk_demos[0].filename);
   
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

@@ -2,9 +2,9 @@
 <VisualStudioProject
  ProjectType="Visual C++"
  Version="9.00"
- Name="gtk"
+ Name="btk"
  ProjectGUID="{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F5}"
- RootNamespace="gtk"
+ RootNamespace="btk"
  Keyword="Win32Proj"
  TargetFrameworkVersion="0"
  >
@@ -21,7 +21,7 @@
  <Configurations>
   <Configuration
    Name="Debug|Win32"
-   InheritedPropertySheets=".\gtk-gen-srcs.vsprops"
+   InheritedPropertySheets=".\btk-gen-srcs.vsprops"
    ConfigurationType="2"
    CharacterSet="2"
    >
@@ -31,8 +31,8 @@
    <Tool
     Name="VCCLCompilerTool"
     Optimization="0"
-    AdditionalIncludeDirectories="..\..\..\gdk;..\..\..\gtk"
-    PreprocessorDefinitions="_DEBUG;G_ENABLE_DEBUG;$(GtkDefines)"
+    AdditionalIncludeDirectories="..\..\..\bdk;..\..\..\btk"
+    PreprocessorDefinitions="_DEBUG;G_ENABLE_DEBUG;$(BtkDefines)"
     MinimalRebuild="true"
     BasicRuntimeChecks="3"
     RuntimeLibrary="3"
@@ -42,10 +42,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="cairo.lib atk-1.0.lib pango-1.0.lib pangocairo-1.0.lib pangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll"
+    AdditionalDependencies="bairo.lib batk-1.0.lib bango-1.0.lib bangobairo-1.0.lib bangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="$(IntDir)\gtk.def"
+    ModuleDefinitionFile="$(IntDir)\btk.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     ImportLibrary="$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib"
@@ -54,7 +54,7 @@
   </Configuration>
   <Configuration
    Name="Release|Win32"
-   InheritedPropertySheets=".\gtk-gen-srcs.vsprops"
+   InheritedPropertySheets=".\btk-gen-srcs.vsprops"
    ConfigurationType="2"
    CharacterSet="2"
    >
@@ -63,8 +63,8 @@
    />
    <Tool
     Name="VCCLCompilerTool"
-    AdditionalIncludeDirectories="..\..\..\gdk;..\..\..\gdk\win32"
-    PreprocessorDefinitions="$(GtkDefines)"
+    AdditionalIncludeDirectories="..\..\..\bdk;..\..\..\bdk\win32"
+    PreprocessorDefinitions="$(BtkDefines)"
     RuntimeLibrary="2"
     UsePrecompiledHeader="0"
     WarningLevel="3"
@@ -72,10 +72,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="cairo.lib atk-1.0.lib pango-1.0.lib pangocairo-1.0.lib pangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll"
+    AdditionalDependencies="bairo.lib batk-1.0.lib bango-1.0.lib bangobairo-1.0.lib bangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="$(IntDir)\gtk.def"
+    ModuleDefinitionFile="$(IntDir)\btk.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     OptimizeReferences="2"
@@ -86,7 +86,7 @@
   </Configuration>
   <Configuration
    Name="Debug|x64"
-   InheritedPropertySheets=".\gtk-gen-srcs.vsprops"
+   InheritedPropertySheets=".\btk-gen-srcs.vsprops"
    ConfigurationType="2"
    CharacterSet="2"
    >
@@ -96,8 +96,8 @@
    <Tool
     Name="VCCLCompilerTool"
     Optimization="0"
-    AdditionalIncludeDirectories="..\..\..\gdk;..\..\..\gdk\win32"
-    PreprocessorDefinitions="_DEBUG;G_ENABLE_DEBUG;$(GtkDefines)"
+    AdditionalIncludeDirectories="..\..\..\bdk;..\..\..\bdk\win32"
+    PreprocessorDefinitions="_DEBUG;G_ENABLE_DEBUG;$(BtkDefines)"
     MinimalRebuild="true"
     BasicRuntimeChecks="3"
     RuntimeLibrary="3"
@@ -107,10 +107,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="cairo.lib atk-1.0.lib pango-1.0.lib pangocairo-1.0.lib pangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll"
+    AdditionalDependencies="bairo.lib batk-1.0.lib bango-1.0.lib bangobairo-1.0.lib bangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="$(IntDir)\gtk.def"
+    ModuleDefinitionFile="$(IntDir)\btk.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     ImportLibrary="$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib"
@@ -119,7 +119,7 @@
   </Configuration>
   <Configuration
    Name="Release|x64"
-   InheritedPropertySheets=".\gtk-gen-srcs.vsprops"
+   InheritedPropertySheets=".\btk-gen-srcs.vsprops"
    ConfigurationType="2"
    CharacterSet="2"
    >
@@ -128,8 +128,8 @@
    />
    <Tool
     Name="VCCLCompilerTool"
-    AdditionalIncludeDirectories="..\..\..\gdk;..\..\..\gdk\win32"
-    PreprocessorDefinitions="$(GtkDefines)"
+    AdditionalIncludeDirectories="..\..\..\bdk;..\..\..\bdk\win32"
+    PreprocessorDefinitions="$(BtkDefines)"
     RuntimeLibrary="2"
     UsePrecompiledHeader="0"
     WarningLevel="3"
@@ -137,10 +137,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="cairo.lib atk-1.0.lib pango-1.0.lib pangocairo-1.0.lib pangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll"
+    AdditionalDependencies="bairo.lib batk-1.0.lib bango-1.0.lib bangobairo-1.0.lib bangowin32-1.0.lib imm32.lib winspool.lib comctl32.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="$(IntDir)\gtk.def"
+    ModuleDefinitionFile="$(IntDir)\btk.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     OptimizeReferences="2"
@@ -165,16 +165,16 @@
    UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
    >
    <File
-    RelativePath="..\..\..\gdk\gtk.symbols"
+    RelativePath="..\..\..\bdk\btk.symbols"
     >
     <FileConfiguration
      Name="Debug|Win32"
      >
      <Tool
       Name="VCCustomBuildTool"
-      Description="Generating gtk.def"
-      CommandLine="$(GtkGenerateGtkDef)"
-      Outputs="$(IntDir)\gtk.def"
+      Description="Generating btk.def"
+      CommandLine="$(BtkGenerateBtkDef)"
+      Outputs="$(IntDir)\btk.def"
      />
     </FileConfiguration>
     <FileConfiguration
@@ -182,9 +182,9 @@
      >
      <Tool
       Name="VCCustomBuildTool"
-      Description="Generating gtk.def"
-      CommandLine="$(GtkGenerateGtkDef)"
-      Outputs="$(IntDir)\gtk.def"
+      Description="Generating btk.def"
+      CommandLine="$(BtkGenerateBtkDef)"
+      Outputs="$(IntDir)\btk.def"
      />
     </FileConfiguration>
     <FileConfiguration
@@ -192,9 +192,9 @@
      >
      <Tool
       Name="VCCustomBuildTool"
-      Description="Generating gtk.def"
-      CommandLine="$(GtkGenerateGtkDef)"
-      Outputs="$(IntDir)\gtk.def"
+      Description="Generating btk.def"
+      CommandLine="$(BtkGenerateBtkDef)"
+      Outputs="$(IntDir)\btk.def"
      />
     </FileConfiguration>
     <FileConfiguration
@@ -202,270 +202,270 @@
      >
      <Tool
       Name="VCCustomBuildTool"
-      Description="Generating gtk.def"
-      CommandLine="$(GtkGenerateGtkDef)"
-      Outputs="$(IntDir)\gtk.def"
+      Description="Generating btk.def"
+      CommandLine="$(BtkGenerateBtkDef)"
+      Outputs="$(IntDir)\btk.def"
      />
     </FileConfiguration>
    </File>
-   <File RelativePath="..\..\..\gtk\gtk-win32.rc" />
+   <File RelativePath="..\..\..\btk\btk-win32.rc" />
   </Filter>
   <Filter
    Name="Source Files"
    Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
    UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
    >
-   <File RelativePath="..\..\..\gtk\gtkquery.c" />
-   <File RelativePath="..\..\..\gtk\gtksearchengine.c" />
-   <File RelativePath="..\..\..\gtk\gtksearchenginesimple.c" />
-   <File RelativePath="..\..\..\gtk\fnmatch.c" />
-   <File RelativePath="..\..\..\gtk\gtkaboutdialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkaccelgroup.c" />
-   <File RelativePath="..\..\..\gtk\gtkaccellabel.c" />
-   <File RelativePath="..\..\..\gtk\gtkaccelmap.c" />
-   <File RelativePath="..\..\..\gtk\gtkaccessible.c" />
-   <File RelativePath="..\..\..\gtk\gtkaction.c" />
-   <File RelativePath="..\..\..\gtk\gtkactiongroup.c" />
-   <File RelativePath="..\..\..\gtk\gtkactivatable.c" />
-   <File RelativePath="..\..\..\gtk\gtkadjustment.c" />
-   <File RelativePath="..\..\..\gtk\gtkalignment.c" />
-   <File RelativePath="..\..\..\gtk\gtkarrow.c" />
-   <File RelativePath="..\..\..\gtk\gtkaspectframe.c" />
-   <File RelativePath="..\..\..\gtk\gtkassistant.c" />
-   <File RelativePath="..\..\..\gtk\gtkbbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkbin.c" />
-   <File RelativePath="..\..\..\gtk\gtkbindings.c" />
-   <File RelativePath="..\..\..\gtk\gtkbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkbuildable.c" />
-   <File RelativePath="..\..\..\gtk\gtkbuilder.c" />
-   <File RelativePath="..\..\..\gtk\gtkbuilderparser.c" />
-   <File RelativePath="..\..\..\gtk\gtkbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkcalendar.c" />
-   <File RelativePath="..\..\..\gtk\gtkcelleditable.c" />
-   <File RelativePath="..\..\..\gtk\gtkcelllayout.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrenderer.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrendereraccel.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrenderercombo.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrendererpixbuf.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrendererprogress.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrendererspin.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrendererspinner.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrenderertext.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellrenderertoggle.c" />
-   <File RelativePath="..\..\..\gtk\gtkcellview.c" />
-   <File RelativePath="..\..\..\gtk\gtkcheckbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkcheckmenuitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkcolorbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkcolorsel.c" />
-   <File RelativePath="..\..\..\gtk\gtkcolorseldialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkcombobox.c" />
-   <File RelativePath="..\..\..\gtk\gtkcomboboxentry.c" />
-   <File RelativePath="..\..\..\gtk\gtkcomboboxtext.c" />
-   <File RelativePath="..\..\..\gtk\gtkcontainer.c" />
-   <File RelativePath="..\..\..\gtk\gtkdialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkdrawingarea.c" />
-   <File RelativePath="..\..\..\gtk\gtkeditable.c" />
-   <File RelativePath="..\..\..\gtk\gtkentry.c" />
-   <File RelativePath="..\..\..\gtk\gtkentrybuffer.c" />
-   <File RelativePath="..\..\..\gtk\gtkentrycompletion.c" />
-   <File RelativePath="..\..\..\gtk\gtkeventbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkexpander.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooser.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserdefault.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserdialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserembed.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserentry.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechoosersettings.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserutils.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilechooserwidget.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilefilter.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilesystem.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilesystemmodel.c" />
-   <File RelativePath="..\..\..\gtk\gtkfixed.c" />
-   <File RelativePath="..\..\..\gtk\gtkfontbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkfontsel.c" />
-   <File RelativePath="..\..\..\gtk\gtkframe.c" />
-   <File RelativePath="..\..\..\gtk\gtkgc.c" />
-   <File RelativePath="..\..\..\gtk\gtkhandlebox.c" />
-   <File RelativePath="..\..\..\gtk\gtkhbbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkhbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkhpaned.c" />
-   <File RelativePath="..\..\..\gtk\gtkhruler.c" />
-   <File RelativePath="..\..\..\gtk\gtkhscale.c" />
-   <File RelativePath="..\..\..\gtk\gtkhscrollbar.c" />
-   <File RelativePath="..\..\..\gtk\gtkhseparator.c" />
-   <File RelativePath="..\..\..\gtk\gtkhsv.c" />
-   <File RelativePath="..\..\..\gtk\gtkiconcache.c" />
-   <File RelativePath="..\..\..\gtk\gtkiconcachevalidator.c" />
-   <File RelativePath="..\..\..\gtk\gtkiconfactory.c" />
-   <File RelativePath="..\..\..\gtk\gtkicontheme.c" />
-   <File RelativePath="..\..\..\gtk\gtkiconview.c" />
-   <File RelativePath="..\..\..\gtk\gtkimage.c" />
-   <File RelativePath="..\..\..\gtk\gtkimagemenuitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkimcontext.c" />
-   <File RelativePath="..\..\..\gtk\gtkimcontextsimple.c" />
-   <File RelativePath="..\..\..\gtk\gtkimmodule.c" />
-   <File RelativePath="..\..\..\gtk\gtkimmulticontext.c" />
-   <File RelativePath="..\..\..\gtk\gtkinfobar.c" />
-   <File RelativePath="..\..\..\gtk\gtkinputdialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkinvisible.c" />
-   <File RelativePath="..\..\..\gtk\gtkitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkkeyhash.c" />
-   <File RelativePath="..\..\..\gtk\gtklabel.c" />
-   <File RelativePath="..\..\..\gtk\gtklayout.c" />
-   <File RelativePath="..\..\..\gtk\gtklinkbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkliststore.c" />
-   <File RelativePath="..\..\..\gtk\gtkmain.c" />
-   <File RelativePath="..\..\..\gtk\gtkmarshal.c" />
-   <File RelativePath="..\..\..\gtk\gtkmarshalers.c" />
-   <File RelativePath="..\..\..\gtk\gtkmenu.c" />
-   <File RelativePath="..\..\..\gtk\gtkmenubar.c" />
-   <File RelativePath="..\..\..\gtk\gtkmenuitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkmenushell.c" />
-   <File RelativePath="..\..\..\gtk\gtkmenutoolbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkmessagedialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkmisc.c" />
-   <File RelativePath="..\..\..\gtk\gtkmnemonichash.c" />
-   <File RelativePath="..\..\..\gtk\gtkmodules.c" />
-   <File RelativePath="..\..\..\gtk\gtkmountoperation.c" />
-   <File RelativePath="..\..\..\gtk\gtknotebook.c" />
-   <File RelativePath="..\..\..\gtk\gtkobject.c" />
-   <File RelativePath="..\..\..\gtk\gtkoffscreenwindow.c" />
-   <File RelativePath="..\..\..\gtk\gtkorientable.c" />
-   <File RelativePath="..\..\..\gtk\gtkpagesetup.c" />
-   <File RelativePath="..\..\..\gtk\gtkpaned.c" />
-   <File RelativePath="..\..\..\gtk\gtkpango.c" />
-   <File RelativePath="..\..\..\gtk\gtkpapersize.c" />
-   <File RelativePath="..\..\..\gtk\gtkpathbar.c" />
-   <File RelativePath="..\..\..\gtk\gtkplug.c" />
-   <File RelativePath="..\..\..\gtk\gtkprintcontext.c" />
-   <File RelativePath="..\..\..\gtk\gtkprintoperation.c" />
-   <File RelativePath="..\..\..\gtk\gtkprintoperationpreview.c" />
-   <File RelativePath="..\..\..\gtk\gtkprintsettings.c" />
-   <File RelativePath="..\..\..\gtk\gtkprintutils.c" />
-   <File RelativePath="..\..\..\gtk\gtkprogressbar.c" />
-   <File RelativePath="..\..\..\gtk\gtkradioaction.c" />
-   <File RelativePath="..\..\..\gtk\gtkradiobutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkradiomenuitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkradiotoolbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkrange.c" />
-   <File RelativePath="..\..\..\gtk\gtkrbtree.c" />
-   <File RelativePath="..\..\..\gtk\gtkrc.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentaction.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentchooserdefault.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentchooserdialog.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentchoosermenu.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentchooserwidget.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentchooserutils.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentchooser.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentfilter.c" />
-   <File RelativePath="..\..\..\gtk\gtkrecentmanager.c" />
-   <File RelativePath="..\..\..\gtk\gtkruler.c" />
-   <File RelativePath="..\..\..\gtk\gtkscale.c" />
-   <File RelativePath="..\..\..\gtk\gtkscalebutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkscrollbar.c" />
-   <File RelativePath="..\..\..\gtk\gtkscrolledwindow.c" />
-   <File RelativePath="..\..\..\gtk\gtkselection.c" />
-   <File RelativePath="..\..\..\gtk\gtkseparator.c" />
-   <File RelativePath="..\..\..\gtk\gtkseparatormenuitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkseparatortoolitem.c" />
-   <File RelativePath="..\..\..\gtk\gtksettings.c" />
-   <File RelativePath="..\..\..\gtk\gtksizegroup.c" />
-   <File RelativePath="..\..\..\gtk\gtkshow.c" />
-   <File RelativePath="..\..\..\gtk\gtksocket.c" />
-   <File RelativePath="..\..\..\gtk\gtkspinbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkspinner.c" />
-   <File RelativePath="..\..\..\gtk\gtkstatusbar.c" />
-   <File RelativePath="..\..\..\gtk\gtkstatusicon.c" />
-   <File RelativePath="..\..\..\gtk\gtkstock.c" />
-   <File RelativePath="..\..\..\gtk\gtkstyle.c" />
-   <File RelativePath="..\..\..\gtk\gtktable.c" />
-   <File RelativePath="..\..\..\gtk\gtktearoffmenuitem.c" />
-   <File RelativePath="..\..\..\gtk\gtktestutils.c" />
-   <File RelativePath="..\..\..\gtk\gtktextbtree.c" />
-   <File RelativePath="..\..\..\gtk\gtktextbuffer.c" />
-   <File RelativePath="..\..\..\gtk\gtktextbufferrichtext.c" />
-   <File RelativePath="..\..\..\gtk\gtktextbufferserialize.c" />
-   <File RelativePath="..\..\..\gtk\gtktextchild.c" />
-   <File RelativePath="..\..\..\gtk\gtktextdisplay.c" />
-   <File RelativePath="..\..\..\gtk\gtktextiter.c" />
-   <File RelativePath="..\..\..\gtk\gtktextlayout.c" />
-   <File RelativePath="..\..\..\gtk\gtktextmark.c" />
-   <File RelativePath="..\..\..\gtk\gtktextsegment.c" />
-   <File RelativePath="..\..\..\gtk\gtktexttag.c" />
-   <File RelativePath="..\..\..\gtk\gtktexttagtable.c" />
-   <File RelativePath="..\..\..\gtk\gtktexttypes.c" />
-   <File RelativePath="..\..\..\gtk\gtktextutil.c" />
-   <File RelativePath="..\..\..\gtk\gtktextview.c" />
-   <File RelativePath="..\..\..\gtk\gtkthemes.c" />
-   <File RelativePath="..\..\..\gtk\gtktoggleaction.c" />
-   <File RelativePath="..\..\..\gtk\gtktogglebutton.c" />
-   <File RelativePath="..\..\..\gtk\gtktoggletoolbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtktoolbar.c" />
-   <File RelativePath="..\..\..\gtk\gtktoolbutton.c" />
-   <File RelativePath="..\..\..\gtk\gtktoolitem.c" />
-   <File RelativePath="..\..\..\gtk\gtktoolitemgroup.c" />
-   <File RelativePath="..\..\..\gtk\gtktoolpalette.c" />
-   <File RelativePath="..\..\..\gtk\gtktoolshell.c" />
-   <File RelativePath="..\..\..\gtk\gtktooltip.c" />
-   <File RelativePath="..\..\..\gtk\gtktreedatalist.c" />
-   <File RelativePath="..\..\..\gtk\gtktreednd.c" />
-   <File RelativePath="..\..\..\gtk\gtktreemodel.c" />
-   <File RelativePath="..\..\..\gtk\gtktreemodelfilter.c" />
-   <File RelativePath="..\..\..\gtk\gtktreemodelsort.c" />
-   <File RelativePath="..\..\..\gtk\gtktreeselection.c" />
-   <File RelativePath="..\..\..\gtk\gtktreesortable.c" />
-   <File RelativePath="..\..\..\gtk\gtktreestore.c" />
-   <File RelativePath="..\..\..\gtk\gtktreeview.c" />
-   <File RelativePath="..\..\..\gtk\gtktreeviewcolumn.c" />
-   <File RelativePath="..\..\..\gtk\gtktypebuiltins.c" />
-   <File RelativePath="..\..\..\gtk\gtktypeutils.c" />
-   <File RelativePath="..\..\..\gtk\gtkuimanager.c" />
-   <File RelativePath="..\..\..\gtk\gtkvbbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkvbox.c" />
-   <File RelativePath="..\..\..\gtk\gtkvolumebutton.c" />
-   <File RelativePath="..\..\..\gtk\gtkviewport.c" />
-   <File RelativePath="..\..\..\gtk\gtkvpaned.c" />
-   <File RelativePath="..\..\..\gtk\gtkvruler.c" />
-   <File RelativePath="..\..\..\gtk\gtkvscale.c" />
-   <File RelativePath="..\..\..\gtk\gtkvscrollbar.c" />
-   <File RelativePath="..\..\..\gtk\gtkvseparator.c" />
-   <File RelativePath="..\..\..\gtk\gtkwidget.c" />
-   <File RelativePath="..\..\..\gtk\gtkwindow-decorate.c" />
-   <File RelativePath="..\..\..\gtk\gtkwindow.c" />
-   <File RelativePath="..\..\..\gtk\gtkclipboard.c" />
-   <File RelativePath="..\..\..\gtk\gtkdnd.c" />
-   <File RelativePath="..\..\..\gtk\gtktext.c" />
-   <File RelativePath="..\..\..\gtk\gtktree.c" />
-   <File RelativePath="..\..\..\gtk\gtktreeitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkclist.c" />
-   <File RelativePath="..\..\..\gtk\gtkcombo.c" />
-   <File RelativePath="..\..\..\gtk\gtkctree.c" />
-   <File RelativePath="..\..\..\gtk\gtkcurve.c" />
-   <File RelativePath="..\..\..\gtk\gtkfilesel.c" />
-   <File RelativePath="..\..\..\gtk\gtkgamma.c" />
-   <File RelativePath="..\..\..\gtk\gtkitemfactory.c" />
-   <File RelativePath="..\..\..\gtk\gtklist.c" />
-   <File RelativePath="..\..\..\gtk\gtklistitem.c" />
-   <File RelativePath="..\..\..\gtk\gtkoldeditable.c" />
-   <File RelativePath="..\..\..\gtk\gtkoptionmenu.c" />
-   <File RelativePath="..\..\..\gtk\gtkpixmap.c" />
-   <File RelativePath="..\..\..\gtk\gtkpreview.c" />
-   <File RelativePath="..\..\..\gtk\gtkprogress.c" />
-   <File RelativePath="..\..\..\gtk\gtksignal.c" />
-   <File RelativePath="..\..\..\gtk\gtktipsquery.c" />
-   <File RelativePath="..\..\..\gtk\gtktooltips.c" />
-   <File RelativePath="..\..\..\gtk\gtkprint-win32.c" />
-   <File RelativePath="..\..\..\gtk\gtkprintoperation-win32.c" />
-   <File RelativePath="..\..\..\gtk\gtkplug-win32.c" />
-   <File RelativePath="..\..\..\gtk\gtksocket-win32.c" />
-   <File RelativePath="..\..\..\gtk\gtkwin32embed.c" />
-   <File RelativePath="..\..\..\gtk\gtkwin32embedwidget.c" />
-   <File RelativePath="..\..\..\gtk\gtkmountoperation-stub.c" />
-   <File RelativePath="..\..\..\modules\input\gtkimcontextime.c" />
-   <File RelativePath="..\..\..\modules\input\gtkimcontextmultipress.c" />
-   <File RelativePath="..\..\..\modules\input\gtkimcontextthai.c" />
+   <File RelativePath="..\..\..\btk\btkquery.c" />
+   <File RelativePath="..\..\..\btk\btksearchengine.c" />
+   <File RelativePath="..\..\..\btk\btksearchenginesimple.c" />
+   <File RelativePath="..\..\..\btk\fnmatch.c" />
+   <File RelativePath="..\..\..\btk\btkaboutdialog.c" />
+   <File RelativePath="..\..\..\btk\btkaccelgroup.c" />
+   <File RelativePath="..\..\..\btk\btkaccellabel.c" />
+   <File RelativePath="..\..\..\btk\btkaccelmap.c" />
+   <File RelativePath="..\..\..\btk\btkaccessible.c" />
+   <File RelativePath="..\..\..\btk\btkaction.c" />
+   <File RelativePath="..\..\..\btk\btkactiongroup.c" />
+   <File RelativePath="..\..\..\btk\btkactivatable.c" />
+   <File RelativePath="..\..\..\btk\btkadjustment.c" />
+   <File RelativePath="..\..\..\btk\btkalignment.c" />
+   <File RelativePath="..\..\..\btk\btkarrow.c" />
+   <File RelativePath="..\..\..\btk\btkaspectframe.c" />
+   <File RelativePath="..\..\..\btk\btkassistant.c" />
+   <File RelativePath="..\..\..\btk\btkbbox.c" />
+   <File RelativePath="..\..\..\btk\btkbin.c" />
+   <File RelativePath="..\..\..\btk\btkbindings.c" />
+   <File RelativePath="..\..\..\btk\btkbox.c" />
+   <File RelativePath="..\..\..\btk\btkbuildable.c" />
+   <File RelativePath="..\..\..\btk\btkbuilder.c" />
+   <File RelativePath="..\..\..\btk\btkbuilderparser.c" />
+   <File RelativePath="..\..\..\btk\btkbutton.c" />
+   <File RelativePath="..\..\..\btk\btkcalendar.c" />
+   <File RelativePath="..\..\..\btk\btkcelleditable.c" />
+   <File RelativePath="..\..\..\btk\btkcelllayout.c" />
+   <File RelativePath="..\..\..\btk\btkcellrenderer.c" />
+   <File RelativePath="..\..\..\btk\btkcellrendereraccel.c" />
+   <File RelativePath="..\..\..\btk\btkcellrenderercombo.c" />
+   <File RelativePath="..\..\..\btk\btkcellrendererpixbuf.c" />
+   <File RelativePath="..\..\..\btk\btkcellrendererprogress.c" />
+   <File RelativePath="..\..\..\btk\btkcellrendererspin.c" />
+   <File RelativePath="..\..\..\btk\btkcellrendererspinner.c" />
+   <File RelativePath="..\..\..\btk\btkcellrenderertext.c" />
+   <File RelativePath="..\..\..\btk\btkcellrenderertoggle.c" />
+   <File RelativePath="..\..\..\btk\btkcellview.c" />
+   <File RelativePath="..\..\..\btk\btkcheckbutton.c" />
+   <File RelativePath="..\..\..\btk\btkcheckmenuitem.c" />
+   <File RelativePath="..\..\..\btk\btkcolorbutton.c" />
+   <File RelativePath="..\..\..\btk\btkcolorsel.c" />
+   <File RelativePath="..\..\..\btk\btkcolorseldialog.c" />
+   <File RelativePath="..\..\..\btk\btkcombobox.c" />
+   <File RelativePath="..\..\..\btk\btkcomboboxentry.c" />
+   <File RelativePath="..\..\..\btk\btkcomboboxtext.c" />
+   <File RelativePath="..\..\..\btk\btkcontainer.c" />
+   <File RelativePath="..\..\..\btk\btkdialog.c" />
+   <File RelativePath="..\..\..\btk\btkdrawingarea.c" />
+   <File RelativePath="..\..\..\btk\btkeditable.c" />
+   <File RelativePath="..\..\..\btk\btkentry.c" />
+   <File RelativePath="..\..\..\btk\btkentrybuffer.c" />
+   <File RelativePath="..\..\..\btk\btkentrycompletion.c" />
+   <File RelativePath="..\..\..\btk\btkeventbox.c" />
+   <File RelativePath="..\..\..\btk\btkexpander.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooser.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserbutton.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserdefault.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserdialog.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserembed.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserentry.c" />
+   <File RelativePath="..\..\..\btk\btkfilechoosersettings.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserutils.c" />
+   <File RelativePath="..\..\..\btk\btkfilechooserwidget.c" />
+   <File RelativePath="..\..\..\btk\btkfilefilter.c" />
+   <File RelativePath="..\..\..\btk\btkfilesystem.c" />
+   <File RelativePath="..\..\..\btk\btkfilesystemmodel.c" />
+   <File RelativePath="..\..\..\btk\btkfixed.c" />
+   <File RelativePath="..\..\..\btk\btkfontbutton.c" />
+   <File RelativePath="..\..\..\btk\btkfontsel.c" />
+   <File RelativePath="..\..\..\btk\btkframe.c" />
+   <File RelativePath="..\..\..\btk\btkgc.c" />
+   <File RelativePath="..\..\..\btk\btkhandlebox.c" />
+   <File RelativePath="..\..\..\btk\btkhbbox.c" />
+   <File RelativePath="..\..\..\btk\btkhbox.c" />
+   <File RelativePath="..\..\..\btk\btkhpaned.c" />
+   <File RelativePath="..\..\..\btk\btkhruler.c" />
+   <File RelativePath="..\..\..\btk\btkhscale.c" />
+   <File RelativePath="..\..\..\btk\btkhscrollbar.c" />
+   <File RelativePath="..\..\..\btk\btkhseparator.c" />
+   <File RelativePath="..\..\..\btk\btkhsv.c" />
+   <File RelativePath="..\..\..\btk\btkiconcache.c" />
+   <File RelativePath="..\..\..\btk\btkiconcachevalidator.c" />
+   <File RelativePath="..\..\..\btk\btkiconfactory.c" />
+   <File RelativePath="..\..\..\btk\btkicontheme.c" />
+   <File RelativePath="..\..\..\btk\btkiconview.c" />
+   <File RelativePath="..\..\..\btk\btkimage.c" />
+   <File RelativePath="..\..\..\btk\btkimagemenuitem.c" />
+   <File RelativePath="..\..\..\btk\btkimcontext.c" />
+   <File RelativePath="..\..\..\btk\btkimcontextsimple.c" />
+   <File RelativePath="..\..\..\btk\btkimmodule.c" />
+   <File RelativePath="..\..\..\btk\btkimmulticontext.c" />
+   <File RelativePath="..\..\..\btk\btkinfobar.c" />
+   <File RelativePath="..\..\..\btk\btkinputdialog.c" />
+   <File RelativePath="..\..\..\btk\btkinvisible.c" />
+   <File RelativePath="..\..\..\btk\btkitem.c" />
+   <File RelativePath="..\..\..\btk\btkkeyhash.c" />
+   <File RelativePath="..\..\..\btk\btklabel.c" />
+   <File RelativePath="..\..\..\btk\btklayout.c" />
+   <File RelativePath="..\..\..\btk\btklinkbutton.c" />
+   <File RelativePath="..\..\..\btk\btkliststore.c" />
+   <File RelativePath="..\..\..\btk\btkmain.c" />
+   <File RelativePath="..\..\..\btk\btkmarshal.c" />
+   <File RelativePath="..\..\..\btk\btkmarshalers.c" />
+   <File RelativePath="..\..\..\btk\btkmenu.c" />
+   <File RelativePath="..\..\..\btk\btkmenubar.c" />
+   <File RelativePath="..\..\..\btk\btkmenuitem.c" />
+   <File RelativePath="..\..\..\btk\btkmenushell.c" />
+   <File RelativePath="..\..\..\btk\btkmenutoolbutton.c" />
+   <File RelativePath="..\..\..\btk\btkmessagedialog.c" />
+   <File RelativePath="..\..\..\btk\btkmisc.c" />
+   <File RelativePath="..\..\..\btk\btkmnemonichash.c" />
+   <File RelativePath="..\..\..\btk\btkmodules.c" />
+   <File RelativePath="..\..\..\btk\btkmountoperation.c" />
+   <File RelativePath="..\..\..\btk\btknotebook.c" />
+   <File RelativePath="..\..\..\btk\btkobject.c" />
+   <File RelativePath="..\..\..\btk\btkoffscreenwindow.c" />
+   <File RelativePath="..\..\..\btk\btkorientable.c" />
+   <File RelativePath="..\..\..\btk\btkpagesetup.c" />
+   <File RelativePath="..\..\..\btk\btkpaned.c" />
+   <File RelativePath="..\..\..\btk\btkbango.c" />
+   <File RelativePath="..\..\..\btk\btkpapersize.c" />
+   <File RelativePath="..\..\..\btk\btkpathbar.c" />
+   <File RelativePath="..\..\..\btk\btkplug.c" />
+   <File RelativePath="..\..\..\btk\btkprintcontext.c" />
+   <File RelativePath="..\..\..\btk\btkprintoperation.c" />
+   <File RelativePath="..\..\..\btk\btkprintoperationpreview.c" />
+   <File RelativePath="..\..\..\btk\btkprintsettings.c" />
+   <File RelativePath="..\..\..\btk\btkprintutils.c" />
+   <File RelativePath="..\..\..\btk\btkprogressbar.c" />
+   <File RelativePath="..\..\..\btk\btkradioaction.c" />
+   <File RelativePath="..\..\..\btk\btkradiobutton.c" />
+   <File RelativePath="..\..\..\btk\btkradiomenuitem.c" />
+   <File RelativePath="..\..\..\btk\btkradiotoolbutton.c" />
+   <File RelativePath="..\..\..\btk\btkrange.c" />
+   <File RelativePath="..\..\..\btk\btkrbtree.c" />
+   <File RelativePath="..\..\..\btk\btkrc.c" />
+   <File RelativePath="..\..\..\btk\btkrecentaction.c" />
+   <File RelativePath="..\..\..\btk\btkrecentchooserdefault.c" />
+   <File RelativePath="..\..\..\btk\btkrecentchooserdialog.c" />
+   <File RelativePath="..\..\..\btk\btkrecentchoosermenu.c" />
+   <File RelativePath="..\..\..\btk\btkrecentchooserwidget.c" />
+   <File RelativePath="..\..\..\btk\btkrecentchooserutils.c" />
+   <File RelativePath="..\..\..\btk\btkrecentchooser.c" />
+   <File RelativePath="..\..\..\btk\btkrecentfilter.c" />
+   <File RelativePath="..\..\..\btk\btkrecentmanager.c" />
+   <File RelativePath="..\..\..\btk\btkruler.c" />
+   <File RelativePath="..\..\..\btk\btkscale.c" />
+   <File RelativePath="..\..\..\btk\btkscalebutton.c" />
+   <File RelativePath="..\..\..\btk\btkscrollbar.c" />
+   <File RelativePath="..\..\..\btk\btkscrolledwindow.c" />
+   <File RelativePath="..\..\..\btk\btkselection.c" />
+   <File RelativePath="..\..\..\btk\btkseparator.c" />
+   <File RelativePath="..\..\..\btk\btkseparatormenuitem.c" />
+   <File RelativePath="..\..\..\btk\btkseparatortoolitem.c" />
+   <File RelativePath="..\..\..\btk\btksettings.c" />
+   <File RelativePath="..\..\..\btk\btksizegroup.c" />
+   <File RelativePath="..\..\..\btk\btkshow.c" />
+   <File RelativePath="..\..\..\btk\btksocket.c" />
+   <File RelativePath="..\..\..\btk\btkspinbutton.c" />
+   <File RelativePath="..\..\..\btk\btkspinner.c" />
+   <File RelativePath="..\..\..\btk\btkstatusbar.c" />
+   <File RelativePath="..\..\..\btk\btkstatusicon.c" />
+   <File RelativePath="..\..\..\btk\btkstock.c" />
+   <File RelativePath="..\..\..\btk\btkstyle.c" />
+   <File RelativePath="..\..\..\btk\btktable.c" />
+   <File RelativePath="..\..\..\btk\btktearoffmenuitem.c" />
+   <File RelativePath="..\..\..\btk\btktestutils.c" />
+   <File RelativePath="..\..\..\btk\btktextbtree.c" />
+   <File RelativePath="..\..\..\btk\btktextbuffer.c" />
+   <File RelativePath="..\..\..\btk\btktextbufferrichtext.c" />
+   <File RelativePath="..\..\..\btk\btktextbufferserialize.c" />
+   <File RelativePath="..\..\..\btk\btktextchild.c" />
+   <File RelativePath="..\..\..\btk\btktextdisplay.c" />
+   <File RelativePath="..\..\..\btk\btktextiter.c" />
+   <File RelativePath="..\..\..\btk\btktextlayout.c" />
+   <File RelativePath="..\..\..\btk\btktextmark.c" />
+   <File RelativePath="..\..\..\btk\btktextsegment.c" />
+   <File RelativePath="..\..\..\btk\btktexttag.c" />
+   <File RelativePath="..\..\..\btk\btktexttagtable.c" />
+   <File RelativePath="..\..\..\btk\btktexttypes.c" />
+   <File RelativePath="..\..\..\btk\btktextutil.c" />
+   <File RelativePath="..\..\..\btk\btktextview.c" />
+   <File RelativePath="..\..\..\btk\btkthemes.c" />
+   <File RelativePath="..\..\..\btk\btktoggleaction.c" />
+   <File RelativePath="..\..\..\btk\btktogglebutton.c" />
+   <File RelativePath="..\..\..\btk\btktoggletoolbutton.c" />
+   <File RelativePath="..\..\..\btk\btktoolbar.c" />
+   <File RelativePath="..\..\..\btk\btktoolbutton.c" />
+   <File RelativePath="..\..\..\btk\btktoolitem.c" />
+   <File RelativePath="..\..\..\btk\btktoolitemgroup.c" />
+   <File RelativePath="..\..\..\btk\btktoolpalette.c" />
+   <File RelativePath="..\..\..\btk\btktoolshell.c" />
+   <File RelativePath="..\..\..\btk\btktooltip.c" />
+   <File RelativePath="..\..\..\btk\btktreedatalist.c" />
+   <File RelativePath="..\..\..\btk\btktreednd.c" />
+   <File RelativePath="..\..\..\btk\btktreemodel.c" />
+   <File RelativePath="..\..\..\btk\btktreemodelfilter.c" />
+   <File RelativePath="..\..\..\btk\btktreemodelsort.c" />
+   <File RelativePath="..\..\..\btk\btktreeselection.c" />
+   <File RelativePath="..\..\..\btk\btktreesortable.c" />
+   <File RelativePath="..\..\..\btk\btktreestore.c" />
+   <File RelativePath="..\..\..\btk\btktreeview.c" />
+   <File RelativePath="..\..\..\btk\btktreeviewcolumn.c" />
+   <File RelativePath="..\..\..\btk\btktypebuiltins.c" />
+   <File RelativePath="..\..\..\btk\btktypeutils.c" />
+   <File RelativePath="..\..\..\btk\btkuimanager.c" />
+   <File RelativePath="..\..\..\btk\btkvbbox.c" />
+   <File RelativePath="..\..\..\btk\btkvbox.c" />
+   <File RelativePath="..\..\..\btk\btkvolumebutton.c" />
+   <File RelativePath="..\..\..\btk\btkviewport.c" />
+   <File RelativePath="..\..\..\btk\btkvpaned.c" />
+   <File RelativePath="..\..\..\btk\btkvruler.c" />
+   <File RelativePath="..\..\..\btk\btkvscale.c" />
+   <File RelativePath="..\..\..\btk\btkvscrollbar.c" />
+   <File RelativePath="..\..\..\btk\btkvseparator.c" />
+   <File RelativePath="..\..\..\btk\btkwidget.c" />
+   <File RelativePath="..\..\..\btk\btkwindow-decorate.c" />
+   <File RelativePath="..\..\..\btk\btkwindow.c" />
+   <File RelativePath="..\..\..\btk\btkclipboard.c" />
+   <File RelativePath="..\..\..\btk\btkdnd.c" />
+   <File RelativePath="..\..\..\btk\btktext.c" />
+   <File RelativePath="..\..\..\btk\btktree.c" />
+   <File RelativePath="..\..\..\btk\btktreeitem.c" />
+   <File RelativePath="..\..\..\btk\btkclist.c" />
+   <File RelativePath="..\..\..\btk\btkcombo.c" />
+   <File RelativePath="..\..\..\btk\btkctree.c" />
+   <File RelativePath="..\..\..\btk\btkcurve.c" />
+   <File RelativePath="..\..\..\btk\btkfilesel.c" />
+   <File RelativePath="..\..\..\btk\btkgamma.c" />
+   <File RelativePath="..\..\..\btk\btkitemfactory.c" />
+   <File RelativePath="..\..\..\btk\btklist.c" />
+   <File RelativePath="..\..\..\btk\btklistitem.c" />
+   <File RelativePath="..\..\..\btk\btkoldeditable.c" />
+   <File RelativePath="..\..\..\btk\btkoptionmenu.c" />
+   <File RelativePath="..\..\..\btk\btkpixmap.c" />
+   <File RelativePath="..\..\..\btk\btkpreview.c" />
+   <File RelativePath="..\..\..\btk\btkprogress.c" />
+   <File RelativePath="..\..\..\btk\btksignal.c" />
+   <File RelativePath="..\..\..\btk\btktipsquery.c" />
+   <File RelativePath="..\..\..\btk\btktooltips.c" />
+   <File RelativePath="..\..\..\btk\btkprint-win32.c" />
+   <File RelativePath="..\..\..\btk\btkprintoperation-win32.c" />
+   <File RelativePath="..\..\..\btk\btkplug-win32.c" />
+   <File RelativePath="..\..\..\btk\btksocket-win32.c" />
+   <File RelativePath="..\..\..\btk\btkwin32embed.c" />
+   <File RelativePath="..\..\..\btk\btkwin32embedwidget.c" />
+   <File RelativePath="..\..\..\btk\btkmountoperation-stub.c" />
+   <File RelativePath="..\..\..\modules\input\btkimcontextime.c" />
+   <File RelativePath="..\..\..\modules\input\btkimcontextmultipress.c" />
+   <File RelativePath="..\..\..\modules\input\btkimcontextthai.c" />
    <File RelativePath="..\..\..\modules\input\imam-et.c" />
    <File RelativePath="..\..\..\modules\input\imcedilla.c" />
    <File RelativePath="..\..\..\modules\input\imcyrillic-translit.c" />

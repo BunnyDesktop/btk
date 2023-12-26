@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackend.h: Abstract printer backend interfaces
+/* BTK - The GIMP Toolkit
+ * btkprintbackend.h: Abstract printer backend interfaces
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,109 +18,109 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_BACKEND_H__
-#define __GTK_PRINT_BACKEND_H__
+#ifndef __BTK_PRINT_BACKEND_H__
+#define __BTK_PRINT_BACKEND_H__
 
 /* This is a "semi-private" header; it is meant only for
- * alternate GtkPrintDialog backend modules; no stability guarantees
+ * alternate BtkPrintDialog backend modules; no stability guarantees
  * are made at this point
  */
-#ifndef GTK_PRINT_BACKEND_ENABLE_UNSUPPORTED
-#error "GtkPrintBackend is not supported API for general use"
+#ifndef BTK_PRINT_BACKEND_ENABLE_UNSUPPORTED
+#error "BtkPrintBackend is not supported API for general use"
 #endif
 
-#include <gtk/gtk.h>
-#include <gtk/gtkunixprint.h>
-#include <gtk/gtkprinteroptionset.h>
+#include <btk/btk.h>
+#include <btk/btkunixprint.h>
+#include <btk/btkprinteroptionset.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GtkPrintBackendClass    GtkPrintBackendClass;
-typedef struct _GtkPrintBackendPrivate  GtkPrintBackendPrivate;
+typedef struct _BtkPrintBackendClass    BtkPrintBackendClass;
+typedef struct _BtkPrintBackendPrivate  BtkPrintBackendPrivate;
 
-#define GTK_PRINT_BACKEND_ERROR (gtk_print_backend_error_quark ())
+#define BTK_PRINT_BACKEND_ERROR (btk_print_backend_error_quark ())
 
 typedef enum
 {
   /* TODO: add specific errors */
-  GTK_PRINT_BACKEND_ERROR_GENERIC
-} GtkPrintBackendError;
+  BTK_PRINT_BACKEND_ERROR_GENERIC
+} BtkPrintBackendError;
 
-GQuark     gtk_print_backend_error_quark      (void);
+GQuark     btk_print_backend_error_quark      (void);
 
-#define GTK_TYPE_PRINT_BACKEND                  (gtk_print_backend_get_type ())
-#define GTK_PRINT_BACKEND(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_BACKEND, GtkPrintBackend))
-#define GTK_PRINT_BACKEND_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINT_BACKEND, GtkPrintBackendClass))
-#define GTK_IS_PRINT_BACKEND(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_BACKEND))
-#define GTK_IS_PRINT_BACKEND_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINT_BACKEND))
-#define GTK_PRINT_BACKEND_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINT_BACKEND, GtkPrintBackendClass))
+#define BTK_TYPE_PRINT_BACKEND                  (btk_print_backend_get_type ())
+#define BTK_PRINT_BACKEND(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackend))
+#define BTK_PRINT_BACKEND_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
+#define BTK_IS_PRINT_BACKEND(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND))
+#define BTK_IS_PRINT_BACKEND_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND))
+#define BTK_PRINT_BACKEND_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
 
 typedef enum 
 {
-  GTK_PRINT_BACKEND_STATUS_UNKNOWN,
-  GTK_PRINT_BACKEND_STATUS_OK,
-  GTK_PRINT_BACKEND_STATUS_UNAVAILABLE
-} GtkPrintBackendStatus;
+  BTK_PRINT_BACKEND_STATUS_UNKNOWN,
+  BTK_PRINT_BACKEND_STATUS_OK,
+  BTK_PRINT_BACKEND_STATUS_UNAVAILABLE
+} BtkPrintBackendStatus;
 
-struct _GtkPrintBackend
+struct _BtkPrintBackend
 {
   GObject parent_instance;
 
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackendPrivate *priv;
 };
 
-struct _GtkPrintBackendClass
+struct _BtkPrintBackendClass
 {
   GObjectClass parent_class;
 
   /* Global backend methods: */
-  void                   (*request_printer_list)            (GtkPrintBackend        *backend);
-  void                   (*print_stream)                    (GtkPrintBackend        *backend,
-							     GtkPrintJob            *job,
-							     GIOChannel             *data_io,
-							     GtkPrintJobCompleteFunc callback,
+  void                   (*request_printer_list)            (BtkPrintBackend        *backend);
+  void                   (*print_stream)                    (BtkPrintBackend        *backend,
+							     BtkPrintJob            *job,
+							     BUNNYIOChannel             *data_io,
+							     BtkPrintJobCompleteFunc callback,
 							     gpointer                user_data,
 							     GDestroyNotify          dnotify);
 
   /* Printer methods: */
-  void                  (*printer_request_details)           (GtkPrinter          *printer);
-  cairo_surface_t *     (*printer_create_cairo_surface)      (GtkPrinter          *printer,
-							      GtkPrintSettings    *settings,
+  void                  (*printer_request_details)           (BtkPrinter          *printer);
+  bairo_surface_t *     (*printer_create_bairo_surface)      (BtkPrinter          *printer,
+							      BtkPrintSettings    *settings,
 							      gdouble              height,
 							      gdouble              width,
-							      GIOChannel          *cache_io);
-  GtkPrinterOptionSet * (*printer_get_options)               (GtkPrinter          *printer,
-							      GtkPrintSettings    *settings,
-							      GtkPageSetup        *page_setup,
-							      GtkPrintCapabilities capabilities);
-  gboolean              (*printer_mark_conflicts)            (GtkPrinter          *printer,
-							      GtkPrinterOptionSet *options);
-  void                  (*printer_get_settings_from_options) (GtkPrinter          *printer,
-							      GtkPrinterOptionSet *options,
-							      GtkPrintSettings    *settings);
-  void                  (*printer_prepare_for_print)         (GtkPrinter          *printer,
-							      GtkPrintJob         *print_job,
-							      GtkPrintSettings    *settings,
-							      GtkPageSetup        *page_setup);
-  GList  *              (*printer_list_papers)               (GtkPrinter          *printer);
-  GtkPageSetup *        (*printer_get_default_page_size)     (GtkPrinter          *printer);
-  gboolean              (*printer_get_hard_margins)          (GtkPrinter          *printer,
+							      BUNNYIOChannel          *cache_io);
+  BtkPrinterOptionSet * (*printer_get_options)               (BtkPrinter          *printer,
+							      BtkPrintSettings    *settings,
+							      BtkPageSetup        *page_setup,
+							      BtkPrintCapabilities capabilities);
+  gboolean              (*printer_mark_conflicts)            (BtkPrinter          *printer,
+							      BtkPrinterOptionSet *options);
+  void                  (*printer_get_settings_from_options) (BtkPrinter          *printer,
+							      BtkPrinterOptionSet *options,
+							      BtkPrintSettings    *settings);
+  void                  (*printer_prepare_for_print)         (BtkPrinter          *printer,
+							      BtkPrintJob         *print_job,
+							      BtkPrintSettings    *settings,
+							      BtkPageSetup        *page_setup);
+  GList  *              (*printer_list_papers)               (BtkPrinter          *printer);
+  BtkPageSetup *        (*printer_get_default_page_size)     (BtkPrinter          *printer);
+  gboolean              (*printer_get_hard_margins)          (BtkPrinter          *printer,
 							      gdouble             *top,
 							      gdouble             *bottom,
 							      gdouble             *left,
 							      gdouble             *right);
-  GtkPrintCapabilities  (*printer_get_capabilities)          (GtkPrinter          *printer);
+  BtkPrintCapabilities  (*printer_get_capabilities)          (BtkPrinter          *printer);
 
   /* Signals */
-  void                  (*printer_list_changed)              (GtkPrintBackend     *backend);
-  void                  (*printer_list_done)                 (GtkPrintBackend     *backend);
-  void                  (*printer_added)                     (GtkPrintBackend     *backend,
-							      GtkPrinter          *printer);
-  void                  (*printer_removed)                   (GtkPrintBackend     *backend,
-							      GtkPrinter          *printer);
-  void                  (*printer_status_changed)            (GtkPrintBackend     *backend,
-							      GtkPrinter          *printer);
-  void                  (*request_password)                  (GtkPrintBackend     *backend,
+  void                  (*printer_list_changed)              (BtkPrintBackend     *backend);
+  void                  (*printer_list_done)                 (BtkPrintBackend     *backend);
+  void                  (*printer_added)                     (BtkPrintBackend     *backend,
+							      BtkPrinter          *printer);
+  void                  (*printer_removed)                   (BtkPrintBackend     *backend,
+							      BtkPrinter          *printer);
+  void                  (*printer_status_changed)            (BtkPrintBackend     *backend,
+							      BtkPrinter          *printer);
+  void                  (*request_password)                  (BtkPrintBackend     *backend,
                                                               gpointer             auth_info_required,
                                                               gpointer             auth_info_default,
                                                               gpointer             auth_info_display,
@@ -128,74 +128,74 @@ struct _GtkPrintBackendClass
                                                               const gchar         *prompt);
 
   /* not a signal */
-  void                  (*set_password)                      (GtkPrintBackend     *backend,
+  void                  (*set_password)                      (BtkPrintBackend     *backend,
                                                               gchar              **auth_info_required,
                                                               gchar              **auth_info);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType   gtk_print_backend_get_type       (void) G_GNUC_CONST;
+GType   btk_print_backend_get_type       (void) G_GNUC_CONST;
 
-GList      *gtk_print_backend_get_printer_list     (GtkPrintBackend         *print_backend);
-gboolean    gtk_print_backend_printer_list_is_done (GtkPrintBackend         *print_backend);
-GtkPrinter *gtk_print_backend_find_printer         (GtkPrintBackend         *print_backend,
+GList      *btk_print_backend_get_printer_list     (BtkPrintBackend         *print_backend);
+gboolean    btk_print_backend_printer_list_is_done (BtkPrintBackend         *print_backend);
+BtkPrinter *btk_print_backend_find_printer         (BtkPrintBackend         *print_backend,
 						    const gchar             *printer_name);
-void        gtk_print_backend_print_stream         (GtkPrintBackend         *print_backend,
-						    GtkPrintJob             *job,
-						    GIOChannel              *data_io,
-						    GtkPrintJobCompleteFunc  callback,
+void        btk_print_backend_print_stream         (BtkPrintBackend         *print_backend,
+						    BtkPrintJob             *job,
+						    BUNNYIOChannel              *data_io,
+						    BtkPrintJobCompleteFunc  callback,
 						    gpointer                 user_data,
 						    GDestroyNotify           dnotify);
-GList *     gtk_print_backend_load_modules         (void);
-void        gtk_print_backend_destroy              (GtkPrintBackend         *print_backend);
-void        gtk_print_backend_set_password         (GtkPrintBackend         *backend, 
+GList *     btk_print_backend_load_modules         (void);
+void        btk_print_backend_destroy              (BtkPrintBackend         *print_backend);
+void        btk_print_backend_set_password         (BtkPrintBackend         *backend, 
                                                     gchar                  **auth_info_required,
                                                     gchar                  **auth_info);
 
-/* Backend-only functions for GtkPrintBackend */
+/* Backend-only functions for BtkPrintBackend */
 
-void        gtk_print_backend_add_printer          (GtkPrintBackend         *print_backend,
-						    GtkPrinter              *printer);
-void        gtk_print_backend_remove_printer       (GtkPrintBackend         *print_backend,
-						    GtkPrinter              *printer);
-void        gtk_print_backend_set_list_done        (GtkPrintBackend         *backend);
+void        btk_print_backend_add_printer          (BtkPrintBackend         *print_backend,
+						    BtkPrinter              *printer);
+void        btk_print_backend_remove_printer       (BtkPrintBackend         *print_backend,
+						    BtkPrinter              *printer);
+void        btk_print_backend_set_list_done        (BtkPrintBackend         *backend);
 
 
-/* Backend-only functions for GtkPrinter */
-gboolean    gtk_printer_is_new                (GtkPrinter      *printer);
-void        gtk_printer_set_accepts_pdf       (GtkPrinter      *printer,
+/* Backend-only functions for BtkPrinter */
+gboolean    btk_printer_is_new                (BtkPrinter      *printer);
+void        btk_printer_set_accepts_pdf       (BtkPrinter      *printer,
 					       gboolean         val);
-void        gtk_printer_set_accepts_ps        (GtkPrinter      *printer,
+void        btk_printer_set_accepts_ps        (BtkPrinter      *printer,
 					       gboolean         val);
-void        gtk_printer_set_is_new            (GtkPrinter      *printer,
+void        btk_printer_set_is_new            (BtkPrinter      *printer,
 					       gboolean         val);
-void        gtk_printer_set_is_active         (GtkPrinter      *printer,
+void        btk_printer_set_is_active         (BtkPrinter      *printer,
 					       gboolean         val);
-gboolean    gtk_printer_set_is_paused         (GtkPrinter      *printer,
+gboolean    btk_printer_set_is_paused         (BtkPrinter      *printer,
 					       gboolean         val);
-gboolean    gtk_printer_set_is_accepting_jobs (GtkPrinter      *printer,
+gboolean    btk_printer_set_is_accepting_jobs (BtkPrinter      *printer,
 					       gboolean         val);
-void        gtk_printer_set_has_details       (GtkPrinter      *printer,
+void        btk_printer_set_has_details       (BtkPrinter      *printer,
 					       gboolean         val);
-void        gtk_printer_set_is_default        (GtkPrinter      *printer,
+void        btk_printer_set_is_default        (BtkPrinter      *printer,
 					       gboolean         val);
-void        gtk_printer_set_icon_name         (GtkPrinter      *printer,
+void        btk_printer_set_icon_name         (BtkPrinter      *printer,
 					       const gchar     *icon);
-gboolean    gtk_printer_set_job_count         (GtkPrinter      *printer,
+gboolean    btk_printer_set_job_count         (BtkPrinter      *printer,
 					       gint             count);
-gboolean    gtk_printer_set_location          (GtkPrinter      *printer,
+gboolean    btk_printer_set_location          (BtkPrinter      *printer,
 					       const gchar     *location);
-gboolean    gtk_printer_set_description       (GtkPrinter      *printer,
+gboolean    btk_printer_set_description       (BtkPrinter      *printer,
 					       const gchar     *description);
-gboolean    gtk_printer_set_state_message     (GtkPrinter      *printer,
+gboolean    btk_printer_set_state_message     (BtkPrinter      *printer,
 					       const gchar     *message);
 
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_BACKEND_H__ */
+#endif /* __BTK_PRINT_BACKEND_H__ */

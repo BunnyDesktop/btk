@@ -1,4 +1,4 @@
-/* GtkPrintUnixDialog
+/* BtkPrintUnixDialog
  * Copyright (C) 2006 John (J5) Palmieri <johnp@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,84 +17,84 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_UNIX_DIALOG_H__
-#define __GTK_PRINT_UNIX_DIALOG_H__
+#ifndef __BTK_PRINT_UNIX_DIALOG_H__
+#define __BTK_PRINT_UNIX_DIALOG_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_UNIX_PRINT_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtkunixprint.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_UNIX_PRINT_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btkunixprint.h> can be included directly."
 #endif
 
-#include <gtk/gtk.h>
-#include <gtk/gtkprinter.h>
-#include <gtk/gtkprintjob.h>
+#include <btk/btk.h>
+#include <btk/btkprinter.h>
+#include <btk/btkprintjob.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_UNIX_DIALOG                  (gtk_print_unix_dialog_get_type ())
-#define GTK_PRINT_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_UNIX_DIALOG, GtkPrintUnixDialog))
-#define GTK_PRINT_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINT_UNIX_DIALOG, GtkPrintUnixDialogClass))
-#define GTK_IS_PRINT_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_UNIX_DIALOG))
-#define GTK_IS_PRINT_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINT_UNIX_DIALOG))
-#define GTK_PRINT_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINT_UNIX_DIALOG, GtkPrintUnixDialogClass))
+#define BTK_TYPE_PRINT_UNIX_DIALOG                  (btk_print_unix_dialog_get_type ())
+#define BTK_PRINT_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialog))
+#define BTK_PRINT_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
+#define BTK_IS_PRINT_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_UNIX_DIALOG))
+#define BTK_IS_PRINT_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_UNIX_DIALOG))
+#define BTK_PRINT_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
 
 
-typedef struct _GtkPrintUnixDialog         GtkPrintUnixDialog;
-typedef struct _GtkPrintUnixDialogClass    GtkPrintUnixDialogClass;
-typedef struct GtkPrintUnixDialogPrivate   GtkPrintUnixDialogPrivate;
+typedef struct _BtkPrintUnixDialog         BtkPrintUnixDialog;
+typedef struct _BtkPrintUnixDialogClass    BtkPrintUnixDialogClass;
+typedef struct BtkPrintUnixDialogPrivate   BtkPrintUnixDialogPrivate;
 
-struct _GtkPrintUnixDialog
+struct _BtkPrintUnixDialog
 {
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
-  GtkPrintUnixDialogPrivate *GSEAL (priv);
+  BtkPrintUnixDialogPrivate *GSEAL (priv);
 };
 
-struct _GtkPrintUnixDialogClass
+struct _BtkPrintUnixDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
-  void (*_gtk_reserved6) (void);
-  void (*_gtk_reserved7) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
+  void (*_btk_reserved6) (void);
+  void (*_btk_reserved7) (void);
 };
 
-GType                gtk_print_unix_dialog_get_type                (void) G_GNUC_CONST;
-GtkWidget *          gtk_print_unix_dialog_new                     (const gchar *title,
-                                                                    GtkWindow   *parent);
+GType                btk_print_unix_dialog_get_type                (void) G_GNUC_CONST;
+BtkWidget *          btk_print_unix_dialog_new                     (const gchar *title,
+                                                                    BtkWindow   *parent);
 
-void                 gtk_print_unix_dialog_set_page_setup          (GtkPrintUnixDialog *dialog,
-								    GtkPageSetup       *page_setup);
-GtkPageSetup *       gtk_print_unix_dialog_get_page_setup          (GtkPrintUnixDialog *dialog);
-void                 gtk_print_unix_dialog_set_current_page        (GtkPrintUnixDialog *dialog,
+void                 btk_print_unix_dialog_set_page_setup          (BtkPrintUnixDialog *dialog,
+								    BtkPageSetup       *page_setup);
+BtkPageSetup *       btk_print_unix_dialog_get_page_setup          (BtkPrintUnixDialog *dialog);
+void                 btk_print_unix_dialog_set_current_page        (BtkPrintUnixDialog *dialog,
 								    gint                current_page);
-gint                 gtk_print_unix_dialog_get_current_page        (GtkPrintUnixDialog *dialog);
-void                 gtk_print_unix_dialog_set_settings            (GtkPrintUnixDialog *dialog,
-								    GtkPrintSettings   *settings);
-GtkPrintSettings *   gtk_print_unix_dialog_get_settings            (GtkPrintUnixDialog *dialog);
-GtkPrinter *         gtk_print_unix_dialog_get_selected_printer    (GtkPrintUnixDialog *dialog);
-void                 gtk_print_unix_dialog_add_custom_tab          (GtkPrintUnixDialog *dialog,
-								    GtkWidget          *child,
-								    GtkWidget          *tab_label);
-void                 gtk_print_unix_dialog_set_manual_capabilities (GtkPrintUnixDialog *dialog,
-								    GtkPrintCapabilities capabilities);
-GtkPrintCapabilities gtk_print_unix_dialog_get_manual_capabilities (GtkPrintUnixDialog  *dialog);
-void                 gtk_print_unix_dialog_set_support_selection   (GtkPrintUnixDialog  *dialog,
+gint                 btk_print_unix_dialog_get_current_page        (BtkPrintUnixDialog *dialog);
+void                 btk_print_unix_dialog_set_settings            (BtkPrintUnixDialog *dialog,
+								    BtkPrintSettings   *settings);
+BtkPrintSettings *   btk_print_unix_dialog_get_settings            (BtkPrintUnixDialog *dialog);
+BtkPrinter *         btk_print_unix_dialog_get_selected_printer    (BtkPrintUnixDialog *dialog);
+void                 btk_print_unix_dialog_add_custom_tab          (BtkPrintUnixDialog *dialog,
+								    BtkWidget          *child,
+								    BtkWidget          *tab_label);
+void                 btk_print_unix_dialog_set_manual_capabilities (BtkPrintUnixDialog *dialog,
+								    BtkPrintCapabilities capabilities);
+BtkPrintCapabilities btk_print_unix_dialog_get_manual_capabilities (BtkPrintUnixDialog  *dialog);
+void                 btk_print_unix_dialog_set_support_selection   (BtkPrintUnixDialog  *dialog,
 								    gboolean             support_selection);
-gboolean             gtk_print_unix_dialog_get_support_selection   (GtkPrintUnixDialog  *dialog);
-void                 gtk_print_unix_dialog_set_has_selection       (GtkPrintUnixDialog  *dialog,
+gboolean             btk_print_unix_dialog_get_support_selection   (BtkPrintUnixDialog  *dialog);
+void                 btk_print_unix_dialog_set_has_selection       (BtkPrintUnixDialog  *dialog,
 								    gboolean             has_selection);
-gboolean             gtk_print_unix_dialog_get_has_selection       (GtkPrintUnixDialog  *dialog);
-void                 gtk_print_unix_dialog_set_embed_page_setup    (GtkPrintUnixDialog *dialog,
+gboolean             btk_print_unix_dialog_get_has_selection       (BtkPrintUnixDialog  *dialog);
+void                 btk_print_unix_dialog_set_embed_page_setup    (BtkPrintUnixDialog *dialog,
 								    gboolean            embed);
-gboolean             gtk_print_unix_dialog_get_embed_page_setup    (GtkPrintUnixDialog *dialog);
-gboolean             gtk_print_unix_dialog_get_page_setup_set      (GtkPrintUnixDialog *dialog);
+gboolean             btk_print_unix_dialog_get_embed_page_setup    (BtkPrintUnixDialog *dialog);
+gboolean             btk_print_unix_dialog_get_page_setup_set      (BtkPrintUnixDialog *dialog);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_UNIX_DIALOG_H__ */
+#endif /* __BTK_PRINT_UNIX_DIALOG_H__ */

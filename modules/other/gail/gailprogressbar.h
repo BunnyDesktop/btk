@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,37 +17,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_PROGRESS_BAR_H__
-#define __GAIL_PROGRESS_BAR_H__
+#ifndef __BAIL_PROGRESS_BAR_H__
+#define __BAIL_PROGRESS_BAR_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_PROGRESS_BAR                      (gail_progress_bar_get_type ())
-#define GAIL_PROGRESS_BAR(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_PROGRESS_BAR, GailProgressBar))
-#define GAIL_PROGRESS_BAR_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_PROGRESS_BAR, GailProgressBarClass))
-#define GAIL_IS_PROGRESS_BAR(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_PROGRESS_BAR))
-#define GAIL_IS_PROGRESS_BAR_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_PROGRESS_BAR))
-#define GAIL_PROGRESS_BAR_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_PROGRESS_BAR, GailProgressBarClass))
+#define BAIL_TYPE_PROGRESS_BAR                      (bail_progress_bar_get_type ())
+#define BAIL_PROGRESS_BAR(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBar))
+#define BAIL_PROGRESS_BAR_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PROGRESS_BAR, BailProgressBarClass))
+#define BAIL_IS_PROGRESS_BAR(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PROGRESS_BAR))
+#define BAIL_IS_PROGRESS_BAR_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PROGRESS_BAR))
+#define BAIL_PROGRESS_BAR_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBarClass))
 
-typedef struct _GailProgressBar         GailProgressBar;
-typedef struct _GailProgressBarClass	GailProgressBarClass;
+typedef struct _BailProgressBar         BailProgressBar;
+typedef struct _BailProgressBarClass	BailProgressBarClass;
 
-struct _GailProgressBar
+struct _BailProgressBar
 {
-  GailWidget parent;
+  BailWidget parent;
 
-  AtkObject *adjustment;
+  BatkObject *adjustment;
 };
 
-GType gail_progress_bar_get_type (void);
+GType bail_progress_bar_get_type (void);
 
-struct _GailProgressBarClass
+struct _BailProgressBarClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_PROGRESS_BAR_H__ */
+#endif /* __BAIL_PROGRESS_BAR_H__ */

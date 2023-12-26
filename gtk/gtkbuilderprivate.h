@@ -1,4 +1,4 @@
-/* gtkbuilderprivate.h
+/* btkbuilderprivate.h
  * Copyright (C) 2006-2007 Async Open Source,
  *                         Johan Dahlin <jdahlin@async.com.br>
  *
@@ -18,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_BUILDER_PRIVATE_H__
-#define __GTK_BUILDER_PRIVATE_H__
+#ifndef __BTK_BUILDER_PRIVATE_H__
+#define __BTK_BUILDER_PRIVATE_H__
 
-#include "gtkbuilder.h"
+#include "btkbuilder.h"
 
 typedef struct {
   const gchar *name;
@@ -88,7 +88,7 @@ typedef struct {
 
 typedef struct {
   const gchar *last_element;
-  GtkBuilder *builder;
+  BtkBuilder *builder;
   gchar *domain;
   GSList *stack;
   SubParser *subparser;
@@ -107,40 +107,40 @@ typedef struct {
 
 typedef GType (*GTypeGetFunc) (void);
 
-/* Things only GtkBuilder should use */
-void _gtk_builder_parser_parse_buffer (GtkBuilder *builder,
+/* Things only BtkBuilder should use */
+void _btk_builder_parser_parse_buffer (BtkBuilder *builder,
                                        const gchar *filename,
                                        const gchar *buffer,
                                        gsize length,
                                        gchar **requested_objs,
                                        GError **error);
-GObject * _gtk_builder_construct (GtkBuilder *builder,
+GObject * _btk_builder_construct (BtkBuilder *builder,
                                   ObjectInfo *info,
 				  GError    **error);
-void      _gtk_builder_add (GtkBuilder *builder,
+void      _btk_builder_add (BtkBuilder *builder,
                             ChildInfo *child_info);
-void      _gtk_builder_add_signals (GtkBuilder *builder,
+void      _btk_builder_add_signals (BtkBuilder *builder,
 				    GSList     *signals);
-void      _gtk_builder_finish (GtkBuilder *builder);
+void      _btk_builder_finish (BtkBuilder *builder);
 void _free_signal_info (SignalInfo *info,
                         gpointer user_data);
 
 /* Internal API which might be made public at some point */
-gboolean _gtk_builder_boolean_from_string (const gchar  *string,
+gboolean _btk_builder_boolean_from_string (const gchar  *string,
 					   gboolean     *value,
 					   GError      **error);
-gboolean _gtk_builder_enum_from_string (GType         type,
+gboolean _btk_builder_enum_from_string (GType         type,
                                         const gchar  *string,
                                         gint         *enum_value,
                                         GError      **error);
-gboolean  _gtk_builder_flags_from_string (GType       type,
+gboolean  _btk_builder_flags_from_string (GType       type,
 					  const char *string,
 					  guint      *value,
 					  GError    **error);
-gchar * _gtk_builder_parser_translate (const gchar *domain,
+gchar * _btk_builder_parser_translate (const gchar *domain,
 				       const gchar *context,
 				       const gchar *text);
-gchar *   _gtk_builder_get_absolute_filename (GtkBuilder *builder,
+gchar *   _btk_builder_get_absolute_filename (BtkBuilder *builder,
 					      const gchar *string);
 
-#endif /* __GTK_BUILDER_PRIVATE_H__ */
+#endif /* __BTK_BUILDER_PRIVATE_H__ */

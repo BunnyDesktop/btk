@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,21 +18,21 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_COLOR_H__
-#define __GDK_COLOR_H__
+#ifndef __BDK_COLOR_H__
+#define __BDK_COLOR_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <cairo.h>
-#include <gdk/gdktypes.h>
+#include <bairo.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  *    be used to draw into. Therefore, sharing colors between
  *    colormaps is a bad idea.
  */
-struct _GdkColor
+struct _BdkColor
 {
   guint32 pixel;
   guint16 red;
@@ -54,123 +54,123 @@ struct _GdkColor
 /* The colormap type.
  */
 
-typedef struct _GdkColormapClass GdkColormapClass;
+typedef struct _BdkColormapClass BdkColormapClass;
 
-#define GDK_TYPE_COLORMAP              (gdk_colormap_get_type ())
-#define GDK_COLORMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_COLORMAP, GdkColormap))
-#define GDK_COLORMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_COLORMAP, GdkColormapClass))
-#define GDK_IS_COLORMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_COLORMAP))
-#define GDK_IS_COLORMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_COLORMAP))
-#define GDK_COLORMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_COLORMAP, GdkColormapClass))
+#define BDK_TYPE_COLORMAP              (bdk_colormap_get_type ())
+#define BDK_COLORMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_COLORMAP, BdkColormap))
+#define BDK_COLORMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_COLORMAP, BdkColormapClass))
+#define BDK_IS_COLORMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_COLORMAP))
+#define BDK_IS_COLORMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_COLORMAP))
+#define BDK_COLORMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_COLORMAP, BdkColormapClass))
 
-#define GDK_TYPE_COLOR                 (gdk_color_get_type ())
+#define BDK_TYPE_COLOR                 (bdk_color_get_type ())
 
-struct _GdkColormap
+struct _BdkColormap
 {
   /*< private >*/
   GObject parent_instance;
 
   /*< public >*/
   gint      GSEAL (size);
-  GdkColor *GSEAL (colors);
+  BdkColor *GSEAL (colors);
 
   /*< private >*/
-  GdkVisual *GSEAL (visual);
+  BdkVisual *GSEAL (visual);
   
   gpointer GSEAL (windowing_data);
 };
 
-struct _GdkColormapClass
+struct _BdkColormapClass
 {
   GObjectClass parent_class;
 
 };
 
-GType        gdk_colormap_get_type (void) G_GNUC_CONST;
+GType        bdk_colormap_get_type (void) G_GNUC_CONST;
 
-GdkColormap* gdk_colormap_new	  (GdkVisual   *visual,
+BdkColormap* bdk_colormap_new	  (BdkVisual   *visual,
 				   gboolean	allocate);
 
-#ifndef GDK_DISABLE_DEPRECATED
-GdkColormap* gdk_colormap_ref	  (GdkColormap *cmap);
-void	     gdk_colormap_unref	  (GdkColormap *cmap);
+#ifndef BDK_DISABLE_DEPRECATED
+BdkColormap* bdk_colormap_ref	  (BdkColormap *cmap);
+void	     bdk_colormap_unref	  (BdkColormap *cmap);
 #endif 
 
-#ifndef GDK_MULTIHEAD_SAFE
-GdkColormap* gdk_colormap_get_system	        (void);
+#ifndef BDK_MULTIHEAD_SAFE
+BdkColormap* bdk_colormap_get_system	        (void);
 #endif
 
-GdkScreen *gdk_colormap_get_screen (GdkColormap *cmap);
+BdkScreen *bdk_colormap_get_screen (BdkColormap *cmap);
 
-#ifndef GDK_DISABLE_DEPRECATED
-gint gdk_colormap_get_system_size  (void);
+#ifndef BDK_DISABLE_DEPRECATED
+gint bdk_colormap_get_system_size  (void);
 #endif
 
-#if !defined (GDK_DISABLE_DEPRECATED) || defined (GDK_COMPILATION)
-/* Used by gdk_colors_store () */
-void gdk_colormap_change (GdkColormap	*colormap,
+#if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
+/* Used by bdk_colors_store () */
+void bdk_colormap_change (BdkColormap	*colormap,
 			  gint		 ncolors);
 #endif 
 
-gint  gdk_colormap_alloc_colors   (GdkColormap    *colormap,
-				   GdkColor       *colors,
+gint  bdk_colormap_alloc_colors   (BdkColormap    *colormap,
+				   BdkColor       *colors,
 				   gint            n_colors,
 				   gboolean        writeable,
 				   gboolean        best_match,
 				   gboolean       *success);
-gboolean gdk_colormap_alloc_color (GdkColormap    *colormap,
-				   GdkColor       *color,
+gboolean bdk_colormap_alloc_color (BdkColormap    *colormap,
+				   BdkColor       *color,
 				   gboolean        writeable,
 				   gboolean        best_match);
-void     gdk_colormap_free_colors (GdkColormap    *colormap,
-				   const GdkColor *colors,
+void     bdk_colormap_free_colors (BdkColormap    *colormap,
+				   const BdkColor *colors,
 				   gint            n_colors);
-void     gdk_colormap_query_color (GdkColormap    *colormap,
+void     bdk_colormap_query_color (BdkColormap    *colormap,
 				   gulong          pixel,
-				   GdkColor       *result);
+				   BdkColor       *result);
 
-GdkVisual *gdk_colormap_get_visual (GdkColormap *colormap);
+BdkVisual *bdk_colormap_get_visual (BdkColormap *colormap);
 
-GdkColor *gdk_color_copy      (const GdkColor *color);
-void      gdk_color_free      (GdkColor       *color);
-gboolean  gdk_color_parse     (const gchar    *spec,
-			       GdkColor       *color);
-guint     gdk_color_hash      (const GdkColor *colora);
-gboolean  gdk_color_equal     (const GdkColor *colora,
-			       const GdkColor *colorb);
-gchar *   gdk_color_to_string (const GdkColor *color);
+BdkColor *bdk_color_copy      (const BdkColor *color);
+void      bdk_color_free      (BdkColor       *color);
+gboolean  bdk_color_parse     (const gchar    *spec,
+			       BdkColor       *color);
+guint     bdk_color_hash      (const BdkColor *colora);
+gboolean  bdk_color_equal     (const BdkColor *colora,
+			       const BdkColor *colorb);
+gchar *   bdk_color_to_string (const BdkColor *color);
 
-GType     gdk_color_get_type (void) G_GNUC_CONST;
+GType     bdk_color_get_type (void) G_GNUC_CONST;
 
 /* The following functions are deprecated */
-#ifndef GDK_DISABLE_DEPRECATED
-void gdk_colors_store	 (GdkColormap	*colormap,
-			  GdkColor	*colors,
+#ifndef BDK_DISABLE_DEPRECATED
+void bdk_colors_store	 (BdkColormap	*colormap,
+			  BdkColor	*colors,
 			  gint		 ncolors);
-gint gdk_color_white	 (GdkColormap	*colormap,
-			  GdkColor	*color);
-gint gdk_color_black	 (GdkColormap	*colormap,
-			  GdkColor	*color);
-gint gdk_color_alloc	 (GdkColormap	*colormap,
-			  GdkColor	*color);
-gint gdk_color_change	 (GdkColormap	*colormap,
-			  GdkColor	*color);
-#endif /* GDK_DISABLE_DEPRECATED */
+gint bdk_color_white	 (BdkColormap	*colormap,
+			  BdkColor	*color);
+gint bdk_color_black	 (BdkColormap	*colormap,
+			  BdkColor	*color);
+gint bdk_color_alloc	 (BdkColormap	*colormap,
+			  BdkColor	*color);
+gint bdk_color_change	 (BdkColormap	*colormap,
+			  BdkColor	*color);
+#endif /* BDK_DISABLE_DEPRECATED */
 
-#if !defined (GDK_DISABLE_DEPRECATED) || defined (GDK_COMPILATION)
-/* Used by gdk_rgb_try_colormap () */
-gint gdk_colors_alloc	 (GdkColormap	*colormap,
+#if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
+/* Used by bdk_rgb_try_colormap () */
+gint bdk_colors_alloc	 (BdkColormap	*colormap,
 			  gboolean	 contiguous,
 			  gulong	*planes,
 			  gint		 nplanes,
 			  gulong	*pixels,
 			  gint		 npixels);
-void gdk_colors_free	 (GdkColormap	*colormap,
+void bdk_colors_free	 (BdkColormap	*colormap,
 			  gulong	*pixels,
 			  gint		 npixels,
 			  gulong	 planes);
-#endif /* !GDK_DISABLE_DEPRECATED || GDK_COMPILATION */
+#endif /* !BDK_DISABLE_DEPRECATED || BDK_COMPILATION */
 
 G_END_DECLS
 
-#endif /* __GDK_COLOR_H__ */
+#endif /* __BDK_COLOR_H__ */

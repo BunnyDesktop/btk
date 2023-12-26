@@ -1,4 +1,4 @@
-/* GtkPrinterCups
+/* BtkPrinterCups
  * Copyright (C) 2006 John (J5) Palmieri <johnp@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,32 +17,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINTER_CUPS_H__
-#define __GTK_PRINTER_CUPS_H__
+#ifndef __BTK_PRINTER_CUPS_H__
+#define __BTK_PRINTER_CUPS_H__
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 #include <cups/cups.h>
 #include <cups/ppd.h>
-#include "gtkcupsutils.h"
+#include "btkcupsutils.h"
 
-#include <gtk/gtkunixprint.h>
+#include <btk/btkunixprint.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINTER_CUPS                  (gtk_printer_cups_get_type ())
-#define GTK_PRINTER_CUPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINTER_CUPS, GtkPrinterCups))
-#define GTK_PRINTER_CUPS_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINTER_CUPS, GtkPrinterCupsClass))
-#define GTK_IS_PRINTER_CUPS(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINTER_CUPS))
-#define GTK_IS_PRINTER_CUPS_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINTER_CUPS))
-#define GTK_PRINTER_CUPS_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINTER_CUPS, GtkPrinterCupsClass))
+#define BTK_TYPE_PRINTER_CUPS                  (btk_printer_cups_get_type ())
+#define BTK_PRINTER_CUPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_CUPS, BtkPrinterCups))
+#define BTK_PRINTER_CUPS_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_CUPS, BtkPrinterCupsClass))
+#define BTK_IS_PRINTER_CUPS(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_CUPS))
+#define BTK_IS_PRINTER_CUPS_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_CUPS))
+#define BTK_PRINTER_CUPS_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_CUPS, BtkPrinterCupsClass))
 
-typedef struct _GtkPrinterCups	        GtkPrinterCups;
-typedef struct _GtkPrinterCupsClass     GtkPrinterCupsClass;
-typedef struct _GtkPrinterCupsPrivate   GtkPrinterCupsPrivate;
+typedef struct _BtkPrinterCups	        BtkPrinterCups;
+typedef struct _BtkPrinterCupsClass     BtkPrinterCupsClass;
+typedef struct _BtkPrinterCupsPrivate   BtkPrinterCupsPrivate;
 
-struct _GtkPrinterCups
+struct _BtkPrinterCups
 {
-  GtkPrinter parent_instance;
+  BtkPrinter parent_instance;
 
   gchar *device_uri;
   gchar *printer_uri;
@@ -61,7 +61,7 @@ struct _GtkPrinterCups
   gboolean remote;
   guint get_remote_ppd_poll;
   gint  get_remote_ppd_attempts;
-  GtkCupsConnectionTest *remote_cups_connection_test;
+  BtkCupsConnectionTest *remote_cups_connection_test;
 #ifdef HAVE_CUPS_API_1_6
   gboolean  avahi_browsed;
   gchar    *avahi_name;
@@ -75,19 +75,19 @@ struct _GtkPrinterCups
   gboolean supports_number_up;
 };
 
-struct _GtkPrinterCupsClass
+struct _BtkPrinterCupsClass
 {
-  GtkPrinterClass parent_class;
+  BtkPrinterClass parent_class;
 
 };
 
-GType                    gtk_printer_cups_get_type      (void) G_GNUC_CONST;
-void                     gtk_printer_cups_register_type (GTypeModule     *module);
-GtkPrinterCups          *gtk_printer_cups_new           (const char      *name,
-							 GtkPrintBackend *backend);
-ppd_file_t 		*gtk_printer_cups_get_ppd       (GtkPrinterCups  *printer);
-const gchar		*gtk_printer_cups_get_ppd_name  (GtkPrinterCups  *printer);
+GType                    btk_printer_cups_get_type      (void) G_GNUC_CONST;
+void                     btk_printer_cups_register_type (GTypeModule     *module);
+BtkPrinterCups          *btk_printer_cups_new           (const char      *name,
+							 BtkPrintBackend *backend);
+ppd_file_t 		*btk_printer_cups_get_ppd       (BtkPrinterCups  *printer);
+const gchar		*btk_printer_cups_get_ppd_name  (BtkPrinterCups  *printer);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINTER_CUPS_H__ */
+#endif /* __BTK_PRINTER_CUPS_H__ */

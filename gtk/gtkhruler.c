@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,39 +18,39 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include "gtkhruler.h"
-#include "gtkorientable.h"
-#include "gtkalias.h"
+#include "btkhruler.h"
+#include "btkorientable.h"
+#include "btkalias.h"
 
-G_DEFINE_TYPE (GtkHRuler, gtk_hruler, GTK_TYPE_RULER)
-
-static void
-gtk_hruler_class_init (GtkHRulerClass *klass)
-{
-}
+G_DEFINE_TYPE (BtkHRuler, btk_hruler, BTK_TYPE_RULER)
 
 static void
-gtk_hruler_init (GtkHRuler *hruler)
+btk_hruler_class_init (BtkHRulerClass *klass)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (hruler),
-                                  GTK_ORIENTATION_HORIZONTAL);
 }
 
-GtkWidget *
-gtk_hruler_new (void)
+static void
+btk_hruler_init (BtkHRuler *hruler)
 {
-  return g_object_new (GTK_TYPE_HRULER, NULL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (hruler),
+                                  BTK_ORIENTATION_HORIZONTAL);
 }
 
-#define __GTK_HRULER_C__
-#include "gtkaliasdef.c"
+BtkWidget *
+btk_hruler_new (void)
+{
+  return g_object_new (BTK_TYPE_HRULER, NULL);
+}
+
+#define __BTK_HRULER_C__
+#include "btkaliasdef.c"

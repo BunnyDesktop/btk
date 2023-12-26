@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilefilter.c: Filters for selecting a file subset
+/* BTK - The GIMP Toolkit
+ * btkfilefilter.c: Filters for selecting a file subset
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,18 +21,18 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtkfilefilter.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
+#include "btkfilefilter.h"
+#include "btkintl.h"
+#include "btkprivate.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
-typedef struct _GtkFileFilterClass GtkFileFilterClass;
+typedef struct _BtkFileFilterClass BtkFileFilterClass;
 typedef struct _FilterRule FilterRule;
 
-#define GTK_FILE_FILTER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FILE_FILTER, GtkFileFilterClass))
-#define GTK_IS_FILE_FILTER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FILE_FILTER))
-#define GTK_FILE_FILTER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FILE_FILTER, GtkFileFilterClass))
+#define BTK_FILE_FILTER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
+#define BTK_IS_FILE_FILTER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_FILTER))
+#define BTK_FILE_FILTER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
 
 typedef enum {
   FILTER_RULE_PATTERN,
@@ -41,54 +41,54 @@ typedef enum {
   FILTER_RULE_CUSTOM
 } FilterRuleType;
 
-struct _GtkFileFilterClass
+struct _BtkFileFilterClass
 {
-  GtkObjectClass parent_class;
+  BtkObjectClass parent_class;
 };
 
-struct _GtkFileFilter
+struct _BtkFileFilter
 {
-  GtkObject parent_instance;
+  BtkObject parent_instance;
   
   gchar *name;
   GSList *rules;
 
-  GtkFileFilterFlags needed;
+  BtkFileFilterFlags needed;
 };
 
 struct _FilterRule
 {
   FilterRuleType type;
-  GtkFileFilterFlags needed;
+  BtkFileFilterFlags needed;
   
   union {
     gchar *pattern;
     gchar *mime_type;
     GSList *pixbuf_formats;
     struct {
-      GtkFileFilterFunc func;
+      BtkFileFilterFunc func;
       gpointer data;
       GDestroyNotify notify;
     } custom;
   } u;
 };
 
-static void gtk_file_filter_finalize   (GObject            *object);
+static void btk_file_filter_finalize   (GObject            *object);
 
 
-G_DEFINE_TYPE (GtkFileFilter, gtk_file_filter, GTK_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkFileFilter, btk_file_filter, BTK_TYPE_OBJECT)
 
 static void
-gtk_file_filter_init (GtkFileFilter *object)
+btk_file_filter_init (BtkFileFilter *object)
 {
 }
 
 static void
-gtk_file_filter_class_init (GtkFileFilterClass *class)
+btk_file_filter_class_init (BtkFileFilterClass *class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
-  gobject_class->finalize = gtk_file_filter_finalize;
+  bobject_class->finalize = btk_file_filter_finalize;
 }
 
 static void
@@ -117,45 +117,45 @@ filter_rule_free (FilterRule *rule)
 }
 
 static void
-gtk_file_filter_finalize (GObject  *object)
+btk_file_filter_finalize (GObject  *object)
 {
-  GtkFileFilter *filter = GTK_FILE_FILTER (object);
+  BtkFileFilter *filter = BTK_FILE_FILTER (object);
 
   g_slist_foreach (filter->rules, (GFunc)filter_rule_free, NULL);
   g_slist_free (filter->rules);
 
   g_free (filter->name);
 
-  G_OBJECT_CLASS (gtk_file_filter_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_file_filter_parent_class)->finalize (object);
 }
 
 /**
- * gtk_file_filter_new:
+ * btk_file_filter_new:
  * 
- * Creates a new #GtkFileFilter with no rules added to it.
+ * Creates a new #BtkFileFilter with no rules added to it.
  * Such a filter doesn't accept any files, so is not
  * particularly useful until you add rules with
- * gtk_file_filter_add_mime_type(), gtk_file_filter_add_pattern(),
- * or gtk_file_filter_add_custom(). To create a filter
+ * btk_file_filter_add_mime_type(), btk_file_filter_add_pattern(),
+ * or btk_file_filter_add_custom(). To create a filter
  * that accepts any file, use:
  * |[
- * GtkFileFilter *filter = gtk_file_filter_new ();
- * gtk_file_filter_add_pattern (filter, "*");
+ * BtkFileFilter *filter = btk_file_filter_new ();
+ * btk_file_filter_add_pattern (filter, "*");
  * ]|
  * 
- * Return value: a new #GtkFileFilter
+ * Return value: a new #BtkFileFilter
  * 
  * Since: 2.4
  **/
-GtkFileFilter *
-gtk_file_filter_new (void)
+BtkFileFilter *
+btk_file_filter_new (void)
 {
-  return g_object_new (GTK_TYPE_FILE_FILTER, NULL);
+  return g_object_new (BTK_TYPE_FILE_FILTER, NULL);
 }
 
 /**
- * gtk_file_filter_set_name:
- * @filter: a #GtkFileFilter
+ * btk_file_filter_set_name:
+ * @filter: a #BtkFileFilter
  * @name: (allow-none): the human-readable-name for the filter, or %NULL
  *   to remove any existing name.
  * 
@@ -166,10 +166,10 @@ gtk_file_filter_new (void)
  * Since: 2.4
  **/
 void
-gtk_file_filter_set_name (GtkFileFilter *filter,
+btk_file_filter_set_name (BtkFileFilter *filter,
 			  const gchar   *name)
 {
-  g_return_if_fail (GTK_IS_FILE_FILTER (filter));
+  g_return_if_fail (BTK_IS_FILE_FILTER (filter));
   
   g_free (filter->name);
 
@@ -177,27 +177,27 @@ gtk_file_filter_set_name (GtkFileFilter *filter,
 }
 
 /**
- * gtk_file_filter_get_name:
- * @filter: a #GtkFileFilter
+ * btk_file_filter_get_name:
+ * @filter: a #BtkFileFilter
  * 
- * Gets the human-readable name for the filter. See gtk_file_filter_set_name().
+ * Gets the human-readable name for the filter. See btk_file_filter_set_name().
  * 
  * Return value: The human-readable name of the filter,
- *   or %NULL. This value is owned by GTK+ and must not
+ *   or %NULL. This value is owned by BTK+ and must not
  *   be modified or freed.
  * 
  * Since: 2.4
  **/
 const gchar *
-gtk_file_filter_get_name (GtkFileFilter *filter)
+btk_file_filter_get_name (BtkFileFilter *filter)
 {
-  g_return_val_if_fail (GTK_IS_FILE_FILTER (filter), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_FILTER (filter), NULL);
   
   return filter->name;
 }
 
 static void
-file_filter_add_rule (GtkFileFilter *filter,
+file_filter_add_rule (BtkFileFilter *filter,
 		      FilterRule    *rule)
 {
   filter->needed |= rule->needed;
@@ -205,8 +205,8 @@ file_filter_add_rule (GtkFileFilter *filter,
 }
 
 /**
- * gtk_file_filter_add_mime_type:
- * @filter: A #GtkFileFilter
+ * btk_file_filter_add_mime_type:
+ * @filter: A #BtkFileFilter
  * @mime_type: name of a MIME type
  * 
  * Adds a rule allowing a given mime type to @filter.
@@ -214,25 +214,25 @@ file_filter_add_rule (GtkFileFilter *filter,
  * Since: 2.4
  **/
 void
-gtk_file_filter_add_mime_type (GtkFileFilter *filter,
+btk_file_filter_add_mime_type (BtkFileFilter *filter,
 			       const gchar   *mime_type)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_FILE_FILTER (filter));
+  g_return_if_fail (BTK_IS_FILE_FILTER (filter));
   g_return_if_fail (mime_type != NULL);
 
   rule = g_slice_new (FilterRule);
   rule->type = FILTER_RULE_MIME_TYPE;
-  rule->needed = GTK_FILE_FILTER_MIME_TYPE;
+  rule->needed = BTK_FILE_FILTER_MIME_TYPE;
   rule->u.mime_type = g_strdup (mime_type);
 
   file_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_file_filter_add_pattern:
- * @filter: a #GtkFileFilter
+ * btk_file_filter_add_pattern:
+ * @filter: a #BtkFileFilter
  * @pattern: a shell style glob
  * 
  * Adds a rule allowing a shell style glob to a filter.
@@ -240,49 +240,49 @@ gtk_file_filter_add_mime_type (GtkFileFilter *filter,
  * Since: 2.4
  **/
 void
-gtk_file_filter_add_pattern (GtkFileFilter *filter,
+btk_file_filter_add_pattern (BtkFileFilter *filter,
 			     const gchar   *pattern)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_FILE_FILTER (filter));
+  g_return_if_fail (BTK_IS_FILE_FILTER (filter));
   g_return_if_fail (pattern != NULL);
 
   rule = g_slice_new (FilterRule);
   rule->type = FILTER_RULE_PATTERN;
-  rule->needed = GTK_FILE_FILTER_DISPLAY_NAME;
+  rule->needed = BTK_FILE_FILTER_DISPLAY_NAME;
   rule->u.pattern = g_strdup (pattern);
 
   file_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_file_filter_add_pixbuf_formats:
- * @filter: a #GtkFileFilter
+ * btk_file_filter_add_pixbuf_formats:
+ * @filter: a #BtkFileFilter
  * 
  * Adds a rule allowing image files in the formats supported
- * by GdkPixbuf.
+ * by BdkPixbuf.
  * 
  * Since: 2.6
  **/
 void
-gtk_file_filter_add_pixbuf_formats (GtkFileFilter *filter)
+btk_file_filter_add_pixbuf_formats (BtkFileFilter *filter)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_FILE_FILTER (filter));
+  g_return_if_fail (BTK_IS_FILE_FILTER (filter));
 
   rule = g_slice_new (FilterRule);
   rule->type = FILTER_RULE_PIXBUF_FORMATS;
-  rule->needed = GTK_FILE_FILTER_MIME_TYPE;
-  rule->u.pixbuf_formats = gdk_pixbuf_get_formats ();
+  rule->needed = BTK_FILE_FILTER_MIME_TYPE;
+  rule->u.pixbuf_formats = bdk_pixbuf_get_formats ();
   file_filter_add_rule (filter, rule);
 }
 
 
 /**
- * gtk_file_filter_add_custom:
- * @filter: a #GtkFileFilter
+ * btk_file_filter_add_custom:
+ * @filter: a #BtkFileFilter
  * @needed: bitfield of flags indicating the information that the custom
  *          filter function needs.
  * @func: callback function; if the function returns %TRUE, then
@@ -293,21 +293,21 @@ gtk_file_filter_add_pixbuf_formats (GtkFileFilter *filter)
  * Adds rule to a filter that allows files based on a custom callback
  * function. The bitfield @needed which is passed in provides information
  * about what sorts of information that the filter function needs;
- * this allows GTK+ to avoid retrieving expensive information when
+ * this allows BTK+ to avoid retrieving expensive information when
  * it isn't needed by the filter.
  * 
  * Since: 2.4
  **/
 void
-gtk_file_filter_add_custom (GtkFileFilter         *filter,
-			    GtkFileFilterFlags     needed,
-			    GtkFileFilterFunc      func,
+btk_file_filter_add_custom (BtkFileFilter         *filter,
+			    BtkFileFilterFlags     needed,
+			    BtkFileFilterFunc      func,
 			    gpointer               data,
 			    GDestroyNotify         notify)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_FILE_FILTER (filter));
+  g_return_if_fail (BTK_IS_FILE_FILTER (filter));
   g_return_if_fail (func != NULL);
 
   rule = g_slice_new (FilterRule);
@@ -321,48 +321,48 @@ gtk_file_filter_add_custom (GtkFileFilter         *filter,
 }
 
 /**
- * gtk_file_filter_get_needed:
- * @filter: a #GtkFileFilter
+ * btk_file_filter_get_needed:
+ * @filter: a #BtkFileFilter
  * 
  * Gets the fields that need to be filled in for the structure
- * passed to gtk_file_filter_filter()
+ * passed to btk_file_filter_filter()
  * 
  * This function will not typically be used by applications; it
  * is intended principally for use in the implementation of
- * #GtkFileChooser.
+ * #BtkFileChooser.
  * 
  * Return value: bitfield of flags indicating needed fields when
- *   calling gtk_file_filter_filter()
+ *   calling btk_file_filter_filter()
  * 
  * Since: 2.4
  **/
-GtkFileFilterFlags
-gtk_file_filter_get_needed (GtkFileFilter *filter)
+BtkFileFilterFlags
+btk_file_filter_get_needed (BtkFileFilter *filter)
 {
   return filter->needed;
 }
 
 /**
- * gtk_file_filter_filter:
- * @filter: a #GtkFileFilter
- * @filter_info: a #GtkFileFilterInfo structure containing information
+ * btk_file_filter_filter:
+ * @filter: a #BtkFileFilter
+ * @filter_info: a #BtkFileFilterInfo structure containing information
  *  about a file.
  * 
  * Tests whether a file should be displayed according to @filter.
- * The #GtkFileFilterInfo structure @filter_info should include
- * the fields returned from gtk_file_filter_get_needed().
+ * The #BtkFileFilterInfo structure @filter_info should include
+ * the fields returned from btk_file_filter_get_needed().
  *
  * This function will not typically be used by applications; it
  * is intended principally for use in the implementation of
- * #GtkFileChooser.
+ * #BtkFileChooser.
  * 
  * Return value: %TRUE if the file should be displayed
  * 
  * Since: 2.4
  **/
 gboolean
-gtk_file_filter_filter (GtkFileFilter           *filter,
-			const GtkFileFilterInfo *filter_info)
+btk_file_filter_filter (BtkFileFilter           *filter,
+			const BtkFileFilterInfo *filter_info)
 {
   GSList *tmp_list;
 
@@ -393,7 +393,7 @@ gtk_file_filter_filter (GtkFileFilter           *filter,
 	  break;
 	case FILTER_RULE_PATTERN:
 	  if (filter_info->display_name != NULL &&
-	      _gtk_fnmatch (rule->u.pattern, filter_info->display_name, FALSE))
+	      _btk_fnmatch (rule->u.pattern, filter_info->display_name, FALSE))
 	    return TRUE;
 	  break;
 	case FILTER_RULE_PIXBUF_FORMATS:
@@ -408,7 +408,7 @@ gtk_file_filter_filter (GtkFileFilter           *filter,
 		int i;
 		gchar **mime_types;
 
-		mime_types = gdk_pixbuf_format_get_mime_types (list->data);
+		mime_types = bdk_pixbuf_format_get_mime_types (list->data);
 
 		for (i = 0; mime_types[i] != NULL; i++)
 		  {
@@ -433,5 +433,5 @@ gtk_file_filter_filter (GtkFileFilter           *filter,
   return FALSE;
 }
 
-#define __GTK_FILE_FILTER_C__
-#include "gtkaliasdef.c"
+#define __BTK_FILE_FILTER_C__
+#include "btkaliasdef.c"

@@ -1,62 +1,62 @@
 include $(top_srcdir)/Makefile.decl
 
-libgdkincludedir = $(includedir)/gtk-2.0/gdk
+libbdkincludedir = $(includedir)/btk-2.0/bdk
 
 INCLUDES = 				\
-	-DG_LOG_DOMAIN=\"Gdk\"		\
-	-DGDK_COMPILATION		\
+	-DG_LOG_DOMAIN=\"Bdk\"		\
+	-DBDK_COMPILATION		\
 	-I$(top_srcdir)			\
-	-I$(top_srcdir)/gdk		\
-	-I$(top_builddir)/gdk		\
-	$(GTK_DEBUG_FLAGS) 		\
-	$(GDK_DEP_CFLAGS)		\
+	-I$(top_srcdir)/bdk		\
+	-I$(top_builddir)/bdk		\
+	$(BTK_DEBUG_FLAGS) 		\
+	$(BDK_DEP_CFLAGS)		\
 	"-xobjective-c"
 
-LDADDS = $(GDK_DEP_LIBS)
+LDADDS = $(BDK_DEP_LIBS)
 
-noinst_LTLIBRARIES = libgdk-quartz.la
+noinst_LTLIBRARIES = libbdk-quartz.la
 
-libgdk_quartz_la_SOURCES =    	\
-	GdkQuartzView.c		\
-	GdkQuartzView.h		\
-	GdkQuartzWindow.c	\
-	GdkQuartzWindow.h	\
-	gdkapplaunchcontext-quartz.c \
-	gdkcolor-quartz.c	\
-	gdkcursor-quartz.c	\
-	gdkdisplay-quartz.c	\
-	gdkdnd-quartz.c		\
-	gdkdrawable-quartz.c	\
-	gdkdrawable-quartz.h	\
-	gdkevents-quartz.c	\
-	gdkeventloop-quartz.c	\
-	gdkfont-quartz.c	\
-	gdkgc-quartz.c		\
-	gdkgeometry-quartz.c	\
-	gdkglobals-quartz.c	\
-	gdkim-quartz.c		\
-	gdkimage-quartz.c	\
-	gdkinput.c		\
-	gdkinputprivate.h	\
-	gdkkeys-quartz.c	\
-	gdkmain-quartz.c	\
-	gdkpixmap-quartz.c	\
-	gdkpixmap-quartz.h	\
-	gdkprivate-quartz.h	\
-	gdkproperty-quartz.c	\
-	gdkquartz.h		\
-	gdkscreen-quartz.c	\
-	gdkscreen-quartz.h	\
-	gdkselection-quartz.c	\
-	gdkspawn-quartz.c	\
-	gdktestutils-quartz.c	\
-	gdkvisual-quartz.c	\
-	gdkwindow-quartz.c	\
-	gdkwindow-quartz.h	\
+libbdk_quartz_la_SOURCES =    	\
+	BdkQuartzView.c		\
+	BdkQuartzView.h		\
+	BdkQuartzWindow.c	\
+	BdkQuartzWindow.h	\
+	bdkapplaunchcontext-quartz.c \
+	bdkcolor-quartz.c	\
+	bdkcursor-quartz.c	\
+	bdkdisplay-quartz.c	\
+	bdkdnd-quartz.c		\
+	bdkdrawable-quartz.c	\
+	bdkdrawable-quartz.h	\
+	bdkevents-quartz.c	\
+	bdkeventloop-quartz.c	\
+	bdkfont-quartz.c	\
+	bdkgc-quartz.c		\
+	bdkgeometry-quartz.c	\
+	bdkglobals-quartz.c	\
+	bdkim-quartz.c		\
+	bdkimage-quartz.c	\
+	bdkinput.c		\
+	bdkinputprivate.h	\
+	bdkkeys-quartz.c	\
+	bdkmain-quartz.c	\
+	bdkpixmap-quartz.c	\
+	bdkpixmap-quartz.h	\
+	bdkprivate-quartz.h	\
+	bdkproperty-quartz.c	\
+	bdkquartz.h		\
+	bdkscreen-quartz.c	\
+	bdkscreen-quartz.h	\
+	bdkselection-quartz.c	\
+	bdkspawn-quartz.c	\
+	bdktestutils-quartz.c	\
+	bdkvisual-quartz.c	\
+	bdkwindow-quartz.c	\
+	bdkwindow-quartz.h	\
 	xcursors.h
 
-libgdkinclude_HEADERS = 	\
-	gdkquartz.h
+libbdkinclude_HEADERS = 	\
+	bdkquartz.h
 
 
 -include $(top_srcdir)/git.mk

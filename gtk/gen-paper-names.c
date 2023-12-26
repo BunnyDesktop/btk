@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2006 Matthias Clasen
  *
  * This library is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <glib.h>
+#include <bunnylib.h>
 
 #include "paper_names.c"
 

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,32 +18,32 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_GC_H__
-#define __GTK_GC_H__
+#ifndef __BTK_GC_H__
+#define __BTK_GC_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gdk/gdk.h>
+#include <bdk/bdk.h>
 
 
 G_BEGIN_DECLS
 
-GdkGC* gtk_gc_get     (gint             depth,
-		       GdkColormap     *colormap,
-		       GdkGCValues     *values,
-		       GdkGCValuesMask  values_mask);
-void   gtk_gc_release (GdkGC           *gc);
+BdkGC* btk_gc_get     (gint             depth,
+		       BdkColormap     *colormap,
+		       BdkGCValues     *values,
+		       BdkGCValuesMask  values_mask);
+void   btk_gc_release (BdkGC           *gc);
 
 
 G_END_DECLS
 
-#endif /* __GTK_GC_H__ */
+#endif /* __BTK_GC_H__ */

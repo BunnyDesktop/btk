@@ -1,6 +1,6 @@
 === ChangeLog discontinued ===
 
-	With the move to git, GTK+ is switching from a ChangeLog file
+	With the move to git, BTK+ is switching from a ChangeLog file
 	to relying on commit messages to provide change history. Please
 	see README.commits for guidance on the expected message format.
 
@@ -183,8 +183,8 @@ Sun Apr 21 14:10:04 2002  Owen Taylor  <otaylor@redhat.com>
 2002-03-07  James Henstridge  <james@daa.com.au>
 
 	* Makefile.am (libpixmap_la_LIBADD): link pixbuf engine against
-	the gtk+ libraries, so that it can be used with programs that
-	dlopen gtk+ without the RTLD_GLOBAL flag (such as scripting
+	the btk+ libraries, so that it can be used with programs that
+	dlopen btk+ without the RTLD_GLOBAL flag (such as scripting
 	languages and mozilla).
 
 Thu Feb  7 00:21:21 2002  Owen Taylor  <otaylor@redhat.com>
@@ -216,7 +216,7 @@ Sun Jan 27 23:58:13 2002  Owen Taylor  <otaylor@redhat.com>
 	* pixbuf-render.c (theme_pixbuf_destroy): Actually free
 	the structure and filename.
 
-=================== Move back into gtk-engines ====================
+=================== Move back into btk-engines ====================
 	
 Sat Jan 19 02:45:17 2002  Owen Taylor  <otaylor@redhat.com>
 
@@ -233,7 +233,7 @@ Sat Jan 19 00:32:14 2002  Owen Taylor  <otaylor@redhat.com>
 	you'll just have to draw it rectangular.
 
 	* src/pixbuf-render.c (pixbuf_render): Always use
-	gdk_pixbuf_render_alpha() with FULL_ALPHA() as the
+	bdk_pixbuf_render_alpha() with FULL_ALPHA() as the
 	type.
 
 	* pixbuf.h src/pixbuf-render.c (theme_pixbuf_compute_hints): To
@@ -246,7 +246,7 @@ Sat Jan 19 00:32:14 2002  Owen Taylor  <otaylor@redhat.com>
 Fri Jan 18 20:49:48 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Use pkg-config to get the binray version
-	of GTK+ that we use for an install path.
+	of BTK+ that we use for an install path.
 
 Fri Jan 18 18:14:11 2002  Owen Taylor  <otaylor@redhat.com>
 
@@ -254,15 +254,15 @@ Fri Jan 18 18:14:11 2002  Owen Taylor  <otaylor@redhat.com>
 
 2001-09-21  Hans Breuer  <hans@breuer.org>
 
-	* src/pixbuf-rc-style-c :  GtkRcStyle::parse has a GtkSettings
+	* src/pixbuf-rc-style-c :  BtkRcStyle::parse has a BtkSettings
 	parameter now. Pass it through theme_parse_file () to use it
-	gtk_rc_find_pixmap_in_path ()
+	btk_rc_find_pixmap_in_path ()
 
-	* src/pixbuf-draw.c : the font field from GtkStyle is private
-	now, use accessor gtk_style_get_font ()
+	* src/pixbuf-draw.c : the font field from BtkStyle is private
+	now, use accessor btk_style_get_font ()
 
 	* makefile.msc : compile on win32, use it if you have a _real_
-	fast computer or want to see gtk in slow motion :-)
+	fast computer or want to see btk in slow motion :-)
 
 Thu May  3 05:36:06 2001  Owen Taylor  <otaylor@redhat.com>
 
@@ -286,14 +286,14 @@ Wed Nov 15 21:56:28 2000  Owen Taylor  <otaylor@redhat.com>
 
 Tue Jul 18 12:13:19 2000  Owen Taylor  <otaylor@redhat.com>
 
-        Updates to work with GTK+-2.0 theme engine architecture.
-	It won't even sort of work with GTK+-1.2 any more.
+        Updates to work with BTK+-2.0 theme engine architecture.
+	It won't even sort of work with BTK+-1.2 any more.
 
-	* configure.in src/Makefile.am: Look for GTK+-2.0, 
-	install engine into GTK+-2.0 location.
+	* configure.in src/Makefile.am: Look for BTK+-2.0, 
+	install engine into BTK+-2.0 location.
 	
 	* src/pixbuf-style.h src/pixbuf-rc-style.[ch]: New
-	files for GtkRcStyle and GtkStyle subclasses. Parsing,
+	files for BtkRcStyle and BtkStyle subclasses. Parsing,
 	etc, moves to pixbuf-rc-style.[ch]
 
 	* src/pixbuf-draw.c: Chain up to parent implementation
@@ -304,7 +304,7 @@ Sun Jul  9 18:15:58 2000  Owen Taylor  <otaylor@redhat.com>
 	* configure.in (ACLOCAL): Add -Wall for gcc.
 
 	* src/pixbuf-render.c (pixbuf_render): Fix problem
-	using gdk_rectangle_intersect() from GTK+-1.2.
+	using bdk_rectangle_intersect() from BTK+-1.2.
 
 	* src/pixbuf-render.c src/pixbuf-draw.c: Remove 
 	direct access to pixbuf internals.
@@ -347,7 +347,7 @@ Tue Oct  5 15:13:29 1999  Owen Taylor  <otaylor@redhat.com>
 
 1999-02-14  Raja R Harinath  <harinath@cs.umn.edu>
 
-	* Theme/gtk/Makefile.am.in (Makefile.am): Handle the case when
+	* Theme/btk/Makefile.am.in (Makefile.am): Handle the case when
 	files are deleted.
 
 Thu Feb 11 21:16:53 1999  Owen Taylor  <otaylor@redhat.com>
@@ -357,7 +357,7 @@ Thu Feb 11 21:16:53 1999  Owen Taylor  <otaylor@redhat.com>
 
 1999-02-03  Raja R Harinath  <harinath@cs.umn.edu>
 
-	* Theme/gtk/Makefile.am.in: New file.  Theme/gtk/Makefile.am is
+	* Theme/btk/Makefile.am.in: New file.  Theme/btk/Makefile.am is
 	generated from this file when new *.png files are added.
 
 1999-01-23  Miguel de Icaza  <miguel@nuclecu.unam.mx>
@@ -366,17 +366,17 @@ Thu Feb 11 21:16:53 1999  Owen Taylor  <otaylor@redhat.com>
 
 Mon Jan 18 13:37:23 1999  Owen Taylor  <otaylor@redhat.com>
 
-	* Theme/gtk/gtkrc: Give buttons a gray background
+	* Theme/btk/btkrc: Give buttons a gray background
 	color so they look a little less funny when initially
 	drawing.
 
 Wed Jan 13 18:58:25 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* pixmap_theme_draw.c: Fixed pervasive mis-bracketing
-	that was causing drawing if the drawn region and
-	clipping region did NOT intersect, and a couple
+	that was causing drawing if the drawn rebunnyion and
+	clipping rebunnyion did NOT intersect, and a couple
 	of errors in computing source and destination 
-	regions.
+	rebunnyions.
 
 1998-11-09  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
@@ -384,7 +384,7 @@ Wed Jan 13 18:58:25 1999  Owen Taylor  <otaylor@redhat.com>
 
 1998-11-07  Raja R Harinath  <harinath@cs.umn.edu>
 
-	* Theme/gtk/Makefile.am (theme_DATA): 
+	* Theme/btk/Makefile.am (theme_DATA): 
 	Update to new directory contents.
 	* configure.in: Remove.
 
@@ -393,10 +393,10 @@ Fri Nov  6 17:26:12 1998  Owen Taylor  <otaylor@redhat.com>
 	* pixmap_theme_main.c: Removed some debugging 
 	printf's. 
 
-	* Theme/gtk/notebook1.c Theme/gtk/menubar.png: new
+	* Theme/btk/notebook1.c Theme/btk/menubar.png: new
 	bigger pixmaps to reduce pixelation.
 
-	* Theme/gtk/gtkrc: Reorganized to use several styles
+	* Theme/btk/btkrc: Reorganized to use several styles
 	instead of one huge style. Change clist backgrounds
 	to be prettier.
 

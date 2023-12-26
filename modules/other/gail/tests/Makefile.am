@@ -1,11 +1,11 @@
-## Makefile.am for gtk+/tests
+## Makefile.am for btk+/tests
 include $(top_srcdir)/Makefile.decl
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 
-moduledir = $(libdir)/gtk-2.0/modules
+moduledir = $(libdir)/btk-2.0/modules
 
 if !OS_WIN32
 module_LTLIBRARIES = \
@@ -34,16 +34,16 @@ noinst_LTLIBRARIES = 		\
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)		\
-	-I$(top_srcdir)/gdk	\
-	-I$(top_builddir)/gdk	\
-	-I$(top_srcdir)/gtk	\
-	-I$(top_builddir)/gtk	\
-	-DGDK_DISABLE_DEPRECATED\
-	-DGTK_DISABLE_DEPRECATED
+	-I$(top_srcdir)/bdk	\
+	-I$(top_builddir)/bdk	\
+	-I$(top_srcdir)/btk	\
+	-I$(top_builddir)/btk	\
+	-DBDK_DISABLE_DEPRECATED\
+	-DBTK_DISABLE_DEPRECATED
 
 AM_CFLAGS = \
-	$(GTK_DEP_CFLAGS)	\
-	$(GTK_DEBUG_FLAGS)
+	$(BTK_DEP_CFLAGS)	\
+	$(BTK_DEBUG_FLAGS)
 
 if !OS_WIN32
 libferret_la_SOURCES = 		\
@@ -57,9 +57,9 @@ libferret_la_LDFLAGS =		\
 	$(LDFLAGS)
 
 libferret_la_LIBADD =			    \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-        $(GTK_DEP_LIBS)  		    \
-	$(GAIL_INET_LIBS)
+	$(top_builddir)/btk/$(btktargetlib) \
+        $(BTK_DEP_LIBS)  		    \
+	$(BAIL_INET_LIBS)
 endif
 
 libtestaction_la_SOURCES = 	\
@@ -67,9 +67,9 @@ libtestaction_la_SOURCES = 	\
 
 libtestaction_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestbutton_la_SOURCES = 	\
@@ -79,9 +79,9 @@ libtestbutton_la_SOURCES = 	\
 
 libtestbutton_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestcombo_la_SOURCES = 	\
@@ -91,9 +91,9 @@ libtestcombo_la_SOURCES = 	\
 
 libtestcombo_la_LDFLAGS =		\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestcomponent_la_SOURCES =	\
@@ -101,9 +101,9 @@ libtestcomponent_la_SOURCES =	\
 
 libtestcomponent_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestimage_la_SOURCES = 	\
@@ -111,9 +111,9 @@ libtestimage_la_SOURCES = 	\
 
 libtestimage_la_LDFLAGS =		\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestmenuitem_la_SOURCES = 	\
@@ -123,9 +123,9 @@ libtestmenuitem_la_SOURCES = 	\
 
 libtestmenuitem_la_LDFLAGS =		\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestnotebook_la_SOURCES = 	\
@@ -135,9 +135,9 @@ libtestnotebook_la_SOURCES = 	\
 
 libtestnotebook_la_LDFLAGS =		\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestobject_la_SOURCES = 	\
@@ -147,9 +147,9 @@ libtestobject_la_SOURCES = 	\
 
 libtestobject_la_LDFLAGS =		\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestoptionmenu_la_SOURCES = 	\
@@ -159,9 +159,9 @@ libtestoptionmenu_la_SOURCES = 	\
 
 libtestoptionmenu_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestpaned_la_SOURCES = 	\
@@ -171,9 +171,9 @@ libtestpaned_la_SOURCES = 	\
 
 libtestpaned_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestprops_la_SOURCES = 	\
@@ -183,9 +183,9 @@ libtestprops_la_SOURCES = 	\
 
 libtestprops_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestselection_la_SOURCES = \
@@ -193,9 +193,9 @@ libtestselection_la_SOURCES = \
 
 libtestselection_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libteststatusbar_la_SOURCES = \
@@ -203,9 +203,9 @@ libteststatusbar_la_SOURCES = \
 
 libteststatusbar_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtesttable_la_SOURCES = 	\
@@ -217,9 +217,9 @@ libtesttable_la_SOURCES = 	\
 
 libtesttable_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtesttext_la_SOURCES = 	\
@@ -231,9 +231,9 @@ libtesttext_la_SOURCES = 	\
 
 libtesttext_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtesttoplevel_la_SOURCES = 	\
@@ -243,9 +243,9 @@ libtesttoplevel_la_SOURCES = 	\
 
 libtesttoplevel_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtesttreetable_la_SOURCES =	\
@@ -255,9 +255,9 @@ libtesttreetable_la_SOURCES =	\
 
 libtesttreetable_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 libtestvalues_la_SOURCES = 	\
@@ -265,9 +265,9 @@ libtestvalues_la_SOURCES = 	\
 
 libtestvalues_la_LDFLAGS =	\
 	-rpath $(moduledir) -module -avoid-version $(no_undefined) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/gdk/$(gdktargetlib) \
-	$(GTK_DEP_LIBS)	\
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/bdk/$(bdktargetlib) \
+	$(BTK_DEP_LIBS)	\
 	$(LDFLAGS)
 
 -include $(top_srcdir)/git.mk

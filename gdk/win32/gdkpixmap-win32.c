@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
  *
@@ -19,10 +19,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -30,25 +30,25 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "gdkpixmap.h"
-#include "gdkdisplay.h"
-#include "gdkscreen.h"
+#include "bdkpixmap.h"
+#include "bdkdisplay.h"
+#include "bdkscreen.h"
 
-#include "gdkprivate-win32.h"
-#include <cairo-win32.h>
+#include "bdkprivate-win32.h"
+#include <bairo-win32.h>
 
-static void gdk_pixmap_impl_win32_get_size   (GdkDrawable        *drawable,
+static void bdk_pixmap_impl_win32_get_size   (BdkDrawable        *drawable,
 					      gint               *width,
 					      gint               *height);
 
-static void gdk_pixmap_impl_win32_init       (GdkPixmapImplWin32      *pixmap);
-static void gdk_pixmap_impl_win32_class_init (GdkPixmapImplWin32Class *klass);
-static void gdk_pixmap_impl_win32_finalize   (GObject                 *object);
+static void bdk_pixmap_impl_win32_init       (BdkPixmapImplWin32      *pixmap);
+static void bdk_pixmap_impl_win32_class_init (BdkPixmapImplWin32Class *klass);
+static void bdk_pixmap_impl_win32_finalize   (GObject                 *object);
 
 static gpointer parent_class = NULL;
 
 GType
-_gdk_pixmap_impl_win32_get_type (void)
+_bdk_pixmap_impl_win32_get_type (void)
 {
   static GType object_type = 0;
 
@@ -56,19 +56,19 @@ _gdk_pixmap_impl_win32_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkPixmapImplWin32Class),
+        sizeof (BdkPixmapImplWin32Class),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_pixmap_impl_win32_class_init,
+        (GClassInitFunc) bdk_pixmap_impl_win32_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkPixmapImplWin32),
+        sizeof (BdkPixmapImplWin32),
         0,              /* n_preallocs */
-        (GInstanceInitFunc) gdk_pixmap_impl_win32_init,
+        (GInstanceInitFunc) bdk_pixmap_impl_win32_init,
       };
       
-      object_type = g_type_register_static (GDK_TYPE_DRAWABLE_IMPL_WIN32,
-                                            "GdkPixmapImplWin32",
+      object_type = g_type_register_static (BDK_TYPE_DRAWABLE_IMPL_WIN32,
+                                            "BdkPixmapImplWin32",
                                             &object_info, 0);
     }
   
@@ -76,40 +76,40 @@ _gdk_pixmap_impl_win32_get_type (void)
 }
 
 GType
-_gdk_pixmap_impl_get_type (void)
+_bdk_pixmap_impl_get_type (void)
 {
-  return _gdk_pixmap_impl_win32_get_type ();
+  return _bdk_pixmap_impl_win32_get_type ();
 }
 
 static void
-gdk_pixmap_impl_win32_init (GdkPixmapImplWin32 *impl)
+bdk_pixmap_impl_win32_init (BdkPixmapImplWin32 *impl)
 {
   impl->width = 1;
   impl->height = 1;
 }
 
 static void
-gdk_pixmap_impl_win32_class_init (GdkPixmapImplWin32Class *klass)
+bdk_pixmap_impl_win32_class_init (BdkPixmapImplWin32Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GdkDrawableClass *drawable_class = GDK_DRAWABLE_CLASS (klass);
+  BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_pixmap_impl_win32_finalize;
+  object_class->finalize = bdk_pixmap_impl_win32_finalize;
 
-  drawable_class->get_size = gdk_pixmap_impl_win32_get_size;
+  drawable_class->get_size = bdk_pixmap_impl_win32_get_size;
 }
 
 static void
-gdk_pixmap_impl_win32_finalize (GObject *object)
+bdk_pixmap_impl_win32_finalize (GObject *object)
 {
-  GdkPixmapImplWin32 *impl = GDK_PIXMAP_IMPL_WIN32 (object);
-  GdkDrawableImplWin32 *drawable_impl = GDK_DRAWABLE_IMPL_WIN32 (impl);
-  GdkPixmap *wrapper = GDK_PIXMAP (drawable_impl->wrapper);
+  BdkPixmapImplWin32 *impl = BDK_PIXMAP_IMPL_WIN32 (object);
+  BdkDrawableImplWin32 *drawable_impl = BDK_DRAWABLE_IMPL_WIN32 (impl);
+  BdkPixmap *wrapper = BDK_PIXMAP (drawable_impl->wrapper);
 
-  GDK_NOTE (PIXMAP, g_print ("gdk_pixmap_impl_win32_finalize: %p\n",
-			     GDK_PIXMAP_HBITMAP (wrapper)));
+  BDK_NOTE (PIXMAP, g_print ("bdk_pixmap_impl_win32_finalize: %p\n",
+			     BDK_PIXMAP_HBITMAP (wrapper)));
 
   if (!impl->is_foreign)
     {
@@ -117,151 +117,151 @@ gdk_pixmap_impl_win32_finalize (GObject *object)
       if (drawable_impl->hdc)
 	drawable_impl->hdc_count--;
 
-      if (drawable_impl->cairo_surface)
+      if (drawable_impl->bairo_surface)
 	{
 	  /* Tell outstanding owners that the surface is useless */
-	  cairo_surface_finish (drawable_impl->cairo_surface);
+	  bairo_surface_finish (drawable_impl->bairo_surface);
 
 	  /* Drop our reference */
-	  cairo_surface_destroy (drawable_impl->cairo_surface);
-	  drawable_impl->cairo_surface = NULL;
+	  bairo_surface_destroy (drawable_impl->bairo_surface);
+	  drawable_impl->bairo_surface = NULL;
 	  if (impl->is_allocated)
 	    {
 	      GDI_CALL (DeleteDC, (drawable_impl->hdc));
-	      GDI_CALL (DeleteObject, (GDK_PIXMAP_HBITMAP (wrapper)));
+	      GDI_CALL (DeleteObject, (BDK_PIXMAP_HBITMAP (wrapper)));
 	    }
 	}
     }
 
-  _gdk_win32_drawable_finish (GDK_DRAWABLE (object));
+  _bdk_win32_drawable_finish (BDK_DRAWABLE (object));
 
-  gdk_win32_handle_table_remove (GDK_PIXMAP_HBITMAP (wrapper));
+  bdk_win32_handle_table_remove (BDK_PIXMAP_HBITMAP (wrapper));
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gdk_pixmap_impl_win32_get_size (GdkDrawable *drawable,
+bdk_pixmap_impl_win32_get_size (BdkDrawable *drawable,
 				gint        *width,
 				gint        *height)
 {
   if (width)
-    *width = GDK_PIXMAP_IMPL_WIN32 (drawable)->width;
+    *width = BDK_PIXMAP_IMPL_WIN32 (drawable)->width;
   if (height)
-    *height = GDK_PIXMAP_IMPL_WIN32 (drawable)->height;
+    *height = BDK_PIXMAP_IMPL_WIN32 (drawable)->height;
 }
 
-GdkPixmap*
-_gdk_pixmap_new (GdkDrawable *drawable,
+BdkPixmap*
+_bdk_pixmap_new (BdkDrawable *drawable,
 		gint         width,
 		gint         height,
 		gint         depth)
 {
   HDC hdc;
   HBITMAP hbitmap;
-  GdkPixmap *pixmap;
-  GdkDrawableImplWin32 *drawable_impl;
-  GdkPixmapImplWin32 *pixmap_impl;
-  GdkColormap *cmap;
+  BdkPixmap *pixmap;
+  BdkDrawableImplWin32 *drawable_impl;
+  BdkPixmapImplWin32 *pixmap_impl;
+  BdkColormap *cmap;
   gint window_depth;
-  cairo_surface_t *dib_surface, *image_surface;
-  cairo_format_t format;
+  bairo_surface_t *dib_surface, *image_surface;
+  bairo_format_t format;
   guchar *bits;
 
-  g_return_val_if_fail (drawable == NULL || GDK_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (drawable == NULL || BDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail ((drawable != NULL) || (depth != -1), NULL);
   g_return_val_if_fail ((width != 0) && (height != 0), NULL);
 
   if (!drawable)
-    drawable = _gdk_root;
+    drawable = _bdk_root;
 
-  if (GDK_IS_WINDOW (drawable) && GDK_WINDOW_DESTROYED (drawable))
+  if (BDK_IS_WINDOW (drawable) && BDK_WINDOW_DESTROYED (drawable))
     return NULL;
 
-  window_depth = gdk_drawable_get_depth (GDK_DRAWABLE (drawable));
+  window_depth = bdk_drawable_get_depth (BDK_DRAWABLE (drawable));
   if (depth == -1)
     depth = window_depth;
 
-  GDK_NOTE (PIXMAP, g_print ("gdk_pixmap_new: %dx%dx%d drawable=%p\n",
+  BDK_NOTE (PIXMAP, g_print ("bdk_pixmap_new: %dx%dx%d drawable=%p\n",
 			     width, height, depth, drawable));
 
   switch (depth)
     {
     case 1:
-      format = CAIRO_FORMAT_A1;
+      format = BAIRO_FORMAT_A1;
       break;
 
     case 8:
-      format = CAIRO_FORMAT_A8;
+      format = BAIRO_FORMAT_A8;
       break;
 
     case 15:
     case 16:
-      format = CAIRO_FORMAT_RGB16_565;
+      format = BAIRO_FORMAT_RGB16_565;
       break;
 
     case 24:
     case 32:
-      format = CAIRO_FORMAT_RGB24;
+      format = BAIRO_FORMAT_RGB24;
       break;
 
     default:
-      g_warning ("gdk_win32_pixmap_new: depth = %d not supported", depth);
+      g_warning ("bdk_win32_pixmap_new: depth = %d not supported", depth);
       return NULL;
       break;
     }
 
-  pixmap = g_object_new (gdk_pixmap_get_type (), NULL);
-  drawable_impl = GDK_DRAWABLE_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
-  pixmap_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
-  drawable_impl->wrapper = GDK_DRAWABLE (pixmap);
+  pixmap = g_object_new (bdk_pixmap_get_type (), NULL);
+  drawable_impl = BDK_DRAWABLE_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl);
+  pixmap_impl = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl);
+  drawable_impl->wrapper = BDK_DRAWABLE (pixmap);
   
   pixmap_impl->is_foreign = FALSE;
   pixmap_impl->width = width;
   pixmap_impl->height = height;
-  GDK_PIXMAP_OBJECT (pixmap)->depth = depth;
+  BDK_PIXMAP_OBJECT (pixmap)->depth = depth;
 
   if (depth == window_depth)
     {
-      cmap = gdk_drawable_get_colormap (drawable);
+      cmap = bdk_drawable_get_colormap (drawable);
       if (cmap)
-        gdk_drawable_set_colormap (pixmap, cmap);
+        bdk_drawable_set_colormap (pixmap, cmap);
     }
 
   if (depth != 15 && depth != 16)
     {
-      dib_surface = cairo_win32_surface_create_with_dib (format, width, height);
+      dib_surface = bairo_win32_surface_create_with_dib (format, width, height);
       if (dib_surface == NULL ||
-	  cairo_surface_status (dib_surface) != CAIRO_STATUS_SUCCESS)
+	  bairo_surface_status (dib_surface) != BAIRO_STATUS_SUCCESS)
 	{
 	  g_object_unref ((GObject *) pixmap);
 	  return NULL;
 	}
 
-      /* We need to have cairo create the dibsection for us, because
-	 creating a cairo surface from a hdc only works for rgb24 format */
-      hdc = cairo_win32_surface_get_dc (dib_surface);
+      /* We need to have bairo create the dibsection for us, because
+	 creating a bairo surface from a hdc only works for rgb24 format */
+      hdc = bairo_win32_surface_get_dc (dib_surface);
 
-      /* Get the bitmap from the cairo hdc */
+      /* Get the bitmap from the bairo hdc */
       hbitmap = GetCurrentObject (hdc, OBJ_BITMAP);
 
-      /* Cairo_win32_surface_get_image() returns NULL on failure, but
+      /* Bairo_win32_surface_get_image() returns NULL on failure, but
 	 this is likely an oversight and future versions will return a
 	 "nil" surface.
        */
-      image_surface = cairo_win32_surface_get_image (dib_surface);
+      image_surface = bairo_win32_surface_get_image (dib_surface);
       if (image_surface == NULL ||
-	  cairo_surface_status (image_surface) != CAIRO_STATUS_SUCCESS)
+	  bairo_surface_status (image_surface) != BAIRO_STATUS_SUCCESS)
       {
-	cairo_surface_destroy (dib_surface);
+	bairo_surface_destroy (dib_surface);
 	g_object_unref ((GObject*) pixmap);
 	return NULL;
       }
-      bits = cairo_image_surface_get_data (image_surface);
+      bits = bairo_image_surface_get_data (image_surface);
     }
   else
     {
-      /* 16 bpp not supported by win32 cairo surface */
+      /* 16 bpp not supported by win32 bairo surface */
       struct {
 	BITMAPINFOHEADER bmiHeader;
 	union {
@@ -272,10 +272,10 @@ _gdk_pixmap_new (GdkDrawable *drawable,
       } bmi;
       UINT iUsage;
       HWND hwnd;
-      GdkVisual *visual;
+      BdkVisual *visual;
 
-      if (GDK_IS_WINDOW (drawable))
-	hwnd = GDK_WINDOW_HWND (drawable);
+      if (BDK_IS_WINDOW (drawable))
+	hwnd = BDK_WINDOW_HWND (drawable);
       else
 	hwnd = GetDesktopWindow ();
       if ((hdc = GetDC (hwnd)) == NULL)
@@ -298,7 +298,7 @@ _gdk_pixmap_new (GdkDrawable *drawable,
       bmi.bmiHeader.biClrImportant = 0;
 
       iUsage = DIB_RGB_COLORS;
-      visual = gdk_visual_get_system ();
+      visual = bdk_visual_get_system ();
       bmi.u.bmiMasks[0] = visual->red_mask;
       bmi.u.bmiMasks[1] = visual->green_mask;
       bmi.u.bmiMasks[2] = visual->blue_mask;
@@ -313,7 +313,7 @@ _gdk_pixmap_new (GdkDrawable *drawable,
 	}
       GDI_CALL (ReleaseDC, (hwnd, hdc));
 
-      dib_surface = cairo_image_surface_create_for_data (bits,
+      dib_surface = bairo_image_surface_create_for_data (bits,
 							 format, width, height,
 							 (width * 2 + 3) & ~3);
 
@@ -332,14 +332,14 @@ _gdk_pixmap_new (GdkDrawable *drawable,
   /* We need to use the same hdc, because only one hdc
      can render to the same bitmap */
   drawable_impl->hdc = hdc;
-  drawable_impl->hdc_count = 1; /* Ensure we never free the cairo surface HDC */
+  drawable_impl->hdc_count = 1; /* Ensure we never free the bairo surface HDC */
 
   /* No need to create a new surface when needed, as we have one already */
-  drawable_impl->cairo_surface = dib_surface;
+  drawable_impl->bairo_surface = dib_surface;
   drawable_impl->handle = hbitmap;
   pixmap_impl->bits = bits;
 
-  gdk_win32_handle_table_insert (&GDK_PIXMAP_HBITMAP (pixmap), pixmap);
+  bdk_win32_handle_table_insert (&BDK_PIXMAP_HBITMAP (pixmap), pixmap);
 
   return pixmap;
 }
@@ -379,32 +379,32 @@ static const unsigned char mirror[256] = {
   0x1f, 0x9f, 0x5f, 0xdf, 0x3f, 0xbf, 0x7f, 0xff
 };
 
-GdkPixmap *
-_gdk_bitmap_create_from_data (GdkDrawable *drawable,
+BdkPixmap *
+_bdk_bitmap_create_from_data (BdkDrawable *drawable,
 			     const gchar *data,
 			     gint         width,
 			     gint         height)
 {
-  GdkPixmap *pixmap;
-  GdkPixmapImplWin32 *pixmap_impl;
+  BdkPixmap *pixmap;
+  BdkPixmapImplWin32 *pixmap_impl;
   gint i, j, data_bpl, pixmap_bpl;
   guchar *bits;
 
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail ((width != 0) && (height != 0), NULL);
-  g_return_val_if_fail (drawable == NULL || GDK_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (drawable == NULL || BDK_IS_DRAWABLE (drawable), NULL);
 
   if (!drawable)
-    drawable = _gdk_root;
-  else if (GDK_IS_WINDOW (drawable) && GDK_WINDOW_DESTROYED (drawable))
+    drawable = _bdk_root;
+  else if (BDK_IS_WINDOW (drawable) && BDK_WINDOW_DESTROYED (drawable))
     return NULL;
 
-  pixmap = gdk_pixmap_new (drawable, width, height, 1);
+  pixmap = bdk_pixmap_new (drawable, width, height, 1);
 
   if (pixmap == NULL)
     return NULL;
 
-  pixmap_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
+  pixmap_impl = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl);
   bits = pixmap_impl->bits;
   data_bpl = ((width - 1) / 8 + 1);
   pixmap_bpl = ((width - 1)/32 + 1)*4;
@@ -413,90 +413,90 @@ _gdk_bitmap_create_from_data (GdkDrawable *drawable,
     for (j = 0; j < data_bpl; j++)
       bits[i*pixmap_bpl + j] = mirror[(guchar) data[i*data_bpl + j]];
 
-  GDK_NOTE (PIXMAP, g_print ("gdk_bitmap_create_from_data: %dx%d=%p\n",
-			     width, height, GDK_PIXMAP_HBITMAP (pixmap)));
+  BDK_NOTE (PIXMAP, g_print ("bdk_bitmap_create_from_data: %dx%d=%p\n",
+			     width, height, BDK_PIXMAP_HBITMAP (pixmap)));
 
   return pixmap;
 }
 
-GdkPixmap*
-_gdk_pixmap_create_from_data (GdkDrawable    *drawable,
+BdkPixmap*
+_bdk_pixmap_create_from_data (BdkDrawable    *drawable,
 			     const gchar    *data,
 			     gint            width,
 			     gint            height,
 			     gint            depth,
-			     const GdkColor *fg,
-			     const GdkColor *bg)
+			     const BdkColor *fg,
+			     const BdkColor *bg)
 {
   /* Oh wow. I struggled with dozens of lines of code trying to get
    * this right using a monochrome Win32 bitmap created from data, and
    * a colour DIB section as the result, trying setting pens,
    * background colors, whatnot and BitBlt:ing.  Nope. Then finally I
-   * realized it's much easier to do it using gdk...:
+   * realized it's much easier to do it using bdk...:
    */
 
-  GdkPixmap *result;
-  GdkPixmap *source;
-  GdkGC *gc;
+  BdkPixmap *result;
+  BdkPixmap *source;
+  BdkGC *gc;
 
-  g_return_val_if_fail (drawable == NULL || GDK_IS_DRAWABLE (drawable), NULL);
+  g_return_val_if_fail (drawable == NULL || BDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail (data != NULL, NULL);
   g_return_val_if_fail (fg != NULL, NULL);
   g_return_val_if_fail (bg != NULL, NULL);
   g_return_val_if_fail ((drawable != NULL) || (depth != -1), NULL);
   g_return_val_if_fail ((width != 0) && (height != 0), NULL);
 
-  if (GDK_IS_WINDOW (drawable) && GDK_WINDOW_DESTROYED (drawable))
+  if (BDK_IS_WINDOW (drawable) && BDK_WINDOW_DESTROYED (drawable))
     return NULL;
 
-  result = gdk_pixmap_new (drawable, width, height, depth);
-  source = gdk_bitmap_create_from_data (drawable, data, width, height);
-  gc = gdk_gc_new (result);
+  result = bdk_pixmap_new (drawable, width, height, depth);
+  source = bdk_bitmap_create_from_data (drawable, data, width, height);
+  gc = bdk_gc_new (result);
 
-  gdk_gc_set_foreground (gc, fg);
-  gdk_gc_set_background (gc, bg);
-  _gdk_win32_blit
+  bdk_gc_set_foreground (gc, fg);
+  bdk_gc_set_background (gc, bg);
+  _bdk_win32_blit
     (TRUE,
-     GDK_DRAWABLE_IMPL_WIN32 (GDK_PIXMAP_OBJECT (result)->impl),
+     BDK_DRAWABLE_IMPL_WIN32 (BDK_PIXMAP_OBJECT (result)->impl),
      gc, source, 0, 0, 0, 0, width, height);
   g_object_unref (source);
   g_object_unref (gc);
 
-  GDK_NOTE (PIXMAP, g_print ("gdk_pixmap_create_from_data: %dx%dx%d=%p\n",
+  BDK_NOTE (PIXMAP, g_print ("bdk_pixmap_create_from_data: %dx%dx%d=%p\n",
 			     width, height, depth,
-			     GDK_PIXMAP_HBITMAP (result)));
+			     BDK_PIXMAP_HBITMAP (result)));
 
   return result;
 }
 
-GdkPixmap *
-gdk_pixmap_foreign_new_for_display (GdkDisplay      *display,
-				    GdkNativeWindow  anid)
+BdkPixmap *
+bdk_pixmap_foreign_new_for_display (BdkDisplay      *display,
+				    BdkNativeWindow  anid)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  g_return_val_if_fail (display == _gdk_display, NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (display == _bdk_display, NULL);
 
-  return gdk_pixmap_foreign_new (anid);
+  return bdk_pixmap_foreign_new (anid);
 }
 
-GdkPixmap *
-gdk_pixmap_foreign_new_for_screen (GdkScreen       *screen,
-				   GdkNativeWindow  anid,
+BdkPixmap *
+bdk_pixmap_foreign_new_for_screen (BdkScreen       *screen,
+				   BdkNativeWindow  anid,
 				   gint             width,
 				   gint             height,
 				   gint             depth)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  return gdk_pixmap_foreign_new (anid);
+  return bdk_pixmap_foreign_new (anid);
 }
 
-GdkPixmap*
-gdk_pixmap_foreign_new (GdkNativeWindow anid)
+BdkPixmap*
+bdk_pixmap_foreign_new (BdkNativeWindow anid)
 {
-  GdkPixmap *pixmap;
-  GdkDrawableImplWin32 *draw_impl;
-  GdkPixmapImplWin32 *pix_impl;
+  BdkPixmap *pixmap;
+  BdkDrawableImplWin32 *draw_impl;
+  BdkPixmapImplWin32 *pix_impl;
   HBITMAP hbitmap;
   SIZE size;
 
@@ -506,15 +506,15 @@ gdk_pixmap_foreign_new (GdkNativeWindow anid)
   hbitmap = (HBITMAP) anid;
 
   /* Get information about the bitmap to fill in the structure for the
-   * GDK window.
+   * BDK window.
    */
   GetBitmapDimensionEx (hbitmap, &size);
 
-  /* Allocate a new GDK pixmap */
-  pixmap = g_object_new (gdk_pixmap_get_type (), NULL);
-  draw_impl = GDK_DRAWABLE_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
-  pix_impl = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl);
-  draw_impl->wrapper = GDK_DRAWABLE (pixmap);
+  /* Allocate a new BDK pixmap */
+  pixmap = g_object_new (bdk_pixmap_get_type (), NULL);
+  draw_impl = BDK_DRAWABLE_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl);
+  pix_impl = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl);
+  draw_impl->wrapper = BDK_DRAWABLE (pixmap);
   
   draw_impl->handle = hbitmap;
   draw_impl->colormap = NULL;
@@ -523,22 +523,22 @@ gdk_pixmap_foreign_new (GdkNativeWindow anid)
   pix_impl->height = size.cy;
   pix_impl->bits = NULL;
 
-  gdk_win32_handle_table_insert (&GDK_PIXMAP_HBITMAP (pixmap), pixmap);
+  bdk_win32_handle_table_insert (&BDK_PIXMAP_HBITMAP (pixmap), pixmap);
 
   return pixmap;
 }
 
-GdkPixmap*
-gdk_pixmap_lookup (GdkNativeWindow anid)
+BdkPixmap*
+bdk_pixmap_lookup (BdkNativeWindow anid)
 {
-  return (GdkPixmap*) gdk_win32_handle_table_lookup (anid);
+  return (BdkPixmap*) bdk_win32_handle_table_lookup (anid);
 }
 
-GdkPixmap*
-gdk_pixmap_lookup_for_display (GdkDisplay *display, GdkNativeWindow anid)
+BdkPixmap*
+bdk_pixmap_lookup_for_display (BdkDisplay *display, BdkNativeWindow anid)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  g_return_val_if_fail (display == _gdk_display, NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (display == _bdk_display, NULL);
 
-  return gdk_pixmap_lookup (anid);
+  return bdk_pixmap_lookup (anid);
 }

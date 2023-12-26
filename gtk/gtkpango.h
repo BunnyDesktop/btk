@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,30 +18,30 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_PANGO_H__
-#define __GTK_PANGO_H__
+#ifndef __BTK_BANGO_H__
+#define __BTK_BANGO_H__
 
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <pango/pangocairo.h>
+#include <bango/bangobairo.h>
 
 
 G_BEGIN_DECLS
 
 void
-_gtk_pango_fill_layout (cairo_t     *cr,
-                        PangoLayout *layout);
+_btk_bango_fill_layout (bairo_t     *cr,
+                        BangoLayout *layout);
 
 
 G_END_DECLS
 
-#endif /* __GTK_PANGO_H__ */
+#endif /* __BTK_BANGO_H__ */

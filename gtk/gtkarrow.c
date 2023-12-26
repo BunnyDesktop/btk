@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,38 +18,38 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2001.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 /**
- * SECTION:gtkarrow
+ * SECTION:btkarrow
  * @Short_description: Displays an arrow
- * @Title: GtkArrow
- * @See_also: gtk_paint_arrow()
+ * @Title: BtkArrow
+ * @See_also: btk_paint_arrow()
  *
- * GtkArrow should be used to draw simple arrows that need to point in
+ * BtkArrow should be used to draw simple arrows that need to point in
  * one of the four cardinal directions (up, down, left, or right).  The
  * style of the arrow can be one of shadow in, shadow out, etched in, or
  * etched out.  Note that these directions and style types may be
- * ammended in versions of GTK+ to come.
+ * ammended in versions of BTK+ to come.
  *
- * GtkArrow will fill any space alloted to it, but since it is inherited
- * from #GtkMisc, it can be padded and/or aligned, to fill exactly the
+ * BtkArrow will fill any space alloted to it, but since it is inherited
+ * from #BtkMisc, it can be padded and/or aligned, to fill exactly the
  * space the programmer desires.
  *
- * Arrows are created with a call to gtk_arrow_new().  The direction or
- * style of an arrow can be changed after creation by using gtk_arrow_set().
+ * Arrows are created with a call to btk_arrow_new().  The direction or
+ * style of an arrow can be changed after creation by using btk_arrow_set().
  */
 
 #include "config.h"
 #include <math.h>
-#include "gtkarrow.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkarrow.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 #define MIN_ARROW_SIZE  15
 
@@ -60,78 +60,78 @@ enum {
 };
 
 
-static void     gtk_arrow_set_property (GObject        *object,
+static void     btk_arrow_set_property (GObject        *object,
                                         guint           prop_id,
                                         const GValue   *value,
                                         GParamSpec     *pspec);
-static void     gtk_arrow_get_property (GObject        *object,
+static void     btk_arrow_get_property (GObject        *object,
                                         guint           prop_id,
                                         GValue         *value,
                                         GParamSpec     *pspec);
-static gboolean gtk_arrow_expose       (GtkWidget      *widget,
-                                        GdkEventExpose *event);
+static gboolean btk_arrow_expose       (BtkWidget      *widget,
+                                        BdkEventExpose *event);
 
 
-G_DEFINE_TYPE (GtkArrow, gtk_arrow, GTK_TYPE_MISC)
+G_DEFINE_TYPE (BtkArrow, btk_arrow, BTK_TYPE_MISC)
 
 
 static void
-gtk_arrow_class_init (GtkArrowClass *class)
+btk_arrow_class_init (BtkArrowClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass *bobject_class;
+  BtkWidgetClass *widget_class;
 
-  gobject_class = (GObjectClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  bobject_class = (GObjectClass*) class;
+  widget_class = (BtkWidgetClass*) class;
 
-  gobject_class->set_property = gtk_arrow_set_property;
-  gobject_class->get_property = gtk_arrow_get_property;
+  bobject_class->set_property = btk_arrow_set_property;
+  bobject_class->get_property = btk_arrow_get_property;
 
-  widget_class->expose_event = gtk_arrow_expose;
+  widget_class->expose_event = btk_arrow_expose;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ARROW_TYPE,
                                    g_param_spec_enum ("arrow-type",
                                                       P_("Arrow direction"),
                                                       P_("The direction the arrow should point"),
-						      GTK_TYPE_ARROW_TYPE,
-						      GTK_ARROW_RIGHT,
-                                                      GTK_PARAM_READWRITE));
+						      BTK_TYPE_ARROW_TYPE,
+						      BTK_ARROW_RIGHT,
+                                                      BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_SHADOW_TYPE,
                                    g_param_spec_enum ("shadow-type",
                                                       P_("Arrow shadow"),
                                                       P_("Appearance of the shadow surrounding the arrow"),
-						      GTK_TYPE_SHADOW_TYPE,
-						      GTK_SHADOW_OUT,
-                                                      GTK_PARAM_READWRITE));
+						      BTK_TYPE_SHADOW_TYPE,
+						      BTK_SHADOW_OUT,
+                                                      BTK_PARAM_READWRITE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_float ("arrow-scaling",
                                                                P_("Arrow Scaling"),
                                                                P_("Amount of space used up by arrow"),
                                                                0.0, 1.0, 0.7,
-                                                               GTK_PARAM_READABLE));
+                                                               BTK_PARAM_READABLE));
 }
 
 static void
-gtk_arrow_set_property (GObject         *object,
+btk_arrow_set_property (GObject         *object,
 			guint            prop_id,
 			const GValue    *value,
 			GParamSpec      *pspec)
 {
-  GtkArrow *arrow = GTK_ARROW (object);
+  BtkArrow *arrow = BTK_ARROW (object);
 
   switch (prop_id)
     {
     case PROP_ARROW_TYPE:
-      gtk_arrow_set (arrow,
+      btk_arrow_set (arrow,
 		     g_value_get_enum (value),
 		     arrow->shadow_type);
       break;
     case PROP_SHADOW_TYPE:
-      gtk_arrow_set (arrow,
+      btk_arrow_set (arrow,
 		     arrow->arrow_type,
 		     g_value_get_enum (value));
       break;
@@ -142,12 +142,12 @@ gtk_arrow_set_property (GObject         *object,
 }
 
 static void
-gtk_arrow_get_property (GObject         *object,
+btk_arrow_get_property (GObject         *object,
 			guint            prop_id,
 			GValue          *value,
 			GParamSpec      *pspec)
 {
-  GtkArrow *arrow = GTK_ARROW (object);
+  BtkArrow *arrow = BTK_ARROW (object);
 
   switch (prop_id)
     {
@@ -164,69 +164,69 @@ gtk_arrow_get_property (GObject         *object,
 }
 
 static void
-gtk_arrow_init (GtkArrow *arrow)
+btk_arrow_init (BtkArrow *arrow)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (arrow), FALSE);
+  btk_widget_set_has_window (BTK_WIDGET (arrow), FALSE);
 
-  GTK_WIDGET (arrow)->requisition.width = MIN_ARROW_SIZE + GTK_MISC (arrow)->xpad * 2;
-  GTK_WIDGET (arrow)->requisition.height = MIN_ARROW_SIZE + GTK_MISC (arrow)->ypad * 2;
+  BTK_WIDGET (arrow)->requisition.width = MIN_ARROW_SIZE + BTK_MISC (arrow)->xpad * 2;
+  BTK_WIDGET (arrow)->requisition.height = MIN_ARROW_SIZE + BTK_MISC (arrow)->ypad * 2;
 
-  arrow->arrow_type = GTK_ARROW_RIGHT;
-  arrow->shadow_type = GTK_SHADOW_OUT;
+  arrow->arrow_type = BTK_ARROW_RIGHT;
+  arrow->shadow_type = BTK_SHADOW_OUT;
 }
 
 /**
- * gtk_arrow_new:
- * @arrow_type: a valid #GtkArrowType.
- * @shadow_type: a valid #GtkShadowType.
+ * btk_arrow_new:
+ * @arrow_type: a valid #BtkArrowType.
+ * @shadow_type: a valid #BtkShadowType.
  *
- * Creates a new #GtkArrow widget.
+ * Creates a new #BtkArrow widget.
  *
- * Returns: the new #GtkArrow widget.
+ * Returns: the new #BtkArrow widget.
  */
-GtkWidget*
-gtk_arrow_new (GtkArrowType  arrow_type,
-	       GtkShadowType shadow_type)
+BtkWidget*
+btk_arrow_new (BtkArrowType  arrow_type,
+	       BtkShadowType shadow_type)
 {
-  GtkArrow *arrow;
+  BtkArrow *arrow;
 
-  arrow = g_object_new (GTK_TYPE_ARROW, NULL);
+  arrow = g_object_new (BTK_TYPE_ARROW, NULL);
 
   arrow->arrow_type = arrow_type;
   arrow->shadow_type = shadow_type;
 
-  return GTK_WIDGET (arrow);
+  return BTK_WIDGET (arrow);
 }
 
 /**
- * gtk_arrow_set:
- * @arrow: a widget of type #GtkArrow.
- * @arrow_type: a valid #GtkArrowType.
- * @shadow_type: a valid #GtkShadowType.
+ * btk_arrow_set:
+ * @arrow: a widget of type #BtkArrow.
+ * @arrow_type: a valid #BtkArrowType.
+ * @shadow_type: a valid #BtkShadowType.
  *
- * Sets the direction and style of the #GtkArrow, @arrow.
+ * Sets the direction and style of the #BtkArrow, @arrow.
  */
 void
-gtk_arrow_set (GtkArrow      *arrow,
-	       GtkArrowType   arrow_type,
-	       GtkShadowType  shadow_type)
+btk_arrow_set (BtkArrow      *arrow,
+	       BtkArrowType   arrow_type,
+	       BtkShadowType  shadow_type)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_if_fail (GTK_IS_ARROW (arrow));
+  g_return_if_fail (BTK_IS_ARROW (arrow));
 
-  if (   ((GtkArrowType) arrow->arrow_type != arrow_type)
-      || ((GtkShadowType) arrow->shadow_type != shadow_type))
+  if (   ((BtkArrowType) arrow->arrow_type != arrow_type)
+      || ((BtkShadowType) arrow->shadow_type != shadow_type))
     {
       g_object_freeze_notify (G_OBJECT (arrow));
 
-      if ((GtkArrowType) arrow->arrow_type != arrow_type)
+      if ((BtkArrowType) arrow->arrow_type != arrow_type)
         {
           arrow->arrow_type = arrow_type;
           g_object_notify (G_OBJECT (arrow), "arrow-type");
         }
 
-      if ((GtkShadowType) arrow->shadow_type != shadow_type)
+      if ((BtkShadowType) arrow->shadow_type != shadow_type)
         {
           arrow->shadow_type = shadow_type;
           g_object_notify (G_OBJECT (arrow), "shadow-type");
@@ -234,45 +234,45 @@ gtk_arrow_set (GtkArrow      *arrow,
 
       g_object_thaw_notify (G_OBJECT (arrow));
 
-      widget = GTK_WIDGET (arrow);
-      if (gtk_widget_is_drawable (widget))
-	gtk_widget_queue_draw (widget);
+      widget = BTK_WIDGET (arrow);
+      if (btk_widget_is_drawable (widget))
+	btk_widget_queue_draw (widget);
     }
 }
 
 
 static gboolean
-gtk_arrow_expose (GtkWidget      *widget,
-		  GdkEventExpose *event)
+btk_arrow_expose (BtkWidget      *widget,
+		  BdkEventExpose *event)
 {
-  if (gtk_widget_is_drawable (widget))
+  if (btk_widget_is_drawable (widget))
     {
-      GtkArrow *arrow = GTK_ARROW (widget);
-      GtkMisc *misc = GTK_MISC (widget);
-      GtkShadowType shadow_type;
+      BtkArrow *arrow = BTK_ARROW (widget);
+      BtkMisc *misc = BTK_MISC (widget);
+      BtkShadowType shadow_type;
       gint width, height;
       gint x, y;
       gint extent;
       gfloat xalign;
-      GtkArrowType effective_arrow_type;
+      BtkArrowType effective_arrow_type;
       gfloat arrow_scaling;
 
-      gtk_widget_style_get (widget, "arrow-scaling", &arrow_scaling, NULL);
+      btk_widget_style_get (widget, "arrow-scaling", &arrow_scaling, NULL);
 
       width = widget->allocation.width - misc->xpad * 2;
       height = widget->allocation.height - misc->ypad * 2;
       extent = MIN (width, height) * arrow_scaling;
       effective_arrow_type = arrow->arrow_type;
 
-      if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR)
+      if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_LTR)
 	xalign = misc->xalign;
       else
 	{
 	  xalign = 1.0 - misc->xalign;
-	  if (arrow->arrow_type == GTK_ARROW_LEFT)
-	    effective_arrow_type = GTK_ARROW_RIGHT;
-	  else if (arrow->arrow_type == GTK_ARROW_RIGHT)
-	    effective_arrow_type = GTK_ARROW_LEFT;
+	  if (arrow->arrow_type == BTK_ARROW_LEFT)
+	    effective_arrow_type = BTK_ARROW_RIGHT;
+	  else if (arrow->arrow_type == BTK_ARROW_RIGHT)
+	    effective_arrow_type = BTK_ARROW_LEFT;
 	}
 
       x = floor (widget->allocation.x + misc->xpad
@@ -282,19 +282,19 @@ gtk_arrow_expose (GtkWidget      *widget,
 
       shadow_type = arrow->shadow_type;
 
-      if (widget->state == GTK_STATE_ACTIVE)
+      if (widget->state == BTK_STATE_ACTIVE)
 	{
-          if (shadow_type == GTK_SHADOW_IN)
-            shadow_type = GTK_SHADOW_OUT;
-          else if (shadow_type == GTK_SHADOW_OUT)
-            shadow_type = GTK_SHADOW_IN;
-          else if (shadow_type == GTK_SHADOW_ETCHED_IN)
-            shadow_type = GTK_SHADOW_ETCHED_OUT;
-          else if (shadow_type == GTK_SHADOW_ETCHED_OUT)
-            shadow_type = GTK_SHADOW_ETCHED_IN;
+          if (shadow_type == BTK_SHADOW_IN)
+            shadow_type = BTK_SHADOW_OUT;
+          else if (shadow_type == BTK_SHADOW_OUT)
+            shadow_type = BTK_SHADOW_IN;
+          else if (shadow_type == BTK_SHADOW_ETCHED_IN)
+            shadow_type = BTK_SHADOW_ETCHED_OUT;
+          else if (shadow_type == BTK_SHADOW_ETCHED_OUT)
+            shadow_type = BTK_SHADOW_ETCHED_IN;
 	}
 
-      gtk_paint_arrow (widget->style, widget->window,
+      btk_paint_arrow (widget->style, widget->window,
 		       widget->state, shadow_type,
 		       &event->area, widget, "arrow",
 		       effective_arrow_type, TRUE,
@@ -304,5 +304,5 @@ gtk_arrow_expose (GtkWidget      *widget,
   return FALSE;
 }
 
-#define __GTK_ARROW_C__
-#include "gtkaliasdef.c"
+#define __BTK_ARROW_C__
+#include "btkaliasdef.c"

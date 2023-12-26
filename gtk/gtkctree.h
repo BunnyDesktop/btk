@@ -1,8 +1,8 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball, Josh MacDonald
  * Copyright (C) 1997-1998 Jay Painter <jpaint@serv.net><jpaint@gimp.org>
  *
- * GtkCTree widget for GTK+
+ * BtkCTree widget for BTK+
  * Copyright (C) 1998 Lars Hamann and Stefan Jeske
  *
  * This library is free software; you can redistribute it and/or
@@ -22,94 +22,94 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (__GTK_CLIST_C__) || defined (__GTK_CTREE_C__)
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_CLIST_C__) || defined (__BTK_CTREE_C__)
 
-#ifndef __GTK_CTREE_H__
-#define __GTK_CTREE_H__
+#ifndef __BTK_CTREE_H__
+#define __BTK_CTREE_H__
 
-#include <gtk/gtkclist.h>
+#include <btk/btkclist.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CTREE            (gtk_ctree_get_type ())
-#define GTK_CTREE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CTREE, GtkCTree))
-#define GTK_CTREE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CTREE, GtkCTreeClass))
-#define GTK_IS_CTREE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CTREE))
-#define GTK_IS_CTREE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CTREE))
-#define GTK_CTREE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CTREE, GtkCTreeClass))
+#define BTK_TYPE_CTREE            (btk_ctree_get_type ())
+#define BTK_CTREE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CTREE, BtkCTree))
+#define BTK_CTREE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CTREE, BtkCTreeClass))
+#define BTK_IS_CTREE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CTREE))
+#define BTK_IS_CTREE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CTREE))
+#define BTK_CTREE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CTREE, BtkCTreeClass))
 
-#define GTK_CTREE_ROW(_node_) ((GtkCTreeRow *)(((GList *)(_node_))->data))
-#define GTK_CTREE_NODE(_node_) ((GtkCTreeNode *)((_node_)))
-#define GTK_CTREE_NODE_NEXT(_nnode_) ((GtkCTreeNode *)(((GList *)(_nnode_))->next))
-#define GTK_CTREE_NODE_PREV(_pnode_) ((GtkCTreeNode *)(((GList *)(_pnode_))->prev))
-#define GTK_CTREE_FUNC(_func_) ((GtkCTreeFunc)(_func_))
+#define BTK_CTREE_ROW(_node_) ((BtkCTreeRow *)(((GList *)(_node_))->data))
+#define BTK_CTREE_NODE(_node_) ((BtkCTreeNode *)((_node_)))
+#define BTK_CTREE_NODE_NEXT(_nnode_) ((BtkCTreeNode *)(((GList *)(_nnode_))->next))
+#define BTK_CTREE_NODE_PREV(_pnode_) ((BtkCTreeNode *)(((GList *)(_pnode_))->prev))
+#define BTK_CTREE_FUNC(_func_) ((BtkCTreeFunc)(_func_))
 
-#define GTK_TYPE_CTREE_NODE (gtk_ctree_node_get_type ())
-
-typedef enum
-{
-  GTK_CTREE_POS_BEFORE,
-  GTK_CTREE_POS_AS_CHILD,
-  GTK_CTREE_POS_AFTER
-} GtkCTreePos;
+#define BTK_TYPE_CTREE_NODE (btk_ctree_node_get_type ())
 
 typedef enum
 {
-  GTK_CTREE_LINES_NONE,
-  GTK_CTREE_LINES_SOLID,
-  GTK_CTREE_LINES_DOTTED,
-  GTK_CTREE_LINES_TABBED
-} GtkCTreeLineStyle;
+  BTK_CTREE_POS_BEFORE,
+  BTK_CTREE_POS_AS_CHILD,
+  BTK_CTREE_POS_AFTER
+} BtkCTreePos;
 
 typedef enum
 {
-  GTK_CTREE_EXPANDER_NONE,
-  GTK_CTREE_EXPANDER_SQUARE,
-  GTK_CTREE_EXPANDER_TRIANGLE,
-  GTK_CTREE_EXPANDER_CIRCULAR
-} GtkCTreeExpanderStyle;
+  BTK_CTREE_LINES_NONE,
+  BTK_CTREE_LINES_SOLID,
+  BTK_CTREE_LINES_DOTTED,
+  BTK_CTREE_LINES_TABBED
+} BtkCTreeLineStyle;
 
 typedef enum
 {
-  GTK_CTREE_EXPANSION_EXPAND,
-  GTK_CTREE_EXPANSION_EXPAND_RECURSIVE,
-  GTK_CTREE_EXPANSION_COLLAPSE,
-  GTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE,
-  GTK_CTREE_EXPANSION_TOGGLE,
-  GTK_CTREE_EXPANSION_TOGGLE_RECURSIVE
-} GtkCTreeExpansionType;
+  BTK_CTREE_EXPANDER_NONE,
+  BTK_CTREE_EXPANDER_SQUARE,
+  BTK_CTREE_EXPANDER_TRIANGLE,
+  BTK_CTREE_EXPANDER_CIRCULAR
+} BtkCTreeExpanderStyle;
 
-typedef struct _GtkCTree      GtkCTree;
-typedef struct _GtkCTreeClass GtkCTreeClass;
-typedef struct _GtkCTreeRow   GtkCTreeRow;
-typedef struct _GtkCTreeNode  GtkCTreeNode;
+typedef enum
+{
+  BTK_CTREE_EXPANSION_EXPAND,
+  BTK_CTREE_EXPANSION_EXPAND_RECURSIVE,
+  BTK_CTREE_EXPANSION_COLLAPSE,
+  BTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE,
+  BTK_CTREE_EXPANSION_TOGGLE,
+  BTK_CTREE_EXPANSION_TOGGLE_RECURSIVE
+} BtkCTreeExpansionType;
 
-typedef void (*GtkCTreeFunc) (GtkCTree     *ctree,
-			      GtkCTreeNode *node,
+typedef struct _BtkCTree      BtkCTree;
+typedef struct _BtkCTreeClass BtkCTreeClass;
+typedef struct _BtkCTreeRow   BtkCTreeRow;
+typedef struct _BtkCTreeNode  BtkCTreeNode;
+
+typedef void (*BtkCTreeFunc) (BtkCTree     *ctree,
+			      BtkCTreeNode *node,
 			      gpointer      data);
 
-typedef gboolean (*GtkCTreeGNodeFunc) (GtkCTree     *ctree,
+typedef gboolean (*BtkCTreeGNodeFunc) (BtkCTree     *ctree,
                                        guint         depth,
                                        GNode        *gnode,
-				       GtkCTreeNode *cnode,
+				       BtkCTreeNode *cnode,
                                        gpointer      data);
 
-typedef gboolean (*GtkCTreeCompareDragFunc) (GtkCTree     *ctree,
-                                             GtkCTreeNode *source_node,
-                                             GtkCTreeNode *new_parent,
-                                             GtkCTreeNode *new_sibling);
+typedef gboolean (*BtkCTreeCompareDragFunc) (BtkCTree     *ctree,
+                                             BtkCTreeNode *source_node,
+                                             BtkCTreeNode *new_parent,
+                                             BtkCTreeNode *new_sibling);
 
-struct _GtkCTree
+struct _BtkCTree
 {
-  GtkCList clist;
+  BtkCList clist;
   
-  GdkGC *lines_gc;
+  BdkGC *lines_gc;
   
   gint tree_indent;
   gint tree_spacing;
@@ -119,43 +119,43 @@ struct _GtkCTree
   guint expander_style : 2;
   guint show_stub      : 1;
 
-  GtkCTreeCompareDragFunc drag_compare;
+  BtkCTreeCompareDragFunc drag_compare;
 };
 
-struct _GtkCTreeClass
+struct _BtkCTreeClass
 {
-  GtkCListClass parent_class;
+  BtkCListClass parent_class;
   
-  void (*tree_select_row)   (GtkCTree     *ctree,
-			     GtkCTreeNode *row,
+  void (*tree_select_row)   (BtkCTree     *ctree,
+			     BtkCTreeNode *row,
 			     gint          column);
-  void (*tree_unselect_row) (GtkCTree     *ctree,
-			     GtkCTreeNode *row,
+  void (*tree_unselect_row) (BtkCTree     *ctree,
+			     BtkCTreeNode *row,
 			     gint          column);
-  void (*tree_expand)       (GtkCTree     *ctree,
-			     GtkCTreeNode *node);
-  void (*tree_collapse)     (GtkCTree     *ctree,
-			     GtkCTreeNode *node);
-  void (*tree_move)         (GtkCTree     *ctree,
-			     GtkCTreeNode *node,
-			     GtkCTreeNode *new_parent,
-			     GtkCTreeNode *new_sibling);
-  void (*change_focus_row_expansion) (GtkCTree *ctree,
-				      GtkCTreeExpansionType action);
+  void (*tree_expand)       (BtkCTree     *ctree,
+			     BtkCTreeNode *node);
+  void (*tree_collapse)     (BtkCTree     *ctree,
+			     BtkCTreeNode *node);
+  void (*tree_move)         (BtkCTree     *ctree,
+			     BtkCTreeNode *node,
+			     BtkCTreeNode *new_parent,
+			     BtkCTreeNode *new_sibling);
+  void (*change_focus_row_expansion) (BtkCTree *ctree,
+				      BtkCTreeExpansionType action);
 };
 
-struct _GtkCTreeRow
+struct _BtkCTreeRow
 {
-  GtkCListRow row;
+  BtkCListRow row;
   
-  GtkCTreeNode *parent;
-  GtkCTreeNode *sibling;
-  GtkCTreeNode *children;
+  BtkCTreeNode *parent;
+  BtkCTreeNode *sibling;
+  BtkCTreeNode *children;
   
-  GdkPixmap *pixmap_closed;
-  GdkBitmap *mask_closed;
-  GdkPixmap *pixmap_opened;
-  GdkBitmap *mask_opened;
+  BdkPixmap *pixmap_closed;
+  BdkBitmap *mask_closed;
+  BdkPixmap *pixmap_opened;
+  BdkBitmap *mask_opened;
   
   guint16 level;
   
@@ -163,7 +163,7 @@ struct _GtkCTreeRow
   guint expanded : 1;
 };
 
-struct _GtkCTreeNode {
+struct _BtkCTreeNode {
   GList list;
 };
 
@@ -172,36 +172,36 @@ struct _GtkCTreeNode {
  *           Creation, insertion, deletion                 *
  ***********************************************************/
 
-GType   gtk_ctree_get_type                       (void) G_GNUC_CONST;
-GtkWidget * gtk_ctree_new_with_titles            (gint          columns, 
+GType   btk_ctree_get_type                       (void) G_GNUC_CONST;
+BtkWidget * btk_ctree_new_with_titles            (gint          columns, 
 						  gint          tree_column,
 						  gchar        *titles[]);
-GtkWidget * gtk_ctree_new                        (gint          columns, 
+BtkWidget * btk_ctree_new                        (gint          columns, 
 						  gint          tree_column);
-GtkCTreeNode * gtk_ctree_insert_node             (GtkCTree     *ctree,
-						  GtkCTreeNode *parent, 
-						  GtkCTreeNode *sibling,
+BtkCTreeNode * btk_ctree_insert_node             (BtkCTree     *ctree,
+						  BtkCTreeNode *parent, 
+						  BtkCTreeNode *sibling,
 						  gchar        *text[],
 						  guint8        spacing,
-						  GdkPixmap    *pixmap_closed,
-						  GdkBitmap    *mask_closed,
-						  GdkPixmap    *pixmap_opened,
-						  GdkBitmap    *mask_opened,
+						  BdkPixmap    *pixmap_closed,
+						  BdkBitmap    *mask_closed,
+						  BdkPixmap    *pixmap_opened,
+						  BdkBitmap    *mask_opened,
 						  gboolean      is_leaf,
 						  gboolean      expanded);
-void gtk_ctree_remove_node                       (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
-GtkCTreeNode * gtk_ctree_insert_gnode            (GtkCTree          *ctree,
-						  GtkCTreeNode      *parent,
-						  GtkCTreeNode      *sibling,
+void btk_ctree_remove_node                       (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
+BtkCTreeNode * btk_ctree_insert_gnode            (BtkCTree          *ctree,
+						  BtkCTreeNode      *parent,
+						  BtkCTreeNode      *sibling,
 						  GNode             *gnode,
-						  GtkCTreeGNodeFunc  func,
+						  BtkCTreeGNodeFunc  func,
 						  gpointer           data);
-GNode * gtk_ctree_export_to_gnode                (GtkCTree          *ctree,
+GNode * btk_ctree_export_to_gnode                (BtkCTree          *ctree,
 						  GNode             *parent,
 						  GNode             *sibling,
-						  GtkCTreeNode      *node,
-						  GtkCTreeGNodeFunc  func,
+						  BtkCTreeNode      *node,
+						  BtkCTreeGNodeFunc  func,
 						  gpointer           data);
 
 /***********************************************************
@@ -209,55 +209,55 @@ GNode * gtk_ctree_export_to_gnode                (GtkCTree          *ctree,
  *  information                                            *
  ***********************************************************/
 
-void gtk_ctree_post_recursive                    (GtkCTree     *ctree, 
-						  GtkCTreeNode *node,
-						  GtkCTreeFunc  func,
+void btk_ctree_post_recursive                    (BtkCTree     *ctree, 
+						  BtkCTreeNode *node,
+						  BtkCTreeFunc  func,
 						  gpointer      data);
-void gtk_ctree_post_recursive_to_depth           (GtkCTree     *ctree, 
-						  GtkCTreeNode *node,
+void btk_ctree_post_recursive_to_depth           (BtkCTree     *ctree, 
+						  BtkCTreeNode *node,
 						  gint          depth,
-						  GtkCTreeFunc  func,
+						  BtkCTreeFunc  func,
 						  gpointer      data);
-void gtk_ctree_pre_recursive                     (GtkCTree     *ctree, 
-						  GtkCTreeNode *node,
-						  GtkCTreeFunc  func,
+void btk_ctree_pre_recursive                     (BtkCTree     *ctree, 
+						  BtkCTreeNode *node,
+						  BtkCTreeFunc  func,
 						  gpointer      data);
-void gtk_ctree_pre_recursive_to_depth            (GtkCTree     *ctree, 
-						  GtkCTreeNode *node,
+void btk_ctree_pre_recursive_to_depth            (BtkCTree     *ctree, 
+						  BtkCTreeNode *node,
 						  gint          depth,
-						  GtkCTreeFunc  func,
+						  BtkCTreeFunc  func,
 						  gpointer      data);
-gboolean gtk_ctree_is_viewable                   (GtkCTree     *ctree, 
-					          GtkCTreeNode *node);
-GtkCTreeNode * gtk_ctree_last                    (GtkCTree     *ctree,
-					          GtkCTreeNode *node);
-GtkCTreeNode * gtk_ctree_find_node_ptr           (GtkCTree     *ctree,
-					          GtkCTreeRow  *ctree_row);
-GtkCTreeNode * gtk_ctree_node_nth                (GtkCTree     *ctree,
+gboolean btk_ctree_is_viewable                   (BtkCTree     *ctree, 
+					          BtkCTreeNode *node);
+BtkCTreeNode * btk_ctree_last                    (BtkCTree     *ctree,
+					          BtkCTreeNode *node);
+BtkCTreeNode * btk_ctree_find_node_ptr           (BtkCTree     *ctree,
+					          BtkCTreeRow  *ctree_row);
+BtkCTreeNode * btk_ctree_node_nth                (BtkCTree     *ctree,
 						  guint         row);
-gboolean gtk_ctree_find                          (GtkCTree     *ctree,
-					          GtkCTreeNode *node,
-					          GtkCTreeNode *child);
-gboolean gtk_ctree_is_ancestor                   (GtkCTree     *ctree,
-					          GtkCTreeNode *node,
-					          GtkCTreeNode *child);
-GtkCTreeNode * gtk_ctree_find_by_row_data        (GtkCTree     *ctree,
-					          GtkCTreeNode *node,
+gboolean btk_ctree_find                          (BtkCTree     *ctree,
+					          BtkCTreeNode *node,
+					          BtkCTreeNode *child);
+gboolean btk_ctree_is_ancestor                   (BtkCTree     *ctree,
+					          BtkCTreeNode *node,
+					          BtkCTreeNode *child);
+BtkCTreeNode * btk_ctree_find_by_row_data        (BtkCTree     *ctree,
+					          BtkCTreeNode *node,
 					          gpointer      data);
-/* returns a GList of all GtkCTreeNodes with row->data == data. */
-GList * gtk_ctree_find_all_by_row_data           (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+/* returns a GList of all BtkCTreeNodes with row->data == data. */
+GList * btk_ctree_find_all_by_row_data           (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gpointer      data);
-GtkCTreeNode * gtk_ctree_find_by_row_data_custom (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+BtkCTreeNode * btk_ctree_find_by_row_data_custom (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gpointer      data,
 						  GCompareFunc  func);
-/* returns a GList of all GtkCTreeNodes with row->data == data. */
-GList * gtk_ctree_find_all_by_row_data_custom    (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+/* returns a GList of all BtkCTreeNodes with row->data == data. */
+GList * btk_ctree_find_all_by_row_data_custom    (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gpointer      data,
 						  GCompareFunc  func);
-gboolean gtk_ctree_is_hot_spot                   (GtkCTree     *ctree,
+gboolean btk_ctree_is_hot_spot                   (BtkCTree     *ctree,
 					          gint          x,
 					          gint          y);
 
@@ -265,181 +265,181 @@ gboolean gtk_ctree_is_hot_spot                   (GtkCTree     *ctree,
  *   Tree signals : move, expand, collapse, (un)select     *
  ***********************************************************/
 
-void gtk_ctree_move                              (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
-						  GtkCTreeNode *new_parent, 
-						  GtkCTreeNode *new_sibling);
-void gtk_ctree_expand                            (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_expand_recursive                  (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_expand_to_depth                   (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_move                              (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
+						  BtkCTreeNode *new_parent, 
+						  BtkCTreeNode *new_sibling);
+void btk_ctree_expand                            (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_expand_recursive                  (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_expand_to_depth                   (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          depth);
-void gtk_ctree_collapse                          (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_collapse_recursive                (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_collapse_to_depth                 (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_collapse                          (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_collapse_recursive                (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_collapse_to_depth                 (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          depth);
-void gtk_ctree_toggle_expansion                  (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_toggle_expansion_recursive        (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_select                            (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
-void gtk_ctree_select_recursive                  (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
-void gtk_ctree_unselect                          (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
-void gtk_ctree_unselect_recursive                (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
-void gtk_ctree_real_select_recursive             (GtkCTree     *ctree, 
-						  GtkCTreeNode *node, 
+void btk_ctree_toggle_expansion                  (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_toggle_expansion_recursive        (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_select                            (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
+void btk_ctree_select_recursive                  (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
+void btk_ctree_unselect                          (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
+void btk_ctree_unselect_recursive                (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
+void btk_ctree_real_select_recursive             (BtkCTree     *ctree, 
+						  BtkCTreeNode *node, 
 						  gint          state);
 
 /***********************************************************
- *           Analogons of GtkCList functions               *
+ *           Analogons of BtkCList functions               *
  ***********************************************************/
 
-void gtk_ctree_node_set_text                     (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_text                     (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
 						  const gchar  *text);
-void gtk_ctree_node_set_pixmap                   (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_pixmap                   (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
-						  GdkPixmap    *pixmap,
-						  GdkBitmap    *mask);
-void gtk_ctree_node_set_pixtext                  (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+						  BdkPixmap    *pixmap,
+						  BdkBitmap    *mask);
+void btk_ctree_node_set_pixtext                  (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
 						  const gchar  *text,
 						  guint8        spacing,
-						  GdkPixmap    *pixmap,
-						  GdkBitmap    *mask);
-void gtk_ctree_set_node_info                     (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+						  BdkPixmap    *pixmap,
+						  BdkBitmap    *mask);
+void btk_ctree_set_node_info                     (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  const gchar  *text,
 						  guint8        spacing,
-						  GdkPixmap    *pixmap_closed,
-						  GdkBitmap    *mask_closed,
-						  GdkPixmap    *pixmap_opened,
-						  GdkBitmap    *mask_opened,
+						  BdkPixmap    *pixmap_closed,
+						  BdkBitmap    *mask_closed,
+						  BdkPixmap    *pixmap_opened,
+						  BdkBitmap    *mask_opened,
 						  gboolean      is_leaf,
 						  gboolean      expanded);
-void gtk_ctree_node_set_shift                    (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_shift                    (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
 						  gint          vertical,
 						  gint          horizontal);
-void gtk_ctree_node_set_selectable               (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_selectable               (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gboolean      selectable);
-gboolean gtk_ctree_node_get_selectable           (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-GtkCellType gtk_ctree_node_get_cell_type         (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+gboolean btk_ctree_node_get_selectable           (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+BtkCellType btk_ctree_node_get_cell_type         (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column);
-gboolean gtk_ctree_node_get_text                 (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+gboolean btk_ctree_node_get_text                 (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
 						  gchar       **text);
-gboolean gtk_ctree_node_get_pixmap               (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+gboolean btk_ctree_node_get_pixmap               (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
-						  GdkPixmap   **pixmap,
-						  GdkBitmap   **mask);
-gboolean gtk_ctree_node_get_pixtext              (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+						  BdkPixmap   **pixmap,
+						  BdkBitmap   **mask);
+gboolean btk_ctree_node_get_pixtext              (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
 						  gchar       **text,
 						  guint8       *spacing,
-						  GdkPixmap   **pixmap,
-						  GdkBitmap   **mask);
-gboolean gtk_ctree_get_node_info                 (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+						  BdkPixmap   **pixmap,
+						  BdkBitmap   **mask);
+gboolean btk_ctree_get_node_info                 (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gchar       **text,
 						  guint8       *spacing,
-						  GdkPixmap   **pixmap_closed,
-						  GdkBitmap   **mask_closed,
-						  GdkPixmap   **pixmap_opened,
-						  GdkBitmap   **mask_opened,
+						  BdkPixmap   **pixmap_closed,
+						  BdkBitmap   **mask_closed,
+						  BdkPixmap   **pixmap_opened,
+						  BdkBitmap   **mask_opened,
 						  gboolean     *is_leaf,
 						  gboolean     *expanded);
-void gtk_ctree_node_set_row_style                (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
-						  GtkStyle     *style);
-GtkStyle * gtk_ctree_node_get_row_style          (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_node_set_cell_style               (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_row_style                (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
+						  BtkStyle     *style);
+BtkStyle * btk_ctree_node_get_row_style          (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_node_set_cell_style               (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
-						  GtkStyle     *style);
-GtkStyle * gtk_ctree_node_get_cell_style         (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+						  BtkStyle     *style);
+BtkStyle * btk_ctree_node_get_cell_style         (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column);
-void gtk_ctree_node_set_foreground               (GtkCTree       *ctree,
-						  GtkCTreeNode   *node,
-						  const GdkColor *color);
-void gtk_ctree_node_set_background               (GtkCTree       *ctree,
-						  GtkCTreeNode   *node,
-						  const GdkColor *color);
-void gtk_ctree_node_set_row_data                 (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_foreground               (BtkCTree       *ctree,
+						  BtkCTreeNode   *node,
+						  const BdkColor *color);
+void btk_ctree_node_set_background               (BtkCTree       *ctree,
+						  BtkCTreeNode   *node,
+						  const BdkColor *color);
+void btk_ctree_node_set_row_data                 (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gpointer      data);
-void gtk_ctree_node_set_row_data_full            (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+void btk_ctree_node_set_row_data_full            (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gpointer      data,
 						  GDestroyNotify destroy);
-gpointer gtk_ctree_node_get_row_data             (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
-void gtk_ctree_node_moveto                       (GtkCTree     *ctree,
-						  GtkCTreeNode *node,
+gpointer btk_ctree_node_get_row_data             (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
+void btk_ctree_node_moveto                       (BtkCTree     *ctree,
+						  BtkCTreeNode *node,
 						  gint          column,
 						  gfloat        row_align,
 						  gfloat        col_align);
-GtkVisibility gtk_ctree_node_is_visible          (GtkCTree     *ctree,
-						  GtkCTreeNode *node);
+BtkVisibility btk_ctree_node_is_visible          (BtkCTree     *ctree,
+						  BtkCTreeNode *node);
 
 /***********************************************************
- *             GtkCTree specific functions                 *
+ *             BtkCTree specific functions                 *
  ***********************************************************/
 
-void gtk_ctree_set_indent            (GtkCTree                *ctree, 
+void btk_ctree_set_indent            (BtkCTree                *ctree, 
 				      gint                     indent);
-void gtk_ctree_set_spacing           (GtkCTree                *ctree, 
+void btk_ctree_set_spacing           (BtkCTree                *ctree, 
 				      gint                     spacing);
-void gtk_ctree_set_show_stub         (GtkCTree                *ctree, 
+void btk_ctree_set_show_stub         (BtkCTree                *ctree, 
 				      gboolean                 show_stub);
-void gtk_ctree_set_line_style        (GtkCTree                *ctree, 
-				      GtkCTreeLineStyle        line_style);
-void gtk_ctree_set_expander_style    (GtkCTree                *ctree, 
-				      GtkCTreeExpanderStyle    expander_style);
-void gtk_ctree_set_drag_compare_func (GtkCTree     	      *ctree,
-				      GtkCTreeCompareDragFunc  cmp_func);
+void btk_ctree_set_line_style        (BtkCTree                *ctree, 
+				      BtkCTreeLineStyle        line_style);
+void btk_ctree_set_expander_style    (BtkCTree                *ctree, 
+				      BtkCTreeExpanderStyle    expander_style);
+void btk_ctree_set_drag_compare_func (BtkCTree     	      *ctree,
+				      BtkCTreeCompareDragFunc  cmp_func);
 
 /***********************************************************
  *             Tree sorting functions                      *
  ***********************************************************/
 
-void gtk_ctree_sort_node                         (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
-void gtk_ctree_sort_recursive                    (GtkCTree     *ctree, 
-						  GtkCTreeNode *node);
+void btk_ctree_sort_node                         (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
+void btk_ctree_sort_recursive                    (BtkCTree     *ctree, 
+						  BtkCTreeNode *node);
 
 
-#define gtk_ctree_set_reorderable(t,r)                    gtk_clist_set_reorderable((GtkCList*) (t),(r))
+#define btk_ctree_set_reorderable(t,r)                    btk_clist_set_reorderable((BtkCList*) (t),(r))
 
-/* GType for the GtkCTreeNode.  This is a boxed type, although it uses
+/* GType for the BtkCTreeNode.  This is a boxed type, although it uses
  * no-op's for the copy and free routines.  It is defined in order to
  * provide type information for the signal arguments
  */
-GType   gtk_ctree_node_get_type                  (void) G_GNUC_CONST;
+GType   btk_ctree_node_get_type                  (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif				/* __GTK_CTREE_H__ */
+#endif				/* __BTK_CTREE_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -32,24 +32,24 @@
 
 #include "config.h"
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkscreen.h"
-#include "gdkvisual.h"
-#include "gdkalias.h"
+#include "bdkscreen.h"
+#include "bdkvisual.h"
+#include "bdkalias.h"
 
 
-struct _GdkVisualClass
+struct _BdkVisualClass
 {
   GObjectClass parent_class;
 };
 
 
-static void                gdk_visual_decompose_mask  (gulong   mask,
+static void                bdk_visual_decompose_mask  (gulong   mask,
                                                        gint    *shift,
                                                        gint    *prec);
-static GdkVisualDirectFB * gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat);
+static BdkVisualDirectFB * bdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat);
 
 
 static DFBSurfacePixelFormat formats[] =
@@ -63,26 +63,26 @@ static DFBSurfacePixelFormat formats[] =
     DSPF_RGB332
   };
 
-GdkVisual                * system_visual                                = NULL;
-static GdkVisualDirectFB * visuals[G_N_ELEMENTS (formats) + 1]          = { NULL };
+BdkVisual                * system_visual                                = NULL;
+static BdkVisualDirectFB * visuals[G_N_ELEMENTS (formats) + 1]          = { NULL };
 static gint                available_depths[G_N_ELEMENTS (formats) + 1] = {0};
-static GdkVisualType       available_types[G_N_ELEMENTS (formats) + 1]  = {0};
+static BdkVisualType       available_types[G_N_ELEMENTS (formats) + 1]  = {0};
 
 
 static void
-gdk_visual_finalize (GObject *object)
+bdk_visual_finalize (GObject *object)
 {
-  g_error ("A GdkVisual object was finalized. This should not happen");
+  g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-gdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (GObjectClass *class)
 {
-  class->finalize = gdk_visual_finalize;
+  class->finalize = bdk_visual_finalize;
 }
 
 GType
-gdk_visual_get_type (void)
+bdk_visual_get_type (void)
 {
   static GType object_type = 0;
 
@@ -90,19 +90,19 @@ gdk_visual_get_type (void)
     {
       const GTypeInfo object_info =
         {
-          sizeof (GdkVisualClass),
+          sizeof (BdkVisualClass),
           (GBaseInitFunc) NULL,
           (GBaseFinalizeFunc) NULL,
-          (GClassInitFunc) gdk_visual_class_init,
+          (GClassInitFunc) bdk_visual_class_init,
           NULL,           /* class_finalize */
           NULL,           /* class_data */
-          sizeof (GdkVisualDirectFB),
+          sizeof (BdkVisualDirectFB),
           0,              /* n_preallocs */
           (GInstanceInitFunc) NULL,
         };
 
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkVisual",
+                                            "BdkVisual",
                                             &object_info, 0);
     }
 
@@ -110,7 +110,7 @@ gdk_visual_get_type (void)
 }
 
 void
-_gdk_visual_init (void)
+_bdk_visual_init (void)
 {
   DFBDisplayLayerConfig  dlc;
   DFBSurfaceDescription  desc;
@@ -118,10 +118,10 @@ _gdk_visual_init (void)
   gint                   i, c;
 
 
-  _gdk_display->layer->GetConfiguration (_gdk_display->layer, &dlc);
+  _bdk_display->layer->GetConfiguration (_bdk_display->layer, &dlc);
   g_assert (dlc.pixelformat != DSPF_UNKNOWN);
 
-  dest = gdk_display_dfb_create_surface (_gdk_display, dlc.pixelformat, 8, 8);
+  dest = bdk_display_dfb_create_surface (_bdk_display, dlc.pixelformat, 8, 8);
   g_assert (dest != NULL);
 
   /* We could provide all visuals since DirectFB allows us to mix
@@ -131,7 +131,7 @@ _gdk_visual_init (void)
 
      If you want to use a special pixelformat that is not registered
      here, you can create it using the DirectFB-specific function
-     gdk_directfb_visual_by_format().
+     bdk_directfb_visual_by_format().
      Note:
      changed to do all formats but we should redo this code
      to ensure the base format ARGB LUT8 RGB etc then add ones supported
@@ -147,17 +147,17 @@ _gdk_visual_init (void)
       desc.height      = 8;
       desc.pixelformat = formats[i];
       //call direct so fail silently  is ok
-      if (_gdk_display->directfb->CreateSurface (_gdk_display->directfb,
+      if (_bdk_display->directfb->CreateSurface (_bdk_display->directfb,
                                                  &desc, &src) != DFB_OK)
         continue;
 
-      visuals[i] = gdk_directfb_visual_create (formats[i]);
+      visuals[i] = bdk_directfb_visual_create (formats[i]);
 
       dest->GetAccelerationMask (dest, src, &acc);
 
       if (acc & DFXL_BLIT || formats[i] == dlc.pixelformat)
         {
-          system_visual = GDK_VISUAL (visuals[i]);
+          system_visual = BDK_VISUAL (visuals[i]);
         }
 
       src->Release (src);
@@ -169,46 +169,46 @@ _gdk_visual_init (void)
   if (!system_visual)
     {
       g_assert (visuals[DSPF_ARGB] != NULL);
-      system_visual = GDK_VISUAL(visuals[DSPF_ARGB]);
+      system_visual = BDK_VISUAL(visuals[DSPF_ARGB]);
     }
 
   g_assert (system_visual != NULL);
 }
 
 gint
-gdk_visual_get_best_depth (void)
+bdk_visual_get_best_depth (void)
 {
   return system_visual->depth;
 }
 
-GdkVisualType
-gdk_visual_get_best_type (void)
+BdkVisualType
+bdk_visual_get_best_type (void)
 {
   return system_visual->type;
 }
 
-GdkVisual *
-gdk_screen_get_system_visual (GdkScreen *screen)
+BdkVisual *
+bdk_screen_get_system_visual (BdkScreen *screen)
 {
   g_assert (system_visual);
   return system_visual;
 }
 
-GdkVisual *
-gdk_visual_get_best (void)
+BdkVisual *
+bdk_visual_get_best (void)
 {
   return system_visual;
 }
 
-GdkVisual *
-gdk_visual_get_best_with_depth (gint depth)
+BdkVisual *
+bdk_visual_get_best_with_depth (gint depth)
 {
   gint i;
 
   for (i = 0; visuals[i]; i++)
     {
       if (visuals[i]) {
-        GdkVisual *visual = GDK_VISUAL (visuals[i]);
+        BdkVisual *visual = BDK_VISUAL (visuals[i]);
 
         if (depth == visual->depth)
           return visual;
@@ -218,15 +218,15 @@ gdk_visual_get_best_with_depth (gint depth)
   return NULL;
 }
 
-GdkVisual *
-gdk_visual_get_best_with_type (GdkVisualType visual_type)
+BdkVisual *
+bdk_visual_get_best_with_type (BdkVisualType visual_type)
 {
   gint i;
 
   for (i = 0; visuals[i]; i++)
     {
       if (visuals[i]) {
-        GdkVisual *visual = GDK_VISUAL (visuals[i]);
+        BdkVisual *visual = BDK_VISUAL (visuals[i]);
 
         if (visual_type == visual->type)
           return visual;
@@ -236,16 +236,16 @@ gdk_visual_get_best_with_type (GdkVisualType visual_type)
   return NULL;
 }
 
-GdkVisual*
-gdk_visual_get_best_with_both (gint          depth,
-                               GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_both (gint          depth,
+                               BdkVisualType visual_type)
 {
   gint i;
 
   for (i = 0; visuals[i]; i++)
     {
       if (visuals[i]) {
-        GdkVisual *visual = GDK_VISUAL (visuals[i]);
+        BdkVisual *visual = BDK_VISUAL (visuals[i]);
 
         if (depth == visual->depth && visual_type == visual->type)
           return visual;
@@ -256,7 +256,7 @@ gdk_visual_get_best_with_both (gint          depth,
 }
 
 void
-gdk_query_depths (gint **depths,
+bdk_query_depths (gint **depths,
                   gint  *count)
 {
   gint i;
@@ -269,7 +269,7 @@ gdk_query_depths (gint **depths,
 }
 
 void
-gdk_query_visual_types (GdkVisualType **visual_types,
+bdk_query_visual_types (BdkVisualType **visual_types,
                         gint           *count)
 {
   gint i;
@@ -282,14 +282,14 @@ gdk_query_visual_types (GdkVisualType **visual_types,
 }
 
 GList *
-gdk_screen_list_visuals (GdkScreen *screen)
+bdk_screen_list_visuals (BdkScreen *screen)
 {
   GList *list = NULL;
   gint   i;
 
   for (i = 0; visuals[i]; i++)
     if (visuals[i]) {
-      GdkVisual * vis = GDK_VISUAL (visuals[i]);
+      BdkVisual * vis = BDK_VISUAL (visuals[i]);
       list = g_list_append (list,vis);
     }
 
@@ -297,30 +297,30 @@ gdk_screen_list_visuals (GdkScreen *screen)
 }
 
 /**
- * gdk_directfb_visual_by_format:
+ * bdk_directfb_visual_by_format:
  * @pixel_format: the pixel_format of the requested visual
  *
  * This function is specific to the DirectFB backend. It allows
- * to specify a GdkVisual by @pixel_format.
+ * to specify a BdkVisual by @pixel_format.
  *
  * At startup, only those visuals that can be blitted
  * hardware-accelerated are registered.  By using
- * gdk_directfb_visual_by_format() you can retrieve visuals that
+ * bdk_directfb_visual_by_format() you can retrieve visuals that
  * don't match this criteria since this function will try to create
  * a new visual for the desired @pixel_format for you.
  *
- * Return value: a pointer to the GdkVisual or %NULL if the
+ * Return value: a pointer to the BdkVisual or %NULL if the
  * pixel_format is unsupported.
  **/
-GdkVisual *
-gdk_directfb_visual_by_format (DFBSurfacePixelFormat pixel_format)
+BdkVisual *
+bdk_directfb_visual_by_format (DFBSurfacePixelFormat pixel_format)
 {
   gint i;
 
   /* first check if one the registered visuals matches */
   for (i = 0; visuals[i]; i++)
     if (visuals[i] && visuals[i]->format == pixel_format)
-      return GDK_VISUAL (visuals[i]);
+      return BDK_VISUAL (visuals[i]);
 
   /* none matched, try to create a new one for this pixel_format */
   {
@@ -332,26 +332,26 @@ gdk_directfb_visual_by_format (DFBSurfacePixelFormat pixel_format)
     desc.height      = 8;
     desc.pixelformat = pixel_format;
 
-    if (_gdk_display->directfb->CreateSurface (_gdk_display->directfb,
+    if (_bdk_display->directfb->CreateSurface (_bdk_display->directfb,
                                                &desc, &test) != DFB_OK)
       return NULL;
 
     test->Release (test);
   }
 
-  return GDK_VISUAL (gdk_directfb_visual_create (pixel_format));
+  return BDK_VISUAL (bdk_directfb_visual_create (pixel_format));
 }
 
-GdkScreen *
-gdk_visual_get_screen (GdkVisual *visual)
+BdkScreen *
+bdk_visual_get_screen (BdkVisual *visual)
 {
-  g_return_val_if_fail (GDK_IS_VISUAL (visual), NULL);
+  g_return_val_if_fail (BDK_IS_VISUAL (visual), NULL);
 
-  return gdk_screen_get_default ();
+  return bdk_screen_get_default ();
 }
 
 static void
-gdk_visual_decompose_mask (gulong  mask,
+bdk_visual_decompose_mask (gulong  mask,
                            gint   *shift,
                            gint   *prec)
 {
@@ -371,10 +371,10 @@ gdk_visual_decompose_mask (gulong  mask,
     }
 }
 
-static GdkVisualDirectFB *
-gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
+static BdkVisualDirectFB *
+bdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
 {
-  GdkVisual *visual;
+  BdkVisual *visual;
   gint       i;
 
   for (i = 0; i < G_N_ELEMENTS (formats); i++)
@@ -387,22 +387,22 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
       return NULL;
     }
 
-  visual = g_object_new (GDK_TYPE_VISUAL, NULL);
+  visual = g_object_new (BDK_TYPE_VISUAL, NULL);
 
   switch (pixelformat)
     {
     case DSPF_LUT8:
-      visual->type         = GDK_VISUAL_PSEUDO_COLOR;
+      visual->type         = BDK_VISUAL_PSEUDO_COLOR;
       visual->bits_per_rgb = 8;
       break;
 
     case DSPF_RGB332:
-      visual->type         = GDK_VISUAL_STATIC_COLOR;
+      visual->type         = BDK_VISUAL_STATIC_COLOR;
       visual->bits_per_rgb = 3;
       break;
 
     case DSPF_ARGB1555:
-      visual->type         = GDK_VISUAL_TRUE_COLOR;
+      visual->type         = BDK_VISUAL_TRUE_COLOR;
       visual->red_mask     = 0x00007C00;
       visual->green_mask   = 0x000003E0;
       visual->blue_mask    = 0x0000001F;
@@ -410,7 +410,7 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
       break;
 
     case DSPF_RGB16:
-      visual->type         = GDK_VISUAL_TRUE_COLOR;
+      visual->type         = BDK_VISUAL_TRUE_COLOR;
       visual->red_mask     = 0x0000F800;
       visual->green_mask   = 0x000007E0;
       visual->blue_mask    = 0x0000001F;
@@ -420,7 +420,7 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
     case DSPF_RGB24:
     case DSPF_RGB32:
     case DSPF_ARGB:
-      visual->type         = GDK_VISUAL_TRUE_COLOR;
+      visual->type         = BDK_VISUAL_TRUE_COLOR;
       visual->red_mask     = 0x00FF0000;
       visual->green_mask   = 0x0000FF00;
       visual->blue_mask    = 0x000000FF;
@@ -432,21 +432,21 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
     }
 
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  visual->byte_order = GDK_MSB_FIRST;
+  visual->byte_order = BDK_MSB_FIRST;
 #else
-  visual->byte_order = GDK_LSB_FIRST;
+  visual->byte_order = BDK_LSB_FIRST;
 #endif
 
   visual->depth      = DFB_BITS_PER_PIXEL (pixelformat);
 
   switch (visual->type)
     {
-    case GDK_VISUAL_TRUE_COLOR:
-      gdk_visual_decompose_mask (visual->red_mask,
+    case BDK_VISUAL_TRUE_COLOR:
+      bdk_visual_decompose_mask (visual->red_mask,
                                  &visual->red_shift, &visual->red_prec);
-      gdk_visual_decompose_mask (visual->green_mask,
+      bdk_visual_decompose_mask (visual->green_mask,
                                  &visual->green_shift, &visual->green_prec);
-      gdk_visual_decompose_mask (visual->blue_mask,
+      bdk_visual_decompose_mask (visual->blue_mask,
                                  &visual->blue_shift, &visual->blue_prec);
 
       /* the number of possible levels per color component */
@@ -455,8 +455,8 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
                                              visual->blue_prec));
       break;
 
-    case GDK_VISUAL_STATIC_COLOR:
-    case GDK_VISUAL_PSEUDO_COLOR:
+    case BDK_VISUAL_STATIC_COLOR:
+    case BDK_VISUAL_PSEUDO_COLOR:
       visual->colormap_size = 1 << visual->depth;
 
       visual->red_mask    = 0;
@@ -477,7 +477,7 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
       g_assert_not_reached ();
     }
 
-  ((GdkVisualDirectFB *)visual)->format = pixelformat;
+  ((BdkVisualDirectFB *)visual)->format = pixelformat;
 
   for (i = 0; available_depths[i]; i++)
     if (available_depths[i] == visual->depth)
@@ -491,8 +491,8 @@ gdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
   if (!available_types[i])
     available_types[i] = visual->type;
 
-  return (GdkVisualDirectFB *) visual;
+  return (BdkVisualDirectFB *) visual;
 }
 
-#define __GDK_VISUAL_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_VISUAL_X11_C__
+#include "bdkaliasdef.c"

@@ -17,10 +17,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 static void
-value_changed (GtkWidget *button,
+value_changed (BtkWidget *button,
                gdouble volume,
                gpointer user_data)
 {
@@ -28,47 +28,47 @@ value_changed (GtkWidget *button,
 }
 
 static void
-toggle_orientation (GtkWidget *button,
-                    GtkWidget *scalebutton)
+toggle_orientation (BtkWidget *button,
+                    BtkWidget *scalebutton)
 {
-  if (gtk_orientable_get_orientation (GTK_ORIENTABLE (scalebutton)) ==
-      GTK_ORIENTATION_HORIZONTAL)
+  if (btk_orientable_get_orientation (BTK_ORIENTABLE (scalebutton)) ==
+      BTK_ORIENTATION_HORIZONTAL)
     {
-      gtk_orientable_set_orientation (GTK_ORIENTABLE (scalebutton),
-                                        GTK_ORIENTATION_VERTICAL);
+      btk_orientable_set_orientation (BTK_ORIENTABLE (scalebutton),
+                                        BTK_ORIENTATION_VERTICAL);
     }
   else
     {
-      gtk_orientable_set_orientation (GTK_ORIENTABLE (scalebutton),
-                                        GTK_ORIENTATION_HORIZONTAL);
+      btk_orientable_set_orientation (BTK_ORIENTABLE (scalebutton),
+                                        BTK_ORIENTATION_HORIZONTAL);
     }
 }
 
 static void
-response_cb (GtkDialog *dialog,
+response_cb (BtkDialog *dialog,
              gint       arg1,
              gpointer   user_data)
 {
-  gtk_widget_destroy (GTK_WIDGET (dialog));
+  btk_widget_destroy (BTK_WIDGET (dialog));
 }
 
 static gboolean
 show_error (gpointer data)
 {
-  GtkWindow *window = (GtkWindow *) data;
-  GtkWidget *dialog;
+  BtkWindow *window = (BtkWindow *) data;
+  BtkWidget *dialog;
 
   g_message ("showing error");
 
-  dialog = gtk_message_dialog_new (window,
-                                   GTK_DIALOG_MODAL,
-                                   GTK_MESSAGE_INFO,
-                                   GTK_BUTTONS_CLOSE,
+  dialog = btk_message_dialog_new (window,
+                                   BTK_DIALOG_MODAL,
+                                   BTK_MESSAGE_INFO,
+                                   BTK_BUTTONS_CLOSE,
                                    "This should have unbroken the grab");
   g_signal_connect (G_OBJECT (dialog),
                     "response",
                     G_CALLBACK (response_cb), NULL);
-  gtk_widget_show (dialog);
+  btk_widget_show (dialog);
 
   return FALSE;
 }
@@ -77,29 +77,29 @@ int
 main (int    argc,
       char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *button;
-  GtkWidget *button2;
-  GtkWidget *button3;
-  GtkWidget *box;
+  BtkWidget *window;
+  BtkWidget *button;
+  BtkWidget *button2;
+  BtkWidget *button3;
+  BtkWidget *box;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  button = gtk_volume_button_new ();
-  button2 = gtk_volume_button_new ();
-  box = gtk_hbox_new (FALSE, 0);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  button = btk_volume_button_new ();
+  button2 = btk_volume_button_new ();
+  box = btk_hbox_new (FALSE, 0);
 
   g_signal_connect (G_OBJECT (button), "value-changed",
                     G_CALLBACK (value_changed),
                     NULL);
 
-  gtk_container_add (GTK_CONTAINER (window), box);
-  gtk_container_add (GTK_CONTAINER (box), button);
-  gtk_container_add (GTK_CONTAINER (box), button2);
+  btk_container_add (BTK_CONTAINER (window), box);
+  btk_container_add (BTK_CONTAINER (box), button);
+  btk_container_add (BTK_CONTAINER (box), button2);
 
-  button3 = gtk_button_new_with_label ("Toggle orientation");
-  gtk_container_add (GTK_CONTAINER (box), button3);
+  button3 = btk_button_new_with_label ("Toggle orientation");
+  btk_container_add (BTK_CONTAINER (box), button3);
 
   g_signal_connect (G_OBJECT (button3), "clicked",
                     G_CALLBACK (toggle_orientation),
@@ -108,11 +108,11 @@ main (int    argc,
                     G_CALLBACK (toggle_orientation),
                     button2);
 
-  gtk_widget_show_all (window);
-  gtk_button_clicked (GTK_BUTTON (button));
+  btk_widget_show_all (window);
+  btk_button_clicked (BTK_BUTTON (button));
   g_timeout_add (4000, (GSourceFunc) show_error, window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

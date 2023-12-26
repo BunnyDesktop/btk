@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackendpdf.h: Default implementation of GtkPrintBackend 
+/* BTK - The GIMP Toolkit
+ * btkprintbackendpdf.h: Default implementation of BtkPrintBackend 
  * for printing to a file
  * Copyright (C) 2003, Red Hat, Inc.
  *
@@ -19,23 +19,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_BACKEND_FILE_H__
-#define __GTK_PRINT_BACKEND_FILE_H__
+#ifndef __BTK_PRINT_BACKEND_FILE_H__
+#define __BTK_PRINT_BACKEND_FILE_H__
 
-#include <glib-object.h>
-#include "gtkprintbackend.h"
+#include <bunnylib-object.h>
+#include "btkprintbackend.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_BACKEND_FILE    (gtk_print_backend_file_get_type ())
-#define GTK_PRINT_BACKEND_FILE(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_BACKEND_FILE, GtkPrintBackendFile))
-#define GTK_IS_PRINT_BACKEND_FILE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_BACKEND_FILE))
+#define BTK_TYPE_PRINT_BACKEND_FILE    (btk_print_backend_file_get_type ())
+#define BTK_PRINT_BACKEND_FILE(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_FILE, BtkPrintBackendFile))
+#define BTK_IS_PRINT_BACKEND_FILE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_FILE))
 
-typedef struct _GtkPrintBackendFile    GtkPrintBackendFile;
+typedef struct _BtkPrintBackendFile    BtkPrintBackendFile;
 
-GtkPrintBackend *gtk_print_backend_file_new      (void);
-GType            gtk_print_backend_file_get_type (void) G_GNUC_CONST;
+BtkPrintBackend *btk_print_backend_file_new      (void);
+GType            btk_print_backend_file_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_BACKEND_FILE_H__ */
+#endif /* __BTK_PRINT_BACKEND_FILE_H__ */

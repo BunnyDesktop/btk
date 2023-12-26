@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkrecentchoosermenu.h - Recently used items menu widget
+/* BTK - The GIMP Toolkit
+ * btkrecentchoosermenu.h - Recently used items menu widget
  * Copyright (C) 2006, Emmanuele Bassi
  *
  * This library is free software; you can redistribute it and/or
@@ -18,57 +18,57 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_RECENT_CHOOSER_MENU_H__
-#define __GTK_RECENT_CHOOSER_MENU_H__
+#ifndef __BTK_RECENT_CHOOSER_MENU_H__
+#define __BTK_RECENT_CHOOSER_MENU_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkrecentchooser.h>
+#include <btk/btkmenu.h>
+#include <btk/btkrecentchooser.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_RECENT_CHOOSER_MENU		(gtk_recent_chooser_menu_get_type ())
-#define GTK_RECENT_CHOOSER_MENU(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_RECENT_CHOOSER_MENU, GtkRecentChooserMenu))
-#define GTK_IS_RECENT_CHOOSER_MENU(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_RECENT_CHOOSER_MENU))
-#define GTK_RECENT_CHOOSER_MENU_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_RECENT_CHOOSER_MENU, GtkRecentChooserMenuClass))
-#define GTK_IS_RECENT_CHOOSER_MENU_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_RECENT_CHOOSER_MENU))
-#define GTK_RECENT_CHOOSER_MENU_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_RECENT_CHOOSER_MENU, GtkRecentChooserMenuClass))
+#define BTK_TYPE_RECENT_CHOOSER_MENU		(btk_recent_chooser_menu_get_type ())
+#define BTK_RECENT_CHOOSER_MENU(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenu))
+#define BTK_IS_RECENT_CHOOSER_MENU(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER_MENU))
+#define BTK_RECENT_CHOOSER_MENU_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenuClass))
+#define BTK_IS_RECENT_CHOOSER_MENU_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RECENT_CHOOSER_MENU))
+#define BTK_RECENT_CHOOSER_MENU_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RECENT_CHOOSER_MENU, BtkRecentChooserMenuClass))
 
-typedef struct _GtkRecentChooserMenu		GtkRecentChooserMenu;
-typedef struct _GtkRecentChooserMenuClass	GtkRecentChooserMenuClass;
-typedef struct _GtkRecentChooserMenuPrivate	GtkRecentChooserMenuPrivate;
+typedef struct _BtkRecentChooserMenu		BtkRecentChooserMenu;
+typedef struct _BtkRecentChooserMenuClass	BtkRecentChooserMenuClass;
+typedef struct _BtkRecentChooserMenuPrivate	BtkRecentChooserMenuPrivate;
 
-struct _GtkRecentChooserMenu
+struct _BtkRecentChooserMenu
 {
   /*< private >*/
-  GtkMenu parent_instance;
+  BtkMenu parent_instance;
 
-  GtkRecentChooserMenuPrivate *GSEAL (priv);
+  BtkRecentChooserMenuPrivate *GSEAL (priv);
 };
 
-struct _GtkRecentChooserMenuClass
+struct _BtkRecentChooserMenuClass
 {
-  GtkMenuClass parent_class;
+  BtkMenuClass parent_class;
 
   /* padding for future expansion */
-  void (* gtk_recent1) (void);
-  void (* gtk_recent2) (void);
-  void (* gtk_recent3) (void);
-  void (* gtk_recent4) (void);
+  void (* btk_recent1) (void);
+  void (* btk_recent2) (void);
+  void (* btk_recent3) (void);
+  void (* btk_recent4) (void);
 };
 
-GType      gtk_recent_chooser_menu_get_type         (void) G_GNUC_CONST;
+GType      btk_recent_chooser_menu_get_type         (void) G_GNUC_CONST;
 
-GtkWidget *gtk_recent_chooser_menu_new              (void);
-GtkWidget *gtk_recent_chooser_menu_new_for_manager  (GtkRecentManager     *manager);
+BtkWidget *btk_recent_chooser_menu_new              (void);
+BtkWidget *btk_recent_chooser_menu_new_for_manager  (BtkRecentManager     *manager);
 
-gboolean   gtk_recent_chooser_menu_get_show_numbers (GtkRecentChooserMenu *menu);
-void       gtk_recent_chooser_menu_set_show_numbers (GtkRecentChooserMenu *menu,
+gboolean   btk_recent_chooser_menu_get_show_numbers (BtkRecentChooserMenu *menu);
+void       btk_recent_chooser_menu_set_show_numbers (BtkRecentChooserMenu *menu,
 						     gboolean              show_numbers);
 
 G_END_DECLS
 
-#endif /* ! __GTK_RECENT_CHOOSER_MENU_H__ */
+#endif /* ! __BTK_RECENT_CHOOSER_MENU_H__ */

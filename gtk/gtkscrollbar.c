@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2001 Red Hat, Inc.
  *
@@ -19,93 +19,93 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkscrollbar.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkscrollbar.h"
+#include "btkintl.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
-static void gtk_scrollbar_style_set (GtkWidget *widget,
-                                     GtkStyle  *previous);
+static void btk_scrollbar_style_set (BtkWidget *widget,
+                                     BtkStyle  *previous);
 
-G_DEFINE_ABSTRACT_TYPE (GtkScrollbar, gtk_scrollbar, GTK_TYPE_RANGE)
+G_DEFINE_ABSTRACT_TYPE (BtkScrollbar, btk_scrollbar, BTK_TYPE_RANGE)
 
 static void
-gtk_scrollbar_class_init (GtkScrollbarClass *class)
+btk_scrollbar_class_init (BtkScrollbarClass *class)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
+  BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
-  widget_class->style_set = gtk_scrollbar_style_set;
+  widget_class->style_set = btk_scrollbar_style_set;
 
-  GTK_RANGE_CLASS (class)->stepper_detail = "Xscrollbar";
+  BTK_RANGE_CLASS (class)->stepper_detail = "Xscrollbar";
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("min-slider-length",
 							     P_("Minimum Slider Length"),
 							     P_("Minimum length of scrollbar slider"),
 							     0,
 							     G_MAXINT,
 							     21,
-							     GTK_PARAM_READABLE));
+							     BTK_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_boolean ("fixed-slider-length",
                                                                  P_("Fixed slider size"),
                                                                  P_("Don't change slider size, just lock it to the minimum length"),
                                                                  FALSE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_boolean ("has-backward-stepper",
                                                                  P_("Backward stepper"),
                                                                  P_("Display the standard backward arrow button"),
                                                                  TRUE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_boolean ("has-forward-stepper",
                                                                  P_("Forward stepper"),
                                                                  P_("Display the standard forward arrow button"),
                                                                  TRUE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_boolean ("has-secondary-backward-stepper",
                                                                  P_("Secondary backward stepper"),
                                                                  P_("Display a second backward arrow button on the opposite end of the scrollbar"),
                                                                  FALSE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_boolean ("has-secondary-forward-stepper",
                                                                  P_("Secondary forward stepper"),
                                                                  P_("Display a second forward arrow button on the opposite end of the scrollbar"),
                                                                  FALSE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 }
 
 static void
-gtk_scrollbar_init (GtkScrollbar *scrollbar)
+btk_scrollbar_init (BtkScrollbar *scrollbar)
 {
 }
 
 static void
-gtk_scrollbar_style_set (GtkWidget *widget,
-                         GtkStyle  *previous)
+btk_scrollbar_style_set (BtkWidget *widget,
+                         BtkStyle  *previous)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
   gint slider_length;
   gboolean fixed_size;
   gboolean has_a, has_b, has_c, has_d;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "min-slider-length", &slider_length,
                         "fixed-slider-length", &fixed_size,
                         "has-backward-stepper", &has_a,
@@ -122,29 +122,29 @@ gtk_scrollbar_style_set (GtkWidget *widget,
   range->has_stepper_c = has_c;
   range->has_stepper_d = has_d;
 
-  GTK_WIDGET_CLASS (gtk_scrollbar_parent_class)->style_set (widget, previous);
+  BTK_WIDGET_CLASS (btk_scrollbar_parent_class)->style_set (widget, previous);
 }
 
 #if 0
 /**
- * gtk_scrollbar_new:
+ * btk_scrollbar_new:
  * @orientation: the scrollbar's orientation.
- * @adjustment: (allow-none): the #GtkAdjustment to use, or %NULL to create a new adjustment.
+ * @adjustment: (allow-none): the #BtkAdjustment to use, or %NULL to create a new adjustment.
  *
  * Creates a new scrollbar with the given orientation.
  *
- * Return value:  the new #GtkScrollbar.
+ * Return value:  the new #BtkScrollbar.
  *
  * Since: 2.16
  **/
-GtkWidget *
-gtk_scrollbar_new (GtkOrientation  orientation,
-                   GtkAdjustment  *adjustment)
+BtkWidget *
+btk_scrollbar_new (BtkOrientation  orientation,
+                   BtkAdjustment  *adjustment)
 {
-  g_return_val_if_fail (adjustment == NULL || GTK_IS_ADJUSTMENT (adjustment),
+  g_return_val_if_fail (adjustment == NULL || BTK_IS_ADJUSTMENT (adjustment),
                         NULL);
 
-  return g_object_new (GTK_TYPE_SCROLLBAR,
+  return g_object_new (BTK_TYPE_SCROLLBAR,
                        "orientation", orientation,
                        "adjustment",  adjustment,
                        NULL);
@@ -152,5 +152,5 @@ gtk_scrollbar_new (GtkOrientation  orientation,
 #endif
 
 
-#define __GTK_SCROLLBAR_C__
-#include "gtkaliasdef.c"
+#define __BTK_SCROLLBAR_C__
+#include "btkaliasdef.c"

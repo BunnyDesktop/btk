@@ -1,6 +1,6 @@
 #define MAX_BUFFER 256
-#undef GTK_DISABLE_DEPRECATED
-#define GTK_ENABLE_BROKEN
+#undef BTK_DISABLE_DEPRECATED
+#define BTK_ENABLE_BROKEN
 #define MAX_GROUPS 20
 #define MAX_NAME_VALUE 20
 
@@ -58,10 +58,10 @@ typedef enum
 typedef struct
 {
   GroupId       group_id;
-  GtkFrame      *scroll_outer_frame;
-  GtkWidget     *frame;
-  GtkVBox       *group_vbox;
-  GtkAdjustment *adj;
+  BtkFrame      *scroll_outer_frame;
+  BtkWidget     *frame;
+  BtkVBox       *group_vbox;
+  BtkAdjustment *adj;
   GList         *name_value;
   gchar         *name;
   gboolean      is_scrolled;
@@ -71,8 +71,8 @@ typedef struct
 typedef struct
 {
   GList     *groups;
-  GtkWidget *page;
-  GtkWidget *main_box;
+  BtkWidget *page;
+  BtkWidget *main_box;
   gchar     *name;
 } TabInfo;
 
@@ -81,18 +81,18 @@ typedef struct
   ValueType type;
   gboolean  active;
 
-  GtkHBox *column1, *column2, *hbox;
-  GtkLabel *label;
+  BtkHBox *column1, *column2, *hbox;
+  BtkLabel *label;
 
-  GtkButton *button;
+  BtkButton *button;
   GValue    button_gval;
   gulong    signal_id;
-  AtkObject *atkobj;
+  BatkObject *batkobj;
   gint      action_num;
 
-  GtkWidget *string;
-  GtkWidget *boolean;
-  GtkWidget *text;
+  BtkWidget *string;
+  BtkWidget *boolean;
+  BtkWidget *text;
 } NameValue;
 
 typedef enum {
@@ -107,12 +107,12 @@ typedef enum {
 
 static void _init_data(void);
 static void _create_window(void);
-static void _add_menu(GtkWidget ** menu, GtkWidget ** menuitem,
+static void _add_menu(BtkWidget ** menu, BtkWidget ** menuitem,
   gchar * name, gboolean init_value, GCallback func);
 static void _clear_tab(TabNumber tab_n);
-static void _greyout_tab (GtkWidget *widget, gboolean is_sensitive);
+static void _greyout_tab (BtkWidget *widget, gboolean is_sensitive);
 static void _finished_group(TabNumber tab_n, gint group_num);
-static gboolean _object_is_ours (AtkObject *aobject);
+static gboolean _object_is_ours (BatkObject *aobject);
 static void _create_event_watcher (void);
 
 /* Mouse Watcher/Magnifier/Festival functions */
@@ -128,39 +128,39 @@ static gboolean _button_watcher (GSignalInvocationHint *ihint,
 static void _send_to_magnifier (gint x, gint y, gint w, gint h);
 static void _send_to_festival (const gchar * name,
   const gchar * role_name, const gchar * accel);
-static void _speak_caret_event (AtkObject * aobject);
+static void _speak_caret_event (BatkObject * aobject);
 static void _festival_say (const gchar * text);
 static void _festival_write (const gchar * text, int fd);
 static gint _festival_init (void);
 
 /* Update functions */
 
-static void _update_current_page(GtkNotebook *notebook, gpointer p,
+static void _update_current_page(BtkNotebook *notebook, gpointer p,
   guint current_page);
-static void _update(TabNumber top_tab, AtkObject *aobject);
+static void _update(TabNumber top_tab, BatkObject *aobject);
 
 /* Print functions */
 
-static void _print_accessible (AtkObject *aobject);
+static void _print_accessible (BatkObject *aobject);
 
-static gint _print_object (AtkObject *aobject);
-static gint _print_relation (AtkObject *aobject);
-static gint _print_state (AtkObject *aobject);
+static gint _print_object (BatkObject *aobject);
+static gint _print_relation (BatkObject *aobject);
+static gint _print_state (BatkObject *aobject);
 
-static gint _print_action (AtkAction *aobject);
-static gint _print_component (AtkComponent *aobject);
-static gint _print_image (AtkImage *aobject);
-static gint _print_selection (AtkSelection *aobject);
-static gint _print_table (AtkTable *aobject);
-static gint _print_text (AtkText *aobject);
-static gint _print_text_attributes (AtkText *aobject);
-static gint _print_value (AtkValue *aobject);
+static gint _print_action (BatkAction *aobject);
+static gint _print_component (BatkComponent *aobject);
+static gint _print_image (BatkImage *aobject);
+static gint _print_selection (BatkSelection *aobject);
+static gint _print_table (BatkTable *aobject);
+static gint _print_text (BatkText *aobject);
+static gint _print_text_attributes (BatkText *aobject);
+static gint _print_value (BatkValue *aobject);
 static void _print_value_type(gint group_num, gchar *type, GValue *value);
 static gint _print_groupname(TabNumber tab_n, GroupId group_id,
   const char *groupname);
 static NameValue* _print_key_value(TabNumber tab_n, gint group_number,
   const char *label, gpointer value, ValueType type);
-static void _print_signal(AtkObject *aobject, FerretSignalType type,
+static void _print_signal(BatkObject *aobject, FerretSignalType type,
   const char *name, const char *info);
 
 /* Data Access functions */
@@ -173,7 +173,7 @@ static NameValue* _get_name_value(GroupInfo *group, const gchar *label,
 
 /* Signal handlers */
 
-static void _update_handlers(AtkObject *obj);
+static void _update_handlers(BatkObject *obj);
 static void _notify_text_insert_handler (GObject *obj,
   int position, int offset);
 static void _notify_text_delete_handler (GObject *obj,
@@ -190,37 +190,37 @@ static void _notify_table_column_deleted (GObject *obj,
 static void _notify_table_row_reordered (GObject *obj);
 static void _notify_table_column_reordered (GObject *obj);
 static void _notify_object_child_added (GObject *obj,
-  gint index, AtkObject *child);
+  gint index, BatkObject *child);
 static void _notify_object_child_removed (GObject *obj,
-  gint index, AtkObject *child);
+  gint index, BatkObject *child);
 static void _notify_object_state_change (GObject *obj,
   gchar *name, gboolean set);
 
 /* Property handlers */
 
-static void _property_change_handler (AtkObject *obj,
-  AtkPropertyValues *values);
+static void _property_change_handler (BatkObject *obj,
+  BatkPropertyValues *values);
 
 /* Ferret GUI callbacks */
 
-void _action_cb(GtkWidget *widget, gpointer  *userdata);
-void _toggle_terminal(GtkCheckMenuItem *checkmenuitem,
+void _action_cb(BtkWidget *widget, gpointer  *userdata);
+void _toggle_terminal(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
-void _toggle_no_signals(GtkCheckMenuItem *checkmenuitem,
+void _toggle_no_signals(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
-void _toggle_magnifier(GtkCheckMenuItem *checkmenuitem,
+void _toggle_magnifier(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
-void _toggle_festival(GtkCheckMenuItem *checkmenuitem,
+void _toggle_festival(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
-void _toggle_festival_terse(GtkCheckMenuItem *checkmenuitem,
+void _toggle_festival_terse(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
-void _toggle_trackmouse(GtkCheckMenuItem *checkmenuitem,
+void _toggle_trackmouse(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
-void _toggle_trackfocus(GtkCheckMenuItem *checkmenuitem,
+void _toggle_trackfocus(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data);
 
 /* Global variables */
-static GtkNotebook *notebook;
+static BtkNotebook *notebook;
 static TabInfo  *nbook_tabs[END_TABS];
 static gint mouse_watcher_focus_id = -1;
 static gint mouse_watcher_button_id = -1;
@@ -235,19 +235,19 @@ static gboolean display_ascii = FALSE;
 static gboolean no_signals = FALSE;
 static gint last_caret_offset = 0;
 
-static AtkObject *last_object = NULL;
-static GtkWidget *mainWindow = NULL;
-static GtkWidget *vbox1 = NULL;
-static GtkWidget *menu = NULL;
-static GtkWidget *menutop = NULL;
-static GtkWidget *menubar = NULL;
-static GtkWidget *menuitem_terminal = NULL;
-static GtkWidget *menuitem_no_signals = NULL;
-static GtkWidget *menuitem_magnifier = NULL;
-static GtkWidget *menuitem_festival = NULL;
-static GtkWidget *menuitem_festival_terse = NULL;
-static GtkWidget *menuitem_trackmouse = NULL;
-static GtkWidget *menuitem_trackfocus = NULL;
+static BatkObject *last_object = NULL;
+static BtkWidget *mainWindow = NULL;
+static BtkWidget *vbox1 = NULL;
+static BtkWidget *menu = NULL;
+static BtkWidget *menutop = NULL;
+static BtkWidget *menubar = NULL;
+static BtkWidget *menuitem_terminal = NULL;
+static BtkWidget *menuitem_no_signals = NULL;
+static BtkWidget *menuitem_magnifier = NULL;
+static BtkWidget *menuitem_festival = NULL;
+static BtkWidget *menuitem_festival_terse = NULL;
+static BtkWidget *menuitem_trackmouse = NULL;
+static BtkWidget *menuitem_trackfocus = NULL;
 
 #ifdef HAVE_SOCKADDR_UN_SUN_LEN
 static struct sockaddr_un mag_server = { 0, AF_UNIX , "/tmp/magnifier_socket" };
@@ -260,11 +260,11 @@ static struct sockaddr_un client = { AF_UNIX, "/tmp/mag_client"};
 /* GUI Information for the output window */
 typedef struct
 {
-  GtkWindow     *outputWindow;
-  GtkWidget     *hbox;
-  GtkWidget     *vbox;
-  GtkWidget     *label;
-  GtkWidget     *textInsert;
+  BtkWindow     *outputWindow;
+  BtkWidget     *hbox;
+  BtkWidget     *vbox;
+  BtkWidget     *label;
+  BtkWidget     *textInsert;
   gchar         *testTitle;
 } MainDialog;
 
@@ -439,25 +439,25 @@ static void _festival_write (const gchar *command_string, int fd)
   g_assert (n_bytes == strlen(command_string));
 }
 
-static void _speak_caret_event (AtkObject *aobject)
+static void _speak_caret_event (BatkObject *aobject)
 {
   gint dummy1, dummy2;
-  gint caret_offset = atk_text_get_caret_offset (ATK_TEXT (aobject));
+  gint caret_offset = batk_text_get_caret_offset (BATK_TEXT (aobject));
   gchar * text;
 
   if (abs(caret_offset - last_caret_offset) > 1)
     {
-      text = atk_text_get_text_at_offset (ATK_TEXT (aobject),
+      text = batk_text_get_text_at_offset (BATK_TEXT (aobject),
                                               caret_offset,
-                                              ATK_TEXT_BOUNDARY_LINE_START,
+                                              BATK_TEXT_BOUNDARY_LINE_START,
                                               &dummy1,
                                               &dummy2);
     }
   else
     {
-      text = atk_text_get_text_before_offset (ATK_TEXT (aobject),
+      text = batk_text_get_text_before_offset (BATK_TEXT (aobject),
                                               caret_offset,
-                                              ATK_TEXT_BOUNDARY_CHAR,
+                                              BATK_TEXT_BOUNDARY_CHAR,
                                               &dummy1,
                                               &dummy2);
     }
@@ -467,31 +467,31 @@ static void _speak_caret_event (AtkObject *aobject)
 }
 
 static void
-_greyout_tab (GtkWidget *page_child, gboolean is_sensitive)
+_greyout_tab (BtkWidget *page_child, gboolean is_sensitive)
 {
-  GtkWidget *tab;
+  BtkWidget *tab;
 
-  tab = gtk_notebook_get_tab_label (notebook, page_child);
+  tab = btk_notebook_get_tab_label (notebook, page_child);
   if (tab)
-      gtk_widget_set_sensitive (GTK_WIDGET (tab), is_sensitive);
+      btk_widget_set_sensitive (BTK_WIDGET (tab), is_sensitive);
 }
 
 static void
-_refresh_notebook (AtkObject *aobject)
+_refresh_notebook (BatkObject *aobject)
 {
-  if (ATK_IS_OBJECT (aobject))
+  if (BATK_IS_OBJECT (aobject))
   {
-    _greyout_tab (nbook_tabs[ACTION]->page, ATK_IS_ACTION(aobject));
-    _greyout_tab (nbook_tabs[COMPONENT]->page, ATK_IS_COMPONENT(aobject));
-    _greyout_tab (nbook_tabs[IMAGE]->page, ATK_IS_IMAGE(aobject));
-    _greyout_tab (nbook_tabs[SELECTION]->page, ATK_IS_SELECTION(aobject));
-    _greyout_tab (nbook_tabs[TABLE]->page, ATK_IS_TABLE(aobject));
-    _greyout_tab (nbook_tabs[TEXT]->page, ATK_IS_TEXT(aobject));
-    _greyout_tab (nbook_tabs[VALUE]->page, ATK_IS_VALUE(aobject));
+    _greyout_tab (nbook_tabs[ACTION]->page, BATK_IS_ACTION(aobject));
+    _greyout_tab (nbook_tabs[COMPONENT]->page, BATK_IS_COMPONENT(aobject));
+    _greyout_tab (nbook_tabs[IMAGE]->page, BATK_IS_IMAGE(aobject));
+    _greyout_tab (nbook_tabs[SELECTION]->page, BATK_IS_SELECTION(aobject));
+    _greyout_tab (nbook_tabs[TABLE]->page, BATK_IS_TABLE(aobject));
+    _greyout_tab (nbook_tabs[TEXT]->page, BATK_IS_TEXT(aobject));
+    _greyout_tab (nbook_tabs[VALUE]->page, BATK_IS_VALUE(aobject));
   }
 }
 
-static void _print_accessible (AtkObject *aobject)
+static void _print_accessible (BatkObject *aobject)
 {
   TabNumber top_tab;
 
@@ -513,7 +513,7 @@ static void _print_accessible (AtkObject *aobject)
   else
     last_object = aobject; /* _update_handler normally does this */
 
-  top_tab = gtk_notebook_get_current_page (notebook) + OBJECT;
+  top_tab = btk_notebook_get_current_page (notebook) + OBJECT;
   _update(top_tab, aobject);
 
   if (use_magnifier)
@@ -521,20 +521,20 @@ static void _print_accessible (AtkObject *aobject)
       gint x, y;
       gint w=0, h=0;
       
-      if (ATK_IS_TEXT (aobject))
+      if (BATK_IS_TEXT (aobject))
         {
 	  gint x0, y0, w0, h0;
 	  gint xN, yN, wN, hN;
 	  gint len;
-	  len = atk_text_get_character_count (ATK_TEXT (aobject));
-	  atk_text_get_character_extents (ATK_TEXT (aobject), 0,
+	  len = batk_text_get_character_count (BATK_TEXT (aobject));
+	  batk_text_get_character_extents (BATK_TEXT (aobject), 0,
 					  &x0, &y0, &w0, &h0,
-					  ATK_XY_SCREEN);
+					  BATK_XY_SCREEN);
           if (len > 0)
 	    {
-	      atk_text_get_character_extents (ATK_TEXT (aobject), len-1,
+	      batk_text_get_character_extents (BATK_TEXT (aobject), len-1,
 					      &xN, &yN, &wN, &hN,
-					      ATK_XY_SCREEN);
+					      BATK_XY_SCREEN);
 	      x = MIN (x0, xN);
 	      y = MIN (y0, yN);
 	      w = MAX (x0+w0, xN+wN) - x;
@@ -546,37 +546,37 @@ static void _print_accessible (AtkObject *aobject)
 	      y = y0;
 	    }
         } 
-      else if (ATK_IS_COMPONENT (aobject))
+      else if (BATK_IS_COMPONENT (aobject))
         {
-	  atk_component_get_extents (ATK_COMPONENT(aobject),
+	  batk_component_get_extents (BATK_COMPONENT(aobject),
 				     &x, &y, &w, &h,
-				     ATK_XY_SCREEN);
+				     BATK_XY_SCREEN);
         }
       if (w > -1) _send_to_magnifier (x, y, w, h);
     }
 }
 
 static gboolean
-_object_is_ours (AtkObject *aobject)
+_object_is_ours (BatkObject *aobject)
 {
   /* determine whether this object is parented by our own accessible... */
 
-   AtkObject *toplevel = aobject;
+   BatkObject *toplevel = aobject;
 
-   while (atk_object_get_role(aobject) != ATK_ROLE_FRAME)
+   while (batk_object_get_role(aobject) != BATK_ROLE_FRAME)
      {
-       aobject = atk_object_get_parent (aobject);
+       aobject = batk_object_get_parent (aobject);
        if (aobject == NULL) break;
        toplevel = aobject;
      };
 
   /*
-   * Some widgets do not have an ATK_ROLE_FRAME at the top,
+   * Some widgets do not have an BATK_ROLE_FRAME at the top,
    * so ignore those.
    */
    if (aobject != NULL)
      {
-       if (GTK_ACCESSIBLE(toplevel)->widget == mainWindow)
+       if (BTK_ACCESSIBLE(toplevel)->widget == mainWindow)
          {
            return TRUE;
          }
@@ -586,20 +586,20 @@ _object_is_ours (AtkObject *aobject)
 }
 
 static gchar *
-ferret_get_name_from_container (AtkObject *aobject)
+ferret_get_name_from_container (BatkObject *aobject)
 {
   gchar *s = NULL;
-  gint n = atk_object_get_n_accessible_children (aobject);
+  gint n = batk_object_get_n_accessible_children (aobject);
   gint i = 0;
   
   while (!s && (i < n))
     {
-      AtkObject *child;	    
-      child = atk_object_ref_accessible_child (aobject, i);
-      if (ATK_IS_TEXT (child))
+      BatkObject *child;	    
+      child = batk_object_ref_accessible_child (aobject, i);
+      if (BATK_IS_TEXT (child))
         {
-		gint count = atk_text_get_character_count (ATK_TEXT (child));
-		s = atk_text_get_text (ATK_TEXT (child),
+		gint count = batk_text_get_character_count (BATK_TEXT (child));
+		s = batk_text_get_text (BATK_TEXT (child),
 				       0,
 				       count);
         }
@@ -615,7 +615,7 @@ ferret_get_name_from_container (AtkObject *aobject)
 }
 
 static gint
-_print_object (AtkObject *aobject)
+_print_object (BatkObject *aobject)
 {
     const gchar * parent_name = NULL;
     const gchar * name = NULL;
@@ -625,9 +625,9 @@ _print_object (AtkObject *aobject)
     const gchar * role_name = NULL;
     const gchar * accel_name = NULL;
     const gchar * text = NULL;
-    AtkRole role;
-    AtkObject *parent = NULL;
-    static AtkObject *prev_aobject = NULL;
+    BatkRole role;
+    BatkObject *parent = NULL;
+    static BatkObject *prev_aobject = NULL;
     gint n_children = 0;
     gint index_in_parent = -1;
     gchar *output_str;
@@ -636,19 +636,19 @@ _print_object (AtkObject *aobject)
 
     group_num = _print_groupname(tab_n, OBJECT_INTERFACE, "Object Interface");
 
-    name = atk_object_get_name (aobject);
+    name = batk_object_get_name (aobject);
     typename = g_type_name (G_OBJECT_TYPE (aobject));
-    description = atk_object_get_description (aobject);
-    parent = atk_object_get_parent(aobject);
+    description = batk_object_get_description (aobject);
+    parent = batk_object_get_parent(aobject);
     if (parent)
-      index_in_parent = atk_object_get_index_in_parent(aobject);
-    n_children = atk_object_get_n_accessible_children(aobject);
-    role = atk_object_get_role(aobject);
-    role_name = atk_role_get_name(role);
+      index_in_parent = batk_object_get_index_in_parent(aobject);
+    n_children = batk_object_get_n_accessible_children(aobject);
+    role = batk_object_get_role(aobject);
+    role_name = batk_role_get_name(role);
 
-    if (ATK_IS_ACTION (aobject))
+    if (BATK_IS_ACTION (aobject))
       {
-        accel_name = atk_action_get_keybinding (ATK_ACTION(aobject), 0);
+        accel_name = batk_action_get_keybinding (BATK_ACTION(aobject), 0);
         if (!accel_name) accel_name = "";
       }
     else
@@ -656,11 +656,11 @@ _print_object (AtkObject *aobject)
         accel_name = "";
       }
 
-    if (GTK_IS_ACCESSIBLE (aobject) &&
-        GTK_IS_WIDGET (GTK_ACCESSIBLE (aobject)->widget))
+    if (BTK_IS_ACCESSIBLE (aobject) &&
+        BTK_IS_WIDGET (BTK_ACCESSIBLE (aobject)->widget))
       {
         _print_key_value(tab_n, group_num, "Widget name",
-          (gpointer)gtk_widget_get_name(GTK_ACCESSIBLE (aobject)->widget),
+          (gpointer)btk_widget_get_name(BTK_ACCESSIBLE (aobject)->widget),
           VALUE_STRING);
       }
     else
@@ -694,12 +694,12 @@ _print_object (AtkObject *aobject)
       {
         if (aobject != prev_aobject)
           {
-	    if (ATK_IS_TEXT (aobject) && !name)
+	    if (BATK_IS_TEXT (aobject) && !name)
 	      {
 		text = 
-		  atk_text_get_text_at_offset (ATK_TEXT (aobject),
+		  batk_text_get_text_at_offset (BATK_TEXT (aobject),
 					       (gint) 0,
-					       ATK_TEXT_BOUNDARY_SENTENCE_END,
+					       BATK_TEXT_BOUNDARY_SENTENCE_END,
 					       (gint *) NULL,
 					       (gint *) NULL);
 		fprintf (stderr, "first sentence: %s\n", text);
@@ -712,12 +712,12 @@ _print_object (AtkObject *aobject)
 		text = "";
 		if (!name)
 		  {
-		    if (atk_object_get_role (aobject) == ATK_ROLE_TABLE_CELL)
+		    if (batk_object_get_role (aobject) == BATK_ROLE_TABLE_CELL)
 		      {
 			gchar *cname = ferret_get_name_from_container (aobject);
 			if (cname) name = g_strdup (cname);
 		      }
-		    else if (atk_object_get_role (aobject) == ATK_ROLE_CHECK_BOX)
+		    else if (batk_object_get_role (aobject) == BATK_ROLE_CHECK_BOX)
 		      {
 			name = g_strdup ("check box");
 		      }
@@ -733,7 +733,7 @@ _print_object (AtkObject *aobject)
 
     if (parent)
       {
-        parent_name = atk_object_get_name(parent);
+        parent_name = batk_object_get_name(parent);
 
         parent_typename = g_type_name (G_OBJECT_TYPE (parent));
 
@@ -801,10 +801,10 @@ _print_object (AtkObject *aobject)
 }
 
 static gint
-_print_relation (AtkObject *aobject)
+_print_relation (BatkObject *aobject)
 {
-    AtkRelationSet* relation_set = atk_object_ref_relation_set (aobject);
-    gint n_relations =  atk_relation_set_get_n_relations (relation_set);
+    BatkRelationSet* relation_set = batk_object_ref_relation_set (aobject);
+    gint n_relations =  batk_relation_set_get_n_relations (relation_set);
     gint group_num;
     TabNumber tab_n = OBJECT;
 
@@ -813,11 +813,11 @@ _print_relation (AtkObject *aobject)
 
     if (relation_set)
       {
-        AtkRelation * relation;
+        BatkRelation * relation;
         const gchar * relation_name = NULL;
         const gchar * relation_obj_name = NULL;
-        AtkRelationType relation_type;
-        AtkObject *relation_obj;
+        BatkRelationType relation_type;
+        BatkObject *relation_obj;
         GPtrArray * relation_arry;
         gchar *label_str;
         gchar *output_str;
@@ -830,12 +830,12 @@ _print_relation (AtkObject *aobject)
 
         for (i = 0; i < n_relations; i++)
           {
-            relation = atk_relation_set_get_relation (relation_set, i);
+            relation = batk_relation_set_get_relation (relation_set, i);
 
-            relation_type = atk_relation_get_relation_type (relation);
-            relation_name = atk_relation_type_get_name (relation_type);
+            relation_type = batk_relation_get_relation_type (relation);
+            relation_name = batk_relation_type_get_name (relation_type);
 
-            relation_arry = atk_relation_get_target(relation);
+            relation_arry = batk_relation_get_target(relation);
 
             if (relation_name)
               {
@@ -855,7 +855,7 @@ _print_relation (AtkObject *aobject)
               }
 
             label_str = g_strdup_printf("Relation %d with", i + 1);
-            output_str = g_strdup_printf("%d AtkObjects", relation_arry->len);
+            output_str = g_strdup_printf("%d BatkObjects", relation_arry->len);
             _print_key_value(tab_n, group_num, label_str, (gpointer)output_str,
               VALUE_STRING);
             g_free(label_str);
@@ -864,10 +864,10 @@ _print_relation (AtkObject *aobject)
             for (j=0; j < relation_arry->len; j++)
               {
                 label_str = g_strdup_printf(
-                  "Relation %d,%d with AtkObject Name", i + 1, j + 1);
-                relation_obj = (AtkObject *)
+                  "Relation %d,%d with BatkObject Name", i + 1, j + 1);
+                relation_obj = (BatkObject *)
                    g_ptr_array_index(relation_arry, j);
-                relation_obj_name = atk_object_get_name(relation_obj);
+                relation_obj_name = batk_object_get_name(relation_obj);
 
                 _print_key_value(tab_n, group_num, label_str,
                   (gpointer)relation_obj_name, VALUE_STRING);
@@ -881,20 +881,20 @@ _print_relation (AtkObject *aobject)
 }
 
 static gint
-_print_state (AtkObject *aobject)
+_print_state (BatkObject *aobject)
 {
-    AtkStateSet *state_set = atk_object_ref_state_set(aobject);
+    BatkStateSet *state_set = batk_object_ref_state_set(aobject);
     gint group_num;
     TabNumber tab_n = OBJECT;
-    static AtkStateType states_to_track[] =
+    static BatkStateType states_to_track[] =
       {
-        ATK_STATE_ACTIVE,
-        ATK_STATE_CHECKED,
-        ATK_STATE_EXPANDED,
-        ATK_STATE_EXPANDABLE,
-        ATK_STATE_SELECTED,
-        ATK_STATE_SHOWING,
-        ATK_STATE_VISIBLE
+        BATK_STATE_ACTIVE,
+        BATK_STATE_CHECKED,
+        BATK_STATE_EXPANDED,
+        BATK_STATE_EXPANDABLE,
+        BATK_STATE_SELECTED,
+        BATK_STATE_SHOWING,
+        BATK_STATE_VISIBLE
       };
 
     group_num = _print_groupname(tab_n, STATE_INTERFACE,
@@ -903,19 +903,19 @@ _print_state (AtkObject *aobject)
     if (state_set)
       {
         gboolean boolean_value;
-        AtkStateType one_state;
+        BatkStateType one_state;
         const gchar *name;
         gint i;
 
-        for (i=0; i < sizeof(states_to_track)/sizeof(AtkStateType); i++)
+        for (i=0; i < sizeof(states_to_track)/sizeof(BatkStateType); i++)
           {
-            one_state = (AtkStateType) states_to_track[i];
-            name = atk_state_type_get_name (one_state);
+            one_state = (BatkStateType) states_to_track[i];
+            name = batk_state_type_get_name (one_state);
 
             if (name)
               {
                 boolean_value =
-                  atk_state_set_contains_state (state_set, one_state);
+                  batk_state_set_contains_state (state_set, one_state);
                 _print_key_value(tab_n, group_num, name,
                   (gpointer)(&boolean_value), VALUE_BOOLEAN);
               }
@@ -927,7 +927,7 @@ _print_state (AtkObject *aobject)
 }
 
 static gint
-_print_action (AtkAction *aobject)
+_print_action (BatkAction *aobject)
 {
     const gchar *action_name;
     const gchar *action_description;
@@ -941,7 +941,7 @@ _print_action (AtkAction *aobject)
     group_num = _print_groupname(tab_n, ACTION_INTERFACE,
       "Action Interface");
 
-    num_actions = atk_action_get_n_actions (aobject);
+    num_actions = batk_action_get_n_actions (aobject);
     output_str = g_strdup_printf("%d", num_actions);
     _print_key_value(tab_n, group_num, "Number of Actions",
       (gpointer) output_str, VALUE_STRING);
@@ -950,7 +950,7 @@ _print_action (AtkAction *aobject)
     for (j = 0; j < num_actions; j++)
       {
         label_str = g_strdup_printf("Action %d Name", j + 1);
-        action_name = atk_action_get_name (aobject, j);
+        action_name = batk_action_get_name (aobject, j);
         if (action_name)
           {
             nv = _print_key_value(tab_n, group_num, label_str,
@@ -962,15 +962,15 @@ _print_action (AtkAction *aobject)
               VALUE_BUTTON);
           }
 
-        nv->atkobj = ATK_OBJECT(aobject);
+        nv->batkobj = BATK_OBJECT(aobject);
         nv->action_num = j;
-        nv->signal_id = g_signal_connect (GTK_OBJECT (nv->button),
+        nv->signal_id = g_signal_connect (BTK_OBJECT (nv->button),
           "clicked", G_CALLBACK (_action_cb), nv);
 
         g_free(label_str);
 
         label_str = g_strdup_printf("Action %d Description", j + 1);
-        action_description = atk_action_get_description (aobject, j);
+        action_description = batk_action_get_description (aobject, j);
         if (action_description)
           {
             _print_key_value(tab_n, group_num, label_str,
@@ -984,7 +984,7 @@ _print_action (AtkAction *aobject)
         g_free(label_str);
 
         label_str = g_strdup_printf("Action %d Keybinding", j + 1);
-        action_keybinding = atk_action_get_keybinding (aobject, j);
+        action_keybinding = batk_action_get_keybinding (aobject, j);
         if (action_keybinding)
           {
             _print_key_value(tab_n, group_num, label_str,
@@ -1001,7 +1001,7 @@ _print_action (AtkAction *aobject)
 }
 
 static gint
-_print_component (AtkComponent *aobject)
+_print_component (BatkComponent *aobject)
 {
     gchar *output_str;
     gint x = 0;
@@ -1014,8 +1014,8 @@ _print_component (AtkComponent *aobject)
     group_num = _print_groupname(tab_n, COMPONENT_INTERFACE,
       "Component Interface");
 
-    atk_component_get_extents (aobject,
-       &x, &y, &width, &height, ATK_XY_SCREEN);
+    batk_component_get_extents (aobject,
+       &x, &y, &width, &height, BATK_XY_SCREEN);
 
     output_str = g_strdup_printf("x: %d y: %d width: %d height %d",
       x, y, width, height);
@@ -1026,7 +1026,7 @@ _print_component (AtkComponent *aobject)
 }
 
 static gint
-_print_image (AtkImage *aobject)
+_print_image (BatkImage *aobject)
 {
     const gchar *image_desc;
     gchar *output_str;
@@ -1040,7 +1040,7 @@ _print_image (AtkImage *aobject)
     group_num = _print_groupname(tab_n, IMAGE_INTERFACE,
       "Image Interface");
 
-    image_desc = atk_image_get_image_description(aobject);
+    image_desc = batk_image_get_image_description(aobject);
     if (image_desc)
       {
         _print_key_value(tab_n, group_num, "Description", (gpointer)image_desc,
@@ -1052,8 +1052,8 @@ _print_image (AtkImage *aobject)
           VALUE_STRING);
       }
 
-    atk_image_get_image_position(aobject, &x, &y, ATK_XY_SCREEN);
-    atk_image_get_image_size(aobject, &height, &width);
+    batk_image_get_image_position(aobject, &x, &y, BATK_XY_SCREEN);
+    batk_image_get_image_size(aobject, &height, &width);
 
     output_str = g_strdup_printf("x: %d y: %d width: %d height %d",
        x, y, width, height);
@@ -1064,10 +1064,10 @@ _print_image (AtkImage *aobject)
 }
 
 static gint
-_print_selection (AtkSelection *aobject)
+_print_selection (BatkSelection *aobject)
 {
-    AtkObject *object;
-    AtkRole role;
+    BatkObject *object;
+    BatkRole role;
     gchar *label_str, *output_str;
     gint group_num;
     gint n_selected, j, n_selectable;
@@ -1076,7 +1076,7 @@ _print_selection (AtkSelection *aobject)
     group_num = _print_groupname(tab_n, SELECTION_INTERFACE,
       "Selection Interface");
 
-    n_selected = atk_selection_get_selection_count (aobject);
+    n_selected = batk_selection_get_selection_count (aobject);
     output_str = g_strdup_printf ("%d", n_selected);
     _print_key_value (tab_n, group_num, "Number of Selected Children",
                       (gpointer) output_str, VALUE_STRING);
@@ -1085,19 +1085,19 @@ _print_selection (AtkSelection *aobject)
      * The number of selected items is the number of children except for
      * a ComboBox where it is the number of items in the list.
      */
-    object = ATK_OBJECT (aobject);
-    role = atk_object_get_role (object);
-    if (role == ATK_ROLE_COMBO_BOX)
+    object = BATK_OBJECT (aobject);
+    role = batk_object_get_role (object);
+    if (role == BATK_ROLE_COMBO_BOX)
     {
-      object = atk_object_ref_accessible_child (object, 0);
-      g_return_val_if_fail (atk_object_get_role (object) == ATK_ROLE_LIST,
+      object = batk_object_ref_accessible_child (object, 0);
+      g_return_val_if_fail (batk_object_get_role (object) == BATK_ROLE_LIST,
                             group_num);
-      n_selectable = atk_object_get_n_accessible_children (object);
+      n_selectable = batk_object_get_n_accessible_children (object);
       g_object_unref (G_OBJECT (object)); 
     }
     else
     {
-      n_selectable = atk_object_get_n_accessible_children (object);
+      n_selectable = batk_object_get_n_accessible_children (object);
     }
     output_str = g_strdup_printf ("%d", n_selectable);
     _print_key_value (tab_n, group_num, "Number of Selectable Children",
@@ -1107,10 +1107,10 @@ _print_selection (AtkSelection *aobject)
     for (j = 0; j < n_selected; j++)
     {
       const gchar *selected_name;
-      AtkObject *selected_object;
+      BatkObject *selected_object;
 
-      selected_object = atk_selection_ref_selection (aobject, j);
-      selected_name = atk_object_get_name (selected_object);
+      selected_object = batk_selection_ref_selection (aobject, j);
+      selected_name = batk_object_get_name (selected_object);
       if (selected_name == NULL)
       {
         selected_name = "No name";
@@ -1125,11 +1125,11 @@ _print_selection (AtkSelection *aobject)
 }
 
 static gint
-_print_table (AtkTable *aobject)
+_print_table (BatkTable *aobject)
 {
     gchar *label_str, *output_str;
     const gchar *col_desc;
-    AtkObject *caption;
+    BatkObject *caption;
     gint n_cols, n_rows;
     gint i;
     gint group_num;
@@ -1138,24 +1138,24 @@ _print_table (AtkTable *aobject)
     group_num = _print_groupname(tab_n, TABLE_INTERFACE,
       "Table Interface");
 
-    n_cols = atk_table_get_n_columns(aobject);
+    n_cols = batk_table_get_n_columns(aobject);
     output_str = g_strdup_printf("%d", n_cols);
     _print_key_value(tab_n, group_num, "Number Columns", (gpointer)output_str,
       VALUE_STRING);
     g_free(output_str);
 
-    n_rows = atk_table_get_n_rows(aobject);
+    n_rows = batk_table_get_n_rows(aobject);
     output_str = g_strdup_printf("%d", n_rows);
     _print_key_value(tab_n, group_num, "Number Rows", (gpointer)output_str,
       VALUE_STRING);
     g_free(output_str);
 
-    caption = atk_table_get_caption(aobject);
+    caption = batk_table_get_caption(aobject);
     if (caption)
       {
         const gchar* caption_name;
 
-        caption_name = atk_object_get_name (caption);
+        caption_name = batk_object_get_name (caption);
         if (caption_name)
           {
             _print_key_value(tab_n, group_num, "Caption Name", 
@@ -1167,7 +1167,7 @@ _print_table (AtkTable *aobject)
       {
         label_str = g_strdup_printf("Column %d Description", i + 1);
 
-        col_desc = atk_table_get_column_description(aobject, i);
+        col_desc = batk_table_get_column_description(aobject, i);
         if (col_desc)
           {
             _print_key_value(tab_n, group_num, label_str, (gpointer)col_desc,
@@ -1186,7 +1186,7 @@ _print_table (AtkTable *aobject)
 }
 
 static gint
-_print_text (AtkText *aobject)
+_print_text (BatkText *aobject)
 {
     gchar *output_str, *text_val, *text_val_escaped;
     gint n_chars, caret_offset;
@@ -1198,7 +1198,7 @@ _print_text (AtkText *aobject)
     group_num = _print_groupname(tab_n, TEXT_INTERFACE,
       "Text Content");
 
-    n_chars = atk_text_get_character_count(aobject);
+    n_chars = batk_text_get_character_count(aobject);
 
     output_str = g_strdup_printf("%d", n_chars);
     _print_key_value(tab_n, group_num, "Total Character Count",
@@ -1209,7 +1209,7 @@ _print_text (AtkText *aobject)
     * Pass through g_strescape so that non-ASCII chars are made
     * print-able.
     */
-    text_val = atk_text_get_text (aobject, 0, n_chars);
+    text_val = batk_text_get_text (aobject, 0, n_chars);
     if (text_val)
       {
         text_val_escaped = g_strescape(text_val, NULL);
@@ -1223,7 +1223,7 @@ _print_text (AtkText *aobject)
         _print_key_value (tab_n, group_num, "Text", "NULL", VALUE_TEXT);
       }
 
-    caret_offset = atk_text_get_caret_offset(aobject);
+    caret_offset = batk_text_get_caret_offset(aobject);
     output_str = g_strdup_printf("%d", caret_offset);
     _print_key_value(tab_n, group_num, "Caret Offset", (gpointer)output_str,
       VALUE_STRING);
@@ -1232,8 +1232,8 @@ _print_text (AtkText *aobject)
     if (caret_offset < 0)
       return(group_num);
 
-    text_val = atk_text_get_text_at_offset (aobject, caret_offset,
-                                            ATK_TEXT_BOUNDARY_CHAR,
+    text_val = batk_text_get_text_at_offset (aobject, caret_offset,
+                                            BATK_TEXT_BOUNDARY_CHAR,
                                             &start_offset, &end_offset);
     if (text_val)
       {
@@ -1249,8 +1249,8 @@ _print_text (AtkText *aobject)
           VALUE_STRING);
       }
 
-    atk_text_get_character_extents (aobject, caret_offset,
-                                    &x, &y, &w, &h, ATK_XY_SCREEN);
+    batk_text_get_character_extents (aobject, caret_offset,
+                                    &x, &y, &w, &h, BATK_XY_SCREEN);
     output_str = g_strdup_printf ("(%d, %d) (%d, %d)", x, y, w, h);
     if (output_str)
       {
@@ -1259,8 +1259,8 @@ _print_text (AtkText *aobject)
         g_free(output_str);
       }
 
-    atk_text_get_character_extents (aobject, caret_offset,
-                                    &x, &y, &w, &h, ATK_XY_WINDOW);
+    batk_text_get_character_extents (aobject, caret_offset,
+                                    &x, &y, &w, &h, BATK_XY_WINDOW);
     output_str = g_strdup_printf ("(%d, %d) (%d, %d)", x, y, w, h);
     if (output_str)
       {
@@ -1269,8 +1269,8 @@ _print_text (AtkText *aobject)
         g_free(output_str);
       }
 
-    text_val = atk_text_get_text_at_offset (aobject, caret_offset,
-                                            ATK_TEXT_BOUNDARY_WORD_START,
+    text_val = batk_text_get_text_at_offset (aobject, caret_offset,
+                                            BATK_TEXT_BOUNDARY_WORD_START,
                                             &start_offset, &end_offset);
     if (text_val)
       {
@@ -1286,8 +1286,8 @@ _print_text (AtkText *aobject)
           VALUE_STRING);
       }
 
-    text_val = atk_text_get_text_at_offset (aobject, caret_offset,
-                                            ATK_TEXT_BOUNDARY_LINE_START,
+    text_val = batk_text_get_text_at_offset (aobject, caret_offset,
+                                            BATK_TEXT_BOUNDARY_LINE_START,
                                             &start_offset, &end_offset);
     if (text_val)
       {
@@ -1303,8 +1303,8 @@ _print_text (AtkText *aobject)
           VALUE_STRING);
       }
 
-    text_val = atk_text_get_text_at_offset (aobject, caret_offset,
-                                              ATK_TEXT_BOUNDARY_SENTENCE_START,
+    text_val = batk_text_get_text_at_offset (aobject, caret_offset,
+                                              BATK_TEXT_BOUNDARY_SENTENCE_START,
                                               &start_offset, &end_offset);
     if (text_val)
       {
@@ -1323,10 +1323,10 @@ _print_text (AtkText *aobject)
 }
 
 static gint
-_print_text_attributes (AtkText *aobject)
+_print_text_attributes (BatkText *aobject)
 {
-    AtkAttributeSet *attribute_set;
-    AtkAttribute *attribute;
+    BatkAttributeSet *attribute_set;
+    BatkAttribute *attribute;
     gchar *output_str, *label_str;
     gint start_offset, end_offset, caret_offset;
     gint attribute_set_len, attribute_offset, i;
@@ -1334,18 +1334,18 @@ _print_text_attributes (AtkText *aobject)
     gint group_num;
     TabNumber tab_n = TEXT;
 
-    n_chars = atk_text_get_character_count(aobject);
+    n_chars = batk_text_get_character_count(aobject);
 
     group_num = _print_groupname (tab_n, TEXT_ATTRIBUTES,
       "Text Attributes at Caret");
 
-    caret_offset = atk_text_get_caret_offset(aobject);
+    caret_offset = batk_text_get_caret_offset(aobject);
     attribute_offset = caret_offset;
 
     start_offset = 0;
     end_offset = 0;
 
-    attribute_set = atk_text_get_run_attributes(aobject, attribute_offset,
+    attribute_set = batk_text_get_run_attributes(aobject, attribute_offset,
           &start_offset, &end_offset);
 
     label_str = g_strdup_printf("Attribute run start");
@@ -1377,20 +1377,20 @@ _print_text_attributes (AtkText *aobject)
 
     for (i=0; i < attribute_set_len; i++)
       {
-        attribute = ((AtkAttribute *) g_slist_nth(attribute_set, i)->data);
+        attribute = ((BatkAttribute *) g_slist_nth(attribute_set, i)->data);
 
         _print_key_value(tab_n, group_num, attribute->name,
                          (gpointer)attribute->value, VALUE_STRING);
       }
     if (attribute_set != NULL)
-      atk_attribute_set_free(attribute_set);
+      batk_attribute_set_free(attribute_set);
 
 
     return(group_num);
 }
 
 static gint
-_print_value (AtkValue *aobject)
+_print_value (BatkValue *aobject)
 {
     GValue *value_back, val;
     gint group_num;
@@ -1401,11 +1401,11 @@ _print_value (AtkValue *aobject)
     group_num = _print_groupname(tab_n, VALUE_INTERFACE,
       "Value Interface");
 
-    atk_value_get_current_value(aobject, value_back);
+    batk_value_get_current_value(aobject, value_back);
     _print_value_type(group_num, "Value", value_back);
-    atk_value_get_minimum_value(aobject, value_back);
+    batk_value_get_minimum_value(aobject, value_back);
     _print_value_type(group_num, "Minimum Value", value_back);
-    atk_value_get_maximum_value(aobject, value_back);
+    batk_value_get_maximum_value(aobject, value_back);
     _print_value_type(group_num, "Maximum Value", value_back);
     return(group_num);
 }
@@ -1448,16 +1448,16 @@ _print_value_type(gint group_num, gchar *type, GValue *value)
 static void
 _create_event_watcher (void)
 {
-    focus_tracker_id = atk_add_focus_tracker (_print_accessible);
+    focus_tracker_id = batk_add_focus_tracker (_print_accessible);
 
     if (track_mouse)
       {
         mouse_watcher_focus_id =
-          atk_add_global_event_listener(_mouse_watcher,
-          "Gtk:GtkWidget:enter_notify_event");
+          batk_add_global_event_listener(_mouse_watcher,
+          "Btk:BtkWidget:enter_notify_event");
         mouse_watcher_button_id =
-          atk_add_global_event_listener(_button_watcher,
-          "Gtk:GtkWidget:button_press_event");
+          batk_add_global_event_listener(_button_watcher,
+          "Btk:BtkWidget:button_press_event");
       }
 }
 
@@ -1468,23 +1468,23 @@ _mouse_watcher (GSignalInvocationHint *ihint,
                gpointer               data)
 {
     GObject *object;
-    GtkWidget *widget;
+    BtkWidget *widget;
 
     object = g_value_get_object (param_values + 0);
 
-    if (GTK_IS_MENU(object)) return TRUE;
+    if (BTK_IS_MENU(object)) return TRUE;
 
-    g_assert (GTK_IS_WIDGET(object));
+    g_assert (BTK_IS_WIDGET(object));
 
-    widget = GTK_WIDGET (object);
-    if (GTK_IS_WINDOW (widget))
+    widget = BTK_WIDGET (object);
+    if (BTK_IS_WINDOW (widget))
     {
-        GtkWidget *focus_widget = GTK_WINDOW (widget)->focus_widget;
+        BtkWidget *focus_widget = BTK_WINDOW (widget)->focus_widget;
         if (focus_widget != NULL)
             widget = focus_widget;
     }
 
-    _print_accessible (gtk_widget_get_accessible (widget));
+    _print_accessible (btk_widget_get_accessible (widget));
     return TRUE;
 }
 
@@ -1495,35 +1495,35 @@ _button_watcher (GSignalInvocationHint *ihint,
                  gpointer               data)
 {
     GObject *object;
-    GtkWidget *widget;
+    BtkWidget *widget;
 
     object = g_value_get_object (param_values + 0);
 
-    widget = GTK_WIDGET (object);
-    if (GTK_IS_CONTAINER (widget))
+    widget = BTK_WIDGET (object);
+    if (BTK_IS_CONTAINER (widget))
     {
       if (G_VALUE_HOLDS_BOXED (param_values + 1))
         {
-          GdkEventButton *event;
+          BdkEventButton *event;
           gpointer gp;
-          AtkObject *aobject;
-          AtkObject *child;
+          BatkObject *aobject;
+          BatkObject *child;
           gint  aobject_x, aobject_y;
           gint x, y;
 
           gp = g_value_get_boxed (param_values + 1);
-          event = (GdkEventButton *) gp;
-          aobject = gtk_widget_get_accessible (widget);
+          event = (BdkEventButton *) gp;
+          aobject = btk_widget_get_accessible (widget);
           aobject_x = aobject_y = 0;
-          atk_component_get_position (ATK_COMPONENT (aobject), 
+          batk_component_get_position (BATK_COMPONENT (aobject), 
                                       &aobject_x, &aobject_y, 
-                                      ATK_XY_WINDOW);
+                                      BATK_XY_WINDOW);
           x = aobject_x + (gint) event->x; 
           y = aobject_y + (gint) event->y; 
-          child = atk_component_ref_accessible_at_point (ATK_COMPONENT (aobject),
+          child = batk_component_ref_accessible_at_point (BATK_COMPONENT (aobject),
                                                          x,
                                                          y,
-                                                         ATK_XY_WINDOW);
+                                                         BATK_XY_WINDOW);
           if (child)
             {
               _print_accessible (child);
@@ -1531,7 +1531,7 @@ _button_watcher (GSignalInvocationHint *ihint,
             }
           else
             {
-              if (!GTK_IS_MENU_ITEM (widget))
+              if (!BTK_IS_MENU_ITEM (widget))
                 {
                   g_print ("No child at position %d %d for %s\n", 
                            x,
@@ -1545,12 +1545,12 @@ _button_watcher (GSignalInvocationHint *ihint,
     return TRUE;
 }
 
-static void _add_notebook_page (GtkNotebook *nbook,
-                                GtkWidget *content_widget,
-                                GtkWidget **new_page,
+static void _add_notebook_page (BtkNotebook *nbook,
+                                BtkWidget *content_widget,
+                                BtkWidget **new_page,
                                 const gchar *label_text)
 {
-  GtkWidget *label;
+  BtkWidget *label;
 
   if (content_widget != NULL)
     {
@@ -1558,20 +1558,20 @@ static void _add_notebook_page (GtkNotebook *nbook,
     }
   else
     {
-      *new_page = gtk_vpaned_new ();
+      *new_page = btk_vpaned_new ();
     }
 
-  label = gtk_label_new ("");
-  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
-  gtk_notebook_append_page (notebook, *new_page, label);
-  gtk_widget_show(*new_page);
+  label = btk_label_new ("");
+  btk_label_set_markup_with_mnemonic (BTK_LABEL (label), label_text);
+  btk_notebook_append_page (notebook, *new_page, label);
+  btk_widget_show(*new_page);
 }
 
 static void
 _create_notebook (void)
 {
   TabInfo *tab;
-  notebook = GTK_NOTEBOOK (gtk_notebook_new());
+  notebook = BTK_NOTEBOOK (btk_notebook_new());
 
   tab = nbook_tabs[OBJECT];
   _add_notebook_page (notebook, tab->main_box, &tab->page, "<b>_Object</b>");
@@ -1597,7 +1597,7 @@ _create_notebook (void)
   tab = nbook_tabs[VALUE];
   _add_notebook_page (notebook, tab->main_box, &tab->page, "<b>_Value</b>");
 
-  g_signal_connect (GTK_OBJECT (notebook),
+  g_signal_connect (BTK_OBJECT (notebook),
                       "switch-page",
                       G_CALLBACK (_update_current_page),
                       NULL);
@@ -1610,49 +1610,49 @@ _init_data(void)
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Object";
   nbook_tabs[OBJECT] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Action";
   nbook_tabs[ACTION] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Component";
   nbook_tabs[COMPONENT] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Image";
   nbook_tabs[IMAGE] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Selection";
   nbook_tabs[SELECTION] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Table";
   nbook_tabs[TABLE] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Text";
   nbook_tabs[TEXT] = the_tab;
 
   the_tab = g_new0(TabInfo, 1);
   the_tab->page = NULL;
-  the_tab->main_box = gtk_vbox_new(FALSE, 20);
+  the_tab->main_box = btk_vbox_new(FALSE, 20);
   the_tab->name = "Value";
   nbook_tabs[VALUE] = the_tab;
 }
@@ -1660,35 +1660,35 @@ _init_data(void)
 static void
 _create_window (void)
 {
-    static GtkWidget *window = NULL;
+    static BtkWidget *window = NULL;
 
     if (!window)
     {
-        window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-        gtk_widget_set_name (window, "Ferret Window");
-        gtk_window_set_policy (GTK_WINDOW(window), TRUE, TRUE, FALSE);
+        window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+        btk_widget_set_name (window, "Ferret Window");
+        btk_window_set_policy (BTK_WINDOW(window), TRUE, TRUE, FALSE);
 
-        g_signal_connect (GTK_OBJECT (window), "destroy",
-                           G_CALLBACK (gtk_widget_destroyed),
+        g_signal_connect (BTK_OBJECT (window), "destroy",
+                           G_CALLBACK (btk_widget_destroyed),
                            &window);
 
-        gtk_window_set_title (GTK_WINDOW (window), "GTK+ Ferret Output");
-        gtk_window_set_default_size (GTK_WINDOW (window), 333, 550);
-        gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+        btk_window_set_title (BTK_WINDOW (window), "BTK+ Ferret Output");
+        btk_window_set_default_size (BTK_WINDOW (window), 333, 550);
+        btk_container_set_border_width (BTK_CONTAINER (window), 0);
 
-        vbox1 = gtk_vbox_new (FALSE, 0);
-        gtk_container_add (GTK_CONTAINER (window), vbox1);
-        gtk_widget_show (vbox1);
+        vbox1 = btk_vbox_new (FALSE, 0);
+        btk_container_add (BTK_CONTAINER (window), vbox1);
+        btk_widget_show (vbox1);
 
-        menubar = gtk_menu_bar_new ();
-        gtk_box_pack_start (GTK_BOX (vbox1), menubar, FALSE, TRUE, 0);
-        gtk_widget_show (menubar);
-        menutop = gtk_menu_item_new_with_label("Menu");
-        gtk_menu_bar_append(GTK_MENU_BAR(menubar), menutop);
-        gtk_widget_show (menutop);
-        menu = gtk_menu_new();
-        gtk_menu_item_set_submenu (GTK_MENU_ITEM (menutop), menu);
-        gtk_widget_show (menu);
+        menubar = btk_menu_bar_new ();
+        btk_box_pack_start (BTK_BOX (vbox1), menubar, FALSE, TRUE, 0);
+        btk_widget_show (menubar);
+        menutop = btk_menu_item_new_with_label("Menu");
+        btk_menu_bar_append(BTK_MENU_BAR(menubar), menutop);
+        btk_widget_show (menutop);
+        menu = btk_menu_new();
+        btk_menu_item_set_submenu (BTK_MENU_ITEM (menutop), menu);
+        btk_widget_show (menu);
 
         _add_menu(&menu, &menuitem_trackmouse, "Track Mouse", track_mouse,
            G_CALLBACK(_toggle_trackmouse));
@@ -1703,33 +1703,33 @@ _create_window (void)
           G_CALLBACK(_toggle_festival_terse));
         _add_menu(&menu, &menuitem_terminal, "Terminal Output", display_ascii,
            G_CALLBACK(_toggle_terminal));
-        _add_menu(&menu, &menuitem_no_signals, "No ATK Signals", no_signals,
+        _add_menu(&menu, &menuitem_no_signals, "No BATK Signals", no_signals,
            G_CALLBACK(_toggle_no_signals));
 
         _create_notebook ();
-        gtk_container_add (GTK_CONTAINER (vbox1), GTK_WIDGET (notebook));
-        gtk_widget_show (GTK_WIDGET (notebook));
+        btk_container_add (BTK_CONTAINER (vbox1), BTK_WIDGET (notebook));
+        btk_widget_show (BTK_WIDGET (notebook));
     }
-    if (!gtk_widget_get_visible (window))
-        gtk_widget_show (window);
+    if (!btk_widget_get_visible (window))
+        btk_widget_show (window);
 
-    mainWindow = GTK_WIDGET (window);
+    mainWindow = BTK_WIDGET (window);
 }
 
 static void
-_add_menu(GtkWidget ** menu, GtkWidget ** menuitem, gchar * name,
+_add_menu(BtkWidget ** menu, BtkWidget ** menuitem, gchar * name,
   gboolean init_value, GCallback func)
 {
-    *menuitem = gtk_check_menu_item_new_with_label(name);
-    gtk_check_menu_item_set_active(
-      GTK_CHECK_MENU_ITEM(*menuitem), init_value);
-    gtk_menu_shell_append (GTK_MENU_SHELL (*menu), *menuitem);
-    gtk_widget_show(*menuitem);
-    g_signal_connect(GTK_OBJECT(*menuitem), "toggled", func, NULL);
+    *menuitem = btk_check_menu_item_new_with_label(name);
+    btk_check_menu_item_set_active(
+      BTK_CHECK_MENU_ITEM(*menuitem), init_value);
+    btk_menu_shell_append (BTK_MENU_SHELL (*menu), *menuitem);
+    btk_widget_show(*menuitem);
+    g_signal_connect(BTK_OBJECT(*menuitem), "toggled", func, NULL);
 }
 
 int
-gtk_module_init(gint argc, char* argv[])
+btk_module_init(gint argc, char* argv[])
 {
     if (g_getenv ("FERRET_ASCII"))
        display_ascii = TRUE;
@@ -1738,7 +1738,7 @@ gtk_module_init(gint argc, char* argv[])
        no_signals = TRUE;
 
     if (display_ascii)
-       g_print("GTK ferret Module loaded\n");
+       g_print("BTK ferret Module loaded\n");
 
     if (g_getenv("FERRET_MAGNIFIER"))
         use_magnifier = TRUE;
@@ -1779,35 +1779,35 @@ _clear_tab(TabNumber tab_n)
         group = (GroupInfo *) group_list->data;
 
         if (group->is_scrolled)
-          gtk_widget_hide(GTK_WIDGET(group->scroll_outer_frame));
+          btk_widget_hide(BTK_WIDGET(group->scroll_outer_frame));
 
-        gtk_widget_hide(GTK_WIDGET(group->frame));
-        gtk_widget_hide(GTK_WIDGET(group->group_vbox));
+        btk_widget_hide(BTK_WIDGET(group->frame));
+        btk_widget_hide(BTK_WIDGET(group->group_vbox));
 
         for (nv_list = group->name_value; nv_list; nv_list = nv_list->next)
           {
             nv = (NameValue *) nv_list->data;
             nv->active = FALSE;
-            gtk_widget_hide(GTK_WIDGET(nv->column1));
-            gtk_widget_hide(GTK_WIDGET(nv->column2));
-            gtk_widget_hide(GTK_WIDGET(nv->label));
+            btk_widget_hide(BTK_WIDGET(nv->column1));
+            btk_widget_hide(BTK_WIDGET(nv->column2));
+            btk_widget_hide(BTK_WIDGET(nv->label));
 
             switch (nv->type)
               {
               case VALUE_STRING:
-                gtk_widget_hide(GTK_WIDGET(nv->string));
+                btk_widget_hide(BTK_WIDGET(nv->string));
                 break;
               case VALUE_BOOLEAN:
-                gtk_widget_hide(GTK_WIDGET(nv->boolean));
+                btk_widget_hide(BTK_WIDGET(nv->boolean));
                 break;
               case VALUE_TEXT:
-                gtk_widget_hide(GTK_WIDGET(nv->text));
+                btk_widget_hide(BTK_WIDGET(nv->text));
                 break;
               case VALUE_BUTTON:
-                gtk_widget_hide(GTK_WIDGET(nv->button));
+                btk_widget_hide(BTK_WIDGET(nv->button));
                 break;
               }
-            gtk_widget_hide(GTK_WIDGET(nv->hbox));
+            btk_widget_hide(BTK_WIDGET(nv->hbox));
 
             /* Disconnect signal handler if any */
             if (nv->signal_id != -1)
@@ -1861,49 +1861,49 @@ _get_group(TabInfo *tab, GroupId group_id, const gchar *groupname)
 
        if (group->is_scrolled)
          {
-           group->frame = gtk_scrolled_window_new (NULL, NULL);
-           gtk_widget_set_size_request (GTK_WIDGET (group->frame), -2,
+           group->frame = btk_scrolled_window_new (NULL, NULL);
+           btk_widget_set_size_request (BTK_WIDGET (group->frame), -2,
              group->default_height);
-           group->scroll_outer_frame = GTK_FRAME(gtk_frame_new(groupname));
-           gtk_container_add(GTK_CONTAINER(group->scroll_outer_frame),
+           group->scroll_outer_frame = BTK_FRAME(btk_frame_new(groupname));
+           btk_container_add(BTK_CONTAINER(group->scroll_outer_frame),
              group->frame);
          }
        else
          {
-           group->frame = gtk_frame_new(groupname);
+           group->frame = btk_frame_new(groupname);
          }
 
-       gtk_container_set_border_width(GTK_CONTAINER(group->frame), 10);
+       btk_container_set_border_width(BTK_CONTAINER(group->frame), 10);
 
        group->name = g_strdup(groupname);
-       group->group_vbox = GTK_VBOX(gtk_vbox_new(FALSE, 10));
+       group->group_vbox = BTK_VBOX(btk_vbox_new(FALSE, 10));
 
        if (group->is_scrolled)
          {
-           gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (group->frame),
-              GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-           gtk_scrolled_window_add_with_viewport(
-             GTK_SCROLLED_WINDOW(group->frame),
-             GTK_WIDGET(group->group_vbox));
+           btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (group->frame),
+              BTK_POLICY_AUTOMATIC, BTK_POLICY_AUTOMATIC);
+           btk_scrolled_window_add_with_viewport(
+             BTK_SCROLLED_WINDOW(group->frame),
+             BTK_WIDGET(group->group_vbox));
          }
        else
          {
-           gtk_container_add(GTK_CONTAINER(group->frame),
-             GTK_WIDGET(group->group_vbox));
+           btk_container_add(BTK_CONTAINER(group->frame),
+             BTK_WIDGET(group->group_vbox));
          }
 
        tab->groups = g_list_append (tab->groups, group);
 
        if (group->is_scrolled)
          {
-           gtk_box_pack_start (GTK_BOX (tab->main_box),
-                               GTK_WIDGET (group->scroll_outer_frame),
+           btk_box_pack_start (BTK_BOX (tab->main_box),
+                               BTK_WIDGET (group->scroll_outer_frame),
                                TRUE, TRUE, 0);
          }
        else
          {
-           gtk_box_pack_start (GTK_BOX (tab->main_box),
-                               GTK_WIDGET (group->frame),
+           btk_box_pack_start (BTK_BOX (tab->main_box),
+                               BTK_WIDGET (group->frame),
                                TRUE, TRUE, 0);
          }
      }
@@ -1972,38 +1972,38 @@ _get_name_value(GroupInfo *group, const gchar *label,
     if (!found)
       {
         name_value = (NameValue *)g_new0(NameValue, 1);
-        name_value->column1 = GTK_HBOX(gtk_hbox_new(FALSE, 10));
-        name_value->column2 = GTK_HBOX(gtk_hbox_new(FALSE, 10));
-        name_value->hbox = GTK_HBOX(gtk_hbox_new(FALSE, 5));
-        name_value->label = GTK_LABEL(gtk_label_new(label));
-        name_value->string = gtk_label_new (NULL);
-        name_value->boolean = gtk_check_button_new ();
-        name_value->text = gtk_entry_new_with_max_length (1000);
-        name_value->button = GTK_BUTTON(gtk_button_new ());
+        name_value->column1 = BTK_HBOX(btk_hbox_new(FALSE, 10));
+        name_value->column2 = BTK_HBOX(btk_hbox_new(FALSE, 10));
+        name_value->hbox = BTK_HBOX(btk_hbox_new(FALSE, 5));
+        name_value->label = BTK_LABEL(btk_label_new(label));
+        name_value->string = btk_label_new (NULL);
+        name_value->boolean = btk_check_button_new ();
+        name_value->text = btk_entry_new_with_max_length (1000);
+        name_value->button = BTK_BUTTON(btk_button_new ());
 
-        gtk_box_pack_end(GTK_BOX(name_value->column1),
-          GTK_WIDGET(name_value->label), FALSE, FALSE, 10);
+        btk_box_pack_end(BTK_BOX(name_value->column1),
+          BTK_WIDGET(name_value->label), FALSE, FALSE, 10);
 
         switch (type)
           {
           case VALUE_STRING:
-            gtk_label_set_text(GTK_LABEL(name_value->string),
+            btk_label_set_text(BTK_LABEL(name_value->string),
               (gchar *) value_ptr);
-            gtk_box_pack_start(GTK_BOX(name_value->column2),
-              GTK_WIDGET(name_value->string), FALSE, FALSE, 10);
+            btk_box_pack_start(BTK_BOX(name_value->column2),
+              BTK_WIDGET(name_value->string), FALSE, FALSE, 10);
             break;
           case VALUE_BOOLEAN:
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(name_value->boolean),
+            btk_toggle_button_set_active(BTK_TOGGLE_BUTTON(name_value->boolean),
                *((gboolean *)value_ptr));
-            gtk_widget_set_sensitive(name_value->boolean, FALSE);
-            gtk_box_pack_start(GTK_BOX(name_value->column2),
-              GTK_WIDGET(name_value->boolean), FALSE, FALSE, 10);
+            btk_widget_set_sensitive(name_value->boolean, FALSE);
+            btk_box_pack_start(BTK_BOX(name_value->column2),
+              BTK_WIDGET(name_value->boolean), FALSE, FALSE, 10);
             break;
           case VALUE_TEXT:
-            gtk_entry_set_text (GTK_ENTRY (name_value->text),
+            btk_entry_set_text (BTK_ENTRY (name_value->text),
               (gchar *)value_ptr);
-            gtk_box_pack_start(GTK_BOX(name_value->column2),
-              GTK_WIDGET(name_value->text), FALSE, FALSE, 10);
+            btk_box_pack_start(BTK_BOX(name_value->column2),
+              BTK_WIDGET(name_value->text), FALSE, FALSE, 10);
           case VALUE_BUTTON:
             value = &(name_value->button_gval);
             memset (value, 0, sizeof (GValue));
@@ -2011,37 +2011,37 @@ _get_name_value(GroupInfo *group, const gchar *label,
             g_value_set_string (value, (gchar *)value_ptr);
             g_object_set_property(G_OBJECT(name_value->button),
               "label", value);
-            gtk_box_pack_start(GTK_BOX(name_value->column2),
-              GTK_WIDGET(name_value->button), FALSE, FALSE, 10);
+            btk_box_pack_start(BTK_BOX(name_value->column2),
+              BTK_WIDGET(name_value->button), FALSE, FALSE, 10);
             break;
           }
 
-        gtk_box_pack_start (GTK_BOX (name_value->hbox),
-                            GTK_WIDGET (name_value->column1),
+        btk_box_pack_start (BTK_BOX (name_value->hbox),
+                            BTK_WIDGET (name_value->column1),
                             TRUE, TRUE, 0);
-        gtk_box_pack_start (GTK_BOX (name_value->hbox),
-                            GTK_WIDGET (name_value->column2),
+        btk_box_pack_start (BTK_BOX (name_value->hbox),
+                            BTK_WIDGET (name_value->column2),
                             TRUE, TRUE, 0);
-        gtk_container_add(GTK_CONTAINER(group->group_vbox),
-          GTK_WIDGET(name_value->hbox));
+        btk_container_add(BTK_CONTAINER(group->group_vbox),
+          BTK_WIDGET(name_value->hbox));
         group->name_value = g_list_append (group->name_value, name_value);
       }
     else
       {
-        gtk_label_set_text(GTK_LABEL(name_value->label), label);
+        btk_label_set_text(BTK_LABEL(name_value->label), label);
         switch (type)
           {
           case VALUE_STRING:
-            gtk_label_set_text(GTK_LABEL(name_value->string),
+            btk_label_set_text(BTK_LABEL(name_value->string),
               (gchar *) value_ptr);
             break;
           case VALUE_BOOLEAN:
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(name_value->boolean),
+            btk_toggle_button_set_active(BTK_TOGGLE_BUTTON(name_value->boolean),
                *((gboolean *)value_ptr));
-            gtk_widget_set_sensitive(name_value->boolean, FALSE);
+            btk_widget_set_sensitive(name_value->boolean, FALSE);
             break;
           case VALUE_TEXT:
-            gtk_entry_set_text (GTK_ENTRY (name_value->text),
+            btk_entry_set_text (BTK_ENTRY (name_value->text),
               (gchar *) value_ptr);
             break;
           case VALUE_BUTTON:
@@ -2059,28 +2059,28 @@ _get_name_value(GroupInfo *group, const gchar *label,
     name_value->type = type;
     name_value->signal_id = -1;
 
-    gtk_widget_show(GTK_WIDGET(name_value->label));
+    btk_widget_show(BTK_WIDGET(name_value->label));
 
     switch (type)
       {
       case VALUE_STRING:
-        gtk_widget_show(GTK_WIDGET(name_value->string));
+        btk_widget_show(BTK_WIDGET(name_value->string));
         break;
       case VALUE_BOOLEAN:
-        gtk_widget_show(GTK_WIDGET(name_value->boolean));
+        btk_widget_show(BTK_WIDGET(name_value->boolean));
         break;
       case VALUE_TEXT:
-        gtk_widget_show(GTK_WIDGET(name_value->text));
+        btk_widget_show(BTK_WIDGET(name_value->text));
         break;
       case VALUE_BUTTON:
-        gtk_widget_show(GTK_WIDGET(name_value->button));
+        btk_widget_show(BTK_WIDGET(name_value->button));
         break;
       }
 
-    gtk_widget_show(GTK_WIDGET(name_value->column1));
-    gtk_widget_show(GTK_WIDGET(name_value->column2));
-    gtk_widget_show(GTK_WIDGET(name_value->hbox));
-    gtk_widget_show(GTK_WIDGET(group->group_vbox));
+    btk_widget_show(BTK_WIDGET(name_value->column1));
+    btk_widget_show(BTK_WIDGET(name_value->column2));
+    btk_widget_show(BTK_WIDGET(name_value->hbox));
+    btk_widget_show(BTK_WIDGET(group->group_vbox));
 
     return name_value;
 }
@@ -2124,11 +2124,11 @@ _finished_group(TabNumber tab_no, gint group_number)
     the_group = (GroupInfo *)g_list_nth_data(tab->groups, group_number);
 
     if (the_group->is_scrolled)
-      gtk_widget_show(GTK_WIDGET(the_group->scroll_outer_frame));
+      btk_widget_show(BTK_WIDGET(the_group->scroll_outer_frame));
 
-    gtk_widget_show(GTK_WIDGET(the_group->frame));
-    gtk_widget_show(GTK_WIDGET(the_group->group_vbox));
-    gtk_widget_show(GTK_WIDGET(tab->main_box));
+    btk_widget_show(BTK_WIDGET(the_group->frame));
+    btk_widget_show(BTK_WIDGET(the_group->group_vbox));
+    btk_widget_show(BTK_WIDGET(tab->main_box));
 }
 
 /* Signal handlers */
@@ -2151,7 +2151,7 @@ static gulong table_column_reordered_id = 0;
 static gulong property_id = 0;
 
 static void
-_update_handlers(AtkObject *obj)
+_update_handlers(BatkObject *obj)
 {
     /* Remove signal handlers from object that had focus before */
 
@@ -2212,7 +2212,7 @@ _update_handlers(AtkObject *obj)
 
     /* Add signal handlers to object that now has focus. */
 
-    if (ATK_IS_OBJECT(obj))
+    if (BATK_IS_OBJECT(obj))
       {
          child_added_id = g_signal_connect_closure (obj,
                 "children_changed::add",
@@ -2230,7 +2230,7 @@ _update_handlers(AtkObject *obj)
                 NULL, NULL), FALSE);
       }
 
-    if (ATK_IS_TEXT(obj))
+    if (BATK_IS_TEXT(obj))
       {
         text_caret_handler_id = g_signal_connect_closure_by_id (obj,
                 g_signal_lookup ("text_caret_moved", G_OBJECT_TYPE (obj)),
@@ -2246,7 +2246,7 @@ _update_handlers(AtkObject *obj)
                 NULL, NULL), FALSE);
       }
 
-    if (ATK_IS_TABLE(obj))
+    if (BATK_IS_TABLE(obj))
       {
         table_row_inserted_id = g_signal_connect_closure_by_id (obj,
                 g_signal_lookup ("row_inserted", G_OBJECT_TYPE (obj)),
@@ -2286,10 +2286,10 @@ _update_handlers(AtkObject *obj)
 static void
 _notify_text_insert_handler (GObject *obj, int position, int offset)
 {
-    gchar *text = atk_text_get_text (ATK_TEXT (obj), position, position + offset);
+    gchar *text = batk_text_get_text (BATK_TEXT (obj), position, position + offset);
     gchar *output_str = g_strdup_printf("position %d, length %d text: %s",
       position, offset,  text ? text: "<NULL>");
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
       "Text Insert", output_str);
     g_free(output_str);
 }
@@ -2297,10 +2297,10 @@ _notify_text_insert_handler (GObject *obj, int position, int offset)
 static void
 _notify_text_delete_handler (GObject *obj, int position, int offset)
 {
-    gchar *text = atk_text_get_text (ATK_TEXT (obj), position, position + offset);
+    gchar *text = batk_text_get_text (BATK_TEXT (obj), position, position + offset);
     gchar *output_str = g_strdup_printf("position %d, length %d text: %s",
       position, offset,  text ? text: "<NULL>");
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
       "Text Delete", output_str);
     g_free(output_str);
 }
@@ -2309,7 +2309,7 @@ static void
 _notify_caret_handler (GObject *obj, int position)
 {
     gchar *output_str = g_strdup_printf("position %d", position);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TEXT,
       "Text Caret Moved", output_str);
     g_free(output_str);
 }
@@ -2323,7 +2323,7 @@ _notify_table_row_inserted (GObject *obj, gint start_offset,
     gchar *output_str =
       g_strdup_printf("position %d, num of rows inserted %d!\n",
       start_offset, length);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Row Inserted", output_str);
     g_free(output_str);
 }
@@ -2335,7 +2335,7 @@ _notify_table_column_inserted (GObject *obj, gint start_offset,
     gchar *output_str =
       g_strdup_printf("position %d, num of rows inserted %d!\n",
       start_offset, length);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Column Inserted", output_str);
     g_free(output_str);
 }
@@ -2346,7 +2346,7 @@ _notify_table_row_deleted (GObject *obj, gint start_offset,
 {
     gchar *output_str = g_strdup_printf("position %d, num of rows inserted %d!\n",
       start_offset, length);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Row Deleted", output_str);
     g_free(output_str);
 }
@@ -2357,7 +2357,7 @@ _notify_table_column_deleted (GObject *obj, gint start_offset,
 {
     gchar *output_str = g_strdup_printf("position %d, num of rows inserted %d!\n",
       start_offset, length);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Column Deleted", output_str);
     g_free(output_str);
 }
@@ -2365,14 +2365,14 @@ _notify_table_column_deleted (GObject *obj, gint start_offset,
 static void
 _notify_table_row_reordered (GObject *obj)
 {
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Row Reordered", NULL);
 }
 
 static void
 _notify_table_column_reordered (GObject *obj)
 {
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_TABLE,
       "Table Column Reordered", NULL);
 }
 
@@ -2380,20 +2380,20 @@ _notify_table_column_reordered (GObject *obj)
 
 static void
 _notify_object_child_added (GObject *obj, gint index,
-  AtkObject *child)
+  BatkObject *child)
 {
     gchar *output_str = g_strdup_printf("index %d", index);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
       "Child Added", output_str);
     g_free(output_str);
 }
 
 static void
 _notify_object_child_removed (GObject *obj, gint index,
-  AtkObject *child)
+  BatkObject *child)
 {
     gchar *output_str = g_strdup_printf("index %d", index);
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
       "Child Removed", output_str);
     g_free(output_str);
 }
@@ -2403,7 +2403,7 @@ _notify_object_state_change (GObject *obj, gchar *name, gboolean set)
 {
     gchar *output_str = g_strdup_printf("name %s %s set", 
                         name, set ? "is" : "was");
-    _print_signal(ATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
+    _print_signal(BATK_OBJECT(obj), FERRET_SIGNAL_OBJECT,
       "State Change", output_str);
     g_free(output_str);
 }
@@ -2412,10 +2412,10 @@ _notify_object_state_change (GObject *obj, gchar *name, gboolean set)
 /* Function to print signals */
 
 static void
-_print_signal(AtkObject *aobject, FerretSignalType type,
+_print_signal(BatkObject *aobject, FerretSignalType type,
   const char *name, const char *info)
 {
-    TabNumber top_tab = gtk_notebook_get_current_page (notebook) + OBJECT;
+    TabNumber top_tab = btk_notebook_get_current_page (notebook) + OBJECT;
 
     if (no_signals)
       return;
@@ -2436,16 +2436,16 @@ _print_signal(AtkObject *aobject, FerretSignalType type,
          }
         else if (type == FERRET_SIGNAL_TEXT)
           {
-            last_caret_offset = atk_text_get_caret_offset (ATK_TEXT (aobject));
+            last_caret_offset = batk_text_get_caret_offset (BATK_TEXT (aobject));
           }
       }
 
-    if (use_magnifier && ATK_IS_TEXT (aobject) &&
+    if (use_magnifier && BATK_IS_TEXT (aobject) &&
         (type == FERRET_SIGNAL_TEXT) && (!strncmp(name, "Text Caret", 10)))
       {
         gint x, y, w, h;
-        gint caret_offset = atk_text_get_caret_offset (ATK_TEXT (aobject));
-        atk_text_get_character_extents ( ATK_TEXT (aobject), caret_offset, &x, &y, &w, &h, ATK_XY_SCREEN);
+        gint caret_offset = batk_text_get_caret_offset (BATK_TEXT (aobject));
+        batk_text_get_character_extents ( BATK_TEXT (aobject), caret_offset, &x, &y, &w, &h, BATK_XY_SCREEN);
         _send_to_magnifier (x, y, w, h);
       }
 
@@ -2463,7 +2463,7 @@ _print_signal(AtkObject *aobject, FerretSignalType type,
 /* Update functions */
 
 static void
-_update (TabNumber top_tab, AtkObject *aobject)
+_update (TabNumber top_tab, BatkObject *aobject)
 {
     gint group_num;
 
@@ -2472,7 +2472,7 @@ _update (TabNumber top_tab, AtkObject *aobject)
        _clear_tab(top_tab);
     }
 
-    if (top_tab == OBJECT && ATK_IS_OBJECT(aobject))
+    if (top_tab == OBJECT && BATK_IS_OBJECT(aobject))
       {
         group_num = _print_object(aobject);
         _finished_group(OBJECT, group_num);
@@ -2481,57 +2481,57 @@ _update (TabNumber top_tab, AtkObject *aobject)
         group_num = _print_state(aobject);
         _finished_group(OBJECT, group_num);
       }
-    if (top_tab == TEXT && ATK_IS_TEXT(aobject))
+    if (top_tab == TEXT && BATK_IS_TEXT(aobject))
       {
-        group_num = _print_text(ATK_TEXT (aobject));
+        group_num = _print_text(BATK_TEXT (aobject));
         _finished_group(TEXT, group_num);
-        group_num = _print_text_attributes(ATK_TEXT (aobject));
+        group_num = _print_text_attributes(BATK_TEXT (aobject));
         _finished_group(TEXT, group_num);
       }
-    if (top_tab == SELECTION && ATK_IS_SELECTION(aobject))
+    if (top_tab == SELECTION && BATK_IS_SELECTION(aobject))
       {
-        group_num = _print_selection(ATK_SELECTION (aobject));
+        group_num = _print_selection(BATK_SELECTION (aobject));
         _finished_group(SELECTION, group_num);
       }
-    if (top_tab == TABLE && ATK_IS_TABLE(aobject))
+    if (top_tab == TABLE && BATK_IS_TABLE(aobject))
       {
-        group_num = _print_table(ATK_TABLE (aobject));
+        group_num = _print_table(BATK_TABLE (aobject));
         _finished_group(TABLE, group_num);
       }
-    if (top_tab == ACTION && ATK_IS_ACTION(aobject))
+    if (top_tab == ACTION && BATK_IS_ACTION(aobject))
       {
-        group_num = _print_action(ATK_ACTION (aobject));
+        group_num = _print_action(BATK_ACTION (aobject));
         _finished_group(ACTION, group_num);
       }
-    if (top_tab == COMPONENT && ATK_IS_COMPONENT(aobject))
+    if (top_tab == COMPONENT && BATK_IS_COMPONENT(aobject))
       {
-        group_num = _print_component(ATK_COMPONENT(aobject));
+        group_num = _print_component(BATK_COMPONENT(aobject));
         _finished_group(COMPONENT, group_num);
       }
-    if (top_tab == IMAGE && ATK_IS_IMAGE(aobject))
+    if (top_tab == IMAGE && BATK_IS_IMAGE(aobject))
       {
-        group_num = _print_image(ATK_IMAGE (aobject));
+        group_num = _print_image(BATK_IMAGE (aobject));
         _finished_group(IMAGE, group_num);
       }
-    if (top_tab == VALUE && ATK_IS_VALUE(aobject))
+    if (top_tab == VALUE && BATK_IS_VALUE(aobject))
       {
-        group_num = _print_value(ATK_VALUE(aobject));
+        group_num = _print_value(BATK_VALUE(aobject));
         _finished_group(VALUE, group_num);
       }
 }
 
 static void
-_update_current_page(GtkNotebook *notebook, gpointer p, guint current_page)
+_update_current_page(BtkNotebook *notebook, gpointer p, guint current_page)
 {
   _update(current_page+OBJECT, last_object);
 }
 
 /* Property listeners */
 
-static void _property_change_handler (AtkObject *obj,
-  AtkPropertyValues *values)
+static void _property_change_handler (BatkObject *obj,
+  BatkPropertyValues *values)
 {
-    TabNumber top_tab = gtk_notebook_get_current_page (notebook) + OBJECT;
+    TabNumber top_tab = btk_notebook_get_current_page (notebook) + OBJECT;
 
     if (no_signals)
       return;
@@ -2600,15 +2600,15 @@ static void _property_change_handler (AtkObject *obj,
 
 /* Action button callback function */
 
-void _action_cb(GtkWidget *widget, gpointer  *userdata)
+void _action_cb(BtkWidget *widget, gpointer  *userdata)
 {
    NameValue *nv = (NameValue *)userdata;
-   atk_action_do_action(ATK_ACTION(nv->atkobj), nv->action_num);
+   batk_action_do_action(BATK_ACTION(nv->batkobj), nv->action_num);
 }
 
 /* Menu-bar callback functions */
 
-void _toggle_terminal(GtkCheckMenuItem *checkmenuitem,
+void _toggle_terminal(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
@@ -2617,7 +2617,7 @@ void _toggle_terminal(GtkCheckMenuItem *checkmenuitem,
        display_ascii = FALSE;
 }
 
-void _toggle_no_signals(GtkCheckMenuItem *checkmenuitem,
+void _toggle_no_signals(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
@@ -2626,7 +2626,7 @@ void _toggle_no_signals(GtkCheckMenuItem *checkmenuitem,
        no_signals = FALSE;
 }
 
-void _toggle_magnifier(GtkCheckMenuItem *checkmenuitem,
+void _toggle_magnifier(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
@@ -2635,7 +2635,7 @@ void _toggle_magnifier(GtkCheckMenuItem *checkmenuitem,
        use_magnifier = FALSE;
 }
 
-void _toggle_festival(GtkCheckMenuItem *checkmenuitem,
+void _toggle_festival(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
@@ -2644,7 +2644,7 @@ void _toggle_festival(GtkCheckMenuItem *checkmenuitem,
        use_festival = FALSE;
 }
 
-void _toggle_festival_terse(GtkCheckMenuItem *checkmenuitem,
+void _toggle_festival_terse(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
@@ -2659,42 +2659,42 @@ void _toggle_festival_terse(GtkCheckMenuItem *checkmenuitem,
      }
 }
 
-void _toggle_trackmouse(GtkCheckMenuItem *checkmenuitem,
+void _toggle_trackmouse(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
      {
         mouse_watcher_focus_id =
-          atk_add_global_event_listener(_mouse_watcher,
-          "Gtk:GtkWidget:enter_notify_event");
+          batk_add_global_event_listener(_mouse_watcher,
+          "Btk:BtkWidget:enter_notify_event");
         mouse_watcher_button_id =
-          atk_add_global_event_listener(_button_watcher,
-          "Gtk:GtkWidget:button_press_event");
+          batk_add_global_event_listener(_button_watcher,
+          "Btk:BtkWidget:button_press_event");
        track_mouse = TRUE;
      }
    else
      {
        if (mouse_watcher_focus_id != -1)
          {
-           atk_remove_global_event_listener(mouse_watcher_focus_id);
-           atk_remove_global_event_listener(mouse_watcher_button_id);
+           batk_remove_global_event_listener(mouse_watcher_focus_id);
+           batk_remove_global_event_listener(mouse_watcher_button_id);
            track_mouse = FALSE;
          }
      }
 }
 
-void _toggle_trackfocus(GtkCheckMenuItem *checkmenuitem,
+void _toggle_trackfocus(BtkCheckMenuItem *checkmenuitem,
   gpointer user_data)
 {
    if (checkmenuitem->active)
      {
        track_focus = TRUE;
-       focus_tracker_id = atk_add_focus_tracker (_print_accessible);
+       focus_tracker_id = batk_add_focus_tracker (_print_accessible);
      }
    else
      { 
        g_print ("No longer tracking focus.\n");
        track_focus = FALSE;
-       atk_remove_focus_tracker (focus_tracker_id);
+       batk_remove_focus_tracker (focus_tracker_id);
      }
 }

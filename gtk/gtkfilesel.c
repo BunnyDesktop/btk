@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -42,8 +42,8 @@
 #include <pwd.h>
 #endif
 
-#include <glib.h>		/* Include early to get G_OS_WIN32 etc */
-#include <glib/gstdio.h>
+#include <bunnylib.h>		/* Include early to get G_OS_WIN32 etc */
+#include <bunnylib/gstdio.h>
 
 #if defined(G_PLATFORM_WIN32)
 #include <ctype.h>
@@ -52,38 +52,38 @@
 #undef STRICT
 #endif /* G_PLATFORM_WIN32 */
 
-#include "gdk/gdkkeysyms.h"
+#include "bdk/bdkkeysyms.h"
 
-#undef GTK_DISABLE_DEPRECATED /* GtkOptionMenu */
+#undef BTK_DISABLE_DEPRECATED /* BtkOptionMenu */
 
-#include "gtkbutton.h"
-#include "gtkcellrenderertext.h"
-#include "gtkentry.h"
-#include "gtkfilesel.h"
-#include "gtkhbox.h"
-#include "gtkhbbox.h"
-#include "gtkintl.h"
-#include "gtklabel.h"
-#include "gtkliststore.h"
-#include "gtkmain.h"
-#include "gtkprivate.h"
-#include "gtkscrolledwindow.h"
-#include "gtkstock.h"
-#include "gtktreeselection.h"
-#include "gtktreeview.h"
-#include "gtkvbox.h"
-#include "gtkmenu.h"
-#include "gtkmenuitem.h"
-#include "gtkdialog.h"
-#include "gtkmessagedialog.h"
-#include "gtkdnd.h"
-#include "gtkeventbox.h"
-#include "gtkoptionmenu.h"
+#include "btkbutton.h"
+#include "btkcellrenderertext.h"
+#include "btkentry.h"
+#include "btkfilesel.h"
+#include "btkhbox.h"
+#include "btkhbbox.h"
+#include "btkintl.h"
+#include "btklabel.h"
+#include "btkliststore.h"
+#include "btkmain.h"
+#include "btkprivate.h"
+#include "btkscrolledwindow.h"
+#include "btkstock.h"
+#include "btktreeselection.h"
+#include "btktreeview.h"
+#include "btkvbox.h"
+#include "btkmenu.h"
+#include "btkmenuitem.h"
+#include "btkdialog.h"
+#include "btkmessagedialog.h"
+#include "btkdnd.h"
+#include "btkeventbox.h"
+#include "btkoptionmenu.h"
 
 #define WANT_HPANED 1
-#include "gtkhpaned.h"
+#include "btkhpaned.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 #ifdef G_OS_WIN32
 #include <direct.h>
@@ -121,7 +121,7 @@ typedef struct _HistoryCallbackArg HistoryCallbackArg;
 struct _HistoryCallbackArg
 {
   gchar *directory;
-  GtkWidget *menu_item;
+  BtkWidget *menu_item;
 };
 
 
@@ -372,50 +372,50 @@ static gint compare_cmpl_dir(const void* a, const void* b);
 static void update_cmpl(PossibleCompletion* poss,
 			CompletionState* cmpl_state);
 
-static void gtk_file_selection_set_property  (GObject         *object,
+static void btk_file_selection_set_property  (GObject         *object,
 					      guint            prop_id,
 					      const GValue    *value,
 					      GParamSpec      *pspec);
-static void gtk_file_selection_get_property  (GObject         *object,
+static void btk_file_selection_get_property  (GObject         *object,
 					      guint            prop_id,
 					      GValue          *value,
 					      GParamSpec      *pspec);
-static void gtk_file_selection_finalize      (GObject               *object);
-static void gtk_file_selection_destroy       (GtkObject             *object);
-static void gtk_file_selection_map           (GtkWidget             *widget);
-static gint gtk_file_selection_key_press     (GtkWidget             *widget,
-					      GdkEventKey           *event,
+static void btk_file_selection_finalize      (GObject               *object);
+static void btk_file_selection_destroy       (BtkObject             *object);
+static void btk_file_selection_map           (BtkWidget             *widget);
+static gint btk_file_selection_key_press     (BtkWidget             *widget,
+					      BdkEventKey           *event,
 					      gpointer               user_data);
-static gint gtk_file_selection_insert_text   (GtkWidget             *widget,
+static gint btk_file_selection_insert_text   (BtkWidget             *widget,
 					      const gchar           *new_text,
 					      gint                   new_text_length,
 					      gint                  *position,
 					      gpointer               user_data);
-static void gtk_file_selection_update_fileops (GtkFileSelection     *filesel);
+static void btk_file_selection_update_fileops (BtkFileSelection     *filesel);
 
-static void gtk_file_selection_file_activate (GtkTreeView       *tree_view,
-					      GtkTreePath       *path,
-					      GtkTreeViewColumn *column,
+static void btk_file_selection_file_activate (BtkTreeView       *tree_view,
+					      BtkTreePath       *path,
+					      BtkTreeViewColumn *column,
 					      gpointer           user_data);
-static void gtk_file_selection_file_changed  (GtkTreeSelection  *selection,
+static void btk_file_selection_file_changed  (BtkTreeSelection  *selection,
 					      gpointer           user_data);
-static void gtk_file_selection_dir_activate  (GtkTreeView       *tree_view,
-					      GtkTreePath       *path,
-					      GtkTreeViewColumn *column,
+static void btk_file_selection_dir_activate  (BtkTreeView       *tree_view,
+					      BtkTreePath       *path,
+					      BtkTreeViewColumn *column,
 					      gpointer           user_data);
 
-static void gtk_file_selection_populate      (GtkFileSelection      *fs,
+static void btk_file_selection_populate      (BtkFileSelection      *fs,
 					      gchar                 *rel_path,
 					      gboolean               try_complete,
 					      gboolean               reset_entry);
-static void gtk_file_selection_abort         (GtkFileSelection      *fs);
+static void btk_file_selection_abort         (BtkFileSelection      *fs);
 
-static void gtk_file_selection_update_history_menu (GtkFileSelection       *fs,
+static void btk_file_selection_update_history_menu (BtkFileSelection       *fs,
 						    gchar                  *current_dir);
 
-static void gtk_file_selection_create_dir  (GtkWidget *widget, gpointer data);
-static void gtk_file_selection_delete_file (GtkWidget *widget, gpointer data);
-static void gtk_file_selection_rename_file (GtkWidget *widget, gpointer data);
+static void btk_file_selection_create_dir  (BtkWidget *widget, gpointer data);
+static void btk_file_selection_delete_file (BtkWidget *widget, gpointer data);
+static void btk_file_selection_rename_file (BtkWidget *widget, gpointer data);
 
 static void free_selected_names (GPtrArray *names);
 
@@ -482,7 +482,7 @@ static gint cmpl_errno;
  * translation had to be made.
  */
 static int
-translate_win32_path (GtkFileSelection *filesel)
+translate_win32_path (BtkFileSelection *filesel)
 {
   int updated = 0;
   const gchar *path;
@@ -491,83 +491,83 @@ translate_win32_path (GtkFileSelection *filesel)
   /*
    * Retrieve the current path
    */
-  path = gtk_entry_get_text (GTK_ENTRY (filesel->selection_entry));
+  path = btk_entry_get_text (BTK_ENTRY (filesel->selection_entry));
 
   cygwin_conv_to_posix_path (path, newPath);
   updated = (strcmp (path, newPath) != 0);
 
   if (updated)
-    gtk_entry_set_text (GTK_ENTRY (filesel->selection_entry), newPath);
+    btk_entry_set_text (BTK_ENTRY (filesel->selection_entry), newPath);
     
   return updated;
 }
 #endif
 
-G_DEFINE_TYPE (GtkFileSelection, gtk_file_selection, GTK_TYPE_DIALOG)
+G_DEFINE_TYPE (BtkFileSelection, btk_file_selection, BTK_TYPE_DIALOG)
 
 static void
-gtk_file_selection_class_init (GtkFileSelectionClass *class)
+btk_file_selection_class_init (BtkFileSelectionClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass *bobject_class;
+  BtkObjectClass *object_class;
+  BtkWidgetClass *widget_class;
 
-  gobject_class = (GObjectClass*) class;
-  object_class = (GtkObjectClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  bobject_class = (GObjectClass*) class;
+  object_class = (BtkObjectClass*) class;
+  widget_class = (BtkWidgetClass*) class;
 
-  gobject_class->finalize = gtk_file_selection_finalize;
-  gobject_class->set_property = gtk_file_selection_set_property;
-  gobject_class->get_property = gtk_file_selection_get_property;
+  bobject_class->finalize = btk_file_selection_finalize;
+  bobject_class->set_property = btk_file_selection_set_property;
+  bobject_class->get_property = btk_file_selection_get_property;
    
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_FILENAME,
                                    g_param_spec_string ("filename",
                                                         P_("Filename"),
                                                         P_("The currently selected filename"),
                                                         NULL,
-                                                        GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+                                                        BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_SHOW_FILEOPS,
 				   g_param_spec_boolean ("show-fileops",
 							 P_("Show file operations"),
 							 P_("Whether buttons for creating/manipulating files should be displayed"),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+							 BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_SELECT_MULTIPLE,
 				   g_param_spec_boolean ("select-multiple",
 							 P_("Select Multiple"),
 							 P_("Whether to allow multiple files to be selected"),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
-  object_class->destroy = gtk_file_selection_destroy;
-  widget_class->map = gtk_file_selection_map;
+							 BTK_PARAM_READWRITE));
+  object_class->destroy = btk_file_selection_destroy;
+  widget_class->map = btk_file_selection_map;
 }
 
-static void gtk_file_selection_set_property (GObject         *object,
+static void btk_file_selection_set_property (GObject         *object,
 					     guint            prop_id,
 					     const GValue    *value,
 					     GParamSpec      *pspec)
 {
-  GtkFileSelection *filesel;
+  BtkFileSelection *filesel;
 
-  filesel = GTK_FILE_SELECTION (object);
+  filesel = BTK_FILE_SELECTION (object);
 
   switch (prop_id)
     {
     case PROP_FILENAME:
-      gtk_file_selection_set_filename (filesel,
+      btk_file_selection_set_filename (filesel,
                                        g_value_get_string (value));
       break;
     case PROP_SHOW_FILEOPS:
       if (g_value_get_boolean (value))
-	 gtk_file_selection_show_fileop_buttons (filesel);
+	 btk_file_selection_show_fileop_buttons (filesel);
       else
-	 gtk_file_selection_hide_fileop_buttons (filesel);
+	 btk_file_selection_hide_fileop_buttons (filesel);
       break;
     case PROP_SELECT_MULTIPLE:
-      gtk_file_selection_set_select_multiple (filesel, g_value_get_boolean (value));
+      btk_file_selection_set_select_multiple (filesel, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -575,20 +575,20 @@ static void gtk_file_selection_set_property (GObject         *object,
     }
 }
 
-static void gtk_file_selection_get_property (GObject         *object,
+static void btk_file_selection_get_property (GObject         *object,
 					     guint            prop_id,
 					     GValue          *value,
 					     GParamSpec      *pspec)
 {
-  GtkFileSelection *filesel;
+  BtkFileSelection *filesel;
 
-  filesel = GTK_FILE_SELECTION (object);
+  filesel = BTK_FILE_SELECTION (object);
 
   switch (prop_id)
     {
     case PROP_FILENAME:
       g_value_set_string (value,
-                          gtk_file_selection_get_filename(filesel));
+                          btk_file_selection_get_filename(filesel));
       break;
 
     case PROP_SHOW_FILEOPS:
@@ -600,7 +600,7 @@ static void gtk_file_selection_get_property (GObject         *object,
 				   filesel->fileop_ren_file));
       break;
     case PROP_SELECT_MULTIPLE:
-      g_value_set_boolean (value, gtk_file_selection_get_select_multiple (filesel));
+      g_value_set_boolean (value, btk_file_selection_get_select_multiple (filesel));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -609,70 +609,70 @@ static void gtk_file_selection_get_property (GObject         *object,
 }
 
 static gboolean
-grab_default (GtkWidget *widget)
+grab_default (BtkWidget *widget)
 {
-  gtk_widget_grab_default (widget);
+  btk_widget_grab_default (widget);
   return FALSE;
 }
      
 static void
-gtk_file_selection_init (GtkFileSelection *filesel)
+btk_file_selection_init (BtkFileSelection *filesel)
 {
-  GtkWidget *entry_vbox;
-  GtkWidget *label;
-  GtkWidget *list_hbox, *list_container;
-  GtkWidget *pulldown_hbox;
-  GtkWidget *scrolled_win;
-  GtkWidget *eventbox;
-  GtkWidget *spacer;
-  GtkDialog *dialog;
+  BtkWidget *entry_vbox;
+  BtkWidget *label;
+  BtkWidget *list_hbox, *list_container;
+  BtkWidget *pulldown_hbox;
+  BtkWidget *scrolled_win;
+  BtkWidget *eventbox;
+  BtkWidget *spacer;
+  BtkDialog *dialog;
 
-  GtkListStore *model;
-  GtkTreeViewColumn *column;
+  BtkListStore *model;
+  BtkTreeViewColumn *column;
   
-  gtk_widget_push_composite_child ();
+  btk_widget_push_composite_child ();
 
-  dialog = GTK_DIALOG (filesel);
+  dialog = BTK_DIALOG (filesel);
 
   filesel->cmpl_state = cmpl_init_state ();
 
   /* The dialog-sized vertical box  */
   filesel->main_vbox = dialog->vbox;
-  gtk_container_set_border_width (GTK_CONTAINER (filesel), 10);
+  btk_container_set_border_width (BTK_CONTAINER (filesel), 10);
 
   /* The horizontal box containing create, rename etc. buttons */
-  filesel->button_area = gtk_hbutton_box_new ();
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (filesel->button_area), GTK_BUTTONBOX_START);
-  gtk_box_set_spacing (GTK_BOX (filesel->button_area), 0);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), filesel->button_area, 
+  filesel->button_area = btk_hbutton_box_new ();
+  btk_button_box_set_layout (BTK_BUTTON_BOX (filesel->button_area), BTK_BUTTONBOX_START);
+  btk_box_set_spacing (BTK_BOX (filesel->button_area), 0);
+  btk_box_pack_start (BTK_BOX (filesel->main_vbox), filesel->button_area, 
 		      FALSE, FALSE, 0);
-  gtk_widget_show (filesel->button_area);
+  btk_widget_show (filesel->button_area);
   
-  gtk_file_selection_show_fileop_buttons (filesel);
+  btk_file_selection_show_fileop_buttons (filesel);
 
   /* hbox for pulldown menu */
-  pulldown_hbox = gtk_hbox_new (TRUE, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), pulldown_hbox, FALSE, FALSE, 0);
-  gtk_widget_show (pulldown_hbox);
+  pulldown_hbox = btk_hbox_new (TRUE, 5);
+  btk_box_pack_start (BTK_BOX (filesel->main_vbox), pulldown_hbox, FALSE, FALSE, 0);
+  btk_widget_show (pulldown_hbox);
   
   /* Pulldown menu */
-  filesel->history_pulldown = gtk_option_menu_new ();
-  gtk_widget_show (filesel->history_pulldown);
-  gtk_box_pack_start (GTK_BOX (pulldown_hbox), filesel->history_pulldown, 
+  filesel->history_pulldown = btk_option_menu_new ();
+  btk_widget_show (filesel->history_pulldown);
+  btk_box_pack_start (BTK_BOX (pulldown_hbox), filesel->history_pulldown, 
 		      FALSE, FALSE, 0);
     
   /*  The horizontal box containing the directory and file listboxes  */
 
-  spacer = gtk_hbox_new (FALSE, 0);
-  gtk_widget_set_size_request (spacer, -1, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), spacer, FALSE, FALSE, 0);
-  gtk_widget_show (spacer);
+  spacer = btk_hbox_new (FALSE, 0);
+  btk_widget_set_size_request (spacer, -1, 5);
+  btk_box_pack_start (BTK_BOX (filesel->main_vbox), spacer, FALSE, FALSE, 0);
+  btk_widget_show (spacer);
   
-  list_hbox = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), list_hbox, TRUE, TRUE, 0);
-  gtk_widget_show (list_hbox);
+  list_hbox = btk_hbox_new (FALSE, 5);
+  btk_box_pack_start (BTK_BOX (filesel->main_vbox), list_hbox, TRUE, TRUE, 0);
+  btk_widget_show (list_hbox);
   if (WANT_HPANED)
-    list_container = g_object_new (GTK_TYPE_HPANED,
+    list_container = g_object_new (BTK_TYPE_HPANED,
 				   "visible", TRUE,
 				   "parent", list_hbox,
 				   "border_width", 0,
@@ -680,138 +680,138 @@ gtk_file_selection_init (GtkFileSelection *filesel)
   else
     list_container = list_hbox;
 
-  spacer = gtk_hbox_new (FALSE, 0);
-  gtk_widget_set_size_request (spacer, -1, 5);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), spacer, FALSE, FALSE, 0);  
-  gtk_widget_show (spacer);
+  spacer = btk_hbox_new (FALSE, 0);
+  btk_widget_set_size_request (spacer, -1, 5);
+  btk_box_pack_start (BTK_BOX (filesel->main_vbox), spacer, FALSE, FALSE, 0);  
+  btk_widget_show (spacer);
   
   /* The directories list */
 
-  model = gtk_list_store_new (1, G_TYPE_STRING);
-  filesel->dir_list = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
+  model = btk_list_store_new (1, G_TYPE_STRING);
+  filesel->dir_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
 
-  column = gtk_tree_view_column_new_with_attributes (_("Folders"),
-						     gtk_cell_renderer_text_new (),
+  column = btk_tree_view_column_new_with_attributes (_("Folders"),
+						     btk_cell_renderer_text_new (),
 						     "text", DIR_COLUMN,
 						     NULL);
-  label = gtk_label_new_with_mnemonic (_("Fol_ders"));
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), filesel->dir_list);
-  gtk_widget_show (label);
-  gtk_tree_view_column_set_widget (column, label);
-  gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (filesel->dir_list), column);
+  label = btk_label_new_with_mnemonic (_("Fol_ders"));
+  btk_label_set_mnemonic_widget (BTK_LABEL (label), filesel->dir_list);
+  btk_widget_show (label);
+  btk_tree_view_column_set_widget (column, label);
+  btk_tree_view_column_set_sizing (column, BTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  btk_tree_view_append_column (BTK_TREE_VIEW (filesel->dir_list), column);
 
-  gtk_widget_set_size_request (filesel->dir_list,
+  btk_widget_set_size_request (filesel->dir_list,
 			       DIR_LIST_WIDTH, DIR_LIST_HEIGHT);
   g_signal_connect (filesel->dir_list, "row-activated",
-		    G_CALLBACK (gtk_file_selection_dir_activate), filesel);
+		    G_CALLBACK (btk_file_selection_dir_activate), filesel);
 
-  /*  gtk_clist_column_titles_passive (GTK_CLIST (filesel->dir_list)); */
+  /*  btk_clist_column_titles_passive (BTK_CLIST (filesel->dir_list)); */
 
-  scrolled_win = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_win), GTK_SHADOW_IN);  
-  gtk_container_add (GTK_CONTAINER (scrolled_win), filesel->dir_list);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
-  gtk_container_set_border_width (GTK_CONTAINER (scrolled_win), 0);
-  if (GTK_IS_PANED (list_container))
-    gtk_paned_pack1 (GTK_PANED (list_container), scrolled_win, TRUE, TRUE);
+  scrolled_win = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (scrolled_win), BTK_SHADOW_IN);  
+  btk_container_add (BTK_CONTAINER (scrolled_win), filesel->dir_list);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_win),
+				  BTK_POLICY_AUTOMATIC, BTK_POLICY_ALWAYS);
+  btk_container_set_border_width (BTK_CONTAINER (scrolled_win), 0);
+  if (BTK_IS_PANED (list_container))
+    btk_paned_pack1 (BTK_PANED (list_container), scrolled_win, TRUE, TRUE);
   else
-    gtk_container_add (GTK_CONTAINER (list_container), scrolled_win);
-  gtk_widget_show (filesel->dir_list);
-  gtk_widget_show (scrolled_win);
+    btk_container_add (BTK_CONTAINER (list_container), scrolled_win);
+  btk_widget_show (filesel->dir_list);
+  btk_widget_show (scrolled_win);
 
   /* The files list */
-  model = gtk_list_store_new (1, G_TYPE_STRING);
-  filesel->file_list = gtk_tree_view_new_with_model (GTK_TREE_MODEL (model));
+  model = btk_list_store_new (1, G_TYPE_STRING);
+  filesel->file_list = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
   g_object_unref (model);
 
-  column = gtk_tree_view_column_new_with_attributes (_("Files"),
-						     gtk_cell_renderer_text_new (),
+  column = btk_tree_view_column_new_with_attributes (_("Files"),
+						     btk_cell_renderer_text_new (),
 						     "text", FILE_COLUMN,
 						     NULL);
-  label = gtk_label_new_with_mnemonic (_("_Files"));
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), filesel->file_list);
-  gtk_widget_show (label);
-  gtk_tree_view_column_set_widget (column, label);
-  gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (filesel->file_list), column);
+  label = btk_label_new_with_mnemonic (_("_Files"));
+  btk_label_set_mnemonic_widget (BTK_LABEL (label), filesel->file_list);
+  btk_widget_show (label);
+  btk_tree_view_column_set_widget (column, label);
+  btk_tree_view_column_set_sizing (column, BTK_TREE_VIEW_COLUMN_AUTOSIZE);
+  btk_tree_view_append_column (BTK_TREE_VIEW (filesel->file_list), column);
 
-  gtk_widget_set_size_request (filesel->file_list,
+  btk_widget_set_size_request (filesel->file_list,
 			       FILE_LIST_WIDTH, FILE_LIST_HEIGHT);
   g_signal_connect (filesel->file_list, "row-activated",
-		    G_CALLBACK (gtk_file_selection_file_activate), filesel);
-  g_signal_connect (gtk_tree_view_get_selection (GTK_TREE_VIEW (filesel->file_list)), "changed",
-		    G_CALLBACK (gtk_file_selection_file_changed), filesel);
+		    G_CALLBACK (btk_file_selection_file_activate), filesel);
+  g_signal_connect (btk_tree_view_get_selection (BTK_TREE_VIEW (filesel->file_list)), "changed",
+		    G_CALLBACK (btk_file_selection_file_changed), filesel);
 
-  /* gtk_clist_column_titles_passive (GTK_CLIST (filesel->file_list)); */
+  /* btk_clist_column_titles_passive (BTK_CLIST (filesel->file_list)); */
 
-  scrolled_win = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolled_win), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (scrolled_win), filesel->file_list);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
-  gtk_container_set_border_width (GTK_CONTAINER (scrolled_win), 0);
-  gtk_container_add (GTK_CONTAINER (list_container), scrolled_win);
-  gtk_widget_show (filesel->file_list);
-  gtk_widget_show (scrolled_win);
+  scrolled_win = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (scrolled_win), BTK_SHADOW_IN);
+  btk_container_add (BTK_CONTAINER (scrolled_win), filesel->file_list);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_win),
+				  BTK_POLICY_AUTOMATIC, BTK_POLICY_ALWAYS);
+  btk_container_set_border_width (BTK_CONTAINER (scrolled_win), 0);
+  btk_container_add (BTK_CONTAINER (list_container), scrolled_win);
+  btk_widget_show (filesel->file_list);
+  btk_widget_show (scrolled_win);
 
   /* action area for packing buttons into. */
-  filesel->action_area = gtk_hbox_new (TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (filesel->main_vbox), filesel->action_area, 
+  filesel->action_area = btk_hbox_new (TRUE, 0);
+  btk_box_pack_start (BTK_BOX (filesel->main_vbox), filesel->action_area, 
 		      FALSE, FALSE, 0);
-  gtk_widget_show (filesel->action_area);
+  btk_widget_show (filesel->action_area);
   
   /*  The OK/Cancel button area */
 
   /*  The Cancel button  */
-  filesel->cancel_button = gtk_dialog_add_button (dialog,
-                                                  GTK_STOCK_CANCEL,
-                                                  GTK_RESPONSE_CANCEL);
+  filesel->cancel_button = btk_dialog_add_button (dialog,
+                                                  BTK_STOCK_CANCEL,
+                                                  BTK_RESPONSE_CANCEL);
   /*  The OK button  */
-  filesel->ok_button = gtk_dialog_add_button (dialog,
-                                              GTK_STOCK_OK,
-                                              GTK_RESPONSE_OK);
+  filesel->ok_button = btk_dialog_add_button (dialog,
+                                              BTK_STOCK_OK,
+                                              BTK_RESPONSE_OK);
 
-  gtk_dialog_set_alternative_button_order (dialog,
-					   GTK_RESPONSE_OK,
-					   GTK_RESPONSE_CANCEL,
+  btk_dialog_set_alternative_button_order (dialog,
+					   BTK_RESPONSE_OK,
+					   BTK_RESPONSE_CANCEL,
 					   -1);
 
-  gtk_widget_grab_default (filesel->ok_button);
+  btk_widget_grab_default (filesel->ok_button);
 
   /*  The selection entry widget  */
-  entry_vbox = gtk_vbox_new (FALSE, 2);
-  gtk_box_pack_end (GTK_BOX (filesel->main_vbox), entry_vbox, FALSE, FALSE, 2);
-  gtk_widget_show (entry_vbox);
+  entry_vbox = btk_vbox_new (FALSE, 2);
+  btk_box_pack_end (BTK_BOX (filesel->main_vbox), entry_vbox, FALSE, FALSE, 2);
+  btk_widget_show (entry_vbox);
   
-  eventbox = gtk_event_box_new ();
-  filesel->selection_text = label = gtk_label_new ("");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_container_add (GTK_CONTAINER (eventbox), label);
-  gtk_box_pack_start (GTK_BOX (entry_vbox), eventbox, FALSE, FALSE, 0);
-  gtk_widget_show (label);
-  gtk_widget_show (eventbox);
+  eventbox = btk_event_box_new ();
+  filesel->selection_text = label = btk_label_new ("");
+  btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.5);
+  btk_container_add (BTK_CONTAINER (eventbox), label);
+  btk_box_pack_start (BTK_BOX (entry_vbox), eventbox, FALSE, FALSE, 0);
+  btk_widget_show (label);
+  btk_widget_show (eventbox);
 
-  filesel->selection_entry = gtk_entry_new ();
+  filesel->selection_entry = btk_entry_new ();
   g_signal_connect (filesel->selection_entry, "key-press-event",
-		    G_CALLBACK (gtk_file_selection_key_press), filesel);
+		    G_CALLBACK (btk_file_selection_key_press), filesel);
   g_signal_connect (filesel->selection_entry, "insert-text",
-		    G_CALLBACK (gtk_file_selection_insert_text), NULL);
+		    G_CALLBACK (btk_file_selection_insert_text), NULL);
   g_signal_connect_swapped (filesel->selection_entry, "changed",
-			    G_CALLBACK (gtk_file_selection_update_fileops), filesel);
+			    G_CALLBACK (btk_file_selection_update_fileops), filesel);
   g_signal_connect_swapped (filesel->selection_entry, "focus-in-event",
 			    G_CALLBACK (grab_default),
 			    filesel->ok_button);
   g_signal_connect_swapped (filesel->selection_entry, "activate",
-			    G_CALLBACK (gtk_button_clicked),
+			    G_CALLBACK (btk_button_clicked),
 			    filesel->ok_button);
   
-  gtk_box_pack_start (GTK_BOX (entry_vbox), filesel->selection_entry, TRUE, TRUE, 0);
-  gtk_widget_show (filesel->selection_entry);
+  btk_box_pack_start (BTK_BOX (entry_vbox), filesel->selection_entry, TRUE, TRUE, 0);
+  btk_widget_show (filesel->selection_entry);
 
-  gtk_label_set_mnemonic_widget (GTK_LABEL (filesel->selection_text),
+  btk_label_set_mnemonic_widget (BTK_LABEL (filesel->selection_text),
 				 filesel->selection_entry);
 
   if (!cmpl_state_okay (filesel->cmpl_state))
@@ -820,39 +820,39 @@ gtk_file_selection_init (GtkFileSelection *filesel)
 
       g_snprintf (err_buf, sizeof (err_buf), _("Folder unreadable: %s"), cmpl_strerror (cmpl_errno));
 
-      gtk_label_set_text (GTK_LABEL (filesel->selection_text), err_buf);
+      btk_label_set_text (BTK_LABEL (filesel->selection_text), err_buf);
     }
   else
     {
-      gtk_file_selection_populate (filesel, "", FALSE, TRUE);
+      btk_file_selection_populate (filesel, "", FALSE, TRUE);
     }
 
-  gtk_widget_grab_focus (filesel->selection_entry);
+  btk_widget_grab_focus (filesel->selection_entry);
 
-  gtk_widget_pop_composite_child ();
+  btk_widget_pop_composite_child ();
 }
 
 static void
-dnd_really_drop  (GtkWidget *dialog, gint response_id, GtkFileSelection *fs)
+dnd_really_drop  (BtkWidget *dialog, gint response_id, BtkFileSelection *fs)
 {
   gchar *filename;
   
-  if (response_id == GTK_RESPONSE_YES)
+  if (response_id == BTK_RESPONSE_YES)
     {
-      filename = g_object_get_data (G_OBJECT (dialog), "gtk-fs-dnd-filename");
+      filename = g_object_get_data (G_OBJECT (dialog), "btk-fs-dnd-filename");
 
-      gtk_file_selection_set_filename (fs, filename);
+      btk_file_selection_set_filename (fs, filename);
     }
   
-  gtk_widget_destroy (dialog);
+  btk_widget_destroy (dialog);
 }
 
 static void
-filenames_dropped (GtkWidget        *widget,
-		   GdkDragContext   *context,
+filenames_dropped (BtkWidget        *widget,
+		   BdkDragContext   *context,
 		   gint              x,
 		   gint              y,
-		   GtkSelectionData *selection_data,
+		   BtkSelectionData *selection_data,
 		   guint             info,
 		   guint             time)
 {
@@ -862,7 +862,7 @@ filenames_dropped (GtkWidget        *widget,
   const char *this_hostname;
   GError *error = NULL;
 
-  uris = gtk_selection_data_get_uris (selection_data);
+  uris = btk_selection_data_get_uris (selection_data);
   if (!uris || !uris[0])
     {
       g_strfreev (uris);
@@ -885,11 +885,11 @@ filenames_dropped (GtkWidget        *widget,
   if ((hostname == NULL) ||
       (strcmp (hostname, this_hostname) == 0) ||
       (strcmp (hostname, "localhost") == 0))
-    gtk_file_selection_set_filename (GTK_FILE_SELECTION (widget),
+    btk_file_selection_set_filename (BTK_FILE_SELECTION (widget),
 				     filename);
   else
     {
-      GtkWidget *dialog;
+      BtkWidget *dialog;
       gchar *filename_utf8;
 
       /* Conversion back to UTF-8 should always succeed for the result
@@ -898,21 +898,21 @@ filenames_dropped (GtkWidget        *widget,
       filename_utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
       g_assert (filename_utf8);
       
-      dialog = gtk_message_dialog_new (GTK_WINDOW (widget),
-				       GTK_DIALOG_DESTROY_WITH_PARENT,
-				       GTK_MESSAGE_QUESTION,
-				       GTK_BUTTONS_YES_NO,
+      dialog = btk_message_dialog_new (BTK_WINDOW (widget),
+				       BTK_DIALOG_DESTROY_WITH_PARENT,
+				       BTK_MESSAGE_QUESTION,
+				       BTK_BUTTONS_YES_NO,
 				       _("The file \"%s\" resides on another machine (called %s) and may not be available to this program.\n"
 					 "Are you sure that you want to select it?"), filename_utf8, hostname);
       g_free (filename_utf8);
 
-      g_object_set_data_full (G_OBJECT (dialog), I_("gtk-fs-dnd-filename"), g_strdup (filename), g_free);
+      g_object_set_data_full (G_OBJECT (dialog), I_("btk-fs-dnd-filename"), g_strdup (filename), g_free);
       
       g_signal_connect_data (dialog, "response",
 			     (GCallback) dnd_really_drop, 
 			     widget, NULL, 0);
       
-      gtk_widget_show (dialog);
+      btk_widget_show (dialog);
     }
 
   g_free (hostname);
@@ -920,21 +920,21 @@ filenames_dropped (GtkWidget        *widget,
 }
 
 static void
-filenames_drag_get (GtkWidget        *widget,
-		    GdkDragContext   *context,
-		    GtkSelectionData *selection_data,
+filenames_drag_get (BtkWidget        *widget,
+		    BdkDragContext   *context,
+		    BtkSelectionData *selection_data,
 		    guint             info,
 		    guint             time,
-		    GtkFileSelection *filesel)
+		    BtkFileSelection *filesel)
 {
   const gchar *file;
   gchar *filename_utf8;
 
-  file = gtk_file_selection_get_filename (filesel);
+  file = btk_file_selection_get_filename (filesel);
   if (!file)
     return;
 
-  if (gtk_targets_include_uri (&selection_data->target, 1))
+  if (btk_targets_include_uri (&selection_data->target, 1))
     {
       gchar *file_uri;
       const char *hostname;
@@ -955,7 +955,7 @@ filenames_drag_get (GtkWidget        *widget,
 	  
       uris[0] = file_uri;
       uris[1] = NULL;
-      gtk_selection_data_set_uris (selection_data, uris);
+      btk_selection_data_set_uris (selection_data, uris);
       g_free (file_uri);
 
       return;
@@ -965,114 +965,114 @@ filenames_drag_get (GtkWidget        *widget,
   if (!filename_utf8)
     return;
 
-  gtk_selection_data_set_text (selection_data, filename_utf8, -1);
+  btk_selection_data_set_text (selection_data, filename_utf8, -1);
   g_free (filename_utf8);
 }
 
 static void
-file_selection_setup_dnd (GtkFileSelection *filesel)
+file_selection_setup_dnd (BtkFileSelection *filesel)
 {
-  GtkWidget *eventbox;
+  BtkWidget *eventbox;
 
-  gtk_drag_dest_set (GTK_WIDGET (filesel),
-		     GTK_DEST_DEFAULT_ALL,
+  btk_drag_dest_set (BTK_WIDGET (filesel),
+		     BTK_DEST_DEFAULT_ALL,
 		     NULL, 0,
-		     GDK_ACTION_COPY);
-  gtk_drag_dest_add_uri_targets (GTK_WIDGET (filesel));
+		     BDK_ACTION_COPY);
+  btk_drag_dest_add_uri_targets (BTK_WIDGET (filesel));
 
   g_signal_connect (filesel, "drag-data-received",
 		    G_CALLBACK (filenames_dropped), NULL);
 
-  eventbox = gtk_widget_get_parent (filesel->selection_text);
-  gtk_drag_source_set (eventbox,
-		       GDK_BUTTON1_MASK,
+  eventbox = btk_widget_get_parent (filesel->selection_text);
+  btk_drag_source_set (eventbox,
+		       BDK_BUTTON1_MASK,
 		       NULL, 0,
-		       GDK_ACTION_COPY);
-  gtk_drag_source_add_uri_targets (eventbox);
-  gtk_drag_source_add_text_targets (eventbox);
+		       BDK_ACTION_COPY);
+  btk_drag_source_add_uri_targets (eventbox);
+  btk_drag_source_add_text_targets (eventbox);
 
   g_signal_connect (eventbox, "drag-data-get",
 		    G_CALLBACK (filenames_drag_get), filesel);
 }
 
-GtkWidget*
-gtk_file_selection_new (const gchar *title)
+BtkWidget*
+btk_file_selection_new (const gchar *title)
 {
-  GtkFileSelection *filesel;
+  BtkFileSelection *filesel;
 
-  filesel = g_object_new (GTK_TYPE_FILE_SELECTION, NULL);
-  gtk_window_set_title (GTK_WINDOW (filesel), title);
-  gtk_dialog_set_has_separator (GTK_DIALOG (filesel), FALSE);
+  filesel = g_object_new (BTK_TYPE_FILE_SELECTION, NULL);
+  btk_window_set_title (BTK_WINDOW (filesel), title);
+  btk_dialog_set_has_separator (BTK_DIALOG (filesel), FALSE);
 
   file_selection_setup_dnd (filesel);
   
-  return GTK_WIDGET (filesel);
+  return BTK_WIDGET (filesel);
 }
 
 void
-gtk_file_selection_show_fileop_buttons (GtkFileSelection *filesel)
+btk_file_selection_show_fileop_buttons (BtkFileSelection *filesel)
 {
-  g_return_if_fail (GTK_IS_FILE_SELECTION (filesel));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (filesel));
     
   /* delete, create directory, and rename */
   if (!filesel->fileop_c_dir) 
     {
-      filesel->fileop_c_dir = gtk_button_new_with_mnemonic (_("_New Folder"));
+      filesel->fileop_c_dir = btk_button_new_with_mnemonic (_("_New Folder"));
       g_signal_connect (filesel->fileop_c_dir, "clicked",
-			G_CALLBACK (gtk_file_selection_create_dir),
+			G_CALLBACK (btk_file_selection_create_dir),
 			filesel);
-      gtk_box_pack_start (GTK_BOX (filesel->button_area), 
+      btk_box_pack_start (BTK_BOX (filesel->button_area), 
 			  filesel->fileop_c_dir, TRUE, TRUE, 0);
-      gtk_widget_show (filesel->fileop_c_dir);
+      btk_widget_show (filesel->fileop_c_dir);
     }
 	
   if (!filesel->fileop_del_file) 
     {
-      filesel->fileop_del_file = gtk_button_new_with_mnemonic (_("De_lete File"));
+      filesel->fileop_del_file = btk_button_new_with_mnemonic (_("De_lete File"));
       g_signal_connect (filesel->fileop_del_file, "clicked",
-			G_CALLBACK (gtk_file_selection_delete_file),
+			G_CALLBACK (btk_file_selection_delete_file),
 			filesel);
-      gtk_box_pack_start (GTK_BOX (filesel->button_area), 
+      btk_box_pack_start (BTK_BOX (filesel->button_area), 
 			  filesel->fileop_del_file, TRUE, TRUE, 0);
-      gtk_widget_show (filesel->fileop_del_file);
+      btk_widget_show (filesel->fileop_del_file);
     }
 
   if (!filesel->fileop_ren_file)
     {
-      filesel->fileop_ren_file = gtk_button_new_with_mnemonic (_("_Rename File"));
+      filesel->fileop_ren_file = btk_button_new_with_mnemonic (_("_Rename File"));
       g_signal_connect (filesel->fileop_ren_file, "clicked",
-			G_CALLBACK (gtk_file_selection_rename_file),
+			G_CALLBACK (btk_file_selection_rename_file),
 			filesel);
-      gtk_box_pack_start (GTK_BOX (filesel->button_area), 
+      btk_box_pack_start (BTK_BOX (filesel->button_area), 
 			  filesel->fileop_ren_file, TRUE, TRUE, 0);
-      gtk_widget_show (filesel->fileop_ren_file);
+      btk_widget_show (filesel->fileop_ren_file);
     }
   
-  gtk_file_selection_update_fileops (filesel);
+  btk_file_selection_update_fileops (filesel);
   
   g_object_notify (G_OBJECT (filesel), "show-fileops");
 }
 
 void       
-gtk_file_selection_hide_fileop_buttons (GtkFileSelection *filesel)
+btk_file_selection_hide_fileop_buttons (BtkFileSelection *filesel)
 {
-  g_return_if_fail (GTK_IS_FILE_SELECTION (filesel));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (filesel));
     
   if (filesel->fileop_ren_file)
     {
-      gtk_widget_destroy (filesel->fileop_ren_file);
+      btk_widget_destroy (filesel->fileop_ren_file);
       filesel->fileop_ren_file = NULL;
     }
 
   if (filesel->fileop_del_file)
     {
-      gtk_widget_destroy (filesel->fileop_del_file);
+      btk_widget_destroy (filesel->fileop_del_file);
       filesel->fileop_del_file = NULL;
     }
 
   if (filesel->fileop_c_dir)
     {
-      gtk_widget_destroy (filesel->fileop_c_dir);
+      btk_widget_destroy (filesel->fileop_c_dir);
       filesel->fileop_c_dir = NULL;
     }
   g_object_notify (G_OBJECT (filesel), "show-fileops");
@@ -1081,8 +1081,8 @@ gtk_file_selection_hide_fileop_buttons (GtkFileSelection *filesel)
 
 
 /**
- * gtk_file_selection_set_filename:
- * @filesel: a #GtkFileSelection.
+ * btk_file_selection_set_filename:
+ * @filesel: a #BtkFileSelection.
  * @filename:  a string to set as the default file name.
  * 
  * Sets a default path for the file requestor. If @filename includes a
@@ -1097,14 +1097,14 @@ gtk_file_selection_hide_fileop_buttons (GtkFileSelection *filesel)
  * may not be UTF-8. See g_filename_from_utf8().
  **/
 void
-gtk_file_selection_set_filename (GtkFileSelection *filesel,
+btk_file_selection_set_filename (BtkFileSelection *filesel,
 				 const gchar      *filename)
 {
   gchar *buf;
   const char *name, *last_slash;
   char *filename_utf8;
 
-  g_return_if_fail (GTK_IS_FILE_SELECTION (filesel));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (filesel));
   g_return_if_fail (filename != NULL);
 
   filename_utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
@@ -1124,10 +1124,10 @@ gtk_file_selection_set_filename (GtkFileSelection *filesel,
       name = last_slash + 1;
     }
 
-  gtk_file_selection_populate (filesel, buf, FALSE, TRUE);
+  btk_file_selection_populate (filesel, buf, FALSE, TRUE);
 
   if (filesel->selection_entry)
-    gtk_entry_set_text (GTK_ENTRY (filesel->selection_entry), name);
+    btk_entry_set_text (BTK_ENTRY (filesel->selection_entry), name);
   g_free (buf);
   g_object_notify (G_OBJECT (filesel), "filename");
 
@@ -1135,8 +1135,8 @@ gtk_file_selection_set_filename (GtkFileSelection *filesel,
 }
 
 /**
- * gtk_file_selection_get_filename:
- * @filesel: a #GtkFileSelection
+ * btk_file_selection_get_filename:
+ * @filesel: a #BtkFileSelection
  * 
  * This function returns the selected filename in the GLib file name
  * encoding. To convert to UTF-8, call g_filename_to_utf8(). The
@@ -1148,19 +1148,19 @@ gtk_file_selection_set_filename (GtkFileSelection *filesel,
  * Return value: currently-selected filename in the on-disk encoding.
  **/
 const gchar*
-gtk_file_selection_get_filename (GtkFileSelection *filesel)
+btk_file_selection_get_filename (BtkFileSelection *filesel)
 {
   static const gchar nothing[2] = "";
   static GString *something;
   char *sys_filename;
   const char *text;
 
-  g_return_val_if_fail (GTK_IS_FILE_SELECTION (filesel), nothing);
+  g_return_val_if_fail (BTK_IS_FILE_SELECTION (filesel), nothing);
 
 #ifdef G_WITH_CYGWIN
   translate_win32_path (filesel);
 #endif
-  text = gtk_entry_get_text (GTK_ENTRY (filesel->selection_entry));
+  text = btk_entry_get_text (BTK_ENTRY (filesel->selection_entry));
   if (text)
     {
       gchar *fullname = cmpl_completion_fullname (text, filesel->cmpl_state);
@@ -1181,31 +1181,31 @@ gtk_file_selection_get_filename (GtkFileSelection *filesel)
 }
 
 void
-gtk_file_selection_complete (GtkFileSelection *filesel,
+btk_file_selection_complete (BtkFileSelection *filesel,
 			     const gchar      *pattern)
 {
-  g_return_if_fail (GTK_IS_FILE_SELECTION (filesel));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (filesel));
   g_return_if_fail (pattern != NULL);
 
   if (filesel->selection_entry)
-    gtk_entry_set_text (GTK_ENTRY (filesel->selection_entry), pattern);
-  gtk_file_selection_populate (filesel, (gchar*) pattern, TRUE, TRUE);
+    btk_entry_set_text (BTK_ENTRY (filesel->selection_entry), pattern);
+  btk_file_selection_populate (filesel, (gchar*) pattern, TRUE, TRUE);
 }
 
 static void
-gtk_file_selection_destroy (GtkObject *object)
+btk_file_selection_destroy (BtkObject *object)
 {
-  GtkFileSelection *filesel;
+  BtkFileSelection *filesel;
   GList *list;
   HistoryCallbackArg *callback_arg;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (object));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (object));
   
-  filesel = GTK_FILE_SELECTION (object);
+  filesel = BTK_FILE_SELECTION (object);
   
   if (filesel->fileop_dialog)
     {
-      gtk_widget_destroy (filesel->fileop_dialog);
+      btk_widget_destroy (filesel->fileop_dialog);
       filesel->fileop_dialog = NULL;
     }
   
@@ -1241,90 +1241,90 @@ gtk_file_selection_destroy (GtkObject *object)
       filesel->last_selected = NULL;
     }
 
-  GTK_OBJECT_CLASS (gtk_file_selection_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_file_selection_parent_class)->destroy (object);
 }
 
 static void
-gtk_file_selection_map (GtkWidget *widget)
+btk_file_selection_map (BtkWidget *widget)
 {
-  GtkFileSelection *filesel = GTK_FILE_SELECTION (widget);
+  BtkFileSelection *filesel = BTK_FILE_SELECTION (widget);
 
   /* Refresh the contents */
-  gtk_file_selection_populate (filesel, "", FALSE, FALSE);
+  btk_file_selection_populate (filesel, "", FALSE, FALSE);
   
-  GTK_WIDGET_CLASS (gtk_file_selection_parent_class)->map (widget);
+  BTK_WIDGET_CLASS (btk_file_selection_parent_class)->map (widget);
 }
 
 static void
-gtk_file_selection_finalize (GObject *object)
+btk_file_selection_finalize (GObject *object)
 {
-  GtkFileSelection *filesel = GTK_FILE_SELECTION (object);
+  BtkFileSelection *filesel = BTK_FILE_SELECTION (object);
 
   g_free (filesel->fileop_file);
 
-  G_OBJECT_CLASS (gtk_file_selection_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_file_selection_parent_class)->finalize (object);
 }
 
 /* Begin file operations callbacks */
 
 static void
-gtk_file_selection_fileop_error (GtkFileSelection *fs,
+btk_file_selection_fileop_error (BtkFileSelection *fs,
 				 gchar            *error_message)
 {
-  GtkWidget *dialog;
+  BtkWidget *dialog;
     
   g_return_if_fail (error_message != NULL);
 
   /* main dialog */
-  dialog = gtk_message_dialog_new (GTK_WINDOW (fs),
-				   GTK_DIALOG_DESTROY_WITH_PARENT,
-				   GTK_MESSAGE_ERROR,
-				   GTK_BUTTONS_OK,
+  dialog = btk_message_dialog_new (BTK_WINDOW (fs),
+				   BTK_DIALOG_DESTROY_WITH_PARENT,
+				   BTK_MESSAGE_ERROR,
+				   BTK_BUTTONS_OK,
 				   "%s", error_message);
 
   /* yes, we free it */
   g_free (error_message);
 
-  gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+  btk_window_set_modal (BTK_WINDOW (dialog), TRUE);
  
   g_signal_connect_swapped (dialog, "response",
-			    G_CALLBACK (gtk_widget_destroy),
+			    G_CALLBACK (btk_widget_destroy),
 			    dialog);
 
-  gtk_widget_show (dialog);
+  btk_widget_show (dialog);
 }
 
 static void
-gtk_file_selection_fileop_destroy (GtkWidget *widget,
+btk_file_selection_fileop_destroy (BtkWidget *widget,
 				   gpointer   data)
 {
-  GtkFileSelection *fs = data;
+  BtkFileSelection *fs = data;
 
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
   
   fs->fileop_dialog = NULL;
 }
 
 static gboolean
-entry_is_empty (GtkEntry *entry)
+entry_is_empty (BtkEntry *entry)
 {
-  const gchar *text = gtk_entry_get_text (entry);
+  const gchar *text = btk_entry_get_text (entry);
   
   return *text == '\0';
 }
 
 static void
-gtk_file_selection_fileop_entry_changed (GtkEntry   *entry,
-					 GtkWidget  *button)
+btk_file_selection_fileop_entry_changed (BtkEntry   *entry,
+					 BtkWidget  *button)
 {
-  gtk_widget_set_sensitive (button, !entry_is_empty (entry));
+  btk_widget_set_sensitive (button, !entry_is_empty (entry));
 }
 
 static void
-gtk_file_selection_create_dir_confirmed (GtkWidget *widget,
+btk_file_selection_create_dir_confirmed (BtkWidget *widget,
 					 gpointer   data)
 {
-  GtkFileSelection *fs = data;
+  BtkFileSelection *fs = data;
   const gchar *dirname;
   gchar *path;
   gchar *full_path;
@@ -1333,9 +1333,9 @@ gtk_file_selection_create_dir_confirmed (GtkWidget *widget,
   GError *error = NULL;
   CompletionState *cmpl_state;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
-  dirname = gtk_entry_get_text (GTK_ENTRY (fs->fileop_entry));
+  dirname = btk_entry_get_text (BTK_ENTRY (fs->fileop_entry));
   cmpl_state = (CompletionState*) fs->cmpl_state;
   path = cmpl_reference_position (cmpl_state);
   
@@ -1348,7 +1348,7 @@ gtk_file_selection_create_dir_confirmed (GtkWidget *widget,
       else
 	buf = g_strdup_printf (_("Error creating folder '%s': %s"), 
 			       dirname, error->message);
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
       g_error_free (error);
       goto out;
     }
@@ -1359,97 +1359,97 @@ gtk_file_selection_create_dir_confirmed (GtkWidget *widget,
 
       buf = g_strdup_printf (_("Error creating folder '%s': %s"), 
 			     dirname, g_strerror (errsv));
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
     }
 
  out:
   g_free (full_path);
   g_free (sys_full_path);
   
-  gtk_widget_destroy (fs->fileop_dialog);
-  gtk_file_selection_populate (fs, "", FALSE, FALSE);
+  btk_widget_destroy (fs->fileop_dialog);
+  btk_file_selection_populate (fs, "", FALSE, FALSE);
 }
   
 static void
-gtk_file_selection_create_dir (GtkWidget *widget,
+btk_file_selection_create_dir (BtkWidget *widget,
 			       gpointer   data)
 {
-  GtkFileSelection *fs = data;
-  GtkWidget *label;
-  GtkWidget *dialog;
-  GtkWidget *vbox;
-  GtkWidget *button;
+  BtkFileSelection *fs = data;
+  BtkWidget *label;
+  BtkWidget *dialog;
+  BtkWidget *vbox;
+  BtkWidget *button;
 
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
   if (fs->fileop_dialog)
     return;
   
   /* main dialog */
-  dialog = gtk_dialog_new ();
+  dialog = btk_dialog_new ();
   fs->fileop_dialog = dialog;
   g_signal_connect (dialog, "destroy",
-		    G_CALLBACK (gtk_file_selection_fileop_destroy),
+		    G_CALLBACK (btk_file_selection_fileop_destroy),
 		    fs);
-  gtk_window_set_title (GTK_WINDOW (dialog), _("New Folder"));
-  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-  gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (fs));
+  btk_window_set_title (BTK_WINDOW (dialog), _("New Folder"));
+  btk_window_set_position (BTK_WINDOW (dialog), BTK_WIN_POS_MOUSE);
+  btk_window_set_transient_for (BTK_WINDOW (dialog), BTK_WINDOW (fs));
 
   /* If file dialog is grabbed, grab option dialog */
   /* When option dialog is closed, file dialog will be grabbed again */
-  if (GTK_WINDOW (fs)->modal)
-      gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+  if (BTK_WINDOW (fs)->modal)
+      btk_window_set_modal (BTK_WINDOW (dialog), TRUE);
 
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox,
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_set_border_width (BTK_CONTAINER (vbox), 8);
+  btk_box_pack_start (BTK_BOX (BTK_DIALOG (dialog)->vbox), vbox,
 		     FALSE, FALSE, 0);
-  gtk_widget_show( vbox);
+  btk_widget_show( vbox);
   
-  label = gtk_label_new_with_mnemonic (_("_Folder name:"));
-  gtk_misc_set_alignment(GTK_MISC (label), 0.0, 0.0);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 5);
-  gtk_widget_show (label);
+  label = btk_label_new_with_mnemonic (_("_Folder name:"));
+  btk_misc_set_alignment(BTK_MISC (label), 0.0, 0.0);
+  btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 5);
+  btk_widget_show (label);
 
   /*  The directory entry widget  */
-  fs->fileop_entry = gtk_entry_new ();
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), fs->fileop_entry);
-  gtk_box_pack_start (GTK_BOX (vbox), fs->fileop_entry, 
+  fs->fileop_entry = btk_entry_new ();
+  btk_label_set_mnemonic_widget (BTK_LABEL (label), fs->fileop_entry);
+  btk_box_pack_start (BTK_BOX (vbox), fs->fileop_entry, 
 		      TRUE, TRUE, 5);
-  gtk_widget_set_can_default (fs->fileop_entry, TRUE);
-  gtk_entry_set_activates_default (GTK_ENTRY (fs->fileop_entry), TRUE); 
-  gtk_widget_show (fs->fileop_entry);
+  btk_widget_set_can_default (fs->fileop_entry, TRUE);
+  btk_entry_set_activates_default (BTK_ENTRY (fs->fileop_entry), TRUE); 
+  btk_widget_show (fs->fileop_entry);
   
   /* buttons */
-  button = gtk_dialog_add_button (GTK_DIALOG (dialog), 
-				  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL);
+  button = btk_dialog_add_button (BTK_DIALOG (dialog), 
+				  BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL);
   g_signal_connect_swapped (button, "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
+			    G_CALLBACK (btk_widget_destroy),
 			    dialog);
 
-  gtk_widget_grab_focus (fs->fileop_entry);
+  btk_widget_grab_focus (fs->fileop_entry);
 
-  button = gtk_dialog_add_button (GTK_DIALOG (dialog), 
-				  _("C_reate"), GTK_RESPONSE_OK);
-  gtk_widget_set_sensitive (button, FALSE);
+  button = btk_dialog_add_button (BTK_DIALOG (dialog), 
+				  _("C_reate"), BTK_RESPONSE_OK);
+  btk_widget_set_sensitive (button, FALSE);
   g_signal_connect (button, "clicked",
-		    G_CALLBACK (gtk_file_selection_create_dir_confirmed),
+		    G_CALLBACK (btk_file_selection_create_dir_confirmed),
 		    fs);
   g_signal_connect (fs->fileop_entry, "changed",
-                    G_CALLBACK (gtk_file_selection_fileop_entry_changed),
+                    G_CALLBACK (btk_file_selection_fileop_entry_changed),
 		    button);
 
-  gtk_widget_grab_default (button);
+  btk_widget_grab_default (button);
   
-  gtk_widget_show (dialog);
+  btk_widget_show (dialog);
 }
 
 static void
-gtk_file_selection_delete_file_response (GtkDialog *dialog, 
+btk_file_selection_delete_file_response (BtkDialog *dialog, 
                                          gint       response_id,
                                          gpointer   data)
 {
-  GtkFileSelection *fs = data;
+  BtkFileSelection *fs = data;
   CompletionState *cmpl_state;
   gchar *path;
   gchar *full_path;
@@ -1457,11 +1457,11 @@ gtk_file_selection_delete_file_response (GtkDialog *dialog,
   GError *error = NULL;
   gchar *buf;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
-  if (response_id != GTK_RESPONSE_OK)
+  if (response_id != BTK_RESPONSE_OK)
     {
-      gtk_widget_destroy (GTK_WIDGET (dialog));
+      btk_widget_destroy (BTK_WIDGET (dialog));
       return;
     }
 
@@ -1479,7 +1479,7 @@ gtk_file_selection_delete_file_response (GtkDialog *dialog,
 	buf = g_strdup_printf (_("Error deleting file '%s': %s"),
 			       fs->fileop_file, error->message);
       
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
       g_error_free (error);
       goto out;
     }
@@ -1490,26 +1490,26 @@ gtk_file_selection_delete_file_response (GtkDialog *dialog,
 
       buf = g_strdup_printf (_("Error deleting file '%s': %s"),
 			     fs->fileop_file, g_strerror (errsv));
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
     }
   
  out:
   g_free (full_path);
   g_free (sys_full_path);
   
-  gtk_widget_destroy (fs->fileop_dialog);
-  gtk_file_selection_populate (fs, "", FALSE, TRUE);
+  btk_widget_destroy (fs->fileop_dialog);
+  btk_file_selection_populate (fs, "", FALSE, TRUE);
 }
 
 static void
-gtk_file_selection_delete_file (GtkWidget *widget,
+btk_file_selection_delete_file (BtkWidget *widget,
 				gpointer   data)
 {
-  GtkFileSelection *fs = data;
-  GtkWidget *dialog;
+  BtkFileSelection *fs = data;
+  BtkWidget *dialog;
   const gchar *filename;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
   if (fs->fileop_dialog)
     return;
@@ -1518,7 +1518,7 @@ gtk_file_selection_delete_file (GtkWidget *widget,
   translate_win32_path (fs);
 #endif
 
-  filename = gtk_entry_get_text (GTK_ENTRY (fs->selection_entry));
+  filename = btk_entry_get_text (BTK_ENTRY (fs->selection_entry));
   if (strlen (filename) < 1)
     return;
 
@@ -1527,38 +1527,38 @@ gtk_file_selection_delete_file (GtkWidget *widget,
   
   /* main dialog */
   fs->fileop_dialog = dialog = 
-    gtk_message_dialog_new (GTK_WINDOW (fs),
-                            GTK_WINDOW (fs)->modal ? GTK_DIALOG_MODAL : 0,
-                            GTK_MESSAGE_QUESTION,
-                            GTK_BUTTONS_NONE,
+    btk_message_dialog_new (BTK_WINDOW (fs),
+                            BTK_WINDOW (fs)->modal ? BTK_DIALOG_MODAL : 0,
+                            BTK_MESSAGE_QUESTION,
+                            BTK_BUTTONS_NONE,
                             _("Really delete file \"%s\"?"), filename);
 
   g_signal_connect (dialog, "destroy",
-		    G_CALLBACK (gtk_file_selection_fileop_destroy),
+		    G_CALLBACK (btk_file_selection_fileop_destroy),
 		    fs);
-  gtk_window_set_title (GTK_WINDOW (dialog), _("Delete File"));
-  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+  btk_window_set_title (BTK_WINDOW (dialog), _("Delete File"));
+  btk_window_set_position (BTK_WINDOW (dialog), BTK_WIN_POS_MOUSE);
   
   /* buttons */
-  gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                          GTK_STOCK_DELETE, GTK_RESPONSE_OK,
+  btk_dialog_add_buttons (BTK_DIALOG (dialog),
+                          BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL,
+                          BTK_STOCK_DELETE, BTK_RESPONSE_OK,
                           NULL);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+  btk_dialog_set_default_response (BTK_DIALOG (dialog), BTK_RESPONSE_CANCEL);
 
   g_signal_connect (dialog, "response",
-                    G_CALLBACK (gtk_file_selection_delete_file_response),
+                    G_CALLBACK (btk_file_selection_delete_file_response),
                     fs);
   
-  gtk_widget_show (dialog);
+  btk_widget_show (dialog);
 }
 
 static void
-gtk_file_selection_rename_file_confirmed (GtkWidget *widget,
+btk_file_selection_rename_file_confirmed (BtkWidget *widget,
 					  gpointer   data)
 {
-  GtkFileSelection *fs = data;
+  BtkFileSelection *fs = data;
   gchar *buf;
   const gchar *file;
   gchar *path;
@@ -1569,9 +1569,9 @@ gtk_file_selection_rename_file_confirmed (GtkWidget *widget,
   CompletionState *cmpl_state;
   GError *error = NULL;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
-  file = gtk_entry_get_text (GTK_ENTRY (fs->fileop_entry));
+  file = btk_entry_get_text (BTK_ENTRY (fs->fileop_entry));
   cmpl_state = (CompletionState*) fs->cmpl_state;
   path = cmpl_reference_position (cmpl_state);
   
@@ -1586,7 +1586,7 @@ gtk_file_selection_rename_file_confirmed (GtkWidget *widget,
       else
 	buf = g_strdup_printf (_("Error renaming file to \"%s\": %s"),
 			       new_filename, error->message);
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
       g_error_free (error);
       goto out1;
     }
@@ -1599,7 +1599,7 @@ gtk_file_selection_rename_file_confirmed (GtkWidget *widget,
       else
 	buf = g_strdup_printf (_("Error renaming file \"%s\": %s"),
 			       old_filename, error->message);
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
       g_error_free (error);
       goto out2;
     }
@@ -1611,12 +1611,12 @@ gtk_file_selection_rename_file_confirmed (GtkWidget *widget,
       buf = g_strdup_printf (_("Error renaming file \"%s\" to \"%s\": %s"),
 			     sys_old_filename, sys_new_filename,
 			     g_strerror (errsv));
-      gtk_file_selection_fileop_error (fs, buf);
+      btk_file_selection_fileop_error (fs, buf);
       goto out2;
     }
   
-  gtk_file_selection_populate (fs, "", FALSE, FALSE);
-  gtk_entry_set_text (GTK_ENTRY (fs->selection_entry), file);
+  btk_file_selection_populate (fs, "", FALSE, FALSE);
+  btk_entry_set_text (BTK_ENTRY (fs->selection_entry), file);
   
  out2:
   g_free (sys_old_filename);
@@ -1626,94 +1626,94 @@ gtk_file_selection_rename_file_confirmed (GtkWidget *widget,
   g_free (old_filename);
   g_free (sys_new_filename);
   
-  gtk_widget_destroy (fs->fileop_dialog);
+  btk_widget_destroy (fs->fileop_dialog);
 }
   
 static void
-gtk_file_selection_rename_file (GtkWidget *widget,
+btk_file_selection_rename_file (BtkWidget *widget,
 				gpointer   data)
 {
-  GtkFileSelection *fs = data;
-  GtkWidget *label;
-  GtkWidget *dialog;
-  GtkWidget *vbox;
-  GtkWidget *button;
+  BtkFileSelection *fs = data;
+  BtkWidget *label;
+  BtkWidget *dialog;
+  BtkWidget *vbox;
+  BtkWidget *button;
   gchar *buf;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
   if (fs->fileop_dialog)
 	  return;
 
   g_free (fs->fileop_file);
-  fs->fileop_file = g_strdup (gtk_entry_get_text (GTK_ENTRY (fs->selection_entry)));
+  fs->fileop_file = g_strdup (btk_entry_get_text (BTK_ENTRY (fs->selection_entry)));
   if (strlen (fs->fileop_file) < 1)
     return;
   
   /* main dialog */
-  fs->fileop_dialog = dialog = gtk_dialog_new ();
+  fs->fileop_dialog = dialog = btk_dialog_new ();
   g_signal_connect (dialog, "destroy",
-		    G_CALLBACK (gtk_file_selection_fileop_destroy),
+		    G_CALLBACK (btk_file_selection_fileop_destroy),
 		    fs);
-  gtk_window_set_title (GTK_WINDOW (dialog), _("Rename File"));
-  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-  gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (fs));
+  btk_window_set_title (BTK_WINDOW (dialog), _("Rename File"));
+  btk_window_set_position (BTK_WINDOW (dialog), BTK_WIN_POS_MOUSE);
+  btk_window_set_transient_for (BTK_WINDOW (dialog), BTK_WINDOW (fs));
 
   /* If file dialog is grabbed, grab option dialog */
   /* When option dialog  closed, file dialog will be grabbed again */
-  if (GTK_WINDOW (fs)->modal)
-    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+  if (BTK_WINDOW (fs)->modal)
+    btk_window_set_modal (BTK_WINDOW (dialog), TRUE);
   
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), vbox,
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_set_border_width (BTK_CONTAINER (vbox), 8);
+  btk_box_pack_start (BTK_BOX (BTK_DIALOG (dialog)->vbox), vbox,
 		      FALSE, FALSE, 0);
-  gtk_widget_show(vbox);
+  btk_widget_show(vbox);
   
   buf = g_strdup_printf (_("Rename file \"%s\" to:"), fs->fileop_file);
-  label = gtk_label_new (buf);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 5);
-  gtk_widget_show (label);
+  label = btk_label_new (buf);
+  btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.0);
+  btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 5);
+  btk_widget_show (label);
   g_free (buf);
 
   /* New filename entry */
-  fs->fileop_entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), fs->fileop_entry, 
+  fs->fileop_entry = btk_entry_new ();
+  btk_box_pack_start (BTK_BOX (vbox), fs->fileop_entry, 
 		      TRUE, TRUE, 5);
-  gtk_widget_set_can_default (fs->fileop_entry, TRUE);
-  gtk_entry_set_activates_default (GTK_ENTRY (fs->fileop_entry), TRUE); 
-  gtk_widget_show (fs->fileop_entry);
+  btk_widget_set_can_default (fs->fileop_entry, TRUE);
+  btk_entry_set_activates_default (BTK_ENTRY (fs->fileop_entry), TRUE); 
+  btk_widget_show (fs->fileop_entry);
   
-  gtk_entry_set_text (GTK_ENTRY (fs->fileop_entry), fs->fileop_file);
-  gtk_editable_select_region (GTK_EDITABLE (fs->fileop_entry),
+  btk_entry_set_text (BTK_ENTRY (fs->fileop_entry), fs->fileop_file);
+  btk_editable_select_rebunnyion (BTK_EDITABLE (fs->fileop_entry),
 			      0, strlen (fs->fileop_file));
 
   /* buttons */
-  button = gtk_dialog_add_button (GTK_DIALOG (dialog), 
-				  GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL);
+  button = btk_dialog_add_button (BTK_DIALOG (dialog), 
+				  BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL);
   g_signal_connect_swapped (button, "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
+			    G_CALLBACK (btk_widget_destroy),
 			    dialog);
 
-  gtk_widget_grab_focus (fs->fileop_entry);
+  btk_widget_grab_focus (fs->fileop_entry);
 
-  button = gtk_dialog_add_button (GTK_DIALOG (dialog), 
-				  _("_Rename"), GTK_RESPONSE_OK);
+  button = btk_dialog_add_button (BTK_DIALOG (dialog), 
+				  _("_Rename"), BTK_RESPONSE_OK);
   g_signal_connect (button, "clicked",
-		    G_CALLBACK (gtk_file_selection_rename_file_confirmed),
+		    G_CALLBACK (btk_file_selection_rename_file_confirmed),
 		    fs);
   g_signal_connect (fs->fileop_entry, "changed",
-		    G_CALLBACK (gtk_file_selection_fileop_entry_changed),
+		    G_CALLBACK (btk_file_selection_fileop_entry_changed),
 		    button);
 
-  gtk_widget_grab_default (button);
+  btk_widget_grab_default (button);
   
-  gtk_widget_show (dialog);
+  btk_widget_show (dialog);
 }
 
 static gint
-gtk_file_selection_insert_text (GtkWidget   *widget,
+btk_file_selection_insert_text (BtkWidget   *widget,
 				const gchar *new_text,
 				gint         new_text_length,
 				gint        *position,
@@ -1725,7 +1725,7 @@ gtk_file_selection_insert_text (GtkWidget   *widget,
 
   if (!filename)
     {
-      gdk_display_beep (gtk_widget_get_display (widget));
+      bdk_display_beep (btk_widget_get_display (widget));
       g_signal_stop_emission_by_name (widget, "insert-text");
       return FALSE;
     }
@@ -1736,43 +1736,43 @@ gtk_file_selection_insert_text (GtkWidget   *widget,
 }
 
 static void
-gtk_file_selection_update_fileops (GtkFileSelection *fs)
+btk_file_selection_update_fileops (BtkFileSelection *fs)
 {
   gboolean sensitive;
 
   if (!fs->selection_entry)
     return;
 
-  sensitive = !entry_is_empty (GTK_ENTRY (fs->selection_entry));
+  sensitive = !entry_is_empty (BTK_ENTRY (fs->selection_entry));
 
   if (fs->fileop_del_file)
-    gtk_widget_set_sensitive (fs->fileop_del_file, sensitive);
+    btk_widget_set_sensitive (fs->fileop_del_file, sensitive);
   
   if (fs->fileop_ren_file)
-    gtk_widget_set_sensitive (fs->fileop_ren_file, sensitive);
+    btk_widget_set_sensitive (fs->fileop_ren_file, sensitive);
 }
 
 static gint
-gtk_file_selection_key_press (GtkWidget   *widget,
-			      GdkEventKey *event,
+btk_file_selection_key_press (BtkWidget   *widget,
+			      BdkEventKey *event,
 			      gpointer     user_data)
 {
-  GtkFileSelection *fs;
+  BtkFileSelection *fs;
   char *text;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  if ((event->keyval == GDK_Tab || event->keyval == GDK_KP_Tab) &&
-      (event->state & gtk_accelerator_get_default_mod_mask ()) == 0)
+  if ((event->keyval == BDK_Tab || event->keyval == BDK_KP_Tab) &&
+      (event->state & btk_accelerator_get_default_mod_mask ()) == 0)
     {
-      fs = GTK_FILE_SELECTION (user_data);
+      fs = BTK_FILE_SELECTION (user_data);
 #ifdef G_WITH_CYGWIN
       translate_win32_path (fs);
 #endif
-      text = g_strdup (gtk_entry_get_text (GTK_ENTRY (fs->selection_entry)));
+      text = g_strdup (btk_entry_get_text (BTK_ENTRY (fs->selection_entry)));
 
-      gtk_file_selection_populate (fs, text, TRUE, TRUE);
+      btk_file_selection_populate (fs, text, TRUE, TRUE);
 
       g_free (text);
 
@@ -1783,14 +1783,14 @@ gtk_file_selection_key_press (GtkWidget   *widget,
 }
 
 static void
-gtk_file_selection_history_callback (GtkWidget *widget,
+btk_file_selection_history_callback (BtkWidget *widget,
 				     gpointer   data)
 {
-  GtkFileSelection *fs = data;
+  BtkFileSelection *fs = data;
   HistoryCallbackArg *callback_arg;
   GList *list;
 
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
   list = fs->history_list;
   
@@ -1799,7 +1799,7 @@ gtk_file_selection_history_callback (GtkWidget *widget,
     
     if (callback_arg->menu_item == widget)
       {
-	gtk_file_selection_populate (fs, callback_arg->directory, FALSE, FALSE);
+	btk_file_selection_populate (fs, callback_arg->directory, FALSE, FALSE);
 	break;
       }
     
@@ -1808,17 +1808,17 @@ gtk_file_selection_history_callback (GtkWidget *widget,
 }
 
 static void 
-gtk_file_selection_update_history_menu (GtkFileSelection *fs,
+btk_file_selection_update_history_menu (BtkFileSelection *fs,
 					gchar            *current_directory)
 {
   HistoryCallbackArg *callback_arg;
-  GtkWidget *menu_item;
+  BtkWidget *menu_item;
   GList *list;
   gchar *current_dir;
   gint dir_len;
   gint i;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
   g_return_if_fail (current_directory != NULL);
   
   list = fs->history_list;
@@ -1834,10 +1834,10 @@ gtk_file_selection_update_history_menu (GtkFileSelection *fs,
       g_list_free (fs->history_list);
       fs->history_list = NULL;
       
-      gtk_widget_destroy (fs->history_menu);
+      btk_widget_destroy (fs->history_menu);
     }
   
-  fs->history_menu = gtk_menu_new ();
+  fs->history_menu = btk_menu_new ();
 
   current_dir = g_strdup (current_directory);
 
@@ -1856,7 +1856,7 @@ gtk_file_selection_update_history_menu (GtkFileSelection *fs,
 	  if (!strcmp (current_dir, "//"))
 	    continue;
 #endif
-	  menu_item = gtk_menu_item_new_with_label (current_dir);
+	  menu_item = btk_menu_item_new_with_label (current_dir);
 	  
 	  callback_arg = g_new (HistoryCallbackArg, 1);
 	  callback_arg->menu_item = menu_item;
@@ -1876,14 +1876,14 @@ gtk_file_selection_update_history_menu (GtkFileSelection *fs,
 	  fs->history_list = g_list_append (fs->history_list, callback_arg);
 	  
 	  g_signal_connect (menu_item, "activate",
-			    G_CALLBACK (gtk_file_selection_history_callback),
+			    G_CALLBACK (btk_file_selection_history_callback),
 			    fs);
-	  gtk_menu_shell_append (GTK_MENU_SHELL (fs->history_menu), menu_item);
-	  gtk_widget_show (menu_item);
+	  btk_menu_shell_append (BTK_MENU_SHELL (fs->history_menu), menu_item);
+	  btk_widget_show (menu_item);
 	}
     }
 
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (fs->history_pulldown), 
+  btk_option_menu_set_menu (BTK_OPTION_MENU (fs->history_pulldown), 
 			    fs->history_menu);
   g_free (current_dir);
 }
@@ -1919,52 +1919,52 @@ get_real_filename (gchar    *filename,
 }
 
 static void
-gtk_file_selection_file_activate (GtkTreeView       *tree_view,
-				  GtkTreePath       *path,
-				  GtkTreeViewColumn *column,
+btk_file_selection_file_activate (BtkTreeView       *tree_view,
+				  BtkTreePath       *path,
+				  BtkTreeViewColumn *column,
 				  gpointer           user_data)
 {
-  GtkFileSelection *fs = GTK_FILE_SELECTION (user_data);
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
-  GtkTreeIter iter;  
+  BtkFileSelection *fs = BTK_FILE_SELECTION (user_data);
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
+  BtkTreeIter iter;  
   gchar *filename;
   
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, FILE_COLUMN, &filename, -1);
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_tree_model_get (model, &iter, FILE_COLUMN, &filename, -1);
   filename = get_real_filename (filename, TRUE);
-  gtk_entry_set_text (GTK_ENTRY (fs->selection_entry), filename);
-  gtk_button_clicked (GTK_BUTTON (fs->ok_button));
+  btk_entry_set_text (BTK_ENTRY (fs->selection_entry), filename);
+  btk_button_clicked (BTK_BUTTON (fs->ok_button));
 
   g_free (filename);
 }
 
 static void
-gtk_file_selection_dir_activate (GtkTreeView       *tree_view,
-				 GtkTreePath       *path,
-				 GtkTreeViewColumn *column,
+btk_file_selection_dir_activate (BtkTreeView       *tree_view,
+				 BtkTreePath       *path,
+				 BtkTreeViewColumn *column,
 				 gpointer           user_data)
 {
-  GtkFileSelection *fs = GTK_FILE_SELECTION (user_data);
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
-  GtkTreeIter iter;
+  BtkFileSelection *fs = BTK_FILE_SELECTION (user_data);
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
+  BtkTreeIter iter;
   gchar *filename;
 
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, DIR_COLUMN, &filename, -1);
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_tree_model_get (model, &iter, DIR_COLUMN, &filename, -1);
   filename = get_real_filename (filename, TRUE);
-  gtk_file_selection_populate (fs, filename, FALSE, FALSE);
+  btk_file_selection_populate (fs, filename, FALSE, FALSE);
   g_free (filename);
 }
 
 #ifdef G_PLATFORM_WIN32
 
 static void
-win32_gtk_add_drives_to_dir_list (GtkListStore *model)
+win32_btk_add_drives_to_dir_list (BtkListStore *model)
 {
   gchar *textPtr;
   gchar buffer[128];
   char formatBuffer[128];
-  GtkTreeIter iter;
+  BtkTreeIter iter;
 
   /* Get the drives string */
   GetLogicalDriveStrings (sizeof (buffer), buffer);
@@ -1980,8 +1980,8 @@ win32_gtk_add_drives_to_dir_list (GtkListStore *model)
 	  g_snprintf (formatBuffer, sizeof (formatBuffer), "%c:\\", toupper (textPtr[0]));
 
 	  /* Add to the list */
-	  gtk_list_store_append (model, &iter);
-	  gtk_list_store_set (model, &iter, DIR_COLUMN, formatBuffer, -1);
+	  btk_list_store_append (model, &iter);
+	  btk_list_store_set (model, &iter, DIR_COLUMN, formatBuffer, -1);
 	}
       textPtr += (strlen (textPtr) + 1);
     }
@@ -2005,23 +2005,23 @@ escape_underscores (const gchar *str)
 }
 
 static void
-gtk_file_selection_populate (GtkFileSelection *fs,
+btk_file_selection_populate (BtkFileSelection *fs,
 			     gchar            *rel_path,
 			     gboolean          try_complete,
 			     gboolean          reset_entry)
 {
   CompletionState *cmpl_state;
   PossibleCompletion* poss;
-  GtkTreeIter iter;
-  GtkListStore *dir_model;
-  GtkListStore *file_model;
+  BtkTreeIter iter;
+  BtkListStore *dir_model;
+  BtkListStore *file_model;
   gchar* filename;
   gchar* rem_path = rel_path;
   gchar* sel_text;
   gint did_recurse = FALSE;
   gint possible_count = 0;
   
-  g_return_if_fail (GTK_IS_FILE_SELECTION (fs));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (fs));
 
   cmpl_state = (CompletionState*) fs->cmpl_state;
   poss = cmpl_completion_matches (rel_path, &rem_path, cmpl_state);
@@ -2029,23 +2029,23 @@ gtk_file_selection_populate (GtkFileSelection *fs,
   if (!cmpl_state_okay (cmpl_state))
     {
       /* Something went wrong. */
-      gtk_file_selection_abort (fs);
+      btk_file_selection_abort (fs);
       return;
     }
 
   g_assert (cmpl_state->reference_dir);
 
-  dir_model = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (fs->dir_list)));
-  file_model = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (fs->file_list)));
+  dir_model = BTK_LIST_STORE (btk_tree_view_get_model (BTK_TREE_VIEW (fs->dir_list)));
+  file_model = BTK_LIST_STORE (btk_tree_view_get_model (BTK_TREE_VIEW (fs->file_list)));
 
-  gtk_list_store_clear (dir_model);
-  gtk_list_store_clear (file_model);
+  btk_list_store_clear (dir_model);
+  btk_list_store_clear (file_model);
 
   /* Set the dir list to include ./ and ../ */
-  gtk_list_store_append (dir_model, &iter);
-  gtk_list_store_set (dir_model, &iter, DIR_COLUMN, "." G_DIR_SEPARATOR_S, -1);
-  gtk_list_store_append (dir_model, &iter);
-  gtk_list_store_set (dir_model, &iter, DIR_COLUMN, ".." G_DIR_SEPARATOR_S, -1);
+  btk_list_store_append (dir_model, &iter);
+  btk_list_store_set (dir_model, &iter, DIR_COLUMN, "." G_DIR_SEPARATOR_S, -1);
+  btk_list_store_append (dir_model, &iter);
+  btk_list_store_set (dir_model, &iter, DIR_COLUMN, ".." G_DIR_SEPARATOR_S, -1);
 
   while (poss)
     {
@@ -2060,14 +2060,14 @@ gtk_file_selection_populate (GtkFileSelection *fs,
               if (strcmp (filename, "." G_DIR_SEPARATOR_S) != 0 &&
                   strcmp (filename, ".." G_DIR_SEPARATOR_S) != 0)
 		{
-		  gtk_list_store_append (dir_model, &iter);
-		  gtk_list_store_set (dir_model, &iter, DIR_COLUMN, filename, -1);
+		  btk_list_store_append (dir_model, &iter);
+		  btk_list_store_set (dir_model, &iter, DIR_COLUMN, filename, -1);
 		}
 	    }
           else
 	    {
-	      gtk_list_store_append (file_model, &iter);
-	      gtk_list_store_set (file_model, &iter, DIR_COLUMN, filename, -1);
+	      btk_list_store_append (file_model, &iter);
+	      btk_list_store_set (file_model, &iter, DIR_COLUMN, filename, -1);
             }
 	}
 
@@ -2076,7 +2076,7 @@ gtk_file_selection_populate (GtkFileSelection *fs,
 
 #ifdef G_PLATFORM_WIN32
   /* For Windows, add drives as potential selections */
-  win32_gtk_add_drives_to_dir_list (dir_model);
+  win32_btk_add_drives_to_dir_list (dir_model);
 #endif
 
   /* File lists are set. */
@@ -2100,33 +2100,33 @@ gtk_file_selection_populate (GtkFileSelection *fs,
 
               did_recurse = TRUE;
 
-              gtk_file_selection_populate (fs, dir_name, TRUE, TRUE);
+              btk_file_selection_populate (fs, dir_name, TRUE, TRUE);
 
               g_free (dir_name);
             }
           else
             {
 	      if (fs->selection_entry)
-		      gtk_entry_set_text (GTK_ENTRY (fs->selection_entry),
+		      btk_entry_set_text (BTK_ENTRY (fs->selection_entry),
 					  cmpl_updated_text (cmpl_state));
             }
         }
       else
         {
 	  if (fs->selection_entry)
-	    gtk_entry_set_text (GTK_ENTRY (fs->selection_entry), rem_path);
+	    btk_entry_set_text (BTK_ENTRY (fs->selection_entry), rem_path);
         }
     }
   else if (reset_entry)
     {
       if (fs->selection_entry)
-	gtk_entry_set_text (GTK_ENTRY (fs->selection_entry), "");
+	btk_entry_set_text (BTK_ENTRY (fs->selection_entry), "");
     }
 
   if (!did_recurse)
     {
       if (fs->selection_entry && try_complete)
-	gtk_editable_set_position (GTK_EDITABLE (fs->selection_entry), -1);
+	btk_editable_set_position (BTK_EDITABLE (fs->selection_entry), -1);
 
       if (fs->selection_entry)
 	{
@@ -2134,92 +2134,92 @@ gtk_file_selection_populate (GtkFileSelection *fs,
 	  sel_text = g_strconcat (_("_Selection: "), escaped, NULL);
 	  g_free (escaped);
 
-	  gtk_label_set_text_with_mnemonic (GTK_LABEL (fs->selection_text), sel_text);
+	  btk_label_set_text_with_mnemonic (BTK_LABEL (fs->selection_text), sel_text);
 	  g_free (sel_text);
 	}
 
       if (fs->history_pulldown) 
 	{
-	  gtk_file_selection_update_history_menu (fs, cmpl_reference_position (cmpl_state));
+	  btk_file_selection_update_history_menu (fs, cmpl_reference_position (cmpl_state));
 	}
       
     }
 }
 
 static void
-gtk_file_selection_abort (GtkFileSelection *fs)
+btk_file_selection_abort (BtkFileSelection *fs)
 {
   gchar err_buf[256];
 
   g_snprintf (err_buf, sizeof (err_buf), _("Folder unreadable: %s"), cmpl_strerror (cmpl_errno));
 
-  /*  BEEP gdk_beep();  */
+  /*  BEEP bdk_beep();  */
 
   if (fs->selection_entry)
-    gtk_label_set_text (GTK_LABEL (fs->selection_text), err_buf);
+    btk_label_set_text (BTK_LABEL (fs->selection_text), err_buf);
 }
 
 /**
- * gtk_file_selection_set_select_multiple:
- * @filesel: a #GtkFileSelection
+ * btk_file_selection_set_select_multiple:
+ * @filesel: a #BtkFileSelection
  * @select_multiple: whether or not the user is allowed to select multiple
  * files in the file list.
  *
  * Sets whether the user is allowed to select multiple files in the file list.
- * Use gtk_file_selection_get_selections () to get the list of selected files.
+ * Use btk_file_selection_get_selections () to get the list of selected files.
  **/
 void
-gtk_file_selection_set_select_multiple (GtkFileSelection *filesel,
+btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
 					gboolean          select_multiple)
 {
-  GtkTreeSelection *sel;
-  GtkSelectionMode mode;
+  BtkTreeSelection *sel;
+  BtkSelectionMode mode;
 
-  g_return_if_fail (GTK_IS_FILE_SELECTION (filesel));
+  g_return_if_fail (BTK_IS_FILE_SELECTION (filesel));
 
-  sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (filesel->file_list));
+  sel = btk_tree_view_get_selection (BTK_TREE_VIEW (filesel->file_list));
 
-  mode = select_multiple ? GTK_SELECTION_MULTIPLE : GTK_SELECTION_SINGLE;
+  mode = select_multiple ? BTK_SELECTION_MULTIPLE : BTK_SELECTION_SINGLE;
 
-  if (mode != gtk_tree_selection_get_mode (sel))
+  if (mode != btk_tree_selection_get_mode (sel))
     {
-      gtk_tree_selection_set_mode (sel, mode);
+      btk_tree_selection_set_mode (sel, mode);
 
       g_object_notify (G_OBJECT (filesel), "select-multiple");
     }
 }
 
 /**
- * gtk_file_selection_get_select_multiple:
- * @filesel: a #GtkFileSelection
+ * btk_file_selection_get_select_multiple:
+ * @filesel: a #BtkFileSelection
  *
  * Determines whether or not the user is allowed to select multiple files in
- * the file list. See gtk_file_selection_set_select_multiple().
+ * the file list. See btk_file_selection_set_select_multiple().
  *
  * Return value: %TRUE if the user is allowed to select multiple files in the
  * file list
  **/
 gboolean
-gtk_file_selection_get_select_multiple (GtkFileSelection *filesel)
+btk_file_selection_get_select_multiple (BtkFileSelection *filesel)
 {
-  GtkTreeSelection *sel;
+  BtkTreeSelection *sel;
 
-  g_return_val_if_fail (GTK_IS_FILE_SELECTION (filesel), FALSE);
+  g_return_val_if_fail (BTK_IS_FILE_SELECTION (filesel), FALSE);
 
-  sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (filesel->file_list));
-  return (gtk_tree_selection_get_mode (sel) == GTK_SELECTION_MULTIPLE);
+  sel = btk_tree_view_get_selection (BTK_TREE_VIEW (filesel->file_list));
+  return (btk_tree_selection_get_mode (sel) == BTK_SELECTION_MULTIPLE);
 }
 
 static void
-multiple_changed_foreach (GtkTreeModel *model,
-			  GtkTreePath  *path,
-			  GtkTreeIter  *iter,
+multiple_changed_foreach (BtkTreeModel *model,
+			  BtkTreePath  *path,
+			  BtkTreeIter  *iter,
 			  gpointer      data)
 {
   GPtrArray *names = data;
   gchar *filename;
 
-  gtk_tree_model_get (model, iter, FILE_COLUMN, &filename, -1);
+  btk_tree_model_get (model, iter, FILE_COLUMN, &filename, -1);
 
   g_ptr_array_add (names, filename);
 }
@@ -2236,10 +2236,10 @@ free_selected_names (GPtrArray *names)
 }
 
 static void
-gtk_file_selection_file_changed (GtkTreeSelection *selection,
+btk_file_selection_file_changed (BtkTreeSelection *selection,
 				 gpointer          user_data)
 {
-  GtkFileSelection *fs = GTK_FILE_SELECTION (user_data);
+  BtkFileSelection *fs = BTK_FILE_SELECTION (user_data);
   GPtrArray *new_names;
   gchar *filename;
   const gchar *entry;
@@ -2247,7 +2247,7 @@ gtk_file_selection_file_changed (GtkTreeSelection *selection,
 
   new_names = g_ptr_array_sized_new (8);
 
-  gtk_tree_selection_selected_foreach (selection,
+  btk_tree_selection_selected_foreach (selection,
 				       multiple_changed_foreach,
 				       new_names);
 
@@ -2338,7 +2338,7 @@ gtk_file_selection_file_changed (GtkTreeSelection *selection,
       fs->last_selected = g_strdup (g_ptr_array_index (new_names, index));
       filename = get_real_filename (fs->last_selected, FALSE);
 
-      gtk_entry_set_text (GTK_ENTRY (fs->selection_entry), filename);
+      btk_entry_set_text (BTK_ENTRY (fs->selection_entry), filename);
 
       if (filename != fs->last_selected)
 	g_free (filename);
@@ -2348,15 +2348,15 @@ gtk_file_selection_file_changed (GtkTreeSelection *selection,
   
 maybe_clear_entry:
 
-  entry = gtk_entry_get_text (GTK_ENTRY (fs->selection_entry));
+  entry = btk_entry_get_text (BTK_ENTRY (fs->selection_entry));
   if ((entry != NULL) && (fs->last_selected != NULL) &&
       (compare_utf8_filenames (entry, fs->last_selected) == 0))
-    gtk_entry_set_text (GTK_ENTRY (fs->selection_entry), "");
+    btk_entry_set_text (BTK_ENTRY (fs->selection_entry), "");
 }
 
 /**
- * gtk_file_selection_get_selections:
- * @filesel: a #GtkFileSelection
+ * btk_file_selection_get_selections:
+ * @filesel: a #BtkFileSelection
  *
  * Retrieves the list of file selections the user has made in the dialog box.
  * This function is intended for use when the user can select multiple files
@@ -2369,7 +2369,7 @@ maybe_clear_entry:
  * g_strfreev() to free it.
  **/
 gchar **
-gtk_file_selection_get_selections (GtkFileSelection *filesel)
+btk_file_selection_get_selections (BtkFileSelection *filesel)
 {
   GPtrArray *names;
   gchar **selections;
@@ -2378,9 +2378,9 @@ gtk_file_selection_get_selections (GtkFileSelection *filesel)
   gint i, count;
   gboolean unselected_entry;
 
-  g_return_val_if_fail (GTK_IS_FILE_SELECTION (filesel), NULL);
+  g_return_val_if_fail (BTK_IS_FILE_SELECTION (filesel), NULL);
 
-  filename = g_strdup (gtk_file_selection_get_filename (filesel));
+  filename = g_strdup (btk_file_selection_get_filename (filesel));
 
   if (strlen (filename) == 0)
     {
@@ -2403,10 +2403,10 @@ gtk_file_selection_get_selections (GtkFileSelection *filesel)
       dirname = g_path_get_dirname (filename);
 
       if ((names->len >= 1) && 
-	  (strcmp (gtk_entry_get_text (GTK_ENTRY (filesel->selection_entry)), "") == 0))
+	  (strcmp (btk_entry_get_text (BTK_ENTRY (filesel->selection_entry)), "") == 0))
 	{ /* multiple files are selected and last selection was removed via ctrl click */
 	  g_free (dirname);
-	  dirname = g_strdup (filename); /* as gtk_file_selection_get_filename returns dir 
+	  dirname = g_strdup (filename); /* as btk_file_selection_get_filename returns dir 
 					    if no file is selected */
 	  unselected_entry = FALSE;
 	}
@@ -3612,7 +3612,7 @@ find_completion_dir (gchar          *text_to_complete,
       for (i = 0; i < dir->sent->entry_count; i += 1)
 	{
 	  if (dir->sent->entries[i].is_dir &&
-	      _gtk_fnmatch (pat_buf, dir->sent->entries[i].entry_name, TRUE))
+	      _btk_fnmatch (pat_buf, dir->sent->entries[i].entry_name, TRUE))
 	    {
 	      if (found)
 		{
@@ -3762,7 +3762,7 @@ attempt_file_completion (CompletionState *cmpl_state)
     {
       if (dir->sent->entries[dir->cmpl_index].is_dir)
 	{
-	  if (_gtk_fnmatch (pat_buf, dir->sent->entries[dir->cmpl_index].entry_name, TRUE))
+	  if (_btk_fnmatch (pat_buf, dir->sent->entries[dir->cmpl_index].entry_name, TRUE))
 	    {
 	      CompletionDir* new_dir;
 
@@ -3810,7 +3810,7 @@ attempt_file_completion (CompletionState *cmpl_state)
       append_completion_text (dir->sent->entries[dir->cmpl_index].entry_name, cmpl_state);
 
       cmpl_state->the_completion.is_a_completion =
-	_gtk_fnmatch (pat_buf, dir->sent->entries[dir->cmpl_index].entry_name, TRUE);
+	_btk_fnmatch (pat_buf, dir->sent->entries[dir->cmpl_index].entry_name, TRUE);
 
       cmpl_state->the_completion.is_directory = dir->sent->entries[dir->cmpl_index].is_dir;
       if (dir->sent->entries[dir->cmpl_index].is_dir)
@@ -3943,15 +3943,15 @@ cmpl_strerror (gint err)
 
 /* DLL ABI stability backward compatibility versions */
 
-#undef gtk_file_selection_get_filename
+#undef btk_file_selection_get_filename
 
 const gchar*
-gtk_file_selection_get_filename (GtkFileSelection *filesel)
+btk_file_selection_get_filename (BtkFileSelection *filesel)
 {
   static gchar retval[MAXPATHLEN*2+1];
   gchar *tem;
 
-  tem = g_locale_from_utf8 (gtk_file_selection_get_filename_utf8 (filesel),
+  tem = g_locale_from_utf8 (btk_file_selection_get_filename_utf8 (filesel),
 			    -1, NULL, NULL, NULL);
 
   strncpy (retval, tem, sizeof (retval) - 1);
@@ -3961,24 +3961,24 @@ gtk_file_selection_get_filename (GtkFileSelection *filesel)
   return retval;
 }
 
-#undef gtk_file_selection_set_filename
+#undef btk_file_selection_set_filename
 
 void
-gtk_file_selection_set_filename (GtkFileSelection *filesel,
+btk_file_selection_set_filename (BtkFileSelection *filesel,
 				 const gchar      *filename)
 {
   gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
-  gtk_file_selection_set_filename_utf8 (filesel, utf8_filename);
+  btk_file_selection_set_filename_utf8 (filesel, utf8_filename);
   g_free (utf8_filename);
 }
 
-#undef gtk_file_selection_get_selections
+#undef btk_file_selection_get_selections
 
 gchar **
-gtk_file_selection_get_selections (GtkFileSelection *filesel)
+btk_file_selection_get_selections (BtkFileSelection *filesel)
 {
   int i = 0;
-  gchar **selections = gtk_file_selection_get_selections_utf8 (filesel);
+  gchar **selections = btk_file_selection_get_selections_utf8 (filesel);
 
   if (selections != NULL)
     while (selections[i] != NULL)
@@ -3995,5 +3995,5 @@ gtk_file_selection_get_selections (GtkFileSelection *filesel)
 
 #endif /* G_OS_WIN32 && !_WIN64 */
 
-#define __GTK_FILESEL_C__
-#include "gtkaliasdef.c"
+#define __BTK_FILESEL_C__
+#include "btkaliasdef.c"

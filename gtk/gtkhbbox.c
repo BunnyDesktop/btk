@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,47 +18,47 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
-#include "gtkhbbox.h"
-#include "gtkorientable.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkhbbox.h"
+#include "btkorientable.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 static gint default_spacing = 30;
-static gint default_layout_style = GTK_BUTTONBOX_EDGE;
+static gint default_layout_style = BTK_BUTTONBOX_EDGE;
 
-G_DEFINE_TYPE (GtkHButtonBox, gtk_hbutton_box, GTK_TYPE_BUTTON_BOX)
+G_DEFINE_TYPE (BtkHButtonBox, btk_hbutton_box, BTK_TYPE_BUTTON_BOX)
 
 static void
-gtk_hbutton_box_class_init (GtkHButtonBoxClass *class)
+btk_hbutton_box_class_init (BtkHButtonBoxClass *class)
 {
 }
 
 static void
-gtk_hbutton_box_init (GtkHButtonBox *hbutton_box)
+btk_hbutton_box_init (BtkHButtonBox *hbutton_box)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (hbutton_box),
-                                  GTK_ORIENTATION_HORIZONTAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (hbutton_box),
+                                  BTK_ORIENTATION_HORIZONTAL);
 }
 
-GtkWidget *
-gtk_hbutton_box_new (void)
+BtkWidget *
+btk_hbutton_box_new (void)
 {
-  return g_object_new (GTK_TYPE_HBUTTON_BOX, NULL);
+  return g_object_new (BTK_TYPE_HBUTTON_BOX, NULL);
 }
 
 
 /* set default value for spacing */
 
 void
-gtk_hbutton_box_set_spacing_default (gint spacing)
+btk_hbutton_box_set_spacing_default (gint spacing)
 {
   default_spacing = spacing;
 }
@@ -67,10 +67,10 @@ gtk_hbutton_box_set_spacing_default (gint spacing)
 /* set default value for layout style */
 
 void
-gtk_hbutton_box_set_layout_default (GtkButtonBoxStyle layout)
+btk_hbutton_box_set_layout_default (BtkButtonBoxStyle layout)
 {
-  g_return_if_fail (layout >= GTK_BUTTONBOX_DEFAULT_STYLE &&
-		    layout <= GTK_BUTTONBOX_CENTER);
+  g_return_if_fail (layout >= BTK_BUTTONBOX_DEFAULT_STYLE &&
+		    layout <= BTK_BUTTONBOX_CENTER);
 
   default_layout_style = layout;
 }
@@ -78,7 +78,7 @@ gtk_hbutton_box_set_layout_default (GtkButtonBoxStyle layout)
 /* get default value for spacing */
 
 gint
-gtk_hbutton_box_get_spacing_default (void)
+btk_hbutton_box_get_spacing_default (void)
 {
   return default_spacing;
 }
@@ -86,17 +86,17 @@ gtk_hbutton_box_get_spacing_default (void)
 
 /* get default value for layout style */
 
-GtkButtonBoxStyle
-gtk_hbutton_box_get_layout_default (void)
+BtkButtonBoxStyle
+btk_hbutton_box_get_layout_default (void)
 {
   return default_layout_style;
 }
 
-GtkButtonBoxStyle
-_gtk_hbutton_box_get_layout_default (void)
+BtkButtonBoxStyle
+_btk_hbutton_box_get_layout_default (void)
 {
   return default_layout_style;
 }
 
-#define __GTK_HBUTTON_BOX_C__
-#include "gtkaliasdef.c"
+#define __BTK_HBUTTON_BOX_C__
+#include "btkaliasdef.c"

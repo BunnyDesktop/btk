@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilesystemmodel.h: GtkTreeModel wrapping a GtkFileSystem
+/* BTK - The GIMP Toolkit
+ * btkfilesystemmodel.h: BtkTreeModel wrapping a BtkFileSystem
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,81 +18,81 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_SYSTEM_MODEL_H__
-#define __GTK_FILE_SYSTEM_MODEL_H__
+#ifndef __BTK_FILE_SYSTEM_MODEL_H__
+#define __BTK_FILE_SYSTEM_MODEL_H__
 
-#include <gio/gio.h>
-#include <gtk/gtkfilefilter.h>
-#include <gtk/gtktreemodel.h>
+#include <bunnyio/bunnyio.h>
+#include <btk/btkfilefilter.h>
+#include <btk/btktreemodel.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FILE_SYSTEM_MODEL             (_gtk_file_system_model_get_type ())
-#define GTK_FILE_SYSTEM_MODEL(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FILE_SYSTEM_MODEL, GtkFileSystemModel))
-#define GTK_IS_FILE_SYSTEM_MODEL(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FILE_SYSTEM_MODEL))
+#define BTK_TYPE_FILE_SYSTEM_MODEL             (_btk_file_system_model_get_type ())
+#define BTK_FILE_SYSTEM_MODEL(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_SYSTEM_MODEL, BtkFileSystemModel))
+#define BTK_IS_FILE_SYSTEM_MODEL(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_SYSTEM_MODEL))
 
-typedef struct _GtkFileSystemModel      GtkFileSystemModel;
+typedef struct _BtkFileSystemModel      BtkFileSystemModel;
 
-GType _gtk_file_system_model_get_type (void) G_GNUC_CONST;
+GType _btk_file_system_model_get_type (void) G_GNUC_CONST;
 
-typedef gboolean (*GtkFileSystemModelGetValue)   (GtkFileSystemModel *model,
+typedef gboolean (*BtkFileSystemModelGetValue)   (BtkFileSystemModel *model,
                                                   GFile              *file,
                                                   GFileInfo          *info,
                                                   int                 column,
                                                   GValue             *value,
                                                   gpointer            user_data);
 
-GtkFileSystemModel *_gtk_file_system_model_new              (GtkFileSystemModelGetValue get_func,
+BtkFileSystemModel *_btk_file_system_model_new              (BtkFileSystemModelGetValue get_func,
                                                              gpointer            get_data,
                                                              guint               n_columns,
                                                              ...);
-GtkFileSystemModel *_gtk_file_system_model_new_for_directory(GFile *             dir,
+BtkFileSystemModel *_btk_file_system_model_new_for_directory(GFile *             dir,
                                                              const gchar *       attributes,
-                                                             GtkFileSystemModelGetValue get_func,
+                                                             BtkFileSystemModelGetValue get_func,
                                                              gpointer            get_data,
                                                              guint               n_columns,
                                                              ...);
-GCancellable *      _gtk_file_system_model_get_cancellable  (GtkFileSystemModel *model);
-gboolean            _gtk_file_system_model_iter_is_visible  (GtkFileSystemModel *model,
-							     GtkTreeIter        *iter);
-gboolean            _gtk_file_system_model_iter_is_filtered_out (GtkFileSystemModel *model,
-								 GtkTreeIter        *iter);
-GFileInfo *         _gtk_file_system_model_get_info         (GtkFileSystemModel *model,
-							     GtkTreeIter        *iter);
-gboolean            _gtk_file_system_model_get_iter_for_file(GtkFileSystemModel *model,
-							     GtkTreeIter        *iter,
+GCancellable *      _btk_file_system_model_get_cancellable  (BtkFileSystemModel *model);
+gboolean            _btk_file_system_model_iter_is_visible  (BtkFileSystemModel *model,
+							     BtkTreeIter        *iter);
+gboolean            _btk_file_system_model_iter_is_filtered_out (BtkFileSystemModel *model,
+								 BtkTreeIter        *iter);
+GFileInfo *         _btk_file_system_model_get_info         (BtkFileSystemModel *model,
+							     BtkTreeIter        *iter);
+gboolean            _btk_file_system_model_get_iter_for_file(BtkFileSystemModel *model,
+							     BtkTreeIter        *iter,
 							     GFile              *file);
-GFile *             _gtk_file_system_model_get_file         (GtkFileSystemModel *model,
-							     GtkTreeIter        *iter);
-const GValue *      _gtk_file_system_model_get_value        (GtkFileSystemModel *model,
-                                                             GtkTreeIter *       iter,
+GFile *             _btk_file_system_model_get_file         (BtkFileSystemModel *model,
+							     BtkTreeIter        *iter);
+const GValue *      _btk_file_system_model_get_value        (BtkFileSystemModel *model,
+                                                             BtkTreeIter *       iter,
                                                              int                 column);
 
-void                _gtk_file_system_model_add_and_query_file (GtkFileSystemModel *model,
+void                _btk_file_system_model_add_and_query_file (BtkFileSystemModel *model,
                                                              GFile              *file,
                                                              const char         *attributes);
-void                _gtk_file_system_model_update_file      (GtkFileSystemModel *model,
+void                _btk_file_system_model_update_file      (BtkFileSystemModel *model,
                                                              GFile              *file,
                                                              GFileInfo          *info);
 
-void                _gtk_file_system_model_set_show_hidden  (GtkFileSystemModel *model,
+void                _btk_file_system_model_set_show_hidden  (BtkFileSystemModel *model,
 							     gboolean            show_hidden);
-void                _gtk_file_system_model_set_show_folders (GtkFileSystemModel *model,
+void                _btk_file_system_model_set_show_folders (BtkFileSystemModel *model,
 							     gboolean            show_folders);
-void                _gtk_file_system_model_set_show_files   (GtkFileSystemModel *model,
+void                _btk_file_system_model_set_show_files   (BtkFileSystemModel *model,
 							     gboolean            show_files);
-void                _gtk_file_system_model_set_filter_folders (GtkFileSystemModel *model,
+void                _btk_file_system_model_set_filter_folders (BtkFileSystemModel *model,
 							     gboolean            show_folders);
-void                _gtk_file_system_model_clear_cache      (GtkFileSystemModel *model,
+void                _btk_file_system_model_clear_cache      (BtkFileSystemModel *model,
                                                              int                 column);
 
-void                _gtk_file_system_model_set_filter       (GtkFileSystemModel *model,
-                                                             GtkFileFilter      *filter);
+void                _btk_file_system_model_set_filter       (BtkFileSystemModel *model,
+                                                             BtkFileFilter      *filter);
 
-void _gtk_file_system_model_add_editable    (GtkFileSystemModel *model,
-					     GtkTreeIter        *iter);
-void _gtk_file_system_model_remove_editable (GtkFileSystemModel *model);
+void _btk_file_system_model_add_editable    (BtkFileSystemModel *model,
+					     BtkTreeIter        *iter);
+void _btk_file_system_model_remove_editable (BtkFileSystemModel *model);
 
 G_END_DECLS
 
-#endif /* __GTK_FILE_SYSTEM_MODEL_H__ */
+#endif /* __BTK_FILE_SYSTEM_MODEL_H__ */

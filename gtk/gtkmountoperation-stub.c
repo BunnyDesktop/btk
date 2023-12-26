@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) David Zeuthen <davidz@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,43 +19,43 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include <gio/gio.h>
-#include "gtkintl.h"
+#include <bunnyio/bunnyio.h>
+#include "btkintl.h"
 
-#include "gtkmountoperationprivate.h"
+#include "btkmountoperationprivate.h"
 
-GtkMountOperationLookupContext *
-_gtk_mount_operation_lookup_context_get (GdkDisplay *display)
+BtkMountOperationLookupContext *
+_btk_mount_operation_lookup_context_get (BdkDisplay *display)
 {
   return NULL;
 }
 
 void
-_gtk_mount_operation_lookup_context_free (GtkMountOperationLookupContext *context)
+_btk_mount_operation_lookup_context_free (BtkMountOperationLookupContext *context)
 {
 }
 
 gboolean
-_gtk_mount_operation_lookup_info (GtkMountOperationLookupContext *context,
+_btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
                                   GPid                            pid,
                                   gint                            size_pixels,
                                   gchar                         **out_name,
                                   gchar                         **out_command_line,
-                                  GdkPixbuf                     **out_pixbuf)
+                                  BdkPixbuf                     **out_pixbuf)
 {
   return FALSE;
 }
 
 gboolean
-_gtk_mount_operation_kill_process (GPid      pid,
+_btk_mount_operation_kill_process (GPid      pid,
                                    GError  **error)
 {
   g_set_error (error,

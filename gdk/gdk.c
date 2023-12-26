@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -29,26 +29,26 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "gdk.h"
-#include "gdkinternals.h"
-#include "gdkintl.h"
+#include "bdk.h"
+#include "bdkinternals.h"
+#include "bdkintl.h"
 
 #ifndef HAVE_XCONVERTCASE
-#include "gdkkeysyms.h"
+#include "bdkkeysyms.h"
 #endif
-#include "gdkalias.h"
+#include "bdkalias.h"
 
-typedef struct _GdkPredicate  GdkPredicate;
+typedef struct _BdkPredicate  BdkPredicate;
 
-struct _GdkPredicate
+struct _BdkPredicate
 {
-  GdkEventFunc func;
+  BdkEventFunc func;
   gpointer data;
 };
 
-typedef struct _GdkThreadsDispatch GdkThreadsDispatch;
+typedef struct _BdkThreadsDispatch BdkThreadsDispatch;
 
-struct _GdkThreadsDispatch
+struct _BdkThreadsDispatch
 {
   GSourceFunc func;
   gpointer data;
@@ -58,198 +58,198 @@ struct _GdkThreadsDispatch
 
 /* Private variable declarations
  */
-static int gdk_initialized = 0;			    /* 1 if the library is initialized,
+static int bdk_initialized = 0;			    /* 1 if the library is initialized,
 						     * 0 otherwise.
 						     */
 
-static gchar  *gdk_progclass = NULL;
+static gchar  *bdk_progclass = NULL;
 
 #ifdef G_ENABLE_DEBUG
-static const GDebugKey gdk_debug_keys[] = {
-  {"events",	    GDK_DEBUG_EVENTS},
-  {"misc",	    GDK_DEBUG_MISC},
-  {"dnd",	    GDK_DEBUG_DND},
-  {"xim",	    GDK_DEBUG_XIM},
-  {"nograbs",       GDK_DEBUG_NOGRABS},
-  {"colormap",	    GDK_DEBUG_COLORMAP},
-  {"gdkrgb",	    GDK_DEBUG_GDKRGB},
-  {"gc",	    GDK_DEBUG_GC},
-  {"pixmap",	    GDK_DEBUG_PIXMAP},
-  {"image",	    GDK_DEBUG_IMAGE},
-  {"input",	    GDK_DEBUG_INPUT},
-  {"cursor",	    GDK_DEBUG_CURSOR},
-  {"multihead",	    GDK_DEBUG_MULTIHEAD},
-  {"xinerama",	    GDK_DEBUG_XINERAMA},
-  {"draw",	    GDK_DEBUG_DRAW},
-  {"eventloop",	    GDK_DEBUG_EVENTLOOP}
+static const GDebugKey bdk_debug_keys[] = {
+  {"events",	    BDK_DEBUG_EVENTS},
+  {"misc",	    BDK_DEBUG_MISC},
+  {"dnd",	    BDK_DEBUG_DND},
+  {"xim",	    BDK_DEBUG_XIM},
+  {"nograbs",       BDK_DEBUG_NOGRABS},
+  {"colormap",	    BDK_DEBUG_COLORMAP},
+  {"bdkrgb",	    BDK_DEBUG_BDKRGB},
+  {"gc",	    BDK_DEBUG_GC},
+  {"pixmap",	    BDK_DEBUG_PIXMAP},
+  {"image",	    BDK_DEBUG_IMAGE},
+  {"input",	    BDK_DEBUG_INPUT},
+  {"cursor",	    BDK_DEBUG_CURSOR},
+  {"multihead",	    BDK_DEBUG_MULTIHEAD},
+  {"xinerama",	    BDK_DEBUG_XINERAMA},
+  {"draw",	    BDK_DEBUG_DRAW},
+  {"eventloop",	    BDK_DEBUG_EVENTLOOP}
 };
 
-static const int gdk_ndebug_keys = G_N_ELEMENTS (gdk_debug_keys);
+static const int bdk_ndebug_keys = G_N_ELEMENTS (bdk_debug_keys);
 
 #endif /* G_ENABLE_DEBUG */
 
 #ifdef G_ENABLE_DEBUG
 static gboolean
-gdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
+bdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
 {
   guint debug_value = g_parse_debug_string (value,
-					    (GDebugKey *) gdk_debug_keys,
-					    gdk_ndebug_keys);
+					    (GDebugKey *) bdk_debug_keys,
+					    bdk_ndebug_keys);
 
   if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
       g_set_error (error, 
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
-		   _("Error parsing option --gdk-debug"));
+		   _("Error parsing option --bdk-debug"));
       return FALSE;
     }
 
-  _gdk_debug_flags |= debug_value;
+  _bdk_debug_flags |= debug_value;
 
   return TRUE;
 }
 
 static gboolean
-gdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
+bdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
 {
   guint debug_value = g_parse_debug_string (value,
-					    (GDebugKey *) gdk_debug_keys,
-					    gdk_ndebug_keys);
+					    (GDebugKey *) bdk_debug_keys,
+					    bdk_ndebug_keys);
 
   if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
       g_set_error (error, 
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
-		   _("Error parsing option --gdk-no-debug"));
+		   _("Error parsing option --bdk-no-debug"));
       return FALSE;
     }
 
-  _gdk_debug_flags &= ~debug_value;
+  _bdk_debug_flags &= ~debug_value;
 
   return TRUE;
 }
 #endif /* G_ENABLE_DEBUG */
 
 static gboolean
-gdk_arg_class_cb (const char *key, const char *value, gpointer user_data, GError **error)
+bdk_arg_class_cb (const char *key, const char *value, gpointer user_data, GError **error)
 {
-  gdk_set_program_class (value);
+  bdk_set_program_class (value);
 
   return TRUE;
 }
 
 static gboolean
-gdk_arg_name_cb (const char *key, const char *value, gpointer user_data, GError **error)
+bdk_arg_name_cb (const char *key, const char *value, gpointer user_data, GError **error)
 {
   g_set_prgname (value);
 
   return TRUE;
 }
 
-static const GOptionEntry gdk_args[] = {
-  { "class",        0, 0,                     G_OPTION_ARG_CALLBACK, gdk_arg_class_cb,
+static const GOptionEntry bdk_args[] = {
+  { "class",        0, 0,                     G_OPTION_ARG_CALLBACK, bdk_arg_class_cb,
     /* Description of --class=CLASS in --help output */        N_("Program class as used by the window manager"),
     /* Placeholder in --class=CLASS in --help output */        N_("CLASS") },
-  { "name",         0, 0,                     G_OPTION_ARG_CALLBACK, gdk_arg_name_cb,
+  { "name",         0, 0,                     G_OPTION_ARG_CALLBACK, bdk_arg_name_cb,
     /* Description of --name=NAME in --help output */          N_("Program name as used by the window manager"),
     /* Placeholder in --name=NAME in --help output */          N_("NAME") },
-  { "display",      0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING,   &_gdk_display_name,
+  { "display",      0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING,   &_bdk_display_name,
     /* Description of --display=DISPLAY in --help output */    N_("X display to use"),
     /* Placeholder in --display=DISPLAY in --help output */    N_("DISPLAY") },
-  { "screen",       0, 0, G_OPTION_ARG_INT,      &_gdk_screen_number,
+  { "screen",       0, 0, G_OPTION_ARG_INT,      &_bdk_screen_number,
     /* Description of --screen=SCREEN in --help output */      N_("X screen to use"),
     /* Placeholder in --screen=SCREEN in --help output */      N_("SCREEN") },
 #ifdef G_ENABLE_DEBUG
-  { "gdk-debug",    0, 0, G_OPTION_ARG_CALLBACK, gdk_arg_debug_cb,  
-    /* Description of --gdk-debug=FLAGS in --help output */    N_("GDK debugging flags to set"),
-    /* Placeholder in --gdk-debug=FLAGS in --help output */    N_("FLAGS") },
-  { "gdk-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, gdk_arg_no_debug_cb, 
-    /* Description of --gdk-no-debug=FLAGS in --help output */ N_("GDK debugging flags to unset"),
-    /* Placeholder in --gdk-no-debug=FLAGS in --help output */ N_("FLAGS") },
+  { "bdk-debug",    0, 0, G_OPTION_ARG_CALLBACK, bdk_arg_debug_cb,  
+    /* Description of --bdk-debug=FLAGS in --help output */    N_("BDK debugging flags to set"),
+    /* Placeholder in --bdk-debug=FLAGS in --help output */    N_("FLAGS") },
+  { "bdk-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, bdk_arg_no_debug_cb, 
+    /* Description of --bdk-no-debug=FLAGS in --help output */ N_("BDK debugging flags to unset"),
+    /* Placeholder in --bdk-no-debug=FLAGS in --help output */ N_("FLAGS") },
 #endif 
   { NULL }
 };
 
 /**
- * gdk_add_option_entries_libgtk_only:
+ * bdk_add_option_entries_libbtk_only:
  * @group: An option group.
  * 
- * Appends gdk option entries to the passed in option group. This is
+ * Appends bdk option entries to the passed in option group. This is
  * not public API and must not be used by applications.
  **/
 void
-gdk_add_option_entries_libgtk_only (GOptionGroup *group)
+bdk_add_option_entries_libbtk_only (GOptionGroup *group)
 {
-  g_option_group_add_entries (group, gdk_args);
-  g_option_group_add_entries (group, _gdk_windowing_args);
+  g_option_group_add_entries (group, bdk_args);
+  g_option_group_add_entries (group, _bdk_windowing_args);
 }
 
 void
-gdk_pre_parse_libgtk_only (void)
+bdk_pre_parse_libbtk_only (void)
 {
-  gdk_initialized = TRUE;
+  bdk_initialized = TRUE;
 
   /* We set the fallback program class here, rather than lazily in
-   * gdk_get_program_class, since we don't want -name to override it.
+   * bdk_get_program_class, since we don't want -name to override it.
    */
-  gdk_progclass = g_strdup (g_get_prgname ());
-  if (gdk_progclass && gdk_progclass[0])
-    gdk_progclass[0] = g_ascii_toupper (gdk_progclass[0]);
+  bdk_progclass = g_strdup (g_get_prgname ());
+  if (bdk_progclass && bdk_progclass[0])
+    bdk_progclass[0] = g_ascii_toupper (bdk_progclass[0]);
   
 #ifdef G_ENABLE_DEBUG
   {
-    gchar *debug_string = getenv("GDK_DEBUG");
+    gchar *debug_string = getenv("BDK_DEBUG");
     if (debug_string != NULL)
-      _gdk_debug_flags = g_parse_debug_string (debug_string,
-					      (GDebugKey *) gdk_debug_keys,
-					      gdk_ndebug_keys);
+      _bdk_debug_flags = g_parse_debug_string (debug_string,
+					      (GDebugKey *) bdk_debug_keys,
+					      bdk_ndebug_keys);
   }
 #endif	/* G_ENABLE_DEBUG */
 
-  if (getenv ("GDK_NATIVE_WINDOWS"))
+  if (getenv ("BDK_NATIVE_WINDOWS"))
     {
-      _gdk_native_windows = TRUE;
+      _bdk_native_windows = TRUE;
       /* Ensure that this is not propagated
 	 to spawned applications */
-      g_unsetenv ("GDK_NATIVE_WINDOWS");
+      g_unsetenv ("BDK_NATIVE_WINDOWS");
     }
 
   g_type_init ();
 
   /* Do any setup particular to the windowing system
    */
-  _gdk_windowing_init ();  
+  _bdk_windowing_init ();  
 }
 
   
 /**
- * gdk_parse_args:
+ * bdk_parse_args:
  * @argc: the number of command line arguments.
  * @argv: (inout) (array length=argc): the array of command line arguments.
  * 
  * Parse command line arguments, and store for future
- * use by calls to gdk_display_open().
+ * use by calls to bdk_display_open().
  *
- * Any arguments used by GDK are removed from the array and @argc and @argv are
+ * Any arguments used by BDK are removed from the array and @argc and @argv are
  * updated accordingly.
  *
  * You shouldn't call this function explicitely if you are using
- * gtk_init(), gtk_init_check(), gdk_init(), or gdk_init_check().
+ * btk_init(), btk_init_check(), bdk_init(), or bdk_init_check().
  *
  * Since: 2.2
  **/
 void
-gdk_parse_args (int    *argc,
+bdk_parse_args (int    *argc,
 		char ***argv)
 {
   GOptionContext *option_context;
   GOptionGroup *option_group;
   GError *error = NULL;
 
-  if (gdk_initialized)
+  if (bdk_initialized)
     return;
 
-  gdk_pre_parse_libgtk_only ();
+  bdk_pre_parse_libbtk_only ();
   
   option_context = g_option_context_new (NULL);
   g_option_context_set_ignore_unknown_options (option_context, TRUE);
@@ -257,8 +257,8 @@ gdk_parse_args (int    *argc,
   option_group = g_option_group_new (NULL, NULL, NULL, NULL, NULL);
   g_option_context_set_main_group (option_context, option_group);
   
-  g_option_group_add_entries (option_group, gdk_args);
-  g_option_group_add_entries (option_group, _gdk_windowing_args);
+  g_option_group_add_entries (option_group, bdk_args);
+  g_option_group_add_entries (option_group, _bdk_windowing_args);
 
   if (!g_option_context_parse (option_context, argc, argv, &error))
     {
@@ -267,79 +267,79 @@ gdk_parse_args (int    *argc,
     }
   g_option_context_free (option_context);
 
-  if (_gdk_debug_flags && GDK_DEBUG_GDKRGB)
-    gdk_rgb_set_verbose (TRUE);
+  if (_bdk_debug_flags && BDK_DEBUG_BDKRGB)
+    bdk_rgb_set_verbose (TRUE);
 
-  GDK_NOTE (MISC, g_message ("progname: \"%s\"", g_get_prgname ()));
+  BDK_NOTE (MISC, g_message ("progname: \"%s\"", g_get_prgname ()));
 }
 
 /** 
- * gdk_get_display_arg_name:
+ * bdk_get_display_arg_name:
  *
  * Gets the display name specified in the command line arguments passed
- * to gdk_init() or gdk_parse_args(), if any.
+ * to bdk_init() or bdk_parse_args(), if any.
  *
  * Returns: the display name, if specified explicitely, otherwise %NULL
- *   this string is owned by GTK+ and must not be modified or freed.
+ *   this string is owned by BTK+ and must not be modified or freed.
  *
  * Since: 2.2
  */
 const gchar *
-gdk_get_display_arg_name (void)
+bdk_get_display_arg_name (void)
 {
-  if (!_gdk_display_arg_name)
+  if (!_bdk_display_arg_name)
     {
-      if (_gdk_screen_number >= 0)
-	_gdk_display_arg_name = _gdk_windowing_substitute_screen_number (_gdk_display_name, _gdk_screen_number);
+      if (_bdk_screen_number >= 0)
+	_bdk_display_arg_name = _bdk_windowing_substitute_screen_number (_bdk_display_name, _bdk_screen_number);
       else
-	_gdk_display_arg_name = g_strdup (_gdk_display_name);
+	_bdk_display_arg_name = g_strdup (_bdk_display_name);
    }
 
-   return _gdk_display_arg_name;
+   return _bdk_display_arg_name;
 }
 
 /**
- * gdk_display_open_default_libgtk_only:
+ * bdk_display_open_default_libbtk_only:
  * 
  * Opens the default display specified by command line arguments or
  * environment variables, sets it as the default display, and returns
- * it.  gdk_parse_args must have been called first. If the default
+ * it.  bdk_parse_args must have been called first. If the default
  * display has previously been set, simply returns that. An internal
  * function that should not be used by applications.
  * 
  * Return value: the default display, if it could be opened,
  *   otherwise %NULL.
  **/
-GdkDisplay *
-gdk_display_open_default_libgtk_only (void)
+BdkDisplay *
+bdk_display_open_default_libbtk_only (void)
 {
-  GdkDisplay *display;
+  BdkDisplay *display;
 
-  g_return_val_if_fail (gdk_initialized, NULL);
+  g_return_val_if_fail (bdk_initialized, NULL);
   
-  display = gdk_display_get_default ();
+  display = bdk_display_get_default ();
   if (display)
     return display;
 
-  display = gdk_display_open (gdk_get_display_arg_name ());
+  display = bdk_display_open (bdk_get_display_arg_name ());
 
-  if (!display && _gdk_screen_number >= 0)
+  if (!display && _bdk_screen_number >= 0)
     {
-      g_free (_gdk_display_arg_name);
-      _gdk_display_arg_name = g_strdup (_gdk_display_name);
+      g_free (_bdk_display_arg_name);
+      _bdk_display_arg_name = g_strdup (_bdk_display_name);
       
-      display = gdk_display_open (_gdk_display_name);
+      display = bdk_display_open (_bdk_display_name);
     }
   
   if (display)
-    gdk_display_manager_set_default_display (gdk_display_manager_get (),
+    bdk_display_manager_set_default_display (bdk_display_manager_get (),
 					     display);
   
   return display;
 }
 
 /**
- * gdk_init_check:
+ * bdk_init_check:
  * @argc: (inout):
  * @argv: (array length=argc) (inout):
  *
@@ -361,26 +361,26 @@ gdk_display_open_default_libgtk_only (void)
  *--------------------------------------------------------------
  */
 gboolean
-gdk_init_check (int    *argc,
+bdk_init_check (int    *argc,
 		char ***argv)
 {
-  gdk_parse_args (argc, argv);
+  bdk_parse_args (argc, argv);
 
-  return gdk_display_open_default_libgtk_only () != NULL;
+  return bdk_display_open_default_libbtk_only () != NULL;
 }
 
 
 /**
- * gdk_init:
+ * bdk_init:
  * @argc: (inout):
  * @argv: (array length=argc) (inout):
  */
 void
-gdk_init (int *argc, char ***argv)
+bdk_init (int *argc, char ***argv)
 {
-  if (!gdk_init_check (argc, argv))
+  if (!bdk_init_check (argc, argv))
     {
-      const char *display_name = gdk_get_display_arg_name ();
+      const char *display_name = bdk_get_display_arg_name ();
       g_warning ("cannot open display: %s", display_name ? display_name : "");
       exit(1);
     }
@@ -388,7 +388,7 @@ gdk_init (int *argc, char ***argv)
 
 /*
  *--------------------------------------------------------------
- * gdk_exit
+ * bdk_exit
  *
  *   Restores the library to an un-itialized state and exits
  *   the program using the "exit" system call.
@@ -406,34 +406,34 @@ gdk_init (int *argc, char ***argv)
  */
 
 void
-gdk_exit (gint errorcode)
+bdk_exit (gint errorcode)
 {
   exit (errorcode);
 }
 
 void
-gdk_threads_enter (void)
+bdk_threads_enter (void)
 {
-  GDK_THREADS_ENTER ();
+  BDK_THREADS_ENTER ();
 }
 
 void
-gdk_threads_leave (void)
+bdk_threads_leave (void)
 {
-  GDK_THREADS_LEAVE ();
+  BDK_THREADS_LEAVE ();
 }
 
 static void
-gdk_threads_impl_lock (void)
+bdk_threads_impl_lock (void)
 {
-  if (gdk_threads_mutex)
-    g_mutex_lock (gdk_threads_mutex);
+  if (bdk_threads_mutex)
+    g_mutex_lock (bdk_threads_mutex);
 }
 
 static void
-gdk_threads_impl_unlock (void)
+bdk_threads_impl_unlock (void)
 {
-  if (gdk_threads_mutex)
+  if (bdk_threads_mutex)
     {
       /* we need a trylock() here because trying to unlock a mutex
        * that hasn't been locked yet is:
@@ -442,116 +442,116 @@ gdk_threads_impl_unlock (void)
        *  b) fail on GLib ≥ 2.41
        *
        * trylock() will either succeed because nothing is holding the
-       * GDK mutex, and will be unlocked right afterwards; or it's
+       * BDK mutex, and will be unlocked right afterwards; or it's
        * going to fail because the mutex is locked already, in which
        * case we unlock it as expected.
        *
-       * this is needed in the case somebody called gdk_threads_init()
-       * without calling gdk_threads_enter() before calling gtk_main().
+       * this is needed in the case somebody called bdk_threads_init()
+       * without calling bdk_threads_enter() before calling btk_main().
        * in theory, we could just say that this is undefined behaviour,
        * but our documentation has always been *less* than explicit as
        * to what the behaviour should actually be.
        *
        * see bug: https://bugzilla.gnome.org/show_bug.cgi?id=735428
        */
-      g_mutex_trylock (gdk_threads_mutex);
-      g_mutex_unlock (gdk_threads_mutex);
+      g_mutex_trylock (bdk_threads_mutex);
+      g_mutex_unlock (bdk_threads_mutex);
     }
 }
 
 /**
- * gdk_threads_init:
+ * bdk_threads_init:
  * 
- * Initializes GDK so that it can be used from multiple threads
- * in conjunction with gdk_threads_enter() and gdk_threads_leave().
+ * Initializes BDK so that it can be used from multiple threads
+ * in conjunction with bdk_threads_enter() and bdk_threads_leave().
  * g_thread_init() must be called previous to this function.
  *
  * This call must be made before any use of the main loop from
- * GTK+; to be safe, call it before gtk_init().
+ * BTK+; to be safe, call it before btk_init().
  **/
 void
-gdk_threads_init (void)
+bdk_threads_init (void)
 {
   if (!g_thread_supported ())
-    g_error ("g_thread_init() must be called before gdk_threads_init()");
+    g_error ("g_thread_init() must be called before bdk_threads_init()");
 
-  gdk_threads_mutex = g_mutex_new ();
-  if (!gdk_threads_lock)
-    gdk_threads_lock = gdk_threads_impl_lock;
-  if (!gdk_threads_unlock)
-    gdk_threads_unlock = gdk_threads_impl_unlock;
+  bdk_threads_mutex = g_mutex_new ();
+  if (!bdk_threads_lock)
+    bdk_threads_lock = bdk_threads_impl_lock;
+  if (!bdk_threads_unlock)
+    bdk_threads_unlock = bdk_threads_impl_unlock;
 }
 
 /**
- * gdk_threads_set_lock_functions:
- * @enter_fn:   function called to guard GDK
+ * bdk_threads_set_lock_functions:
+ * @enter_fn:   function called to guard BDK
  * @leave_fn: function called to release the guard
  *
  * Allows the application to replace the standard method that
- * GDK uses to protect its data structures. Normally, GDK
- * creates a single #GMutex that is locked by gdk_threads_enter(),
- * and released by gdk_threads_leave(); using this function an
+ * BDK uses to protect its data structures. Normally, BDK
+ * creates a single #GMutex that is locked by bdk_threads_enter(),
+ * and released by bdk_threads_leave(); using this function an
  * application provides, instead, a function @enter_fn that is
- * called by gdk_threads_enter() and a function @leave_fn that is
- * called by gdk_threads_leave().
+ * called by bdk_threads_enter() and a function @leave_fn that is
+ * called by bdk_threads_leave().
  *
  * The functions must provide at least same locking functionality
  * as the default implementation, but can also do extra application
  * specific processing.
  *
  * As an example, consider an application that has its own recursive
- * lock that when held, holds the GTK+ lock as well. When GTK+ unlocks
- * the GTK+ lock when entering a recursive main loop, the application
+ * lock that when held, holds the BTK+ lock as well. When BTK+ unlocks
+ * the BTK+ lock when entering a recursive main loop, the application
  * must temporarily release its lock as well.
  *
- * Most threaded GTK+ apps won't need to use this method.
+ * Most threaded BTK+ apps won't need to use this method.
  *
- * This method must be called before gdk_threads_init(), and cannot
+ * This method must be called before bdk_threads_init(), and cannot
  * be called multiple times.
  *
  * Since: 2.4
  **/
 void
-gdk_threads_set_lock_functions (GCallback enter_fn,
+bdk_threads_set_lock_functions (GCallback enter_fn,
 				GCallback leave_fn)
 {
-  g_return_if_fail (gdk_threads_lock == NULL &&
-		    gdk_threads_unlock == NULL);
+  g_return_if_fail (bdk_threads_lock == NULL &&
+		    bdk_threads_unlock == NULL);
 
-  gdk_threads_lock = enter_fn;
-  gdk_threads_unlock = leave_fn;
+  bdk_threads_lock = enter_fn;
+  bdk_threads_unlock = leave_fn;
 }
 
 static gboolean
-gdk_threads_dispatch (gpointer data)
+bdk_threads_dispatch (gpointer data)
 {
-  GdkThreadsDispatch *dispatch = data;
+  BdkThreadsDispatch *dispatch = data;
   gboolean ret = FALSE;
 
-  GDK_THREADS_ENTER ();
+  BDK_THREADS_ENTER ();
 
   if (!g_source_is_destroyed (g_main_current_source ()))
     ret = dispatch->func (dispatch->data);
 
-  GDK_THREADS_LEAVE ();
+  BDK_THREADS_LEAVE ();
 
   return ret;
 }
 
 static void
-gdk_threads_dispatch_free (gpointer data)
+bdk_threads_dispatch_free (gpointer data)
 {
-  GdkThreadsDispatch *dispatch = data;
+  BdkThreadsDispatch *dispatch = data;
 
   if (dispatch->destroy && dispatch->data)
     dispatch->destroy (dispatch->data);
 
-  g_slice_free (GdkThreadsDispatch, data);
+  g_slice_free (BdkThreadsDispatch, data);
 }
 
 
 /**
- * gdk_threads_add_idle_full:
+ * bdk_threads_add_idle_full:
  * @priority: the priority of the idle source. Typically this will be in the
  *            range btweeen #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE
  * @function: function to call
@@ -562,8 +562,8 @@ gdk_threads_dispatch_free (gpointer data)
  * events pending.  If the function returns %FALSE it is automatically
  * removed from the list of event sources and will not be called again.
  *
- * This variant of g_idle_add_full() calls @function with the GDK lock
- * held. It can be thought of a MT-safe version for GTK+ widgets for the 
+ * This variant of g_idle_add_full() calls @function with the BDK lock
+ * held. It can be thought of a MT-safe version for BTK+ widgets for the 
  * following use case, where you have to worry about idle_callback()
  * running in thread A and accessing @self after it has been finalized
  * in thread B:
@@ -572,21 +572,21 @@ gdk_threads_dispatch_free (gpointer data)
  * static gboolean
  * idle_callback (gpointer data)
  * {
- *    /&ast; gdk_threads_enter(); would be needed for g_idle_add() &ast;/
+ *    /&ast; bdk_threads_enter(); would be needed for g_idle_add() &ast;/
  *
  *    SomeWidget *self = data;
  *    /&ast; do stuff with self &ast;/
  *
  *    self->idle_id = 0;
  *
- *    /&ast; gdk_threads_leave(); would be needed for g_idle_add() &ast;/
+ *    /&ast; bdk_threads_leave(); would be needed for g_idle_add() &ast;/
  *    return FALSE;
  * }
  *
  * static void
  * some_widget_do_stuff_later (SomeWidget *self)
  * {
- *    self->idle_id = gdk_threads_add_idle (idle_callback, self)
+ *    self->idle_id = bdk_threads_add_idle (idle_callback, self)
  *    /&ast; using g_idle_add() here would require thread protection in the callback &ast;/
  * }
  *
@@ -605,51 +605,51 @@ gdk_threads_dispatch_free (gpointer data)
  * Since: 2.12
  */
 guint
-gdk_threads_add_idle_full (gint           priority,
+bdk_threads_add_idle_full (gint           priority,
 		           GSourceFunc    function,
 		           gpointer       data,
 		           GDestroyNotify notify)
 {
-  GdkThreadsDispatch *dispatch;
+  BdkThreadsDispatch *dispatch;
 
   g_return_val_if_fail (function != NULL, 0);
 
-  dispatch = g_slice_new (GdkThreadsDispatch);
+  dispatch = g_slice_new (BdkThreadsDispatch);
   dispatch->func = function;
   dispatch->data = data;
   dispatch->destroy = notify;
 
   return g_idle_add_full (priority,
-                          gdk_threads_dispatch,
+                          bdk_threads_dispatch,
                           dispatch,
-                          gdk_threads_dispatch_free);
+                          bdk_threads_dispatch_free);
 }
 
 /**
- * gdk_threads_add_idle:
+ * bdk_threads_add_idle:
  * @function: function to call
  * @data:     data to pass to @function
  *
- * A wrapper for the common usage of gdk_threads_add_idle_full() 
+ * A wrapper for the common usage of bdk_threads_add_idle_full() 
  * assigning the default priority, #G_PRIORITY_DEFAULT_IDLE.
  *
- * See gdk_threads_add_idle_full().
+ * See bdk_threads_add_idle_full().
  *
  * Return value: the ID (greater than 0) of the event source.
  * 
  * Since: 2.12
  */
 guint
-gdk_threads_add_idle (GSourceFunc    function,
+bdk_threads_add_idle (GSourceFunc    function,
 		      gpointer       data)
 {
-  return gdk_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
+  return bdk_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
                                     function, data, NULL);
 }
 
 
 /**
- * gdk_threads_add_timeout_full:
+ * bdk_threads_add_timeout_full:
  * @priority: the priority of the timeout source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @interval: the time between calls to the function, in milliseconds
@@ -658,7 +658,7 @@ gdk_threads_add_idle (GSourceFunc    function,
  * @data:     data to pass to @function
  * @notify: (allow-none):   function to call when the timeout is removed, or %NULL
  *
- * Sets a function to be called at regular intervals holding the GDK lock,
+ * Sets a function to be called at regular intervals holding the BDK lock,
  * with the given priority.  The function is called repeatedly until it 
  * returns %FALSE, at which point the timeout is automatically destroyed 
  * and the function will not be called again.  The @notify function is
@@ -672,7 +672,7 @@ gdk_threads_add_idle (GSourceFunc    function,
  * (it does not try to 'catch up' time lost in delays).
  *
  * This variant of g_timeout_add_full() can be thought of a MT-safe version 
- * for GTK+ widgets for the following use case:
+ * for BTK+ widgets for the following use case:
  *
  * |[
  * static gboolean timeout_callback (gpointer data)
@@ -707,56 +707,56 @@ gdk_threads_add_idle (GSourceFunc    function,
  * Since: 2.12
  */
 guint
-gdk_threads_add_timeout_full (gint           priority,
+bdk_threads_add_timeout_full (gint           priority,
                               guint          interval,
                               GSourceFunc    function,
                               gpointer       data,
                               GDestroyNotify notify)
 {
-  GdkThreadsDispatch *dispatch;
+  BdkThreadsDispatch *dispatch;
 
   g_return_val_if_fail (function != NULL, 0);
 
-  dispatch = g_slice_new (GdkThreadsDispatch);
+  dispatch = g_slice_new (BdkThreadsDispatch);
   dispatch->func = function;
   dispatch->data = data;
   dispatch->destroy = notify;
 
   return g_timeout_add_full (priority, 
                              interval,
-                             gdk_threads_dispatch, 
+                             bdk_threads_dispatch, 
                              dispatch, 
-                             gdk_threads_dispatch_free);
+                             bdk_threads_dispatch_free);
 }
 
 /**
- * gdk_threads_add_timeout:
+ * bdk_threads_add_timeout:
  * @interval: the time between calls to the function, in milliseconds
  *             (1/1000ths of a second)
  * @function: function to call
  * @data:     data to pass to @function
  *
- * A wrapper for the common usage of gdk_threads_add_timeout_full() 
+ * A wrapper for the common usage of bdk_threads_add_timeout_full() 
  * assigning the default priority, #G_PRIORITY_DEFAULT.
  *
- * See gdk_threads_add_timeout_full().
+ * See bdk_threads_add_timeout_full().
  * 
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.12
  */
 guint
-gdk_threads_add_timeout (guint       interval,
+bdk_threads_add_timeout (guint       interval,
                          GSourceFunc function,
                          gpointer    data)
 {
-  return gdk_threads_add_timeout_full (G_PRIORITY_DEFAULT,
+  return bdk_threads_add_timeout_full (G_PRIORITY_DEFAULT,
                                        interval, function, data, NULL);
 }
 
 
 /**
- * gdk_threads_add_timeout_seconds_full:
+ * bdk_threads_add_timeout_seconds_full:
  * @priority: the priority of the timeout source. Typically this will be in the
  *            range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE.
  * @interval: the time between calls to the function, in seconds
@@ -764,7 +764,7 @@ gdk_threads_add_timeout (guint       interval,
  * @data:     data to pass to @function
  * @notify: (allow-none):   function to call when the timeout is removed, or %NULL
  *
- * A variant of gdk_threads_add_timout_full() with second-granularity.
+ * A variant of bdk_threads_add_timout_full() with second-granularity.
  * See g_timeout_add_seconds_full() for a discussion of why it is
  * a good idea to use this function if you don't need finer granularity.
  *
@@ -773,66 +773,66 @@ gdk_threads_add_timeout (guint       interval,
  * Since: 2.14
  */
 guint
-gdk_threads_add_timeout_seconds_full (gint           priority,
+bdk_threads_add_timeout_seconds_full (gint           priority,
                                       guint          interval,
                                       GSourceFunc    function,
                                       gpointer       data,
                                       GDestroyNotify notify)
 {
-  GdkThreadsDispatch *dispatch;
+  BdkThreadsDispatch *dispatch;
 
   g_return_val_if_fail (function != NULL, 0);
 
-  dispatch = g_slice_new (GdkThreadsDispatch);
+  dispatch = g_slice_new (BdkThreadsDispatch);
   dispatch->func = function;
   dispatch->data = data;
   dispatch->destroy = notify;
 
   return g_timeout_add_seconds_full (priority, 
                                      interval,
-                                     gdk_threads_dispatch, 
+                                     bdk_threads_dispatch, 
                                      dispatch, 
-                                     gdk_threads_dispatch_free);
+                                     bdk_threads_dispatch_free);
 }
 
 /**
- * gdk_threads_add_timeout_seconds:
+ * bdk_threads_add_timeout_seconds:
  * @interval: the time between calls to the function, in seconds
  * @function: function to call
  * @data:     data to pass to @function
  *
- * A wrapper for the common usage of gdk_threads_add_timeout_seconds_full() 
+ * A wrapper for the common usage of bdk_threads_add_timeout_seconds_full() 
  * assigning the default priority, #G_PRIORITY_DEFAULT.
  *
- * For details, see gdk_threads_add_timeout_full().
+ * For details, see bdk_threads_add_timeout_full().
  * 
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
  */
 guint
-gdk_threads_add_timeout_seconds (guint       interval,
+bdk_threads_add_timeout_seconds (guint       interval,
                                  GSourceFunc function,
                                  gpointer    data)
 {
-  return gdk_threads_add_timeout_seconds_full (G_PRIORITY_DEFAULT,
+  return bdk_threads_add_timeout_seconds_full (G_PRIORITY_DEFAULT,
                                                interval, function, data, NULL);
 }
 
 
 const char *
-gdk_get_program_class (void)
+bdk_get_program_class (void)
 {
-  return gdk_progclass;
+  return bdk_progclass;
 }
 
 void
-gdk_set_program_class (const char *program_class)
+bdk_set_program_class (const char *program_class)
 {
-  g_free (gdk_progclass);
+  g_free (bdk_progclass);
 
-  gdk_progclass = g_strdup (program_class);
+  bdk_progclass = g_strdup (program_class);
 }
 
-#define __GDK_C__
-#include "gdkaliasdef.c"
+#define __BDK_C__
+#include "bdkaliasdef.c"

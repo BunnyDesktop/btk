@@ -1,4 +1,4 @@
-/* gtkiconcachevalidator.c
+/* btkiconcachevalidator.c
  * Copyright (C) 2007 Red Hat, Inc
  *
  * This library is free software; you can redistribute it and/or
@@ -17,12 +17,12 @@
  * Boston, MA 02111-1307, USA.
  */
 #include "config.h"
-#include "gtkiconcachevalidator.h"
+#include "btkiconcachevalidator.h"
 
-#include <glib.h>
+#include <bunnylib.h>
 
-#undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include <gdk-pixbuf/gdk-pixdata.h>
+#undef BDK_PIXBUF_DISABLE_DEPRECATED
+#include <bdk-pixbuf/bdk-pixdata.h>
 
 
 #define VERBOSE(x) 
@@ -165,9 +165,9 @@ check_pixel_data (CacheInfo *info,
 
   if (info->flags & CHECK_PIXBUFS) 
     {
-      GdkPixdata data; 
+      BdkPixdata data; 
  
-      check ("pixel data", gdk_pixdata_deserialize (&data, length,
+      check ("pixel data", bdk_pixdata_deserialize (&data, length,
                                                     (const guint8*)info->cache + offset + 8, 
                                                     NULL));
     }
@@ -371,7 +371,7 @@ check_hash (CacheInfo *info,
 }
 
 /**
- * _gtk_icon_cache_validate:
+ * _btk_icon_cache_validate:
  * @info: a CacheInfo structure 
  *
  * Validates the icon cache passed in the @cache and
@@ -385,7 +385,7 @@ check_hash (CacheInfo *info,
  * Return value: %TRUE if the cache is valid
  */
 gboolean 
-_gtk_icon_cache_validate (CacheInfo *info)
+_btk_icon_cache_validate (CacheInfo *info)
 {
   guint32 hash_offset;
   guint32 directory_list_offset;

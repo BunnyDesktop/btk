@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,38 +17,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_PIXMAP_H__
-#define __GAIL_PIXMAP_H__
+#ifndef __BAIL_PIXMAP_H__
+#define __BAIL_PIXMAP_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_PIXMAP                      (gail_pixmap_get_type ())
-#define GAIL_PIXMAP(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_PIXMAP, GailPixmap))
-#define GAIL_PIXMAP_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_PIXMAP, GailPixmapClass))
-#define GAIL_IS_PIXMAP(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_PIXMAP))
-#define GAIL_IS_PIXMAP_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_PIXMAP))
-#define GAIL_PIXMAP_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_PIXMAP, GailPixmapClass))
+#define BAIL_TYPE_PIXMAP                      (bail_pixmap_get_type ())
+#define BAIL_PIXMAP(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PIXMAP, BailPixmap))
+#define BAIL_PIXMAP_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PIXMAP, BailPixmapClass))
+#define BAIL_IS_PIXMAP(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PIXMAP))
+#define BAIL_IS_PIXMAP_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PIXMAP))
+#define BAIL_PIXMAP_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PIXMAP, BailPixmapClass))
 
-typedef struct _GailPixmap              GailPixmap;
-typedef struct _GailPixmapClass         GailPixmapClass;
+typedef struct _BailPixmap              BailPixmap;
+typedef struct _BailPixmapClass         BailPixmapClass;
 
-struct _GailPixmap
+struct _BailPixmap
 {
-  GailWidget parent;
+  BailWidget parent;
 
   gchar*     image_description;
 
 };
 
-GType gail_pixmap_get_type (void);
+GType bail_pixmap_get_type (void);
 
-struct _GailPixmapClass
+struct _BailPixmapClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_PIXMAP_H__ */
+#endif /* __BAIL_PIXMAP_H__ */

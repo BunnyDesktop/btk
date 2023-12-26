@@ -1,4 +1,4 @@
-/* gdkproperty-quartz.c
+/* bdkproperty-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include "gdkproperty.h"
+#include "bdkproperty.h"
 
 static GHashTable *names_to_atoms;
 static GPtrArray *atoms_to_names;
@@ -130,12 +130,12 @@ ensure_atom_tables (void)
     }
 }
 
-static GdkAtom
+static BdkAtom
 intern_atom_internal (const gchar *atom_name, gboolean allocate)
 {
   gpointer result;
   gchar *name;
-  g_return_val_if_fail (atom_name != NULL, GDK_NONE);
+  g_return_val_if_fail (atom_name != NULL, BDK_NONE);
 
   ensure_atom_tables ();
   
@@ -150,22 +150,22 @@ intern_atom_internal (const gchar *atom_name, gboolean allocate)
   return result;  
 }
 
-GdkAtom
-gdk_atom_intern (const gchar *atom_name,
+BdkAtom
+bdk_atom_intern (const gchar *atom_name,
 		 gboolean     only_if_exists)
 {
   return intern_atom_internal (atom_name, TRUE);
 }
 
-GdkAtom
-gdk_atom_intern_static_string (const gchar *atom_name)
+BdkAtom
+bdk_atom_intern_static_string (const gchar *atom_name)
 {
   return intern_atom_internal (atom_name, FALSE);
 }
 
 
 gchar *
-gdk_atom_name (GdkAtom atom)
+bdk_atom_name (BdkAtom atom)
 {
   ensure_atom_tables ();
     
@@ -176,20 +176,20 @@ gdk_atom_name (GdkAtom atom)
 }
 
 void
-gdk_property_delete (GdkWindow *window,
-		     GdkAtom    property)
+bdk_property_delete (BdkWindow *window,
+		     BdkAtom    property)
 {
   /* FIXME: Implement */
 }
 
 gint
-gdk_property_get (GdkWindow   *window,
-		  GdkAtom      property,
-		  GdkAtom      type,
+bdk_property_get (BdkWindow   *window,
+		  BdkAtom      property,
+		  BdkAtom      type,
 		  gulong       offset,
 		  gulong       length,
 		  gint         pdelete,
-		  GdkAtom     *actual_property_type,
+		  BdkAtom     *actual_property_type,
 		  gint        *actual_format_type,
 		  gint        *actual_length,
 		  guchar     **data)
@@ -199,11 +199,11 @@ gdk_property_get (GdkWindow   *window,
 }
 
 void
-gdk_property_change (GdkWindow   *window,
-		     GdkAtom      property,
-		     GdkAtom      type,
+bdk_property_change (BdkWindow   *window,
+		     BdkAtom      property,
+		     BdkAtom      type,
 		     gint         format,
-		     GdkPropMode  mode,
+		     BdkPropMode  mode,
 		     const guchar *data,
 		     gint         nelements)
 {

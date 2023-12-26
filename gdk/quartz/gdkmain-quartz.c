@@ -1,4 +1,4 @@
-/* gdkmain-quartz.c
+/* bdkmain-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -21,80 +21,80 @@
 #include "config.h"
 #include <dlfcn.h>
 
-#include "gdk.h"
+#include "bdk.h"
 #include <ApplicationServices/ApplicationServices.h>
 
-const GOptionEntry _gdk_windowing_args[] = {
+const GOptionEntry _bdk_windowing_args[] = {
   { NULL }
 };
 
 void
-_gdk_windowing_init (void)
+_bdk_windowing_init (void)
 {
   ProcessSerialNumber psn = { 0, kCurrentProcess };
-  void (*_gtk_quartz_framework_init_ptr) (void);
+  void (*_btk_quartz_framework_init_ptr) (void);
 
   /* Make the current process a foreground application, i.e. an app
    * with a user interface, in case we're not running from a .app bundle
    */
   TransformProcessType (&psn, kProcessTransformToForegroundApplication);
 
-  /* Initialize GTK+ framework if there is one. */
-  _gtk_quartz_framework_init_ptr = dlsym (RTLD_DEFAULT, "_gtk_quartz_framework_init");
-  if (_gtk_quartz_framework_init_ptr)
-    _gtk_quartz_framework_init_ptr ();
+  /* Initialize BTK+ framework if there is one. */
+  _btk_quartz_framework_init_ptr = dlsym (RTLD_DEFAULT, "_btk_quartz_framework_init");
+  if (_btk_quartz_framework_init_ptr)
+    _btk_quartz_framework_init_ptr ();
 }
 
 void
-gdk_error_trap_push (void)
+bdk_error_trap_push (void)
 {
 }
 
 gint
-gdk_error_trap_pop (void)
+bdk_error_trap_pop (void)
 {
   return 0;
 }
 
 gchar *
-gdk_get_display (void)
+bdk_get_display (void)
 {
-  return g_strdup (gdk_display_get_name (gdk_display_get_default ()));
+  return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
 }
 
 void
-gdk_notify_startup_complete (void)
+bdk_notify_startup_complete (void)
 {
   /* FIXME: Implement? */
 }
 
 void
-gdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const gchar* startup_id)
 {
   /* FIXME: Implement? */
 }
 
 void          
-gdk_window_set_startup_id (GdkWindow   *window,
+bdk_window_set_startup_id (BdkWindow   *window,
 			   const gchar *startup_id)
 {
   /* FIXME: Implement? */
 }
 
 void
-_gdk_windowing_display_set_sm_client_id (GdkDisplay  *display,
+_bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
 					 const gchar *sm_client_id)
 {
 }
 
 void
-gdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (gboolean use_xshm)
 {
   /* Always on, since we're always on the local machine */
 }
 
 gboolean
-gdk_get_use_xshm (void)
+bdk_get_use_xshm (void)
 {
   return TRUE;
 }

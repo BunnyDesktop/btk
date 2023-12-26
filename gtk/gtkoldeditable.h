@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,38 +18,38 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_OLD_EDITABLE_H__
-#define __GTK_OLD_EDITABLE_H__
+#ifndef __BTK_OLD_EDITABLE_H__
+#define __BTK_OLD_EDITABLE_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_OLD_EDITABLE            (gtk_old_editable_get_type ())
-#define GTK_OLD_EDITABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_OLD_EDITABLE, GtkOldEditable))
-#define GTK_OLD_EDITABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_OLD_EDITABLE, GtkOldEditableClass))
-#define GTK_IS_OLD_EDITABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_OLD_EDITABLE))
-#define GTK_IS_OLD_EDITABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_OLD_EDITABLE))
-#define GTK_OLD_EDITABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_OLD_EDITABLE, GtkOldEditableClass))
+#define BTK_TYPE_OLD_EDITABLE            (btk_old_editable_get_type ())
+#define BTK_OLD_EDITABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_OLD_EDITABLE, BtkOldEditable))
+#define BTK_OLD_EDITABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_OLD_EDITABLE, BtkOldEditableClass))
+#define BTK_IS_OLD_EDITABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_OLD_EDITABLE))
+#define BTK_IS_OLD_EDITABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_OLD_EDITABLE))
+#define BTK_OLD_EDITABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_OLD_EDITABLE, BtkOldEditableClass))
 
 
-typedef struct _GtkOldEditable       GtkOldEditable;
-typedef struct _GtkOldEditableClass  GtkOldEditableClass;
+typedef struct _BtkOldEditable       BtkOldEditable;
+typedef struct _BtkOldEditableClass  BtkOldEditableClass;
 
-typedef void (*GtkTextFunction) (GtkOldEditable  *editable, guint32 time_);
+typedef void (*BtkTextFunction) (BtkOldEditable  *editable, guint32 time_);
 
-struct _GtkOldEditable
+struct _BtkOldEditable
 {
-  GtkWidget widget;
+  BtkWidget widget;
 
   /*< public >*/
   guint      current_pos;
@@ -65,62 +65,62 @@ struct _GtkOldEditable
   gchar *clipboard_text;
 };
 
-struct _GtkOldEditableClass
+struct _BtkOldEditableClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
   
   /* Bindings actions */
-  void (* activate)        (GtkOldEditable *editable);
-  void (* set_editable)    (GtkOldEditable *editable,
+  void (* activate)        (BtkOldEditable *editable);
+  void (* set_editable)    (BtkOldEditable *editable,
 			    gboolean	    is_editable);
-  void (* move_cursor)     (GtkOldEditable *editable,
+  void (* move_cursor)     (BtkOldEditable *editable,
 			    gint            x,
 			    gint            y);
-  void (* move_word)       (GtkOldEditable *editable,
+  void (* move_word)       (BtkOldEditable *editable,
 			    gint            n);
-  void (* move_page)       (GtkOldEditable *editable,
+  void (* move_page)       (BtkOldEditable *editable,
 			    gint            x,
 			    gint            y);
-  void (* move_to_row)     (GtkOldEditable *editable,
+  void (* move_to_row)     (BtkOldEditable *editable,
 			    gint            row);
-  void (* move_to_column)  (GtkOldEditable *editable,
+  void (* move_to_column)  (BtkOldEditable *editable,
 			    gint            row);
-  void (* kill_char)       (GtkOldEditable *editable,
+  void (* kill_char)       (BtkOldEditable *editable,
 			    gint            direction);
-  void (* kill_word)       (GtkOldEditable *editable,
+  void (* kill_word)       (BtkOldEditable *editable,
 			    gint            direction);
-  void (* kill_line)       (GtkOldEditable *editable,
+  void (* kill_line)       (BtkOldEditable *editable,
 			    gint            direction);
-  void (* cut_clipboard)   (GtkOldEditable *editable);
-  void (* copy_clipboard)  (GtkOldEditable *editable);
-  void (* paste_clipboard) (GtkOldEditable *editable);
+  void (* cut_clipboard)   (BtkOldEditable *editable);
+  void (* copy_clipboard)  (BtkOldEditable *editable);
+  void (* paste_clipboard) (BtkOldEditable *editable);
 
   /* Virtual functions. get_chars is in paricular not a signal because
    * it returns malloced memory. The others are not signals because
    * they would not be particularly useful as such. (All changes to
    * selection and position do not go through these functions)
    */
-  void (* update_text)  (GtkOldEditable  *editable,
+  void (* update_text)  (BtkOldEditable  *editable,
 			 gint             start_pos,
 			 gint             end_pos);
-  gchar* (* get_chars)  (GtkOldEditable  *editable,
+  gchar* (* get_chars)  (BtkOldEditable  *editable,
 			 gint             start_pos,
 			 gint             end_pos);
-  void (* set_selection)(GtkOldEditable  *editable,
+  void (* set_selection)(BtkOldEditable  *editable,
 			 gint             start_pos,
 			 gint             end_pos);
-  void (* set_position) (GtkOldEditable  *editable,
+  void (* set_position) (BtkOldEditable  *editable,
 			 gint             position);
 };
 
-GType      gtk_old_editable_get_type        (void) G_GNUC_CONST;
-void       gtk_old_editable_claim_selection (GtkOldEditable *old_editable,
+GType      btk_old_editable_get_type        (void) G_GNUC_CONST;
+void       btk_old_editable_claim_selection (BtkOldEditable *old_editable,
 					     gboolean        claim,
 					     guint32         time_);
-void       gtk_old_editable_changed         (GtkOldEditable *old_editable);
+void       btk_old_editable_changed         (BtkOldEditable *old_editable);
 
 G_END_DECLS
 
-#endif /* __GTK_OLD_EDITABLE_H__ */
+#endif /* __BTK_OLD_EDITABLE_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

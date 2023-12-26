@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackend.h: Abstract printer backend interfaces
+/* BTK - The GIMP Toolkit
+ * btkprintbackend.h: Abstract printer backend interfaces
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,34 +21,34 @@
 #include "config.h"
 #include <string.h>
 
-#include <gmodule.h>
+#include <bmodule.h>
 
-#include "gtkintl.h"
-#include "gtkmodules.h"
-#include "gtkmarshalers.h"
-#include "gtkprivate.h"
-#include "gtkprintbackend.h"
-#include "gtkalias.h"
+#include "btkintl.h"
+#include "btkmodules.h"
+#include "btkmarshalers.h"
+#include "btkprivate.h"
+#include "btkprintbackend.h"
+#include "btkalias.h"
 
-#define GTK_PRINT_BACKEND_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), GTK_TYPE_PRINT_BACKEND, GtkPrintBackendPrivate))
+#define BTK_PRINT_BACKEND_GET_PRIVATE(o)  \
+   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendPrivate))
 
-static void gtk_print_backend_dispose      (GObject      *object);
-static void gtk_print_backend_set_property (GObject      *object,
+static void btk_print_backend_dispose      (GObject      *object);
+static void btk_print_backend_set_property (GObject      *object,
                                             guint         prop_id,
                                             const GValue *value,
                                             GParamSpec   *pspec);
-static void gtk_print_backend_get_property (GObject      *object,
+static void btk_print_backend_get_property (GObject      *object,
                                             guint         prop_id,
                                             GValue       *value,
                                             GParamSpec   *pspec);
 
-struct _GtkPrintBackendPrivate
+struct _BtkPrintBackendPrivate
 {
   GHashTable *printers;
   guint printer_list_requested : 1;
   guint printer_list_done : 1;
-  GtkPrintBackendStatus status;
+  BtkPrintBackendStatus status;
   char **auth_info_required;
   char **auth_info;
 };
@@ -74,22 +74,22 @@ enum
 static GObjectClass *backend_parent_class;
 
 GQuark
-gtk_print_backend_error_quark (void)
+btk_print_backend_error_quark (void)
 {
   static GQuark quark = 0;
   if (quark == 0)
-    quark = g_quark_from_static_string ("gtk-print-backend-error-quark");
+    quark = g_quark_from_static_string ("btk-print-backend-error-quark");
   return quark;
 }
 
 /*****************************************
- *     GtkPrintBackendModule modules     *
+ *     BtkPrintBackendModule modules     *
  *****************************************/
 
-typedef struct _GtkPrintBackendModule GtkPrintBackendModule;
-typedef struct _GtkPrintBackendModuleClass GtkPrintBackendModuleClass;
+typedef struct _BtkPrintBackendModule BtkPrintBackendModule;
+typedef struct _BtkPrintBackendModuleClass BtkPrintBackendModuleClass;
 
-struct _GtkPrintBackendModule
+struct _BtkPrintBackendModule
 {
   GTypeModule parent_instance;
   
@@ -97,26 +97,26 @@ struct _GtkPrintBackendModule
 
   void             (*init)     (GTypeModule    *module);
   void             (*exit)     (void);
-  GtkPrintBackend* (*create)   (void);
+  BtkPrintBackend* (*create)   (void);
 
   gchar *path;
 };
 
-struct _GtkPrintBackendModuleClass
+struct _BtkPrintBackendModuleClass
 {
   GTypeModuleClass parent_class;
 };
 
-G_DEFINE_TYPE (GtkPrintBackendModule, _gtk_print_backend_module, G_TYPE_TYPE_MODULE)
-#define GTK_TYPE_PRINT_BACKEND_MODULE      (_gtk_print_backend_module_get_type ())
-#define GTK_PRINT_BACKEND_MODULE(module)   (G_TYPE_CHECK_INSTANCE_CAST ((module), GTK_TYPE_PRINT_BACKEND_MODULE, GtkPrintBackendModule))
+G_DEFINE_TYPE (BtkPrintBackendModule, _btk_print_backend_module, G_TYPE_TYPE_MODULE)
+#define BTK_TYPE_PRINT_BACKEND_MODULE      (_btk_print_backend_module_get_type ())
+#define BTK_PRINT_BACKEND_MODULE(module)   (G_TYPE_CHECK_INSTANCE_CAST ((module), BTK_TYPE_PRINT_BACKEND_MODULE, BtkPrintBackendModule))
 
 static GSList *loaded_backends;
 
 static gboolean
-gtk_print_backend_module_load (GTypeModule *module)
+btk_print_backend_module_load (GTypeModule *module)
 {
-  GtkPrintBackendModule *pb_module = GTK_PRINT_BACKEND_MODULE (module); 
+  BtkPrintBackendModule *pb_module = BTK_PRINT_BACKEND_MODULE (module); 
   gpointer initp, exitp, createp;
  
   pb_module->library = g_module_open (pb_module->path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
@@ -152,9 +152,9 @@ gtk_print_backend_module_load (GTypeModule *module)
 }
 
 static void
-gtk_print_backend_module_unload (GTypeModule *module)
+btk_print_backend_module_unload (GTypeModule *module)
 {
-  GtkPrintBackendModule *pb_module = GTK_PRINT_BACKEND_MODULE (module);
+  BtkPrintBackendModule *pb_module = BTK_PRINT_BACKEND_MODULE (module);
   
   pb_module->exit();
 
@@ -170,37 +170,37 @@ gtk_print_backend_module_unload (GTypeModule *module)
  * initialization
  */
 static void
-gtk_print_backend_module_finalize (GObject *object)
+btk_print_backend_module_finalize (GObject *object)
 {
-  GtkPrintBackendModule *module = GTK_PRINT_BACKEND_MODULE (object);
+  BtkPrintBackendModule *module = BTK_PRINT_BACKEND_MODULE (object);
 
   g_free (module->path);
 
-  G_OBJECT_CLASS (_gtk_print_backend_module_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_print_backend_module_parent_class)->finalize (object);
 }
 
 static void
-_gtk_print_backend_module_class_init (GtkPrintBackendModuleClass *class)
+_btk_print_backend_module_class_init (BtkPrintBackendModuleClass *class)
 {
   GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
-  module_class->load = gtk_print_backend_module_load;
-  module_class->unload = gtk_print_backend_module_unload;
+  module_class->load = btk_print_backend_module_load;
+  module_class->unload = btk_print_backend_module_unload;
 
-  gobject_class->finalize = gtk_print_backend_module_finalize;
+  bobject_class->finalize = btk_print_backend_module_finalize;
 }
 
 static void 
-gtk_print_backend_set_property (GObject      *object,
+btk_print_backend_set_property (GObject      *object,
                                 guint         prop_id,
                                 const GValue *value,
                                 GParamSpec   *pspec)
 {
-  GtkPrintBackend *backend = GTK_PRINT_BACKEND (object);
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackend *backend = BTK_PRINT_BACKEND (object);
+  BtkPrintBackendPrivate *priv;
 
-  priv = backend->priv = GTK_PRINT_BACKEND_GET_PRIVATE (backend); 
+  priv = backend->priv = BTK_PRINT_BACKEND_GET_PRIVATE (backend); 
 
   switch (prop_id)
     {
@@ -214,15 +214,15 @@ gtk_print_backend_set_property (GObject      *object,
 }
 
 static void 
-gtk_print_backend_get_property (GObject    *object,
+btk_print_backend_get_property (GObject    *object,
                                 guint       prop_id,
                                 GValue     *value,
                                 GParamSpec *pspec)
 {
-  GtkPrintBackend *backend = GTK_PRINT_BACKEND (object);
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackend *backend = BTK_PRINT_BACKEND (object);
+  BtkPrintBackendPrivate *priv;
 
-  priv = backend->priv = GTK_PRINT_BACKEND_GET_PRIVATE (backend); 
+  priv = backend->priv = BTK_PRINT_BACKEND_GET_PRIVATE (backend); 
 
   switch (prop_id)
     {
@@ -236,14 +236,14 @@ gtk_print_backend_get_property (GObject    *object,
 }
 
 static void
-_gtk_print_backend_module_init (GtkPrintBackendModule *pb_module)
+_btk_print_backend_module_init (BtkPrintBackendModule *pb_module)
 {
 }
 
-static GtkPrintBackend *
-_gtk_print_backend_module_create (GtkPrintBackendModule *pb_module)
+static BtkPrintBackend *
+_btk_print_backend_module_create (BtkPrintBackendModule *pb_module)
 {
-  GtkPrintBackend *pb;
+  BtkPrintBackend *pb;
   
   if (g_type_module_use (G_TYPE_MODULE (pb_module)))
     {
@@ -254,33 +254,33 @@ _gtk_print_backend_module_create (GtkPrintBackendModule *pb_module)
   return NULL;
 }
 
-static GtkPrintBackend *
-_gtk_print_backend_create (const gchar *backend_name)
+static BtkPrintBackend *
+_btk_print_backend_create (const gchar *backend_name)
 {
   GSList *l;
   gchar *module_path;
   gchar *full_name;
-  GtkPrintBackendModule *pb_module;
-  GtkPrintBackend *pb;
+  BtkPrintBackendModule *pb_module;
+  BtkPrintBackend *pb;
 
   for (l = loaded_backends; l != NULL; l = l->next)
     {
       pb_module = l->data;
       
       if (strcmp (G_TYPE_MODULE (pb_module)->name, backend_name) == 0)
-	return _gtk_print_backend_module_create (pb_module);
+	return _btk_print_backend_module_create (pb_module);
     }
 
   pb = NULL;
   if (g_module_supported ())
     {
       full_name = g_strconcat ("printbackend-", backend_name, NULL);
-      module_path = _gtk_find_module (full_name, "printbackends");
+      module_path = _btk_find_module (full_name, "printbackends");
       g_free (full_name);
 
       if (module_path)
 	{
-	  pb_module = g_object_new (GTK_TYPE_PRINT_BACKEND_MODULE, NULL);
+	  pb_module = g_object_new (BTK_TYPE_PRINT_BACKEND_MODULE, NULL);
 
 	  g_type_module_set_name (G_TYPE_MODULE (pb_module), backend_name);
 	  pb_module->path = g_strdup (module_path);
@@ -288,7 +288,7 @@ _gtk_print_backend_create (const gchar *backend_name)
 	  loaded_backends = g_slist_prepend (loaded_backends,
 		   		             pb_module);
 
-	  pb = _gtk_print_backend_module_create (pb_module);
+	  pb = _btk_print_backend_module_create (pb_module);
 
 	  /* Increase use-count so that we don't unload print backends.
 	   * There is a problem with module unloading in the cups module,
@@ -304,27 +304,27 @@ _gtk_print_backend_create (const gchar *backend_name)
 }
 
 /**
- * gtk_printer_backend_load_modules:
+ * btk_printer_backend_load_modules:
  *
- * Return value: (element-type GtkPrintBackend) (transfer container):
+ * Return value: (element-type BtkPrintBackend) (transfer container):
  */
 GList *
-gtk_print_backend_load_modules (void)
+btk_print_backend_load_modules (void)
 {
   GList *result;
-  GtkPrintBackend *backend;
+  BtkPrintBackend *backend;
   gchar *setting;
   gchar **backends;
   gint i;
-  GtkSettings *settings;
+  BtkSettings *settings;
 
   result = NULL;
 
-  settings = gtk_settings_get_default ();
+  settings = btk_settings_get_default ();
   if (settings)
-    g_object_get (settings, "gtk-print-backends", &setting, NULL);
+    g_object_get (settings, "btk-print-backends", &setting, NULL);
   else
-    setting = g_strdup (GTK_PRINT_BACKENDS);
+    setting = g_strdup (BTK_PRINT_BACKENDS);
 
   backends = g_strsplit (setting, ",", -1);
 
@@ -332,7 +332,7 @@ gtk_print_backend_load_modules (void)
     {
       g_strchug (backends[i]);
       g_strchomp (backends[i]);
-      backend = _gtk_print_backend_create (backends[i]);
+      backend = _btk_print_backend_create (backends[i]);
       
       if (backend)
         result = g_list_append (result, backend);
@@ -345,23 +345,23 @@ gtk_print_backend_load_modules (void)
 }
 
 /*****************************************
- *             GtkPrintBackend           *
+ *             BtkPrintBackend           *
  *****************************************/
 
-G_DEFINE_TYPE (GtkPrintBackend, gtk_print_backend, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrintBackend, btk_print_backend, G_TYPE_OBJECT)
 
-static void                 fallback_printer_request_details       (GtkPrinter          *printer);
-static gboolean             fallback_printer_mark_conflicts        (GtkPrinter          *printer,
-								    GtkPrinterOptionSet *options);
-static gboolean             fallback_printer_get_hard_margins      (GtkPrinter          *printer,
+static void                 fallback_printer_request_details       (BtkPrinter          *printer);
+static gboolean             fallback_printer_mark_conflicts        (BtkPrinter          *printer,
+								    BtkPrinterOptionSet *options);
+static gboolean             fallback_printer_get_hard_margins      (BtkPrinter          *printer,
                                                                     gdouble             *top,
                                                                     gdouble             *bottom,
                                                                     gdouble             *left,
                                                                     gdouble             *right);
-static GList *              fallback_printer_list_papers           (GtkPrinter          *printer);
-static GtkPageSetup *       fallback_printer_get_default_page_size (GtkPrinter          *printer);
-static GtkPrintCapabilities fallback_printer_get_capabilities      (GtkPrinter          *printer);
-static void                 request_password                       (GtkPrintBackend     *backend,
+static GList *              fallback_printer_list_papers           (BtkPrinter          *printer);
+static BtkPageSetup *       fallback_printer_get_default_page_size (BtkPrinter          *printer);
+static BtkPrintCapabilities fallback_printer_get_capabilities      (BtkPrinter          *printer);
+static void                 request_password                       (BtkPrintBackend     *backend,
                                                                     gpointer             auth_info_required,
                                                                     gpointer             auth_info_default,
                                                                     gpointer             auth_info_display,
@@ -369,16 +369,16 @@ static void                 request_password                       (GtkPrintBack
                                                                     const gchar         *prompt);
   
 static void
-gtk_print_backend_class_init (GtkPrintBackendClass *class)
+btk_print_backend_class_init (BtkPrintBackendClass *class)
 {
   GObjectClass *object_class;
   object_class = (GObjectClass *) class;
 
   backend_parent_class = g_type_class_peek_parent (class);
   
-  object_class->dispose = gtk_print_backend_dispose;
-  object_class->set_property = gtk_print_backend_set_property;
-  object_class->get_property = gtk_print_backend_get_property;
+  object_class->dispose = btk_print_backend_dispose;
+  object_class->set_property = btk_print_backend_set_property;
+  object_class->get_property = btk_print_backend_get_property;
 
   class->printer_request_details = fallback_printer_request_details;
   class->printer_mark_conflicts = fallback_printer_mark_conflicts;
@@ -393,18 +393,18 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
                                    g_param_spec_int ("status",
                                                      "Status",
                                                      "The status of the print backend",
-                                                     GTK_PRINT_BACKEND_STATUS_UNKNOWN,
-                                                     GTK_PRINT_BACKEND_STATUS_UNAVAILABLE,
-                                                     GTK_PRINT_BACKEND_STATUS_UNKNOWN,
-                                                     GTK_PARAM_READWRITE)); 
+                                                     BTK_PRINT_BACKEND_STATUS_UNKNOWN,
+                                                     BTK_PRINT_BACKEND_STATUS_UNAVAILABLE,
+                                                     BTK_PRINT_BACKEND_STATUS_UNKNOWN,
+                                                     BTK_PARAM_READWRITE)); 
 
-  g_type_class_add_private (class, sizeof (GtkPrintBackendPrivate));
+  g_type_class_add_private (class, sizeof (BtkPrintBackendPrivate));
   
   signals[PRINTER_LIST_CHANGED] =
     g_signal_new (I_("printer-list-changed"),
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkPrintBackendClass, printer_list_changed),
+		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_list_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
@@ -412,7 +412,7 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
     g_signal_new (I_("printer-list-done"),
 		    G_TYPE_FROM_CLASS (class),
 		    G_SIGNAL_RUN_LAST,
-		    G_STRUCT_OFFSET (GtkPrintBackendClass, printer_list_done),
+		    G_STRUCT_OFFSET (BtkPrintBackendClass, printer_list_done),
 		    NULL, NULL,
 		    g_cclosure_marshal_VOID__VOID,
 		    G_TYPE_NONE, 0);
@@ -420,42 +420,42 @@ gtk_print_backend_class_init (GtkPrintBackendClass *class)
     g_signal_new (I_("printer-added"),
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkPrintBackendClass, printer_added),
+		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_added),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, GTK_TYPE_PRINTER);
+		  G_TYPE_NONE, 1, BTK_TYPE_PRINTER);
   signals[PRINTER_REMOVED] =
     g_signal_new (I_("printer-removed"),
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkPrintBackendClass, printer_removed),
+		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_removed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, GTK_TYPE_PRINTER);
+		  G_TYPE_NONE, 1, BTK_TYPE_PRINTER);
   signals[PRINTER_STATUS_CHANGED] =
     g_signal_new (I_("printer-status-changed"),
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkPrintBackendClass, printer_status_changed),
+		  G_STRUCT_OFFSET (BtkPrintBackendClass, printer_status_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, GTK_TYPE_PRINTER);
+		  G_TYPE_NONE, 1, BTK_TYPE_PRINTER);
   signals[REQUEST_PASSWORD] =
     g_signal_new (I_("request-password"),
 		  G_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkPrintBackendClass, request_password),
+		  G_STRUCT_OFFSET (BtkPrintBackendClass, request_password),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__POINTER_POINTER_POINTER_POINTER_STRING,
+		  _btk_marshal_VOID__POINTER_POINTER_POINTER_POINTER_STRING,
 		  G_TYPE_NONE, 5, G_TYPE_POINTER, G_TYPE_POINTER, G_TYPE_POINTER, G_TYPE_POINTER, G_TYPE_STRING);
 }
 
 static void
-gtk_print_backend_init (GtkPrintBackend *backend)
+btk_print_backend_init (BtkPrintBackend *backend)
 {
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackendPrivate *priv;
 
-  priv = backend->priv = GTK_PRINT_BACKEND_GET_PRIVATE (backend); 
+  priv = backend->priv = BTK_PRINT_BACKEND_GET_PRIVATE (backend); 
 
   priv->printers = g_hash_table_new_full (g_str_hash, g_str_equal, 
 					  (GDestroyNotify) g_free,
@@ -465,16 +465,16 @@ gtk_print_backend_init (GtkPrintBackend *backend)
 }
 
 static void
-gtk_print_backend_dispose (GObject *object)
+btk_print_backend_dispose (GObject *object)
 {
-  GtkPrintBackend *backend;
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackend *backend;
+  BtkPrintBackendPrivate *priv;
 
-  backend = GTK_PRINT_BACKEND (object);
+  backend = BTK_PRINT_BACKEND (object);
   priv = backend->priv;
 
   /* We unref the printers in dispose, not in finalize so that
-   * we can break refcount cycles with gtk_print_backend_destroy 
+   * we can break refcount cycles with btk_print_backend_destroy 
    */
   if (priv->printers)
     {
@@ -487,19 +487,19 @@ gtk_print_backend_dispose (GObject *object)
 
 
 static void
-fallback_printer_request_details (GtkPrinter *printer)
+fallback_printer_request_details (BtkPrinter *printer)
 {
 }
 
 static gboolean
-fallback_printer_mark_conflicts (GtkPrinter          *printer,
-				 GtkPrinterOptionSet *options)
+fallback_printer_mark_conflicts (BtkPrinter          *printer,
+				 BtkPrinterOptionSet *options)
 {
   return FALSE;
 }
 
 static gboolean
-fallback_printer_get_hard_margins (GtkPrinter *printer,
+fallback_printer_get_hard_margins (BtkPrinter *printer,
 				   gdouble    *top,
 				   gdouble    *bottom,
 				   gdouble    *left,
@@ -509,19 +509,19 @@ fallback_printer_get_hard_margins (GtkPrinter *printer,
 }
 
 static GList *
-fallback_printer_list_papers (GtkPrinter *printer)
+fallback_printer_list_papers (BtkPrinter *printer)
 {
   return NULL;
 }
 
-static GtkPageSetup *
-fallback_printer_get_default_page_size (GtkPrinter *printer)
+static BtkPageSetup *
+fallback_printer_get_default_page_size (BtkPrinter *printer)
 {
   return NULL;
 }
 
-static GtkPrintCapabilities
-fallback_printer_get_capabilities (GtkPrinter *printer)
+static BtkPrintCapabilities
+fallback_printer_get_capabilities (BtkPrinter *printer)
 {
   return 0;
 }
@@ -532,27 +532,27 @@ printer_hash_to_sorted_active_list (const gchar  *key,
                                     gpointer      value,
                                     GList       **out_list)
 {
-  GtkPrinter *printer;
+  BtkPrinter *printer;
 
-  printer = GTK_PRINTER (value);
+  printer = BTK_PRINTER (value);
 
-  if (gtk_printer_get_name (printer) == NULL)
+  if (btk_printer_get_name (printer) == NULL)
     return;
 
-  if (!gtk_printer_is_active (printer))
+  if (!btk_printer_is_active (printer))
     return;
 
-  *out_list = g_list_insert_sorted (*out_list, value, (GCompareFunc) gtk_printer_compare);
+  *out_list = g_list_insert_sorted (*out_list, value, (GCompareFunc) btk_printer_compare);
 }
 
 
 void
-gtk_print_backend_add_printer (GtkPrintBackend *backend,
-			       GtkPrinter      *printer)
+btk_print_backend_add_printer (BtkPrintBackend *backend,
+			       BtkPrinter      *printer)
 {
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackendPrivate *priv;
   
-  g_return_if_fail (GTK_IS_PRINT_BACKEND (backend));
+  g_return_if_fail (BTK_IS_PRINT_BACKEND (backend));
 
   priv = backend->priv;
 
@@ -560,28 +560,28 @@ gtk_print_backend_add_printer (GtkPrintBackend *backend,
     return;
   
   g_hash_table_insert (priv->printers,
-		       g_strdup (gtk_printer_get_name (printer)), 
+		       g_strdup (btk_printer_get_name (printer)), 
 		       g_object_ref (printer));
 }
 
 void
-gtk_print_backend_remove_printer (GtkPrintBackend *backend,
-				  GtkPrinter      *printer)
+btk_print_backend_remove_printer (BtkPrintBackend *backend,
+				  BtkPrinter      *printer)
 {
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackendPrivate *priv;
   
-  g_return_if_fail (GTK_IS_PRINT_BACKEND (backend));
+  g_return_if_fail (BTK_IS_PRINT_BACKEND (backend));
   priv = backend->priv;
 
   if (!priv->printers)
     return;
   
   g_hash_table_remove (priv->printers,
-		       gtk_printer_get_name (printer));
+		       btk_printer_get_name (printer));
 }
 
 void
-gtk_print_backend_set_list_done (GtkPrintBackend *backend)
+btk_print_backend_set_list_done (BtkPrintBackend *backend)
 {
   if (!backend->priv->printer_list_done)
     {
@@ -592,17 +592,17 @@ gtk_print_backend_set_list_done (GtkPrintBackend *backend)
 
 
 /**
- * gtk_print_backend_get_printer_list:
+ * btk_print_backend_get_printer_list:
  *
- * Return value: (element-type GtkPrinter) (transfer container):
+ * Return value: (element-type BtkPrinter) (transfer container):
  */
 GList *
-gtk_print_backend_get_printer_list (GtkPrintBackend *backend)
+btk_print_backend_get_printer_list (BtkPrintBackend *backend)
 {
-  GtkPrintBackendPrivate *priv;
+  BtkPrintBackendPrivate *priv;
   GList *result;
   
-  g_return_val_if_fail (GTK_IS_PRINT_BACKEND (backend), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_BACKEND (backend), NULL);
 
   priv = backend->priv;
 
@@ -614,8 +614,8 @@ gtk_print_backend_get_printer_list (GtkPrintBackend *backend)
 
   if (!priv->printer_list_requested && priv->printers != NULL)
     {
-      if (GTK_PRINT_BACKEND_GET_CLASS (backend)->request_printer_list)
-	GTK_PRINT_BACKEND_GET_CLASS (backend)->request_printer_list (backend);
+      if (BTK_PRINT_BACKEND_GET_CLASS (backend)->request_printer_list)
+	BTK_PRINT_BACKEND_GET_CLASS (backend)->request_printer_list (backend);
       priv->printer_list_requested = TRUE;
     }
 
@@ -623,21 +623,21 @@ gtk_print_backend_get_printer_list (GtkPrintBackend *backend)
 }
 
 gboolean
-gtk_print_backend_printer_list_is_done (GtkPrintBackend *print_backend)
+btk_print_backend_printer_list_is_done (BtkPrintBackend *print_backend)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_BACKEND (print_backend), TRUE);
+  g_return_val_if_fail (BTK_IS_PRINT_BACKEND (print_backend), TRUE);
 
   return print_backend->priv->printer_list_done;
 }
 
-GtkPrinter *
-gtk_print_backend_find_printer (GtkPrintBackend *backend,
+BtkPrinter *
+btk_print_backend_find_printer (BtkPrintBackend *backend,
                                 const gchar     *printer_name)
 {
-  GtkPrintBackendPrivate *priv;
-  GtkPrinter *printer;
+  BtkPrintBackendPrivate *priv;
+  BtkPrinter *printer;
   
-  g_return_val_if_fail (GTK_IS_PRINT_BACKEND (backend), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_BACKEND (backend), NULL);
 
   priv = backend->priv;
 
@@ -650,16 +650,16 @@ gtk_print_backend_find_printer (GtkPrintBackend *backend,
 }
 
 void
-gtk_print_backend_print_stream (GtkPrintBackend        *backend,
-                                GtkPrintJob            *job,
-                                GIOChannel             *data_io,
-                                GtkPrintJobCompleteFunc callback,
+btk_print_backend_print_stream (BtkPrintBackend        *backend,
+                                BtkPrintJob            *job,
+                                BUNNYIOChannel             *data_io,
+                                BtkPrintJobCompleteFunc callback,
                                 gpointer                user_data,
 				GDestroyNotify          dnotify)
 {
-  g_return_if_fail (GTK_IS_PRINT_BACKEND (backend));
+  g_return_if_fail (BTK_IS_PRINT_BACKEND (backend));
 
-  GTK_PRINT_BACKEND_GET_CLASS (backend)->print_stream (backend,
+  BTK_PRINT_BACKEND_GET_CLASS (backend)->print_stream (backend,
 						       job,
 						       data_io,
 						       callback,
@@ -668,18 +668,18 @@ gtk_print_backend_print_stream (GtkPrintBackend        *backend,
 }
 
 void 
-gtk_print_backend_set_password (GtkPrintBackend  *backend,
+btk_print_backend_set_password (BtkPrintBackend  *backend,
                                 gchar           **auth_info_required,
                                 gchar           **auth_info)
 {
-  g_return_if_fail (GTK_IS_PRINT_BACKEND (backend));
+  g_return_if_fail (BTK_IS_PRINT_BACKEND (backend));
 
-  if (GTK_PRINT_BACKEND_GET_CLASS (backend)->set_password)
-    GTK_PRINT_BACKEND_GET_CLASS (backend)->set_password (backend, auth_info_required, auth_info);
+  if (BTK_PRINT_BACKEND_GET_CLASS (backend)->set_password)
+    BTK_PRINT_BACKEND_GET_CLASS (backend)->set_password (backend, auth_info_required, auth_info);
 }
 
 static void
-store_entry (GtkEntry  *entry,
+store_entry (BtkEntry  *entry,
              gpointer   user_data)
 {
   gchar **data = (gchar **) user_data;
@@ -690,21 +690,21 @@ store_entry (GtkEntry  *entry,
       g_free (*data);
     }
 
-  *data = g_strdup (gtk_entry_get_text (entry));
+  *data = g_strdup (btk_entry_get_text (entry));
 }
 
 static void
-password_dialog_response (GtkWidget       *dialog,
+password_dialog_response (BtkWidget       *dialog,
                           gint             response_id,
-                          GtkPrintBackend *backend)
+                          BtkPrintBackend *backend)
 {
-  GtkPrintBackendPrivate *priv = backend->priv;
+  BtkPrintBackendPrivate *priv = backend->priv;
   gint i;
 
-  if (response_id == GTK_RESPONSE_OK)
-    gtk_print_backend_set_password (backend, priv->auth_info_required, priv->auth_info);
+  if (response_id == BTK_RESPONSE_OK)
+    btk_print_backend_set_password (backend, priv->auth_info_required, priv->auth_info);
   else
-    gtk_print_backend_set_password (backend, priv->auth_info_required, NULL);
+    btk_print_backend_set_password (backend, priv->auth_info_required, NULL);
 
   for (i = 0; i < g_strv_length (priv->auth_info_required); i++)
     if (priv->auth_info[i] != NULL)
@@ -718,22 +718,22 @@ password_dialog_response (GtkWidget       *dialog,
 
   g_strfreev (priv->auth_info_required);
 
-  gtk_widget_destroy (dialog);
+  btk_widget_destroy (dialog);
 
   g_object_unref (backend);
 }
 
 static void
-request_password (GtkPrintBackend  *backend,
+request_password (BtkPrintBackend  *backend,
                   gpointer          auth_info_required,
                   gpointer          auth_info_default,
                   gpointer          auth_info_display,
                   gpointer          auth_info_visible,
                   const gchar      *prompt)
 {
-  GtkPrintBackendPrivate *priv = backend->priv;
-  GtkWidget *dialog, *box, *main_box, *label, *icon, *vbox, *entry;
-  GtkWidget *focus = NULL;
+  BtkPrintBackendPrivate *priv = backend->priv;
+  BtkWidget *dialog, *box, *main_box, *label, *icon, *vbox, *entry;
+  BtkWidget *focus = NULL;
   gchar     *markup;
   gint       length;
   gint       i;
@@ -746,42 +746,42 @@ request_password (GtkPrintBackend  *backend,
   length = g_strv_length (ai_required);
   priv->auth_info = g_new0 (gchar *, length + 1);
 
-  dialog = gtk_dialog_new_with_buttons ( _("Authentication"), NULL, GTK_DIALOG_MODAL, 
-                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                         GTK_STOCK_OK, GTK_RESPONSE_OK,
+  dialog = btk_dialog_new_with_buttons ( _("Authentication"), NULL, BTK_DIALOG_MODAL, 
+                                         BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL,
+                                         BTK_STOCK_OK, BTK_RESPONSE_OK,
                                          NULL);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-  gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+  btk_dialog_set_default_response (BTK_DIALOG (dialog), BTK_RESPONSE_OK);
+  btk_dialog_set_has_separator (BTK_DIALOG (dialog), FALSE);
 
-  main_box = gtk_hbox_new (FALSE, 0);
+  main_box = btk_hbox_new (FALSE, 0);
 
   /* Left */
-  icon = gtk_image_new_from_stock (GTK_STOCK_DIALOG_AUTHENTICATION, GTK_ICON_SIZE_DIALOG);
-  gtk_misc_set_alignment (GTK_MISC (icon), 0.5, 0.0);
-  gtk_misc_set_padding (GTK_MISC (icon), 6, 6);
+  icon = btk_image_new_from_stock (BTK_STOCK_DIALOG_AUTHENTICATION, BTK_ICON_SIZE_DIALOG);
+  btk_misc_set_alignment (BTK_MISC (icon), 0.5, 0.0);
+  btk_misc_set_padding (BTK_MISC (icon), 6, 6);
 
 
   /* Right */
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_widget_set_size_request (GTK_WIDGET (vbox), 320, -1);
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_widget_set_size_request (BTK_WIDGET (vbox), 320, -1);
 
   /* Right - 1. */
-  label = gtk_label_new (NULL);
+  label = btk_label_new (NULL);
   markup = g_markup_printf_escaped ("<span weight=\"bold\" size=\"large\">%s</span>", prompt);
-  gtk_label_set_markup (GTK_LABEL (label), markup);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_widget_set_size_request (GTK_WIDGET (label), 320, -1);
+  btk_label_set_markup (BTK_LABEL (label), markup);
+  btk_label_set_line_wrap (BTK_LABEL (label), TRUE);
+  btk_widget_set_size_request (BTK_WIDGET (label), 320, -1);
   g_free (markup);
 
 
   /* Packing */
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), main_box, TRUE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (BTK_DIALOG (dialog)->vbox), main_box, TRUE, FALSE, 0);
 
-  gtk_box_pack_start (GTK_BOX (main_box), icon, FALSE, FALSE, 6);
-  gtk_box_pack_start (GTK_BOX (main_box), vbox, FALSE, FALSE, 6);
+  btk_box_pack_start (BTK_BOX (main_box), icon, FALSE, FALSE, 6);
+  btk_box_pack_start (BTK_BOX (main_box), vbox, FALSE, FALSE, 6);
 
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 6);
+  btk_box_pack_start (BTK_BOX (vbox), label, FALSE, TRUE, 6);
   
   /* Right - 2. */
   for (i = 0; i < length; i++)
@@ -789,24 +789,24 @@ request_password (GtkPrintBackend  *backend,
       priv->auth_info[i] = g_strdup (ai_default[i]);
       if (ai_display[i] != NULL)
         {
-          box = gtk_hbox_new (TRUE, 0);
+          box = btk_hbox_new (TRUE, 0);
 
-          label = gtk_label_new (ai_display[i]);
-          gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+          label = btk_label_new (ai_display[i]);
+          btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.5);
 
-          entry = gtk_entry_new ();
+          entry = btk_entry_new ();
           focus = entry;
 
           if (ai_default[i] != NULL)
-            gtk_entry_set_text (GTK_ENTRY (entry), ai_default[i]);
+            btk_entry_set_text (BTK_ENTRY (entry), ai_default[i]);
 
-          gtk_entry_set_visibility (GTK_ENTRY (entry), ai_visible[i]);
-          gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
+          btk_entry_set_visibility (BTK_ENTRY (entry), ai_visible[i]);
+          btk_entry_set_activates_default (BTK_ENTRY (entry), TRUE);
 
-          gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, TRUE, 6);
+          btk_box_pack_start (BTK_BOX (vbox), box, FALSE, TRUE, 6);
 
-          gtk_box_pack_start (GTK_BOX (box), label, TRUE, TRUE, 0);
-          gtk_box_pack_start (GTK_BOX (box), entry, TRUE, TRUE, 0);
+          btk_box_pack_start (BTK_BOX (box), label, TRUE, TRUE, 0);
+          btk_box_pack_start (BTK_BOX (box), entry, TRUE, TRUE, 0);
 
           g_signal_connect (entry, "changed",
                             G_CALLBACK (store_entry), &(priv->auth_info[i]));
@@ -815,7 +815,7 @@ request_password (GtkPrintBackend  *backend,
 
   if (focus != NULL)
     {
-      gtk_widget_grab_focus (focus);
+      btk_widget_grab_focus (focus);
       focus = NULL;
     }
 
@@ -823,11 +823,11 @@ request_password (GtkPrintBackend  *backend,
   g_signal_connect (G_OBJECT (dialog), "response",
                     G_CALLBACK (password_dialog_response), backend);
 
-  gtk_widget_show_all (dialog);
+  btk_widget_show_all (dialog);
 }
 
 void
-gtk_print_backend_destroy (GtkPrintBackend *print_backend)
+btk_print_backend_destroy (BtkPrintBackend *print_backend)
 {
   /* The lifecycle of print backends and printers are tied, such that
    * the backend owns the printers, but the printers also ref the backend.
@@ -839,5 +839,5 @@ gtk_print_backend_destroy (GtkPrintBackend *print_backend)
 }
 
 
-#define __GTK_PRINT_BACKEND_C__
-#include "gtkaliasdef.c"
+#define __BTK_PRINT_BACKEND_C__
+#include "btkaliasdef.c"

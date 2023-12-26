@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2001-2007 Sun Microsystems, Inc.  All rights reserved.
  * (Brian Cameron, Dmitriy Demin, James Cheng, Padraig O'Briain)
  *
@@ -19,27 +19,27 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_MEDIALIB_H__
-#define __GDK_MEDIALIB_H__
+#ifndef __BDK_MEDIALIB_H__
+#define __BDK_MEDIALIB_H__
 
 #ifdef USE_MEDIALIB
 #include <mlib_image.h>
 #include <mlib_video.h>
 
-#include <gdktypes.h>
+#include <bdktypes.h>
 
 G_BEGIN_DECLS
 
-gboolean _gdk_use_medialib (void);
+gboolean _bdk_use_medialib (void);
 
 G_END_DECLS
 
 #endif /* USE_MEDIALIB */
-#endif /* __GDK_MEDIALIB_H__ */
+#endif /* __BDK_MEDIALIB_H__ */
 

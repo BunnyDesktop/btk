@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-   <ClCompile Include="..\..\..\modules\other\gail\libgail-util\gailmisc.c"><Filter>Source Files</Filter></ClCompile>
-   <ClCompile Include="..\..\..\modules\other\gail\libgail-util\gailtextutil.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\modules\other\bail\libbail-util\bailmisc.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\modules\other\bail\libbail-util\bailtextutil.c"><Filter>Source Files</Filter></ClCompile>
   </ItemGroup>
 </Project>

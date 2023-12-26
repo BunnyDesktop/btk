@@ -4,46 +4,46 @@
 AC_PREREQ(2.62)
 
 # Making releases:
-#   GTK_MICRO_VERSION += 1;
-#   GTK_INTERFACE_AGE += 1;
-#   GTK_BINARY_AGE += 1;
-# if any functions have been added, set GTK_INTERFACE_AGE to 0.
+#   BTK_MICRO_VERSION += 1;
+#   BTK_INTERFACE_AGE += 1;
+#   BTK_BINARY_AGE += 1;
+# if any functions have been added, set BTK_INTERFACE_AGE to 0.
 # if backwards compatibility has been broken,
-# set GTK_BINARY_AGE and GTK_INTERFACE_AGE to 0.
+# set BTK_BINARY_AGE and BTK_INTERFACE_AGE to 0.
 
-m4_define([gtk_major_version], [2])
-m4_define([gtk_minor_version], [24])
-m4_define([gtk_micro_version], [33])
-m4_define([gtk_interface_age], [33])
-m4_define([gtk_binary_age],
-          [m4_eval(100 * gtk_minor_version + gtk_micro_version)])
-m4_define([gtk_version],
-          [gtk_major_version.gtk_minor_version.gtk_micro_version])
-# This is the X.Y used in -lgtk-FOO-X.Y
-m4_define([gtk_api_version], [2.0])
+m4_define([btk_major_version], [2])
+m4_define([btk_minor_version], [24])
+m4_define([btk_micro_version], [33])
+m4_define([btk_interface_age], [33])
+m4_define([btk_binary_age],
+          [m4_eval(100 * btk_minor_version + btk_micro_version)])
+m4_define([btk_version],
+          [btk_major_version.btk_minor_version.btk_micro_version])
+# This is the X.Y used in -lbtk-FOO-X.Y
+m4_define([btk_api_version], [2.0])
 
 # Define a string for the earliest version that this release has
 # backwards binary compatibility with for all interfaces a module
 # might. Unless we add module-only API with lower stability
 # guarantees, this should be unchanged until we break binary compat
-# for GTK+.
+# for BTK+.
 #
-#GTK_BINARY_VERSION=$GTK_MAJOR_VERSION.$GTK_MINOR_VERSION.$LT_CURRENT
-m4_define([gtk_binary_version], [2.10.0])
+#BTK_BINARY_VERSION=$BTK_MAJOR_VERSION.$BTK_MINOR_VERSION.$LT_CURRENT
+m4_define([btk_binary_version], [2.10.0])
 
 # required versions of other packages
-m4_define([glib_required_version], [2.28.0])
-m4_define([pango_required_version], [1.20])
-m4_define([atk_required_version], [1.29.2])
-m4_define([cairo_required_version], [1.6])
-m4_define([gdk_pixbuf_required_version], [2.21.0])
+m4_define([bunnylib_required_version], [2.28.0])
+m4_define([bango_required_version], [1.20])
+m4_define([batk_required_version], [1.29.2])
+m4_define([bairo_required_version], [1.6])
+m4_define([bdk_pixbuf_required_version], [2.21.0])
 
 
-AC_INIT([gtk+], [gtk_version],
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=gtk%2B],
-	[gtk+])
+AC_INIT([btk+], [btk_version],
+        [http://bugzilla.gnome.org/enter_bug.cgi?product=btk%2B],
+	[btk+])
 
-AC_CONFIG_SRCDIR([gdk/gdktypes.h])
+AC_CONFIG_SRCDIR([bdk/bdktypes.h])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -69,47 +69,47 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([no])])
 # foo_DEP_CFLAGS:   All cflags this module requires
 
 
-GTK_MAJOR_VERSION=gtk_major_version
-GTK_MINOR_VERSION=gtk_minor_version
-GTK_MICRO_VERSION=gtk_micro_version
-GTK_INTERFACE_AGE=gtk_interface_age
-GTK_BINARY_AGE=gtk_binary_age
-GTK_VERSION=gtk_version
-GTK_API_VERSION=gtk_api_version
-GTK_BINARY_VERSION=gtk_binary_version
-AC_SUBST(GTK_MAJOR_VERSION)
-AC_SUBST(GTK_MINOR_VERSION)
-AC_SUBST(GTK_MICRO_VERSION)
-AC_SUBST(GTK_INTERFACE_AGE)
-AC_SUBST(GTK_BINARY_AGE)
-AC_SUBST(GTK_API_VERSION)
-AC_SUBST(GTK_VERSION)
-AC_SUBST(GTK_BINARY_VERSION)
+BTK_MAJOR_VERSION=btk_major_version
+BTK_MINOR_VERSION=btk_minor_version
+BTK_MICRO_VERSION=btk_micro_version
+BTK_INTERFACE_AGE=btk_interface_age
+BTK_BINARY_AGE=btk_binary_age
+BTK_VERSION=btk_version
+BTK_API_VERSION=btk_api_version
+BTK_BINARY_VERSION=btk_binary_version
+AC_SUBST(BTK_MAJOR_VERSION)
+AC_SUBST(BTK_MINOR_VERSION)
+AC_SUBST(BTK_MICRO_VERSION)
+AC_SUBST(BTK_INTERFACE_AGE)
+AC_SUBST(BTK_BINARY_AGE)
+AC_SUBST(BTK_API_VERSION)
+AC_SUBST(BTK_VERSION)
+AC_SUBST(BTK_BINARY_VERSION)
 
 # libtool versioning
-#LT_RELEASE=$GTK_MAJOR_VERSION.$GTK_MINOR_VERSION
-#LT_CURRENT=`expr $GTK_MICRO_VERSION - $GTK_INTERFACE_AGE`
-#LT_REVISION=$GTK_INTERFACE_AGE
-#LT_AGE=`expr $GTK_BINARY_AGE - $GTK_INTERFACE_AGE`
+#LT_RELEASE=$BTK_MAJOR_VERSION.$BTK_MINOR_VERSION
+#LT_CURRENT=`expr $BTK_MICRO_VERSION - $BTK_INTERFACE_AGE`
+#LT_REVISION=$BTK_INTERFACE_AGE
+#LT_AGE=`expr $BTK_BINARY_AGE - $BTK_INTERFACE_AGE`
 #LT_CURRENT_MINUS_AGE=`expr $LT_CURRENT - $LT_AGE`
 
-m4_define([lt_current], [m4_eval(100 * gtk_minor_version + gtk_micro_version - gtk_interface_age)])
-m4_define([lt_revision], [gtk_interface_age])
-m4_define([lt_age], [m4_eval(gtk_binary_age - gtk_interface_age)])
+m4_define([lt_current], [m4_eval(100 * btk_minor_version + btk_micro_version - btk_interface_age)])
+m4_define([lt_revision], [btk_interface_age])
+m4_define([lt_age], [m4_eval(btk_binary_age - btk_interface_age)])
 LT_VERSION_INFO="lt_current:lt_revision:lt_age"
 LT_CURRENT_MINUS_AGE=m4_eval(lt_current - lt_age)
 AC_SUBST(LT_VERSION_INFO)
 AC_SUBST(LT_CURRENT_MINUS_AGE)
 
-m4_define([gail_lt_current],[18])
-m4_define([gail_lt_revision],[1])
-m4_define([gail_lt_age],[0])
-m4_define([gail_lt_version_info],[gail_lt_current:gail_lt_revision:gail_lt_age])
-m4_define([gail_lt_current_minus_age],[m4_eval(gail_lt_current - gail_lt_age)])
-AC_SUBST([GAIL_LT_VERSION_INFO],[gail_lt_version_info])
-AC_SUBST([GAIL_LT_CURRENT_MINUS_AGE],[gail_lt_current_minus_age])
+m4_define([bail_lt_current],[18])
+m4_define([bail_lt_revision],[1])
+m4_define([bail_lt_age],[0])
+m4_define([bail_lt_version_info],[bail_lt_current:bail_lt_revision:bail_lt_age])
+m4_define([bail_lt_current_minus_age],[m4_eval(bail_lt_current - bail_lt_age)])
+AC_SUBST([BAIL_LT_VERSION_INFO],[bail_lt_version_info])
+AC_SUBST([BAIL_LT_CURRENT_MINUS_AGE],[bail_lt_current_minus_age])
 
-GETTEXT_PACKAGE=gtk20
+GETTEXT_PACKAGE=btk20
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [The prefix for our gettext translation domains.])
@@ -123,7 +123,7 @@ EXE_MANIFEST_ARCHITECTURE=X86
 case "$host" in
   *-*-mingw*)
     os_win32=yes
-    gio_can_sniff=no
+    bunnyio_can_sniff=no
     MATH_LIB=
     case "$host" in
     x86_64-*-*)
@@ -162,11 +162,11 @@ AC_LANG_CPLUSPLUS
 AC_TRY_COMPILE(,[class a { int b; } c;], ,CXX=)
 AM_CONDITIONAL(HAVE_CXX, test "$CXX" != "")
 
-gtk_save_cxxflags="$CXXFLAGS"
+btk_save_cxxflags="$CXXFLAGS"
 CXXFLAGS="$CXXFLAGS -x objective-c++"
 AC_TRY_COMPILE([@interface Foo @end],,OBJC=yes,OBJC=no)
 AM_CONDITIONAL(HAVE_OBJC, test "$OBJC" = "yes")
-CXXFLAGS="$gtk_save_cxxflags"
+CXXFLAGS="$btk_save_cxxflags"
 AC_LANG_RESTORE
 
 if test "$os_win32" = "yes"; then
@@ -221,7 +221,7 @@ fi
 AM_CONDITIONAL(MS_LIB_AVAILABLE, test x$ms_librarian = xyes)
 
 m4_define([debug_default],
-          m4_if(m4_eval(gtk_minor_version % 2), [1], [yes], [minimum]))
+          m4_if(m4_eval(btk_minor_version % 2), [1], [yes], [minimum]))
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,
@@ -253,44 +253,44 @@ AC_ARG_WITH(xinput,
             [AC_HELP_STRING([--with-xinput=@<:@no/yes@:>@], [support XInput])])
 
 if test "$platform_win32" = yes; then
-  gdktarget=win32
+  bdktarget=win32
 else
-  gdktarget=x11
+  bdktarget=x11
 fi
 
-AC_ARG_WITH(gdktarget, [  --with-gdktarget=[[x11/win32/quartz/directfb]] select non-default GDK target],
-	gdktarget=$with_gdktarget)
+AC_ARG_WITH(bdktarget, [  --with-bdktarget=[[x11/win32/quartz/directfb]] select non-default BDK target],
+	bdktarget=$with_bdktarget)
 
-AC_SUBST(gdktarget)
-case $gdktarget in
+AC_SUBST(bdktarget)
+case $bdktarget in
   x11|win32|quartz|directfb) ;;
-  *) AC_MSG_ERROR([Invalid target for GDK: use x11, quartz, directfb or win32.]);;
+  *) AC_MSG_ERROR([Invalid target for BDK: use x11, quartz, directfb or win32.]);;
 esac
 
-gdktargetlib=libgdk-$gdktarget-$GTK_API_VERSION.la
-gtktargetlib=libgtk-$gdktarget-$GTK_API_VERSION.la
+bdktargetlib=libbdk-$bdktarget-$BTK_API_VERSION.la
+btktargetlib=libbtk-$bdktarget-$BTK_API_VERSION.la
 
-AC_SUBST(gdktargetlib)
-AC_SUBST(gtktargetlib)
+AC_SUBST(bdktargetlib)
+AC_SUBST(btktargetlib)
 
 if test "x$enable_debug" = "xyes"; then
   test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
-  GTK_DEBUG_FLAGS="-DG_ENABLE_DEBUG -DG_ERRORCHECK_MUTEXES" 
+  BTK_DEBUG_FLAGS="-DG_ENABLE_DEBUG -DG_ERRORCHECK_MUTEXES" 
 else
   if test "x$enable_debug" = "xno"; then
-    GTK_DEBUG_FLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
+    BTK_DEBUG_FLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
   else
-    GTK_DEBUG_FLAGS="-DG_DISABLE_CAST_CHECKS"
+    BTK_DEBUG_FLAGS="-DG_DISABLE_CAST_CHECKS"
   fi
 fi
 
 
 if test "x$enable_visibility" = "xno"; then
-  GTK_DEBUG_FLAGS="$GTK_DEBUG_FLAGS -DDISABLE_VISIBILITY"
+  BTK_DEBUG_FLAGS="$BTK_DEBUG_FLAGS -DDISABLE_VISIBILITY"
 fi
 
 
-AC_DEFINE_UNQUOTED(GTK_COMPILED_WITH_DEBUGGING, "${enable_debug}",
+AC_DEFINE_UNQUOTED(BTK_COMPILED_WITH_DEBUGGING, "${enable_debug}",
                    [Define if debugging is enabled])
 
 			
@@ -324,7 +324,7 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-CPPFLAGS="$CPPFLAGS -DG_DISABLE_SINGLE_INCLUDES -DATK_DISABLE_SINGLE_INCLUDES -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
+CPPFLAGS="$CPPFLAGS -DG_DISABLE_SINGLE_INCLUDES -DBATK_DISABLE_SINGLE_INCLUDES -DBDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DBTK_DISABLE_SINGLE_INCLUDES"
 
 # Ensure MSVC-compatible struct packing convention is used when
 # compiling for Win32 with gcc.
@@ -371,33 +371,33 @@ ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
 ## the version requirements since those make the module lists 
 ## annoying to construct
 PKG_CHECK_MODULES(BASE_DEPENDENCIES,
-  [glib-2.0 >= glib_required_version dnl
-   atk >= atk_required_version dnl
-   pango >= pango_required_version dnl
-   cairo >= cairo_required_version dnl
-   gdk-pixbuf-2.0 >= gdk_pixbuf_required_version])
+  [bunnylib-2.0 >= bunnylib_required_version dnl
+   batk >= batk_required_version dnl
+   bango >= bango_required_version dnl
+   bairo >= bairo_required_version dnl
+   bdk-pixbuf-2.0 >= bdk_pixbuf_required_version])
 
-## In addition to checking that cairo is present, we also need to
-## check that the correct cairo backend is there. E.g. if the GDK
-## target is win32 we need the cairo-win32 backend and so on.
-cairo_backend=$gdktarget
+## In addition to checking that bairo is present, we also need to
+## check that the correct bairo backend is there. E.g. if the BDK
+## target is win32 we need the bairo-win32 backend and so on.
+bairo_backend=$bdktarget
 
-# GDK calls the xlib backend "x11," cairo calls it "xlib." Other
+# BDK calls the xlib backend "x11," bairo calls it "xlib." Other
 # backend names are identical.
-if test "x$cairo_backend" = "xx11"; then
-   cairo_backend=xlib
+if test "x$bairo_backend" = "xx11"; then
+   bairo_backend=xlib
 fi
-PKG_CHECK_MODULES(CAIRO_BACKEND,
-  [cairo-$cairo_backend >= cairo_required_version])
+PKG_CHECK_MODULES(BAIRO_BACKEND,
+  [bairo-$bairo_backend >= bairo_required_version])
 
-PKG_CHECK_MODULES(GMODULE, [gmodule-2.0])
+PKG_CHECK_MODULES(BMODULE, [bmodule-2.0])
 
 if test "$os_win32" != yes; then
     # libtool option to control which symbols are exported
     # right now, symbols starting with _ are not exported
     LIBTOOL_EXPORT_OPTIONS='-export-symbols-regex "^[[^_]].*"'
 else
-    # We currently use .def files on Windows (for gdk and gtk)
+    # We currently use .def files on Windows (for bdk and btk)
     LIBTOOL_EXPORT_OPTIONS=
 fi
 AC_SUBST(LIBTOOL_EXPORT_OPTIONS)
@@ -455,9 +455,9 @@ AC_MSG_CHECKING([for _NL_TIME_FIRST_WEEKDAY])
 AC_TRY_LINK([#include <langinfo.h>], [
 char c;
 c = *((unsigned char *)  nl_langinfo(_NL_TIME_FIRST_WEEKDAY));
-], gtk_ok=yes, gtk_ok=no)
-AC_MSG_RESULT($gtk_ok)
-if test "$gtk_ok" = "yes"; then
+], btk_ok=yes, btk_ok=no)
+AC_MSG_RESULT($btk_ok)
+if test "$btk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_TIME_FIRST_WEEKDAY], [1],
 	    [Define if _NL_TIME_FIRST_WEEKDAY is available])
 fi
@@ -467,9 +467,9 @@ AC_MSG_CHECKING([for _NL_MEASUREMENT_MEASUREMENT])
 AC_TRY_LINK([#include <langinfo.h>], [
 char c;
 c = *((unsigned char *)  nl_langinfo(_NL_MEASUREMENT_MEASUREMENT));
-], gtk_ok=yes, gtk_ok=no)
-AC_MSG_RESULT($gtk_ok)
-if test "$gtk_ok" = "yes"; then
+], btk_ok=yes, btk_ok=no)
+AC_MSG_RESULT($btk_ok)
+if test "$btk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_MEASUREMENT_MEASUREMENT], [1],
 	    [Define if _NL_MEASUREMENT_MEASUREMENT is available])
 fi
@@ -479,9 +479,9 @@ AC_MSG_CHECKING([for _NL_PAPER_HEIGHT])
 AC_TRY_LINK([#include <langinfo.h>], [
 char c;
 c = *((unsigned char *)  nl_langinfo(_NL_PAPER_HEIGHT));
-], gtk_ok=yes, gtk_ok=no)
-AC_MSG_RESULT($gtk_ok)
-if test "$gtk_ok" = "yes"; then
+], btk_ok=yes, btk_ok=no)
+AC_MSG_RESULT($btk_ok)
+if test "$btk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_PAPER_HEIGHT], [1],
 	    [Define if _NL_PAPER_HEIGHT is available])
 fi
@@ -491,9 +491,9 @@ AC_MSG_CHECKING([for _NL_PAPER_WIDTH])
 AC_TRY_LINK([#include <langinfo.h>], [
 char c;
 c = *((unsigned char *)  nl_langinfo(_NL_PAPER_WIDTH));
-], gtk_ok=yes, gtk_ok=no)
-AC_MSG_RESULT($gtk_ok)
-if test "$gtk_ok" = "yes"; then
+], btk_ok=yes, btk_ok=no)
+AC_MSG_RESULT($btk_ok)
+if test "$btk_ok" = "yes"; then
   AC_DEFINE([HAVE__NL_PAPER_WIDTH], [1],
 	    [Define if _NL_PAPER_WIDTH is available])
 fi
@@ -503,22 +503,22 @@ AC_MSG_CHECKING(for sigsetjmp)
 AC_TRY_LINK([#include <setjmp.h>], [
 sigjmp_buf env;
 sigsetjmp(env, 0);
-], gtk_ok=yes, gtk_ok=no)
-AC_MSG_RESULT($gtk_ok)
-if test "$gtk_ok" = "yes"; then
+], btk_ok=yes, btk_ok=no)
+AC_MSG_RESULT($btk_ok)
+if test "$btk_ok" = "yes"; then
   AC_DEFINE(HAVE_SIGSETJMP, 1,
             [Define to 1 if sigsetjmp is available])
 fi
 
 # i18n stuff
 ALL_LINGUAS="`grep -v '^#' "$srcdir/po/LINGUAS" | tr '\n' ' '`"
-AM_GLIB_GNU_GETTEXT
+AM_BUNNYLIB_GNU_GETTEXT
 LIBS="$LIBS $INTLLIBS"
 AC_OUTPUT_COMMANDS([case "$CONFIG_FILES" in *po-properties/Makefile.in*)
         sed -e "/POTFILES =/r po-properties/POTFILES" po-properties/Makefile.in > po-properties/Makefile
       esac])
 
-dnl Snippet below is copied from AM_GLIB_GNU_GETTEXT to generate a first
+dnl Snippet below is copied from AM_BUNNYLIB_GNU_GETTEXT to generate a first
 dnl po-properties/POTFILES during configure; see GNOME #573515.
 dnl
 dnl Generate list of files to be processed by xgettext which will
@@ -536,33 +536,33 @@ fi
 rm -f po-properties/POTFILES
 sed -e "/^#/d" -e "/^\$/d" -e "s,.*,	$popropsrcprefix& \\\\," -e "\$s/\(.*\) \\\\/\1/" \
 < $srcdir/po-properties/POTFILES.in > po-properties/POTFILES
-dnl (End of adapted AM_GLIB_GNU_GETTEXT snippet.)
+dnl (End of adapted AM_BUNNYLIB_GNU_GETTEXT snippet.)
 
-AM_GLIB_DEFINE_LOCALEDIR(GTK_LOCALEDIR)
+AM_BUNNYLIB_DEFINE_LOCALEDIR(BTK_LOCALEDIR)
 
 dnl The DU4 header files don't provide library prototypes unless 
 dnl -std1 is given to the native cc.
 AC_MSG_CHECKING([for extra flags to get ANSI library prototypes])
 
-gtk_save_LIBS=$LIBS
+btk_save_LIBS=$LIBS
 LIBS="$LIBS -lm"
 AC_TRY_RUN([#include <math.h>
              int main (void) { return (log(1) != log(1.)); }],
      AC_MSG_RESULT(none needed),
-     gtk_save_CFLAGS="$CFLAGS"
+     btk_save_CFLAGS="$CFLAGS"
      CFLAGS="$CFLAGS -std1"
      AC_TRY_RUN([#include <math.h>
 	         int main (void) { return (log(1) != log(1.)); }],
          AC_MSG_RESULT(-std1),
          AC_MSG_RESULT()
-         CFLAGS="$gtk_save_CFLAGS"
+         CFLAGS="$btk_save_CFLAGS"
          AC_MSG_WARN(
                 [No ANSI prototypes found in library. (-std1 didn't work.)]),
 	 true
      ),
      AC_MSG_RESULT(none needed)
 )
-LIBS=$gtk_save_LIBS
+LIBS=$btk_save_LIBS
 
 AC_MSG_CHECKING(for the BeOS)
 case $host in
@@ -594,30 +594,30 @@ dnl NeXTStep cc seems to need this
 AC_MSG_CHECKING([for extra flags for POSIX compliance])
 AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
   AC_MSG_RESULT(none needed),
-  gtk_save_CFLAGS="$CFLAGS"
+  btk_save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS -posix"
   AC_TRY_COMPILE([#include <dirent.h>], [DIR *dir;],
     AC_MSG_RESULT(-posix),
     AC_MSG_RESULT()
-    CFLAGS="$gtk_save_CFLAGS"
+    CFLAGS="$btk_save_CFLAGS"
     AC_MSG_WARN([Could not determine POSIX flag. (-posix didn't work.)])))
 
 #
-# Run AM_PATH_GLIB_2_0 to make sure that GLib is installed and working
+# Run AM_PATH_BUNNYLIB_2_0 to make sure that GLib is installed and working
 # 
 
-GLIB_PACKAGES="gobject-2.0 gio-2.0 gmodule-no-export-2.0"
+BUNNYLIB_PACKAGES="bobject-2.0 bunnyio-2.0 bmodule-no-export-2.0"
 
-AM_PATH_GLIB_2_0(glib_required_version, :,
+AM_PATH_BUNNYLIB_2_0(bunnylib_required_version, :,
   AC_MSG_ERROR([
-*** GLIB glib_required_version or better is required. The latest version of 
-*** GLIB is always available from ftp://ftp.gtk.org/pub/gtk/.]),
-  gobject gmodule-no-export gthread)
+*** BUNNYLIB bunnylib_required_version or better is required. The latest version of 
+*** BUNNYLIB is always available from ftp://ftp.btk.org/pub/btk/.]),
+  bobject bmodule-no-export bthread)
 
 # See if it's safe to turn G_DISABLE_DEPRECATED on.
-GLIB_VERSION_MAJOR_MINOR=`$PKG_CONFIG --modversion glib-2.0 | sed "s/\.@<:@^.@:>@*\$//"`
-GLIB_REQUIRED_VERSION_MAJOR_MINOR=`echo glib_required_version | sed "s/\.@<:@^.@:>@*\$//"`
-if test "x$GLIB_VERSION_MAJOR_MINOR" = "x$GLIB_REQUIRED_VERSION_MAJOR_MINOR"; then
+BUNNYLIB_VERSION_MAJOR_MINOR=`$PKG_CONFIG --modversion bunnylib-2.0 | sed "s/\.@<:@^.@:>@*\$//"`
+BUNNYLIB_REQUIRED_VERSION_MAJOR_MINOR=`echo bunnylib_required_version | sed "s/\.@<:@^.@:>@*\$//"`
+if test "x$BUNNYLIB_VERSION_MAJOR_MINOR" = "x$BUNNYLIB_REQUIRED_VERSION_MAJOR_MINOR"; then
   CFLAGS="-DG_DISABLE_DEPRECATED $CFLAGS"
 fi
 
@@ -625,10 +625,10 @@ fi
 dnl
 dnl Check for bind_textdomain_codeset, including -lintl if GLib brings it in.
 dnl
-gtk_save_LIBS=$LIBS
-LIBS="$LIBS $GLIB_LIBS"
+btk_save_LIBS=$LIBS
+LIBS="$LIBS $BUNNYLIB_LIBS"
 AC_CHECK_FUNCS(bind_textdomain_codeset)
-LIBS=$gtk_save_LIBS
+LIBS=$btk_save_LIBS
 
 AC_CHECK_HEADERS(pwd.h,
                  AC_DEFINE(HAVE_PWD_H, 1,
@@ -646,8 +646,8 @@ AC_CHECK_HEADERS(ftw.h,
 AC_MSG_CHECKING([for GNU ftw extensions])
 AC_TRY_COMPILE([#define _XOPEN_SOURCE 500
 #define _GNU_SOURCE
-#include <ftw.h>], [int flags = FTW_ACTIONRETVAL;], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = yes; then
+#include <ftw.h>], [int flags = FTW_ACTIONRETVAL;], btk_ok=yes, btk_ok=no)
+if test $btk_ok = yes; then
     AC_MSG_RESULT([yes])
     AC_DEFINE(HAVE_GNU_FTW, 1, [Have GNU ftw])
 else
@@ -675,12 +675,12 @@ AC_TYPE_UID_T
 # Check if <sys/select.h> needs to be included for fd_set
 AC_MSG_CHECKING([for fd_set])
 AC_TRY_COMPILE([#include <sys/types.h>],
-        [fd_set readMask, writeMask;], gtk_ok=yes, gtk_ok=no)
-if test $gtk_ok = yes; then
+        [fd_set readMask, writeMask;], btk_ok=yes, btk_ok=no)
+if test $btk_ok = yes; then
     AC_MSG_RESULT([yes, found in sys/types.h])
 else
-    AC_HEADER_EGREP(fd_mask, sys/select.h, gtk_ok=yes)
-    if test $gtk_ok = yes; then
+    AC_HEADER_EGREP(fd_mask, sys/select.h, btk_ok=yes)
+    if test $btk_ok = yes; then
         AC_DEFINE(HAVE_SYS_SELECT_H, 1,
                   [Define to 1 if sys/select.h is available])
         AC_MSG_RESULT([yes, found in sys/select.h])
@@ -691,28 +691,28 @@ else
     fi
 fi
 
-# `widechar' tests for gdki18n.h
+# `widechar' tests for bdki18n.h
 AC_MSG_CHECKING(for wchar.h)
-AC_TRY_CPP([#include <wchar.h>], gdk_wchar_h=yes, gdk_wchar_h=no)
-if test $gdk_wchar_h = yes; then
+AC_TRY_CPP([#include <wchar.h>], bdk_wchar_h=yes, bdk_wchar_h=no)
+if test $bdk_wchar_h = yes; then
    AC_DEFINE(HAVE_WCHAR_H, 1, [Have wchar.h include file])
 fi
-AC_MSG_RESULT($gdk_wchar_h)
+AC_MSG_RESULT($bdk_wchar_h)
 
 # Check for wctype.h (for iswalnum)
 AC_MSG_CHECKING(for wctype.h)
-AC_TRY_CPP([#include <wctype.h>], gdk_wctype_h=yes, gdk_wctype_h=no)
-if test $gdk_wctype_h = yes; then
+AC_TRY_CPP([#include <wctype.h>], bdk_wctype_h=yes, bdk_wctype_h=no)
+if test $bdk_wctype_h = yes; then
    AC_DEFINE(HAVE_WCTYPE_H, 1, [Have wctype.h include file])
 fi
-AC_MSG_RESULT($gdk_wctype_h)
+AC_MSG_RESULT($bdk_wctype_h)
 
 # in Solaris 2.5, `iswalnum' is in -lw
-GDK_WLIBS=
-AC_CHECK_FUNC(iswalnum,,[AC_CHECK_LIB(w,iswalnum,GDK_WLIBS=-lw)])
+BDK_WLIBS=
+AC_CHECK_FUNC(iswalnum,,[AC_CHECK_LIB(w,iswalnum,BDK_WLIBS=-lw)])
 
 oLIBS="$LIBS"
-LIBS="$LIBS $GDK_WLIBS"
+LIBS="$LIBS $BDK_WLIBS"
 # The following is necessary for Linux libc-5.4.38
 AC_MSG_CHECKING(if iswalnum() and friends are properly defined)
 AC_TRY_LINK([#include <stdlib.h>
@@ -728,25 +728,25 @@ AC_TRY_LINK([#include <stdlib.h>
 #  define iswalnum(c) ((wchar_t)(c) <= 0xFF && isalnum(c))
 #endif],[
 iswalnum((wchar_t) 0);
-], gdk_working_wctype=yes, gdk_working_wctype=no)
+], bdk_working_wctype=yes, bdk_working_wctype=no)
 LIBS="$oLIBS"
 
-if test $gdk_working_wctype = no; then
+if test $bdk_working_wctype = no; then
    AC_DEFINE(HAVE_BROKEN_WCTYPE, 1, [Is the wctype implementation broken])
-   GDK_WLIBS=
+   BDK_WLIBS=
 fi
-AC_MSG_RESULT($gdk_working_wctype)
-AC_SUBST(GDK_WLIBS)
+AC_MSG_RESULT($bdk_working_wctype)
+AC_SUBST(BDK_WLIBS)
 
 # Check for uxtheme.h (for MS-Windows Engine)
 AC_MSG_CHECKING(for uxtheme.h)
-AC_TRY_CPP([#include <uxtheme.h>], gtk_uxtheme_h=yes, gtk_uxtheme_h=no)
-if test $gtk_uxtheme_h = yes; then
+AC_TRY_CPP([#include <uxtheme.h>], btk_uxtheme_h=yes, btk_uxtheme_h=no)
+if test $btk_uxtheme_h = yes; then
    AC_DEFINE(HAVE_UXTHEME_H, 1, [Have uxtheme.h include file])
 fi
-AC_MSG_RESULT($gtk_uxtheme_h)
+AC_MSG_RESULT($btk_uxtheme_h)
 
-# Checks for gdkspawn
+# Checks for bdkspawn
 AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
 
@@ -764,7 +764,7 @@ else
     AC_MSG_RESULT(yes)
     AC_MSG_CHECKING(whether dynamic modules work)
     ## for loop is to strip newline 
-    tmp=`$PKG_CONFIG --variable=gmodule_supported gmodule-no-export-2.0`
+    tmp=`$PKG_CONFIG --variable=bmodule_supported bmodule-no-export-2.0`
     for I in $tmp; do
         dynworks=$I
     done
@@ -784,8 +784,8 @@ else
     fi
 
     if $dynworks; then
-        AC_DEFINE(USE_GMODULE, 1,
-                  [Define to 1 if gmodule works and should be used])
+        AC_DEFINE(USE_BMODULE, 1,
+                  [Define to 1 if bmodule works and should be used])
         AC_MSG_RESULT(yes)
     else
         AC_MSG_RESULT(no)
@@ -802,10 +802,10 @@ AC_MSG_CHECKING(immodules to build)
 dnl due to an autoconf bug, commas in the first arg to
 dnl AC_HELP_STRING cause problems.
 dnl AC_HELP_STRING([--with-included-immodules=MODULE1 MODULE2 ...],
-dnl                [build the specified input method modules into gtk])
+dnl                [build the specified input method modules into btk])
 AC_ARG_WITH(included_immodules,
 [  --with-included-immodules=MODULE1,MODULE2,...
-                          build the specified input methods into gtk])
+                          build the specified input methods into btk])
 
 if $dynworks; then 
    :
@@ -817,14 +817,14 @@ else
 fi
 
 all_immodules="am-et,cedilla,cyrillic-translit"
-if test "$gdktarget" = "win32"; then
+if test "$bdktarget" = "win32"; then
    all_immodules="${all_immodules},ime"
 fi
-if test "$gdktarget" = "quartz"; then
+if test "$bdktarget" = "quartz"; then
    all_immodules="${all_immodules},quartz"
 fi
 all_immodules="${all_immodules},inuktitut,ipa,multipress,thai,ti-er,ti-et,viqr"
-if test "$gdktarget" = "x11"; then
+if test "$bdktarget" = "x11"; then
    all_immodules="${all_immodules},xim"
 fi
 
@@ -842,7 +842,7 @@ AM_CONDITIONAL(HAVE_INCLUDED_IMMMODULES, test "x$included_immodules" != x)
 INCLUDED_IMMODULE_OBJ=
 INCLUDED_IMMODULE_DEFINE=
 
-IFS="${IFS= 	}"; gtk_save_ifs="$IFS"; IFS=","
+IFS="${IFS= 	}"; btk_save_ifs="$IFS"; IFS=","
 for immodule in $included_immodules; do
  immodule_underscores=`echo $immodule | sed -e 's/-/_/g'`
  if echo "$all_immodules" | egrep "(^|,)$immodule(\$|,)" > /dev/null; then
@@ -855,7 +855,7 @@ for immodule in $included_immodules; do
  INCLUDED_IMMODULE_DEFINE="$INCLUDED_IMMODULE_DEFINE -DINCLUDE_IM_$immodule_underscores"
  eval INCLUDE_$immodule_underscores=yes
 done
-IFS="$gtk_save_ifs"
+IFS="$btk_save_ifs"
 AC_SUBST(INCLUDED_IMMODULE_OBJ)
 AC_SUBST(INCLUDED_IMMODULE_DEFINE)
 
@@ -889,7 +889,7 @@ AC_CHECK_HEADER(sys/sysinfo.h,
 
 AC_MSG_CHECKING(for mediaLib 2.3)
 use_mlib25=no
-# Check for a mediaLib 2.3 function since that is what the GTK+ mediaLib
+# Check for a mediaLib 2.3 function since that is what the BTK+ mediaLib
 # patch requires.
 AC_CHECK_LIB(mlib, mlib_ImageSetStruct, use_mlib=yes, use_mlib=no)
 if test $use_mlib = yes; then
@@ -899,7 +899,7 @@ if test $use_mlib = yes; then
 
     AC_MSG_CHECKING(for mediaLib 2.5)
     # Check for a mediaLib 2.5 function since that is what is needed for
-    # gdk_rgb_convert integration.
+    # bdk_rgb_convert integration.
     AC_CHECK_LIB(mlib, mlib_VideoColorRGBint_to_BGRAint, use_mlib25=yes, use_mlib25=no)
     if test $use_mlib25 = yes; then
         AC_DEFINE(USE_MEDIALIB25, 1,
@@ -909,39 +909,39 @@ fi
 AM_CONDITIONAL(USE_MEDIALIB, test $use_mlib = yes)
 AM_CONDITIONAL(USE_MEDIALIB25, test $use_mlib25 = yes)
 
-dnl Look for a host system's gdk-pixbuf-csource if we are cross-compiling
+dnl Look for a host system's bdk-pixbuf-csource if we are cross-compiling
 
 AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
 
 if test $cross_compiling = yes; then
-  AC_PATH_PROG(GTK_UPDATE_ICON_CACHE, gtk-update-icon-cache, no)
-  if test x$GTK_UPDATE_ICON_CACHE = xno; then
+  AC_PATH_PROG(BTK_UPDATE_ICON_CACHE, btk-update-icon-cache, no)
+  if test x$BTK_UPDATE_ICON_CACHE = xno; then
     REBUILD_PNGS=#
   fi
 fi
 
-AC_PATH_PROG(GDK_PIXBUF_CSOURCE, gdk-pixbuf-csource, no)
+AC_PATH_PROG(BDK_PIXBUF_CSOURCE, bdk-pixbuf-csource, no)
 
-if test ! -f $srcdir/gtk/gtkbuiltincache.h && 
+if test ! -f $srcdir/btk/btkbuiltincache.h && 
    test "x$REBUILD_PNGS" = "x#" ; then
      AC_MSG_ERROR([
-*** gtkbuiltincache.h is not in the tree, and cannot be built
+*** btkbuiltincache.h is not in the tree, and cannot be built
 *** because you don't have libpng, or (when cross-compiling) you 
-*** don't have a prebuilt gtk-update-icon-cache on the build system.])
+*** don't have a prebuilt btk-update-icon-cache on the build system.])
 fi
 
 ########################################
 # Windowing system checks
 ########################################
 
-GDK_EXTRA_LIBS="$GDK_WLIBS"
-GDK_EXTRA_CFLAGS=
+BDK_EXTRA_LIBS="$BDK_WLIBS"
+BDK_EXTRA_CFLAGS=
 	
-# GTK+ uses some X calls, so needs to link against X directly
-GTK_DEP_PACKAGES_FOR_X=
-GTK_DEP_LIBS_FOR_X=
+# BTK+ uses some X calls, so needs to link against X directly
+BTK_DEP_PACKAGES_FOR_X=
+BTK_DEP_LIBS_FOR_X=
 
-if test "x$gdktarget" = "xx11"; then
+if test "x$bdktarget" = "xx11"; then
   X_PACKAGES=fontconfig
 
   #
@@ -972,7 +972,7 @@ if test "x$gdktarget" = "xx11"; then
       esac
     done
 
-    GTK_PACKAGES_FOR_X="x11"
+    BTK_PACKAGES_FOR_X="x11"
   else
     have_base_x_pc=false
     AC_PATH_XTRA
@@ -983,16 +983,16 @@ if test "x$gdktarget" = "xx11"; then
     x_cflags="$X_CFLAGS"
     x_libs_for_checks="$X_LIBS -lXext -lXrender -lX11 $X_EXTRA_LIBS"
 
-    GTK_DEP_LIBS_FOR_X="$X_LIBS -lXrender -lX11 $X_EXTRA_LIBS"
+    BTK_DEP_LIBS_FOR_X="$X_LIBS -lXrender -lX11 $X_EXTRA_LIBS"
   fi
 
   # Extra libraries found during checks (-lXinerama, etc), not from pkg-config.
   x_extra_libs=
 
-  gtk_save_cppflags="$CPPFLAGS"
+  btk_save_cppflags="$CPPFLAGS"
   CPPFLAGS="$CPPFLAGS $X_CFLAGS"
 
-  gtk_save_LIBS=$LIBS
+  btk_save_LIBS=$LIBS
   LIBS="$x_libs_for_checks $LIBS"
   
   # Sanity check for the X11 and Xext libraries. While everything we need from
@@ -1056,7 +1056,7 @@ if test "x$gdktarget" = "xx11"; then
      [AC_MSG_ERROR([Shape extension not found, check your development headers])])
 
   # X SYNC check
-  gtk_save_CFLAGS="$CFLAGS"
+  btk_save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS $x_cflags"
   
   AC_CHECK_FUNC(XSyncQueryExtension,
@@ -1064,7 +1064,7 @@ if test "x$gdktarget" = "xx11"; then
 	  AC_DEFINE(HAVE_XSYNC, 1, [Have the SYNC extension library]),
 	  :, [#include <X11/Xlib.h>])])
 
-  CFLAGS="$gtk_save_CFLAGS"
+  CFLAGS="$btk_save_CFLAGS"
 
   # Xshm checks
 
@@ -1074,7 +1074,7 @@ if test "x$gdktarget" = "xx11"; then
 	:,
 	# On AIX, it is in XextSam instead
 	[AC_CHECK_LIB(XextSam, XShmAttach, 
-	    [GTK_ADD_LIB(x_extra_libs,XextSam)])])
+	    [BTK_ADD_LIB(x_extra_libs,XextSam)])])
   fi    
 
   if test "x$enable_shm" = "xyes"; then
@@ -1094,7 +1094,7 @@ if test "x$gdktarget" = "xx11"; then
     if test "x$no_xext_lib" = "xyes"; then
       :
     else
-      gtk_save_CFLAGS="$CFLAGS"
+      btk_save_CFLAGS="$CFLAGS"
       CFLAGS="$CFLAGS $x_cflags"
       AC_TRY_COMPILE([
 #include <stdlib.h>
@@ -1105,7 +1105,7 @@ if test "x$gdktarget" = "xx11"; then
 #include <X11/Xutil.h>
 #include <X11/extensions/XShm.h>
 ], [XShmSegmentInfo *x_shm_info;], have_xshm=yes)
-      CFLAGS="$gtk_save_CFLAGS"
+      CFLAGS="$btk_save_CFLAGS"
     fi
     AC_MSG_RESULT($have_xshm)
     if test $have_xshm = yes ; then
@@ -1116,7 +1116,7 @@ if test "x$gdktarget" = "xx11"; then
 
   if test "x$enable_xinerama" = "xyes"; then
     # Check for Xinerama extension (Solaris impl or Xfree impl)
-    gtk_save_cppflags="$CPPFLAGS"
+    btk_save_cppflags="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $x_cflags"
   
     # Check for XFree
@@ -1129,7 +1129,7 @@ if test "x$gdktarget" = "xx11"; then
     else    
        AC_CHECK_LIB(Xinerama, XineramaQueryExtension,
 	   [AC_CHECK_HEADER(X11/extensions/Xinerama.h, 
-	   [GTK_ADD_LIB(x_extra_libs,Xinerama)
+	   [BTK_ADD_LIB(x_extra_libs,Xinerama)
 	   have_xfree_xinerama=true], :,
            [#include <X11/Xlib.h>])])
     fi
@@ -1179,7 +1179,7 @@ if test "x$gdktarget" = "xx11"; then
     if $PKG_CONFIG --exists xi ; then
       X_PACKAGES="$X_PACKAGES xi"
     else
-      GTK_ADD_LIB(x_extra_libs, Xi)
+      BTK_ADD_LIB(x_extra_libs, Xi)
     fi
   else
     AC_DEFINE(XINPUT_NONE, 1,
@@ -1212,7 +1212,7 @@ if test "x$gdktarget" = "xx11"; then
     AC_DEFINE(HAVE_XFIXES, 1, [Have the XFIXES X extension])
     
     X_PACKAGES="$X_PACKAGES xfixes"
-    GTK_PACKAGES_FOR_X="$GTK_PACKAGES_FOR_X xfixes"
+    BTK_PACKAGES_FOR_X="$BTK_PACKAGES_FOR_X xfixes"
   fi
 
   # Checks for Xcomposite extension
@@ -1221,7 +1221,7 @@ if test "x$gdktarget" = "xx11"; then
     AC_DEFINE(HAVE_XCOMPOSITE, 1, [Have the XCOMPOSITE X extension])
 
     X_PACKAGES="$X_PACKAGES xcomposite"
-    GTK_PACKAGES_FOR_X="$GTK_PACKAGES_FOR_X xcomposite"
+    BTK_PACKAGES_FOR_X="$BTK_PACKAGES_FOR_X xcomposite"
   fi
 
   # Checks for Xdamage extension
@@ -1230,17 +1230,17 @@ if test "x$gdktarget" = "xx11"; then
     AC_DEFINE(HAVE_XDAMAGE, 1, [Have the XDAMAGE X extension])
 
     X_PACKAGES="$X_PACKAGES xdamage"
-    GTK_PACKAGES_FOR_X="$GTK_PACKAGES_FOR_X xdamage"
+    BTK_PACKAGES_FOR_X="$BTK_PACKAGES_FOR_X xdamage"
   fi
 
   if $have_base_x_pc ; then
-    GDK_EXTRA_LIBS="$x_extra_libs"
+    BDK_EXTRA_LIBS="$x_extra_libs"
   else
-    GDK_EXTRA_LIBS="$X_LIBS $x_extra_libs -lXext -lX11 $GDK_EXTRA_LIBS"
+    BDK_EXTRA_LIBS="$X_LIBS $x_extra_libs -lXext -lX11 $BDK_EXTRA_LIBS"
   fi
 
-  CPPFLAGS="$gtk_save_cppflags"
-  LIBS="$gtk_save_libs"
+  CPPFLAGS="$btk_save_cppflags"
+  LIBS="$btk_save_libs"
 
   AM_CONDITIONAL(USE_X11, true)
 else
@@ -1251,8 +1251,8 @@ else
   AM_CONDITIONAL(HAVE_X11R6, false)
 fi
 
-if test "x$gdktarget" = "xwin32"; then
-  GDK_EXTRA_LIBS="$GDK_EXTRA_LIBS -lgdi32 -limm32 -lshell32 -lole32 -Wl,-luuid"
+if test "x$bdktarget" = "xwin32"; then
+  BDK_EXTRA_LIBS="$BDK_EXTRA_LIBS -lgdi32 -limm32 -lshell32 -lole32 -Wl,-luuid"
   AM_CONDITIONAL(USE_WIN32, true)
 else
   AM_CONDITIONAL(USE_WIN32, false)
@@ -1263,8 +1263,8 @@ AC_ARG_ENABLE(quartz-relocation,
                               [enable bundle-based relocation functions])],
                               [quartz_relocation=yes])
 
-if test "x$gdktarget" = "xquartz"; then
-  GDK_EXTRA_LIBS="$GDK_EXTRA_LIBS -framework Cocoa"
+if test "x$bdktarget" = "xquartz"; then
+  BDK_EXTRA_LIBS="$BDK_EXTRA_LIBS -framework Cocoa"
   AM_CONDITIONAL(USE_QUARTZ, true)
   if test "x$quartz_relocation" = xyes; then
     AC_DEFINE([QUARTZ_RELOCATION], [1], [Use NSBundle functions to determine load paths for libraries, translations, etc.])
@@ -1274,7 +1274,7 @@ else
   AM_CONDITIONAL(USE_QUARTZ, false)
 fi
 
-if test "x$gdktarget" = "xdirectfb"; then
+if test "x$bdktarget" = "xdirectfb"; then
   DIRECTFB_REQUIRED_VERSION=1.0.0
   AC_MSG_CHECKING(for DirectFB)
 
@@ -1285,134 +1285,134 @@ else
 fi
 
 
-# Check for Pango flags
+# Check for Bango flags
 
-if test "x$gdktarget" = "xwin32"; then
-	PANGO_PACKAGES="pangowin32 pangocairo"
+if test "x$bdktarget" = "xwin32"; then
+	BANGO_PACKAGES="bangowin32 bangobairo"
 else
-	PANGO_PACKAGES="pango pangocairo"
+	BANGO_PACKAGES="bango bangobairo"
 fi
 
-AC_MSG_CHECKING(Pango flags)
-if $PKG_CONFIG --exists $PANGO_PACKAGES ; then
-        PANGO_CFLAGS=`$PKG_CONFIG --cflags $PANGO_PACKAGES`
-        PANGO_LIBS=`$PKG_CONFIG --libs $PANGO_PACKAGES`
+AC_MSG_CHECKING(Bango flags)
+if $PKG_CONFIG --exists $BANGO_PACKAGES ; then
+        BANGO_CFLAGS=`$PKG_CONFIG --cflags $BANGO_PACKAGES`
+        BANGO_LIBS=`$PKG_CONFIG --libs $BANGO_PACKAGES`
 
-        AC_MSG_RESULT($PANGO_CFLAGS $PANGO_LIBS)
+        AC_MSG_RESULT($BANGO_CFLAGS $BANGO_LIBS)
 else
         AC_MSG_ERROR([
-*** Pango not found. Pango built with Cairo support is required
-*** to build GTK+. See http://www.pango.org for Pango information.
+*** Bango not found. Bango built with Bairo support is required
+*** to build BTK+. See http://www.bango.org for Bango information.
 ])
 fi
 
-CFLAGS="$CFLAGS $PANGO_CFLAGS"
+CFLAGS="$CFLAGS $BANGO_CFLAGS"
 
-if $PKG_CONFIG --uninstalled $PANGO_PACKAGES; then
+if $PKG_CONFIG --uninstalled $BANGO_PACKAGES; then
         :
 else
-	gtk_save_LIBS="$LIBS"
-        LIBS="$PANGO_LIBS $LIBS"
-        AC_TRY_LINK_FUNC(pango_context_new, :, AC_MSG_ERROR([
-*** Can't link to Pango. Pango is required to build
-*** GTK+. For more information see http://www.pango.org]))
-        LIBS="$gtk_save_LIBS"
+	btk_save_LIBS="$LIBS"
+        LIBS="$BANGO_LIBS $LIBS"
+        AC_TRY_LINK_FUNC(bango_context_new, :, AC_MSG_ERROR([
+*** Can't link to Bango. Bango is required to build
+*** BTK+. For more information see http://www.bango.org]))
+        LIBS="$btk_save_LIBS"
 fi
 
 CFLAGS="$saved_cflags"
 LDFLAGS="$saved_ldflags"
 
-# Pull in gio-unix for GDesktopAppInfo usage, see at least gdkapplaunchcontext-x11.c
-if test "x$gdktarget" = "xx11"; then
-  GDK_PACKAGES="$PANGO_PACKAGES gio-unix-2.0 $X_PACKAGES gdk-pixbuf-2.0 cairo-$cairo_backend"
+# Pull in bunnyio-unix for GDesktopAppInfo usage, see at least bdkapplaunchcontext-x11.c
+if test "x$bdktarget" = "xx11"; then
+  BDK_PACKAGES="$BANGO_PACKAGES bunnyio-unix-2.0 $X_PACKAGES bdk-pixbuf-2.0 bairo-$bairo_backend"
 else
-  GDK_PACKAGES="$PANGO_PACKAGES gio-2.0 gdk-pixbuf-2.0 cairo-$cairo_backend"
+  BDK_PACKAGES="$BANGO_PACKAGES bunnyio-2.0 bdk-pixbuf-2.0 bairo-$bairo_backend"
 fi
 
-GDK_DEP_LIBS="$GDK_EXTRA_LIBS `$PKG_CONFIG --libs $GDK_PACKAGES` $MATH_LIB"
-GDK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES` $GDK_EXTRA_CFLAGS"
+BDK_DEP_LIBS="$BDK_EXTRA_LIBS `$PKG_CONFIG --libs $BDK_PACKAGES` $MATH_LIB"
+BDK_DEP_CFLAGS="`$PKG_CONFIG --cflags  bthread-2.0 $BDK_PACKAGES` $BDK_EXTRA_CFLAGS"
 #
 # If we aren't writing explicit dependencies, then don't put the extra libraries we need
 # into the pkg-config files
 #
 if test $enable_explicit_deps != yes ; then
-  GDK_PACKAGES="$PANGO_PACKAGES gdk-pixbuf-2.0"
-  GDK_EXTRA_LIBS=
+  BDK_PACKAGES="$BANGO_PACKAGES bdk-pixbuf-2.0"
+  BDK_EXTRA_LIBS=
 fi
 
-AC_SUBST(GDK_PACKAGES)
-AC_SUBST(GDK_EXTRA_LIBS)
-AC_SUBST(GDK_EXTRA_CFLAGS)
-AC_SUBST(GDK_DEP_LIBS)
-AC_SUBST(GDK_DEP_CFLAGS)
+AC_SUBST(BDK_PACKAGES)
+AC_SUBST(BDK_EXTRA_LIBS)
+AC_SUBST(BDK_EXTRA_CFLAGS)
+AC_SUBST(BDK_DEP_LIBS)
+AC_SUBST(BDK_DEP_CFLAGS)
 
 
 ########################################
 # Check for Accessibility Toolkit flags
 ########################################
 
-ATK_PACKAGES=atk
-AC_MSG_CHECKING(ATK flags)
-if $PKG_CONFIG --exists $ATK_PACKAGES ; then
-        ATK_CFLAGS=`$PKG_CONFIG --cflags $ATK_PACKAGES`
-        ATK_LIBS=`$PKG_CONFIG --libs $ATK_PACKAGES`
+BATK_PACKAGES=batk
+AC_MSG_CHECKING(BATK flags)
+if $PKG_CONFIG --exists $BATK_PACKAGES ; then
+        BATK_CFLAGS=`$PKG_CONFIG --cflags $BATK_PACKAGES`
+        BATK_LIBS=`$PKG_CONFIG --libs $BATK_PACKAGES`
 
-        AC_MSG_RESULT($ATK_CFLAGS $ATK_LIBS)
+        AC_MSG_RESULT($BATK_CFLAGS $BATK_LIBS)
 else
         AC_MSG_ERROR([
 *** Accessibility Toolkit not found. Accessibility Toolkit is required
-*** to build GTK+.
+*** to build BTK+.
 ])
 fi
 
-if $PKG_CONFIG --uninstalled $ATK_PACKAGES; then
+if $PKG_CONFIG --uninstalled $BATK_PACKAGES; then
         :
 else
-	gtk_save_LIBS="$LIBS"
-        LIBS="$ATK_LIBS $LIBS"
-        AC_TRY_LINK_FUNC(atk_object_get_type, : , AC_MSG_ERROR([
+	btk_save_LIBS="$LIBS"
+        LIBS="$BATK_LIBS $LIBS"
+        AC_TRY_LINK_FUNC(batk_object_get_type, : , AC_MSG_ERROR([
                 *** Cannot link to Accessibility Toolkit. Accessibility Toolkit is required
-                *** to build GTK+]))
-        LIBS="$gtk_save_LIBS"
+                *** to build BTK+]))
+        LIBS="$btk_save_LIBS"
 fi
 
-GTK_PACKAGES="atk cairo gdk-pixbuf-2.0 gio-2.0"
-if test "x$gdktarget" = "xx11"; then
-  GTK_PACKAGES="$GTK_PACKAGES pangoft2"
+BTK_PACKAGES="batk bairo bdk-pixbuf-2.0 bunnyio-2.0"
+if test "x$bdktarget" = "xx11"; then
+  BTK_PACKAGES="$BTK_PACKAGES bangoft2"
 fi
-GTK_EXTRA_LIBS=
-GTK_EXTRA_CFLAGS= 
-GTK_DEP_LIBS="$GDK_EXTRA_LIBS $GTK_DEP_LIBS_FOR_X `$PKG_CONFIG --libs $PANGO_PACKAGES $GTK_PACKAGES_FOR_X $GTK_PACKAGES` $GTK_EXTRA_LIBS $MATH_LIB"
-GTK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES $GTK_PACKAGES` $GDK_EXTRA_CFLAGS $GTK_EXTRA_CFLAGS"
+BTK_EXTRA_LIBS=
+BTK_EXTRA_CFLAGS= 
+BTK_DEP_LIBS="$BDK_EXTRA_LIBS $BTK_DEP_LIBS_FOR_X `$PKG_CONFIG --libs $BANGO_PACKAGES $BTK_PACKAGES_FOR_X $BTK_PACKAGES` $BTK_EXTRA_LIBS $MATH_LIB"
+BTK_DEP_CFLAGS="`$PKG_CONFIG --cflags  bthread-2.0 $BDK_PACKAGES $BTK_PACKAGES` $BDK_EXTRA_CFLAGS $BTK_EXTRA_CFLAGS"
 
 if test x"$os_win32" = xyes; then
-  GTK_EXTRA_CFLAGS="$msnative_struct"
+  BTK_EXTRA_CFLAGS="$msnative_struct"
 fi
 
-GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
-ATK_PREFIX="`$PKG_CONFIG --variable=prefix atk`"
-PANGO_PREFIX="`$PKG_CONFIG --variable=prefix pango`"
-CAIRO_PREFIX="`pkg-config --variable=prefix cairo`"
+BUNNYLIB_PREFIX="`$PKG_CONFIG --variable=prefix bunnylib-2.0`"
+BATK_PREFIX="`$PKG_CONFIG --variable=prefix batk`"
+BANGO_PREFIX="`$PKG_CONFIG --variable=prefix bango`"
+BAIRO_PREFIX="`pkg-config --variable=prefix bairo`"
 
-AC_SUBST(GTK_PACKAGES)
-AC_SUBST(GTK_EXTRA_LIBS)
-AC_SUBST(GTK_EXTRA_CFLAGS)
-AC_SUBST(GTK_DEP_LIBS)
-AC_SUBST(GTK_DEP_CFLAGS)
+AC_SUBST(BTK_PACKAGES)
+AC_SUBST(BTK_EXTRA_LIBS)
+AC_SUBST(BTK_EXTRA_CFLAGS)
+AC_SUBST(BTK_DEP_LIBS)
+AC_SUBST(BTK_DEP_CFLAGS)
 
-AC_SUBST(GLIB_PREFIX)
-AC_SUBST(ATK_PREFIX)
-AC_SUBST(PANGO_PREFIX)
-AC_SUBST(CAIRO_PREFIX)
+AC_SUBST(BUNNYLIB_PREFIX)
+AC_SUBST(BATK_PREFIX)
+AC_SUBST(BANGO_PREFIX)
+AC_SUBST(BAIRO_PREFIX)
 
-AC_SUBST(GTK_DEBUG_FLAGS)
-AC_SUBST(GTK_XIM_FLAGS)
+AC_SUBST(BTK_DEBUG_FLAGS)
+AC_SUBST(BTK_XIM_FLAGS)
 
-GDK_PIXBUF_LIBS=`$PKG_CONFIG --libs gdk-pixbuf-2.0`
-AC_SUBST(GDK_PIXBUF_LIBS)
+BDK_PIXBUF_LIBS=`$PKG_CONFIG --libs bdk-pixbuf-2.0`
+AC_SUBST(BDK_PIXBUF_LIBS)
 
 ########################
-# Checks needed for gail
+# Checks needed for bail
 ########################
 
 old_LIBS="$LIBS"
@@ -1437,8 +1437,8 @@ case $struct_sockaddr_un_sun_len in
 		;;
 esac
 
-GAIL_INET_LIBS="$LIBS"
-AC_SUBST([GAIL_INET_LIBS])
+BAIL_INET_LIBS="$LIBS"
+AC_SUBST([BAIL_INET_LIBS])
 
 LIBS="$old_LIBS"
 
@@ -1492,24 +1492,24 @@ else
 
     AM_CONDITIONAL(HAVE_CUPS, true)
 
-    gtk_save_cflags="$CFLAGS"
+    btk_save_cflags="$CFLAGS"
     CFLAGS="$CUPS_CFLAGS"
     AC_TRY_COMPILE([#include <cups/http.h>],
                    [http_t http; char *s = http.authstring;],
                    [AC_DEFINE(HAVE_HTTP_AUTHSTRING, [],
                               [Define if cups http_t authstring field is accessible])],)
-    CFLAGS="$gtk_save_cflags"
+    CFLAGS="$btk_save_cflags"
 
     AC_SUBST(HAVE_HTTP_AUTHSTRING)
 
-    gtk_save_libs="$LIBS"
+    btk_save_libs="$LIBS"
     LIBS="$CUPS_LIBS"
     AC_CHECK_FUNCS(httpGetAuthString)
-    LIBS="$gtk_save_libs"
+    LIBS="$btk_save_libs"
   fi
 fi
 
-# Checks to see if we should compile with PAPI backend for GTK+
+# Checks to see if we should compile with PAPI backend for BTK+
 #
 
 AC_ARG_ENABLE(papi,
@@ -1535,24 +1535,24 @@ fi
 
 AM_CONDITIONAL(HAVE_PAPI_CUPS, test "x$have_papi" = "xyes" -a "x$CUPS_CONFIG" != "xno")
 
-gtk_save_cppflags="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $GTK_DEP_CFLAGS $GDK_DEP_CFLAGS"
+btk_save_cppflags="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $BTK_DEP_CFLAGS $BDK_DEP_CFLAGS"
 
-AC_CHECK_HEADER(cairo-pdf.h,,AC_MSG_ERROR([
-*** Can't find cairo-pdf.h. You must build Cairo with the pdf
+AC_CHECK_HEADER(bairo-pdf.h,,AC_MSG_ERROR([
+*** Can't find bairo-pdf.h. You must build Bairo with the pdf
 *** backend enabled.]))
 
 if test "$os_win32" != "yes"; then
-  AC_CHECK_HEADER(cairo-ps.h,,AC_MSG_ERROR([
-*** Can't find cairo-ps.h. You must build Cairo with the 
+  AC_CHECK_HEADER(bairo-ps.h,,AC_MSG_ERROR([
+*** Can't find bairo-ps.h. You must build Bairo with the 
 *** postscript backend enabled.]))
 
-  AC_CHECK_HEADER(cairo-svg.h,,AC_MSG_ERROR([
-*** Can't find cairo-svg.h. You must build Cairo with the
+  AC_CHECK_HEADER(bairo-svg.h,,AC_MSG_ERROR([
+*** Can't find bairo-svg.h. You must build Bairo with the
 *** svg backend enabled.]))
 fi   
 
-CPPFLAGS="$gtk_save_cppflags"
+CPPFLAGS="$btk_save_cppflags"
      
 			  	
 AC_ARG_ENABLE(test-print-backend,
@@ -1570,32 +1570,32 @@ fi
 ################################################################
 
 #
-# pkg-config --libs gmodule includes the "export_dynamic" flag,
+# pkg-config --libs bmodule includes the "export_dynamic" flag,
 #  but this flag is only meaningful for executables. For libraries
 #  the effect is undefined; what it causes on Linux is that the
 #  export list from -export-symbols-regex is ignored and everything
 #  is exported
 #
-# We are using gmodule-no-export now, but I'm leaving the stripping
-# code in place for now, since pango and atk still require gmodule.
+# We are using bmodule-no-export now, but I'm leaving the stripping
+# code in place for now, since bango and batk still require bmodule.
 export SED
 export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
 if test -n "$export_dynamic"; then
-  GDK_DEP_LIBS=`echo $GDK_DEP_LIBS | sed -e "s/$export_dynamic//"`
-  GTK_DEP_LIBS=`echo $GTK_DEP_LIBS | sed -e "s/$export_dynamic//"`
+  BDK_DEP_LIBS=`echo $BDK_DEP_LIBS | sed -e "s/$export_dynamic//"`
+  BTK_DEP_LIBS=`echo $BTK_DEP_LIBS | sed -e "s/$export_dynamic//"`
 fi
 
 ##################################################
 # GObject introspection
 ##################################################
 
-GOBJECT_INTROSPECTION_CHECK([0.9.3])
+BOBJECT_INTROSPECTION_CHECK([0.9.3])
 
 ##################################################
-# Checks for gtk-doc and docbook-tools
+# Checks for btk-doc and docbook-tools
 ##################################################
 
-GTK_DOC_CHECK([1.11])
+BTK_DOC_CHECK([1.11])
 
 AC_CHECK_PROG(DB2HTML, db2html, true, false)
 AM_CONDITIONAL(HAVE_DOCBOOK, $DB2HTML)
@@ -1634,23 +1634,23 @@ AM_CONDITIONAL(MSVC_NO_TOOLSET_SET, [test x$MSVC_TOOLSET = x])
 # Output commands
 ##################################################
 
-AC_CONFIG_COMMANDS([gdk/gdkconfig.h], [
-	outfile=gdkconfig.h-tmp
+AC_CONFIG_COMMANDS([bdk/bdkconfig.h], [
+	outfile=bdkconfig.h-tmp
 	cat > $outfile <<\_______EOF
-/* gdkconfig.h
+/* bdkconfig.h
  *
  * This is a generated file.  Please modify `configure.in'
  */
 
-#ifndef GDKCONFIG_H
-#define GDKCONFIG_H
+#ifndef BDKCONFIG_H
+#define BDKCONFIG_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 #ifndef GSEAL
-/* introduce GSEAL() here for all of Gdk and Gtk+ without the need to modify GLib */
+/* introduce GSEAL() here for all of Bdk and Btk+ without the need to modify GLib */
 #  ifdef GSEAL_ENABLE
 #    define GSEAL(ident)      _g_sealed__ ## ident
 #  else
@@ -1661,8 +1661,8 @@ extern "C" {
 _______EOF
 
 	cat >>$outfile <<_______EOF
-$gdk_windowing
-$gdk_wc
+$bdk_windowing
+$bdk_wc
 _______EOF
 
 	cat >>$outfile <<_______EOF
@@ -1671,46 +1671,46 @@ _______EOF
 }
 #endif /* __cplusplus */
 
-#endif /* GDKCONFIG_H */
+#endif /* BDKCONFIG_H */
 _______EOF
 
 
-	if cmp -s $outfile gdk/gdkconfig.h; then
-          AC_MSG_NOTICE([gdk/gdkconfig.h is unchanged])
+	if cmp -s $outfile bdk/bdkconfig.h; then
+          AC_MSG_NOTICE([bdk/bdkconfig.h is unchanged])
 	  rm -f $outfile
 	else
-	  mv $outfile gdk/gdkconfig.h
+	  mv $outfile bdk/bdkconfig.h
 	fi
 ],[
-if test "x$gdktarget" = "xx11" ; then
-  gdk_windowing='
-#define GDK_WINDOWING_X11'
-elif test "x$gdktarget" = "xwin32" ; then
-  gdk_windowing='
-#define GDK_NATIVE_WINDOW_POINTER
+if test "x$bdktarget" = "xx11" ; then
+  bdk_windowing='
+#define BDK_WINDOWING_X11'
+elif test "x$bdktarget" = "xwin32" ; then
+  bdk_windowing='
+#define BDK_NATIVE_WINDOW_POINTER
 
-#define GDK_WINDOWING_WIN32'
-elif test "x$gdktarget" = "xquartz" ; then
-  gdk_windowing='
-#define GDK_NATIVE_WINDOW_POINTER
+#define BDK_WINDOWING_WIN32'
+elif test "x$bdktarget" = "xquartz" ; then
+  bdk_windowing='
+#define BDK_NATIVE_WINDOW_POINTER
 
-#define GDK_WINDOWING_QUARTZ'
-elif test "x$gdktarget" = "xdirectfb" ; then
-  gdk_windowing='
-#define GDK_WINDOWING_DIRECTFB'
+#define BDK_WINDOWING_QUARTZ'
+elif test "x$bdktarget" = "xdirectfb" ; then
+  bdk_windowing='
+#define BDK_WINDOWING_DIRECTFB'
 fi
 
-if test x$gdk_wchar_h = xyes; then
-  gdk_wc='
-#define GDK_HAVE_WCHAR_H 1'
+if test x$bdk_wchar_h = xyes; then
+  bdk_wc='
+#define BDK_HAVE_WCHAR_H 1'
 fi
-if test x$gdk_wctype_h = xyes; then
-  gdk_wc="\$gdk_wc
-#define GDK_HAVE_WCTYPE_H 1"
+if test x$bdk_wctype_h = xyes; then
+  bdk_wc="\$bdk_wc
+#define BDK_HAVE_WCTYPE_H 1"
 fi
-if test x$gdk_working_wctype = xno; then
-  gdk_wc="\$gdk_wc
-#define GDK_HAVE_BROKEN_WCTYPE 1"
+if test x$bdk_working_wctype = xno; then
+  bdk_wc="\$bdk_wc
+#define BDK_HAVE_BROKEN_WCTYPE 1"
 fi
 
 
@@ -1718,67 +1718,67 @@ fi
 
 AC_CONFIG_FILES([
 config.h.win32
-gtk-zip.sh
+btk-zip.sh
 Makefile
-gdk-2.0.pc
-gtk+-2.0.pc
-gtk+-unix-print-2.0.pc
-gail.pc
-gdk-2.0-uninstalled.pc
-gtk+-2.0-uninstalled.pc
-gail-uninstalled.pc
+bdk-2.0.pc
+btk+-2.0.pc
+btk+-unix-print-2.0.pc
+bail.pc
+bdk-2.0-uninstalled.pc
+btk+-2.0-uninstalled.pc
+bail-uninstalled.pc
 m4macros/Makefile
 po/Makefile.in
 po-properties/Makefile.in
 demos/Makefile
-demos/gtk-demo/Makefile
-demos/gtk-demo/geninclude.pl
+demos/btk-demo/Makefile
+demos/btk-demo/geninclude.pl
 tests/Makefile
 docs/Makefile
 docs/reference/Makefile
-docs/reference/gdk/Makefile
-docs/reference/gdk/version.xml
-docs/reference/gtk/Makefile
-docs/reference/gtk/version.xml
-docs/reference/libgail-util/Makefile
+docs/reference/bdk/Makefile
+docs/reference/bdk/version.xml
+docs/reference/btk/Makefile
+docs/reference/btk/version.xml
+docs/reference/libbail-util/Makefile
 docs/faq/Makefile
 docs/tools/Makefile
 docs/tutorial/Makefile
 build/Makefile
 build/win32/Makefile
 build/win32/vs9/Makefile
-build/win32/vs9/gtk-version-paths.vsprops
+build/win32/vs9/btk-version-paths.vsprops
 build/win32/vs10/Makefile
-build/win32/vs10/gtk-version-paths.props
+build/win32/vs10/btk-version-paths.props
 build/win32/vs11/Makefile
 build/win32/vs12/Makefile
 build/win32/vs14/Makefile
 build/win32/vs15/Makefile
 build/win32/vs16/Makefile
-gdk/Makefile
-gdk/x11/Makefile
-gdk/win32/Makefile
-gdk/win32/rc/Makefile
-gdk/win32/rc/gdk.rc
-gdk/quartz/Makefile
-gdk/directfb/Makefile
-gdk/tests/Makefile
-gtk/Makefile
-gtk/makefile.msc
-gtk/gtkversion.h
-gtk/gtk-win32.rc
-gtk/theme-bits/Makefile
-gtk/tests/Makefile
+bdk/Makefile
+bdk/x11/Makefile
+bdk/win32/Makefile
+bdk/win32/rc/Makefile
+bdk/win32/rc/bdk.rc
+bdk/quartz/Makefile
+bdk/directfb/Makefile
+bdk/tests/Makefile
+btk/Makefile
+btk/makefile.msc
+btk/btkversion.h
+btk/btk-win32.rc
+btk/theme-bits/Makefile
+btk/tests/Makefile
 modules/Makefile
 modules/other/Makefile
-modules/other/gail/Makefile
-modules/other/gail/libgail-util/Makefile
-modules/other/gail/tests/Makefile
+modules/other/bail/Makefile
+modules/other/bail/libbail-util/Makefile
+modules/other/bail/tests/Makefile
 modules/engines/Makefile
 modules/engines/pixbuf/Makefile
 modules/engines/ms-windows/Makefile
 modules/engines/ms-windows/Theme/Makefile
-modules/engines/ms-windows/Theme/gtk-2.0/Makefile
+modules/engines/ms-windows/Theme/btk-2.0/Makefile
 modules/input/Makefile
 modules/printbackends/Makefile
 modules/printbackends/cups/Makefile
@@ -1792,4 +1792,4 @@ perf/Makefile
 AC_OUTPUT
 
 echo "configuration:
-        target: $gdktarget"
+        target: $bdktarget"

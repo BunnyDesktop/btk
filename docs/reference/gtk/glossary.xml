@@ -28,7 +28,7 @@
       <para>
 	A <glossterm linkend="container">container</glossterm> that
 	can hold at most one child widget.  The base class for bins is
-	#GtkBin.
+	#BtkBin.
       </para>
       <glossseealso>
 	<glossterm linkend="container">container</glossterm>
@@ -51,11 +51,11 @@
     <glossterm>column</glossterm>
     <glossdef>
       <para>
-	GTK+ contains several widgets which display data in columns,
-        e.g. the #GtkTreeView. 
+	BTK+ contains several widgets which display data in columns,
+        e.g. the #BtkTreeView. 
         These <glossterm linkend="view-column">view columns</glossterm> in 
-        the tree view are represented by #GtkTreeViewColumn
-        objects inside GTK+. They should not be confused with 
+        the tree view are represented by #BtkTreeViewColumn
+        objects inside BTK+. They should not be confused with 
         <glossterm linkend="model-column">model columns</glossterm> which
         are used to organize the data in tree models.
       </para>
@@ -72,11 +72,11 @@
 	<emphasis>parent</emphasis> of the <emphasis>child</emphasis>
 	widgets.  Some containers don't draw anything on their own,
 	but rather just organize their children's <glossterm
-	linkend="geometry">geometry</glossterm>; for example, #GtkVBox lays out 
+	linkend="geometry">geometry</glossterm>; for example, #BtkVBox lays out 
         its children vertically without painting anything on its own.  Other
-	containers include decorative elements; for example, #GtkFrame contains 
+	containers include decorative elements; for example, #BtkFrame contains 
         the frame's child and a label in addition to the shaded frame it draws.  
-        The base class for containers is #GtkContainer.
+        The base class for containers is #BtkContainer.
       </para>
       <glossseealso>
 	<glossterm linkend="container">widget</glossterm>
@@ -89,12 +89,12 @@
     <glossterm>display</glossterm>
     <glossdef>
       <para>
-        GDK inherited the concept of display from the X window system,
+        BDK inherited the concept of display from the X window system,
         which considers a display to be the combination
         of a keyboard, a pointing device and one or more 
         <glossterm linkend="screen">screens</glossterm>. 
         Applications open a display to show windows and interact with the user.
-        In GDK, a display is represented by a #GdkDisplay.
+        In BDK, a display is represented by a #BdkDisplay.
       </para>
     </glossdef>
   </glossentry>
@@ -104,7 +104,7 @@
       <para>
         Ellipsization is the process of replacing some part
         of a text by an ellipsis (usually "...") to make the
-        text fit in a smaller space. Pango can ellipsize text
+        text fit in a smaller space. Bango can ellipsize text
         at the beginning, at the end or in the middle.
       </para>
     </glossdef>
@@ -114,7 +114,7 @@
     <glossterm>event</glossterm>
     <glossdef>
       <para>
-        Events are the way in which GDK informs GTK+ about external events
+        Events are the way in which BDK informs BTK+ about external events
         like pointer motion, button clicks, key presses, etc. 
       </para>
     </glossdef>
@@ -137,20 +137,20 @@
       <para>
 	This is the step in a <glossterm
 	linkend="widget">widget's</glossterm> life cycle where it
-	actually shows the GdkWindows it created when it was
+	actually shows the BdkWindows it created when it was
 	<glossterm linkend="realization">realized</glossterm>.  When a
 	widget is mapped, it must turn on its
-	%GTK_MAPPED <link linkend="GtkWidgetFlags">flag</link>.
+	%BTK_MAPPED <link linkend="BtkWidgetFlags">flag</link>.
       </para>
 
       <para>
 	Note that due to the asynchronous nature of the X window
 	system, a widget's window may not appear on the screen
-	immediatly after one calls gdk_window_show():
+	immediatly after one calls bdk_window_show():
 	you must wait for the corresponding map <glossterm
 	linkend="event">event</glossterm> to be received.  You can do
 	this with the <link
-	linkend="GtkWidget-map-event"><methodname>GtkWidget::map-event</methodname>
+	linkend="BtkWidget-map-event"><methodname>BtkWidget::map-event</methodname>
 	signal</link>.
       </para>
     </glossdef>
@@ -163,7 +163,7 @@
         A column in a tree model, holding data of a certain type. 
         The types which can be stored in the columns of a model 
         have to be specified when the model is constructed, see 
-        e.g. gtk_list_store_new().
+        e.g. btk_list_store_new().
       </para>
       <glossseealso>
 	<glossterm linkend="view-column">view column</glossterm>
@@ -177,14 +177,14 @@
       <para>
         These widgets follow the well-known model-view pattern, which separates
         the data (the model) to be displayed from the component which does the 
-        actual visualization (the view). Examples of this pattern in GTK+ are 
-        the #GtkTreeView/#GtkTreeModel and #GtkTextView/#GtkTextBuffer
+        actual visualization (the view). Examples of this pattern in BTK+ are 
+        the #BtkTreeView/#BtkTreeModel and #BtkTextView/#BtkTextBuffer
       </para>
       <para>
         One important advantage of this pattern is that it is possible to 
         display the same model in multiple views; another one that the 
         separation of the model allows a great deal of flexibility, as 
-        demonstrated by e.g. #GtkTreeModelSort or #GtkTreeModelFilter.
+        demonstrated by e.g. #BtkTreeModelSort or #BtkTreeModelFilter.
       </para>
     </glossdef>
   </glossentry>
@@ -193,10 +193,10 @@
     <glossterm>no-window widget</glossterm>
     <glossdef>
       <para>
-	A widget that does not have a GdkWindow of its own on which to
+	A widget that does not have a BdkWindow of its own on which to
 	draw its contents, but rather shares its <glossterm
 	linkend="parent">parent's</glossterm>.  This can be tested with
-	the gtk_widget_get_has_window() function.  See
+	the btk_widget_get_has_window() function.  See
 	<xref linkend="window-no-window-widgets"/> for a detailed
 	description of this flag.
       </para>
@@ -220,25 +220,25 @@
       <para>
 	This is the step in a <glossterm
 	linkend="widget">widget's</glossterm> life cycle where it
-	creates its own GdkWindow, or otherwise associates itself with
+	creates its own BdkWindow, or otherwise associates itself with
 	its <glossterm linkend="parent">parent's</glossterm>
-	GdkWindow.  If the widget has its own window, then it must
+	BdkWindow.  If the widget has its own window, then it must
 	also attach a <glossterm linkend="style">style</glossterm> to
 	it.  A widget becomes unrealized by destroying its associated
-	GdkWindow.  When a widget is realized, it must turn on its
-	%GTK_REALIZED <link linkend="GtkWidgetFlags">flag</link>.
+	BdkWindow.  When a widget is realized, it must turn on its
+	%BTK_REALIZED <link linkend="BtkWidgetFlags">flag</link>.
       </para>
 
       <para>
-	Widgets that don't own the GdkWindow on which they draw are
+	Widgets that don't own the BdkWindow on which they draw are
 	called <glossterm linkend="no-window">no-window widgets</glossterm>.  
-        This can be tested with the GTK_WIDGET_NO_WINDOW() macro.  Normally, 
-        these widgets draw on their parent's GdkWindow.
+        This can be tested with the BTK_WIDGET_NO_WINDOW() macro.  Normally, 
+        these widgets draw on their parent's BdkWindow.
       </para>
 
       <para>
 	Note that when a widget creates a window in its <link
-	linkend="gtkwidget-realize"><methodname>::realize()</methodname></link>
+	linkend="btkwidget-realize"><methodname>::realize()</methodname></link>
 	handler, it does not actually show the window.  That is, the
 	window's structure is just created in memory.  The widget
 	actually shows the window when it gets <glossterm
@@ -268,14 +268,14 @@
     <glossterm>screen</glossterm>
     <glossdef>
       <para>
-	GDK inherited the concept of screen from the X window system, 
+	BDK inherited the concept of screen from the X window system, 
         which considers a screen to be a rectangular area, on which 
         applications may place their windows. Screens under X may have 
         quite dissimilar <glossterm linkend="visual">visuals</glossterm>.
         Each screen can stretch across multiple physical monitors.
       </para>
       <para>
-        In GDK, screens are represented by #GdkScreen objects.
+        In BDK, screens are represented by #BdkScreen objects.
       </para>
     </glossdef>
   </glossentry>
@@ -284,9 +284,9 @@
     <glossterm>style</glossterm>
     <glossdef>
       <para>
-        A style encapsulates what GTK+ needs to know in order to draw
+        A style encapsulates what BTK+ needs to know in order to draw
         a widget. Styles can be modified with 
-        <link linkend="gtk-Resource-Files">resource files</link>.
+        <link linkend="btk-Resource-Files">resource files</link>.
       </para>
     </glossdef>
   </glossentry>
@@ -297,7 +297,7 @@
       <para>
 	A <glossterm linkend="widget">widget</glossterm> that does not
 	require a <glossterm linkend="parent">parent</glossterm> container.  
-        The only toplevel widgets in GTK+ are #GtkWindow and widgets derived from it.
+        The only toplevel widgets in BTK+ are #BtkWindow and widgets derived from it.
       </para>
       <glossseealso>
 	<glossterm linkend="container">container</glossterm>
@@ -320,7 +320,7 @@
     <glossdef>
       <para>
         A displayed column in a tree view, represented by a
-        #GtkTreeViewColumn object.
+        #BtkTreeViewColumn object.
       </para>
       <glossseealso>
 	<glossterm linkend="model-column">model column</glossterm>
@@ -359,7 +359,7 @@
 	linkend="geometry">geometry</glossterm> of the widgets:  every
 	widget thus has a parent except those widgets which are
 	<glossterm linkend="toplevel">toplevels</glossterm>.  The base
-	class for widgets is #GtkWidget.
+	class for widgets is #BtkWidget.
       </para>
       <glossseealso>
 	<glossterm linkend="container">container</glossterm>
@@ -371,6 +371,6 @@
 <!--
 Local variables:
 mode: sgml
-sgml-parent-document: ("gtk-docs.sgml" "book" "glossary")
+sgml-parent-document: ("btk-docs.sgml" "book" "glossary")
 End:
 -->

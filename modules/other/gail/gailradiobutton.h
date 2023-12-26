@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,37 +17,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_RADIO_BUTTON_H__
-#define __GAIL_RADIO_BUTTON_H__
+#ifndef __BAIL_RADIO_BUTTON_H__
+#define __BAIL_RADIO_BUTTON_H__
 
-#include <gail/gailtogglebutton.h>
+#include <bail/bailtogglebutton.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_RADIO_BUTTON               (gail_radio_button_get_type ())
-#define GAIL_RADIO_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_RADIO_BUTTON, GailRadioButton))
-#define GAIL_RADIO_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_RADIO_BUTTON, GailRadioButtonClass))
-#define GAIL_IS_RADIO_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_RADIO_BUTTON))
-#define GAIL_IS_RADIO_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_RADIO_BUTTON))
-#define GAIL_RADIO_BUTTON_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_RADIO_BUTTON, GailRadioButtonClass))
+#define BAIL_TYPE_RADIO_BUTTON               (bail_radio_button_get_type ())
+#define BAIL_RADIO_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RADIO_BUTTON, BailRadioButton))
+#define BAIL_RADIO_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RADIO_BUTTON, BailRadioButtonClass))
+#define BAIL_IS_RADIO_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RADIO_BUTTON))
+#define BAIL_IS_RADIO_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RADIO_BUTTON))
+#define BAIL_RADIO_BUTTON_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RADIO_BUTTON, BailRadioButtonClass))
 
-typedef struct _GailRadioButton              GailRadioButton;
-typedef struct _GailRadioButtonClass         GailRadioButtonClass;
+typedef struct _BailRadioButton              BailRadioButton;
+typedef struct _BailRadioButtonClass         BailRadioButtonClass;
 
-struct _GailRadioButton
+struct _BailRadioButton
 {
-  GailToggleButton parent;
+  BailToggleButton parent;
 
   GSList *old_group;
 };
 
-GType gail_radio_button_get_type (void);
+GType bail_radio_button_get_type (void);
 
-struct _GailRadioButtonClass
+struct _BailRadioButtonClass
 {
-  GailToggleButtonClass parent_class;
+  BailToggleButtonClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_RADIO_BUTTON_H__ */
+#endif /* __BAIL_RADIO_BUTTON_H__ */

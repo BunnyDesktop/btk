@@ -1,0 +1,500 @@
+2006-04-17  Matthias Clasen  <mclasen@redhat.com>
+
+	* docs/tools/widgets.c (get_all_widgets): Add print dialog
+	and page setup dialog.
+
+2006-04-11  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkpapersize.c (btk_paper_size_get_display_name):
+	Call gettext on the standard paper names. 
+
+2006-04-11  Alexander Larsson  <alexl@redhat.com>
+
+	* bdk/bdk.symbols:
+	* bdk/win32/bdkevents-win32.c:
+	* bdk/win32/bdkwin32.h:
+	Add bdk_win32_set_modal_dialog_libbtk_only that we
+	need for handling the mainloop in the print dialogs.
+
+	* btk/btkprintoperation-win32.c:
+	Pump the btk+ mainloop when needed in the print dialogs.
+	This means btk+ windows will redraw while the print dialogs
+	are up.
+
+2006-04-10  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintoperation-win32.c: 
+	Better size handling.
+	Save win32-specific settings in additions to the generic ones
+	if the generic one is lossy.
+
+2006-04-10  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintoperation-win32.c:
+	Finish implementing run_page_setup_dialog.
+
+	* btk/btkpagesetup.h:
+	* btk/btkpapersize.h:
+	* btk/btkprint-win32.h:
+	* btk/btkprintcontext.h:
+	* btk/btkprinter-private.h:
+	* btk/btkprintoperation-private.h:
+	* btk/btkprintoperation-unix.c:
+	* btk/btkprintoperation.h:
+	* btk/btkprintsettings.h:
+	s/EGG/BTK/
+
+2006-04-09  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk+-unix-print-2.0.pc.in: Fix a typo  (#337698)
+
+2006-04-07  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/paper_names_offsets.c: 
+	* btk/gen-paper-names.c: Correct the suffix/duplicate optimizations.
+
+2006-04-07  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintoperation-win32.c:
+	Initial work on btk_print_run_page_setup_dialog.
+	Not reading margins yet.
+
+2006-04-07  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/Makefile.am:
+	Link to winspool
+	
+	* btk/btk.symbols:
+	* btk/btkprintoperation-private.h:
+	* btk/btkprintoperation-unix.c:
+	* btk/btkprintoperation.[ch]: 
+	Add btk_print_operation_get_status_string() and status
+	string to _btk_print_operation_set_status.
+	Rename BTK_PRINT_STATUS_PROCESSING to BTK_PRINT_STATUS_PRINTING.
+	
+	* btk/btkprintoperation-win32.c:
+	Poll for status updates
+	
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	Rename BTK_PRINT_STATUS_PROCESSING to BTK_PRINT_STATUS_PRINTING.
+	
+	* tests/print-editor.c:
+	Show print status string
+
+2006-04-06  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/paper_names_offsets.c: 
+	* btk/btkpapersize.c: Save 4K of .data by converting
+	the array of paper names to offsets. 
+
+	* btk/gen-paper-names.c: Utility used to create
+	paper_names_offsets.c from paper_names.c.
+
+	* btk/Makefile.am: Necessary glue.
+
+2006-04-06  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintoperation-win32.c: 
+	Use bunnylib base64 code.
+	Set up manual_* vars fully.
+
+2006-04-06  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/Makefile.am:
+	Add -lcomdlg32 on win32
+	
+	* btk/btkprint-win32.h:
+	Move WINVER define to .c files
+	
+	* btk/btk.symbols:
+	* btk/btkprintoperation-win32.c:
+	Add empty btk_print_run_page_setup win implementation
+	Move WINVER define to this file
+	
+	* modules/Makefile.am:
+	Only build print backends on unix
+
+2006-04-05  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprintunixdialog.c:
+	* btk/btkprintoperation-unix.c: Use BTK_RESPONSE_CANCEL/OK
+	instead of BTK_RESPONSE_REJECT/ACCEPT, to make Esc close
+	the dialog, and to not use values which are documented
+	as reserved for apps.
+
+2006-04-05  Alexander Larsson  <alexl@redhat.com>
+
+	* modules/printbackends/lpr/btkprintbackendlpr.c:
+	Don't hardcode lpr command, expose full commandline.
+
+2006-04-05  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	* btk/btkprintunixdialog.c:
+	Don't check for printer changes after dialog is dead.
+	
+	* btk/btkprintbackend.c: (btk_print_backend_load_modules):
+	Strip whitespace from backend strings
+	
+	* btk/btkprintbackend.h:
+	Add private printer functions
+	
+	* btk/btkprinter-private.h:
+	Move BtkPrinterPrivate into btkprinter.c
+	
+	* btk/btkprinter.[ch]:
+	Move BtkPrinterPrivate into btkprinter.c
+	Add new construct properties.
+	Add setter functions.
+	
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	* modules/printbackends/cups/btkprintercups.[ch]:
+	Update to new APIs.
+	
+	* modules/printbackends/lpr/Makefile.am:
+	* modules/printbackends/lpr/btkprintbackendlpr.c:
+	* modules/printbackends/lpr/btkprinterlpr.[ch]
+	Update to new APIs.
+	Remove BtkPrinterLPR.
+	Read/Save command line option in settings
+	
+	* modules/printbackends/pdf/Makefile.am:
+	* modules/printbackends/pdf/btkprintbackendpdf.c:
+	* modules/printbackends/pdf/btkprinterpdf.[ch]:
+	Update to new APIs.
+	Remove BtkPrinterPDF.
+
+2006-04-04  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprintoperation.h: Add missing standard
+	GObject macros.  (#337277, Yevgen Muntyan)
+
+2006-04-04  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprinteroption.[ch]:
+	Add btk_printer_option_has_choice.
+	
+	* btk/btkprintunixdialog.c:
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	Add support for "print at time".
+
+2006-04-04  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpapersize.c:
+	Handle ppd names with ".Transverse" suffix
+	Don't force width < height
+	
+	* btk/btkprinteroption.c:
+	Make sure that value is never NULL.
+	
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	Add some HP whitelist names
+	Remove spew from ignored options.
+
+2006-04-03  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	Fix warnings
+	
+	* btk/btkprinter-private.h:
+	* btk/btkprinter.[ch]:
+	Add btk_printer_is_default.
+	
+	* btk/btkprintunixdialog.c:
+	Use btk_printer_is_default.
+	
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	Get default printer info
+	
+	* modules/printbackends/pdf/btkprintbackendpdf.c:
+	Fix warning.
+
+2006-04-03  Alexander Larsson  <alexl@redhat.com>
+
+	* modules/printbackends/pdf/btkprintbackendpdf.c:
+	* modules/printbackends/pdf/btkprinterpdf.[ch]:
+	Correctly read/write/use the output filename setting.
+
+2006-04-03  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	Disable margin from printers if there are no printers.
+	
+	* btk/btkpapersize.c:
+	Fix build.
+
+2006-04-01  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols: protect unix-only symbols by 
+	G_OS_UNIX (#336819, Yevgen Muntyan)
+
+	* btk/btkpapersize.c: Win32 fixes.  (#336806, Yevgen Muntyan)
+
+2006-03-30  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btk.symbols:
+	Update
+	
+	* btk/btkprintbackend.[ch]:
+	Add dnotify to btk_print_backend_print_stream
+	
+	* btk/btkprinter-private.h:
+	Declare btk_print_job_set_status
+	
+	* btk/btkprinter.[ch]:
+	Remove btk_printer_prepare_job.
+	
+	* btk/btkprintjob.[ch]:
+	Now you create print job directly with btk_print_job_new() and
+	they'll be prepared automatically.
+	Add status_changed signal and get_status.
+	Add btk_print_job_set_source_file to allow sending a file.
+	
+	* btk/btkprintoperation-private.h:
+	Add destroy notify for platform_data.
+	Declare _btk_print_operation_set_status.
+	
+	* btk/btkprintoperation-unix.c:
+	Hook up status change handling.
+	Use the new way to get a print job.
+
+	* btk/btkprintoperation.[ch]:
+	Add status_changed signal and get_status/is_finished.
+
+	
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	* modules/printbackends/lpr/btkprintbackendlpr.c:
+	* modules/printbackends/pdf/btkprintbackendpdf.c:
+	Update to use new APIs and set status on the job.
+	Cups polls for the status.
+	
+	* tests/print-editor.c:
+	Track the print operations in the status bar.
+
+2006-03-30  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/Makefile.am:
+	* btk/btkprintbackend.c:
+	Default to "pdf,cups" if we found cups, and
+	"pdf,lpr" otherwise.
+
+2006-03-29  Matthias Clasen  <mclasen@redhat.com>
+
+	* modules/printbackends/Makefile.am: 
+	* configure.in: Don't build the cups backend 
+	if cups is not there.
+
+2006-03-29  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btk.symbols:
+	btk_printer_prep_job -> btk_printer_prepare_job
+	btk_print_job_prep -> btk_print_job_prepare
+	
+	* btk/btkprintbackend.h:
+	* btk/btkprinter-private.h:
+	* btk/btkprinter.[ch]:
+	Add print_job argument to printer_prepare_for_print
+	btk_printer_prep_job -> btk_printer_prepare_job
+	
+	* btk/btkprintjob.[ch]:
+	Add manual rendering settings to BtkPrintJob.
+	btk_print_job_prep -> btk_print_job_prepare
+	
+	* btk/btkprintoperation-private.h:
+	* btk/btkprintoperation-unix.c:
+	* btk/btkprintoperation.c:
+	Get more manual_* settings working.
+	Run mainloop after each printed page.
+
+	* btk/btkprintunixdialog.c:
+	Save page ranges.
+	
+	* modules/printbackends/cups/btkprintbackendcups.c:
+	* modules/printbackends/lpr/btkprintbackendlpr.c:
+	* modules/printbackends/pdf/btkprintbackendpdf.c:
+	Now put the manual_* settings inside the PrintJob in
+	prepare_for_print.
+
+2006-03-29  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintunixdialog.c:
+	Make sure we remember the format-for printer.
+	Also, use it as the default if set.
+
+2006-03-28  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintunixdialog.c:
+	Remove unnecessary padding under list.
+	
+2006-03-28  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	* btk/btkprintunixdialog.c:
+	More HIGy layout.
+
+2006-03-28  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	HIG conformance of spacing and titles.
+	
+	* btk/btkprintunixdialog.c:
+	Use standard constructor form print button too.
+
+2006-03-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* modules/printbackends/*/Makefile.am: Fix 
+	a problem with builddir != srcdir builds.
+	(#335915, Yevgen Muntyan)
+
+2006-03-27  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprintbackend.c: Simply the syntax
+	of the setting to "cups,pdf", and get rid
+	of the GScanner used to parse it.
+
+2006-03-27  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkprintunixdialog.c:
+	Reorder print list so status is at the end.
+	Ellipsize the status column.
+
+2006-03-27  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	Handle removed printers and status-changed.
+	Handle NULL printer location.
+
+2006-03-27  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/Makefile.am:
+	* btk/stock-icons/24/btk-orientation-landscape.png:
+	* btk/stock-icons/24/btk-orientation-portrait.png:
+	* btk/stock-icons/24/btk-orientation-reverse-landscape.png:
+	* btk/btkiconfactory.c: (get_default_icons):
+	* btk/btkstock.h:
+	Add orientation stock icons.
+	
+	* btk/btkpagesetupunixdialog.c:
+	Use the orientation icons.
+
+2006-03-27  Alexander Larsson  <alexl@redhat.com>
+
+	* btk/btkpagesetupunixdialog.c:
+	* btk/btkprintjob.c:
+	* btk/btkprintoperation-unix.c:
+	* btk/btkprintunixdialog.c:
+	s/impl/dialog/
+	Don't prefix static functions with _
+
+2006-03-26  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btkprintunixdialog.c: Don't use _(""). (#335898,
+	Christian Persch)
+
+	* modules/printbackends/*: Don't use G_DEFINE_TYPE
+	in modules.
+
+	* btk/btkprintbackend.c: Remove an unused static function.
+
+2006-03-25  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btk.symbols: Add printing symbols
+
+	* btk/btkpapersize.[hc]: 
+	* btk/btkpage*.[hc]: 
+	* btk/btkprint*.[hc]: Add aliasing, #include cleanups.
+
+	* btk/btkprintcontext.h:
+	* btk/btkprintoperation.h:
+	* btk/btkprintsettings.h: Make get_type function const.
+
+	* modules/printbackends/pdf/btkprintbackendpdf.c: Remove
+	C99ism.
+
+	* modules/printbackends/cups/btkcupsutils.c: Use unsigned
+	integers for bitfields.
+
+2006-03-24  Matthias Clasen  <mclasen@redhat.com>
+
+	* btk/btknotebook.c: Fix docs
+
+	* btk/Makefile.am (EXTRA_DIST): Add the stock icons here.
+
+	* bdk/directfb/Makefile.am (EXTRA_DIST): Remove ChangeLog,
+	to make make dist happier.
+
+2006-03-24  Alexander Larsson  <alexl@redhat.com>
+
+	* configure.in:
+	* btk/btkprintbackend.c:
+	* modules/printbackends/Makefile.am:
+	* modules/printbackends/cups/Makefile.am:
+	* modules/printbackends/lpr/Makefile.am:
+	* modules/printbackends/lpr/btkprintbackendlpr.[ch]:
+	* modules/printbackends/lpr/btkprinterlpr.[ch]:
+	* modules/printbackends/pdf/Makefile.am:
+	* modules/printbackends/pdf/btkprintbackendpdf.[ch]:
+	* modules/printbackends/pdf/btkprinterpdf.[ch]:
+	Import pdf and lpr backend
+
+2006-03-24  Alexander Larsson  <alexl@redhat.com>
+
+        Import print-operation into btk+
+	
+	* .cvsignore:
+	* Makefile.am:
+	* btk+-unix-print-2.0.pc.in:
+	Add btk+-unix-print-2.0.pc
+	
+	* configure.in:
+	Look for cups
+	Look for various _NL_* extensions
+	Output new makefiles and .pc.in
+	
+	* btk/Makefile.am:
+	Add new files
+	
+	* btk/btk.h:
+	Include btkprintoperation.h
+	
+	* btk/btkenums.h:
+	Add printing enums
+	
+	* btk/btkmarshalers.list:
+	Add required new marshallers
+	
+	* btk/btkpagesetup.[ch]:
+	* btk/btkpagesetupunixdialog.[ch]:
+	* btk/btkpagesetupunixdialog.h:
+	* btk/btkpapersize.[ch]:
+	* btk/btkprint-win32.[ch]:
+	* btk/btkprintbackend.[ch]:
+	* btk/btkprintcontext.[ch]:
+	* btk/btkprinter-private.h:
+	* btk/btkprinter.[ch]:
+	* btk/btkprinteroption.[ch]:
+	* btk/btkprinteroptionset.[ch]:
+	* btk/btkprinteroptionwidget.[ch]:
+	* btk/btkprintjob.[ch]:
+	* btk/btkprintoperation-private.h:
+	* btk/btkprintoperation-unix.c:
+	* btk/btkprintoperation-win32.c:
+	* btk/btkprintoperation.[ch]:
+	* btk/btkprintsettings.[ch]:
+	* btk/btkprintunixdialog.[ch]:
+	* btk/paper_names.c:
+	Generic printing support
+	
+	* modules/Makefile.am:
+	* modules/printbackends/Makefile.am:
+	* modules/printbackends/cups/Makefile.am:
+	* modules/printbackends/cups/btkcupsutils.[ch]:
+	* modules/printbackends/cups/btkprintbackendcups.[ch]:
+	* modules/printbackends/cups/btkprintercups.[ch]:
+	Cups backend
+	
+	* tests/.cvsignore:
+	* tests/Makefile.am:
+	* tests/print-editor.c:
+	Add printing test app
+

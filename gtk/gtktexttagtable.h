@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,35 +18,35 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TEXT_TAG_TABLE_H__
-#define __GTK_TEXT_TAG_TABLE_H__
+#ifndef __BTK_TEXT_TAG_TABLE_H__
+#define __BTK_TEXT_TAG_TABLE_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktexttag.h>
+#include <btk/btktexttag.h>
 
 G_BEGIN_DECLS
 
-typedef void (* GtkTextTagTableForeach) (GtkTextTag *tag, gpointer data);
+typedef void (* BtkTextTagTableForeach) (BtkTextTag *tag, gpointer data);
 
-#define GTK_TYPE_TEXT_TAG_TABLE            (gtk_text_tag_table_get_type ())
-#define GTK_TEXT_TAG_TABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TEXT_TAG_TABLE, GtkTextTagTable))
-#define GTK_TEXT_TAG_TABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TEXT_TAG_TABLE, GtkTextTagTableClass))
-#define GTK_IS_TEXT_TAG_TABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TEXT_TAG_TABLE))
-#define GTK_IS_TEXT_TAG_TABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TEXT_TAG_TABLE))
-#define GTK_TEXT_TAG_TABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TEXT_TAG_TABLE, GtkTextTagTableClass))
+#define BTK_TYPE_TEXT_TAG_TABLE            (btk_text_tag_table_get_type ())
+#define BTK_TEXT_TAG_TABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTable))
+#define BTK_TEXT_TAG_TABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTableClass))
+#define BTK_IS_TEXT_TAG_TABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG_TABLE))
+#define BTK_IS_TEXT_TAG_TABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG_TABLE))
+#define BTK_TEXT_TAG_TABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTableClass))
 
-typedef struct _GtkTextTagTableClass GtkTextTagTableClass;
+typedef struct _BtkTextTagTableClass BtkTextTagTableClass;
 
-struct _GtkTextTagTable
+struct _BtkTextTagTable
 {
   GObject parent_instance;
 
@@ -57,42 +57,42 @@ struct _GtkTextTagTable
   GSList *GSEAL (buffers);
 };
 
-struct _GtkTextTagTableClass
+struct _BtkTextTagTableClass
 {
   GObjectClass parent_class;
 
-  void (* tag_changed) (GtkTextTagTable *table, GtkTextTag *tag, gboolean size_changed);
-  void (* tag_added) (GtkTextTagTable *table, GtkTextTag *tag);
-  void (* tag_removed) (GtkTextTagTable *table, GtkTextTag *tag);
+  void (* tag_changed) (BtkTextTagTable *table, BtkTextTag *tag, gboolean size_changed);
+  void (* tag_added) (BtkTextTagTable *table, BtkTextTag *tag);
+  void (* tag_removed) (BtkTextTagTable *table, BtkTextTag *tag);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType          gtk_text_tag_table_get_type (void) G_GNUC_CONST;
+GType          btk_text_tag_table_get_type (void) G_GNUC_CONST;
 
-GtkTextTagTable *gtk_text_tag_table_new      (void);
-void             gtk_text_tag_table_add      (GtkTextTagTable        *table,
-                                              GtkTextTag             *tag);
-void             gtk_text_tag_table_remove   (GtkTextTagTable        *table,
-                                              GtkTextTag             *tag);
-GtkTextTag      *gtk_text_tag_table_lookup   (GtkTextTagTable        *table,
+BtkTextTagTable *btk_text_tag_table_new      (void);
+void             btk_text_tag_table_add      (BtkTextTagTable        *table,
+                                              BtkTextTag             *tag);
+void             btk_text_tag_table_remove   (BtkTextTagTable        *table,
+                                              BtkTextTag             *tag);
+BtkTextTag      *btk_text_tag_table_lookup   (BtkTextTagTable        *table,
                                               const gchar            *name);
-void             gtk_text_tag_table_foreach  (GtkTextTagTable        *table,
-                                              GtkTextTagTableForeach  func,
+void             btk_text_tag_table_foreach  (BtkTextTagTable        *table,
+                                              BtkTextTagTableForeach  func,
                                               gpointer                data);
-gint             gtk_text_tag_table_get_size (GtkTextTagTable        *table);
+gint             btk_text_tag_table_get_size (BtkTextTagTable        *table);
 
 
 /* INTERNAL private stuff - not even exported from the library on
  * many platforms
  */
-void _gtk_text_tag_table_add_buffer    (GtkTextTagTable *table,
+void _btk_text_tag_table_add_buffer    (BtkTextTagTable *table,
                                         gpointer         buffer);
-void _gtk_text_tag_table_remove_buffer (GtkTextTagTable *table,
+void _btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
                                         gpointer         buffer);
 
 G_END_DECLS

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,110 +18,110 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_REGION_H__
-#define __GDK_REGION_H__
+#ifndef __BDK_REBUNNYION_H__
+#define __BDK_REBUNNYION_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
-#ifndef GDK_DISABLE_DEPRECATED
+#ifndef BDK_DISABLE_DEPRECATED
 /* GC fill rule for polygons
  *  EvenOddRule
  *  WindingRule
  */
 typedef enum
 {
-  GDK_EVEN_ODD_RULE,
-  GDK_WINDING_RULE
-} GdkFillRule;
+  BDK_EVEN_ODD_RULE,
+  BDK_WINDING_RULE
+} BdkFillRule;
 #endif
 
-/* Types of overlapping between a rectangle and a region
- * GDK_OVERLAP_RECTANGLE_IN: rectangle is in region
- * GDK_OVERLAP_RECTANGLE_OUT: rectangle in not in region
- * GDK_OVERLAP_RECTANGLE_PART: rectangle in partially in region
+/* Types of overlapping between a rectangle and a rebunnyion
+ * BDK_OVERLAP_RECTANGLE_IN: rectangle is in rebunnyion
+ * BDK_OVERLAP_RECTANGLE_OUT: rectangle in not in rebunnyion
+ * BDK_OVERLAP_RECTANGLE_PART: rectangle in partially in rebunnyion
  */
 typedef enum
 {
-  GDK_OVERLAP_RECTANGLE_IN,
-  GDK_OVERLAP_RECTANGLE_OUT,
-  GDK_OVERLAP_RECTANGLE_PART
-} GdkOverlapType;
+  BDK_OVERLAP_RECTANGLE_IN,
+  BDK_OVERLAP_RECTANGLE_OUT,
+  BDK_OVERLAP_RECTANGLE_PART
+} BdkOverlapType;
 
-#ifndef GDK_DISABLE_DEPRECATED
-typedef void (* GdkSpanFunc) (GdkSpan *span,
+#ifndef BDK_DISABLE_DEPRECATED
+typedef void (* BdkSpanFunc) (BdkSpan *span,
                               gpointer data);
 #endif
 
-GdkRegion    * gdk_region_new             (void);
-#ifndef GDK_DISABLE_DEPRECATED
-GdkRegion    * gdk_region_polygon         (const GdkPoint     *points,
+BdkRebunnyion    * bdk_rebunnyion_new             (void);
+#ifndef BDK_DISABLE_DEPRECATED
+BdkRebunnyion    * bdk_rebunnyion_polygon         (const BdkPoint     *points,
                                            gint                n_points,
-                                           GdkFillRule         fill_rule);
+                                           BdkFillRule         fill_rule);
 #endif
-GdkRegion    * gdk_region_copy            (const GdkRegion    *region);
-GdkRegion    * gdk_region_rectangle       (const GdkRectangle *rectangle);
-void           gdk_region_destroy         (GdkRegion          *region);
+BdkRebunnyion    * bdk_rebunnyion_copy            (const BdkRebunnyion    *rebunnyion);
+BdkRebunnyion    * bdk_rebunnyion_rectangle       (const BdkRectangle *rectangle);
+void           bdk_rebunnyion_destroy         (BdkRebunnyion          *rebunnyion);
 
-void	       gdk_region_get_clipbox     (const GdkRegion    *region,
-                                           GdkRectangle       *rectangle);
-void           gdk_region_get_rectangles  (const GdkRegion    *region,
-                                           GdkRectangle      **rectangles,
+void	       bdk_rebunnyion_get_clipbox     (const BdkRebunnyion    *rebunnyion,
+                                           BdkRectangle       *rectangle);
+void           bdk_rebunnyion_get_rectangles  (const BdkRebunnyion    *rebunnyion,
+                                           BdkRectangle      **rectangles,
                                            gint               *n_rectangles);
 
-gboolean       gdk_region_empty           (const GdkRegion    *region);
-gboolean       gdk_region_equal           (const GdkRegion    *region1,
-                                           const GdkRegion    *region2);
-#ifndef GDK_DISABLE_DEPRECATED
-gboolean       gdk_region_rect_equal      (const GdkRegion    *region,
-                                           const GdkRectangle *rectangle);
+gboolean       bdk_rebunnyion_empty           (const BdkRebunnyion    *rebunnyion);
+gboolean       bdk_rebunnyion_equal           (const BdkRebunnyion    *rebunnyion1,
+                                           const BdkRebunnyion    *rebunnyion2);
+#ifndef BDK_DISABLE_DEPRECATED
+gboolean       bdk_rebunnyion_rect_equal      (const BdkRebunnyion    *rebunnyion,
+                                           const BdkRectangle *rectangle);
 #endif
-gboolean       gdk_region_point_in        (const GdkRegion    *region,
+gboolean       bdk_rebunnyion_point_in        (const BdkRebunnyion    *rebunnyion,
                                            int                 x,
                                            int                 y);
-GdkOverlapType gdk_region_rect_in         (const GdkRegion    *region,
-                                           const GdkRectangle *rectangle);
+BdkOverlapType bdk_rebunnyion_rect_in         (const BdkRebunnyion    *rebunnyion,
+                                           const BdkRectangle *rectangle);
 
-void           gdk_region_offset          (GdkRegion          *region,
+void           bdk_rebunnyion_offset          (BdkRebunnyion          *rebunnyion,
                                            gint                dx,
                                            gint                dy);
-#ifndef GDK_DISABLE_DEPRECATED
-void           gdk_region_shrink          (GdkRegion          *region,
+#ifndef BDK_DISABLE_DEPRECATED
+void           bdk_rebunnyion_shrink          (BdkRebunnyion          *rebunnyion,
                                            gint                dx,
                                            gint                dy);
 #endif
-void           gdk_region_union_with_rect (GdkRegion          *region,
-                                           const GdkRectangle *rect);
-void           gdk_region_intersect       (GdkRegion          *source1,
-                                           const GdkRegion    *source2);
-void           gdk_region_union           (GdkRegion          *source1,
-                                           const GdkRegion    *source2);
-void           gdk_region_subtract        (GdkRegion          *source1,
-                                           const GdkRegion    *source2);
-void           gdk_region_xor             (GdkRegion          *source1,
-                                           const GdkRegion    *source2);
+void           bdk_rebunnyion_union_with_rect (BdkRebunnyion          *rebunnyion,
+                                           const BdkRectangle *rect);
+void           bdk_rebunnyion_intersect       (BdkRebunnyion          *source1,
+                                           const BdkRebunnyion    *source2);
+void           bdk_rebunnyion_union           (BdkRebunnyion          *source1,
+                                           const BdkRebunnyion    *source2);
+void           bdk_rebunnyion_subtract        (BdkRebunnyion          *source1,
+                                           const BdkRebunnyion    *source2);
+void           bdk_rebunnyion_xor             (BdkRebunnyion          *source1,
+                                           const BdkRebunnyion    *source2);
 
-#ifndef GDK_DISABLE_DEPRECATED
-void   gdk_region_spans_intersect_foreach (GdkRegion          *region,
-                                           const GdkSpan      *spans,
+#ifndef BDK_DISABLE_DEPRECATED
+void   bdk_rebunnyion_spans_intersect_foreach (BdkRebunnyion          *rebunnyion,
+                                           const BdkSpan      *spans,
                                            int                 n_spans,
                                            gboolean            sorted,
-                                           GdkSpanFunc         function,
+                                           BdkSpanFunc         function,
                                            gpointer            data);
 #endif
 
 G_END_DECLS
 
-#endif /* __GDK_REGION_H__ */
+#endif /* __BDK_REBUNNYION_H__ */
 

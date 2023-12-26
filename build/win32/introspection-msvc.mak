@@ -4,7 +4,7 @@
 # that support MSVC builds and introspection under MSVC.
 
 # Can override with env vars as needed
-# You will need to have built gobject-introspection for this to work.
+# You will need to have built bobject-introspection for this to work.
 # Change or pass in or set the following to suit your environment
 
 !if "$(PREFIX)" == ""
@@ -31,7 +31,7 @@ PKG_CONFIG_PATH=$(PREFIX_FULL)\lib\pkgconfig;$(PKG_CONFIG_PATH)
 # Either having python.exe your PATH will work or passing in
 # PYTHON=<full path to your Python interpretor> will do
 
-# This is required, and gobject-introspection needs to be built
+# This is required, and bobject-introspection needs to be built
 # before this can be successfully run.
 !if "$(PYTHON)" == ""
 PYTHON=python
@@ -45,7 +45,7 @@ PKG_CONFIG=pkg-config
 # Don't change anything following this line!
 
 GIR_SUBDIR = share\gir-1.0
-GIR_TYPELIBDIR = lib\girepository-1.0
+GIR_TYPELIBDIR = lib\birepository-1.0
 G_IR_SCANNER = $(PREFIX)\bin\g-ir-scanner
 G_IR_COMPILER = $(PREFIX)\bin\g-ir-compiler.exe
 G_IR_INCLUDEDIR = $(PREFIX)\$(GIR_SUBDIR)

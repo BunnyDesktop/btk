@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -31,17 +31,17 @@
  */
 
 #include "config.h"
-#include "gdk.h"        /* For gdk_rectangle_intersect */
+#include "bdk.h"        /* For bdk_rectangle_intersect */
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkinternals.h"
-#include "gdkalias.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
 
 
 void
-_gdk_directfb_window_get_offsets (GdkWindow *window,
+_bdk_directfb_window_get_offsets (BdkWindow *window,
                                   gint      *x_offset,
                                   gint      *y_offset)
 {
@@ -52,15 +52,15 @@ _gdk_directfb_window_get_offsets (GdkWindow *window,
 }
 
 gboolean
-_gdk_windowing_window_queue_antiexpose (GdkWindow *window,
-                                        GdkRegion *area)
+_bdk_windowing_window_queue_antiexpose (BdkWindow *window,
+                                        BdkRebunnyion *area)
 {
   return FALSE;
 }
 
 /**
- * gdk_window_scroll:
- * @window: a #GdkWindow
+ * bdk_window_scroll:
+ * @window: a #BdkWindow
  * @dx: Amount to scroll in the X direction
  * @dy: Amount to scroll in the Y direction
  *
@@ -69,50 +69,50 @@ _gdk_windowing_window_queue_antiexpose (GdkWindow *window,
  * brings in from offscreen areas are invalidated.
  **/
 void
-_gdk_directfb_window_scroll (GdkWindow *window,
+_bdk_directfb_window_scroll (BdkWindow *window,
                              gint       dx,
                              gint       dy)
 {
-  GdkWindowObject         *private;
-  GdkDrawableImplDirectFB *impl;
-  GdkRegion               *invalidate_region = NULL;
+  BdkWindowObject         *private;
+  BdkDrawableImplDirectFB *impl;
+  BdkRebunnyion               *invalidate_rebunnyion = NULL;
   GList                   *list;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
 
   if (dx == 0 && dy == 0)
     return;
 
-  /* Move the current invalid region */
+  /* Move the current invalid rebunnyion */
   if (private->update_area)
-    gdk_region_offset (private->update_area, dx, dy);
+    bdk_rebunnyion_offset (private->update_area, dx, dy);
 
-  if (GDK_WINDOW_IS_MAPPED (window))
+  if (BDK_WINDOW_IS_MAPPED (window))
     {
-      GdkRectangle  clip_rect = {  0,  0, impl->width, impl->height };
-      GdkRectangle  rect      = { dx, dy, impl->width, impl->height };
+      BdkRectangle  clip_rect = {  0,  0, impl->width, impl->height };
+      BdkRectangle  rect      = { dx, dy, impl->width, impl->height };
 
-      invalidate_region = gdk_region_rectangle (&clip_rect);
+      invalidate_rebunnyion = bdk_rebunnyion_rectangle (&clip_rect);
 
-      if (gdk_rectangle_intersect (&rect, &clip_rect, &rect) &&
+      if (bdk_rectangle_intersect (&rect, &clip_rect, &rect) &&
           (!private->update_area ||
-           !gdk_region_rect_in (private->update_area, &rect)))
+           !bdk_rebunnyion_rect_in (private->update_area, &rect)))
         {
-          GdkRegion *region;
+          BdkRebunnyion *rebunnyion;
 
-          region = gdk_region_rectangle (&rect);
-          gdk_region_subtract (invalidate_region, region);
-          gdk_region_destroy (region);
+          rebunnyion = bdk_rebunnyion_rectangle (&rect);
+          bdk_rebunnyion_subtract (invalidate_rebunnyion, rebunnyion);
+          bdk_rebunnyion_destroy (rebunnyion);
 
           if (impl->surface)
             {
-              DFBRegion update = { rect.x, rect.y,
+              DFBRebunnyion update = { rect.x, rect.y,
                                    rect.x + rect.width  - 1,
                                    rect.y + rect.height - 1 };
 
@@ -126,110 +126,110 @@ _gdk_directfb_window_scroll (GdkWindow *window,
 
   for (list = private->children; list; list = list->next)
     {
-      GdkWindowObject         *obj      = GDK_WINDOW_OBJECT (list->data);
-      GdkDrawableImplDirectFB *obj_impl = GDK_DRAWABLE_IMPL_DIRECTFB (obj->impl);
+      BdkWindowObject         *obj      = BDK_WINDOW_OBJECT (list->data);
+      BdkDrawableImplDirectFB *obj_impl = BDK_DRAWABLE_IMPL_DIRECTFB (obj->impl);
 
-      _gdk_directfb_move_resize_child (list->data,
+      _bdk_directfb_move_resize_child (list->data,
                                        obj->x + dx,
                                        obj->y + dy,
                                        obj_impl->width,
                                        obj_impl->height);
     }
 
-  if (invalidate_region)
+  if (invalidate_rebunnyion)
     {
-      gdk_window_invalidate_region (window, invalidate_region, TRUE);
-      gdk_region_destroy (invalidate_region);
+      bdk_window_invalidate_rebunnyion (window, invalidate_rebunnyion, TRUE);
+      bdk_rebunnyion_destroy (invalidate_rebunnyion);
     }
 }
 
 /**
- * gdk_window_move_region:
- * @window: a #GdkWindow
- * @region: The #GdkRegion to move
+ * bdk_window_move_rebunnyion:
+ * @window: a #BdkWindow
+ * @rebunnyion: The #BdkRebunnyion to move
  * @dx: Amount to move in the X direction
  * @dy: Amount to move in the Y direction
  *
- * Move the part of @window indicated by @region by @dy pixels in the Y
- * direction and @dx pixels in the X direction. The portions of @region
- * that not covered by the new position of @region are invalidated.
+ * Move the part of @window indicated by @rebunnyion by @dy pixels in the Y
+ * direction and @dx pixels in the X direction. The portions of @rebunnyion
+ * that not covered by the new position of @rebunnyion are invalidated.
  *
  * Child windows are not moved.
  *
  * Since: 2.8
  **/
 void
-_gdk_directfb_window_move_region (GdkWindow       *window,
-                                  const GdkRegion *region,
+_bdk_directfb_window_move_rebunnyion (BdkWindow       *window,
+                                  const BdkRebunnyion *rebunnyion,
                                   gint             dx,
                                   gint             dy)
 {
-  GdkWindowObject         *private;
-  GdkDrawableImplDirectFB *impl;
-  GdkRegion               *window_clip;
-  GdkRegion               *src_region;
-  GdkRegion               *brought_in;
-  GdkRegion               *dest_region;
-  GdkRegion               *moving_invalid_region;
-  GdkRectangle             dest_extents;
+  BdkWindowObject         *private;
+  BdkDrawableImplDirectFB *impl;
+  BdkRebunnyion               *window_clip;
+  BdkRebunnyion               *src_rebunnyion;
+  BdkRebunnyion               *brought_in;
+  BdkRebunnyion               *dest_rebunnyion;
+  BdkRebunnyion               *moving_invalid_rebunnyion;
+  BdkRectangle             dest_extents;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
-  g_return_if_fail (region != NULL);
+  g_return_if_fail (BDK_IS_WINDOW (window));
+  g_return_if_fail (rebunnyion != NULL);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  private = GDK_WINDOW_OBJECT (window);
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
+  private = BDK_WINDOW_OBJECT (window);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (private->impl);
 
   if (dx == 0 && dy == 0)
     return;
 
-  GdkRectangle  clip_rect = {  0,  0, impl->width, impl->height };
-  window_clip = gdk_region_rectangle (&clip_rect);
+  BdkRectangle  clip_rect = {  0,  0, impl->width, impl->height };
+  window_clip = bdk_rebunnyion_rectangle (&clip_rect);
 
-  /* compute source regions */
-  src_region = gdk_region_copy (region);
-  brought_in = gdk_region_copy (region);
-  gdk_region_intersect (src_region, window_clip);
+  /* compute source rebunnyions */
+  src_rebunnyion = bdk_rebunnyion_copy (rebunnyion);
+  brought_in = bdk_rebunnyion_copy (rebunnyion);
+  bdk_rebunnyion_intersect (src_rebunnyion, window_clip);
 
-  gdk_region_subtract (brought_in, src_region);
-  gdk_region_offset (brought_in, dx, dy);
+  bdk_rebunnyion_subtract (brought_in, src_rebunnyion);
+  bdk_rebunnyion_offset (brought_in, dx, dy);
 
-  /* compute destination regions */
-  dest_region = gdk_region_copy (src_region);
-  gdk_region_offset (dest_region, dx, dy);
-  gdk_region_intersect (dest_region, window_clip);
-  gdk_region_get_clipbox (dest_region, &dest_extents);
+  /* compute destination rebunnyions */
+  dest_rebunnyion = bdk_rebunnyion_copy (src_rebunnyion);
+  bdk_rebunnyion_offset (dest_rebunnyion, dx, dy);
+  bdk_rebunnyion_intersect (dest_rebunnyion, window_clip);
+  bdk_rebunnyion_get_clipbox (dest_rebunnyion, &dest_extents);
 
-  gdk_region_destroy (window_clip);
+  bdk_rebunnyion_destroy (window_clip);
 
   /* calculating moving part of current invalid area */
-  moving_invalid_region = NULL;
+  moving_invalid_rebunnyion = NULL;
   if (private->update_area)
     {
-      moving_invalid_region = gdk_region_copy (private->update_area);
-      gdk_region_intersect (moving_invalid_region, src_region);
-      gdk_region_offset (moving_invalid_region, dx, dy);
+      moving_invalid_rebunnyion = bdk_rebunnyion_copy (private->update_area);
+      bdk_rebunnyion_intersect (moving_invalid_rebunnyion, src_rebunnyion);
+      bdk_rebunnyion_offset (moving_invalid_rebunnyion, dx, dy);
     }
 
-  /* invalidate all of the src region */
-  gdk_window_invalidate_region (window, src_region, FALSE);
+  /* invalidate all of the src rebunnyion */
+  bdk_window_invalidate_rebunnyion (window, src_rebunnyion, FALSE);
 
-  /* un-invalidate destination region */
+  /* un-invalidate destination rebunnyion */
   if (private->update_area)
-    gdk_region_subtract (private->update_area, dest_region);
+    bdk_rebunnyion_subtract (private->update_area, dest_rebunnyion);
 
   /* invalidate moving parts of existing update area */
-  if (moving_invalid_region)
+  if (moving_invalid_rebunnyion)
     {
-      gdk_window_invalidate_region (window, moving_invalid_region, FALSE);
-      gdk_region_destroy (moving_invalid_region);
+      bdk_window_invalidate_rebunnyion (window, moving_invalid_rebunnyion, FALSE);
+      bdk_rebunnyion_destroy (moving_invalid_rebunnyion);
     }
 
   /* invalidate area brought in from off-screen */
-  gdk_window_invalidate_region (window, brought_in, FALSE);
-  gdk_region_destroy (brought_in);
+  bdk_window_invalidate_rebunnyion (window, brought_in, FALSE);
+  bdk_rebunnyion_destroy (brought_in);
 
   /* Actually do the moving */
   if (impl->surface)
@@ -238,7 +238,7 @@ _gdk_directfb_window_move_region (GdkWindow       *window,
                               dest_extents.y - dy,
                               dest_extents.width,
                               dest_extents.height};
-      DFBRegion destination = { dest_extents.x,
+      DFBRebunnyion destination = { dest_extents.x,
                                 dest_extents.y,
                                 dest_extents.x + dest_extents.width - 1,
                                 dest_extents.y + dest_extents.height - 1};
@@ -248,9 +248,9 @@ _gdk_directfb_window_move_region (GdkWindow       *window,
       impl->surface->SetClip (impl->surface, NULL);
       impl->surface->Flip (impl->surface, &destination, 0);
     }
-  gdk_region_destroy (src_region);
-  gdk_region_destroy (dest_region);
+  bdk_rebunnyion_destroy (src_rebunnyion);
+  bdk_rebunnyion_destroy (dest_rebunnyion);
 }
 
-#define __GDK_GEOMETRY_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_GEOMETRY_X11_C__
+#include "bdkaliasdef.c"

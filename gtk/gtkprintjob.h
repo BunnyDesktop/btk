@@ -1,4 +1,4 @@
-/* GtkPrintJob
+/* BtkPrintJob
  * Copyright (C) 2006 Red Hat,Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,97 +17,97 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_JOB_H__
-#define __GTK_PRINT_JOB_H__
+#ifndef __BTK_PRINT_JOB_H__
+#define __BTK_PRINT_JOB_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_UNIX_PRINT_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtkunixprint.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_UNIX_PRINT_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btkunixprint.h> can be included directly."
 #endif
 
-#include <cairo.h>
+#include <bairo.h>
 
-#include <gtk/gtk.h>
-#include <gtk/gtkprinter.h>
+#include <btk/btk.h>
+#include <btk/btkprinter.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_JOB                  (gtk_print_job_get_type ())
-#define GTK_PRINT_JOB(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_JOB, GtkPrintJob))
-#define GTK_PRINT_JOB_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINT_JOB, GtkPrintJobClass))
-#define GTK_IS_PRINT_JOB(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_JOB))
-#define GTK_IS_PRINT_JOB_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINT_JOB))
-#define GTK_PRINT_JOB_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINT_JOB, GtkPrintJobClass))
+#define BTK_TYPE_PRINT_JOB                  (btk_print_job_get_type ())
+#define BTK_PRINT_JOB(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJob))
+#define BTK_PRINT_JOB_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
+#define BTK_IS_PRINT_JOB(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_JOB))
+#define BTK_IS_PRINT_JOB_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_JOB))
+#define BTK_PRINT_JOB_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
 
-typedef struct _GtkPrintJob          GtkPrintJob;
-typedef struct _GtkPrintJobClass     GtkPrintJobClass;
-typedef struct _GtkPrintJobPrivate   GtkPrintJobPrivate;
+typedef struct _BtkPrintJob          BtkPrintJob;
+typedef struct _BtkPrintJobClass     BtkPrintJobClass;
+typedef struct _BtkPrintJobPrivate   BtkPrintJobPrivate;
 
-typedef void (*GtkPrintJobCompleteFunc) (GtkPrintJob *print_job,
+typedef void (*BtkPrintJobCompleteFunc) (BtkPrintJob *print_job,
                                          gpointer     user_data,
                                          GError      *error);
 
-struct _GtkPrinter;
+struct _BtkPrinter;
 
-struct _GtkPrintJob
+struct _BtkPrintJob
 {
   GObject parent_instance;
 
-  GtkPrintJobPrivate *GSEAL (priv);
+  BtkPrintJobPrivate *GSEAL (priv);
 
   /* Settings the client has to implement:
    * (These are read-only, set at initialization)
    */
-  GtkPrintPages GSEAL (print_pages);
-  GtkPageRange *GSEAL (page_ranges);
+  BtkPrintPages GSEAL (print_pages);
+  BtkPageRange *GSEAL (page_ranges);
   gint GSEAL (num_page_ranges);
-  GtkPageSet GSEAL (page_set);
+  BtkPageSet GSEAL (page_set);
   gint GSEAL (num_copies);
   gdouble GSEAL (scale);
   guint GSEAL (rotate_to_orientation) : 1;
   guint GSEAL (collate)               : 1;
   guint GSEAL (reverse)               : 1;
   guint GSEAL (number_up);
-  GtkNumberUpLayout GSEAL (number_up_layout);
+  BtkNumberUpLayout GSEAL (number_up_layout);
 };
 
-struct _GtkPrintJobClass
+struct _BtkPrintJobClass
 {
   GObjectClass parent_class;
 
-  void (*status_changed) (GtkPrintJob *job);
+  void (*status_changed) (BtkPrintJob *job);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
-  void (*_gtk_reserved6) (void);
-  void (*_gtk_reserved7) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
+  void (*_btk_reserved6) (void);
+  void (*_btk_reserved7) (void);
 };
 
-GType                    gtk_print_job_get_type               (void) G_GNUC_CONST;
-GtkPrintJob             *gtk_print_job_new                    (const gchar              *title,
-							       GtkPrinter               *printer,
-							       GtkPrintSettings         *settings,
-							       GtkPageSetup             *page_setup);
-GtkPrintSettings        *gtk_print_job_get_settings           (GtkPrintJob              *job);
-GtkPrinter              *gtk_print_job_get_printer            (GtkPrintJob              *job);
-const gchar *            gtk_print_job_get_title              (GtkPrintJob              *job);
-GtkPrintStatus           gtk_print_job_get_status             (GtkPrintJob              *job);
-gboolean                 gtk_print_job_set_source_file        (GtkPrintJob              *job,
+GType                    btk_print_job_get_type               (void) G_GNUC_CONST;
+BtkPrintJob             *btk_print_job_new                    (const gchar              *title,
+							       BtkPrinter               *printer,
+							       BtkPrintSettings         *settings,
+							       BtkPageSetup             *page_setup);
+BtkPrintSettings        *btk_print_job_get_settings           (BtkPrintJob              *job);
+BtkPrinter              *btk_print_job_get_printer            (BtkPrintJob              *job);
+const gchar *            btk_print_job_get_title              (BtkPrintJob              *job);
+BtkPrintStatus           btk_print_job_get_status             (BtkPrintJob              *job);
+gboolean                 btk_print_job_set_source_file        (BtkPrintJob              *job,
 							       const gchar              *filename,
 							       GError                  **error);
-cairo_surface_t         *gtk_print_job_get_surface            (GtkPrintJob              *job,
+bairo_surface_t         *btk_print_job_get_surface            (BtkPrintJob              *job,
 							       GError                  **error);
-void                     gtk_print_job_set_track_print_status (GtkPrintJob              *job,
+void                     btk_print_job_set_track_print_status (BtkPrintJob              *job,
 							       gboolean                  track_status);
-gboolean                 gtk_print_job_get_track_print_status (GtkPrintJob              *job);
-void                     gtk_print_job_send                   (GtkPrintJob              *job,
-							       GtkPrintJobCompleteFunc   callback,
+gboolean                 btk_print_job_get_track_print_status (BtkPrintJob              *job);
+void                     btk_print_job_send                   (BtkPrintJob              *job,
+							       BtkPrintJobCompleteFunc   callback,
 							       gpointer                  user_data,
 							       GDestroyNotify            dnotify);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_JOB_H__ */
+#endif /* __BTK_PRINT_JOB_H__ */

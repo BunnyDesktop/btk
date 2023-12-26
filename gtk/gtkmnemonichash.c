@@ -1,6 +1,6 @@
-/* gtkmnemonichash.c: Sets of mnemonics with cycling
+/* btkmnemonichash.c: Sets of mnemonics with cycling
  *
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 2002, Red Hat Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,19 +19,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "gtkmnemonichash.h"
-#include "gtkalias.h"
+#include "btkmnemonichash.h"
+#include "btkalias.h"
 
-struct _GtkMnemnonicHash
+struct _BtkMnemnonicHash
 {
   GHashTable *hash;
 };
 
 
-GtkMnemonicHash *
-_gtk_mnemonic_hash_new (void)
+BtkMnemonicHash *
+_btk_mnemonic_hash_new (void)
 {
-  GtkMnemonicHash *mnemonic_hash = g_new (GtkMnemonicHash, 1);
+  BtkMnemonicHash *mnemonic_hash = g_new (BtkMnemonicHash, 1);
 
   mnemonic_hash->hash = g_hash_table_new (g_direct_hash, NULL);
 
@@ -46,7 +46,7 @@ mnemonic_hash_free_foreach (gpointer	key,
   guint keyval = GPOINTER_TO_UINT (key);
   GSList *targets = value;
 
-  gchar *name = gtk_accelerator_name (keyval, 0);
+  gchar *name = btk_accelerator_name (keyval, 0);
       
   g_warning ("mnemonic \"%s\" wasn't removed for widget (%p)",
 	     name, targets->data);
@@ -56,7 +56,7 @@ mnemonic_hash_free_foreach (gpointer	key,
 }
 
 void
-_gtk_mnemonic_hash_free (GtkMnemonicHash *mnemonic_hash)
+_btk_mnemonic_hash_free (BtkMnemonicHash *mnemonic_hash)
 {
   g_hash_table_foreach (mnemonic_hash->hash,
 			mnemonic_hash_free_foreach,
@@ -67,14 +67,14 @@ _gtk_mnemonic_hash_free (GtkMnemonicHash *mnemonic_hash)
 }
 
 void
-_gtk_mnemonic_hash_add (GtkMnemonicHash *mnemonic_hash,
+_btk_mnemonic_hash_add (BtkMnemonicHash *mnemonic_hash,
 			guint            keyval,
-			GtkWidget       *target)
+			BtkWidget       *target)
 {
   gpointer key = GUINT_TO_POINTER (keyval);
   GSList *targets, *new_targets;
   
-  g_return_if_fail (GTK_IS_WIDGET (target));
+  g_return_if_fail (BTK_IS_WIDGET (target));
   
   targets = g_hash_table_lookup (mnemonic_hash->hash, key);
   g_return_if_fail (g_slist_find (targets, target) == NULL);
@@ -85,14 +85,14 @@ _gtk_mnemonic_hash_add (GtkMnemonicHash *mnemonic_hash,
 }
 
 void
-_gtk_mnemonic_hash_remove (GtkMnemonicHash *mnemonic_hash,
+_btk_mnemonic_hash_remove (BtkMnemonicHash *mnemonic_hash,
 			   guint           keyval,
-			   GtkWidget      *target)
+			   BtkWidget      *target)
 {
   gpointer key = GUINT_TO_POINTER (keyval);
   GSList *targets, *new_targets;
   
-  g_return_if_fail (GTK_IS_WIDGET (target));
+  g_return_if_fail (BTK_IS_WIDGET (target));
   
   targets = g_hash_table_lookup (mnemonic_hash->hash, key);
 
@@ -109,11 +109,11 @@ _gtk_mnemonic_hash_remove (GtkMnemonicHash *mnemonic_hash,
 }
 
 gboolean
-_gtk_mnemonic_hash_activate (GtkMnemonicHash *mnemonic_hash,
+_btk_mnemonic_hash_activate (BtkMnemonicHash *mnemonic_hash,
 			     guint            keyval)
 {
   GSList *list, *targets;
-  GtkWidget *widget, *chosen_widget;
+  BtkWidget *widget, *chosen_widget;
   gboolean overloaded;
 
   targets = g_hash_table_lookup (mnemonic_hash->hash,
@@ -125,12 +125,12 @@ _gtk_mnemonic_hash_activate (GtkMnemonicHash *mnemonic_hash,
   chosen_widget = NULL;
   for (list = targets; list; list = list->next)
     {
-      widget = GTK_WIDGET (list->data);
+      widget = BTK_WIDGET (list->data);
       
-      if (gtk_widget_is_sensitive (widget) &&
-	  gtk_widget_get_mapped (widget) &&
+      if (btk_widget_is_sensitive (widget) &&
+	  btk_widget_get_mapped (widget) &&
           widget->window &&
-	  gdk_window_is_viewable (widget->window))
+	  bdk_window_is_viewable (widget->window))
 	{
 	  if (chosen_widget)
 	    {
@@ -153,13 +153,13 @@ _gtk_mnemonic_hash_activate (GtkMnemonicHash *mnemonic_hash,
 			   GUINT_TO_POINTER (keyval),
 			   targets);
 
-      return gtk_widget_mnemonic_activate (chosen_widget, overloaded);
+      return btk_widget_mnemonic_activate (chosen_widget, overloaded);
     }
   return FALSE;
 }
 
 GSList *
-_gtk_mnemonic_hash_lookup (GtkMnemonicHash *mnemonic_hash,
+_btk_mnemonic_hash_lookup (BtkMnemonicHash *mnemonic_hash,
 			   guint            keyval)
 {
   return g_hash_table_lookup (mnemonic_hash->hash, GUINT_TO_POINTER (keyval));
@@ -171,7 +171,7 @@ mnemonic_hash_foreach_func (gpointer key,
 			    gpointer data)
 {
   struct {
-    GtkMnemonicHashForeach func;
+    BtkMnemonicHashForeach func;
     gpointer func_data;
   } *info = data;
 
@@ -182,12 +182,12 @@ mnemonic_hash_foreach_func (gpointer key,
 }
 
 void
-_gtk_mnemonic_hash_foreach (GtkMnemonicHash       *mnemonic_hash,
-			    GtkMnemonicHashForeach func,
+_btk_mnemonic_hash_foreach (BtkMnemonicHash       *mnemonic_hash,
+			    BtkMnemonicHashForeach func,
 			    gpointer               func_data)
 {
   struct {
-    GtkMnemonicHashForeach func;
+    BtkMnemonicHashForeach func;
     gpointer func_data;
   } info;
   

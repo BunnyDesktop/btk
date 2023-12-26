@@ -1,97 +1,97 @@
 include $(top_srcdir)/Makefile.decl
 
-EXTRA_DIST += gailutil.def
+EXTRA_DIST += bailutil.def
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
 if OS_WIN32
-export_symbols = -export-symbols $(srcdir)/gailutil.def
-install-def-file: gailutil.def
+export_symbols = -export-symbols $(srcdir)/bailutil.def
+install-def-file: bailutil.def
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL) $(srcdir)/gailutil.def $(DESTDIR)$(libdir)
+	$(INSTALL) $(srcdir)/bailutil.def $(DESTDIR)$(libdir)
 uninstall-def-file:
-	-rm $(DESTDIR)$(libdir)/gailutil.def
+	-rm $(DESTDIR)$(libdir)/bailutil.def
 else
 install-def-file:
 uninstall-def-file:
 endif
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gailutil.lib
+noinst_DATA = bailutil.lib
 
 install-ms-lib:
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL) gailutil.lib $(DESTDIR)$(libdir)
+	$(INSTALL) bailutil.lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gailutil.lib
+	-rm $(DESTDIR)$(libdir)/bailutil.lib
 else
 install-ms-lib:
 uninstall-ms-lib:
 endif
 
 
-lib_LTLIBRARIES = libgailutil.la
+lib_LTLIBRARIES = libbailutil.la
 
 util_c_sources =		\
-	gailmisc.c		\
-	gailtextutil.c
+	bailmisc.c		\
+	bailtextutil.c
 
-libgailutilincludedir=$(includedir)/gail-1.0/libgail-util
+libbailutilincludedir=$(includedir)/bail-1.0/libbail-util
 
 util_public_h_sources =		\
-	gailmisc.h		\
-	gailtextutil.h		\
-	gail-util.h
+	bailmisc.h		\
+	bailtextutil.h		\
+	bail-util.h
 
-libgailutil_la_SOURCES = 	\
+libbailutil_la_SOURCES = 	\
 	$(util_c_sources)
 
-libgailutilinclude_HEADERS =	\
+libbailutilinclude_HEADERS =	\
 	$(util_public_h_sources)
 
-libgailutil_la_CPPFLAGS = \
+libbailutil_la_CPPFLAGS = \
 	-I$(top_srcdir)		\
-	-I$(top_srcdir)/gdk	\
-	-I$(top_builddir)/gdk	\
-	-I$(top_srcdir)/gtk	\
-	-I$(top_builddir)/gtk	\
+	-I$(top_srcdir)/bdk	\
+	-I$(top_builddir)/bdk	\
+	-I$(top_srcdir)/btk	\
+	-I$(top_builddir)/btk	\
 	$(AM_CPPFLAGS) 		\
-	-DGDK_DISABLE_DEPRECATED\
-	-DGTK_DISABLE_DEPRECATED
+	-DBDK_DISABLE_DEPRECATED\
+	-DBTK_DISABLE_DEPRECATED
 
-libgailutil_la_CFLAGS = \
-	$(GTK_DEP_CFLAGS)	\
-	$(GTK_DEBUG_FLAGS)	\
+libbailutil_la_CFLAGS = \
+	$(BTK_DEP_CFLAGS)	\
+	$(BTK_DEBUG_FLAGS)	\
 	$(AM_CFLAGS)
 
-libgailutil_la_LIBADD = \
-	$(top_builddir)/gtk/$(gtktargetlib)	\
-	$(top_builddir)/gdk/$(gdktargetlib)	\
-	$(GTK_DEP_LIBS)
+libbailutil_la_LIBADD = \
+	$(top_builddir)/btk/$(btktargetlib)	\
+	$(top_builddir)/bdk/$(bdktargetlib)	\
+	$(BTK_DEP_LIBS)
 
-libgailutil_la_LDFLAGS = \
-	-version-info $(GAIL_LT_VERSION_INFO)	\
+libbailutil_la_LDFLAGS = \
+	-version-info $(BAIL_LT_VERSION_INFO)	\
 	$(no_undefined)				\
 	$(export_symbols)			\
         $(LDFLAGS)
 
 # ----------------- MSVC Projects ------------------
-MSVCPROJS = gailutil
+MSVCPROJS = bailutil
 
-gailutil_FILES = $(libgailutil_la_SOURCES)
-gailutil_EXCLUDES = gaildummy
+bailutil_FILES = $(libbailutil_la_SOURCES)
+bailutil_EXCLUDES = baildummy
 
-gailutil_HEADERS_DIR = $(libgailutilincludedir)
-gailutil_HEADERS_INST = $(libgailutilinclude_HEADERS)
-gailutil_HEADERS_EXCLUDES = gaildummy
+bailutil_HEADERS_DIR = $(libbailutilincludedir)
+bailutil_HEADERS_INST = $(libbailutilinclude_HEADERS)
+bailutil_HEADERS_EXCLUDES = baildummy
 
 include $(top_srcdir)/build/Makefile.msvcproj
 
-dist-hook: $(top_builddir)/build/win32/vs9/gailutil.vcproj $(top_builddir)/build/win32/vs9/gailutil.headers
+dist-hook: $(top_builddir)/build/win32/vs9/bailutil.vcproj $(top_builddir)/build/win32/vs9/bailutil.headers
 
-gailutil.lib: libgailutil.la gailutil.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgailutil-$(GAIL_LT_CURRENT_MINUS_AGE).dll -def:gailutil.def -out:$@
+bailutil.lib: libbailutil.la bailutil.def
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libbailutil-$(BAIL_LT_CURRENT_MINUS_AGE).dll -def:bailutil.def -out:$@
 
 install-data-local: install-ms-lib install-def-file
 

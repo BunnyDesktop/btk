@@ -21,8 +21,8 @@
  */
 
 #include "config.h"
-#include <gmodule.h>
-#include "gtksearchenginebeagle.h"
+#include <bmodule.h>
+#include "btksearchenginebeagle.h"
 
 #if 0
 #include <beagle/beagle.h>
@@ -152,10 +152,10 @@ open_libbeagle (void)
 }
 
 
-struct _GtkSearchEngineBeaglePrivate 
+struct _BtkSearchEngineBeaglePrivate 
 {
   BeagleClient *client;
-  GtkQuery *query;
+  BtkQuery *query;
 
   BeagleQuery *current_query;
   char *current_query_uri_prefix;
@@ -163,14 +163,14 @@ struct _GtkSearchEngineBeaglePrivate
 };
 
 
-G_DEFINE_TYPE (GtkSearchEngineBeagle, _gtk_search_engine_beagle, GTK_TYPE_SEARCH_ENGINE);
+G_DEFINE_TYPE (BtkSearchEngineBeagle, _btk_search_engine_beagle, BTK_TYPE_SEARCH_ENGINE);
 
 static void
 finalize (GObject *object)
 {
-  GtkSearchEngineBeagle *beagle;
+  BtkSearchEngineBeagle *beagle;
   
-  beagle = GTK_SEARCH_ENGINE_BEAGLE (object);
+  beagle = BTK_SEARCH_ENGINE_BEAGLE (object);
   
   if (beagle->priv->current_query) 
     {
@@ -192,13 +192,13 @@ finalize (GObject *object)
       beagle->priv->client = NULL;
     }
 
-  G_OBJECT_CLASS (_gtk_search_engine_beagle_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_search_engine_beagle_parent_class)->finalize (object);
 }
 
 static void
 beagle_hits_added (BeagleQuery             *query, 
 		   BeagleHitsAddedResponse *response, 
-		   GtkSearchEngineBeagle   *engine)
+		   BtkSearchEngineBeagle   *engine)
 {
   GSList *hits, *list;
   GList *hit_uris;
@@ -221,14 +221,14 @@ beagle_hits_added (BeagleQuery             *query,
       hit_uris = g_list_prepend (hit_uris, (char *)uri);
     }
 
-  _gtk_search_engine_hits_added (GTK_SEARCH_ENGINE (engine), hit_uris);
+  _btk_search_engine_hits_added (BTK_SEARCH_ENGINE (engine), hit_uris);
   g_list_free (hit_uris);
 }
 
 static void
 beagle_hits_subtracted (BeagleQuery                  *query, 
 			BeagleHitsSubtractedResponse *response, 
-			GtkSearchEngineBeagle        *engine)
+			BtkSearchEngineBeagle        *engine)
 {
   GSList *uris, *list;
   GList *hit_uris;
@@ -242,14 +242,14 @@ beagle_hits_subtracted (BeagleQuery                  *query,
       hit_uris = g_list_prepend (hit_uris, (char *)list->data);
     }
 
-  _gtk_search_engine_hits_subtracted (GTK_SEARCH_ENGINE (engine), hit_uris);
+  _btk_search_engine_hits_subtracted (BTK_SEARCH_ENGINE (engine), hit_uris);
   g_list_free (hit_uris);
 }
 
 static void
 beagle_finished (BeagleQuery            *query, 
 		 BeagleFinishedResponse *response,
-		 GtkSearchEngineBeagle  *engine)
+		 BtkSearchEngineBeagle  *engine)
 {
   /* For some reason we keep getting finished events,
    * only emit finished once */
@@ -257,27 +257,27 @@ beagle_finished (BeagleQuery            *query,
     return;
   
   engine->priv->query_finished = TRUE;
-  _gtk_search_engine_finished (GTK_SEARCH_ENGINE (engine));
+  _btk_search_engine_finished (BTK_SEARCH_ENGINE (engine));
 }
 
 static void
 beagle_error (BeagleQuery           *query,
 	      GError                *error,
-	      GtkSearchEngineBeagle *engine)
+	      BtkSearchEngineBeagle *engine)
 {
-  _gtk_search_engine_error (GTK_SEARCH_ENGINE (engine), error->message);
+  _btk_search_engine_error (BTK_SEARCH_ENGINE (engine), error->message);
 }
 
 static void
-gtk_search_engine_beagle_start (GtkSearchEngine *engine)
+btk_search_engine_beagle_start (BtkSearchEngine *engine)
 {
-  GtkSearchEngineBeagle *beagle;
+  BtkSearchEngineBeagle *beagle;
   GError *error;
   gchar *text;
   gchar *query;
 
   error = NULL;
-  beagle = GTK_SEARCH_ENGINE_BEAGLE (engine);
+  beagle = BTK_SEARCH_ENGINE_BEAGLE (engine);
   
   g_return_if_fail (beagle->priv->query != NULL);
 
@@ -298,18 +298,18 @@ gtk_search_engine_beagle_start (GtkSearchEngine *engine)
   /* We only want files */
   
  
-  text = _gtk_query_get_text (beagle->priv->query);
+  text = _btk_query_get_text (beagle->priv->query);
   query = g_strconcat (text, " type:File", NULL);
                           
   beagle_query_set_max_hits (beagle->priv->current_query, 1000);
   beagle_query_add_text (beagle->priv->current_query, query);
   
-  beagle->priv->current_query_uri_prefix = _gtk_query_get_location (beagle->priv->query);
+  beagle->priv->current_query_uri_prefix = _btk_query_get_location (beagle->priv->query);
   
   if (!beagle_client_send_request_async (beagle->priv->client,
 					 BEAGLE_REQUEST (beagle->priv->current_query), &error)) 
     {
-      _gtk_search_engine_error (engine, error->message);
+      _btk_search_engine_error (engine, error->message);
       g_error_free (error);
     }
 
@@ -319,11 +319,11 @@ gtk_search_engine_beagle_start (GtkSearchEngine *engine)
 }
 
 static void
-gtk_search_engine_beagle_stop (GtkSearchEngine *engine)
+btk_search_engine_beagle_stop (BtkSearchEngine *engine)
 {
-  GtkSearchEngineBeagle *beagle;
+  BtkSearchEngineBeagle *beagle;
   
-  beagle = GTK_SEARCH_ENGINE_BEAGLE (engine);
+  beagle = BTK_SEARCH_ENGINE_BEAGLE (engine);
   
   if (beagle->priv->current_query) 
     {
@@ -336,18 +336,18 @@ gtk_search_engine_beagle_stop (GtkSearchEngine *engine)
 }
 
 static gboolean
-gtk_search_engine_beagle_is_indexed (GtkSearchEngine *engine)
+btk_search_engine_beagle_is_indexed (BtkSearchEngine *engine)
 {
   return TRUE;
 }
 
 static void
-gtk_search_engine_beagle_set_query (GtkSearchEngine *engine, 
-				    GtkQuery        *query)
+btk_search_engine_beagle_set_query (BtkSearchEngine *engine, 
+				    BtkQuery        *query)
 {
-  GtkSearchEngineBeagle *beagle;
+  BtkSearchEngineBeagle *beagle;
   
-  beagle = GTK_SEARCH_ENGINE_BEAGLE (engine);
+  beagle = BTK_SEARCH_ENGINE_BEAGLE (engine);
   
   if (query)
     g_object_ref (query);
@@ -359,34 +359,34 @@ gtk_search_engine_beagle_set_query (GtkSearchEngine *engine,
 }
 
 static void
-_gtk_search_engine_beagle_class_init (GtkSearchEngineBeagleClass *class)
+_btk_search_engine_beagle_class_init (BtkSearchEngineBeagleClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkSearchEngineClass *engine_class;
+  GObjectClass *bobject_class;
+  BtkSearchEngineClass *engine_class;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  gobject_class->finalize = finalize;
+  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class->finalize = finalize;
   
-  engine_class = GTK_SEARCH_ENGINE_CLASS (class);
-  engine_class->set_query = gtk_search_engine_beagle_set_query;
-  engine_class->start = gtk_search_engine_beagle_start;
-  engine_class->stop = gtk_search_engine_beagle_stop;
-  engine_class->is_indexed = gtk_search_engine_beagle_is_indexed;
+  engine_class = BTK_SEARCH_ENGINE_CLASS (class);
+  engine_class->set_query = btk_search_engine_beagle_set_query;
+  engine_class->start = btk_search_engine_beagle_start;
+  engine_class->stop = btk_search_engine_beagle_stop;
+  engine_class->is_indexed = btk_search_engine_beagle_is_indexed;
 
-  g_type_class_add_private (gobject_class, sizeof (GtkSearchEngineBeaglePrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkSearchEngineBeaglePrivate));
 }
 
 static void
-_gtk_search_engine_beagle_init (GtkSearchEngineBeagle *engine)
+_btk_search_engine_beagle_init (BtkSearchEngineBeagle *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, GTK_TYPE_SEARCH_ENGINE_BEAGLE, GtkSearchEngineBeaglePrivate);
+  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_BEAGLE, BtkSearchEngineBeaglePrivate);
 }
 
 
-GtkSearchEngine *
-_gtk_search_engine_beagle_new (void)
+BtkSearchEngine *
+_btk_search_engine_beagle_new (void)
 {
-  GtkSearchEngineBeagle *engine;
+  BtkSearchEngineBeagle *engine;
   BeagleClient *client;
 
   open_libbeagle ();
@@ -404,9 +404,9 @@ _gtk_search_engine_beagle_new (void)
   if (client == NULL)
     return NULL;
 	
-  engine = g_object_new (GTK_TYPE_SEARCH_ENGINE_BEAGLE, NULL);
+  engine = g_object_new (BTK_TYPE_SEARCH_ENGINE_BEAGLE, NULL);
   
   engine->priv->client = client;
   
-  return GTK_SEARCH_ENGINE (engine);
+  return BTK_SEARCH_ENGINE (engine);
 }

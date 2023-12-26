@@ -2,21 +2,21 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<refentry id="gtk-update-icon-cache">
+<refentry id="btk-update-icon-cache">
 
 <refmeta>
-<refentrytitle>gtk-update-icon-cache</refentrytitle>
+<refentrytitle>btk-update-icon-cache</refentrytitle>
 <manvolnum>1</manvolnum>
 </refmeta>
 
 <refnamediv>
-<refname>gtk-update-icon-cache</refname>
+<refname>btk-update-icon-cache</refname>
 <refpurpose>Icon theme caching utility</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
 <cmdsynopsis>
-<command>gtk-update-icon-cache</command>
+<command>btk-update-icon-cache</command>
 <arg choice="opt">--force</arg>
 <arg choice="opt">--ignore-theme-index</arg>
 <group>
@@ -31,7 +31,7 @@
 </refsynopsisdiv>
 
 <refsect1><title>Description</title>
-<para><command>gtk-update-icon-cache</command> creates mmap()able cache files for
+<para><command>btk-update-icon-cache</command> creates mmap()able cache files for
 icon themes. 
 </para>
 <para>
@@ -41,7 +41,7 @@ and writes a <filename>icon-theme.cache</filename> containing cached information
 about the icons in the directory tree below the given directory.
 </para>
 <para>
-GTK+ can use the cache files created by <command>gtk-update-icon-cache</command>
+BTK+ can use the cache files created by <command>btk-update-icon-cache</command>
 to avoid a lot of system call and disk seek overhead when the application starts.
 Since the format of the cache files allows them to be mmap()ed shared between
 multiple applications, the overall memory consumption is reduced as well.
@@ -61,7 +61,7 @@ multiple applications, the overall memory consumption is reduced as well.
     <term>--ignore-theme-index</term>
     <term>-t</term>
     <listitem><para>Don't check for the existence of 'index.theme' in the icon theme
-     directory. Without this option, <command>gtk-update-icon-cache</command> refuses
+     directory. Without this option, <command>btk-update-icon-cache</command> refuses
      to create an icon cache in a directory which does not appear to be the toplevel
      directory of an icon theme. 
     </para></listitem>

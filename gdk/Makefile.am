@@ -1,15 +1,15 @@
-## Makefile.am for gtk+/gdk
+## Makefile.am for btk+/bdk
 include $(top_srcdir)/Makefile.decl
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = \
    --warn-all \
-   --add-include-path=../gdk
+   --add-include-path=../bdk
 INTROSPECTION_COMPILER_ARGS = \
    --includedir=$(srcdir) \
    --includedir=.
 
-SUBDIRS = $(gdktarget) . tests
+SUBDIRS = $(bdktarget) . tests
 DIST_SUBDIRS = win32 x11 quartz directfb tests
 
 CLEANFILES =
@@ -18,31 +18,31 @@ EXTRA_DIST +=			\
 	keynames.txt		\
 	keyname-table.h		\
 	gen-keyname-table.pl	\
-	gdkconfig.h.win32 	\
-	gdkkeysyms-update.pl	\
-	gdk.def 		\
-	gdkmarshalers.list	\
-	gdkmedialib.h		\
-	gdkwindowimpl.h		\
+	bdkconfig.h.win32 	\
+	bdkkeysyms-update.pl	\
+	bdk.def 		\
+	bdkmarshalers.list	\
+	bdkmedialib.h		\
+	bdkwindowimpl.h		\
 	makeenums.pl		\
 	makefile.msc		\
-	gdk.symbols		\
-	makegdkalias.pl		\
-	gdkenumtypes.c.template	\
-	gdkenumtypes.h.template	\
+	bdk.symbols		\
+	makebdkalias.pl		\
+	bdkenumtypes.c.template	\
+	bdkenumtypes.h.template	\
 	abicheck.sh		\
 	pltcheck.sh
 
 INCLUDES =                              \
-	-DG_LOG_DOMAIN=\"Gdk\"		\
-	-DGDK_COMPILATION		\
+	-DG_LOG_DOMAIN=\"Bdk\"		\
+	-DBDK_COMPILATION		\
 	-I$(top_srcdir)			\
 	-I$(top_builddir)		\
-	-I$(top_builddir)/gdk		\
-	$(GTK_DEBUG_FLAGS) 		\
-	$(GDK_DEP_CFLAGS)
+	-I$(top_builddir)/bdk		\
+	$(BTK_DEBUG_FLAGS) 		\
+	$(BDK_DEP_CFLAGS)
 
-gtarget=$(gdktarget)
+gtarget=$(bdktarget)
 
 if PLATFORM_WIN32
 no_undefined = -no-undefined
@@ -52,7 +52,7 @@ endif
 # since automake doesn't support conditionalized libsomething_la_LDFLAGS
 # we use the general approach here
 LDADD = \
-	$(GTK_LINK_FLAGS)						\
+	$(BTK_LINK_FLAGS)						\
 	-version-info $(LT_VERSION_INFO)		 		\
 	-export-dynamic 						\
 	-rpath $(libdir) 						\
@@ -61,7 +61,7 @@ LDADD = \
 
 if USE_MEDIALIB
 medialib_sources =  \
-    gdkmedialib.c
+    bdkmedialib.c
 else
 medialib_sources =
 endif
@@ -70,197 +70,197 @@ endif
 # setup source file variables
 #
 #
-# GDK header files for public installation (non-generated)
+# BDK header files for public installation (non-generated)
 #
-gdk_public_h_sources =				\
-	gdk.h					\
-	gdkapplaunchcontext.h			\
-	gdkcairo.h				\
-	gdkcolor.h				\
-	gdkcursor.h				\
-	gdkdisplay.h				\
-	gdkdisplaymanager.h			\
-	gdkdnd.h				\
-	gdkdrawable.h				\
-	gdkevents.h				\
-	gdkfont.h				\
-	gdkgc.h					\
-	gdki18n.h				\
-	gdkimage.h				\
-	gdkinput.h				\
-	gdkkeys.h				\
-	gdkkeysyms.h				\
-	gdkkeysyms-compat.h			\
-	gdkpango.h				\
-	gdkpixbuf.h				\
-	gdkpixmap.h				\
-	gdkprivate.h				\
-	gdkproperty.h				\
-	gdkregion.h				\
-	gdkrgb.h				\
-	gdkscreen.h				\
-	gdkselection.h				\
-	gdkspawn.h				\
-	gdktestutils.h				\
-	gdktypes.h				\
-	gdkvisual.h				\
-	gdkwindow.h
+bdk_public_h_sources =				\
+	bdk.h					\
+	bdkapplaunchcontext.h			\
+	bdkbairo.h				\
+	bdkcolor.h				\
+	bdkcursor.h				\
+	bdkdisplay.h				\
+	bdkdisplaymanager.h			\
+	bdkdnd.h				\
+	bdkdrawable.h				\
+	bdkevents.h				\
+	bdkfont.h				\
+	bdkgc.h					\
+	bdki18n.h				\
+	bdkimage.h				\
+	bdkinput.h				\
+	bdkkeys.h				\
+	bdkkeysyms.h				\
+	bdkkeysyms-compat.h			\
+	bdkbango.h				\
+	bdkpixbuf.h				\
+	bdkpixmap.h				\
+	bdkprivate.h				\
+	bdkproperty.h				\
+	bdkrebunnyion.h				\
+	bdkrgb.h				\
+	bdkscreen.h				\
+	bdkselection.h				\
+	bdkspawn.h				\
+	bdktestutils.h				\
+	bdktypes.h				\
+	bdkvisual.h				\
+	bdkwindow.h
 
-gdk_built_public_sources =			\
-	gdkenumtypes.h
+bdk_built_public_sources =			\
+	bdkenumtypes.h
 
-gdk_built_private_headers =			\
-	gdkalias.h
+bdk_built_private_headers =			\
+	bdkalias.h
 
-gdk_private_headers =   \
-	gdkinternals.h \
-	gdkintl.h \
-    gdkpoly-generic.h	\
-	gdkregion-generic.h
+bdk_private_headers =   \
+	bdkinternals.h \
+	bdkintl.h \
+    bdkpoly-generic.h	\
+	bdkrebunnyion-generic.h
 
-gdk_c_sources =                 \
+bdk_c_sources =                 \
 	$(medialib_sources)     \
-	gdk.c			\
-	gdkapplaunchcontext.c	\
-	gdkcairo.c		\
-	gdkcolor.c		\
-	gdkcursor.c		\
-	gdkdisplay.c		\
-	gdkdisplaymanager.c	\
-	gdkdnd.c		\
-	gdkdraw.c		\
-	gdkevents.c     	\
-	gdkfont.c		\
-	gdkgc.c			\
-	gdkglobals.c		\
-	gdkimage.c		\
-	gdkkeys.c		\
-	gdkkeyuni.c		\
-	gdkoffscreenwindow.c	\
-	gdkpango.c		\
-	gdkpixbuf-drawable.c	\
-	gdkpixbuf-render.c	\
-	gdkpixmap.c		\
-	gdkpolyreg-generic.c	\
-	gdkrectangle.c		\
-	gdkregion-generic.c	\
-	gdkrgb.c		\
-	gdkscreen.c		\
-	gdkselection.c		\
-	gdkvisual.c		\
-	gdkwindow.c		\
-	gdkwindowimpl.c
+	bdk.c			\
+	bdkapplaunchcontext.c	\
+	bdkbairo.c		\
+	bdkcolor.c		\
+	bdkcursor.c		\
+	bdkdisplay.c		\
+	bdkdisplaymanager.c	\
+	bdkdnd.c		\
+	bdkdraw.c		\
+	bdkevents.c     	\
+	bdkfont.c		\
+	bdkgc.c			\
+	bdkglobals.c		\
+	bdkimage.c		\
+	bdkkeys.c		\
+	bdkkeyuni.c		\
+	bdkoffscreenwindow.c	\
+	bdkbango.c		\
+	bdkpixbuf-drawable.c	\
+	bdkpixbuf-render.c	\
+	bdkpixmap.c		\
+	bdkpolyreg-generic.c	\
+	bdkrectangle.c		\
+	bdkrebunnyion-generic.c	\
+	bdkrgb.c		\
+	bdkscreen.c		\
+	bdkselection.c		\
+	bdkvisual.c		\
+	bdkwindow.c		\
+	bdkwindowimpl.c
 
-gdk_built_sources =				\
-	gdkaliasdef.c				\
-	gdkenumtypes.c				\
-	gdkmarshalers.h 			\
-	gdkmarshalers.c				\
-	$(gdk_built_public_sources)		\
-	$(gdk_built_private_headers)
+bdk_built_sources =				\
+	bdkaliasdef.c				\
+	bdkenumtypes.c				\
+	bdkmarshalers.h 			\
+	bdkmarshalers.c				\
+	$(bdk_built_public_sources)		\
+	$(bdk_built_private_headers)
 
 #
-# setup GDK sources and their dependencies
+# setup BDK sources and their dependencies
 #
 
-gdkincludedir = $(includedir)/gtk-2.0/gdk
-gdkinclude_HEADERS = $(gdk_public_h_sources) $(gdk_built_public_sources)
+bdkincludedir = $(includedir)/btk-2.0/bdk
+bdkinclude_HEADERS = $(bdk_public_h_sources) $(bdk_built_public_sources)
 
 common_sources =                \
-	$(gdk_private_headers)      \
-    $(gdk_c_sources)	\
-	gdkenumtypes.c		\
-	gdkmarshalers.c		\
-	gdkmarshalers.h
+	$(bdk_private_headers)      \
+    $(bdk_c_sources)	\
+	bdkenumtypes.c		\
+	bdkmarshalers.c		\
+	bdkmarshalers.h
 
-libgdk_directfb_2_0_la_SOURCES = $(common_sources)
-libgdk_directfb_2_0_la_LIBADD = directfb/libgdk-directfb.la $(GDK_DEP_LIBS)
-libgdk_directfb_2_0_la_LDFLAGS = $(LDADD)
+libbdk_directfb_2_0_la_SOURCES = $(common_sources)
+libbdk_directfb_2_0_la_LIBADD = directfb/libbdk-directfb.la $(BDK_DEP_LIBS)
+libbdk_directfb_2_0_la_LDFLAGS = $(LDADD)
 
-libgdk_x11_2_0_la_SOURCES = $(common_sources)
-libgdk_x11_2_0_la_LIBADD = x11/libgdk-x11.la $(GDK_DEP_LIBS)
-libgdk_x11_2_0_la_LDFLAGS = $(LDADD)
+libbdk_x11_2_0_la_SOURCES = $(common_sources)
+libbdk_x11_2_0_la_LIBADD = x11/libbdk-x11.la $(BDK_DEP_LIBS)
+libbdk_x11_2_0_la_LDFLAGS = $(LDADD)
 
-libgdk_quartz_2_0_la_SOURCES = $(common_sources) gdkkeynames.c
-libgdk_quartz_2_0_la_LIBADD = quartz/libgdk-quartz.la $(GDK_DEP_LIBS)
-libgdk_quartz_2_0_la_LDFLAGS = $(LDADD)
+libbdk_quartz_2_0_la_SOURCES = $(common_sources) bdkkeynames.c
+libbdk_quartz_2_0_la_LIBADD = quartz/libbdk-quartz.la $(BDK_DEP_LIBS)
+libbdk_quartz_2_0_la_LDFLAGS = $(LDADD)
 
-libgdk_win32_2_0_la_SOURCES = $(common_sources) gdkkeynames.c
-libgdk_win32_2_0_la_LIBADD = win32/libgdk-win32.la $(GDK_DEP_LIBS)
-libgdk_win32_2_0_la_DEPENDENCIES = win32/libgdk-win32.la win32/rc/gdk-win32-res.o gdk.def
-libgdk_win32_2_0_la_LDFLAGS = -Wl,win32/rc/gdk-win32-res.o -export-symbols $(srcdir)/gdk.def $(LDADD)
+libbdk_win32_2_0_la_SOURCES = $(common_sources) bdkkeynames.c
+libbdk_win32_2_0_la_LIBADD = win32/libbdk-win32.la $(BDK_DEP_LIBS)
+libbdk_win32_2_0_la_DEPENDENCIES = win32/libbdk-win32.la win32/rc/bdk-win32-res.o bdk.def
+libbdk_win32_2_0_la_LDFLAGS = -Wl,win32/rc/bdk-win32-res.o -export-symbols $(srcdir)/bdk.def $(LDADD)
 
 if HAVE_INTROSPECTION
 
 base_introspection_files = 		\
-	$(filter-out gdkkeysyms-compat.h, $(gdk_public_h_sources))	\
-	$(gdk_c_sources)	\
-	gdkkeynames.c		\
-        gdkenumtypes.c		\
-        gdkenumtypes.h
+	$(filter-out bdkkeysyms-compat.h, $(bdk_public_h_sources))	\
+	$(bdk_c_sources)	\
+	bdkkeynames.c		\
+        bdkenumtypes.c		\
+        bdkenumtypes.h
 
 introspection_files = $(base_introspection_files)
 
-Gdk-2.0.gir: $(gdktargetlib) Makefile
-Gdk_2_0_gir_SCANNERFLAGS = --c-include="gdk/gdk.h"
-Gdk_2_0_gir_INCLUDES = Gio-2.0 GdkPixbuf-2.0 Pango-1.0 cairo-1.0
-Gdk_2_0_gir_LIBS = $(gdktargetlib)
-Gdk_2_0_gir_FILES = $(introspection_files)
-Gdk_2_0_gir_EXPORT_PACKAGES = gdk-2.0
-Gdk_2_0_gir_CFLAGS = $(INCLUDES)
-INTROSPECTION_GIRS += Gdk-2.0.gir
+Bdk-2.0.gir: $(bdktargetlib) Makefile
+Bdk_2_0_gir_SCANNERFLAGS = --c-include="bdk/bdk.h"
+Bdk_2_0_gir_INCLUDES = Bunnyio-2.0 BdkPixbuf-2.0 Bango-1.0 bairo-1.0
+Bdk_2_0_gir_LIBS = $(bdktargetlib)
+Bdk_2_0_gir_FILES = $(introspection_files)
+Bdk_2_0_gir_EXPORT_PACKAGES = bdk-2.0
+Bdk_2_0_gir_CFLAGS = $(INCLUDES)
+INTROSPECTION_GIRS += Bdk-2.0.gir
 
 if USE_X11
 x11_introspection_files = 		\
 	x11/checksettings.c		\
-	x11/gdkapplaunchcontext-x11.c	\
-	x11/gdkasync.c			\
-	x11/gdkcolor-x11.c		\
-	x11/gdkcursor-x11.c		\
-	x11/gdkdisplay-x11.c		\
-	x11/gdkdnd-x11.c		\
-	x11/gdkdrawable-x11.c		\
-	x11/gdkgc-x11.c			\
-	x11/gdkgeometry-x11.c		\
-	x11/gdkglobals-x11.c		\
-	x11/gdkimage-x11.c		\
-	x11/gdkim-x11.c			\
-	x11/gdkinput.c			\
-	x11/gdkkeys-x11.c		\
-	x11/gdkmain-x11.c		\
-	x11/gdkpixmap-x11.c		\
-	x11/gdkproperty-x11.c		\
-	x11/gdkscreen-x11.c		\
-	x11/gdkselection-x11.c		\
-	x11/gdksettings.c		\
-	x11/gdkspawn-x11.c		\
-	x11/gdktestutils-x11.c		\
-	x11/gdkvisual-x11.c		\
-	x11/gdkwindow-x11.c		\
-	x11/gdkxftdefaults.c		\
-	x11/gdkxid.c			\
+	x11/bdkapplaunchcontext-x11.c	\
+	x11/bdkasync.c			\
+	x11/bdkcolor-x11.c		\
+	x11/bdkcursor-x11.c		\
+	x11/bdkdisplay-x11.c		\
+	x11/bdkdnd-x11.c		\
+	x11/bdkdrawable-x11.c		\
+	x11/bdkgc-x11.c			\
+	x11/bdkgeometry-x11.c		\
+	x11/bdkglobals-x11.c		\
+	x11/bdkimage-x11.c		\
+	x11/bdkim-x11.c			\
+	x11/bdkinput.c			\
+	x11/bdkkeys-x11.c		\
+	x11/bdkmain-x11.c		\
+	x11/bdkpixmap-x11.c		\
+	x11/bdkproperty-x11.c		\
+	x11/bdkscreen-x11.c		\
+	x11/bdkselection-x11.c		\
+	x11/bdksettings.c		\
+	x11/bdkspawn-x11.c		\
+	x11/bdktestutils-x11.c		\
+	x11/bdkvisual-x11.c		\
+	x11/bdkwindow-x11.c		\
+	x11/bdkxftdefaults.c		\
+	x11/bdkxid.c			\
 	x11/xsettings-client.c		\
 	x11/xsettings-common.c		\
-        x11/gdkx.h
+        x11/bdkx.h
 
-GdkX11-2.0.gir: $(gdktargetlib) Gdk-2.0.gir Makefile
-GdkX11_2_0_gir_SCANNERFLAGS = --identifier-prefix=Gdk --include-uninstalled=Gdk-2.0.gir
-GdkX11_2_0_gir_INCLUDES = Gio-2.0 GdkPixbuf-2.0 Pango-1.0 xlib-2.0
+BdkX11-2.0.gir: $(bdktargetlib) Bdk-2.0.gir Makefile
+BdkX11_2_0_gir_SCANNERFLAGS = --identifier-prefix=Bdk --include-uninstalled=Bdk-2.0.gir
+BdkX11_2_0_gir_INCLUDES = Bunnyio-2.0 BdkPixbuf-2.0 Bango-1.0 xlib-2.0
 
-GdkX11_2_0_gir_LIBS = $(gdktargetlib)
-GdkX11_2_0_gir_FILES = $(x11_introspection_files)
-GdkX11_2_0_gir_EXPORT_PACKAGES = gdk-x11-2.0
-GdkX11_2_0_gir_CFLAGS = $(INCLUDES) -L$(top_builddir)/gdk
-INTROSPECTION_GIRS += GdkX11-2.0.gir
+BdkX11_2_0_gir_LIBS = $(bdktargetlib)
+BdkX11_2_0_gir_FILES = $(x11_introspection_files)
+BdkX11_2_0_gir_EXPORT_PACKAGES = bdk-x11-2.0
+BdkX11_2_0_gir_CFLAGS = $(INCLUDES) -L$(top_builddir)/bdk
+INTROSPECTION_GIRS += BdkX11-2.0.gir
 
-introspection_files += $(filter-out x11/gdkx.h, $(x11_introspection_files))
+introspection_files += $(filter-out x11/bdkx.h, $(x11_introspection_files))
 
 endif # USE_X11
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibsdir = $(libdir)/girepository-1.0
+typelibsdir = $(libdir)/birepository-1.0
 typelibs_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelibs_DATA)
@@ -268,28 +268,28 @@ CLEANFILES += $(gir_DATA) $(typelibs_DATA)
 endif # HAVE_INTROSPECTION
 
 if OS_WIN32
-install-def-file: gdk.def
+install-def-file: bdk.def
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL) $(srcdir)/gdk.def $(DESTDIR)$(libdir)/gdk-win32-2.0.def
+	$(INSTALL) $(srcdir)/bdk.def $(DESTDIR)$(libdir)/bdk-win32-2.0.def
 uninstall-def-file:
-	-rm $(DESTDIR)$(libdir)/gdk-win32-2.0.def
+	-rm $(DESTDIR)$(libdir)/bdk-win32-2.0.def
 else
 install-def-file:
 uninstall-def-file:
 endif
 
 if MS_LIB_AVAILABLE
-noinst_DATA = gdk-win32-$(GTK_API_VERSION).lib
+noinst_DATA = bdk-win32-$(BTK_API_VERSION).lib
 
-gdk-win32-$(GTK_API_VERSION).lib: libgdk-win32-$(GTK_API_VERSION).la gdk.def
-	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgdk-win32-$(GTK_API_VERSION)-@LT_CURRENT_MINUS_AGE@.dll -def:gdk.def -out:$@
+bdk-win32-$(BTK_API_VERSION).lib: libbdk-win32-$(BTK_API_VERSION).la bdk.def
+	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libbdk-win32-$(BTK_API_VERSION)-@LT_CURRENT_MINUS_AGE@.dll -def:bdk.def -out:$@
 
 install-ms-lib:
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
-	$(INSTALL) gdk-win32-$(GTK_API_VERSION).lib $(DESTDIR)$(libdir)
+	$(INSTALL) bdk-win32-$(BTK_API_VERSION).lib $(DESTDIR)$(libdir)
 
 uninstall-ms-lib:
-	-rm $(DESTDIR)$(libdir)/gdk-win32-$(GTK_API_VERSION).lib
+	-rm $(DESTDIR)$(libdir)/bdk-win32-$(BTK_API_VERSION).lib
 else
 install-ms-lib:
 uninstall-ms-lib:
@@ -297,113 +297,113 @@ endif
 
 # This places the generated .def file in srcdir, since it is expected to be there.
 # (The one from a tarball is)
-gdk.def: gdk.symbols
-	(echo -e EXPORTS; $(CPP) -P -DALL_FILES -DGDK_WINDOWING_WIN32 -DINCLUDE_VARIABLES - <$(srcdir)/gdk.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > $(srcdir)/gdk.def
+bdk.def: bdk.symbols
+	(echo -e EXPORTS; $(CPP) -P -DALL_FILES -DBDK_WINDOWING_WIN32 -DINCLUDE_VARIABLES - <$(srcdir)/bdk.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > $(srcdir)/bdk.def
 
-gdkalias.h: gdk.symbols
-	 $(PERL) $(srcdir)/makegdkalias.pl < $(srcdir)/gdk.symbols > gdkalias.h
+bdkalias.h: bdk.symbols
+	 $(PERL) $(srcdir)/makebdkalias.pl < $(srcdir)/bdk.symbols > bdkalias.h
 
-gdkaliasdef.c: gdk.symbols
-	 $(PERL) $(srcdir)/makegdkalias.pl -def < $(srcdir)/gdk.symbols > gdkaliasdef.c
+bdkaliasdef.c: bdk.symbols
+	 $(PERL) $(srcdir)/makebdkalias.pl -def < $(srcdir)/bdk.symbols > bdkaliasdef.c
 
 if OS_LINUX
 TESTS = abicheck.sh pltcheck.sh
 endif
 
 
-lib_LTLIBRARIES = $(gdktargetlib)
+lib_LTLIBRARIES = $(bdktargetlib)
 
-EXTRA_LTLIBRARIES = libgdk-x11-2.0.la libgdk-win32-2.0.la libgdk-quartz-2.0.la libgdk-directfb-2.0.la
+EXTRA_LTLIBRARIES = libbdk-x11-2.0.la libbdk-win32-2.0.la libbdk-quartz-2.0.la libbdk-directfb-2.0.la
 
-MAINTAINERCLEANFILES = $(gdk_built_sources) stamp-gdkenumtypes.h
-EXTRA_DIST += $(gdk_built_sources)
+MAINTAINERCLEANFILES = $(bdk_built_sources) stamp-bdkenumtypes.h
+EXTRA_DIST += $(bdk_built_sources)
 EXTRA_HEADERS =
 
 #
-# Rule to install gdkconfig.h header file
+# Rule to install bdkconfig.h header file
 #
-configexecincludedir = $(libdir)/gtk-2.0/include
-#configexecinclude_DATA = gdkconfig.h
+configexecincludedir = $(libdir)/btk-2.0/include
+#configexecinclude_DATA = bdkconfig.h
 
-install-exec-local: gdkconfig.h
+install-exec-local: bdkconfig.h
 	$(mkinstalldirs) $(DESTDIR)$(configexecincludedir)
-	file=$(DESTDIR)$(configexecincludedir)/gdkconfig.h; \
-	if test -r $$file && cmp -s gdkconfig.h $$file; then :; \
-	else $(INSTALL_DATA) gdkconfig.h $$file; fi
+	file=$(DESTDIR)$(configexecincludedir)/bdkconfig.h; \
+	if test -r $$file && cmp -s bdkconfig.h $$file; then :; \
+	else $(INSTALL_DATA) bdkconfig.h $$file; fi
 
 install-exec-hook:
 if DISABLE_EXPLICIT_DEPS
-	$(SHELL) $(top_srcdir)/sanitize-la.sh $(DESTDIR)$(libdir)/$(gdktargetlib)
+	$(SHELL) $(top_srcdir)/sanitize-la.sh $(DESTDIR)$(libdir)/$(bdktargetlib)
 endif
 
-#note: not gdkconfig.h
+#note: not bdkconfig.h
 BUILT_SOURCES = \
-	$(gdk_built_sources)			\
-	gdkconfig.h
+	$(bdk_built_sources)			\
+	bdkconfig.h
 
-gdkenumtypes.h: stamp-gdkenumtypes.h
+bdkenumtypes.h: stamp-bdkenumtypes.h
 	@true
-stamp-gdkenumtypes.h: @REBUILD@ $(gdk_public_h_sources) gdkenumtypes.h.template
-	( cd $(srcdir) && $(GLIB_MKENUMS) --template gdkenumtypes.h.template \
-		$(gdk_public_h_sources) ) >> xgen-geth \
-	&& (cmp -s xgen-geth gdkenumtypes.h || cp xgen-geth gdkenumtypes.h ) \
+stamp-bdkenumtypes.h: @REBUILD@ $(bdk_public_h_sources) bdkenumtypes.h.template
+	( cd $(srcdir) && $(BUNNYLIB_MKENUMS) --template bdkenumtypes.h.template \
+		$(bdk_public_h_sources) ) >> xgen-geth \
+	&& (cmp -s xgen-geth bdkenumtypes.h || cp xgen-geth bdkenumtypes.h ) \
 	&& rm -f xgen-geth \
 	&& echo timestamp > $(@F)
-gdkenumtypes.c: @REBUILD@ $(gdk_public_h_sources) gdkenumtypes.c.template
-	( cd $(srcdir) && $(GLIB_MKENUMS) --template gdkenumtypes.c.template \
-		$(gdk_public_h_sources) ) > xgen-getc \
-	&& cp xgen-getc gdkenumtypes.c  \
+bdkenumtypes.c: @REBUILD@ $(bdk_public_h_sources) bdkenumtypes.c.template
+	( cd $(srcdir) && $(BUNNYLIB_MKENUMS) --template bdkenumtypes.c.template \
+		$(bdk_public_h_sources) ) > xgen-getc \
+	&& cp xgen-getc bdkenumtypes.c  \
 	&& rm -f xgen-getc
 
 # 
 # Marshaller generation
 #
-gdkmarshalers.h: @REBUILD@ gdkmarshalers.list
-	$(GLIB_GENMARSHAL) --prefix=_gdk_marshal $(srcdir)/gdkmarshalers.list --header > gdkmarshalers-h.tmp \
-	&& mv gdkmarshalers-h.tmp gdkmarshalers.h \
-	|| ( rm -f gdkmarshalers-h.tmp && exit 1)
-gdkmarshalers.c: @REBUILD@ gdkmarshalers.list
-	(echo "#include \"gdkalias.h\""; $(GLIB_GENMARSHAL) --prefix=_gdk_marshal $(srcdir)/gdkmarshalers.list --body) > gdkmarshalers-c.tmp	\
-	&& mv gdkmarshalers-c.tmp gdkmarshalers.c \
-	|| ( rm -f gdkmarshalers-c.tmp && exit 1 )
+bdkmarshalers.h: @REBUILD@ bdkmarshalers.list
+	$(BUNNYLIB_GENMARSHAL) --prefix=_bdk_marshal $(srcdir)/bdkmarshalers.list --header > bdkmarshalers-h.tmp \
+	&& mv bdkmarshalers-h.tmp bdkmarshalers.h \
+	|| ( rm -f bdkmarshalers-h.tmp && exit 1)
+bdkmarshalers.c: @REBUILD@ bdkmarshalers.list
+	(echo "#include \"bdkalias.h\""; $(BUNNYLIB_GENMARSHAL) --prefix=_bdk_marshal $(srcdir)/bdkmarshalers.list --body) > bdkmarshalers-c.tmp	\
+	&& mv bdkmarshalers-c.tmp bdkmarshalers.c \
+	|| ( rm -f bdkmarshalers-c.tmp && exit 1 )
 
-gdkconfig.h: stamp-gc-h
-	@if test -f gdkconfig.h; then :; \
+bdkconfig.h: stamp-gc-h
+	@if test -f bdkconfig.h; then :; \
 	else rm -f stamp-gc-h; $(MAKE) stamp-gc-h; fi
 stamp-gc-h: $(top_builddir)/config.status
-	cd $(top_builddir) && $(SHELL) ./config.status gdk/gdkconfig.h
+	cd $(top_builddir) && $(SHELL) ./config.status bdk/bdkconfig.h
 	echo timestamp > stamp-gc-h
 
 # ---------------- MSVC Projects ----------------
-MSVCPROJS = gdk
+MSVCPROJS = bdk
 
-gdk_FILES = $(libgdk_win32_2_0_la_SOURCES)
-gdk_EXCLUDES = gdkdummy
+bdk_FILES = $(libbdk_win32_2_0_la_SOURCES)
+bdk_EXCLUDES = bdkdummy
 
-gdk_HEADERS_DIR = $(gdkincludedir)
-gdk_HEADERS_INST = $(gdkinclude_HEADERS)
-gdk_HEADERS_EXCLUDES = gdkdummy
+bdk_HEADERS_DIR = $(bdkincludedir)
+bdk_HEADERS_INST = $(bdkinclude_HEADERS)
+bdk_HEADERS_EXCLUDES = bdkdummy
 
 include $(top_srcdir)/build/Makefile.msvcproj
 
 if HAVE_INTROSPECTION
 # Introspection Items for MSVC
-MSVC_INTROSPECT_GIRS = Gdk-2.0.gir
+MSVC_INTROSPECT_GIRS = Bdk-2.0.gir
 
 BASE_MSVC_GIR_CFLAGS =			\
-	-DGDK_COMPILATION		\
-	-I../.. -I../../gdk -I.../../gdk/win32
+	-DBDK_COMPILATION		\
+	-I../.. -I../../bdk -I.../../bdk/win32
 
 INTROSPECTION_INTERMEDIATE_ITEMS = \
-	$(top_builddir)/build/win32/Gdk-2.0.gir.msvc.introspect	\
-	$(top_builddir)/build/win32/Gdk_2_0_gir_list
+	$(top_builddir)/build/win32/Bdk-2.0.gir.msvc.introspect	\
+	$(top_builddir)/build/win32/Bdk_2_0_gir_list
 
-Gdk_2_0_gir_MSVC_FILES = $(filter-out gdkmedialib.c, $(base_introspection_files))
-Gdk_2_0_gir_MSVC_EXPORT_PACKAGES = $(Gdk_2_0_gir_EXPORT_PACKAGES)
-Gdk_2_0_gir_MSVC_INCLUDE_GIRS = $(Gdk_2_0_gir_INCLUDES)
-Gdk_2_0_gir_MSVC_LIBS = gdk-win32-2.0
-Gdk_2_0_gir_MSVC_CFLAGS = $(BASE_MSVC_GIR_CFLAGS)
-Gdk_2_0_gir_MSVC_SCANNERFLAGS = $(Gdk_2_0_gir_SCANNERFLAGS)
+Bdk_2_0_gir_MSVC_FILES = $(filter-out bdkmedialib.c, $(base_introspection_files))
+Bdk_2_0_gir_MSVC_EXPORT_PACKAGES = $(Bdk_2_0_gir_EXPORT_PACKAGES)
+Bdk_2_0_gir_MSVC_INCLUDE_GIRS = $(Bdk_2_0_gir_INCLUDES)
+Bdk_2_0_gir_MSVC_LIBS = bdk-win32-2.0
+Bdk_2_0_gir_MSVC_CFLAGS = $(BASE_MSVC_GIR_CFLAGS)
+Bdk_2_0_gir_MSVC_SCANNERFLAGS = $(Bdk_2_0_gir_SCANNERFLAGS)
 
 include $(top_srcdir)/build/Makefile.msvc-introspection
 
@@ -412,16 +412,16 @@ INTROSPECTION_INTERMEDIATE_ITEMS =
 endif
 
 dist-hook:	\
-	$(top_builddir)/build/win32/vs9/gdk.vcproj	\
-	$(top_builddir)/build/win32/vs9/gdk.headers	\
+	$(top_builddir)/build/win32/vs9/bdk.vcproj	\
+	$(top_builddir)/build/win32/vs9/bdk.headers	\
 	$(INTROSPECTION_INTERMEDIATE_ITEMS)
 
-DISTCLEANFILES = gdkconfig.h stamp-gc-h
+DISTCLEANFILES = bdkconfig.h stamp-gc-h
 
 install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
-	rm -f $(DESTDIR)$(configexecincludedir)/gdkconfig.h
+	rm -f $(DESTDIR)$(configexecincludedir)/bdkconfig.h
 
 # if srcdir!=builddir, clean out maintainer-clean files from builddir
 # this allows dist to pass.

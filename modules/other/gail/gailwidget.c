@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,185 +21,185 @@
 
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
-#ifdef GDK_WINDOWING_X11
-#include <gdk/x11/gdkx.h>
+#include <btk/btk.h>
+#ifdef BDK_WINDOWING_X11
+#include <bdk/x11/bdkx.h>
 #endif
-#include "gailwidget.h"
-#include "gailnotebookpage.h"
-#include "gail-private-macros.h"
+#include "bailwidget.h"
+#include "bailnotebookpage.h"
+#include "bail-private-macros.h"
 
-extern GtkWidget *focus_widget;
+extern BtkWidget *focus_widget;
 
-static void gail_widget_class_init (GailWidgetClass *klass);
-static void gail_widget_init                     (GailWidget       *accessible);
-static void gail_widget_connect_widget_destroyed (GtkAccessible    *accessible);
-static void gail_widget_destroyed                (GtkWidget        *widget,
-                                                  GtkAccessible    *accessible);
+static void bail_widget_class_init (BailWidgetClass *klass);
+static void bail_widget_init                     (BailWidget       *accessible);
+static void bail_widget_connect_widget_destroyed (BtkAccessible    *accessible);
+static void bail_widget_destroyed                (BtkWidget        *widget,
+                                                  BtkAccessible    *accessible);
 
-static const gchar* gail_widget_get_description (AtkObject *accessible);
-static AtkObject* gail_widget_get_parent (AtkObject *accessible);
-static AtkStateSet* gail_widget_ref_state_set (AtkObject *accessible);
-static AtkRelationSet* gail_widget_ref_relation_set (AtkObject *accessible);
-static gint gail_widget_get_index_in_parent (AtkObject *accessible);
+static const gchar* bail_widget_get_description (BatkObject *accessible);
+static BatkObject* bail_widget_get_parent (BatkObject *accessible);
+static BatkStateSet* bail_widget_ref_state_set (BatkObject *accessible);
+static BatkRelationSet* bail_widget_ref_relation_set (BatkObject *accessible);
+static gint bail_widget_get_index_in_parent (BatkObject *accessible);
 
-static void atk_component_interface_init (AtkComponentIface *iface);
+static void batk_component_interface_init (BatkComponentIface *iface);
 
-static guint    gail_widget_add_focus_handler
-                                           (AtkComponent    *component,
-                                            AtkFocusHandler handler);
+static guint    bail_widget_add_focus_handler
+                                           (BatkComponent    *component,
+                                            BatkFocusHandler handler);
 
-static void     gail_widget_get_extents    (AtkComponent    *component,
+static void     bail_widget_get_extents    (BatkComponent    *component,
                                             gint            *x,
                                             gint            *y,
                                             gint            *width,
                                             gint            *height,
-                                            AtkCoordType    coord_type);
+                                            BatkCoordType    coord_type);
 
-static void     gail_widget_get_size       (AtkComponent    *component,
+static void     bail_widget_get_size       (BatkComponent    *component,
                                             gint            *width,
                                             gint            *height);
 
-static AtkLayer gail_widget_get_layer      (AtkComponent *component);
+static BatkLayer bail_widget_get_layer      (BatkComponent *component);
 
-static gboolean gail_widget_grab_focus     (AtkComponent    *component);
+static gboolean bail_widget_grab_focus     (BatkComponent    *component);
 
 
-static void     gail_widget_remove_focus_handler 
-                                           (AtkComponent    *component,
+static void     bail_widget_remove_focus_handler 
+                                           (BatkComponent    *component,
                                             guint           handler_id);
 
-static gboolean gail_widget_set_extents    (AtkComponent    *component,
+static gboolean bail_widget_set_extents    (BatkComponent    *component,
                                             gint            x,
                                             gint            y,
                                             gint            width,
                                             gint            height,
-                                            AtkCoordType    coord_type);
+                                            BatkCoordType    coord_type);
 
-static gboolean gail_widget_set_position   (AtkComponent    *component,
+static gboolean bail_widget_set_position   (BatkComponent    *component,
                                             gint            x,
                                             gint            y,
-                                            AtkCoordType    coord_type);
+                                            BatkCoordType    coord_type);
 
-static gboolean gail_widget_set_size       (AtkComponent    *component,
+static gboolean bail_widget_set_size       (BatkComponent    *component,
                                             gint            width,
                                             gint            height);
 
-static gint       gail_widget_map_gtk            (GtkWidget     *widget);
-static void       gail_widget_real_notify_gtk    (GObject       *obj,
+static gint       bail_widget_map_btk            (BtkWidget     *widget);
+static void       bail_widget_real_notify_btk    (GObject       *obj,
                                                   GParamSpec    *pspec);
-static void       gail_widget_notify_gtk         (GObject       *obj,
+static void       bail_widget_notify_btk         (GObject       *obj,
                                                   GParamSpec    *pspec);
-static gboolean   gail_widget_focus_gtk          (GtkWidget     *widget,
-                                                  GdkEventFocus *event);
-static gboolean   gail_widget_real_focus_gtk     (GtkWidget     *widget,
-                                                  GdkEventFocus *event);
-static void       gail_widget_size_allocate_gtk  (GtkWidget     *widget,
-                                                  GtkAllocation *allocation);
+static gboolean   bail_widget_focus_btk          (BtkWidget     *widget,
+                                                  BdkEventFocus *event);
+static gboolean   bail_widget_real_focus_btk     (BtkWidget     *widget,
+                                                  BdkEventFocus *event);
+static void       bail_widget_size_allocate_btk  (BtkWidget     *widget,
+                                                  BtkAllocation *allocation);
 
-static void       gail_widget_focus_event        (AtkObject     *obj,
+static void       bail_widget_focus_event        (BatkObject     *obj,
                                                   gboolean      focus_in);
 
-static void       gail_widget_real_initialize    (AtkObject     *obj,
+static void       bail_widget_real_initialize    (BatkObject     *obj,
                                                   gpointer      data);
-static GtkWidget* gail_widget_find_viewport      (GtkWidget     *widget);
-static gboolean   gail_widget_on_screen          (GtkWidget     *widget);
-static gboolean   gail_widget_all_parents_visible(GtkWidget     *widget);
+static BtkWidget* bail_widget_find_viewport      (BtkWidget     *widget);
+static gboolean   bail_widget_on_screen          (BtkWidget     *widget);
+static gboolean   bail_widget_all_parents_visible(BtkWidget     *widget);
 
-G_DEFINE_TYPE_WITH_CODE (GailWidget, gail_widget, GTK_TYPE_ACCESSIBLE,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_COMPONENT, atk_component_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailWidget, bail_widget, BTK_TYPE_ACCESSIBLE,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_COMPONENT, batk_component_interface_init))
 
 static void
-gail_widget_class_init (GailWidgetClass *klass)
+bail_widget_class_init (BailWidgetClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
-  GtkAccessibleClass *accessible_class = GTK_ACCESSIBLE_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
+  BtkAccessibleClass *accessible_class = BTK_ACCESSIBLE_CLASS (klass);
 
-  klass->notify_gtk = gail_widget_real_notify_gtk;
-  klass->focus_gtk = gail_widget_real_focus_gtk;
+  klass->notify_btk = bail_widget_real_notify_btk;
+  klass->focus_btk = bail_widget_real_focus_btk;
 
-  accessible_class->connect_widget_destroyed = gail_widget_connect_widget_destroyed;
+  accessible_class->connect_widget_destroyed = bail_widget_connect_widget_destroyed;
 
-  class->get_description = gail_widget_get_description;
-  class->get_parent = gail_widget_get_parent;
-  class->ref_relation_set = gail_widget_ref_relation_set;
-  class->ref_state_set = gail_widget_ref_state_set;
-  class->get_index_in_parent = gail_widget_get_index_in_parent;
-  class->initialize = gail_widget_real_initialize;
+  class->get_description = bail_widget_get_description;
+  class->get_parent = bail_widget_get_parent;
+  class->ref_relation_set = bail_widget_ref_relation_set;
+  class->ref_state_set = bail_widget_ref_state_set;
+  class->get_index_in_parent = bail_widget_get_index_in_parent;
+  class->initialize = bail_widget_real_initialize;
 }
 
 static void
-gail_widget_init (GailWidget *accessible)
+bail_widget_init (BailWidget *accessible)
 {
 }
 
 /**
- * This function  specifies the GtkWidget for which the GailWidget was created 
- * and specifies a handler to be called when the GtkWidget is destroyed.
+ * This function  specifies the BtkWidget for which the BailWidget was created 
+ * and specifies a handler to be called when the BtkWidget is destroyed.
  **/
 static void 
-gail_widget_real_initialize (AtkObject *obj,
+bail_widget_real_initialize (BatkObject *obj,
                              gpointer  data)
 {
-  GtkAccessible *accessible;
-  GtkWidget *widget;
+  BtkAccessible *accessible;
+  BtkWidget *widget;
 
-  g_return_if_fail (GTK_IS_WIDGET (data));
+  g_return_if_fail (BTK_IS_WIDGET (data));
 
-  widget = GTK_WIDGET (data);
+  widget = BTK_WIDGET (data);
 
-  accessible = GTK_ACCESSIBLE (obj);
+  accessible = BTK_ACCESSIBLE (obj);
   accessible->widget = widget;
-  gtk_accessible_connect_widget_destroyed (accessible);
+  btk_accessible_connect_widget_destroyed (accessible);
   g_signal_connect_after (widget,
                           "focus-in-event",
-                          G_CALLBACK (gail_widget_focus_gtk),
+                          G_CALLBACK (bail_widget_focus_btk),
                           NULL);
   g_signal_connect_after (widget,
                           "focus-out-event",
-                          G_CALLBACK (gail_widget_focus_gtk),
+                          G_CALLBACK (bail_widget_focus_btk),
                           NULL);
   g_signal_connect (widget,
                     "notify",
-                    G_CALLBACK (gail_widget_notify_gtk),
+                    G_CALLBACK (bail_widget_notify_btk),
                     NULL);
   g_signal_connect (widget,
                     "size_allocate",
-                    G_CALLBACK (gail_widget_size_allocate_gtk),
+                    G_CALLBACK (bail_widget_size_allocate_btk),
                     NULL);
-  atk_component_add_focus_handler (ATK_COMPONENT (accessible),
-                                   gail_widget_focus_event);
+  batk_component_add_focus_handler (BATK_COMPONENT (accessible),
+                                   bail_widget_focus_event);
   /*
-   * Add signal handlers for GTK signals required to support property changes
+   * Add signal handlers for BTK signals required to support property changes
    */
   g_signal_connect (widget,
                     "map",
-                    G_CALLBACK (gail_widget_map_gtk),
+                    G_CALLBACK (bail_widget_map_btk),
                     NULL);
   g_signal_connect (widget,
                     "unmap",
-                    G_CALLBACK (gail_widget_map_gtk),
+                    G_CALLBACK (bail_widget_map_btk),
                     NULL);
-  g_object_set_data (G_OBJECT (obj), "atk-component-layer",
-		     GINT_TO_POINTER (ATK_LAYER_WIDGET));
+  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+		     GINT_TO_POINTER (BATK_LAYER_WIDGET));
 
-  obj->role = ATK_ROLE_UNKNOWN;
+  obj->role = BATK_ROLE_UNKNOWN;
 }
 
-AtkObject* 
-gail_widget_new (GtkWidget *widget)
+BatkObject* 
+bail_widget_new (BtkWidget *widget)
 {
   GObject *object;
-  AtkObject *accessible;
+  BatkObject *accessible;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  object = g_object_new (GAIL_TYPE_WIDGET, NULL);
+  object = g_object_new (BAIL_TYPE_WIDGET, NULL);
 
-  accessible = ATK_OBJECT (object);
-  atk_object_initialize (accessible, widget);
+  accessible = BATK_OBJECT (object);
+  batk_object_initialize (accessible, widget);
 
   return accessible;
 }
@@ -209,42 +209,42 @@ gail_widget_new (GtkWidget *widget)
  * is destroyed
  */
 static void
-gail_widget_connect_widget_destroyed (GtkAccessible *accessible)
+bail_widget_connect_widget_destroyed (BtkAccessible *accessible)
 {
   if (accessible->widget)
     {
       g_signal_connect_after (accessible->widget,
                               "destroy",
-                              G_CALLBACK (gail_widget_destroyed),
+                              G_CALLBACK (bail_widget_destroyed),
                               accessible);
     }
 }
 
 /*
  * This function is called when the widget is destroyed.
- * It sets the widget field in the GtkAccessible structure to NULL
- * and emits a state-change signal for the state ATK_STATE_DEFUNCT
+ * It sets the widget field in the BtkAccessible structure to NULL
+ * and emits a state-change signal for the state BATK_STATE_DEFUNCT
  */
 static void 
-gail_widget_destroyed (GtkWidget     *widget,
-                       GtkAccessible *accessible)
+bail_widget_destroyed (BtkWidget     *widget,
+                       BtkAccessible *accessible)
 {
   accessible->widget = NULL;
-  atk_object_notify_state_change (ATK_OBJECT (accessible), ATK_STATE_DEFUNCT,
+  batk_object_notify_state_change (BATK_OBJECT (accessible), BATK_STATE_DEFUNCT,
                                   TRUE);
 }
 
 static const gchar*
-gail_widget_get_description (AtkObject *accessible)
+bail_widget_get_description (BatkObject *accessible)
 {
   if (accessible->description)
     return accessible->description;
   else
     {
       /* Get the tooltip from the widget */
-      GtkAccessible *obj = GTK_ACCESSIBLE (accessible);
+      BtkAccessible *obj = BTK_ACCESSIBLE (accessible);
 
-      gail_return_val_if_fail (obj, NULL);
+      bail_return_val_if_fail (obj, NULL);
 
       if (obj->widget == NULL)
         /*
@@ -252,59 +252,59 @@ gail_widget_get_description (AtkObject *accessible)
          */
         return NULL;
  
-      gail_return_val_if_fail (GTK_WIDGET (obj->widget), NULL);
+      bail_return_val_if_fail (BTK_WIDGET (obj->widget), NULL);
 
-      return gtk_widget_get_tooltip_text (obj->widget);
+      return btk_widget_get_tooltip_text (obj->widget);
     }
 }
 
-static AtkObject* 
-gail_widget_get_parent (AtkObject *accessible)
+static BatkObject* 
+bail_widget_get_parent (BatkObject *accessible)
 {
-  AtkObject *parent;
+  BatkObject *parent;
 
   parent = accessible->accessible_parent;
 
   if (parent != NULL)
-    g_return_val_if_fail (ATK_IS_OBJECT (parent), NULL);
+    g_return_val_if_fail (BATK_IS_OBJECT (parent), NULL);
   else
     {
-      GtkWidget *widget, *parent_widget;
+      BtkWidget *widget, *parent_widget;
 
-      widget = GTK_ACCESSIBLE (accessible)->widget;
+      widget = BTK_ACCESSIBLE (accessible)->widget;
       if (widget == NULL)
         /*
          * State is defunct
          */
         return NULL;
-      gail_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+      bail_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
       parent_widget = widget->parent;
       if (parent_widget == NULL)
         return NULL;
 
       /*
-       * For a widget whose parent is a GtkNoteBook, we return the
-       * accessible object corresponding the GtkNotebookPage containing
+       * For a widget whose parent is a BtkNoteBook, we return the
+       * accessible object corresponding the BtkNotebookPage containing
        * the widget as the accessible parent.
        */
-      if (GTK_IS_NOTEBOOK (parent_widget))
+      if (BTK_IS_NOTEBOOK (parent_widget))
         {
           gint page_num;
-          GtkWidget *child;
-          GtkNotebook *notebook;
+          BtkWidget *child;
+          BtkNotebook *notebook;
 
           page_num = 0;
-          notebook = GTK_NOTEBOOK (parent_widget);
+          notebook = BTK_NOTEBOOK (parent_widget);
           while (TRUE)
             {
-              child = gtk_notebook_get_nth_page (notebook, page_num);
+              child = btk_notebook_get_nth_page (notebook, page_num);
               if (!child)
                 break;
               if (child == widget)
                 {
-                  parent = gtk_widget_get_accessible (parent_widget);
-                  parent = atk_object_ref_accessible_child (parent, page_num);
+                  parent = btk_widget_get_accessible (parent_widget);
+                  parent = batk_object_ref_accessible_child (parent, page_num);
                   g_object_unref (parent);
                   return parent;
                 }
@@ -312,19 +312,19 @@ gail_widget_get_parent (AtkObject *accessible)
             }
         }
 
-      parent = gtk_widget_get_accessible (parent_widget);
+      parent = btk_widget_get_accessible (parent_widget);
     }
   return parent;
 }
 
-static GtkWidget*
-find_label (GtkWidget *widget)
+static BtkWidget*
+find_label (BtkWidget *widget)
 {
   GList *labels;
-  GtkWidget *label;
-  GtkWidget *temp_widget;
+  BtkWidget *label;
+  BtkWidget *temp_widget;
 
-  labels = gtk_widget_list_mnemonic_labels (widget);
+  labels = btk_widget_list_mnemonic_labels (widget);
   label = NULL;
   if (labels)
     {
@@ -346,7 +346,7 @@ find_label (GtkWidget *widget)
   /*
    * Ignore a label within a button; bug #136602
    */
-  if (label && GTK_IS_BUTTON (widget))
+  if (label && BTK_IS_BUTTON (widget))
     {
       temp_widget = label;
       while (temp_widget)
@@ -356,99 +356,99 @@ find_label (GtkWidget *widget)
               label = NULL;
               break;
             }
-          temp_widget = gtk_widget_get_parent (temp_widget);
+          temp_widget = btk_widget_get_parent (temp_widget);
         }
     } 
   return label;
 }
 
-static AtkRelationSet*
-gail_widget_ref_relation_set (AtkObject *obj)
+static BatkRelationSet*
+bail_widget_ref_relation_set (BatkObject *obj)
 {
-  GtkWidget *widget;
-  AtkRelationSet *relation_set;
-  GtkWidget *label;
-  AtkObject *array[1];
-  AtkRelation* relation;
+  BtkWidget *widget;
+  BatkRelationSet *relation_set;
+  BtkWidget *label;
+  BatkObject *array[1];
+  BatkRelation* relation;
 
-  gail_return_val_if_fail (GAIL_IS_WIDGET (obj), NULL);
+  bail_return_val_if_fail (BAIL_IS_WIDGET (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return NULL;
 
-  relation_set = ATK_OBJECT_CLASS (gail_widget_parent_class)->ref_relation_set (obj);
+  relation_set = BATK_OBJECT_CLASS (bail_widget_parent_class)->ref_relation_set (obj);
 
-  if (GTK_IS_BOX (widget) && !GTK_IS_COMBO (widget))
+  if (BTK_IS_BOX (widget) && !BTK_IS_COMBO (widget))
       /*
-       * Do not report labelled-by for a GtkBox which could be a 
+       * Do not report labelled-by for a BtkBox which could be a 
        * GnomeFileEntry.
        */
     return relation_set;
 
-  if (!atk_relation_set_contains (relation_set, ATK_RELATION_LABELLED_BY))
+  if (!batk_relation_set_contains (relation_set, BATK_RELATION_LABELLED_BY))
     {
       label = find_label (widget);
       if (label == NULL)
         {
-          if (GTK_IS_BUTTON (widget))
+          if (BTK_IS_BUTTON (widget))
             /*
              * Handle the case where GnomeIconEntry is the mnemonic widget.
-             * The GtkButton which is a grandchild of the GnomeIconEntry
+             * The BtkButton which is a grandchild of the GnomeIconEntry
              * should really be the mnemonic widget. See bug #133967.
              */
             {
-              GtkWidget *temp_widget;
+              BtkWidget *temp_widget;
 
-              temp_widget = gtk_widget_get_parent (widget);
+              temp_widget = btk_widget_get_parent (widget);
 
-              if (GTK_IS_ALIGNMENT (temp_widget))
+              if (BTK_IS_ALIGNMENT (temp_widget))
                 {
-                  temp_widget = gtk_widget_get_parent (temp_widget);
-                  if (GTK_IS_BOX (temp_widget))
+                  temp_widget = btk_widget_get_parent (temp_widget);
+                  if (BTK_IS_BOX (temp_widget))
                     {
                       label = find_label (temp_widget);
                  
                       if (!label)
-                        label = find_label (gtk_widget_get_parent (temp_widget));
+                        label = find_label (btk_widget_get_parent (temp_widget));
                     }
                 }
             }
-          else if (GTK_IS_COMBO (widget))
+          else if (BTK_IS_COMBO (widget))
             /*
              * Handle the case when GnomeFileEntry is the mnemonic widget.
              * The GnomeEntry which is a grandchild of the GnomeFileEntry
              * should be the mnemonic widget. See bug #137584.
              */
             {
-              GtkWidget *temp_widget;
+              BtkWidget *temp_widget;
 
-              temp_widget = gtk_widget_get_parent (widget);
+              temp_widget = btk_widget_get_parent (widget);
 
-              if (GTK_IS_HBOX (temp_widget))
+              if (BTK_IS_HBOX (temp_widget))
                 {
-                  temp_widget = gtk_widget_get_parent (temp_widget);
-                  if (GTK_IS_BOX (temp_widget))
+                  temp_widget = btk_widget_get_parent (temp_widget);
+                  if (BTK_IS_BOX (temp_widget))
                     {
                       label = find_label (temp_widget);
                     }
                 }
             }
-          else if (GTK_IS_COMBO_BOX (widget))
+          else if (BTK_IS_COMBO_BOX (widget))
             /*
-             * Handle the case when GtkFileChooserButton is the mnemonic
-             * widget.  The GtkComboBox which is a child of the
-             * GtkFileChooserButton should be the mnemonic widget.
+             * Handle the case when BtkFileChooserButton is the mnemonic
+             * widget.  The BtkComboBox which is a child of the
+             * BtkFileChooserButton should be the mnemonic widget.
              * See bug #359843.
              */
             {
-              GtkWidget *temp_widget;
+              BtkWidget *temp_widget;
 
-              temp_widget = gtk_widget_get_parent (widget);
-              if (GTK_IS_HBOX (temp_widget))
+              temp_widget = btk_widget_get_parent (widget);
+              if (BTK_IS_HBOX (temp_widget))
                 {
                   label = find_label (temp_widget);
                 }
@@ -457,10 +457,10 @@ gail_widget_ref_relation_set (AtkObject *obj)
 
       if (label)
         {
-	  array [0] = gtk_widget_get_accessible (label);
+	  array [0] = btk_widget_get_accessible (label);
 
-	  relation = atk_relation_new (array, 1, ATK_RELATION_LABELLED_BY);
-	  atk_relation_set_add (relation_set, relation);
+	  relation = batk_relation_new (array, 1, BATK_RELATION_LABELLED_BY);
+	  batk_relation_set_add (relation_set, relation);
 	  g_object_unref (relation);
         }
     }
@@ -468,86 +468,86 @@ gail_widget_ref_relation_set (AtkObject *obj)
   return relation_set;
 }
 
-static AtkStateSet*
-gail_widget_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_widget_ref_state_set (BatkObject *accessible)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (accessible)->widget;
-  AtkStateSet *state_set;
+  BtkWidget *widget = BTK_ACCESSIBLE (accessible)->widget;
+  BatkStateSet *state_set;
 
-  state_set = ATK_OBJECT_CLASS (gail_widget_parent_class)->ref_state_set (accessible);
+  state_set = BATK_OBJECT_CLASS (bail_widget_parent_class)->ref_state_set (accessible);
 
   if (widget == NULL)
     {
-      atk_state_set_add_state (state_set, ATK_STATE_DEFUNCT);
+      batk_state_set_add_state (state_set, BATK_STATE_DEFUNCT);
     }
   else
     {
-      if (gtk_widget_is_sensitive (widget))
+      if (btk_widget_is_sensitive (widget))
         {
-          atk_state_set_add_state (state_set, ATK_STATE_SENSITIVE);
-          atk_state_set_add_state (state_set, ATK_STATE_ENABLED);
+          batk_state_set_add_state (state_set, BATK_STATE_SENSITIVE);
+          batk_state_set_add_state (state_set, BATK_STATE_ENABLED);
         }
   
-      if (gtk_widget_get_can_focus (widget))
+      if (btk_widget_get_can_focus (widget))
         {
-          atk_state_set_add_state (state_set, ATK_STATE_FOCUSABLE);
+          batk_state_set_add_state (state_set, BATK_STATE_FOCUSABLE);
         }
       /*
-       * We do not currently generate notifications when an ATK object 
-       * corresponding to a GtkWidget changes visibility by being scrolled 
+       * We do not currently generate notifications when an BATK object 
+       * corresponding to a BtkWidget changes visibility by being scrolled 
        * on or off the screen.  The testcase for this is the main window 
-       * of the testgtk application in which a set of buttons in a GtkVBox 
+       * of the testbtk application in which a set of buttons in a BtkVBox 
        * is in a scrooled window with a viewport.
        *
        * To generate the notifications we would need to do the following: 
-       * 1) Find the GtkViewPort among the antecendents of the objects
-       * 2) Create an accesible for the GtkViewPort
+       * 1) Find the BtkViewPort among the antecendents of the objects
+       * 2) Create an accesible for the BtkViewPort
        * 3) Connect to the value-changed signal on the viewport
        * 4) When the signal is received we need to traverse the children 
        * of the viewport and check whether the children are visible or not 
        * visible; we may want to restrict this to the widgets for which 
        * accessible objects have been created.
        * 5) We probably need to store a variable on_screen in the 
-       * GailWidget data structure so we can determine whether the value has 
+       * BailWidget data structure so we can determine whether the value has 
        * changed.
        */
-      if (gtk_widget_get_visible (widget))
+      if (btk_widget_get_visible (widget))
         {
-          atk_state_set_add_state (state_set, ATK_STATE_VISIBLE);
-          if (gail_widget_on_screen (widget) && gtk_widget_get_mapped (widget) &&
-              gail_widget_all_parents_visible (widget))
+          batk_state_set_add_state (state_set, BATK_STATE_VISIBLE);
+          if (bail_widget_on_screen (widget) && btk_widget_get_mapped (widget) &&
+              bail_widget_all_parents_visible (widget))
             {
-              atk_state_set_add_state (state_set, ATK_STATE_SHOWING);
+              batk_state_set_add_state (state_set, BATK_STATE_SHOWING);
             }
         }
   
-      if (gtk_widget_has_focus (widget) && (widget == focus_widget))
+      if (btk_widget_has_focus (widget) && (widget == focus_widget))
         {
-          AtkObject *focus_obj;
+          BatkObject *focus_obj;
 
-          focus_obj = g_object_get_data (G_OBJECT (accessible), "gail-focus-object");
+          focus_obj = g_object_get_data (G_OBJECT (accessible), "bail-focus-object");
           if (focus_obj == NULL)
-            atk_state_set_add_state (state_set, ATK_STATE_FOCUSED);
+            batk_state_set_add_state (state_set, BATK_STATE_FOCUSED);
         }
-      if (gtk_widget_has_default (widget))
+      if (btk_widget_has_default (widget))
         {
-          atk_state_set_add_state (state_set, ATK_STATE_DEFAULT);
+          batk_state_set_add_state (state_set, BATK_STATE_DEFAULT);
         }
     }
   return state_set;
 }
 
 static gint
-gail_widget_get_index_in_parent (AtkObject *accessible)
+bail_widget_get_index_in_parent (BatkObject *accessible)
 {
-  GtkWidget *widget;
-  GtkWidget *parent_widget;
+  BtkWidget *widget;
+  BtkWidget *parent_widget;
   gint index;
   GList *children;
   GType type;
 
-  type = g_type_from_name ("GailCanvasWidget");
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  type = g_type_from_name ("BailCanvasWidget");
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
     /*
@@ -557,11 +557,11 @@ gail_widget_get_index_in_parent (AtkObject *accessible)
 
   if (accessible->accessible_parent)
     {
-      AtkObject *parent;
+      BatkObject *parent;
 
       parent = accessible->accessible_parent;
 
-      if (GAIL_IS_NOTEBOOK_PAGE (parent) ||
+      if (BAIL_IS_NOTEBOOK_PAGE (parent) ||
           G_TYPE_CHECK_INSTANCE_TYPE ((parent), type))
         return 0;
       else
@@ -569,12 +569,12 @@ gail_widget_get_index_in_parent (AtkObject *accessible)
           gint n_children, i;
           gboolean found = FALSE;
 
-          n_children = atk_object_get_n_accessible_children (parent);
+          n_children = batk_object_get_n_accessible_children (parent);
           for (i = 0; i < n_children; i++)
             {
-              AtkObject *child;
+              BatkObject *child;
 
-              child = atk_object_ref_accessible_child (parent, i);
+              child = batk_object_ref_accessible_child (parent, i);
               if (child == accessible)
                 found = TRUE;
 
@@ -585,13 +585,13 @@ gail_widget_get_index_in_parent (AtkObject *accessible)
         }
     }
 
-  gail_return_val_if_fail (GTK_IS_WIDGET (widget), -1);
+  bail_return_val_if_fail (BTK_IS_WIDGET (widget), -1);
   parent_widget = widget->parent;
   if (parent_widget == NULL)
     return -1;
-  gail_return_val_if_fail (GTK_IS_CONTAINER (parent_widget), -1);
+  bail_return_val_if_fail (BTK_IS_CONTAINER (parent_widget), -1);
 
-  children = gtk_container_get_children (GTK_CONTAINER (parent_widget));
+  children = btk_container_get_children (BTK_CONTAINER (parent_widget));
 
   index = g_list_index (children, widget);
   g_list_free (children);
@@ -599,32 +599,32 @@ gail_widget_get_index_in_parent (AtkObject *accessible)
 }
 
 static void 
-atk_component_interface_init (AtkComponentIface *iface)
+batk_component_interface_init (BatkComponentIface *iface)
 {
   /*
    * Use default implementation for contains and get_position
    */
-  iface->add_focus_handler = gail_widget_add_focus_handler;
-  iface->get_extents = gail_widget_get_extents;
-  iface->get_size = gail_widget_get_size;
-  iface->get_layer = gail_widget_get_layer;
-  iface->grab_focus = gail_widget_grab_focus;
-  iface->remove_focus_handler = gail_widget_remove_focus_handler;
-  iface->set_extents = gail_widget_set_extents;
-  iface->set_position = gail_widget_set_position;
-  iface->set_size = gail_widget_set_size;
+  iface->add_focus_handler = bail_widget_add_focus_handler;
+  iface->get_extents = bail_widget_get_extents;
+  iface->get_size = bail_widget_get_size;
+  iface->get_layer = bail_widget_get_layer;
+  iface->grab_focus = bail_widget_grab_focus;
+  iface->remove_focus_handler = bail_widget_remove_focus_handler;
+  iface->set_extents = bail_widget_set_extents;
+  iface->set_position = bail_widget_set_position;
+  iface->set_size = bail_widget_set_size;
 }
 
 static guint 
-gail_widget_add_focus_handler (AtkComponent    *component,
-                               AtkFocusHandler handler)
+bail_widget_add_focus_handler (BatkComponent    *component,
+                               BatkFocusHandler handler)
 {
   GSignalMatchType match_type;
   gulong ret;
   guint signal_id;
 
   match_type = G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_FUNC;
-  signal_id = g_signal_lookup ("focus-event", ATK_TYPE_OBJECT);
+  signal_id = g_signal_lookup ("focus-event", BATK_TYPE_OBJECT);
 
   ret = g_signal_handler_find (component, match_type, signal_id, 0, NULL,
                                (gpointer) handler, NULL);
@@ -644,17 +644,17 @@ gail_widget_add_focus_handler (AtkComponent    *component,
 }
 
 static void 
-gail_widget_get_extents (AtkComponent   *component,
+bail_widget_get_extents (BatkComponent   *component,
                          gint           *x,
                          gint           *y,
                          gint           *width,
                          gint           *height,
-                         AtkCoordType   coord_type)
+                         BatkCoordType   coord_type)
 {
-  GdkWindow *window;
+  BdkWindow *window;
   gint x_window, y_window;
   gint x_toplevel, y_toplevel;
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
@@ -662,11 +662,11 @@ gail_widget_get_extents (AtkComponent   *component,
      */
     return;
 
-  gail_return_if_fail (GTK_IS_WIDGET (widget));
+  bail_return_if_fail (BTK_IS_WIDGET (widget));
 
   *width = widget->allocation.width;
   *height = widget->allocation.height;
-  if (!gail_widget_on_screen (widget) || (!gtk_widget_is_drawable (widget)))
+  if (!bail_widget_on_screen (widget) || (!btk_widget_is_drawable (widget)))
     {
       *x = G_MININT;
       *y = G_MININT;
@@ -677,7 +677,7 @@ gail_widget_get_extents (AtkComponent   *component,
     {
       *x = widget->allocation.x;
       *y = widget->allocation.y;
-      window = gtk_widget_get_parent_window (widget);
+      window = btk_widget_get_parent_window (widget);
     }
   else
     {
@@ -685,15 +685,15 @@ gail_widget_get_extents (AtkComponent   *component,
       *y = 0;
       window = widget->window;
     }
-  gdk_window_get_origin (window, &x_window, &y_window);
+  bdk_window_get_origin (window, &x_window, &y_window);
   *x += x_window;
   *y += y_window;
 
  
- if (coord_type == ATK_XY_WINDOW) 
+ if (coord_type == BATK_XY_WINDOW) 
     { 
-      window = gdk_window_get_toplevel (widget->window);
-      gdk_window_get_origin (window, &x_toplevel, &y_toplevel);
+      window = bdk_window_get_toplevel (widget->window);
+      bdk_window_get_origin (window, &x_toplevel, &y_toplevel);
 
       *x -= x_toplevel;
       *y -= y_toplevel;
@@ -701,11 +701,11 @@ gail_widget_get_extents (AtkComponent   *component,
 }
 
 static void 
-gail_widget_get_size (AtkComponent   *component,
+bail_widget_get_size (BatkComponent   *component,
                       gint           *width,
                       gint           *height)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
@@ -713,38 +713,38 @@ gail_widget_get_size (AtkComponent   *component,
      */
     return;
 
-  gail_return_if_fail (GTK_IS_WIDGET (widget));
+  bail_return_if_fail (BTK_IS_WIDGET (widget));
 
   *width = widget->allocation.width;
   *height = widget->allocation.height;
 }
 
-static AtkLayer
-gail_widget_get_layer (AtkComponent *component)
+static BatkLayer
+bail_widget_get_layer (BatkComponent *component)
 {
   gint layer;
-  layer = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (component), "atk-component-layer"));
+  layer = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (component), "batk-component-layer"));
 
-  return (AtkLayer) layer;
+  return (BatkLayer) layer;
 }
 
 static gboolean 
-gail_widget_grab_focus (AtkComponent   *component)
+bail_widget_grab_focus (BatkComponent   *component)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
-  GtkWidget *toplevel;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
+  BtkWidget *toplevel;
 
-  gail_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
-  if (gtk_widget_get_can_focus (widget))
+  bail_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
+  if (btk_widget_get_can_focus (widget))
     {
-      gtk_widget_grab_focus (widget);
-      toplevel = gtk_widget_get_toplevel (widget);
-      if (gtk_widget_is_toplevel (toplevel))
+      btk_widget_grab_focus (widget);
+      toplevel = btk_widget_get_toplevel (widget);
+      if (btk_widget_is_toplevel (toplevel))
 	{
-#ifdef GDK_WINDOWING_X11
-	  gtk_window_present_with_time (GTK_WINDOW (toplevel), gdk_x11_get_server_time (widget->window));
+#ifdef BDK_WINDOWING_X11
+	  btk_window_present_with_time (BTK_WINDOW (toplevel), bdk_x11_get_server_time (widget->window));
 #else
-	  gtk_window_present (GTK_WINDOW (toplevel));
+	  btk_window_present (BTK_WINDOW (toplevel));
 #endif
 	}
       return TRUE;
@@ -754,52 +754,52 @@ gail_widget_grab_focus (AtkComponent   *component)
 }
 
 static void 
-gail_widget_remove_focus_handler (AtkComponent   *component,
+bail_widget_remove_focus_handler (BatkComponent   *component,
                                   guint          handler_id)
 {
   g_signal_handler_disconnect (component, handler_id);
 }
 
 static gboolean 
-gail_widget_set_extents (AtkComponent   *component,
+bail_widget_set_extents (BatkComponent   *component,
                          gint           x,
                          gint           y,
                          gint           width,
                          gint           height,
-                         AtkCoordType   coord_type)
+                         BatkCoordType   coord_type)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
      * Object is defunct
      */
     return FALSE;
-  gail_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  bail_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  if (gtk_widget_is_toplevel (widget))
+  if (btk_widget_is_toplevel (widget))
     {
-      if (coord_type == ATK_XY_WINDOW)
+      if (coord_type == BATK_XY_WINDOW)
         {
           gint x_current, y_current;
-          GdkWindow *window = widget->window;
+          BdkWindow *window = widget->window;
 
-          gdk_window_get_origin (window, &x_current, &y_current);
+          bdk_window_get_origin (window, &x_current, &y_current);
           x_current += x;
           y_current += y;
           if (x_current < 0 || y_current < 0)
             return FALSE;
           else
             {
-              gtk_widget_set_uposition (widget, x_current, y_current);
-              gtk_widget_set_size_request (widget, width, height);
+              btk_widget_set_uposition (widget, x_current, y_current);
+              btk_widget_set_size_request (widget, width, height);
               return TRUE;
             }
         }
-      else if (coord_type == ATK_XY_SCREEN)
+      else if (coord_type == BATK_XY_SCREEN)
         {  
-          gtk_widget_set_uposition (widget, x, y);
-          gtk_widget_set_size_request (widget, width, height);
+          btk_widget_set_uposition (widget, x, y);
+          btk_widget_set_size_request (widget, width, height);
           return TRUE;
         }
     }
@@ -807,41 +807,41 @@ gail_widget_set_extents (AtkComponent   *component,
 }
 
 static gboolean
-gail_widget_set_position (AtkComponent   *component,
+bail_widget_set_position (BatkComponent   *component,
                           gint           x,
                           gint           y,
-                          AtkCoordType   coord_type)
+                          BatkCoordType   coord_type)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
      * Object is defunct
      */
     return FALSE;
-  gail_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  bail_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  if (gtk_widget_is_toplevel (widget))
+  if (btk_widget_is_toplevel (widget))
     {
-      if (coord_type == ATK_XY_WINDOW)
+      if (coord_type == BATK_XY_WINDOW)
         {
           gint x_current, y_current;
-          GdkWindow *window = widget->window;
+          BdkWindow *window = widget->window;
 
-          gdk_window_get_origin (window, &x_current, &y_current);
+          bdk_window_get_origin (window, &x_current, &y_current);
           x_current += x;
           y_current += y;
           if (x_current < 0 || y_current < 0)
             return FALSE;
           else
             {
-              gtk_widget_set_uposition (widget, x_current, y_current);
+              btk_widget_set_uposition (widget, x_current, y_current);
               return TRUE;
             }
         }
-      else if (coord_type == ATK_XY_SCREEN)
+      else if (coord_type == BATK_XY_SCREEN)
         {  
-          gtk_widget_set_uposition (widget, x, y);
+          btk_widget_set_uposition (widget, x, y);
           return TRUE;
         }
     }
@@ -849,22 +849,22 @@ gail_widget_set_position (AtkComponent   *component,
 }
 
 static gboolean 
-gail_widget_set_size (AtkComponent   *component,
+bail_widget_set_size (BatkComponent   *component,
                       gint           width,
                       gint           height)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
      * Object is defunct
      */
     return FALSE;
-  gail_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  bail_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  if (gtk_widget_is_toplevel (widget))
+  if (btk_widget_is_toplevel (widget))
     {
-      gtk_widget_set_size_request (widget, width, height);
+      btk_widget_set_size_request (widget, width, height);
       return TRUE;
     }
   else
@@ -873,51 +873,51 @@ gail_widget_set_size (AtkComponent   *component,
 
 /*
  * This function is a signal handler for notify_in_event and focus_out_event
- * signal which gets emitted on a GtkWidget.
+ * signal which gets emitted on a BtkWidget.
  */
 static gboolean
-gail_widget_focus_gtk (GtkWidget     *widget,
-                       GdkEventFocus *event)
+bail_widget_focus_btk (BtkWidget     *widget,
+                       BdkEventFocus *event)
 {
-  GailWidget *gail_widget;
-  GailWidgetClass *klass;
+  BailWidget *bail_widget;
+  BailWidgetClass *klass;
 
-  gail_widget = GAIL_WIDGET (gtk_widget_get_accessible (widget));
-  klass = GAIL_WIDGET_GET_CLASS (gail_widget);
-  if (klass->focus_gtk)
-    return klass->focus_gtk (widget, event);
+  bail_widget = BAIL_WIDGET (btk_widget_get_accessible (widget));
+  klass = BAIL_WIDGET_GET_CLASS (bail_widget);
+  if (klass->focus_btk)
+    return klass->focus_btk (widget, event);
   else
     return FALSE;
 }
 
 /*
  * This function is the signal handler defined for focus_in_event and
- * focus_out_event got GailWidget.
+ * focus_out_event got BailWidget.
  *
- * It emits a focus-event signal on the GailWidget.
+ * It emits a focus-event signal on the BailWidget.
  */
 static gboolean
-gail_widget_real_focus_gtk (GtkWidget     *widget,
-                            GdkEventFocus *event)
+bail_widget_real_focus_btk (BtkWidget     *widget,
+                            BdkEventFocus *event)
 {
-  AtkObject* accessible;
+  BatkObject* accessible;
   gboolean return_val;
   return_val = FALSE;
 
-  accessible = gtk_widget_get_accessible (widget);
+  accessible = btk_widget_get_accessible (widget);
   g_signal_emit_by_name (accessible, "focus_event", event->in, &return_val);
   return FALSE;
 }
 
 static void
-gail_widget_size_allocate_gtk (GtkWidget     *widget,
-                               GtkAllocation *allocation)
+bail_widget_size_allocate_btk (BtkWidget     *widget,
+                               BtkAllocation *allocation)
 {
-  AtkObject* accessible;
-  AtkRectangle rect;
+  BatkObject* accessible;
+  BatkRectangle rect;
 
-  accessible = gtk_widget_get_accessible (widget);
-  if (ATK_IS_COMPONENT (accessible))
+  accessible = btk_widget_get_accessible (widget);
+  if (BATK_IS_COMPONENT (accessible))
     {
       rect.x = allocation->x;
       rect.y = allocation->y;
@@ -931,50 +931,50 @@ gail_widget_size_allocate_gtk (GtkWidget     *widget,
  * This function is the signal handler defined for map and unmap signals.
  */
 static gint
-gail_widget_map_gtk (GtkWidget     *widget)
+bail_widget_map_btk (BtkWidget     *widget)
 {
-  AtkObject* accessible;
+  BatkObject* accessible;
 
-  accessible = gtk_widget_get_accessible (widget);
-  atk_object_notify_state_change (accessible, ATK_STATE_SHOWING,
-                                  gtk_widget_get_mapped (widget));
+  accessible = btk_widget_get_accessible (widget);
+  batk_object_notify_state_change (accessible, BATK_STATE_SHOWING,
+                                  btk_widget_get_mapped (widget));
   return 1;
 }
 
 /*
  * This function is a signal handler for notify signal which gets emitted 
- * when a property changes value on the GtkWidget associated with the object.
+ * when a property changes value on the BtkWidget associated with the object.
  *
- * It calls a function for the GailWidget type
+ * It calls a function for the BailWidget type
  */
 static void 
-gail_widget_notify_gtk (GObject     *obj,
+bail_widget_notify_btk (GObject     *obj,
                         GParamSpec  *pspec)
 {
-  GailWidget *widget;
-  GailWidgetClass *klass;
+  BailWidget *widget;
+  BailWidgetClass *klass;
 
-  widget = GAIL_WIDGET (gtk_widget_get_accessible (GTK_WIDGET (obj)));
-  klass = GAIL_WIDGET_GET_CLASS (widget);
-  if (klass->notify_gtk)
-    klass->notify_gtk (obj, pspec);
+  widget = BAIL_WIDGET (btk_widget_get_accessible (BTK_WIDGET (obj)));
+  klass = BAIL_WIDGET_GET_CLASS (widget);
+  if (klass->notify_btk)
+    klass->notify_btk (obj, pspec);
 }
 
 /*
  * This function is a signal handler for notify signal which gets emitted 
- * when a property changes value on the GtkWidget associated with a GailWidget.
+ * when a property changes value on the BtkWidget associated with a BailWidget.
  *
- * It constructs an AtkPropertyValues structure and emits a "property_changed"
- * signal which causes the user specified AtkPropertyChangeHandler
+ * It constructs an BatkPropertyValues structure and emits a "property_changed"
+ * signal which causes the user specified BatkPropertyChangeHandler
  * to be called.
  */
 static void 
-gail_widget_real_notify_gtk (GObject     *obj,
+bail_widget_real_notify_btk (GObject     *obj,
                              GParamSpec  *pspec)
 {
-  GtkWidget* widget = GTK_WIDGET (obj);
-  AtkObject* atk_obj = gtk_widget_get_accessible (widget);
-  AtkState state;
+  BtkWidget* widget = BTK_WIDGET (obj);
+  BatkObject* batk_obj = btk_widget_get_accessible (widget);
+  BatkState state;
   gboolean value;
 
   if (strcmp (pspec->name, "has-focus") == 0)
@@ -983,55 +983,55 @@ gail_widget_real_notify_gtk (GObject     *obj,
      * focus changes so we ignore this.
      */
     return;
-  else if (atk_obj->description == NULL &&
+  else if (batk_obj->description == NULL &&
            strcmp (pspec->name, "tooltip-text") == 0)
     {
-      g_object_notify (G_OBJECT (atk_obj), "accessible-description");
+      g_object_notify (G_OBJECT (batk_obj), "accessible-description");
       return;
     }
   else if (strcmp (pspec->name, "visible") == 0)
     {
-      state = ATK_STATE_VISIBLE;
-      value = gtk_widget_get_visible (widget);
+      state = BATK_STATE_VISIBLE;
+      value = btk_widget_get_visible (widget);
     }
   else if (strcmp (pspec->name, "sensitive") == 0)
     {
-      state = ATK_STATE_SENSITIVE;
-      value = gtk_widget_get_sensitive (widget);
+      state = BATK_STATE_SENSITIVE;
+      value = btk_widget_get_sensitive (widget);
     }
   else
     return;
 
-  atk_object_notify_state_change (atk_obj, state, value);
-  if (state == ATK_STATE_SENSITIVE)
-    atk_object_notify_state_change (atk_obj, ATK_STATE_ENABLED, value);
+  batk_object_notify_state_change (batk_obj, state, value);
+  if (state == BATK_STATE_SENSITIVE)
+    batk_object_notify_state_change (batk_obj, BATK_STATE_ENABLED, value);
 
 }
 
 static void 
-gail_widget_focus_event (AtkObject   *obj,
+bail_widget_focus_event (BatkObject   *obj,
                          gboolean    focus_in)
 {
-  AtkObject *focus_obj;
+  BatkObject *focus_obj;
 
-  focus_obj = g_object_get_data (G_OBJECT (obj), "gail-focus-object");
+  focus_obj = g_object_get_data (G_OBJECT (obj), "bail-focus-object");
   if (focus_obj == NULL)
     focus_obj = obj;
-  atk_object_notify_state_change (focus_obj, ATK_STATE_FOCUSED, focus_in);
+  batk_object_notify_state_change (focus_obj, BATK_STATE_FOCUSED, focus_in);
 }
 
-static GtkWidget*
-gail_widget_find_viewport (GtkWidget *widget)
+static BtkWidget*
+bail_widget_find_viewport (BtkWidget *widget)
 {
   /*
-   * Find an antecedent which is a GtkViewPort
+   * Find an antecedent which is a BtkViewPort
    */
-  GtkWidget *parent;
+  BtkWidget *parent;
 
   parent = widget->parent;
   while (parent != NULL)
     {
-      if (GTK_IS_VIEWPORT (parent))
+      if (BTK_IS_VIEWPORT (parent))
         break;
       parent = parent->parent;
     }
@@ -1040,23 +1040,23 @@ gail_widget_find_viewport (GtkWidget *widget)
 
 /*
  * This function checks whether the widget has an antecedent which is 
- * a GtkViewport and, if so, whether any part of the widget intersects
- * the visible rectangle of the GtkViewport.
+ * a BtkViewport and, if so, whether any part of the widget intersects
+ * the visible rectangle of the BtkViewport.
  */ 
-static gboolean gail_widget_on_screen (GtkWidget *widget)
+static gboolean bail_widget_on_screen (BtkWidget *widget)
 {
-  GtkWidget *viewport;
+  BtkWidget *viewport;
   gboolean return_value;
 
-  viewport = gail_widget_find_viewport (widget);
+  viewport = bail_widget_find_viewport (widget);
   if (viewport)
     {
-      GtkAdjustment *adjustment;
-      GdkRectangle visible_rect;
+      BtkAdjustment *adjustment;
+      BdkRectangle visible_rect;
 
-      adjustment = gtk_viewport_get_vadjustment (GTK_VIEWPORT (viewport));
+      adjustment = btk_viewport_get_vadjustment (BTK_VIEWPORT (viewport));
       visible_rect.y = adjustment->value;
-      adjustment = gtk_viewport_get_hadjustment (GTK_VIEWPORT (viewport));
+      adjustment = btk_viewport_get_hadjustment (BTK_VIEWPORT (viewport));
       visible_rect.x = adjustment->value;
       visible_rect.width = viewport->allocation.width;
       visible_rect.height = viewport->allocation.height;
@@ -1086,23 +1086,23 @@ static gboolean gail_widget_on_screen (GtkWidget *widget)
 }
 
 /**
- * gail_widget_all_parents_visible:
- * @widget: a #GtkWidget
+ * bail_widget_all_parents_visible:
+ * @widget: a #BtkWidget
  *
  * Checks if all the predecesors (the parent widget, his parent, etc) are visible
  * Used to check properly the SHOWING state.
  *
  * Return value: TRUE if all the parent hierarchy is visible, FALSE otherwise
  **/
-static gboolean gail_widget_all_parents_visible (GtkWidget *widget)
+static gboolean bail_widget_all_parents_visible (BtkWidget *widget)
 {
-  GtkWidget *iter_parent = NULL;
+  BtkWidget *iter_parent = NULL;
   gboolean result = TRUE;
 
-  for (iter_parent = gtk_widget_get_parent (widget); iter_parent;
-       iter_parent = gtk_widget_get_parent (iter_parent))
+  for (iter_parent = btk_widget_get_parent (widget); iter_parent;
+       iter_parent = btk_widget_get_parent (iter_parent))
     {
-      if (!gtk_widget_get_visible (iter_parent))
+      if (!btk_widget_get_visible (iter_parent))
         {
           result = FALSE;
           break;

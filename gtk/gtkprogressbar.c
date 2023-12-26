@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,23 +18,23 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
-#define __GTK_PROGRESS_BAR_C__
+#undef BTK_DISABLE_DEPRECATED
+#define __BTK_PROGRESS_BAR_C__
 
-#include "gtkprogressbar.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkprogressbar.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 #define MIN_HORIZONTAL_BAR_WIDTH   150
@@ -60,162 +60,162 @@ enum {
   PROP_DISCRETE_BLOCKS
 };
 
-static void gtk_progress_bar_set_property  (GObject             *object,
+static void btk_progress_bar_set_property  (GObject             *object,
 					    guint                prop_id,
 					    const GValue        *value,
 					    GParamSpec          *pspec);
-static void gtk_progress_bar_get_property  (GObject             *object,
+static void btk_progress_bar_get_property  (GObject             *object,
 					    guint                prop_id,
 					    GValue              *value,
 					    GParamSpec          *pspec);
-static gboolean gtk_progress_bar_expose    (GtkWidget           *widget,
-					    GdkEventExpose      *event);
-static void gtk_progress_bar_size_request  (GtkWidget           *widget,
-					    GtkRequisition      *requisition);
-static void gtk_progress_bar_style_set     (GtkWidget           *widget,
-					    GtkStyle            *previous);
-static void gtk_progress_bar_real_update   (GtkProgress         *progress);
-static void gtk_progress_bar_paint         (GtkProgress         *progress);
-static void gtk_progress_bar_act_mode_enter (GtkProgress        *progress);
+static gboolean btk_progress_bar_expose    (BtkWidget           *widget,
+					    BdkEventExpose      *event);
+static void btk_progress_bar_size_request  (BtkWidget           *widget,
+					    BtkRequisition      *requisition);
+static void btk_progress_bar_style_set     (BtkWidget           *widget,
+					    BtkStyle            *previous);
+static void btk_progress_bar_real_update   (BtkProgress         *progress);
+static void btk_progress_bar_paint         (BtkProgress         *progress);
+static void btk_progress_bar_act_mode_enter (BtkProgress        *progress);
 
-static void gtk_progress_bar_set_bar_style_internal       (GtkProgressBar *pbar,
-							   GtkProgressBarStyle style);
-static void gtk_progress_bar_set_discrete_blocks_internal (GtkProgressBar *pbar,
+static void btk_progress_bar_set_bar_style_internal       (BtkProgressBar *pbar,
+							   BtkProgressBarStyle style);
+static void btk_progress_bar_set_discrete_blocks_internal (BtkProgressBar *pbar,
 							   guint           blocks);
-static void gtk_progress_bar_set_activity_step_internal   (GtkProgressBar *pbar,
+static void btk_progress_bar_set_activity_step_internal   (BtkProgressBar *pbar,
 							   guint           step);
-static void gtk_progress_bar_set_activity_blocks_internal (GtkProgressBar *pbar,
+static void btk_progress_bar_set_activity_blocks_internal (BtkProgressBar *pbar,
 							   guint           blocks);
 
 
-G_DEFINE_TYPE (GtkProgressBar, gtk_progress_bar, GTK_TYPE_PROGRESS)
+G_DEFINE_TYPE (BtkProgressBar, btk_progress_bar, BTK_TYPE_PROGRESS)
 
 static void
-gtk_progress_bar_class_init (GtkProgressBarClass *class)
+btk_progress_bar_class_init (BtkProgressBarClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkWidgetClass *widget_class;
-  GtkProgressClass *progress_class;
+  GObjectClass *bobject_class;
+  BtkWidgetClass *widget_class;
+  BtkProgressClass *progress_class;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  widget_class = (GtkWidgetClass *) class;
-  progress_class = (GtkProgressClass *) class;
+  bobject_class = G_OBJECT_CLASS (class);
+  widget_class = (BtkWidgetClass *) class;
+  progress_class = (BtkProgressClass *) class;
 
-  gobject_class->set_property = gtk_progress_bar_set_property;
-  gobject_class->get_property = gtk_progress_bar_get_property;
+  bobject_class->set_property = btk_progress_bar_set_property;
+  bobject_class->get_property = btk_progress_bar_get_property;
   
-  widget_class->expose_event = gtk_progress_bar_expose;
-  widget_class->size_request = gtk_progress_bar_size_request;
-  widget_class->style_set = gtk_progress_bar_style_set;
+  widget_class->expose_event = btk_progress_bar_expose;
+  widget_class->size_request = btk_progress_bar_size_request;
+  widget_class->style_set = btk_progress_bar_style_set;
 
-  progress_class->paint = gtk_progress_bar_paint;
-  progress_class->update = gtk_progress_bar_real_update;
-  progress_class->act_mode_enter = gtk_progress_bar_act_mode_enter;
+  progress_class->paint = btk_progress_bar_paint;
+  progress_class->update = btk_progress_bar_real_update;
+  progress_class->act_mode_enter = btk_progress_bar_act_mode_enter;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ADJUSTMENT,
                                    g_param_spec_object ("adjustment",
                                                         P_("Adjustment"),
-                                                        P_("The GtkAdjustment connected to the progress bar (Deprecated)"),
-                                                        GTK_TYPE_ADJUSTMENT,
-                                                        GTK_PARAM_READWRITE));
+                                                        P_("The BtkAdjustment connected to the progress bar (Deprecated)"),
+                                                        BTK_TYPE_ADJUSTMENT,
+                                                        BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ORIENTATION,
                                    g_param_spec_enum ("orientation",
 						      P_("Orientation"),
 						      P_("Orientation and growth direction of the progress bar"),
-						      GTK_TYPE_PROGRESS_BAR_ORIENTATION,
-						      GTK_PROGRESS_LEFT_TO_RIGHT,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_PROGRESS_BAR_ORIENTATION,
+						      BTK_PROGRESS_LEFT_TO_RIGHT,
+						      BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_BAR_STYLE,
                                    g_param_spec_enum ("bar-style",
 						      P_("Bar style"),
 						      P_("Specifies the visual style of the bar in percentage mode (Deprecated)"),
-						      GTK_TYPE_PROGRESS_BAR_STYLE,
-						      GTK_PROGRESS_CONTINUOUS,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_PROGRESS_BAR_STYLE,
+						      BTK_PROGRESS_CONTINUOUS,
+						      BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ACTIVITY_STEP,
                                    g_param_spec_uint ("activity-step",
 						      P_("Activity Step"),
 						      P_("The increment used for each iteration in activity mode (Deprecated)"),
 						      0, G_MAXUINT, 3,
-						      GTK_PARAM_READWRITE));
+						      BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ACTIVITY_BLOCKS,
                                    g_param_spec_uint ("activity-blocks",
 						      P_("Activity Blocks"),
 						      P_("The number of blocks which can fit in the progress bar area in activity mode (Deprecated)"),
 						      2, G_MAXUINT, 5,
-						      GTK_PARAM_READWRITE));
+						      BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_DISCRETE_BLOCKS,
                                    g_param_spec_uint ("discrete-blocks",
 						      P_("Discrete Blocks"),
 						      P_("The number of discrete blocks in a progress bar (when shown in the discrete style)"),
 						      2, G_MAXUINT, 10,
-						      GTK_PARAM_READWRITE));
+						      BTK_PARAM_READWRITE));
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_FRACTION,
 				   g_param_spec_double ("fraction",
 							P_("Fraction"),
 							P_("The fraction of total work that has been completed"),
 							0.0, 1.0, 0.0,
-							GTK_PARAM_READWRITE));  
+							BTK_PARAM_READWRITE));  
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_PULSE_STEP,
 				   g_param_spec_double ("pulse-step",
 							P_("Pulse Step"),
 							P_("The fraction of total progress to move the bouncing block when pulsed"),
 							0.0, 1.0, 0.1,
-							GTK_PARAM_READWRITE));  
+							BTK_PARAM_READWRITE));  
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_TEXT,
 				   g_param_spec_string ("text",
 							P_("Text"),
 							P_("Text to be displayed in the progress bar"),
 							NULL,
-							GTK_PARAM_READWRITE));
+							BTK_PARAM_READWRITE));
 
   /**
-   * GtkProgressBar:ellipsize:
+   * BtkProgressBar:ellipsize:
    *
    * The preferred place to ellipsize the string, if the progressbar does 
    * not have enough room to display the entire string, specified as a 
-   * #PangoEllisizeMode. 
+   * #BangoEllisizeMode. 
    *
    * Note that setting this property to a value other than 
-   * %PANGO_ELLIPSIZE_NONE has the side-effect that the progressbar requests 
+   * %BANGO_ELLIPSIZE_NONE has the side-effect that the progressbar requests 
    * only enough space to display the ellipsis "...". Another means to set a 
-   * progressbar's width is gtk_widget_set_size_request().
+   * progressbar's width is btk_widget_set_size_request().
    *
    * Since: 2.6
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_ELLIPSIZE,
                                    g_param_spec_enum ("ellipsize",
                                                       P_("Ellipsize"),
                                                       P_("The preferred place to ellipsize the string, if the progress bar "
                                                          "does not have enough room to display the entire string, if at all."),
-						      PANGO_TYPE_ELLIPSIZE_MODE,
-						      PANGO_ELLIPSIZE_NONE,
-                                                      GTK_PARAM_READWRITE));
-  gtk_widget_class_install_style_property (widget_class,
+						      BANGO_TYPE_ELLIPSIZE_MODE,
+						      BANGO_ELLIPSIZE_NONE,
+                                                      BTK_PARAM_READWRITE));
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("xspacing",
                                                              P_("XSpacing"),
                                                              P_("Extra spacing applied to the width of a progress bar."),
                                                              0, G_MAXINT, 7,
                                                              G_PARAM_READWRITE));
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("yspacing",
                                                              P_("YSpacing"),
                                                              P_("Extra spacing applied to the height of a progress bar."),
@@ -223,52 +223,52 @@ gtk_progress_bar_class_init (GtkProgressBarClass *class)
                                                              G_PARAM_READWRITE));
 
   /**
-   * GtkProgressBar:min-horizontal-bar-width:
+   * BtkProgressBar:min-horizontal-bar-width:
    *
    * The minimum horizontal width of the progress bar.
    *
    * Since: 2.14
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("min-horizontal-bar-width",
                                                              P_("Min horizontal bar width"),
                                                              P_("The minimum horizontal width of the progress bar"),
                                                              1, G_MAXINT, MIN_HORIZONTAL_BAR_WIDTH,
                                                              G_PARAM_READWRITE));
   /**
-   * GtkProgressBar:min-horizontal-bar-height:
+   * BtkProgressBar:min-horizontal-bar-height:
    *
    * Minimum horizontal height of the progress bar.
    *
    * Since: 2.14
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("min-horizontal-bar-height",
                                                              P_("Min horizontal bar height"),
                                                              P_("Minimum horizontal height of the progress bar"),
                                                              1, G_MAXINT, MIN_HORIZONTAL_BAR_HEIGHT,
                                                              G_PARAM_READWRITE));
   /**
-   * GtkProgressBar:min-vertical-bar-width:
+   * BtkProgressBar:min-vertical-bar-width:
    *
    * The minimum vertical width of the progress bar.
    *
    * Since: 2.14
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("min-vertical-bar-width",
                                                              P_("Min vertical bar width"),
                                                              P_("The minimum vertical width of the progress bar"),
                                                              1, G_MAXINT, MIN_VERTICAL_BAR_WIDTH,
                                                              G_PARAM_READWRITE));
   /**
-   * GtkProgressBar:min-vertical-bar-height:
+   * BtkProgressBar:min-vertical-bar-height:
    *
    * The minimum vertical height of the progress bar.
    *
    * Since: 2.14
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("min-vertical-bar-height",
                                                              P_("Min vertical bar height"),
                                                              P_("The minimum vertical height of the progress bar"),
@@ -277,62 +277,62 @@ gtk_progress_bar_class_init (GtkProgressBarClass *class)
 }
 
 static void
-gtk_progress_bar_init (GtkProgressBar *pbar)
+btk_progress_bar_init (BtkProgressBar *pbar)
 {
-  pbar->bar_style = GTK_PROGRESS_CONTINUOUS;
+  pbar->bar_style = BTK_PROGRESS_CONTINUOUS;
   pbar->blocks = 10;
   pbar->in_block = -1;
-  pbar->orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+  pbar->orientation = BTK_PROGRESS_LEFT_TO_RIGHT;
   pbar->pulse_fraction = 0.1;
   pbar->activity_pos = 0;
   pbar->activity_dir = 1;
   pbar->activity_step = 3;
   pbar->activity_blocks = 5;
-  pbar->ellipsize = PANGO_ELLIPSIZE_NONE;
+  pbar->ellipsize = BANGO_ELLIPSIZE_NONE;
 }
 
 static void
-gtk_progress_bar_set_property (GObject      *object,
+btk_progress_bar_set_property (GObject      *object,
 			       guint         prop_id,
 			       const GValue *value,
 			       GParamSpec   *pspec)
 {
-  GtkProgressBar *pbar;
+  BtkProgressBar *pbar;
 
-  pbar = GTK_PROGRESS_BAR (object);
+  pbar = BTK_PROGRESS_BAR (object);
 
   switch (prop_id)
     {
     case PROP_ADJUSTMENT:
-      gtk_progress_set_adjustment (GTK_PROGRESS (pbar),
-				   GTK_ADJUSTMENT (g_value_get_object (value)));
+      btk_progress_set_adjustment (BTK_PROGRESS (pbar),
+				   BTK_ADJUSTMENT (g_value_get_object (value)));
       break;
     case PROP_ORIENTATION:
-      gtk_progress_bar_set_orientation (pbar, g_value_get_enum (value));
+      btk_progress_bar_set_orientation (pbar, g_value_get_enum (value));
       break;
     case PROP_BAR_STYLE:
-      gtk_progress_bar_set_bar_style_internal (pbar, g_value_get_enum (value));
+      btk_progress_bar_set_bar_style_internal (pbar, g_value_get_enum (value));
       break;
     case PROP_ACTIVITY_STEP:
-      gtk_progress_bar_set_activity_step_internal (pbar, g_value_get_uint (value));
+      btk_progress_bar_set_activity_step_internal (pbar, g_value_get_uint (value));
       break;
     case PROP_ACTIVITY_BLOCKS:
-      gtk_progress_bar_set_activity_blocks_internal (pbar, g_value_get_uint (value));
+      btk_progress_bar_set_activity_blocks_internal (pbar, g_value_get_uint (value));
       break;
     case PROP_DISCRETE_BLOCKS:
-      gtk_progress_bar_set_discrete_blocks_internal (pbar, g_value_get_uint (value));
+      btk_progress_bar_set_discrete_blocks_internal (pbar, g_value_get_uint (value));
       break;
     case PROP_FRACTION:
-      gtk_progress_bar_set_fraction (pbar, g_value_get_double (value));
+      btk_progress_bar_set_fraction (pbar, g_value_get_double (value));
       break;
     case PROP_PULSE_STEP:
-      gtk_progress_bar_set_pulse_step (pbar, g_value_get_double (value));
+      btk_progress_bar_set_pulse_step (pbar, g_value_get_double (value));
       break;
     case PROP_TEXT:
-      gtk_progress_bar_set_text (pbar, g_value_get_string (value));
+      btk_progress_bar_set_text (pbar, g_value_get_string (value));
       break;
     case PROP_ELLIPSIZE:
-      gtk_progress_bar_set_ellipsize (pbar, g_value_get_enum (value));
+      btk_progress_bar_set_ellipsize (pbar, g_value_get_enum (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -341,19 +341,19 @@ gtk_progress_bar_set_property (GObject      *object,
 }
 
 static void
-gtk_progress_bar_get_property (GObject      *object,
+btk_progress_bar_get_property (GObject      *object,
 			       guint         prop_id,
 			       GValue       *value,
 			       GParamSpec   *pspec)
 {
-  GtkProgressBar *pbar;
+  BtkProgressBar *pbar;
 
-  pbar = GTK_PROGRESS_BAR (object);
+  pbar = BTK_PROGRESS_BAR (object);
 
   switch (prop_id)
     {
     case PROP_ADJUSTMENT:
-      g_value_set_object (value, GTK_PROGRESS (pbar)->adjustment);
+      g_value_set_object (value, BTK_PROGRESS (pbar)->adjustment);
       break;
     case PROP_ORIENTATION:
       g_value_set_enum (value, pbar->orientation);
@@ -371,13 +371,13 @@ gtk_progress_bar_get_property (GObject      *object,
       g_value_set_uint (value, pbar->blocks);
       break;
     case PROP_FRACTION:
-      g_value_set_double (value, gtk_progress_get_current_percentage (GTK_PROGRESS (pbar)));
+      g_value_set_double (value, btk_progress_get_current_percentage (BTK_PROGRESS (pbar)));
       break;
     case PROP_PULSE_STEP:
       g_value_set_double (value, pbar->pulse_fraction);
       break;
     case PROP_TEXT:
-      g_value_set_string (value, gtk_progress_bar_get_text (pbar));
+      g_value_set_string (value, btk_progress_bar_get_text (pbar));
       break;
     case PROP_ELLIPSIZE:
       g_value_set_enum (value, pbar->ellipsize);
@@ -389,38 +389,38 @@ gtk_progress_bar_get_property (GObject      *object,
 }
 
 /**
- * gtk_progress_bar_new:
+ * btk_progress_bar_new:
  *
- * Creates a new #GtkProgressBar.
+ * Creates a new #BtkProgressBar.
  *
- * Returns: a #GtkProgressBar.
+ * Returns: a #BtkProgressBar.
  */
-GtkWidget*
-gtk_progress_bar_new (void)
+BtkWidget*
+btk_progress_bar_new (void)
 {
-  GtkWidget *pbar;
+  BtkWidget *pbar;
 
-  pbar = g_object_new (GTK_TYPE_PROGRESS_BAR, NULL);
+  pbar = g_object_new (BTK_TYPE_PROGRESS_BAR, NULL);
 
   return pbar;
 }
 
 /**
- * gtk_progress_bar_new_with_adjustment:
+ * btk_progress_bar_new_with_adjustment:
  * @adjustment: (allow-none):
  *
- * Creates a new #GtkProgressBar with an associated #GtkAdjustment.
+ * Creates a new #BtkProgressBar with an associated #BtkAdjustment.
  *
- * Returns: (transfer none): a #GtkProgressBar.
+ * Returns: (transfer none): a #BtkProgressBar.
  */
-GtkWidget*
-gtk_progress_bar_new_with_adjustment (GtkAdjustment *adjustment)
+BtkWidget*
+btk_progress_bar_new_with_adjustment (BtkAdjustment *adjustment)
 {
-  GtkWidget *pbar;
+  BtkWidget *pbar;
 
-  g_return_val_if_fail (GTK_IS_ADJUSTMENT (adjustment), NULL);
+  g_return_val_if_fail (BTK_IS_ADJUSTMENT (adjustment), NULL);
 
-  pbar = g_object_new (GTK_TYPE_PROGRESS_BAR,
+  pbar = g_object_new (BTK_TYPE_PROGRESS_BAR,
 			 "adjustment", adjustment,
 			 NULL);
 
@@ -428,27 +428,27 @@ gtk_progress_bar_new_with_adjustment (GtkAdjustment *adjustment)
 }
 
 static void
-gtk_progress_bar_real_update (GtkProgress *progress)
+btk_progress_bar_real_update (BtkProgress *progress)
 {
-  GtkProgressBar *pbar;
-  GtkWidget *widget;
+  BtkProgressBar *pbar;
+  BtkWidget *widget;
 
-  g_return_if_fail (GTK_IS_PROGRESS (progress));
+  g_return_if_fail (BTK_IS_PROGRESS (progress));
 
-  pbar = GTK_PROGRESS_BAR (progress);
-  widget = GTK_WIDGET (progress);
+  pbar = BTK_PROGRESS_BAR (progress);
+  widget = BTK_WIDGET (progress);
  
-  if (pbar->bar_style == GTK_PROGRESS_CONTINUOUS ||
-      GTK_PROGRESS (pbar)->activity_mode)
+  if (pbar->bar_style == BTK_PROGRESS_CONTINUOUS ||
+      BTK_PROGRESS (pbar)->activity_mode)
     {
-      if (GTK_PROGRESS (pbar)->activity_mode)
+      if (BTK_PROGRESS (pbar)->activity_mode)
 	{
 	  guint size;
           
 	  /* advance the block */
 
-	  if (pbar->orientation == GTK_PROGRESS_LEFT_TO_RIGHT ||
-	      pbar->orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+	  if (pbar->orientation == BTK_PROGRESS_LEFT_TO_RIGHT ||
+	      pbar->orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
 	    {
               /* Update our activity step. */
               
@@ -510,92 +510,92 @@ gtk_progress_bar_real_update (GtkProgress *progress)
 	    }
 	}
       pbar->dirty = TRUE;
-      gtk_widget_queue_draw (GTK_WIDGET (progress));
+      btk_widget_queue_draw (BTK_WIDGET (progress));
     }
   else
     {
       gint in_block;
       
-      in_block = -1 + (gint)(gtk_progress_get_current_percentage (progress) *
+      in_block = -1 + (gint)(btk_progress_get_current_percentage (progress) *
 			     (gdouble)pbar->blocks);
       
       if (pbar->in_block != in_block)
 	{
 	  pbar->in_block = in_block;
 	  pbar->dirty = TRUE;
-	  gtk_widget_queue_draw (GTK_WIDGET (progress));
+	  btk_widget_queue_draw (BTK_WIDGET (progress));
 	}
     }
 }
 
 static gboolean
-gtk_progress_bar_expose (GtkWidget      *widget,
-		     GdkEventExpose *event)
+btk_progress_bar_expose (BtkWidget      *widget,
+		     BdkEventExpose *event)
 {
-  GtkProgressBar *pbar;
+  BtkProgressBar *pbar;
 
-  g_return_val_if_fail (GTK_IS_PROGRESS_BAR (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_PROGRESS_BAR (widget), FALSE);
 
-  pbar = GTK_PROGRESS_BAR (widget);
+  pbar = BTK_PROGRESS_BAR (widget);
 
-  if (pbar->dirty && gtk_widget_is_drawable (widget))
-    gtk_progress_bar_paint (GTK_PROGRESS (pbar));
+  if (pbar->dirty && btk_widget_is_drawable (widget))
+    btk_progress_bar_paint (BTK_PROGRESS (pbar));
 
-  return GTK_WIDGET_CLASS (gtk_progress_bar_parent_class)->expose_event (widget, event);
+  return BTK_WIDGET_CLASS (btk_progress_bar_parent_class)->expose_event (widget, event);
 }
 
 static void
-gtk_progress_bar_size_request (GtkWidget      *widget,
-			       GtkRequisition *requisition)
+btk_progress_bar_size_request (BtkWidget      *widget,
+			       BtkRequisition *requisition)
 {
-  GtkProgress *progress;
-  GtkProgressBar *pbar;
+  BtkProgress *progress;
+  BtkProgressBar *pbar;
   gchar *buf;
-  PangoRectangle logical_rect;
-  PangoLayout *layout;
+  BangoRectangle logical_rect;
+  BangoLayout *layout;
   gint width, height;
   gint xspacing, yspacing;
   gint min_width, min_height;
 
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (widget));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (widget));
   g_return_if_fail (requisition != NULL);
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "xspacing", &xspacing,
                         "yspacing", &yspacing,
                         NULL);
 
-  progress = GTK_PROGRESS (widget);
-  pbar = GTK_PROGRESS_BAR (widget);
+  progress = BTK_PROGRESS (widget);
+  pbar = BTK_PROGRESS_BAR (widget);
 
   width = 2 * widget->style->xthickness + xspacing;
   height = 2 * widget->style->ythickness + yspacing;
 
-  if (progress->show_text && pbar->bar_style != GTK_PROGRESS_DISCRETE)
+  if (progress->show_text && pbar->bar_style != BTK_PROGRESS_DISCRETE)
     {
       if (!progress->adjustment)
-	gtk_progress_set_adjustment (progress, NULL);
+	btk_progress_set_adjustment (progress, NULL);
 
-      buf = gtk_progress_get_text_from_value (progress, progress->adjustment->upper);
+      buf = btk_progress_get_text_from_value (progress, progress->adjustment->upper);
 
-      layout = gtk_widget_create_pango_layout (widget, buf);
+      layout = btk_widget_create_bango_layout (widget, buf);
 
-      pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+      bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 	  
       if (pbar->ellipsize)
 	{
-	  PangoContext *context;
-	  PangoFontMetrics *metrics;
+	  BangoContext *context;
+	  BangoFontMetrics *metrics;
 	  gint char_width;
 	  
 	  /* The minimum size for ellipsized text is ~ 3 chars */
-	  context = pango_layout_get_context (layout);
-	  metrics = pango_context_get_metrics (context, widget->style->font_desc, pango_context_get_language (context));
+	  context = bango_layout_get_context (layout);
+	  metrics = bango_context_get_metrics (context, widget->style->font_desc, bango_context_get_language (context));
 	  
-	  char_width = pango_font_metrics_get_approximate_char_width (metrics);
-	  pango_font_metrics_unref (metrics);
+	  char_width = bango_font_metrics_get_approximate_char_width (metrics);
+	  bango_font_metrics_unref (metrics);
 	  
-	  width += PANGO_PIXELS (char_width) * 3;
+	  width += BANGO_PIXELS (char_width) * 3;
 	}
       else
 	width += logical_rect.width;
@@ -606,14 +606,14 @@ gtk_progress_bar_size_request (GtkWidget      *widget,
       g_free (buf);
     }
   
-  if (pbar->orientation == GTK_PROGRESS_LEFT_TO_RIGHT ||
-      pbar->orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
-    gtk_widget_style_get (widget,
+  if (pbar->orientation == BTK_PROGRESS_LEFT_TO_RIGHT ||
+      pbar->orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
+    btk_widget_style_get (widget,
 			  "min-horizontal-bar-width", &min_width,
 			  "min-horizontal-bar-height", &min_height,
 			  NULL);
   else
-    gtk_widget_style_get (widget,
+    btk_widget_style_get (widget,
 			  "min-vertical-bar-width", &min_width,
 			  "min-vertical-bar-height", &min_height,
 			  NULL);
@@ -623,41 +623,41 @@ gtk_progress_bar_size_request (GtkWidget      *widget,
 }
 
 static void
-gtk_progress_bar_style_set (GtkWidget      *widget,
-    GtkStyle *previous)
+btk_progress_bar_style_set (BtkWidget      *widget,
+    BtkStyle *previous)
 {
-  GtkProgressBar *pbar = GTK_PROGRESS_BAR (widget);
+  BtkProgressBar *pbar = BTK_PROGRESS_BAR (widget);
 
   pbar->dirty = TRUE;
 
-  GTK_WIDGET_CLASS (gtk_progress_bar_parent_class)->style_set (widget, previous);
+  BTK_WIDGET_CLASS (btk_progress_bar_parent_class)->style_set (widget, previous);
 }
 
 static void
-gtk_progress_bar_act_mode_enter (GtkProgress *progress)
+btk_progress_bar_act_mode_enter (BtkProgress *progress)
 {
-  GtkProgressBar *pbar;
-  GtkWidget *widget;
-  GtkProgressBarOrientation orientation;
+  BtkProgressBar *pbar;
+  BtkWidget *widget;
+  BtkProgressBarOrientation orientation;
 
-  pbar = GTK_PROGRESS_BAR (progress);
-  widget = GTK_WIDGET (progress);
+  pbar = BTK_PROGRESS_BAR (progress);
+  widget = BTK_WIDGET (progress);
 
   orientation = pbar->orientation;
-  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) 
+  if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL) 
     {
-      if (pbar->orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
-	orientation = GTK_PROGRESS_RIGHT_TO_LEFT;
-      else if (pbar->orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
-	orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+      if (pbar->orientation == BTK_PROGRESS_LEFT_TO_RIGHT)
+	orientation = BTK_PROGRESS_RIGHT_TO_LEFT;
+      else if (pbar->orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
+	orientation = BTK_PROGRESS_LEFT_TO_RIGHT;
     }
   
   /* calculate start pos */
 
-  if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT ||
-      orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+  if (orientation == BTK_PROGRESS_LEFT_TO_RIGHT ||
+      orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
     {
-      if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
+      if (orientation == BTK_PROGRESS_LEFT_TO_RIGHT)
 	{
 	  pbar->activity_pos = widget->style->xthickness;
 	  pbar->activity_dir = 0;
@@ -672,7 +672,7 @@ gtk_progress_bar_act_mode_enter (GtkProgress *progress)
     }
   else
     {
-      if (orientation == GTK_PROGRESS_TOP_TO_BOTTOM)
+      if (orientation == BTK_PROGRESS_TOP_TO_BOTTOM)
 	{
 	  pbar->activity_pos = widget->style->ythickness;
 	  pbar->activity_dir = 0;
@@ -688,49 +688,49 @@ gtk_progress_bar_act_mode_enter (GtkProgress *progress)
 }
 
 static void
-gtk_progress_bar_get_activity (GtkProgressBar            *pbar,
-			       GtkProgressBarOrientation  orientation,
+btk_progress_bar_get_activity (BtkProgressBar            *pbar,
+			       BtkProgressBarOrientation  orientation,
 			       gint                      *offset,
 			       gint                      *amount)
 {
-  GtkWidget *widget = GTK_WIDGET (pbar);
+  BtkWidget *widget = BTK_WIDGET (pbar);
 
   *offset = pbar->activity_pos;
 
   switch (orientation)
     {
-    case GTK_PROGRESS_LEFT_TO_RIGHT:
-    case GTK_PROGRESS_RIGHT_TO_LEFT:
+    case BTK_PROGRESS_LEFT_TO_RIGHT:
+    case BTK_PROGRESS_RIGHT_TO_LEFT:
       *amount = MAX (2, widget->allocation.width / pbar->activity_blocks);
       break;
 
-    case GTK_PROGRESS_TOP_TO_BOTTOM:
-    case GTK_PROGRESS_BOTTOM_TO_TOP:
+    case BTK_PROGRESS_TOP_TO_BOTTOM:
+    case BTK_PROGRESS_BOTTOM_TO_TOP:
       *amount = MAX (2, widget->allocation.height / pbar->activity_blocks);
       break;
     }
 }
 
 static void
-gtk_progress_bar_paint_activity (GtkProgressBar            *pbar,
-				 GtkProgressBarOrientation  orientation)
+btk_progress_bar_paint_activity (BtkProgressBar            *pbar,
+				 BtkProgressBarOrientation  orientation)
 {
-  GtkWidget *widget = GTK_WIDGET (pbar);
-  GtkProgress *progress = GTK_PROGRESS (pbar);
-  GdkRectangle area;
+  BtkWidget *widget = BTK_WIDGET (pbar);
+  BtkProgress *progress = BTK_PROGRESS (pbar);
+  BdkRectangle area;
 
   switch (orientation)
     {
-    case GTK_PROGRESS_LEFT_TO_RIGHT:
-    case GTK_PROGRESS_RIGHT_TO_LEFT:
-      gtk_progress_bar_get_activity (pbar, orientation, &area.x, &area.width);
+    case BTK_PROGRESS_LEFT_TO_RIGHT:
+    case BTK_PROGRESS_RIGHT_TO_LEFT:
+      btk_progress_bar_get_activity (pbar, orientation, &area.x, &area.width);
       area.y = widget->style->ythickness;
       area.height = widget->allocation.height - 2 * widget->style->ythickness;
       break;
 
-    case GTK_PROGRESS_TOP_TO_BOTTOM:
-    case GTK_PROGRESS_BOTTOM_TO_TOP:
-      gtk_progress_bar_get_activity (pbar, orientation, &area.y, &area.height);
+    case BTK_PROGRESS_TOP_TO_BOTTOM:
+    case BTK_PROGRESS_BOTTOM_TO_TOP:
+      btk_progress_bar_get_activity (pbar, orientation, &area.y, &area.height);
       area.x = widget->style->xthickness;
       area.width = widget->allocation.width - 2 * widget->style->xthickness;
       break;
@@ -740,45 +740,45 @@ gtk_progress_bar_paint_activity (GtkProgressBar            *pbar,
       break;
     }
 
-  gtk_paint_box (widget->style,
+  btk_paint_box (widget->style,
 		 progress->offscreen_pixmap,
-		 GTK_STATE_PRELIGHT, GTK_SHADOW_OUT,
+		 BTK_STATE_PRELIGHT, BTK_SHADOW_OUT,
 		 &area, widget, "bar",
 		 area.x, area.y, area.width, area.height);
 }
 
 static void
-gtk_progress_bar_paint_continuous (GtkProgressBar            *pbar,
+btk_progress_bar_paint_continuous (BtkProgressBar            *pbar,
 				   gint                       amount,
-				   GtkProgressBarOrientation  orientation)
+				   BtkProgressBarOrientation  orientation)
 {
-  GdkRectangle area;
-  GtkWidget *widget = GTK_WIDGET (pbar);
+  BdkRectangle area;
+  BtkWidget *widget = BTK_WIDGET (pbar);
 
   if (amount <= 0)
     return;
 
   switch (orientation)
     {
-    case GTK_PROGRESS_LEFT_TO_RIGHT:
-    case GTK_PROGRESS_RIGHT_TO_LEFT:
+    case BTK_PROGRESS_LEFT_TO_RIGHT:
+    case BTK_PROGRESS_RIGHT_TO_LEFT:
       area.width = amount;
       area.height = widget->allocation.height - widget->style->ythickness * 2;
       area.y = widget->style->ythickness;
       
       area.x = widget->style->xthickness;
-      if (orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+      if (orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
 	area.x = widget->allocation.width - amount - area.x;
       break;
       
-    case GTK_PROGRESS_TOP_TO_BOTTOM:
-    case GTK_PROGRESS_BOTTOM_TO_TOP:
+    case BTK_PROGRESS_TOP_TO_BOTTOM:
+    case BTK_PROGRESS_BOTTOM_TO_TOP:
       area.width = widget->allocation.width - widget->style->xthickness * 2;
       area.height = amount;
       area.x = widget->style->xthickness;
       
       area.y = widget->style->ythickness;
-      if (orientation == GTK_PROGRESS_BOTTOM_TO_TOP)
+      if (orientation == BTK_PROGRESS_BOTTOM_TO_TOP)
 	area.y = widget->allocation.height - amount - area.y;
       break;
       
@@ -787,29 +787,29 @@ gtk_progress_bar_paint_continuous (GtkProgressBar            *pbar,
       break;
     }
   
-  gtk_paint_box (widget->style,
-		 GTK_PROGRESS (pbar)->offscreen_pixmap,
-		 GTK_STATE_PRELIGHT, GTK_SHADOW_OUT,
+  btk_paint_box (widget->style,
+		 BTK_PROGRESS (pbar)->offscreen_pixmap,
+		 BTK_STATE_PRELIGHT, BTK_SHADOW_OUT,
 		 &area, widget, "bar",
 		 area.x, area.y, area.width, area.height);
 }
 
 static void
-gtk_progress_bar_paint_discrete (GtkProgressBar            *pbar,
-				 GtkProgressBarOrientation  orientation)
+btk_progress_bar_paint_discrete (BtkProgressBar            *pbar,
+				 BtkProgressBarOrientation  orientation)
 {
-  GtkWidget *widget = GTK_WIDGET (pbar);
+  BtkWidget *widget = BTK_WIDGET (pbar);
   gint i;
 
   for (i = 0; i <= pbar->in_block; i++)
     {
-      GdkRectangle area;
+      BdkRectangle area;
       gint space;
 
       switch (orientation)
 	{
-	case GTK_PROGRESS_LEFT_TO_RIGHT:
-	case GTK_PROGRESS_RIGHT_TO_LEFT:
+	case BTK_PROGRESS_LEFT_TO_RIGHT:
+	case BTK_PROGRESS_RIGHT_TO_LEFT:
 	  space = widget->allocation.width - 2 * widget->style->xthickness;
 	  
 	  area.x = widget->style->xthickness + (i * space) / pbar->blocks;
@@ -817,12 +817,12 @@ gtk_progress_bar_paint_discrete (GtkProgressBar            *pbar,
 	  area.width = widget->style->xthickness + ((i + 1) * space) / pbar->blocks - area.x;
 	  area.height = widget->allocation.height - 2 * widget->style->ythickness;
 
-	  if (orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+	  if (orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
 	    area.x = widget->allocation.width - area.width - area.x;
 	  break;
 	  
-	case GTK_PROGRESS_TOP_TO_BOTTOM:
-	case GTK_PROGRESS_BOTTOM_TO_TOP:
+	case BTK_PROGRESS_TOP_TO_BOTTOM:
+	case BTK_PROGRESS_BOTTOM_TO_TOP:
 	  space = widget->allocation.height - 2 * widget->style->ythickness;
 	  
 	  area.x = widget->style->xthickness;
@@ -830,7 +830,7 @@ gtk_progress_bar_paint_discrete (GtkProgressBar            *pbar,
 	  area.width = widget->allocation.width - 2 * widget->style->xthickness;
 	  area.height = widget->style->ythickness + ((i + 1) * space) / pbar->blocks - area.y;
 	  
-	  if (orientation == GTK_PROGRESS_BOTTOM_TO_TOP)
+	  if (orientation == BTK_PROGRESS_BOTTOM_TO_TOP)
 	    area.y = widget->allocation.height - area.height - area.y;
 	  break;
 
@@ -839,43 +839,43 @@ gtk_progress_bar_paint_discrete (GtkProgressBar            *pbar,
 	  break;
 	}
       
-      gtk_paint_box (widget->style,
-		     GTK_PROGRESS (pbar)->offscreen_pixmap,
-		     GTK_STATE_PRELIGHT, GTK_SHADOW_OUT,
+      btk_paint_box (widget->style,
+		     BTK_PROGRESS (pbar)->offscreen_pixmap,
+		     BTK_STATE_PRELIGHT, BTK_SHADOW_OUT,
 		     &area, widget, "bar",
 		     area.x, area.y, area.width, area.height);
     }
 }
 
 static void
-gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
+btk_progress_bar_paint_text (BtkProgressBar            *pbar,
 			     gint                       offset,
 			     gint			amount,
-			     GtkProgressBarOrientation  orientation)
+			     BtkProgressBarOrientation  orientation)
 {
-  GtkProgress *progress = GTK_PROGRESS (pbar);
-  GtkWidget *widget = GTK_WIDGET (pbar);
+  BtkProgress *progress = BTK_PROGRESS (pbar);
+  BtkWidget *widget = BTK_WIDGET (pbar);
   gint x;
   gint y;
   gchar *buf;
-  GdkRectangle rect;
-  PangoLayout *layout;
-  PangoRectangle logical_rect;
-  GdkRectangle prelight_clip, start_clip, end_clip;
+  BdkRectangle rect;
+  BangoLayout *layout;
+  BangoRectangle logical_rect;
+  BdkRectangle prelight_clip, start_clip, end_clip;
   gfloat text_xalign = progress->x_align;
   gfloat text_yalign = progress->y_align;
 
-  if (gtk_widget_get_direction (widget) != GTK_TEXT_DIR_LTR)
+  if (btk_widget_get_direction (widget) != BTK_TEXT_DIR_LTR)
     text_xalign = 1.0 - text_xalign;
 
-  buf = gtk_progress_get_current_text (progress);
+  buf = btk_progress_get_current_text (progress);
   
-  layout = gtk_widget_create_pango_layout (widget, buf);
-  pango_layout_set_ellipsize (layout, pbar->ellipsize);
+  layout = btk_widget_create_bango_layout (widget, buf);
+  bango_layout_set_ellipsize (layout, pbar->ellipsize);
   if (pbar->ellipsize)
-    pango_layout_set_width (layout, widget->allocation.width * PANGO_SCALE);
+    bango_layout_set_width (layout, widget->allocation.width * BANGO_SCALE);
 
-  pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+  bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
   
   x = widget->style->xthickness + 1 + text_xalign *
       (widget->allocation.width - 2 * widget->style->xthickness -
@@ -894,7 +894,7 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
 
   switch (orientation)
     {
-    case GTK_PROGRESS_LEFT_TO_RIGHT:
+    case BTK_PROGRESS_LEFT_TO_RIGHT:
       if (offset != -1)
 	prelight_clip.x = offset;
       prelight_clip.width = amount;
@@ -903,7 +903,7 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
       end_clip.width -= prelight_clip.width + start_clip.width;
       break;
       
-    case GTK_PROGRESS_RIGHT_TO_LEFT:
+    case BTK_PROGRESS_RIGHT_TO_LEFT:
       if (offset != -1)
 	prelight_clip.x = offset;
       else
@@ -914,7 +914,7 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
       end_clip.width -= prelight_clip.width + start_clip.width;
       break;
        
-    case GTK_PROGRESS_TOP_TO_BOTTOM:
+    case BTK_PROGRESS_TOP_TO_BOTTOM:
       if (offset != -1)
 	prelight_clip.y = offset;
       prelight_clip.height = amount;
@@ -923,7 +923,7 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
       end_clip.height -= prelight_clip.height + start_clip.height;
       break;
       
-    case GTK_PROGRESS_BOTTOM_TO_TOP:
+    case BTK_PROGRESS_BOTTOM_TO_TOP:
       if (offset != -1)
 	prelight_clip.y = offset;
       else
@@ -936,9 +936,9 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
     }
 
   if (start_clip.width > 0 && start_clip.height > 0)
-    gtk_paint_layout (widget->style,
+    btk_paint_layout (widget->style,
 		      progress->offscreen_pixmap,
-		      GTK_STATE_NORMAL,
+		      BTK_STATE_NORMAL,
 		      FALSE,
 		      &start_clip,
 		      widget,
@@ -947,9 +947,9 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
 		      layout);
 
   if (end_clip.width > 0 && end_clip.height > 0)
-    gtk_paint_layout (widget->style,
+    btk_paint_layout (widget->style,
 		      progress->offscreen_pixmap,
-		      GTK_STATE_NORMAL,
+		      BTK_STATE_NORMAL,
 		      FALSE,
 		      &end_clip,
 		      widget,
@@ -957,9 +957,9 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
 		      x, y,
 		      layout);
 
-  gtk_paint_layout (widget->style,
+  btk_paint_layout (widget->style,
 		    progress->offscreen_pixmap,
-		    GTK_STATE_PRELIGHT,
+		    BTK_STATE_PRELIGHT,
 		    FALSE,
 		    &prelight_clip,
 		    widget,
@@ -972,32 +972,32 @@ gtk_progress_bar_paint_text (GtkProgressBar            *pbar,
 }
 
 static void
-gtk_progress_bar_paint (GtkProgress *progress)
+btk_progress_bar_paint (BtkProgress *progress)
 {
-  GtkProgressBar *pbar;
-  GtkWidget *widget;
+  BtkProgressBar *pbar;
+  BtkWidget *widget;
 
-  GtkProgressBarOrientation orientation;
+  BtkProgressBarOrientation orientation;
 
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (progress));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (progress));
 
-  pbar = GTK_PROGRESS_BAR (progress);
-  widget = GTK_WIDGET (progress);
+  pbar = BTK_PROGRESS_BAR (progress);
+  widget = BTK_WIDGET (progress);
 
   orientation = pbar->orientation;
-  if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL) 
+  if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL) 
     {
-      if (pbar->orientation == GTK_PROGRESS_LEFT_TO_RIGHT)
-	orientation = GTK_PROGRESS_RIGHT_TO_LEFT;
-      else if (pbar->orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
-	orientation = GTK_PROGRESS_LEFT_TO_RIGHT;
+      if (pbar->orientation == BTK_PROGRESS_LEFT_TO_RIGHT)
+	orientation = BTK_PROGRESS_RIGHT_TO_LEFT;
+      else if (pbar->orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
+	orientation = BTK_PROGRESS_LEFT_TO_RIGHT;
     }
  
   if (progress->offscreen_pixmap)
     {
-      gtk_paint_box (widget->style,
+      btk_paint_box (widget->style,
 		     progress->offscreen_pixmap,
-		     GTK_STATE_NORMAL, GTK_SHADOW_IN, 
+		     BTK_STATE_NORMAL, BTK_SHADOW_IN, 
 		     NULL, widget, "trough",
 		     0, 0,
 		     widget->allocation.width,
@@ -1005,15 +1005,15 @@ gtk_progress_bar_paint (GtkProgress *progress)
       
       if (progress->activity_mode)
 	{
-	  gtk_progress_bar_paint_activity (pbar, orientation);
+	  btk_progress_bar_paint_activity (pbar, orientation);
 
-	  if (GTK_PROGRESS (pbar)->show_text)
+	  if (BTK_PROGRESS (pbar)->show_text)
 	    {
 	      gint offset;
 	      gint amount;
 
-	      gtk_progress_bar_get_activity (pbar, orientation, &offset, &amount);
-	      gtk_progress_bar_paint_text (pbar, offset, amount, orientation);
+	      btk_progress_bar_get_activity (pbar, orientation, &offset, &amount);
+	      btk_progress_bar_paint_text (pbar, offset, amount, orientation);
 	    }
 	}
       else
@@ -1021,24 +1021,24 @@ gtk_progress_bar_paint (GtkProgress *progress)
 	  gint amount;
 	  gint space;
 	  
-	  if (orientation == GTK_PROGRESS_LEFT_TO_RIGHT ||
-	      orientation == GTK_PROGRESS_RIGHT_TO_LEFT)
+	  if (orientation == BTK_PROGRESS_LEFT_TO_RIGHT ||
+	      orientation == BTK_PROGRESS_RIGHT_TO_LEFT)
 	    space = widget->allocation.width - 2 * widget->style->xthickness;
 	  else
 	    space = widget->allocation.height - 2 * widget->style->ythickness;
 	  
 	  amount = space *
-	    gtk_progress_get_current_percentage (GTK_PROGRESS (pbar));
+	    btk_progress_get_current_percentage (BTK_PROGRESS (pbar));
 	  
-	  if (pbar->bar_style == GTK_PROGRESS_CONTINUOUS)
+	  if (pbar->bar_style == BTK_PROGRESS_CONTINUOUS)
 	    {
-	      gtk_progress_bar_paint_continuous (pbar, amount, orientation);
+	      btk_progress_bar_paint_continuous (pbar, amount, orientation);
 
-	      if (GTK_PROGRESS (pbar)->show_text)
-		gtk_progress_bar_paint_text (pbar, -1, amount, orientation);
+	      if (BTK_PROGRESS (pbar)->show_text)
+		btk_progress_bar_paint_text (pbar, -1, amount, orientation);
 	    }
 	  else
-	    gtk_progress_bar_paint_discrete (pbar, orientation);
+	    btk_progress_bar_paint_discrete (pbar, orientation);
 	}
 
       pbar->dirty = FALSE;
@@ -1046,45 +1046,45 @@ gtk_progress_bar_paint (GtkProgress *progress)
 }
 
 static void
-gtk_progress_bar_set_bar_style_internal (GtkProgressBar     *pbar,
-					 GtkProgressBarStyle bar_style)
+btk_progress_bar_set_bar_style_internal (BtkProgressBar     *pbar,
+					 BtkProgressBarStyle bar_style)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
   if (pbar->bar_style != bar_style)
     {
       pbar->bar_style = bar_style;
 
-      if (gtk_widget_is_drawable (GTK_WIDGET (pbar)))
-	gtk_widget_queue_resize (GTK_WIDGET (pbar));
+      if (btk_widget_is_drawable (BTK_WIDGET (pbar)))
+	btk_widget_queue_resize (BTK_WIDGET (pbar));
 
       g_object_notify (G_OBJECT (pbar), "bar-style");
     }
 }
 
 static void
-gtk_progress_bar_set_discrete_blocks_internal (GtkProgressBar *pbar,
+btk_progress_bar_set_discrete_blocks_internal (BtkProgressBar *pbar,
 					       guint           blocks)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
 
   if (pbar->blocks != blocks)
     {
       pbar->blocks = blocks;
 
-      if (gtk_widget_is_drawable (GTK_WIDGET (pbar)))
-	gtk_widget_queue_resize (GTK_WIDGET (pbar));
+      if (btk_widget_is_drawable (BTK_WIDGET (pbar)))
+	btk_widget_queue_resize (BTK_WIDGET (pbar));
 
       g_object_notify (G_OBJECT (pbar), "discrete-blocks");
     }
 }
 
 static void
-gtk_progress_bar_set_activity_step_internal (GtkProgressBar *pbar,
+btk_progress_bar_set_activity_step_internal (BtkProgressBar *pbar,
 					     guint           step)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
   if (pbar->activity_step != step)
     {
@@ -1094,10 +1094,10 @@ gtk_progress_bar_set_activity_step_internal (GtkProgressBar *pbar,
 }
 
 static void
-gtk_progress_bar_set_activity_blocks_internal (GtkProgressBar *pbar,
+btk_progress_bar_set_activity_blocks_internal (BtkProgressBar *pbar,
 					       guint           blocks)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
 
   if (pbar->activity_blocks != blocks)
@@ -1110,8 +1110,8 @@ gtk_progress_bar_set_activity_blocks_internal (GtkProgressBar *pbar,
 /*******************************************************************/
 
 /**
- * gtk_progress_bar_set_fraction:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_set_fraction:
+ * @pbar: a #BtkProgressBar
  * @fraction: fraction of the task that's been completed
  * 
  * Causes the progress bar to "fill in" the given fraction
@@ -1120,83 +1120,83 @@ gtk_progress_bar_set_activity_blocks_internal (GtkProgressBar *pbar,
  * 
  **/
 void
-gtk_progress_bar_set_fraction (GtkProgressBar *pbar,
+btk_progress_bar_set_fraction (BtkProgressBar *pbar,
                                gdouble         fraction)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
   /* If we know the percentage, we don't want activity mode. */
-  gtk_progress_set_activity_mode (GTK_PROGRESS (pbar), FALSE);
+  btk_progress_set_activity_mode (BTK_PROGRESS (pbar), FALSE);
   
-  /* We use the deprecated GtkProgress interface internally.
+  /* We use the deprecated BtkProgress interface internally.
    * Once everything's been deprecated for a good long time,
    * we can clean up all this code.
    */
-  gtk_progress_set_percentage (GTK_PROGRESS (pbar), fraction);
+  btk_progress_set_percentage (BTK_PROGRESS (pbar), fraction);
 
   g_object_notify (G_OBJECT (pbar), "fraction");
 }
 
 /**
- * gtk_progress_bar_pulse:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_pulse:
+ * @pbar: a #BtkProgressBar
  * 
  * Indicates that some progress is made, but you don't know how much.
  * Causes the progress bar to enter "activity mode," where a block
- * bounces back and forth. Each call to gtk_progress_bar_pulse()
+ * bounces back and forth. Each call to btk_progress_bar_pulse()
  * causes the block to move by a little bit (the amount of movement
- * per pulse is determined by gtk_progress_bar_set_pulse_step()).
+ * per pulse is determined by btk_progress_bar_set_pulse_step()).
  **/
 void
-gtk_progress_bar_pulse (GtkProgressBar *pbar)
+btk_progress_bar_pulse (BtkProgressBar *pbar)
 {  
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
   /* If we don't know the percentage, we must want activity mode. */
-  gtk_progress_set_activity_mode (GTK_PROGRESS (pbar), TRUE);
+  btk_progress_set_activity_mode (BTK_PROGRESS (pbar), TRUE);
 
   /* Sigh. */
-  gtk_progress_bar_real_update (GTK_PROGRESS (pbar));
+  btk_progress_bar_real_update (BTK_PROGRESS (pbar));
 }
 
 /**
- * gtk_progress_bar_set_text:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_set_text:
+ * @pbar: a #BtkProgressBar
  * @text: (allow-none): a UTF-8 string, or %NULL 
  * 
  * Causes the given @text to appear superimposed on the progress bar.
  **/
 void
-gtk_progress_bar_set_text (GtkProgressBar *pbar,
+btk_progress_bar_set_text (BtkProgressBar *pbar,
                            const gchar    *text)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   
-  gtk_progress_set_show_text (GTK_PROGRESS (pbar), text && *text);
-  gtk_progress_set_format_string (GTK_PROGRESS (pbar), text);
+  btk_progress_set_show_text (BTK_PROGRESS (pbar), text && *text);
+  btk_progress_set_format_string (BTK_PROGRESS (pbar), text);
   
   /* We don't support formats in this interface, but turn
    * them back on for NULL, which should put us back to
    * the initial state.
    */
-  GTK_PROGRESS (pbar)->use_text_format = (text == NULL);
+  BTK_PROGRESS (pbar)->use_text_format = (text == NULL);
   
   g_object_notify (G_OBJECT (pbar), "text");
 }
 
 /**
- * gtk_progress_bar_set_pulse_step:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_set_pulse_step:
+ * @pbar: a #BtkProgressBar
  * @fraction: fraction between 0.0 and 1.0
  * 
  * Sets the fraction of total progress bar length to move the
- * bouncing block for each call to gtk_progress_bar_pulse().
+ * bouncing block for each call to btk_progress_bar_pulse().
  **/
 void
-gtk_progress_bar_set_pulse_step   (GtkProgressBar *pbar,
+btk_progress_bar_set_pulse_step   (BtkProgressBar *pbar,
                                    gdouble         fraction)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   
   pbar->pulse_fraction = fraction;
 
@@ -1204,46 +1204,46 @@ gtk_progress_bar_set_pulse_step   (GtkProgressBar *pbar,
 }
 
 void
-gtk_progress_bar_update (GtkProgressBar *pbar,
+btk_progress_bar_update (BtkProgressBar *pbar,
 			 gdouble         percentage)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
-  /* Use of gtk_progress_bar_update() is deprecated ! 
-   * Use gtk_progress_bar_set_percentage ()
+  /* Use of btk_progress_bar_update() is deprecated ! 
+   * Use btk_progress_bar_set_percentage ()
    */   
 
-  gtk_progress_set_percentage (GTK_PROGRESS (pbar), percentage);
+  btk_progress_set_percentage (BTK_PROGRESS (pbar), percentage);
 }
 
 /**
- * gtk_progress_bar_set_orientation:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_set_orientation:
+ * @pbar: a #BtkProgressBar
  * @orientation: orientation of the progress bar
  * 
  * Causes the progress bar to switch to a different orientation
  * (left-to-right, right-to-left, top-to-bottom, or bottom-to-top). 
  **/
 void
-gtk_progress_bar_set_orientation (GtkProgressBar           *pbar,
-				  GtkProgressBarOrientation orientation)
+btk_progress_bar_set_orientation (BtkProgressBar           *pbar,
+				  BtkProgressBarOrientation orientation)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
   if (pbar->orientation != orientation)
     {
       pbar->orientation = orientation;
 
-      if (gtk_widget_is_drawable (GTK_WIDGET (pbar)))
-	gtk_widget_queue_resize (GTK_WIDGET (pbar));
+      if (btk_widget_is_drawable (BTK_WIDGET (pbar)))
+	btk_widget_queue_resize (BTK_WIDGET (pbar));
 
       g_object_notify (G_OBJECT (pbar), "orientation");
     }
 }
 
 /**
- * gtk_progress_bar_get_text:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_get_text:
+ * @pbar: a #BtkProgressBar
  * 
  * Retrieves the text displayed superimposed on the progress bar,
  * if any, otherwise %NULL. The return value is a reference
@@ -1254,106 +1254,106 @@ gtk_progress_bar_set_orientation (GtkProgressBar           *pbar,
  * and should not be modified or freed.
  **/
 const gchar*
-gtk_progress_bar_get_text (GtkProgressBar *pbar)
+btk_progress_bar_get_text (BtkProgressBar *pbar)
 {
-  g_return_val_if_fail (GTK_IS_PROGRESS_BAR (pbar), NULL);
+  g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), NULL);
 
-  if (GTK_PROGRESS (pbar)->use_text_format)
+  if (BTK_PROGRESS (pbar)->use_text_format)
     return NULL;
   else
-    return GTK_PROGRESS (pbar)->format;
+    return BTK_PROGRESS (pbar)->format;
 }
 
 /**
- * gtk_progress_bar_get_fraction:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_get_fraction:
+ * @pbar: a #BtkProgressBar
  * 
  * Returns the current fraction of the task that's been completed.
  * 
  * Return value: a fraction from 0.0 to 1.0
  **/
 gdouble
-gtk_progress_bar_get_fraction (GtkProgressBar *pbar)
+btk_progress_bar_get_fraction (BtkProgressBar *pbar)
 {
-  g_return_val_if_fail (GTK_IS_PROGRESS_BAR (pbar), 0);
+  g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), 0);
 
-  return gtk_progress_get_current_percentage (GTK_PROGRESS (pbar));
+  return btk_progress_get_current_percentage (BTK_PROGRESS (pbar));
 }
 
 /**
- * gtk_progress_bar_get_pulse_step:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_get_pulse_step:
+ * @pbar: a #BtkProgressBar
  * 
- * Retrieves the pulse step set with gtk_progress_bar_set_pulse_step()
+ * Retrieves the pulse step set with btk_progress_bar_set_pulse_step()
  * 
  * Return value: a fraction from 0.0 to 1.0
  **/
 gdouble
-gtk_progress_bar_get_pulse_step (GtkProgressBar *pbar)
+btk_progress_bar_get_pulse_step (BtkProgressBar *pbar)
 {
-  g_return_val_if_fail (GTK_IS_PROGRESS_BAR (pbar), 0);
+  g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), 0);
 
   return pbar->pulse_fraction;
 }
 
 /**
- * gtk_progress_bar_get_orientation:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_get_orientation:
+ * @pbar: a #BtkProgressBar
  * 
  * Retrieves the current progress bar orientation.
  * 
  * Return value: orientation of the progress bar
  **/
-GtkProgressBarOrientation
-gtk_progress_bar_get_orientation (GtkProgressBar *pbar)
+BtkProgressBarOrientation
+btk_progress_bar_get_orientation (BtkProgressBar *pbar)
 {
-  g_return_val_if_fail (GTK_IS_PROGRESS_BAR (pbar), 0);
+  g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), 0);
 
   return pbar->orientation;
 }
 
 void
-gtk_progress_bar_set_bar_style (GtkProgressBar     *pbar,
-				GtkProgressBarStyle bar_style)
+btk_progress_bar_set_bar_style (BtkProgressBar     *pbar,
+				BtkProgressBarStyle bar_style)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
-  gtk_progress_bar_set_bar_style_internal (pbar, bar_style);
+  btk_progress_bar_set_bar_style_internal (pbar, bar_style);
 }
 
 void
-gtk_progress_bar_set_discrete_blocks (GtkProgressBar *pbar,
+btk_progress_bar_set_discrete_blocks (BtkProgressBar *pbar,
 				      guint           blocks)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
 
-  gtk_progress_bar_set_discrete_blocks_internal (pbar, blocks);
+  btk_progress_bar_set_discrete_blocks_internal (pbar, blocks);
 }
 
 void
-gtk_progress_bar_set_activity_step (GtkProgressBar *pbar,
+btk_progress_bar_set_activity_step (BtkProgressBar *pbar,
                                     guint           step)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
 
-  gtk_progress_bar_set_activity_step_internal (pbar, step);
+  btk_progress_bar_set_activity_step_internal (pbar, step);
 }
 
 void
-gtk_progress_bar_set_activity_blocks (GtkProgressBar *pbar,
+btk_progress_bar_set_activity_blocks (BtkProgressBar *pbar,
 				      guint           blocks)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
   g_return_if_fail (blocks > 1);
 
-  gtk_progress_bar_set_activity_blocks_internal (pbar, blocks);
+  btk_progress_bar_set_activity_blocks_internal (pbar, blocks);
 }
 
 /**
- * gtk_progress_bar_set_ellipsize:
- * @pbar: a #GtkProgressBar
- * @mode: a #PangoEllipsizeMode
+ * btk_progress_bar_set_ellipsize:
+ * @pbar: a #BtkProgressBar
+ * @mode: a #BangoEllipsizeMode
  *
  * Sets the mode used to ellipsize (add an ellipsis: "...") the text 
  * if there is not enough space to render the entire string.
@@ -1361,39 +1361,39 @@ gtk_progress_bar_set_activity_blocks (GtkProgressBar *pbar,
  * Since: 2.6
  **/
 void
-gtk_progress_bar_set_ellipsize (GtkProgressBar     *pbar,
-				PangoEllipsizeMode  mode)
+btk_progress_bar_set_ellipsize (BtkProgressBar     *pbar,
+				BangoEllipsizeMode  mode)
 {
-  g_return_if_fail (GTK_IS_PROGRESS_BAR (pbar));
-  g_return_if_fail (mode >= PANGO_ELLIPSIZE_NONE && 
-		    mode <= PANGO_ELLIPSIZE_END);
+  g_return_if_fail (BTK_IS_PROGRESS_BAR (pbar));
+  g_return_if_fail (mode >= BANGO_ELLIPSIZE_NONE && 
+		    mode <= BANGO_ELLIPSIZE_END);
   
-  if ((PangoEllipsizeMode)pbar->ellipsize != mode)
+  if ((BangoEllipsizeMode)pbar->ellipsize != mode)
     {
       pbar->ellipsize = mode;
 
       g_object_notify (G_OBJECT (pbar), "ellipsize");
-      gtk_widget_queue_resize (GTK_WIDGET (pbar));
+      btk_widget_queue_resize (BTK_WIDGET (pbar));
     }
 }
 
 /**
- * gtk_progress_bar_get_ellipsize:
- * @pbar: a #GtkProgressBar
+ * btk_progress_bar_get_ellipsize:
+ * @pbar: a #BtkProgressBar
  *
  * Returns the ellipsizing position of the progressbar. 
- * See gtk_progress_bar_set_ellipsize().
+ * See btk_progress_bar_set_ellipsize().
  *
- * Return value: #PangoEllipsizeMode
+ * Return value: #BangoEllipsizeMode
  *
  * Since: 2.6
  **/
-PangoEllipsizeMode 
-gtk_progress_bar_get_ellipsize (GtkProgressBar *pbar)
+BangoEllipsizeMode 
+btk_progress_bar_get_ellipsize (BtkProgressBar *pbar)
 {
-  g_return_val_if_fail (GTK_IS_PROGRESS_BAR (pbar), PANGO_ELLIPSIZE_NONE);
+  g_return_val_if_fail (BTK_IS_PROGRESS_BAR (pbar), BANGO_ELLIPSIZE_NONE);
 
   return pbar->ellipsize;
 }
 
-#include "gtkaliasdef.c"
+#include "btkaliasdef.c"

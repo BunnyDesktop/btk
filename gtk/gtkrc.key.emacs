@@ -1,4 +1,4 @@
-# GTK - The GIMP Toolkit
+# BTK - The GIMP Toolkit
 # Copyright (C) 2002 Owen Taylor
 #
 # This library is free software; you can redistribute it and/or
@@ -17,10 +17,10 @@
 # Boston, MA 02111-1307, USA.
 
 
-# Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
-# file for a list of people on the GTK+ Team.  See the ChangeLog
+# Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+# file for a list of people on the BTK+ Team.  See the ChangeLog
 # files for a list of changes.  These files are distributed with
-# GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+# BTK+ at ftp://ftp.btk.org/pub/btk/. 
 
 
 #
@@ -28,9 +28,9 @@
 #
 
 #
-# Bindings for GtkTextView and GtkEntry
+# Bindings for BtkTextView and BtkEntry
 #
-binding "gtk-emacs-text-entry"
+binding "btk-emacs-text-entry"
 {
   bind "<ctrl>b" { "move-cursor" (logical-positions, -1, 0) }
   bind "<shift><ctrl>b" { "move-cursor" (logical-positions, -1, 1) }
@@ -72,9 +72,9 @@ binding "gtk-emacs-text-entry"
 }
 
 #
-# Bindings for GtkTextView
+# Bindings for BtkTextView
 #
-binding "gtk-emacs-text-view"
+binding "btk-emacs-text-view"
 {
   bind "<ctrl>p" { "move-cursor" (display-lines, -1, 0) }
   bind "<shift><ctrl>p" { "move-cursor" (display-lines, -1, 1) }
@@ -86,9 +86,9 @@ binding "gtk-emacs-text-view"
 }
 
 #
-# Bindings for GtkTreeView
+# Bindings for BtkTreeView
 #
-binding "gtk-emacs-tree-view"
+binding "btk-emacs-tree-view"
 {
   bind "<ctrl>s" { "start-interactive-search" () }
   bind "<ctrl>f" { "move-cursor" (logical-positions, 1) }
@@ -98,7 +98,7 @@ binding "gtk-emacs-tree-view"
 #
 # Bindings for menus
 #
-binding "gtk-emacs-menu"
+binding "btk-emacs-menu"
 {
   bind "<ctrl>n" { "move-current" (next) }
   bind "<ctrl>p" { "move-current" (prev) }
@@ -106,8 +106,8 @@ binding "gtk-emacs-menu"
   bind "<ctrl>b" { "move-current" (parent) }
 }
 
-class "GtkEntry" binding "gtk-emacs-text-entry"
-class "GtkTextView" binding "gtk-emacs-text-entry"
-class "GtkTextView" binding "gtk-emacs-text-view"
-class "GtkTreeView" binding "gtk-emacs-tree-view"
-class "GtkMenuShell" binding "gtk-emacs-menu"
+class "BtkEntry" binding "btk-emacs-text-entry"
+class "BtkTextView" binding "btk-emacs-text-entry"
+class "BtkTextView" binding "btk-emacs-text-view"
+class "BtkTreeView" binding "btk-emacs-tree-view"
+class "BtkMenuShell" binding "btk-emacs-menu"

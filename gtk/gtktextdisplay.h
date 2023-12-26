@@ -1,9 +1,9 @@
-/* gtktextdisplay.c - display layed-out text
+/* btktextdisplay.c - display layed-out text
  *
  * Copyright (c) 1992-1994 The Regents of the University of California.
  * Copyright (c) 1994-1997 Sun Microsystems, Inc.
  * Copyright (c) 2000 Red Hat, Inc.
- * Tk->Gtk port by Havoc Pennington
+ * Tk->Btk port by Havoc Pennington
  *
  * This file can be used under your choice of two licenses, the LGPL
  * and the original Tk license.
@@ -68,21 +68,21 @@
  *
  */
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TEXT_DISPLAY_H__
-#define __GTK_TEXT_DISPLAY_H__
+#ifndef __BTK_TEXT_DISPLAY_H__
+#define __BTK_TEXT_DISPLAY_H__
 
-#include <gtk/gtktextlayout.h>
+#include <btk/btktextlayout.h>
 
 G_BEGIN_DECLS
 
 /* A semi-public header intended for use by code that also
- * uses GtkTextLayout
+ * uses BtkTextLayout
  */
 
 /* The drawable should be pre-initialized to your preferred background.
@@ -90,14 +90,14 @@ G_BEGIN_DECLS
  * drawable          - Drawable to render to
  * cursor_gc         - Graphics context to use for cursor
  * x_offset/y_offset - Position of the drawable in layout coordinates
- * x/y/width/height  - Region of the layout to render. x,y must be inside
+ * x/y/width/height  - Rebunnyion of the layout to render. x,y must be inside
  *                     the drawable.
  * widgets           - list of widgets that need exposing
  */
-void gtk_text_layout_draw (GtkTextLayout        *layout,
-                           GtkWidget            *widget,
-                           GdkDrawable          *drawable,
-			   GdkGC                *cursor_gc,
+void btk_text_layout_draw (BtkTextLayout        *layout,
+                           BtkWidget            *widget,
+                           BdkDrawable          *drawable,
+			   BdkGC                *cursor_gc,
                            gint                  x_offset,
                            gint                  y_offset,
                            gint                  x,
@@ -109,4 +109,4 @@ void gtk_text_layout_draw (GtkTextLayout        *layout,
 
 G_END_DECLS
 
-#endif  /* __GTK_TEXT_DISPLAY_H__ */
+#endif  /* __BTK_TEXT_DISPLAY_H__ */

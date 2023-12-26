@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,31 +17,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_DIAL_H__
-#define __GTK_DIAL_H__
+#ifndef __BTK_DIAL_H__
+#define __BTK_DIAL_H__
 
 
-#include <gdk/gdk.h>
-#include <gtk/gtkadjustment.h>
-#include <gtk/gtkwidget.h>
+#include <bdk/bdk.h>
+#include <btk/btkadjustment.h>
+#include <btk/btkwidget.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_DIAL(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, gtk_dial_get_type (), GtkDial)
-#define GTK_DIAL_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, gtk_dial_get_type (), GtkDialClass)
-#define GTK_IS_DIAL(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, gtk_dial_get_type ())
+#define BTK_DIAL(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, btk_dial_get_type (), BtkDial)
+#define BTK_DIAL_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, btk_dial_get_type (), BtkDialClass)
+#define BTK_IS_DIAL(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, btk_dial_get_type ())
 
 
-typedef struct _GtkDial        GtkDial;
-typedef struct _GtkDialClass   GtkDialClass;
+typedef struct _BtkDial        BtkDial;
+typedef struct _BtkDialClass   BtkDialClass;
 
-struct _GtkDial
+struct _BtkDial
 {
-  GtkWidget widget;
+  BtkWidget widget;
 
-  /* update policy (GTK_UPDATE_[CONTINUOUS/DELAYED/DISCONTINUOUS]) */
+  /* update policy (BTK_UPDATE_[CONTINUOUS/DELAYED/DISCONTINUOUS]) */
   guint policy : 2;
 
   /* Button currently pressed or 0 if none */
@@ -64,26 +64,26 @@ struct _GtkDial
   gfloat old_upper;
 
   /* The adjustment object that stores the data for this dial */
-  GtkAdjustment *adjustment;
+  BtkAdjustment *adjustment;
 };
 
-struct _GtkDialClass
+struct _BtkDialClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 };
 
 
-GtkWidget*     gtk_dial_new                    (GtkAdjustment *adjustment);
-GType          gtk_dial_get_type               (void);
-GtkAdjustment* gtk_dial_get_adjustment         (GtkDial      *dial);
-void           gtk_dial_set_update_policy      (GtkDial      *dial,
-						GtkUpdateType  policy);
+BtkWidget*     btk_dial_new                    (BtkAdjustment *adjustment);
+GType          btk_dial_get_type               (void);
+BtkAdjustment* btk_dial_get_adjustment         (BtkDial      *dial);
+void           btk_dial_set_update_policy      (BtkDial      *dial,
+						BtkUpdateType  policy);
 
-void           gtk_dial_set_adjustment         (GtkDial      *dial,
-						GtkAdjustment *adjustment);
+void           btk_dial_set_adjustment         (BtkDial      *dial,
+						BtkAdjustment *adjustment);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_DIAL_H__ */
+#endif /* __BTK_DIAL_H__ */

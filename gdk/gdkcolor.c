@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,23 +18,23 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <time.h>
 
-#include "gdkscreen.h"
-#include "gdkcolor.h"
-#include "gdkinternals.h"
-#include "gdkalias.h"
+#include "bdkscreen.h"
+#include "bdkcolor.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
 
 /**
- * gdk_colormap_ref:
- * @cmap: a #GdkColormap
+ * bdk_colormap_ref:
+ * @cmap: a #BdkColormap
  *
  * Deprecated function; use g_object_ref() instead.
  *
@@ -42,56 +42,56 @@
  *
  * Deprecated: 2.0: Use g_object_ref() instead.
  **/
-GdkColormap*
-gdk_colormap_ref (GdkColormap *cmap)
+BdkColormap*
+bdk_colormap_ref (BdkColormap *cmap)
 {
-  return (GdkColormap *) g_object_ref (cmap);
+  return (BdkColormap *) g_object_ref (cmap);
 }
 
 /**
- * gdk_colormap_unref:
- * @cmap: a #GdkColormap
+ * bdk_colormap_unref:
+ * @cmap: a #BdkColormap
  *
  * Deprecated function; use g_object_unref() instead.
  *
  * Deprecated: 2.0: Use g_object_unref() instead.
  **/
 void
-gdk_colormap_unref (GdkColormap *cmap)
+bdk_colormap_unref (BdkColormap *cmap)
 {
   g_object_unref (cmap);
 }
 
 
 /**
- * gdk_colormap_get_visual:
- * @colormap: a #GdkColormap.
+ * bdk_colormap_get_visual:
+ * @colormap: a #BdkColormap.
  * 
  * Returns the visual for which a given colormap was created.
  * 
  * Return value: the visual of the colormap.
  **/
-GdkVisual *
-gdk_colormap_get_visual (GdkColormap *colormap)
+BdkVisual *
+bdk_colormap_get_visual (BdkColormap *colormap)
 {
-  g_return_val_if_fail (GDK_IS_COLORMAP (colormap), NULL);
+  g_return_val_if_fail (BDK_IS_COLORMAP (colormap), NULL);
 
   return colormap->visual;
 }
 
 /**
- * gdk_colors_store:
- * @colormap: a #GdkColormap.
+ * bdk_colors_store:
+ * @colormap: a #BdkColormap.
  * @colors: the new color values.
  * @ncolors: the number of colors to change.
  * 
  * Changes the value of the first @ncolors colors in
  * a private colormap. This function is obsolete and
- * should not be used. See gdk_color_change().
+ * should not be used. See bdk_color_change().
  **/     
 void
-gdk_colors_store (GdkColormap   *colormap,
-		  GdkColor      *colors,
+bdk_colors_store (BdkColormap   *colormap,
+		  BdkColor      *colors,
 		  gint           ncolors)
 {
   gint i;
@@ -104,48 +104,48 @@ gdk_colors_store (GdkColormap   *colormap,
       colormap->colors[i].blue = colors[i].blue;
     }
 
-  gdk_colormap_change (colormap, ncolors);
+  bdk_colormap_change (colormap, ncolors);
 }
 
 /**
- * gdk_color_copy:
- * @color: a #GdkColor.
+ * bdk_color_copy:
+ * @color: a #BdkColor.
  * 
  * Makes a copy of a color structure. The result
- * must be freed using gdk_color_free().
+ * must be freed using bdk_color_free().
  * 
  * Return value: a copy of @color.
  **/
-GdkColor*
-gdk_color_copy (const GdkColor *color)
+BdkColor*
+bdk_color_copy (const BdkColor *color)
 {
-  GdkColor *new_color;
+  BdkColor *new_color;
   
   g_return_val_if_fail (color != NULL, NULL);
 
-  new_color = g_slice_new (GdkColor);
+  new_color = g_slice_new (BdkColor);
   *new_color = *color;
   return new_color;
 }
 
 /**
- * gdk_color_free:
- * @color: a #GdkColor.
+ * bdk_color_free:
+ * @color: a #BdkColor.
  * 
  * Frees a color structure created with 
- * gdk_color_copy().
+ * bdk_color_copy().
  **/
 void
-gdk_color_free (GdkColor *color)
+bdk_color_free (BdkColor *color)
 {
   g_return_if_fail (color != NULL);
 
-  g_slice_free (GdkColor, color);
+  g_slice_free (BdkColor, color);
 }
 
 /**
- * gdk_color_white:
- * @colormap: a #GdkColormap.
+ * bdk_color_white:
+ * @colormap: a #BdkColormap.
  * @color: the location to store the color.
  * 
  * Returns the white color for a given colormap. The resulting
@@ -154,8 +154,8 @@ gdk_color_free (GdkColor *color)
  * Return value: %TRUE if the allocation succeeded.
  **/
 gboolean
-gdk_color_white (GdkColormap *colormap,
-		 GdkColor    *color)
+bdk_color_white (BdkColormap *colormap,
+		 BdkColor    *color)
 {
   gint return_val;
 
@@ -167,7 +167,7 @@ gdk_color_white (GdkColormap *colormap,
       color->green = 65535;
       color->blue = 65535;
 
-      return_val = gdk_colormap_alloc_color (colormap, color, FALSE, TRUE);
+      return_val = bdk_colormap_alloc_color (colormap, color, FALSE, TRUE);
     }
   else
     return_val = FALSE;
@@ -176,8 +176,8 @@ gdk_color_white (GdkColormap *colormap,
 }
 
 /**
- * gdk_color_black:
- * @colormap: a #GdkColormap.
+ * bdk_color_black:
+ * @colormap: a #BdkColormap.
  * @color: the location to store the color.
  * 
  * Returns the black color for a given colormap. The resulting
@@ -186,8 +186,8 @@ gdk_color_white (GdkColormap *colormap,
  * Return value: %TRUE if the allocation succeeded.
  **/
 gboolean
-gdk_color_black (GdkColormap *colormap,
-		 GdkColor    *color)
+bdk_color_black (BdkColormap *colormap,
+		 BdkColor    *color)
 {
   gint return_val;
 
@@ -199,7 +199,7 @@ gdk_color_black (GdkColormap *colormap,
       color->green = 0;
       color->blue = 0;
 
-      return_val = gdk_colormap_alloc_color (colormap, color, FALSE, TRUE);
+      return_val = bdk_colormap_alloc_color (colormap, color, FALSE, TRUE);
     }
   else
     return_val = FALSE;
@@ -212,15 +212,15 @@ gdk_color_black (GdkColormap *colormap,
  ********************/
 
 /**
- * gdk_colormap_alloc_color:
- * @colormap: a #GdkColormap.
+ * bdk_colormap_alloc_color:
+ * @colormap: a #BdkColormap.
  * @color: the color to allocate. On return the
  *    <structfield>pixel</structfield> field will be
  *    filled in if allocation succeeds.
  * @writeable: If %TRUE, the color is allocated writeable
- *    (their values can later be changed using gdk_color_change()).
+ *    (their values can later be changed using bdk_color_change()).
  *    Writeable colors cannot be shared between applications.
- * @best_match: If %TRUE, GDK will attempt to do matching against
+ * @best_match: If %TRUE, BDK will attempt to do matching against
  *    existing colors if the color cannot be allocated as requested.
  *
  * Allocates a single color from a colormap.
@@ -228,22 +228,22 @@ gdk_color_black (GdkColormap *colormap,
  * Return value: %TRUE if the allocation succeeded.
  **/
 gboolean
-gdk_colormap_alloc_color (GdkColormap *colormap,
-			  GdkColor    *color,
+bdk_colormap_alloc_color (BdkColormap *colormap,
+			  BdkColor    *color,
 			  gboolean     writeable,
 			  gboolean     best_match)
 {
   gboolean success;
 
-  gdk_colormap_alloc_colors (colormap, color, 1, writeable, best_match,
+  bdk_colormap_alloc_colors (colormap, color, 1, writeable, best_match,
 			     &success);
 
   return success;
 }
 
 /**
- * gdk_color_alloc:
- * @colormap: a #GdkColormap.
+ * bdk_color_alloc:
+ * @colormap: a #BdkColormap.
  * @color: The color to allocate. On return, the 
  *    <structfield>pixel</structfield> field will be filled in.
  * 
@@ -251,30 +251,30 @@ gdk_colormap_alloc_color (GdkColormap *colormap,
  * 
  * Return value: %TRUE if the allocation succeeded.
  *
- * Deprecated: 2.2: Use gdk_colormap_alloc_color() instead.
+ * Deprecated: 2.2: Use bdk_colormap_alloc_color() instead.
  **/
 gboolean
-gdk_color_alloc (GdkColormap *colormap,
-		 GdkColor    *color)
+bdk_color_alloc (BdkColormap *colormap,
+		 BdkColor    *color)
 {
   gboolean success;
 
-  gdk_colormap_alloc_colors (colormap, color, 1, FALSE, TRUE, &success);
+  bdk_colormap_alloc_colors (colormap, color, 1, FALSE, TRUE, &success);
 
   return success;
 }
 
 /**
- * gdk_color_hash:
- * @colora: a #GdkColor.
+ * bdk_color_hash:
+ * @colora: a #BdkColor.
  * 
  * A hash function suitable for using for a hash
- * table that stores #GdkColor's.
+ * table that stores #BdkColor's.
  * 
  * Return value: The hash function applied to @colora
  **/
 guint
-gdk_color_hash (const GdkColor *colora)
+bdk_color_hash (const BdkColor *colora)
 {
   return ((colora->red) +
 	  (colora->green << 11) +
@@ -283,17 +283,17 @@ gdk_color_hash (const GdkColor *colora)
 }
 
 /**
- * gdk_color_equal:
- * @colora: a #GdkColor.
- * @colorb: another #GdkColor.
+ * bdk_color_equal:
+ * @colora: a #BdkColor.
+ * @colorb: another #BdkColor.
  * 
  * Compares two colors. 
  * 
  * Return value: %TRUE if the two colors compare equal
  **/
 gboolean
-gdk_color_equal (const GdkColor *colora,
-		 const GdkColor *colorb)
+bdk_color_equal (const BdkColor *colora,
+		 const BdkColor *colorb)
 {
   g_return_val_if_fail (colora != NULL, FALSE);
   g_return_val_if_fail (colorb != NULL, FALSE);
@@ -304,27 +304,27 @@ gdk_color_equal (const GdkColor *colora,
 }
 
 GType
-gdk_color_get_type (void)
+bdk_color_get_type (void)
 {
   static GType our_type = 0;
   
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (g_intern_static_string ("GdkColor"),
-					     (GBoxedCopyFunc)gdk_color_copy,
-					     (GBoxedFreeFunc)gdk_color_free);
+    our_type = g_boxed_type_register_static (g_intern_static_string ("BdkColor"),
+					     (GBoxedCopyFunc)bdk_color_copy,
+					     (GBoxedFreeFunc)bdk_color_free);
   return our_type;
 }
 
 /**
- * gdk_color_parse:
+ * bdk_color_parse:
  * @spec: the string specifying the color.
- * @color: (out): the #GdkColor to fill in
+ * @color: (out): the #BdkColor to fill in
  *
  * Parses a textual specification of a color and fill in the
  * <structfield>red</structfield>, <structfield>green</structfield>,
- * and <structfield>blue</structfield> fields of a #GdkColor
+ * and <structfield>blue</structfield> fields of a #BdkColor
  * structure. The color is <emphasis>not</emphasis> allocated, you
- * must call gdk_colormap_alloc_color() yourself. The string can
+ * must call bdk_colormap_alloc_color() yourself. The string can
  * either one of a large set of standard names. (Taken from the X11
  * <filename>rgb.txt</filename> file), or it can be a hex value in the
  * form '&num;rgb' '&num;rrggbb' '&num;rrrgggbbb' or
@@ -336,16 +336,16 @@ gdk_color_get_type (void)
  * Return value: %TRUE if the parsing succeeded.
  **/
 gboolean
-gdk_color_parse (const gchar *spec,
-		 GdkColor    *color)
+bdk_color_parse (const gchar *spec,
+		 BdkColor    *color)
 {
-  PangoColor pango_color;
+  BangoColor bango_color;
 
-  if (pango_color_parse (&pango_color, spec))
+  if (bango_color_parse (&bango_color, spec))
     {
-      color->red = pango_color.red;
-      color->green = pango_color.green;
-      color->blue = pango_color.blue;
+      color->red = bango_color.red;
+      color->green = bango_color.green;
+      color->blue = bango_color.blue;
 
       return TRUE;
     }
@@ -354,8 +354,8 @@ gdk_color_parse (const gchar *spec,
 }
 
 /**
- * gdk_color_to_string:
- * @color: a #GdkColor
+ * bdk_color_to_string:
+ * @color: a #BdkColor
  *
  * Returns a textual specification of @color in the hexadecimal form
  * <literal>&num;rrrrggggbbbb</literal>, where <literal>r</literal>,
@@ -367,32 +367,32 @@ gdk_color_parse (const gchar *spec,
  * Since: 2.12
  **/
 gchar *
-gdk_color_to_string (const GdkColor *color)
+bdk_color_to_string (const BdkColor *color)
 {
-  PangoColor pango_color;
+  BangoColor bango_color;
 
   g_return_val_if_fail (color != NULL, NULL);
 
-  pango_color.red = color->red;
-  pango_color.green = color->green;
-  pango_color.blue = color->blue;
+  bango_color.red = color->red;
+  bango_color.green = color->green;
+  bango_color.blue = color->blue;
 
-  return pango_color_to_string (&pango_color);
+  return bango_color_to_string (&bango_color);
 }
 
 /**
- * gdk_colormap_get_system:
+ * bdk_colormap_get_system:
  * 
  * Gets the system's default colormap for the default screen. (See
- * gdk_colormap_get_system_for_screen ())
+ * bdk_colormap_get_system_for_screen ())
  * 
  * Return value: the default colormap.
  **/
-GdkColormap*
-gdk_colormap_get_system (void)
+BdkColormap*
+bdk_colormap_get_system (void)
 {
-  return gdk_screen_get_system_colormap (gdk_screen_get_default ());
+  return bdk_screen_get_system_colormap (bdk_screen_get_default ());
 }
 
-#define __GDK_COLOR_C__
-#include "gdkaliasdef.c"
+#define __BDK_COLOR_C__
+#include "bdkaliasdef.c"

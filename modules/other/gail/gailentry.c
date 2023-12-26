@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The GNOME Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,180 +20,180 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
-#include "gailentry.h"
-#include "gailcombo.h"
-#include "gailcombobox.h"
-#include <libgail-util/gailmisc.h>
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
+#include "bailentry.h"
+#include "bailcombo.h"
+#include "bailcombobox.h"
+#include <libbail-util/bailmisc.h>
 
-static void       gail_entry_class_init            (GailEntryClass       *klass);
-static void       gail_entry_init                  (GailEntry            *entry);
-static void	  gail_entry_real_initialize       (AtkObject            *obj,
+static void       bail_entry_class_init            (BailEntryClass       *klass);
+static void       bail_entry_init                  (BailEntry            *entry);
+static void	  bail_entry_real_initialize       (BatkObject            *obj,
                                                     gpointer             data);
-static void       text_setup                       (GailEntry            *entry,
-                                                    GtkEntry             *gtk_entry);
-static void	  gail_entry_real_notify_gtk	   (GObject		 *obj,
+static void       text_setup                       (BailEntry            *entry,
+                                                    BtkEntry             *btk_entry);
+static void	  bail_entry_real_notify_btk	   (GObject		 *obj,
                                                     GParamSpec		 *pspec);
-static void       gail_entry_finalize              (GObject              *object);
+static void       bail_entry_finalize              (GObject              *object);
 
-static gint       gail_entry_get_index_in_parent   (AtkObject            *accessible);
+static gint       bail_entry_get_index_in_parent   (BatkObject            *accessible);
 
-/* atkobject.h */
+/* batkobject.h */
 
-static AtkStateSet* gail_entry_ref_state_set       (AtkObject            *accessible);
+static BatkStateSet* bail_entry_ref_state_set       (BatkObject            *accessible);
 
-/* atktext.h */
+/* batktext.h */
 
-static void       atk_text_interface_init          (AtkTextIface         *iface);
+static void       batk_text_interface_init          (BatkTextIface         *iface);
 
-static gchar*     gail_entry_get_text              (AtkText              *text,
+static gchar*     bail_entry_get_text              (BatkText              *text,
                                                     gint                 start_pos,
                                                     gint                 end_pos);
-static gunichar	  gail_entry_get_character_at_offset
-						   (AtkText		 *text,
+static gunichar	  bail_entry_get_character_at_offset
+						   (BatkText		 *text,
 						    gint		 offset);
-static gchar*	  gail_entry_get_text_before_offset(AtkText		 *text,
+static gchar*	  bail_entry_get_text_before_offset(BatkText		 *text,
 						    gint		 offset,
-						    AtkTextBoundary	 boundary_type,
+						    BatkTextBoundary	 boundary_type,
 						    gint		 *start_offset,
 						    gint		 *end_offset);
-static gchar*	  gail_entry_get_text_at_offset	   (AtkText		 *text,
+static gchar*	  bail_entry_get_text_at_offset	   (BatkText		 *text,
 						    gint		 offset,
-						    AtkTextBoundary	 boundary_type,
+						    BatkTextBoundary	 boundary_type,
 						    gint		 *start_offset,
 						    gint		 *end_offset);
-static gchar*	  gail_entry_get_text_after_offset (AtkText		 *text,
+static gchar*	  bail_entry_get_text_after_offset (BatkText		 *text,
 						    gint		 offset,
-						    AtkTextBoundary	 boundary_type,
+						    BatkTextBoundary	 boundary_type,
 						    gint		 *start_offset,
 						    gint		 *end_offset);
-static gint       gail_entry_get_caret_offset      (AtkText              *text);
-static gboolean   gail_entry_set_caret_offset      (AtkText              *text,
+static gint       bail_entry_get_caret_offset      (BatkText              *text);
+static gboolean   bail_entry_set_caret_offset      (BatkText              *text,
 						    gint                 offset);
-static gint	  gail_entry_get_n_selections	   (AtkText		 *text);
-static gchar*	  gail_entry_get_selection	   (AtkText		 *text,
+static gint	  bail_entry_get_n_selections	   (BatkText		 *text);
+static gchar*	  bail_entry_get_selection	   (BatkText		 *text,
 						    gint		 selection_num,
 						    gint		 *start_offset,
 						    gint		 *end_offset);
-static gboolean	  gail_entry_add_selection	   (AtkText		 *text,
+static gboolean	  bail_entry_add_selection	   (BatkText		 *text,
 						    gint		 start_offset,
 						    gint		 end_offset);
-static gboolean	  gail_entry_remove_selection	   (AtkText		 *text,
+static gboolean	  bail_entry_remove_selection	   (BatkText		 *text,
 						    gint		 selection_num);
-static gboolean	  gail_entry_set_selection	   (AtkText		 *text,
+static gboolean	  bail_entry_set_selection	   (BatkText		 *text,
 						    gint		 selection_num,
 						    gint		 start_offset,
 						    gint		 end_offset);
-static gint	  gail_entry_get_character_count   (AtkText		 *text);
-static AtkAttributeSet *  gail_entry_get_run_attributes 
-                                                   (AtkText              *text,
+static gint	  bail_entry_get_character_count   (BatkText		 *text);
+static BatkAttributeSet *  bail_entry_get_run_attributes 
+                                                   (BatkText              *text,
 						    gint		 offset,
         					    gint		 *start_offset,
 					       	    gint 		 *end_offset);
-static AtkAttributeSet *  gail_entry_get_default_attributes 
-                                                   (AtkText              *text);
-static void gail_entry_get_character_extents       (AtkText	         *text,
+static BatkAttributeSet *  bail_entry_get_default_attributes 
+                                                   (BatkText              *text);
+static void bail_entry_get_character_extents       (BatkText	         *text,
 						    gint 	         offset,
 		                                    gint 	         *x,
                     		   	            gint 	         *y,
                                 		    gint 	         *width,
                                      		    gint 	         *height,
-			        		    AtkCoordType         coords);
-static gint gail_entry_get_offset_at_point         (AtkText              *text,
+			        		    BatkCoordType         coords);
+static gint bail_entry_get_offset_at_point         (BatkText              *text,
                                                     gint                 x,
                                                     gint                 y,
-			                            AtkCoordType         coords);
-/* atkeditabletext.h */
+			                            BatkCoordType         coords);
+/* batkeditabletext.h */
 
-static void       atk_editable_text_interface_init (AtkEditableTextIface *iface);
-static void       gail_entry_set_text_contents     (AtkEditableText      *text,
+static void       batk_editable_text_interface_init (BatkEditableTextIface *iface);
+static void       bail_entry_set_text_contents     (BatkEditableText      *text,
                                                     const gchar          *string);
-static void       gail_entry_insert_text           (AtkEditableText      *text,
+static void       bail_entry_insert_text           (BatkEditableText      *text,
                                                     const gchar          *string,
                                                     gint                 length,
                                                     gint                 *position);
-static void       gail_entry_copy_text             (AtkEditableText      *text,
+static void       bail_entry_copy_text             (BatkEditableText      *text,
                                                     gint                 start_pos,
                                                     gint                 end_pos);
-static void       gail_entry_cut_text              (AtkEditableText      *text,
+static void       bail_entry_cut_text              (BatkEditableText      *text,
                                                     gint                 start_pos,
                                                     gint                 end_pos);
-static void       gail_entry_delete_text           (AtkEditableText      *text,
+static void       bail_entry_delete_text           (BatkEditableText      *text,
                                                     gint                 start_pos,
                                                     gint                 end_pos);
-static void       gail_entry_paste_text            (AtkEditableText      *text,
+static void       bail_entry_paste_text            (BatkEditableText      *text,
                                                     gint                 position);
-static void       gail_entry_paste_received	   (GtkClipboard *clipboard,
+static void       bail_entry_paste_received	   (BtkClipboard *clipboard,
 						    const gchar  *text,
 						    gpointer     data);
 
 
 /* Callbacks */
 
-static gboolean   gail_entry_idle_notify_insert    (gpointer data);
-static void       gail_entry_notify_insert         (GailEntry            *entry);
-static void       gail_entry_notify_delete         (GailEntry            *entry);
-static void	  _gail_entry_insert_text_cb	   (GtkEntry     	 *entry,
+static gboolean   bail_entry_idle_notify_insert    (gpointer data);
+static void       bail_entry_notify_insert         (BailEntry            *entry);
+static void       bail_entry_notify_delete         (BailEntry            *entry);
+static void	  _bail_entry_insert_text_cb	   (BtkEntry     	 *entry,
                                                     gchar		 *arg1,
                                                     gint		 arg2,
                                                     gpointer		 arg3);
-static void	  _gail_entry_delete_text_cb	   (GtkEntry		 *entry,
+static void	  _bail_entry_delete_text_cb	   (BtkEntry		 *entry,
                                                     gint		 arg1,
                                                     gint		 arg2);
-static void	  _gail_entry_changed_cb           (GtkEntry		 *entry);
-static gboolean   check_for_selection_change       (GailEntry            *entry,
-                                                    GtkEntry             *gtk_entry);
+static void	  _bail_entry_changed_cb           (BtkEntry		 *entry);
+static gboolean   check_for_selection_change       (BailEntry            *entry,
+                                                    BtkEntry             *btk_entry);
 
-static void                  atk_action_interface_init   (AtkActionIface  *iface);
+static void                  batk_action_interface_init   (BatkActionIface  *iface);
 
-static gboolean              gail_entry_do_action        (AtkAction       *action,
+static gboolean              bail_entry_do_action        (BatkAction       *action,
                                                           gint            i);
 static gboolean              idle_do_action              (gpointer        data);
-static gint                  gail_entry_get_n_actions    (AtkAction       *action);
-static const gchar*          gail_entry_get_description  (AtkAction       *action,
+static gint                  bail_entry_get_n_actions    (BatkAction       *action);
+static const gchar*          bail_entry_get_description  (BatkAction       *action,
                                                           gint            i);
-static const gchar*          gail_entry_get_keybinding   (AtkAction       *action,
+static const gchar*          bail_entry_get_keybinding   (BatkAction       *action,
                                                           gint            i);
-static const gchar*          gail_entry_action_get_name  (AtkAction       *action,
+static const gchar*          bail_entry_action_get_name  (BatkAction       *action,
                                                           gint            i);
-static gboolean              gail_entry_set_description  (AtkAction       *action,
+static gboolean              bail_entry_set_description  (BatkAction       *action,
                                                           gint            i,
                                                           const gchar     *desc);
 
-typedef struct _GailEntryPaste			GailEntryPaste;
+typedef struct _BailEntryPaste			BailEntryPaste;
 
-struct _GailEntryPaste
+struct _BailEntryPaste
 {
-  GtkEntry* entry;
+  BtkEntry* entry;
   gint position;
 };
 
-G_DEFINE_TYPE_WITH_CODE (GailEntry, gail_entry, GAIL_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_EDITABLE_TEXT, atk_editable_text_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT, atk_text_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailEntry, bail_entry, BAIL_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_EDITABLE_TEXT, batk_editable_text_interface_init)
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_TEXT, batk_text_interface_init)
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init))
 
 static void
-gail_entry_class_init (GailEntryClass *klass)
+bail_entry_class_init (BailEntryClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
-  GailWidgetClass *widget_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
+  BailWidgetClass *widget_class;
 
-  widget_class = (GailWidgetClass*)klass;
+  widget_class = (BailWidgetClass*)klass;
 
-  gobject_class->finalize = gail_entry_finalize;
+  bobject_class->finalize = bail_entry_finalize;
 
-  class->ref_state_set = gail_entry_ref_state_set;
-  class->get_index_in_parent = gail_entry_get_index_in_parent;
-  class->initialize = gail_entry_real_initialize;
+  class->ref_state_set = bail_entry_ref_state_set;
+  class->get_index_in_parent = bail_entry_get_index_in_parent;
+  class->initialize = bail_entry_real_initialize;
 
-  widget_class->notify_gtk = gail_entry_real_notify_gtk;
+  widget_class->notify_btk = bail_entry_real_notify_btk;
 }
 
 static void
-gail_entry_init (GailEntry *entry)
+bail_entry_init (BailEntry *entry)
 {
   entry->textutil = NULL;
   entry->signal_name_insert = NULL;
@@ -205,94 +205,94 @@ gail_entry_init (GailEntry *entry)
 }
 
 static void
-gail_entry_real_initialize (AtkObject *obj, 
+bail_entry_real_initialize (BatkObject *obj, 
                             gpointer  data)
 {
-  GtkEntry *entry;
-  GailEntry *gail_entry;
+  BtkEntry *entry;
+  BailEntry *bail_entry;
 
-  ATK_OBJECT_CLASS (gail_entry_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_entry_parent_class)->initialize (obj, data);
 
-  gail_entry = GAIL_ENTRY (obj);
-  gail_entry->textutil = gail_text_util_new ();
+  bail_entry = BAIL_ENTRY (obj);
+  bail_entry->textutil = bail_text_util_new ();
   
-  g_assert (GTK_IS_ENTRY (data));
+  g_assert (BTK_IS_ENTRY (data));
 
-  entry = GTK_ENTRY (data);
-  text_setup (gail_entry, entry);
-  gail_entry->cursor_position = entry->current_pos;
-  gail_entry->selection_bound = entry->selection_bound;
+  entry = BTK_ENTRY (data);
+  text_setup (bail_entry, entry);
+  bail_entry->cursor_position = entry->current_pos;
+  bail_entry->selection_bound = entry->selection_bound;
 
   /* Set up signal callbacks */
   g_signal_connect (data, "insert-text",
-	G_CALLBACK (_gail_entry_insert_text_cb), NULL);
+	G_CALLBACK (_bail_entry_insert_text_cb), NULL);
   g_signal_connect (data, "delete-text",
-	G_CALLBACK (_gail_entry_delete_text_cb), NULL);
+	G_CALLBACK (_bail_entry_delete_text_cb), NULL);
   g_signal_connect (data, "changed",
-	G_CALLBACK (_gail_entry_changed_cb), NULL);
+	G_CALLBACK (_bail_entry_changed_cb), NULL);
 
-  if (gtk_entry_get_visibility (entry))
-    obj->role = ATK_ROLE_TEXT;
+  if (btk_entry_get_visibility (entry))
+    obj->role = BATK_ROLE_TEXT;
   else
-    obj->role = ATK_ROLE_PASSWORD_TEXT;
+    obj->role = BATK_ROLE_PASSWORD_TEXT;
 }
 
 static void
-gail_entry_real_notify_gtk (GObject		*obj,
+bail_entry_real_notify_btk (GObject		*obj,
                             GParamSpec		*pspec)
 {
-  GtkWidget *widget;
-  AtkObject* atk_obj;
-  GtkEntry* gtk_entry;
-  GailEntry* entry;
+  BtkWidget *widget;
+  BatkObject* batk_obj;
+  BtkEntry* btk_entry;
+  BailEntry* entry;
 
-  widget = GTK_WIDGET (obj);
-  atk_obj = gtk_widget_get_accessible (widget);
-  gtk_entry = GTK_ENTRY (widget);
-  entry = GAIL_ENTRY (atk_obj);
+  widget = BTK_WIDGET (obj);
+  batk_obj = btk_widget_get_accessible (widget);
+  btk_entry = BTK_ENTRY (widget);
+  entry = BAIL_ENTRY (batk_obj);
 
   if (strcmp (pspec->name, "cursor-position") == 0)
     {
       if (entry->insert_idle_handler == 0)
-        entry->insert_idle_handler = gdk_threads_add_idle (gail_entry_idle_notify_insert, entry);
+        entry->insert_idle_handler = bdk_threads_add_idle (bail_entry_idle_notify_insert, entry);
 
-      if (check_for_selection_change (entry, gtk_entry))
-        g_signal_emit_by_name (atk_obj, "text_selection_changed");
+      if (check_for_selection_change (entry, btk_entry))
+        g_signal_emit_by_name (batk_obj, "text_selection_changed");
       /*
        * The entry cursor position has moved so generate the signal.
        */
-      g_signal_emit_by_name (atk_obj, "text_caret_moved", 
+      g_signal_emit_by_name (batk_obj, "text_caret_moved", 
                              entry->cursor_position);
     }
   else if (strcmp (pspec->name, "selection-bound") == 0)
     {
       if (entry->insert_idle_handler == 0)
-        entry->insert_idle_handler = gdk_threads_add_idle (gail_entry_idle_notify_insert, entry);
+        entry->insert_idle_handler = bdk_threads_add_idle (bail_entry_idle_notify_insert, entry);
 
-      if (check_for_selection_change (entry, gtk_entry))
-        g_signal_emit_by_name (atk_obj, "text_selection_changed");
+      if (check_for_selection_change (entry, btk_entry))
+        g_signal_emit_by_name (batk_obj, "text_selection_changed");
     }
   else if (strcmp (pspec->name, "editable") == 0)
     {
       gboolean value;
 
       g_object_get (obj, "editable", &value, NULL);
-      atk_object_notify_state_change (atk_obj, ATK_STATE_EDITABLE,
+      batk_object_notify_state_change (batk_obj, BATK_STATE_EDITABLE,
                                                value);
     }
   else if (strcmp (pspec->name, "visibility") == 0)
     {
       gboolean visibility;
-      AtkRole new_role;
+      BatkRole new_role;
 
-      text_setup (entry, gtk_entry);
-      visibility = gtk_entry_get_visibility (gtk_entry);
-      new_role = visibility ? ATK_ROLE_TEXT : ATK_ROLE_PASSWORD_TEXT;
-      atk_object_set_role (atk_obj, new_role);
+      text_setup (entry, btk_entry);
+      visibility = btk_entry_get_visibility (btk_entry);
+      new_role = visibility ? BATK_ROLE_TEXT : BATK_ROLE_PASSWORD_TEXT;
+      batk_object_set_role (batk_obj, new_role);
     }
   else if (strcmp (pspec->name, "invisible-char") == 0)
     {
-      text_setup (entry, gtk_entry);
+      text_setup (entry, btk_entry);
     }
   else if (strcmp (pspec->name, "editing-canceled") == 0)
     {
@@ -303,16 +303,16 @@ gail_entry_real_notify_gtk (GObject		*obj,
         }
     }
   else
-    GAIL_WIDGET_CLASS (gail_entry_parent_class)->notify_gtk (obj, pspec);
+    BAIL_WIDGET_CLASS (bail_entry_parent_class)->notify_btk (obj, pspec);
 }
 
 static void
-text_setup (GailEntry *entry,
-            GtkEntry  *gtk_entry)
+text_setup (BailEntry *entry,
+            BtkEntry  *btk_entry)
 {
-  if (gtk_entry_get_visibility (gtk_entry))
+  if (btk_entry_get_visibility (btk_entry))
     {
-      gail_text_util_text_setup (entry->textutil, gtk_entry_get_text (gtk_entry));
+      bail_text_util_text_setup (entry->textutil, btk_entry_get_text (btk_entry));
     }
   else
     {
@@ -323,27 +323,27 @@ text_setup (GailEntry *entry,
       guint length;
       gint i;
 
-      invisible_char = gtk_entry_get_invisible_char (gtk_entry);
+      invisible_char = btk_entry_get_invisible_char (btk_entry);
       if (invisible_char == 0)
         invisible_char = ' ';
 
       ch_len = g_unichar_to_utf8 (invisible_char, buf);
-      length = gtk_entry_get_text_length (gtk_entry);
+      length = btk_entry_get_text_length (btk_entry);
       for (i = 0; i < length; i++)
         {
           g_string_append_len (tmp_string, buf, ch_len);
         }
 
-      gail_text_util_text_setup (entry->textutil, tmp_string->str);
+      bail_text_util_text_setup (entry->textutil, tmp_string->str);
       g_string_free (tmp_string, TRUE);
 
     } 
 }
 
 static void
-gail_entry_finalize (GObject            *object)
+bail_entry_finalize (GObject            *object)
 {
-  GailEntry *entry = GAIL_ENTRY (object);
+  BailEntry *entry = BAIL_ENTRY (object);
 
   g_object_unref (entry->textutil);
   g_free (entry->activate_description);
@@ -358,321 +358,321 @@ gail_entry_finalize (GObject            *object)
       g_source_remove (entry->insert_idle_handler);
       entry->insert_idle_handler = 0;
     }
-  G_OBJECT_CLASS (gail_entry_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_entry_parent_class)->finalize (object);
 }
 
 static gint
-gail_entry_get_index_in_parent (AtkObject *accessible)
+bail_entry_get_index_in_parent (BatkObject *accessible)
 {
   /*
    * If the parent widget is a combo box then the index is 1
    * otherwise do the normal thing.
    */
   if (accessible->accessible_parent)
-    if (GAIL_IS_COMBO (accessible->accessible_parent) ||
-        GAIL_IS_COMBO_BOX (accessible->accessible_parent))
+    if (BAIL_IS_COMBO (accessible->accessible_parent) ||
+        BAIL_IS_COMBO_BOX (accessible->accessible_parent))
       return 1;
 
-  return ATK_OBJECT_CLASS (gail_entry_parent_class)->get_index_in_parent (accessible);
+  return BATK_OBJECT_CLASS (bail_entry_parent_class)->get_index_in_parent (accessible);
 }
 
-/* atkobject.h */
+/* batkobject.h */
 
-static AtkStateSet*
-gail_entry_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_entry_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkEntry *entry;
+  BatkStateSet *state_set;
+  BtkEntry *entry;
   gboolean value;
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  state_set = ATK_OBJECT_CLASS (gail_entry_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_entry_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
   
   if (widget == NULL)
     return state_set;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
   g_object_get (G_OBJECT (entry), "editable", &value, NULL);
   if (value)
-    atk_state_set_add_state (state_set, ATK_STATE_EDITABLE);
-  atk_state_set_add_state (state_set, ATK_STATE_SINGLE_LINE);
+    batk_state_set_add_state (state_set, BATK_STATE_EDITABLE);
+  batk_state_set_add_state (state_set, BATK_STATE_SINGLE_LINE);
 
   return state_set;
 }
 
-/* atktext.h */
+/* batktext.h */
 
 static void
-atk_text_interface_init (AtkTextIface *iface)
+batk_text_interface_init (BatkTextIface *iface)
 {
-  iface->get_text = gail_entry_get_text;
-  iface->get_character_at_offset = gail_entry_get_character_at_offset;
-  iface->get_text_before_offset = gail_entry_get_text_before_offset;
-  iface->get_text_at_offset = gail_entry_get_text_at_offset;
-  iface->get_text_after_offset = gail_entry_get_text_after_offset;
-  iface->get_caret_offset = gail_entry_get_caret_offset;
-  iface->set_caret_offset = gail_entry_set_caret_offset;
-  iface->get_character_count = gail_entry_get_character_count;
-  iface->get_n_selections = gail_entry_get_n_selections;
-  iface->get_selection = gail_entry_get_selection;
-  iface->add_selection = gail_entry_add_selection;
-  iface->remove_selection = gail_entry_remove_selection;
-  iface->set_selection = gail_entry_set_selection;
-  iface->get_run_attributes = gail_entry_get_run_attributes;
-  iface->get_default_attributes = gail_entry_get_default_attributes;
-  iface->get_character_extents = gail_entry_get_character_extents;
-  iface->get_offset_at_point = gail_entry_get_offset_at_point;
+  iface->get_text = bail_entry_get_text;
+  iface->get_character_at_offset = bail_entry_get_character_at_offset;
+  iface->get_text_before_offset = bail_entry_get_text_before_offset;
+  iface->get_text_at_offset = bail_entry_get_text_at_offset;
+  iface->get_text_after_offset = bail_entry_get_text_after_offset;
+  iface->get_caret_offset = bail_entry_get_caret_offset;
+  iface->set_caret_offset = bail_entry_set_caret_offset;
+  iface->get_character_count = bail_entry_get_character_count;
+  iface->get_n_selections = bail_entry_get_n_selections;
+  iface->get_selection = bail_entry_get_selection;
+  iface->add_selection = bail_entry_add_selection;
+  iface->remove_selection = bail_entry_remove_selection;
+  iface->set_selection = bail_entry_set_selection;
+  iface->get_run_attributes = bail_entry_get_run_attributes;
+  iface->get_default_attributes = bail_entry_get_default_attributes;
+  iface->get_character_extents = bail_entry_get_character_extents;
+  iface->get_offset_at_point = bail_entry_get_offset_at_point;
 }
 
 static gchar*
-gail_entry_get_text (AtkText *text,
+bail_entry_get_text (BatkText *text,
                      gint    start_pos,
                      gint    end_pos)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  return gail_text_util_get_substring (GAIL_ENTRY (text)->textutil, start_pos, end_pos);
+  return bail_text_util_get_substring (BAIL_ENTRY (text)->textutil, start_pos, end_pos);
 }
 
 static gchar*
-gail_entry_get_text_before_offset (AtkText	    *text,
+bail_entry_get_text_before_offset (BatkText	    *text,
 				   gint		    offset,
-				   AtkTextBoundary  boundary_type,
+				   BatkTextBoundary  boundary_type,
 				   gint		    *start_offset,
 				   gint		    *end_offset)
 {
-  GtkWidget *widget;
-  GtkEntry *entry;
+  BtkWidget *widget;
+  BtkEntry *entry;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   /* Get Entry */
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  return gail_text_util_get_text (GAIL_ENTRY (text)->textutil,
-                          gtk_entry_get_layout (entry), GAIL_BEFORE_OFFSET, 
+  return bail_text_util_get_text (BAIL_ENTRY (text)->textutil,
+                          btk_entry_get_layout (entry), BAIL_BEFORE_OFFSET, 
                           boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
-gail_entry_get_text_at_offset (AtkText          *text,
+bail_entry_get_text_at_offset (BatkText          *text,
                                gint             offset,
-                               AtkTextBoundary  boundary_type,
+                               BatkTextBoundary  boundary_type,
                                gint             *start_offset,
                                gint             *end_offset)
 {
-  GtkWidget *widget;
-  GtkEntry *entry;
+  BtkWidget *widget;
+  BtkEntry *entry;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   /* Get Entry */
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  return gail_text_util_get_text (GAIL_ENTRY (text)->textutil,
-                            gtk_entry_get_layout (entry), GAIL_AT_OFFSET, 
+  return bail_text_util_get_text (BAIL_ENTRY (text)->textutil,
+                            btk_entry_get_layout (entry), BAIL_AT_OFFSET, 
                             boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
-gail_entry_get_text_after_offset  (AtkText	    *text,
+bail_entry_get_text_after_offset  (BatkText	    *text,
 				   gint		    offset,
-				   AtkTextBoundary  boundary_type,
+				   BatkTextBoundary  boundary_type,
 				   gint		    *start_offset,
 				   gint		    *end_offset)
 {
-  GtkWidget *widget;
-  GtkEntry *entry;
+  BtkWidget *widget;
+  BtkEntry *entry;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   /* Get Entry */
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  return gail_text_util_get_text (GAIL_ENTRY (text)->textutil,
-                           gtk_entry_get_layout (entry), GAIL_AFTER_OFFSET, 
+  return bail_text_util_get_text (BAIL_ENTRY (text)->textutil,
+                           btk_entry_get_layout (entry), BAIL_AFTER_OFFSET, 
                            boundary_type, offset, start_offset, end_offset);
 }
 
 static gint
-gail_entry_get_character_count (AtkText *text)
+bail_entry_get_character_count (BatkText *text)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
-  entry = GTK_ENTRY (widget);
-  return g_utf8_strlen (gtk_entry_get_text (entry), -1);
+  entry = BTK_ENTRY (widget);
+  return g_utf8_strlen (btk_entry_get_text (entry), -1);
 }
 
 static gint
-gail_entry_get_caret_offset (AtkText *text)
+bail_entry_get_caret_offset (BatkText *text)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  return gtk_editable_get_position (GTK_EDITABLE (entry));
+  return btk_editable_get_position (BTK_EDITABLE (entry));
 }
 
 static gboolean
-gail_entry_set_caret_offset (AtkText *text, gint offset)
+bail_entry_set_caret_offset (BatkText *text, gint offset)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  gtk_editable_set_position (GTK_EDITABLE (entry), offset);
+  btk_editable_set_position (BTK_EDITABLE (entry), offset);
   return TRUE;
 }
 
-static AtkAttributeSet*
-gail_entry_get_run_attributes (AtkText *text,
+static BatkAttributeSet*
+bail_entry_get_run_attributes (BatkText *text,
 			       gint    offset,
                                gint    *start_offset,
                                gint    *end_offset)
 {
-  GtkWidget *widget;
-  GtkEntry *entry;
-  AtkAttributeSet *at_set = NULL;
-  GtkTextDirection dir;
+  BtkWidget *widget;
+  BtkEntry *entry;
+  BatkAttributeSet *at_set = NULL;
+  BtkTextDirection dir;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
  
-  dir = gtk_widget_get_direction (widget);
-  if (dir == GTK_TEXT_DIR_RTL)
+  dir = btk_widget_get_direction (widget);
+  if (dir == BTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set,
-                                        ATK_TEXT_ATTR_DIRECTION,
-       g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
+      at_set = bail_misc_add_attribute (at_set,
+                                        BATK_TEXT_ATTR_DIRECTION,
+       g_strdup (batk_text_attribute_get_value (BATK_TEXT_ATTR_DIRECTION, dir)));
     }
 
-  at_set = gail_misc_layout_get_run_attributes (at_set,
-                                                gtk_entry_get_layout (entry),
-                                                (gchar*)gtk_entry_get_text (entry),
+  at_set = bail_misc_layout_get_run_attributes (at_set,
+                                                btk_entry_get_layout (entry),
+                                                (gchar*)btk_entry_get_text (entry),
                                                 offset,
                                                 start_offset,
                                                 end_offset);
   return at_set;
 }
 
-static AtkAttributeSet*
-gail_entry_get_default_attributes (AtkText *text)
+static BatkAttributeSet*
+bail_entry_get_default_attributes (BatkText *text)
 {
-  GtkWidget *widget;
-  GtkEntry *entry;
-  AtkAttributeSet *at_set = NULL;
+  BtkWidget *widget;
+  BtkEntry *entry;
+  BatkAttributeSet *at_set = NULL;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  at_set = gail_misc_get_default_attributes (at_set,
-                                             gtk_entry_get_layout (entry),
+  at_set = bail_misc_get_default_attributes (at_set,
+                                             btk_entry_get_layout (entry),
                                              widget);
   return at_set;
 }
   
 static void
-gail_entry_get_character_extents (AtkText *text,
+bail_entry_get_character_extents (BatkText *text,
 				  gint    offset,
 		                  gint    *x,
                     		  gint 	  *y,
                                   gint 	  *width,
                                   gint 	  *height,
-			          AtkCoordType coords)
+			          BatkCoordType coords)
 {
-  GtkWidget *widget;
-  GtkEntry *entry;
-  PangoRectangle char_rect;
+  BtkWidget *widget;
+  BtkEntry *entry;
+  BangoRectangle char_rect;
   gint index, cursor_index, x_layout, y_layout;
   const gchar *entry_text;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  gtk_entry_get_layout_offsets (entry, &x_layout, &y_layout);
-  entry_text = gtk_entry_get_text (entry);
+  btk_entry_get_layout_offsets (entry, &x_layout, &y_layout);
+  entry_text = btk_entry_get_text (entry);
   index = g_utf8_offset_to_pointer (entry_text, offset) - entry_text;
   cursor_index = g_utf8_offset_to_pointer (entry_text, entry->current_pos) - entry_text;
   if (index > cursor_index)
     index += entry->preedit_length;
-  pango_layout_index_to_pos (gtk_entry_get_layout(entry), index, &char_rect);
+  bango_layout_index_to_pos (btk_entry_get_layout(entry), index, &char_rect);
  
-  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect, 
+  bail_misc_get_extents_from_bango_rectangle (widget, &char_rect, 
                         x_layout, y_layout, x, y, width, height, coords);
 } 
 
 static gint 
-gail_entry_get_offset_at_point (AtkText *text,
+bail_entry_get_offset_at_point (BatkText *text,
                                 gint x,
                                 gint y,
-			        AtkCoordType coords)
+			        BatkCoordType coords)
 { 
-  GtkWidget *widget;
-  GtkEntry *entry;
+  BtkWidget *widget;
+  BtkEntry *entry;
   gint index, cursor_index, x_layout, y_layout;
   const gchar *entry_text;
   
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return -1;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
   
-  gtk_entry_get_layout_offsets (entry, &x_layout, &y_layout);
-  entry_text = gtk_entry_get_text (entry);
+  btk_entry_get_layout_offsets (entry, &x_layout, &y_layout);
+  entry_text = btk_entry_get_text (entry);
   
-  index = gail_misc_get_index_at_point_in_layout (widget, 
-               gtk_entry_get_layout(entry), x_layout, y_layout, x, y, coords);
+  index = bail_misc_get_index_at_point_in_layout (widget, 
+               btk_entry_get_layout(entry), x_layout, y_layout, x, y, coords);
   if (index == -1)
     {
-      if (coords == ATK_XY_SCREEN || coords == ATK_XY_WINDOW)
+      if (coords == BATK_XY_SCREEN || coords == BATK_XY_WINDOW)
         return g_utf8_strlen (entry_text, -1);
 
       return index;  
@@ -692,20 +692,20 @@ gail_entry_get_offset_at_point (AtkText *text,
 }
 
 static gint
-gail_entry_get_n_selections (AtkText              *text)
+bail_entry_get_n_selections (BatkText              *text)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
   gint select_start, select_end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return -1;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &select_start, 
                                      &select_end);
 
   if (select_start != select_end)
@@ -715,15 +715,15 @@ gail_entry_get_n_selections (AtkText              *text)
 }
 
 static gchar*
-gail_entry_get_selection (AtkText *text,
+bail_entry_get_selection (BatkText *text,
 			  gint    selection_num,
                           gint    *start_pos,
                           gint    *end_pos)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
@@ -734,40 +734,40 @@ gail_entry_get_selection (AtkText *text,
   if (selection_num != 0)
      return NULL;
 
-  entry = GTK_ENTRY (widget);
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), start_pos, end_pos);
+  entry = BTK_ENTRY (widget);
+  btk_editable_get_selection_bounds (BTK_EDITABLE (entry), start_pos, end_pos);
 
   if (*start_pos != *end_pos)
-     return gtk_editable_get_chars (GTK_EDITABLE (entry), *start_pos, *end_pos);
+     return btk_editable_get_chars (BTK_EDITABLE (entry), *start_pos, *end_pos);
   else
      return NULL;
 }
 
 static gboolean
-gail_entry_add_selection (AtkText *text,
+bail_entry_add_selection (BatkText *text,
                           gint    start_pos,
                           gint    end_pos)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
   gint select_start, select_end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &select_start, 
                                      &select_end);
 
  /* If there is already a selection, then don't allow another to be added,
-  * since GtkEntry only supports one selected region.
+  * since BtkEntry only supports one selected rebunnyion.
   */
   if (select_start == select_end)
     {
-       gtk_editable_select_region (GTK_EDITABLE (entry), start_pos, end_pos);
+       btk_editable_select_rebunnyion (BTK_EDITABLE (entry), start_pos, end_pos);
        return TRUE;
     }
   else
@@ -775,14 +775,14 @@ gail_entry_add_selection (AtkText *text,
 }
 
 static gboolean
-gail_entry_remove_selection (AtkText *text,
+bail_entry_remove_selection (BatkText *text,
                              gint    selection_num)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
   gint select_start, select_end, caret_pos;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
@@ -790,17 +790,17 @@ gail_entry_remove_selection (AtkText *text,
   if (selection_num != 0)
      return FALSE;
 
-  entry = GTK_ENTRY (widget);
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  entry = BTK_ENTRY (widget);
+  btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &select_start, 
                                      &select_end);
 
   if (select_start != select_end)
     {
-     /* Setting the start & end of the selected region to the caret position
+     /* Setting the start & end of the selected rebunnyion to the caret position
       * turns off the selection.
       */
-      caret_pos = gtk_editable_get_position (GTK_EDITABLE (entry));
-      gtk_editable_select_region (GTK_EDITABLE (entry), caret_pos, caret_pos);
+      caret_pos = btk_editable_get_position (BTK_EDITABLE (entry));
+      btk_editable_select_rebunnyion (BTK_EDITABLE (entry), caret_pos, caret_pos);
       return TRUE;
     }
   else
@@ -808,16 +808,16 @@ gail_entry_remove_selection (AtkText *text,
 }
 
 static gboolean
-gail_entry_set_selection (AtkText *text,
+bail_entry_set_selection (BatkText *text,
 			  gint	  selection_num,
                           gint    start_pos,
                           gint    end_pos)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
+  BtkEntry *entry;
+  BtkWidget *widget;
   gint select_start, select_end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
@@ -828,14 +828,14 @@ gail_entry_set_selection (AtkText *text,
   if (selection_num != 0)
      return FALSE;
 
-  entry = GTK_ENTRY (widget);
+  entry = BTK_ENTRY (widget);
 
-  gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &select_start, 
+  btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &select_start, 
                                      &select_end);
 
   if (select_start != select_end)
     {
-      gtk_editable_select_region (GTK_EDITABLE (entry), start_pos, end_pos);
+      btk_editable_select_rebunnyion (BTK_EDITABLE (entry), start_pos, end_pos);
       return TRUE;
     }
   else
@@ -843,171 +843,171 @@ gail_entry_set_selection (AtkText *text,
 }
 
 static void
-atk_editable_text_interface_init (AtkEditableTextIface *iface)
+batk_editable_text_interface_init (BatkEditableTextIface *iface)
 {
-  iface->set_text_contents = gail_entry_set_text_contents;
-  iface->insert_text = gail_entry_insert_text;
-  iface->copy_text = gail_entry_copy_text;
-  iface->cut_text = gail_entry_cut_text;
-  iface->delete_text = gail_entry_delete_text;
-  iface->paste_text = gail_entry_paste_text;
+  iface->set_text_contents = bail_entry_set_text_contents;
+  iface->insert_text = bail_entry_insert_text;
+  iface->copy_text = bail_entry_copy_text;
+  iface->cut_text = bail_entry_cut_text;
+  iface->delete_text = bail_entry_delete_text;
+  iface->paste_text = bail_entry_paste_text;
   iface->set_run_attributes = NULL;
 }
 
 static void
-gail_entry_set_text_contents (AtkEditableText *text,
+bail_entry_set_text_contents (BatkEditableText *text,
                               const gchar     *string)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
-  GtkEditable *editable;
+  BtkEntry *entry;
+  BtkWidget *widget;
+  BtkEditable *editable;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  entry = GTK_ENTRY (widget);
-  editable = GTK_EDITABLE (entry);
-  if (!gtk_editable_get_editable (editable))
+  entry = BTK_ENTRY (widget);
+  editable = BTK_EDITABLE (entry);
+  if (!btk_editable_get_editable (editable))
     return;
 
-  gtk_entry_set_text (entry, string);
+  btk_entry_set_text (entry, string);
 }
 
 static void
-gail_entry_insert_text (AtkEditableText *text,
+bail_entry_insert_text (BatkEditableText *text,
                         const gchar     *string,
                         gint            length,
                         gint            *position)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
-  GtkEditable *editable;
+  BtkEntry *entry;
+  BtkWidget *widget;
+  BtkEditable *editable;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  entry = GTK_ENTRY (widget);
-  editable = GTK_EDITABLE (entry);
-  if (!gtk_editable_get_editable (editable))
+  entry = BTK_ENTRY (widget);
+  editable = BTK_EDITABLE (entry);
+  if (!btk_editable_get_editable (editable))
     return;
 
-  gtk_editable_insert_text (editable, string, length, position);
-  gtk_editable_set_position (editable, *position);
+  btk_editable_insert_text (editable, string, length, position);
+  btk_editable_set_position (editable, *position);
 }
 
 static void
-gail_entry_copy_text   (AtkEditableText *text,
+bail_entry_copy_text   (BatkEditableText *text,
                         gint            start_pos,
                         gint            end_pos)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
-  GtkEditable *editable;
+  BtkEntry *entry;
+  BtkWidget *widget;
+  BtkEditable *editable;
   gchar *str;
-  GtkClipboard *clipboard;
+  BtkClipboard *clipboard;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  entry = GTK_ENTRY (widget);
-  editable = GTK_EDITABLE (entry);
-  str = gtk_editable_get_chars (editable, start_pos, end_pos);
-  clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (widget),
-                                             GDK_SELECTION_CLIPBOARD);
-  gtk_clipboard_set_text (clipboard, str, -1);
+  entry = BTK_ENTRY (widget);
+  editable = BTK_EDITABLE (entry);
+  str = btk_editable_get_chars (editable, start_pos, end_pos);
+  clipboard = btk_clipboard_get_for_display (btk_widget_get_display (widget),
+                                             BDK_SELECTION_CLIPBOARD);
+  btk_clipboard_set_text (clipboard, str, -1);
 }
 
 static void
-gail_entry_cut_text (AtkEditableText *text,
+bail_entry_cut_text (BatkEditableText *text,
                      gint            start_pos,
                      gint            end_pos)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
-  GtkEditable *editable;
+  BtkEntry *entry;
+  BtkWidget *widget;
+  BtkEditable *editable;
   gchar *str;
-  GtkClipboard *clipboard;
+  BtkClipboard *clipboard;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  entry = GTK_ENTRY (widget);
-  editable = GTK_EDITABLE (entry);
-  if (!gtk_editable_get_editable (editable))
+  entry = BTK_ENTRY (widget);
+  editable = BTK_EDITABLE (entry);
+  if (!btk_editable_get_editable (editable))
     return;
-  str = gtk_editable_get_chars (editable, start_pos, end_pos);
-  clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (widget),
-                                             GDK_SELECTION_CLIPBOARD);
-  gtk_clipboard_set_text (clipboard, str, -1);
-  gtk_editable_delete_text (editable, start_pos, end_pos);
+  str = btk_editable_get_chars (editable, start_pos, end_pos);
+  clipboard = btk_clipboard_get_for_display (btk_widget_get_display (widget),
+                                             BDK_SELECTION_CLIPBOARD);
+  btk_clipboard_set_text (clipboard, str, -1);
+  btk_editable_delete_text (editable, start_pos, end_pos);
 }
 
 static void
-gail_entry_delete_text (AtkEditableText *text,
+bail_entry_delete_text (BatkEditableText *text,
                         gint            start_pos,
                         gint            end_pos)
 {
-  GtkEntry *entry;
-  GtkWidget *widget;
-  GtkEditable *editable;
+  BtkEntry *entry;
+  BtkWidget *widget;
+  BtkEditable *editable;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  entry = GTK_ENTRY (widget);
-  editable = GTK_EDITABLE (entry);
-  if (!gtk_editable_get_editable (editable))
+  entry = BTK_ENTRY (widget);
+  editable = BTK_EDITABLE (entry);
+  if (!btk_editable_get_editable (editable))
     return;
 
-  gtk_editable_delete_text (editable, start_pos, end_pos);
+  btk_editable_delete_text (editable, start_pos, end_pos);
 }
 
 static void
-gail_entry_paste_text (AtkEditableText *text,
+bail_entry_paste_text (BatkEditableText *text,
                        gint            position)
 {
-  GtkWidget *widget;
-  GtkEditable *editable;
-  GailEntryPaste paste_struct;
-  GtkClipboard *clipboard;
+  BtkWidget *widget;
+  BtkEditable *editable;
+  BailEntryPaste paste_struct;
+  BtkClipboard *clipboard;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  editable = GTK_EDITABLE (widget);
-  if (!gtk_editable_get_editable (editable))
+  editable = BTK_EDITABLE (widget);
+  if (!btk_editable_get_editable (editable))
     return;
-  paste_struct.entry = GTK_ENTRY (widget);
+  paste_struct.entry = BTK_ENTRY (widget);
   paste_struct.position = position;
 
   g_object_ref (paste_struct.entry);
-  clipboard = gtk_clipboard_get_for_display (gtk_widget_get_display (widget),
-                                             GDK_SELECTION_CLIPBOARD);
-  gtk_clipboard_request_text (clipboard,
-    gail_entry_paste_received, &paste_struct);
+  clipboard = btk_clipboard_get_for_display (btk_widget_get_display (widget),
+                                             BDK_SELECTION_CLIPBOARD);
+  btk_clipboard_request_text (clipboard,
+    bail_entry_paste_received, &paste_struct);
 }
 
 static void
-gail_entry_paste_received (GtkClipboard *clipboard,
+bail_entry_paste_received (BtkClipboard *clipboard,
 		const gchar  *text,
 		gpointer     data)
 {
-  GailEntryPaste* paste_struct = (GailEntryPaste *)data;
+  BailEntryPaste* paste_struct = (BailEntryPaste *)data;
 
   if (text)
-    gtk_editable_insert_text (GTK_EDITABLE (paste_struct->entry), text, -1,
+    btk_editable_insert_text (BTK_EDITABLE (paste_struct->entry), text, -1,
        &(paste_struct->position));
 
   g_object_unref (paste_struct->entry);
@@ -1016,19 +1016,19 @@ gail_entry_paste_received (GtkClipboard *clipboard,
 /* Callbacks */
 
 static gboolean
-gail_entry_idle_notify_insert (gpointer data)
+bail_entry_idle_notify_insert (gpointer data)
 {
-  GailEntry *entry;
+  BailEntry *entry;
 
-  entry = GAIL_ENTRY (data);
+  entry = BAIL_ENTRY (data);
   entry->insert_idle_handler = 0;
-  gail_entry_notify_insert (entry);
+  bail_entry_notify_insert (entry);
 
   return FALSE;
 }
 
 static void
-gail_entry_notify_insert (GailEntry *entry)
+bail_entry_notify_insert (BailEntry *entry)
 {
   if (entry->signal_name_insert)
     {
@@ -1044,48 +1044,48 @@ gail_entry_notify_insert (GailEntry *entry)
  * arg2 returns the number of characters inserted.
  */
 static void 
-_gail_entry_insert_text_cb (GtkEntry *entry, 
+_bail_entry_insert_text_cb (BtkEntry *entry, 
                             gchar    *arg1, 
                             gint     arg2,
                             gpointer arg3)
 {
-  AtkObject *accessible;
-  GailEntry *gail_entry;
+  BatkObject *accessible;
+  BailEntry *bail_entry;
   gint *position = (gint *) arg3;
 
-  accessible = gtk_widget_get_accessible (GTK_WIDGET (entry));
-  gail_entry = GAIL_ENTRY (accessible);
-  if (!gail_entry->signal_name_insert)
+  accessible = btk_widget_get_accessible (BTK_WIDGET (entry));
+  bail_entry = BAIL_ENTRY (accessible);
+  if (!bail_entry->signal_name_insert)
     {
-      gail_entry->signal_name_insert = "text_changed::insert";
-      gail_entry->position_insert = *position;
-      gail_entry->length_insert = g_utf8_strlen(arg1, arg2);
+      bail_entry->signal_name_insert = "text_changed::insert";
+      bail_entry->position_insert = *position;
+      bail_entry->length_insert = g_utf8_strlen(arg1, arg2);
     }
   /*
    * The signal will be emitted when the cursor position is updated.
    * or in an idle handler if it not updated.
    */
-   if (gail_entry->insert_idle_handler == 0)
-     gail_entry->insert_idle_handler = gdk_threads_add_idle (gail_entry_idle_notify_insert, gail_entry);
+   if (bail_entry->insert_idle_handler == 0)
+     bail_entry->insert_idle_handler = bdk_threads_add_idle (bail_entry_idle_notify_insert, bail_entry);
 }
 
 static gunichar 
-gail_entry_get_character_at_offset (AtkText *text,
+bail_entry_get_character_at_offset (BatkText *text,
                                     gint     offset)
 {
-  GtkWidget *widget;
-  GailEntry *entry;
+  BtkWidget *widget;
+  BailEntry *entry;
   gchar *string;
   gchar *index;
   gunichar unichar;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return '\0';
 
-  entry = GAIL_ENTRY (text);
-  string = gail_text_util_get_substring (entry->textutil, 0, -1);
+  entry = BAIL_ENTRY (text);
+  string = bail_text_util_get_substring (entry->textutil, 0, -1);
   if (offset >= g_utf8_strlen (string, -1))
     {
       unichar = '\0';
@@ -1102,7 +1102,7 @@ gail_entry_get_character_at_offset (AtkText *text,
 }
 
 static void
-gail_entry_notify_delete (GailEntry *entry)
+bail_entry_notify_delete (BailEntry *entry)
 {
   if (entry->signal_name_delete)
     {
@@ -1118,12 +1118,12 @@ gail_entry_notify_delete (GailEntry *entry)
  * end of the delete range if multiple characters are deleted.	
  */
 static void 
-_gail_entry_delete_text_cb (GtkEntry *entry, 
+_bail_entry_delete_text_cb (BtkEntry *entry, 
                             gint      arg1, 
                             gint      arg2)
 {
-  AtkObject *accessible;
-  GailEntry *gail_entry;
+  BatkObject *accessible;
+  BailEntry *bail_entry;
 
   /*
    * Zero length text deleted so ignore
@@ -1131,40 +1131,40 @@ _gail_entry_delete_text_cb (GtkEntry *entry,
   if (arg2 - arg1 == 0)
     return;
 
-  accessible = gtk_widget_get_accessible (GTK_WIDGET (entry));
-  gail_entry = GAIL_ENTRY (accessible);
-  if (!gail_entry->signal_name_delete)
+  accessible = btk_widget_get_accessible (BTK_WIDGET (entry));
+  bail_entry = BAIL_ENTRY (accessible);
+  if (!bail_entry->signal_name_delete)
     {
-      gail_entry->signal_name_delete = "text_changed::delete";
-      gail_entry->position_delete = arg1;
-      gail_entry->length_delete = arg2 - arg1;
+      bail_entry->signal_name_delete = "text_changed::delete";
+      bail_entry->position_delete = arg1;
+      bail_entry->length_delete = arg2 - arg1;
     }
-  gail_entry_notify_delete (gail_entry);
+  bail_entry_notify_delete (bail_entry);
 }
 
 static void
-_gail_entry_changed_cb (GtkEntry *entry)
+_bail_entry_changed_cb (BtkEntry *entry)
 {
-  AtkObject *accessible;
-  GailEntry *gail_entry;
+  BatkObject *accessible;
+  BailEntry *bail_entry;
 
-  accessible = gtk_widget_get_accessible (GTK_WIDGET (entry));
+  accessible = btk_widget_get_accessible (BTK_WIDGET (entry));
 
-  gail_entry = GAIL_ENTRY (accessible);
+  bail_entry = BAIL_ENTRY (accessible);
 
-  text_setup (gail_entry, entry);
+  text_setup (bail_entry, entry);
 }
 
 static gboolean 
-check_for_selection_change (GailEntry   *entry,
-                            GtkEntry    *gtk_entry)
+check_for_selection_change (BailEntry   *entry,
+                            BtkEntry    *btk_entry)
 {
   gboolean ret_val = FALSE;
  
-  if (gtk_entry->current_pos != gtk_entry->selection_bound)
+  if (btk_entry->current_pos != btk_entry->selection_bound)
     {
-      if (gtk_entry->current_pos != entry->cursor_position ||
-          gtk_entry->selection_bound != entry->selection_bound)
+      if (btk_entry->current_pos != entry->cursor_position ||
+          btk_entry->selection_bound != entry->selection_bound)
         /*
          * This check is here as this function can be called
          * for notification of selection_bound and current_pos.
@@ -1179,40 +1179,40 @@ check_for_selection_change (GailEntry   *entry,
       /* We had a selection */
       ret_val = (entry->cursor_position != entry->selection_bound);
     }
-  entry->cursor_position = gtk_entry->current_pos;
-  entry->selection_bound = gtk_entry->selection_bound;
+  entry->cursor_position = btk_entry->current_pos;
+  entry->selection_bound = btk_entry->selection_bound;
 
   return ret_val;
 }
 
 static void
-atk_action_interface_init (AtkActionIface *iface)
+batk_action_interface_init (BatkActionIface *iface)
 {
-  iface->do_action = gail_entry_do_action;
-  iface->get_n_actions = gail_entry_get_n_actions;
-  iface->get_description = gail_entry_get_description;
-  iface->get_keybinding = gail_entry_get_keybinding;
-  iface->get_name = gail_entry_action_get_name;
-  iface->set_description = gail_entry_set_description;
+  iface->do_action = bail_entry_do_action;
+  iface->get_n_actions = bail_entry_get_n_actions;
+  iface->get_description = bail_entry_get_description;
+  iface->get_keybinding = bail_entry_get_keybinding;
+  iface->get_name = bail_entry_action_get_name;
+  iface->set_description = bail_entry_set_description;
 }
 
 static gboolean
-gail_entry_do_action (AtkAction *action,
+bail_entry_do_action (BatkAction *action,
                       gint      i)
 {
-  GailEntry *entry;
-  GtkWidget *widget;
+  BailEntry *entry;
+  BtkWidget *widget;
   gboolean return_value = TRUE;
 
-  entry = GAIL_ENTRY (action);
-  widget = GTK_ACCESSIBLE (action)->widget;
+  entry = BAIL_ENTRY (action);
+  widget = BTK_ACCESSIBLE (action)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  if (!gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
+  if (!btk_widget_get_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
   switch (i)
@@ -1221,7 +1221,7 @@ gail_entry_do_action (AtkAction *action,
       if (entry->action_idle_handler)
         return_value = FALSE;
       else
-        entry->action_idle_handler = gdk_threads_add_idle (idle_do_action, entry);
+        entry->action_idle_handler = bdk_threads_add_idle (idle_do_action, entry);
       break;
     default:
       return_value = FALSE;
@@ -1233,35 +1233,35 @@ gail_entry_do_action (AtkAction *action,
 static gboolean
 idle_do_action (gpointer data)
 {
-  GailEntry *entry;
-  GtkWidget *widget;
+  BailEntry *entry;
+  BtkWidget *widget;
 
-  entry = GAIL_ENTRY (data);
+  entry = BAIL_ENTRY (data);
   entry->action_idle_handler = 0;
-  widget = GTK_ACCESSIBLE (entry)->widget;
+  widget = BTK_ACCESSIBLE (entry)->widget;
   if (widget == NULL /* State is defunct */ ||
-      !gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
+      !btk_widget_get_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
-  gtk_widget_activate (widget);
+  btk_widget_activate (widget);
 
   return FALSE;
 }
 
 static gint
-gail_entry_get_n_actions (AtkAction *action)
+bail_entry_get_n_actions (BatkAction *action)
 {
   return 1;
 }
 
 static const gchar*
-gail_entry_get_description (AtkAction *action,
+bail_entry_get_description (BatkAction *action,
                             gint      i)
 {
-  GailEntry *entry;
+  BailEntry *entry;
   const gchar *return_value;
 
-  entry = GAIL_ENTRY (action);
+  entry = BAIL_ENTRY (action);
   switch (i)
     {
     case 0:
@@ -1275,13 +1275,13 @@ gail_entry_get_description (AtkAction *action,
 }
 
 static const gchar*
-gail_entry_get_keybinding (AtkAction *action,
+bail_entry_get_keybinding (BatkAction *action,
                            gint      i)
 {
-  GailEntry *entry;
+  BailEntry *entry;
   gchar *return_value = NULL;
 
-  entry = GAIL_ENTRY (action);
+  entry = BAIL_ENTRY (action);
   switch (i)
     {
     case 0:
@@ -1289,16 +1289,16 @@ gail_entry_get_keybinding (AtkAction *action,
         /*
          * We look for a mnemonic on the label
          */
-        GtkWidget *widget;
-        GtkWidget *label;
-        AtkRelationSet *set;
-        AtkRelation *relation;
+        BtkWidget *widget;
+        BtkWidget *label;
+        BatkRelationSet *set;
+        BatkRelation *relation;
         GPtrArray *target;
         gpointer target_object;
         guint key_val; 
 
-        entry = GAIL_ENTRY (action);
-        widget = GTK_ACCESSIBLE (entry)->widget;
+        entry = BAIL_ENTRY (action);
+        widget = BTK_ACCESSIBLE (entry)->widget;
         if (widget == NULL)
           /*
            * State is defunct
@@ -1307,29 +1307,29 @@ gail_entry_get_keybinding (AtkAction *action,
 
         /* Find labelled-by relation */
 
-        set = atk_object_ref_relation_set (ATK_OBJECT (action));
+        set = batk_object_ref_relation_set (BATK_OBJECT (action));
         if (!set)
           return NULL;
         label = NULL;
-        relation = atk_relation_set_get_relation_by_type (set, ATK_RELATION_LABELLED_BY);
+        relation = batk_relation_set_get_relation_by_type (set, BATK_RELATION_LABELLED_BY);
         if (relation)
           {              
-            target = atk_relation_get_target (relation);
+            target = batk_relation_get_target (relation);
           
             target_object = g_ptr_array_index (target, 0);
-            if (GTK_IS_ACCESSIBLE (target_object))
+            if (BTK_IS_ACCESSIBLE (target_object))
               {
-                label = GTK_ACCESSIBLE (target_object)->widget;
+                label = BTK_ACCESSIBLE (target_object)->widget;
               } 
           }
 
         g_object_unref (set);
 
-        if (GTK_IS_LABEL (label))
+        if (BTK_IS_LABEL (label))
           {
-            key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label)); 
-            if (key_val != GDK_VoidSymbol)
-              return_value = gtk_accelerator_name (key_val, GDK_MOD1_MASK);
+            key_val = btk_label_get_mnemonic_keyval (BTK_LABEL (label)); 
+            if (key_val != BDK_VoidSymbol)
+              return_value = btk_accelerator_name (key_val, BDK_MOD1_MASK);
           }
         g_free (entry->activate_keybinding);
         entry->activate_keybinding = return_value;
@@ -1342,7 +1342,7 @@ gail_entry_get_keybinding (AtkAction *action,
 }
 
 static const gchar*
-gail_entry_action_get_name (AtkAction *action,
+bail_entry_action_get_name (BatkAction *action,
                             gint      i)
 {
   const gchar *return_value;
@@ -1360,14 +1360,14 @@ gail_entry_action_get_name (AtkAction *action,
 }
 
 static gboolean
-gail_entry_set_description (AtkAction      *action,
+bail_entry_set_description (BatkAction      *action,
                             gint           i,
                             const gchar    *desc)
 {
-  GailEntry *entry;
+  BailEntry *entry;
   gchar **value;
 
-  entry = GAIL_ENTRY (action);
+  entry = BAIL_ENTRY (action);
   switch (i)
     {
     case 0:

@@ -1,4 +1,4 @@
-/* Pango
+/* Bango
  * thai-charprop.h:
  *
  * Copyright (C) 1999 Red Hat Software
@@ -29,7 +29,7 @@
 #ifndef __THAI_CHARPROP_H__
 #define __THAI_CHARPROP_H__
 
-#include <glib.h>
+#include <bunnylib.h>
 
 #define isthai(wc)      (0x0E00 <= (wc) && (wc) < 0x0E60)
 #define islao(wc)       (0x0E80 <= (wc) && (wc) < 0x0EE0)

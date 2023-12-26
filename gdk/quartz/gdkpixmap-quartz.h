@@ -1,4 +1,4 @@
-/* gdkdrawable-quartz.h
+/* bdkdrawable-quartz.h
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -18,31 +18,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_PIXMAP_QUARTZ_H__
-#define __GDK_PIXMAP_QUARTZ_H__
+#ifndef __BDK_PIXMAP_QUARTZ_H__
+#define __BDK_PIXMAP_QUARTZ_H__
 
 #include <ApplicationServices/ApplicationServices.h>
-#include <gdk/quartz/gdkdrawable-quartz.h>
-#include <gdk/gdkpixmap.h>
+#include <bdk/quartz/bdkdrawable-quartz.h>
+#include <bdk/bdkpixmap.h>
 
 G_BEGIN_DECLS
 
 /* Pixmap implementation for Quartz
  */
 
-typedef struct _GdkPixmapImplQuartz GdkPixmapImplQuartz;
-typedef struct _GdkPixmapImplQuartzClass GdkPixmapImplQuartzClass;
+typedef struct _BdkPixmapImplQuartz BdkPixmapImplQuartz;
+typedef struct _BdkPixmapImplQuartzClass BdkPixmapImplQuartzClass;
 
-#define GDK_TYPE_PIXMAP_IMPL_QUARTZ              (_gdk_pixmap_impl_quartz_get_type ())
-#define GDK_PIXMAP_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_PIXMAP_IMPL_QUARTZ, GdkPixmapImplQuartz))
-#define GDK_PIXMAP_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_PIXMAP_IMPL_QUARTZ, GdkPixmapImplQuartzClass))
-#define GDK_IS_PIXMAP_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_PIXMAP_IMPL_QUARTZ))
-#define GDK_IS_PIXMAP_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_PIXMAP_IMPL_QUARTZ))
-#define GDK_PIXMAP_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_PIXMAP_IMPL_QUARTZ, GdkPixmapImplQuartzClass))
+#define BDK_TYPE_PIXMAP_IMPL_QUARTZ              (_bdk_pixmap_impl_quartz_get_type ())
+#define BDK_PIXMAP_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartz))
+#define BDK_PIXMAP_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartzClass))
+#define BDK_IS_PIXMAP_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_QUARTZ))
+#define BDK_IS_PIXMAP_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_QUARTZ))
+#define BDK_PIXMAP_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartzClass))
 
-struct _GdkPixmapImplQuartz
+struct _BdkPixmapImplQuartz
 {
-  GdkDrawableImplQuartz parent_instance;
+  BdkDrawableImplQuartz parent_instance;
 
   gint width;
   gint height;
@@ -51,13 +51,13 @@ struct _GdkPixmapImplQuartz
   CGDataProviderRef data_provider;
 };
  
-struct _GdkPixmapImplQuartzClass 
+struct _BdkPixmapImplQuartzClass 
 {
-  GdkDrawableImplQuartzClass parent_class;
+  BdkDrawableImplQuartzClass parent_class;
 };
 
-GType _gdk_pixmap_impl_quartz_get_type (void);
+GType _bdk_pixmap_impl_quartz_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GDK_PIXMAP_QUARTZ_H__ */
+#endif /* __BDK_PIXMAP_QUARTZ_H__ */

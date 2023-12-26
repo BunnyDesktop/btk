@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,18 +18,18 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include <gdk/gdk.h>
-#include "gtkinvisible.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include <bdk/bdk.h>
+#include "btkinvisible.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 enum {
   PROP_0,
@@ -37,80 +37,80 @@ enum {
   LAST_ARG
 };
 
-static void gtk_invisible_destroy       (GtkObject         *object);
-static void gtk_invisible_realize       (GtkWidget         *widget);
-static void gtk_invisible_style_set     (GtkWidget         *widget,
-					 GtkStyle          *previous_style);
-static void gtk_invisible_show          (GtkWidget         *widget);
-static void gtk_invisible_size_allocate (GtkWidget         *widget,
-					 GtkAllocation     *allocation);
-static void gtk_invisible_set_property  (GObject           *object,
+static void btk_invisible_destroy       (BtkObject         *object);
+static void btk_invisible_realize       (BtkWidget         *widget);
+static void btk_invisible_style_set     (BtkWidget         *widget,
+					 BtkStyle          *previous_style);
+static void btk_invisible_show          (BtkWidget         *widget);
+static void btk_invisible_size_allocate (BtkWidget         *widget,
+					 BtkAllocation     *allocation);
+static void btk_invisible_set_property  (GObject           *object,
 					 guint              prop_id,
 					 const GValue      *value,
 					 GParamSpec        *pspec);
-static void gtk_invisible_get_property  (GObject           *object,
+static void btk_invisible_get_property  (GObject           *object,
 					 guint              prop_id,
 					 GValue		   *value,
 					 GParamSpec        *pspec);
 
-static GObject *gtk_invisible_constructor (GType                  type,
+static GObject *btk_invisible_constructor (GType                  type,
 					   guint                  n_construct_properties,
 					   GObjectConstructParam *construct_params);
 
-G_DEFINE_TYPE (GtkInvisible, gtk_invisible, GTK_TYPE_WIDGET)
+G_DEFINE_TYPE (BtkInvisible, btk_invisible, BTK_TYPE_WIDGET)
 
 static void
-gtk_invisible_class_init (GtkInvisibleClass *class)
+btk_invisible_class_init (BtkInvisibleClass *class)
 {
-  GObjectClass	 *gobject_class;
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass	 *bobject_class;
+  BtkObjectClass *object_class;
+  BtkWidgetClass *widget_class;
 
-  widget_class = (GtkWidgetClass*) class;
-  object_class = (GtkObjectClass*) class;
-  gobject_class = (GObjectClass*) class;
+  widget_class = (BtkWidgetClass*) class;
+  object_class = (BtkObjectClass*) class;
+  bobject_class = (GObjectClass*) class;
 
-  widget_class->realize = gtk_invisible_realize;
-  widget_class->style_set = gtk_invisible_style_set;
-  widget_class->show = gtk_invisible_show;
-  widget_class->size_allocate = gtk_invisible_size_allocate;
+  widget_class->realize = btk_invisible_realize;
+  widget_class->style_set = btk_invisible_style_set;
+  widget_class->show = btk_invisible_show;
+  widget_class->size_allocate = btk_invisible_size_allocate;
 
-  object_class->destroy = gtk_invisible_destroy;
-  gobject_class->set_property = gtk_invisible_set_property;
-  gobject_class->get_property = gtk_invisible_get_property;
-  gobject_class->constructor = gtk_invisible_constructor;
+  object_class->destroy = btk_invisible_destroy;
+  bobject_class->set_property = btk_invisible_set_property;
+  bobject_class->get_property = btk_invisible_get_property;
+  bobject_class->constructor = btk_invisible_constructor;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_SCREEN,
 				   g_param_spec_object ("screen",
  							P_("Screen"),
  							P_("The screen where this window will be displayed"),
-							GDK_TYPE_SCREEN,
- 							GTK_PARAM_READWRITE));
+							BDK_TYPE_SCREEN,
+ 							BTK_PARAM_READWRITE));
 }
 
 static void
-gtk_invisible_init (GtkInvisible *invisible)
+btk_invisible_init (BtkInvisible *invisible)
 {
-  GdkColormap *colormap;
+  BdkColormap *colormap;
   
-  gtk_widget_set_has_window (GTK_WIDGET (invisible), TRUE);
-  _gtk_widget_set_is_toplevel (GTK_WIDGET (invisible), TRUE);
+  btk_widget_set_has_window (BTK_WIDGET (invisible), TRUE);
+  _btk_widget_set_is_toplevel (BTK_WIDGET (invisible), TRUE);
 
   g_object_ref_sink (invisible);
 
   invisible->has_user_ref_count = TRUE;
-  invisible->screen = gdk_screen_get_default ();
+  invisible->screen = bdk_screen_get_default ();
   
-  colormap = _gtk_widget_peek_colormap ();
+  colormap = _btk_widget_peek_colormap ();
   if (colormap)
-    gtk_widget_set_colormap (GTK_WIDGET (invisible), colormap);
+    btk_widget_set_colormap (BTK_WIDGET (invisible), colormap);
 }
 
 static void
-gtk_invisible_destroy (GtkObject *object)
+btk_invisible_destroy (BtkObject *object)
 {
-  GtkInvisible *invisible = GTK_INVISIBLE (object);
+  BtkInvisible *invisible = BTK_INVISIBLE (object);
   
   if (invisible->has_user_ref_count)
     {
@@ -118,164 +118,164 @@ gtk_invisible_destroy (GtkObject *object)
       g_object_unref (invisible);
     }
 
-  GTK_OBJECT_CLASS (gtk_invisible_parent_class)->destroy (object);  
+  BTK_OBJECT_CLASS (btk_invisible_parent_class)->destroy (object);  
 }
 
 /**
- * gtk_invisible_new_for_screen:
- * @screen: a #GdkScreen which identifies on which
- *	    the new #GtkInvisible will be created.
+ * btk_invisible_new_for_screen:
+ * @screen: a #BdkScreen which identifies on which
+ *	    the new #BtkInvisible will be created.
  *
- * Creates a new #GtkInvisible object for a specified screen
+ * Creates a new #BtkInvisible object for a specified screen
  *
- * Return value: a newly created #GtkInvisible object
+ * Return value: a newly created #BtkInvisible object
  *
  * Since: 2.2
  **/
-GtkWidget* 
-gtk_invisible_new_for_screen (GdkScreen *screen)
+BtkWidget* 
+btk_invisible_new_for_screen (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   
-  return g_object_new (GTK_TYPE_INVISIBLE, "screen", screen, NULL);
+  return g_object_new (BTK_TYPE_INVISIBLE, "screen", screen, NULL);
 }
 
 /**
- * gtk_invisible_new:
+ * btk_invisible_new:
  * 
- * Creates a new #GtkInvisible.
+ * Creates a new #BtkInvisible.
  * 
- * Return value: a new #GtkInvisible.
+ * Return value: a new #BtkInvisible.
  **/
-GtkWidget*
-gtk_invisible_new (void)
+BtkWidget*
+btk_invisible_new (void)
 {
-  return g_object_new (GTK_TYPE_INVISIBLE, NULL);
+  return g_object_new (BTK_TYPE_INVISIBLE, NULL);
 }
 
 /**
- * gtk_invisible_set_screen:
- * @invisible: a #GtkInvisible.
- * @screen: a #GdkScreen.
+ * btk_invisible_set_screen:
+ * @invisible: a #BtkInvisible.
+ * @screen: a #BdkScreen.
  *
- * Sets the #GdkScreen where the #GtkInvisible object will be displayed.
+ * Sets the #BdkScreen where the #BtkInvisible object will be displayed.
  *
  * Since: 2.2
  **/ 
 void
-gtk_invisible_set_screen (GtkInvisible *invisible,
-			  GdkScreen    *screen)
+btk_invisible_set_screen (BtkInvisible *invisible,
+			  BdkScreen    *screen)
 {
-  GtkWidget *widget;
-  GdkScreen *previous_screen;
+  BtkWidget *widget;
+  BdkScreen *previous_screen;
   gboolean was_realized;
   
-  g_return_if_fail (GTK_IS_INVISIBLE (invisible));
-  g_return_if_fail (GDK_IS_SCREEN (screen));
+  g_return_if_fail (BTK_IS_INVISIBLE (invisible));
+  g_return_if_fail (BDK_IS_SCREEN (screen));
 
   if (screen == invisible->screen)
     return;
 
-  widget = GTK_WIDGET (invisible);
+  widget = BTK_WIDGET (invisible);
 
   previous_screen = invisible->screen;
-  was_realized = gtk_widget_get_realized (widget);
+  was_realized = btk_widget_get_realized (widget);
 
   if (was_realized)
-    gtk_widget_unrealize (widget);
+    btk_widget_unrealize (widget);
   
   invisible->screen = screen;
   if (screen != previous_screen)
-    _gtk_widget_propagate_screen_changed (widget, previous_screen);
+    _btk_widget_propagate_screen_changed (widget, previous_screen);
   g_object_notify (G_OBJECT (invisible), "screen");
   
   if (was_realized)
-    gtk_widget_realize (widget);
+    btk_widget_realize (widget);
 }
 
 /**
- * gtk_invisible_get_screen:
- * @invisible: a #GtkInvisible.
+ * btk_invisible_get_screen:
+ * @invisible: a #BtkInvisible.
  *
- * Returns the #GdkScreen object associated with @invisible
+ * Returns the #BdkScreen object associated with @invisible
  *
- * Return value: (transfer none): the associated #GdkScreen.
+ * Return value: (transfer none): the associated #BdkScreen.
  *
  * Since: 2.2
  **/
-GdkScreen *
-gtk_invisible_get_screen (GtkInvisible *invisible)
+BdkScreen *
+btk_invisible_get_screen (BtkInvisible *invisible)
 {
-  g_return_val_if_fail (GTK_IS_INVISIBLE (invisible), NULL);
+  g_return_val_if_fail (BTK_IS_INVISIBLE (invisible), NULL);
   
   return invisible->screen;
 }
 
 static void
-gtk_invisible_realize (GtkWidget *widget)
+btk_invisible_realize (BtkWidget *widget)
 {
-  GdkWindow *parent;
-  GdkWindowAttr attributes;
+  BdkWindow *parent;
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
-  parent = gtk_widget_get_parent_window (widget);
+  parent = btk_widget_get_parent_window (widget);
   if (parent == NULL)
-    parent = gtk_widget_get_root_window (widget);
+    parent = btk_widget_get_root_window (widget);
 
   attributes.x = -100;
   attributes.y = -100;
   attributes.width = 10;
   attributes.height = 10;
-  attributes.window_type = GDK_WINDOW_TEMP;
-  attributes.wclass = GDK_INPUT_ONLY;
+  attributes.window_type = BDK_WINDOW_TEMP;
+  attributes.wclass = BDK_INPUT_ONLY;
   attributes.override_redirect = TRUE;
-  attributes.event_mask = gtk_widget_get_events (widget);
+  attributes.event_mask = btk_widget_get_events (widget);
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_NOREDIR;
+  attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_NOREDIR;
 
-  widget->window = gdk_window_new (parent, &attributes, attributes_mask);
+  widget->window = bdk_window_new (parent, &attributes, attributes_mask);
 					      
-  gdk_window_set_user_data (widget->window, widget);
+  bdk_window_set_user_data (widget->window, widget);
   
-  widget->style = gtk_style_attach (widget->style, widget->window);
+  widget->style = btk_style_attach (widget->style, widget->window);
 }
 
 static void
-gtk_invisible_style_set (GtkWidget *widget,
-			 GtkStyle  *previous_style)
+btk_invisible_style_set (BtkWidget *widget,
+			 BtkStyle  *previous_style)
 {
   /* Don't chain up to parent implementation */
 }
 
 static void
-gtk_invisible_show (GtkWidget *widget)
+btk_invisible_show (BtkWidget *widget)
 {
-  GTK_WIDGET_SET_FLAGS (widget, GTK_VISIBLE);
-  gtk_widget_map (widget);
+  BTK_WIDGET_SET_FLAGS (widget, BTK_VISIBLE);
+  btk_widget_map (widget);
 }
 
 static void
-gtk_invisible_size_allocate (GtkWidget     *widget,
-			    GtkAllocation *allocation)
+btk_invisible_size_allocate (BtkWidget     *widget,
+			    BtkAllocation *allocation)
 {
   widget->allocation = *allocation;
 } 
 
 
 static void 
-gtk_invisible_set_property  (GObject      *object,
+btk_invisible_set_property  (GObject      *object,
 			     guint         prop_id,
 			     const GValue *value,
 			     GParamSpec   *pspec)
 {
-  GtkInvisible *invisible = GTK_INVISIBLE (object);
+  BtkInvisible *invisible = BTK_INVISIBLE (object);
   
   switch (prop_id)
     {
     case PROP_SCREEN:
-      gtk_invisible_set_screen (invisible, g_value_get_object (value));
+      btk_invisible_set_screen (invisible, g_value_get_object (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -284,12 +284,12 @@ gtk_invisible_set_property  (GObject      *object,
 }
 
 static void 
-gtk_invisible_get_property  (GObject      *object,
+btk_invisible_get_property  (GObject      *object,
 			     guint         prop_id,
 			     GValue	  *value,
 			     GParamSpec   *pspec)
 {
-  GtkInvisible *invisible = GTK_INVISIBLE (object);
+  BtkInvisible *invisible = BTK_INVISIBLE (object);
 
   switch (prop_id)
     {
@@ -306,20 +306,20 @@ gtk_invisible_get_property  (GObject      *object,
  * the correct screen after the "screen" property has been set
  */
 static GObject*
-gtk_invisible_constructor (GType                  type,
+btk_invisible_constructor (GType                  type,
 			   guint                  n_construct_properties,
 			   GObjectConstructParam *construct_params)
 {
   GObject *object;
 
-  object = G_OBJECT_CLASS (gtk_invisible_parent_class)->constructor (type,
+  object = G_OBJECT_CLASS (btk_invisible_parent_class)->constructor (type,
                                                                      n_construct_properties,
                                                                      construct_params);
 
-  gtk_widget_realize (GTK_WIDGET (object));
+  btk_widget_realize (BTK_WIDGET (object));
 
   return object;
 }
 
-#define __GTK_INVISIBLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_INVISIBLE_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,11 +17,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_UTILS_H__
-#define __GTK_PRINT_UTILS_H__
+#ifndef __BTK_PRINT_UTILS_H__
+#define __BTK_PRINT_UTILS_H__
 
 
-#include "gtkenums.h"
+#include "btkenums.h"
 
 
 G_BEGIN_DECLS
@@ -29,9 +29,9 @@ G_BEGIN_DECLS
 #define MM_PER_INCH 25.4
 #define POINTS_PER_INCH 72
 
-gdouble _gtk_print_convert_to_mm   (gdouble len, GtkUnit unit);
-gdouble _gtk_print_convert_from_mm (gdouble len, GtkUnit unit);
+gdouble _btk_print_convert_to_mm   (gdouble len, BtkUnit unit);
+gdouble _btk_print_convert_from_mm (gdouble len, BtkUnit unit);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_UTILS_H__ */
+#endif /* __BTK_PRINT_UTILS_H__ */

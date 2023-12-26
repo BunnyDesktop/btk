@@ -1,4 +1,4 @@
-/* gtktoggletoolbutton.h
+/* btktoggletoolbutton.h
  *
  * Copyright (C) 2002 Anders Carlsson <andersca@gnome.org>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
@@ -20,58 +20,58 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TOGGLE_TOOL_BUTTON_H__
-#define __GTK_TOGGLE_TOOL_BUTTON_H__
+#ifndef __BTK_TOGGLE_TOOL_BUTTON_H__
+#define __BTK_TOGGLE_TOOL_BUTTON_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktoolbutton.h>
+#include <btk/btktoolbutton.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TOGGLE_TOOL_BUTTON             (gtk_toggle_tool_button_get_type ())
-#define GTK_TOGGLE_TOOL_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TOGGLE_TOOL_BUTTON, GtkToggleToolButton))
-#define GTK_TOGGLE_TOOL_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TOGGLE_TOOL_BUTTON, GtkToggleToolButtonClass))
-#define GTK_IS_TOGGLE_TOOL_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TOGGLE_TOOL_BUTTON))
-#define GTK_IS_TOGGLE_TOOL_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TOGGLE_TOOL_BUTTON))
-#define GTK_TOGGLE_TOOL_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), GTK_TYPE_TOGGLE_TOOL_BUTTON, GtkToggleToolButtonClass))
+#define BTK_TYPE_TOGGLE_TOOL_BUTTON             (btk_toggle_tool_button_get_type ())
+#define BTK_TOGGLE_TOOL_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButton))
+#define BTK_TOGGLE_TOOL_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonClass))
+#define BTK_IS_TOGGLE_TOOL_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON))
+#define BTK_IS_TOGGLE_TOOL_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_TOOL_BUTTON))
+#define BTK_TOGGLE_TOOL_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonClass))
 
-typedef struct _GtkToggleToolButton        GtkToggleToolButton;
-typedef struct _GtkToggleToolButtonClass   GtkToggleToolButtonClass;
-typedef struct _GtkToggleToolButtonPrivate GtkToggleToolButtonPrivate;
+typedef struct _BtkToggleToolButton        BtkToggleToolButton;
+typedef struct _BtkToggleToolButtonClass   BtkToggleToolButtonClass;
+typedef struct _BtkToggleToolButtonPrivate BtkToggleToolButtonPrivate;
 
-struct _GtkToggleToolButton
+struct _BtkToggleToolButton
 {
-  GtkToolButton parent;
+  BtkToolButton parent;
 
   /*< private >*/
-  GtkToggleToolButtonPrivate *GSEAL (priv);
+  BtkToggleToolButtonPrivate *GSEAL (priv);
 };
 
-struct _GtkToggleToolButtonClass
+struct _BtkToggleToolButtonClass
 {
-  GtkToolButtonClass parent_class;
+  BtkToolButtonClass parent_class;
 
   /* signal */
-  void (* toggled) (GtkToggleToolButton *button);
+  void (* toggled) (BtkToggleToolButton *button);
 
   /* Padding for future expansion */
-  void (* _gtk_reserved1) (void);
-  void (* _gtk_reserved2) (void);
-  void (* _gtk_reserved3) (void);
-  void (* _gtk_reserved4) (void);
+  void (* _btk_reserved1) (void);
+  void (* _btk_reserved2) (void);
+  void (* _btk_reserved3) (void);
+  void (* _btk_reserved4) (void);
 };
 
-GType        gtk_toggle_tool_button_get_type       (void) G_GNUC_CONST;
-GtkToolItem *gtk_toggle_tool_button_new            (void);
-GtkToolItem *gtk_toggle_tool_button_new_from_stock (const gchar *stock_id);
+GType        btk_toggle_tool_button_get_type       (void) G_GNUC_CONST;
+BtkToolItem *btk_toggle_tool_button_new            (void);
+BtkToolItem *btk_toggle_tool_button_new_from_stock (const gchar *stock_id);
 
-void         gtk_toggle_tool_button_set_active     (GtkToggleToolButton *button,
+void         btk_toggle_tool_button_set_active     (BtkToggleToolButton *button,
 						    gboolean             is_active);
-gboolean     gtk_toggle_tool_button_get_active     (GtkToggleToolButton *button);
+gboolean     btk_toggle_tool_button_get_active     (BtkToggleToolButton *button);
 
 G_END_DECLS
 
-#endif /* __GTK_TOGGLE_TOOL_BUTTON_H__ */
+#endif /* __BTK_TOGGLE_TOOL_BUTTON_H__ */

@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechooserembed.h: Abstract sizing interface for file selector implementations
+/* BTK - The GIMP Toolkit
+ * btkfilechooserembed.h: Abstract sizing interface for file selector implementations
  * Copyright (C) 2004, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,54 +18,54 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_CHOOSER_EMBED_H__
-#define __GTK_FILE_CHOOSER_EMBED_H__
+#ifndef __BTK_FILE_CHOOSER_EMBED_H__
+#define __BTK_FILE_CHOOSER_EMBED_H__
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FILE_CHOOSER_EMBED             (_gtk_file_chooser_embed_get_type ())
-#define GTK_FILE_CHOOSER_EMBED(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FILE_CHOOSER_EMBED, GtkFileChooserEmbed))
-#define GTK_IS_FILE_CHOOSER_EMBED(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FILE_CHOOSER_EMBED))
-#define GTK_FILE_CHOOSER_EMBED_GET_IFACE(obj)   (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GTK_TYPE_FILE_CHOOSER_EMBED, GtkFileChooserEmbedIface))
+#define BTK_TYPE_FILE_CHOOSER_EMBED             (_btk_file_chooser_embed_get_type ())
+#define BTK_FILE_CHOOSER_EMBED(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbed))
+#define BTK_IS_FILE_CHOOSER_EMBED(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED))
+#define BTK_FILE_CHOOSER_EMBED_GET_IFACE(obj)   (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbedIface))
 
-typedef struct _GtkFileChooserEmbed      GtkFileChooserEmbed;
-typedef struct _GtkFileChooserEmbedIface GtkFileChooserEmbedIface;
+typedef struct _BtkFileChooserEmbed      BtkFileChooserEmbed;
+typedef struct _BtkFileChooserEmbedIface BtkFileChooserEmbedIface;
 
 
-struct _GtkFileChooserEmbedIface
+struct _BtkFileChooserEmbedIface
 {
   GTypeInterface base_iface;
 
   /* Methods
    */
-  void (*get_default_size)        (GtkFileChooserEmbed *chooser_embed,
+  void (*get_default_size)        (BtkFileChooserEmbed *chooser_embed,
 				   gint                *default_width,
 				   gint                *default_height);
 
-  gboolean (*should_respond)      (GtkFileChooserEmbed *chooser_embed);
+  gboolean (*should_respond)      (BtkFileChooserEmbed *chooser_embed);
 
-  void (*initial_focus)           (GtkFileChooserEmbed *chooser_embed);
+  void (*initial_focus)           (BtkFileChooserEmbed *chooser_embed);
   /* Signals
    */
-  void (*default_size_changed)    (GtkFileChooserEmbed *chooser_embed);
-  void (*response_requested)      (GtkFileChooserEmbed *chooser_embed);
+  void (*default_size_changed)    (BtkFileChooserEmbed *chooser_embed);
+  void (*response_requested)      (BtkFileChooserEmbed *chooser_embed);
 };
 
-GType _gtk_file_chooser_embed_get_type (void) G_GNUC_CONST;
+GType _btk_file_chooser_embed_get_type (void) G_GNUC_CONST;
 
-void  _gtk_file_chooser_embed_get_default_size    (GtkFileChooserEmbed *chooser_embed,
+void  _btk_file_chooser_embed_get_default_size    (BtkFileChooserEmbed *chooser_embed,
 						   gint                *default_width,
 						   gint                *default_height);
-gboolean _gtk_file_chooser_embed_should_respond (GtkFileChooserEmbed *chooser_embed);
+gboolean _btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed);
 
-void _gtk_file_chooser_embed_initial_focus (GtkFileChooserEmbed *chooser_embed);
+void _btk_file_chooser_embed_initial_focus (BtkFileChooserEmbed *chooser_embed);
 
-void _gtk_file_chooser_embed_delegate_iface_init  (GtkFileChooserEmbedIface *iface);
-void _gtk_file_chooser_embed_set_delegate         (GtkFileChooserEmbed *receiver,
-						   GtkFileChooserEmbed *delegate);
+void _btk_file_chooser_embed_delegate_iface_init  (BtkFileChooserEmbedIface *iface);
+void _btk_file_chooser_embed_set_delegate         (BtkFileChooserEmbed *receiver,
+						   BtkFileChooserEmbed *delegate);
 
 G_END_DECLS
 
-#endif /* __GTK_FILE_CHOOSER_EMBED_H__ */
+#endif /* __BTK_FILE_CHOOSER_EMBED_H__ */

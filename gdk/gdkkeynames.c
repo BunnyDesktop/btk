@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,52 +18,52 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include <glib/gprintf.h>
+#include <bunnylib/gprintf.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "gdkkeysyms.h"
-#include "gdkinternals.h"
-#include "gdkalias.h"
+#include "bdkkeysyms.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
 
 /* Key handling not part of the keymap */
 
 #include "keyname-table.h"
 
-#define GDK_NUM_KEYS G_N_ELEMENTS (gdk_keys_by_keyval)
+#define BDK_NUM_KEYS G_N_ELEMENTS (bdk_keys_by_keyval)
 
 static int
-gdk_keys_keyval_compare (const void *pkey, const void *pbase)
+bdk_keys_keyval_compare (const void *pkey, const void *pbase)
 {
-  return (*(int *) pkey) - ((gdk_key *) pbase)->keyval;
+  return (*(int *) pkey) - ((bdk_key *) pbase)->keyval;
 }
 
 /**
- * gdk_keyval_name:
+ * bdk_keyval_name:
  * @keyval: a key value
  *
  * Converts a key value into a symbolic name.
  *
  * The names are the same as those in the
- * <filename>&lt;gdk/gdkkeysyms.h&gt;</filename> header file
- * but without the leading "GDK_KEY_".
+ * <filename>&lt;bdk/bdkkeysyms.h&gt;</filename> header file
+ * but without the leading "BDK_KEY_".
  *
  * Return value: (transfer none): a string containing the name of the key,
  *     or %NULL if @keyval is not a valid key. The string should not be
  *     modified.
  */
 gchar*
-gdk_keyval_name (guint keyval)
+bdk_keyval_name (guint keyval)
 {
   static gchar buf[100];
-  gdk_key *found;
+  bdk_key *found;
 
   /* Check for directly encoded 24-bit UCS characters: */
   if ((keyval & 0xff000000) == 0x01000000)
@@ -72,13 +72,13 @@ gdk_keyval_name (guint keyval)
       return buf;
     }
 
-  found = bsearch (&keyval, gdk_keys_by_keyval,
-		   GDK_NUM_KEYS, sizeof (gdk_key),
-		   gdk_keys_keyval_compare);
+  found = bsearch (&keyval, bdk_keys_by_keyval,
+		   BDK_NUM_KEYS, sizeof (bdk_key),
+		   bdk_keys_keyval_compare);
 
   if (found != NULL)
     {
-      while ((found > gdk_keys_by_keyval) &&
+      while ((found > bdk_keys_by_keyval) &&
              ((found - 1)->keyval == keyval))
         found--;
 	    
@@ -94,40 +94,40 @@ gdk_keyval_name (guint keyval)
 }
 
 static int
-gdk_keys_name_compare (const void *pkey, const void *pbase)
+bdk_keys_name_compare (const void *pkey, const void *pbase)
 {
   return strcmp ((const char *) pkey, 
-		 (const char *) (keynames + ((const gdk_key *) pbase)->offset));
+		 (const char *) (keynames + ((const bdk_key *) pbase)->offset));
 }
 
 /**
- * gdk_keyval_from_name:
+ * bdk_keyval_from_name:
  * @keyval_name: a key name
  *
  * Converts a key name to a key value.
  *
  * The names are the same as those in the
- * <filename>&lt;gdk/gdkkeysyms.h&gt;</filename> header file
- * but without the leading "GDK_KEY_".
+ * <filename>&lt;bdk/bdkkeysyms.h&gt;</filename> header file
+ * but without the leading "BDK_KEY_".
  *
- * Returns: the corresponding key value, or %GDK_KEY_VoidSymbol
+ * Returns: the corresponding key value, or %BDK_KEY_VoidSymbol
  *     if the key name is not a valid key
  */
 guint
-gdk_keyval_from_name (const gchar *keyval_name)
+bdk_keyval_from_name (const gchar *keyval_name)
 {
-  gdk_key *found;
+  bdk_key *found;
 
   g_return_val_if_fail (keyval_name != NULL, 0);
   
-  found = bsearch (keyval_name, gdk_keys_by_name,
-		   GDK_NUM_KEYS, sizeof (gdk_key),
-		   gdk_keys_name_compare);
+  found = bsearch (keyval_name, bdk_keys_by_name,
+		   BDK_NUM_KEYS, sizeof (bdk_key),
+		   bdk_keys_name_compare);
   if (found != NULL)
     return found->keyval;
   else
-    return GDK_VoidSymbol;
+    return BDK_VoidSymbol;
 }
 
-#define __GDK_KEYNAMES_C__
-#include "gdkaliasdef.c"
+#define __BDK_KEYNAMES_C__
+#include "bdkaliasdef.c"

@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * testcellrenderertext.c: Tests for the various properties of GtkCellRendererText
+/* BTK - The GIMP Toolkit
+ * testcellrenderertext.c: Tests for the various properties of BtkCellRendererText
  * Copyright (C) 2005, Novell, Inc.
  *
  * Authors:
@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 #define COL_BACKGROUND 15
 #define COL_LINE_NUM   16
@@ -39,26 +39,26 @@ struct cell_params {
   int height;				/* 8 */
   int width_chars;			/* 9 */
   int wrap_width;			/* 10 */
-  PangoWrapMode wrap_mode;		/* 11 */
+  BangoWrapMode wrap_mode;		/* 11 */
   gboolean single_paragraph_mode;	/* 12 */
-  PangoEllipsizeMode ellipsize;		/* 13 */
-  PangoAlignment alignment;			/* 14 */
+  BangoEllipsizeMode ellipsize;		/* 13 */
+  BangoAlignment alignment;			/* 14 */
   /* COL_BACKGROUND	 */		/* 15 */
   /* COL_LINE_NUM */			/* 16 */
 };
 
-#define WO PANGO_WRAP_WORD
-#define CH PANGO_WRAP_CHAR
-#define WC PANGO_WRAP_WORD_CHAR
+#define WO BANGO_WRAP_WORD
+#define CH BANGO_WRAP_CHAR
+#define WC BANGO_WRAP_WORD_CHAR
 
-#define NO PANGO_ELLIPSIZE_NONE
-#define ST PANGO_ELLIPSIZE_START
-#define MI PANGO_ELLIPSIZE_MIDDLE
-#define EN PANGO_ELLIPSIZE_END
+#define NO BANGO_ELLIPSIZE_NONE
+#define ST BANGO_ELLIPSIZE_START
+#define MI BANGO_ELLIPSIZE_MIDDLE
+#define EN BANGO_ELLIPSIZE_END
 
-#define AL PANGO_ALIGN_LEFT
-#define AC PANGO_ALIGN_CENTER
-#define AR PANGO_ALIGN_RIGHT
+#define AL BANGO_ALIGN_LEFT
+#define AC BANGO_ALIGN_CENTER
+#define AR BANGO_ALIGN_RIGHT
 
 #define TESTL "LEFT JUSTIFIED This is really truly verily some very long text\n\330\247\331\204\330\263\331\204\330\247\331\205 \330\271\331\204\331\212\331\203\331\205 \330\247\331\204\330\263\331\204\330\247\331\205 \330\271\331\204\331\212\331\203\331\205 \330\247\331\204\330\263\331\204\330\247\331\205 \330\271\331\204\331\212\331\203\331\205"
 
@@ -99,19 +99,19 @@ static const struct cell_params cell_params[] = {
   { "10 10 .5 1  T  -1 -1 -1 -1 CH F  NO", TESTC, 10, 10, 0.5, 1.0, TRUE,  -1, -1, -1, -1, CH, FALSE, NO , AL }, /* 17 */
   { "10 10 1  1  T  -1 -1 -1 -1 CH F  NO", TESTR, 10, 10, 1.0, 1.0, TRUE,  -1, -1, -1, -1, CH, FALSE, NO , AL }, /* 18 */
 
-  /* Test Pango alignment (not xalign) */
+  /* Test Bango alignment (not xalign) */
   { "0  0  0  0  T  -1 -1 -1 -1 CH F  NO AL", TESTL,  0,  0, 0.0, 0.0, TRUE,  -1, -1, -1, 20, WO, FALSE, NO , AL }, /* 19 */
   { "0  0  0  0  T  -1 -1 -1 -1 CH F  NO AC", TESTC,  0,  0, 0.0, 0.0, TRUE,  -1, -1, -1, 20, WO, FALSE, NO , AC }, /* 20 */
   { "0  0  0  0  T  -1 -1 -1 -1 CH F  NO AR", TESTR,  0,  0, 0.0, 0.0, TRUE,  -1, -1, -1, 20, WO, FALSE, NO , AR }, /* 21 */
 };
 
-static GtkListStore *
+static BtkListStore *
 create_list_store (void)
 {
-  GtkListStore *list_store;
+  BtkListStore *list_store;
   int i;
 
-  list_store = gtk_list_store_new (NUM_COLS,
+  list_store = btk_list_store_new (NUM_COLS,
 				   G_TYPE_STRING,		/* 0 */ 
 				   G_TYPE_STRING,		/* 1 */ 
 				   G_TYPE_INT,			/* 2 */ 
@@ -123,25 +123,25 @@ create_list_store (void)
 				   G_TYPE_INT,			/* 8 */ 
 				   G_TYPE_INT,			/* 9 */ 
 				   G_TYPE_INT,			/* 10 */
-				   PANGO_TYPE_WRAP_MODE,	/* 11 */
+				   BANGO_TYPE_WRAP_MODE,	/* 11 */
 				   G_TYPE_BOOLEAN,		/* 12 */
-				   PANGO_TYPE_ELLIPSIZE_MODE,	/* 13 */
-				   PANGO_TYPE_ALIGNMENT,	/* 14 */
+				   BANGO_TYPE_ELLIPSIZE_MODE,	/* 13 */
+				   BANGO_TYPE_ALIGNMENT,	/* 14 */
 				   G_TYPE_STRING,		/* 15 */
 				   G_TYPE_STRING);		/* 16 */
 
   for (i = 0; i < G_N_ELEMENTS (cell_params); i++)
     {
       const struct cell_params *p;
-      GtkTreeIter iter;
+      BtkTreeIter iter;
       char buf[50];
 
       p = cell_params + i;
 
       g_snprintf (buf, sizeof (buf), "%d", i);
 
-      gtk_list_store_append (list_store, &iter);
-      gtk_list_store_set (list_store, &iter,
+      btk_list_store_append (list_store, &iter);
+      btk_list_store_set (list_store, &iter,
 			  0, p->description,
 			  1, p->test,
 			  2, p->xpad,
@@ -165,51 +165,51 @@ create_list_store (void)
   return list_store;
 }
 
-static GtkWidget *
+static BtkWidget *
 create_tree (gboolean rtl)
 {
-  GtkWidget *sw;
-  GtkWidget *treeview;
-  GtkListStore *list_store;
-  GtkTreeViewColumn *column;
-  GtkCellRenderer *renderer;
-  GdkPixbuf *pixbuf;
+  BtkWidget *sw;
+  BtkWidget *treeview;
+  BtkListStore *list_store;
+  BtkTreeViewColumn *column;
+  BtkCellRenderer *renderer;
+  BdkPixbuf *pixbuf;
 
-  sw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
-  gtk_widget_set_direction (sw, rtl ? GTK_TEXT_DIR_RTL : GTK_TEXT_DIR_LTR);
+  sw = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (sw), BTK_SHADOW_IN);
+  btk_widget_set_direction (sw, rtl ? BTK_TEXT_DIR_RTL : BTK_TEXT_DIR_LTR);
 
   list_store = create_list_store ();
 
-  treeview = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_widget_set_direction (treeview, rtl ? GTK_TEXT_DIR_RTL : GTK_TEXT_DIR_LTR);
-  gtk_container_add (GTK_CONTAINER (sw), treeview);
+  treeview = btk_tree_view_new_with_model (BTK_TREE_MODEL (list_store));
+  btk_widget_set_direction (treeview, rtl ? BTK_TEXT_DIR_RTL : BTK_TEXT_DIR_LTR);
+  btk_container_add (BTK_CONTAINER (sw), treeview);
 
   /* Line number */
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("#",
+  renderer = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("#",
 						     renderer,
 						     "text", COL_LINE_NUM,
 						     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
+  btk_tree_view_append_column (BTK_TREE_VIEW (treeview), column);
 
   /* Description */
 
-  renderer = gtk_cell_renderer_text_new ();
+  renderer = btk_cell_renderer_text_new ();
   g_object_set (renderer,
 		"font", "monospace",
 		NULL);
-  column = gtk_tree_view_column_new_with_attributes ("Description",
+  column = btk_tree_view_column_new_with_attributes ("Description",
 						     renderer,
 						     "text", 0,
 						     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
+  btk_tree_view_append_column (BTK_TREE_VIEW (treeview), column);
 
   /* Test text */
 
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Test",
+  renderer = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("Test",
 						     renderer,
 						     "text", 1,
 						     "xpad", 2,
@@ -227,23 +227,23 @@ create_tree (gboolean rtl)
 						     "alignment", 14,
 						     "cell_background", 15,
 						     NULL);
-  gtk_tree_view_column_set_resizable (column, TRUE);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
+  btk_tree_view_column_set_resizable (column, TRUE);
+  btk_tree_view_append_column (BTK_TREE_VIEW (treeview), column);
 
   /* Empty column */
 
-  pixbuf = gdk_pixbuf_new_from_file ("apple-red.png", NULL);
+  pixbuf = bdk_pixbuf_new_from_file ("apple-red.png", NULL);
 
-  renderer = gtk_cell_renderer_pixbuf_new ();
+  renderer = btk_cell_renderer_pixbuf_new ();
   g_object_set (renderer,
 		"pixbuf", pixbuf,
 		"xpad", 10,
 		"ypad", 10,
 		NULL);
-  column = gtk_tree_view_column_new_with_attributes ("Empty",
+  column = btk_tree_view_column_new_with_attributes ("Empty",
 						     renderer,
 						     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
+  btk_tree_view_append_column (BTK_TREE_VIEW (treeview), column);
 
   return sw;
 }
@@ -251,39 +251,39 @@ create_tree (gboolean rtl)
 int
 main (int argc, char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *vbox;
-  GtkWidget *label;
-  GtkWidget *tree;
+  BtkWidget *window;
+  BtkWidget *vbox;
+  BtkWidget *label;
+  BtkWidget *tree;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
-		    G_CALLBACK (gtk_main_quit), NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (window), 12);
+		    G_CALLBACK (btk_main_quit), NULL);
+  btk_container_set_border_width (BTK_CONTAINER (window), 12);
 
-  vbox = gtk_vbox_new (FALSE, 12);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  vbox = btk_vbox_new (FALSE, 12);
+  btk_container_add (BTK_CONTAINER (window), vbox);
 
   /* LTR */
 
-  label = gtk_label_new ("Left to right");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  label = btk_label_new ("Left to right");
+  btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   tree = create_tree (FALSE);
-  gtk_box_pack_start (GTK_BOX (vbox), tree, TRUE, TRUE, 0);
+  btk_box_pack_start (BTK_BOX (vbox), tree, TRUE, TRUE, 0);
 
   /* RTL */
 
-  label = gtk_label_new ("Right to left");
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+  label = btk_label_new ("Right to left");
+  btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   tree = create_tree (TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), tree, TRUE, TRUE, 0);
+  btk_box_pack_start (BTK_BOX (vbox), tree, TRUE, TRUE, 0);
 
-  gtk_widget_show_all (window);
-  gtk_main ();
+  btk_widget_show_all (window);
+  btk_main ();
 
   return 0;
 }

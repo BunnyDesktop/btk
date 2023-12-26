@@ -1,4 +1,4 @@
-/* gdkdnd-quartz.c
+/* bdkdnd-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -18,16 +18,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "gdkdnd.h"
-#include "gdkprivate-quartz.h"
+#include "bdkdnd.h"
+#include "bdkprivate-quartz.h"
 
 static gpointer parent_class = NULL;
 
 static void
-gdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (GObject *object)
 {
-  GdkDragContext *context = GDK_DRAG_CONTEXT (object);
-  GdkDragContextPrivate *private = GDK_DRAG_CONTEXT_PRIVATE (context);
+  BdkDragContext *context = BDK_DRAG_CONTEXT (object);
+  BdkDragContextPrivate *private = BDK_DRAG_CONTEXT_PRIVATE (context);
  
   g_free (private);
   
@@ -35,25 +35,25 @@ gdk_drag_context_finalize (GObject *object)
 }
 
 static void
-gdk_drag_context_init (GdkDragContext *dragcontext)
+bdk_drag_context_init (BdkDragContext *dragcontext)
 {
-  GdkDragContextPrivate *priv = g_new0 (GdkDragContextPrivate, 1);
+  BdkDragContextPrivate *priv = g_new0 (BdkDragContextPrivate, 1);
 
   dragcontext->windowing_data = priv;
 }
 
 static void
-gdk_drag_context_class_init (GdkDragContextClass *klass)
+bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_drag_context_finalize;
+  object_class->finalize = bdk_drag_context_finalize;
 }
 
 GType
-gdk_drag_context_get_type (void)
+bdk_drag_context_get_type (void)
 {
   static GType object_type = 0;
 
@@ -61,19 +61,19 @@ gdk_drag_context_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkDragContextClass),
+        sizeof (BdkDragContextClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_drag_context_class_init,
+        (GClassInitFunc) bdk_drag_context_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkDragContext),
+        sizeof (BdkDragContext),
         0,              /* n_preallocs */
-        (GInstanceInitFunc) gdk_drag_context_init,
+        (GInstanceInitFunc) bdk_drag_context_init,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkDragContext",
+                                            "BdkDragContext",
                                             &object_info,
 					    0);
     }
@@ -81,89 +81,89 @@ gdk_drag_context_get_type (void)
   return object_type;
 }
 
-GdkDragContext *
-gdk_drag_context_new (void)
+BdkDragContext *
+bdk_drag_context_new (void)
 {
-  return (GdkDragContext *)g_object_new (gdk_drag_context_get_type (), NULL);
+  return (BdkDragContext *)g_object_new (bdk_drag_context_get_type (), NULL);
 }
 
 void            
-gdk_drag_context_ref (GdkDragContext *context)
+bdk_drag_context_ref (BdkDragContext *context)
 {
   g_object_ref (context);
 }
 
 void            
-gdk_drag_context_unref (GdkDragContext *context)
+bdk_drag_context_unref (BdkDragContext *context)
 {
   g_object_unref (context);
 }
 
-GdkDragContext *_gdk_quartz_drag_source_context = NULL;
+BdkDragContext *_bdk_quartz_drag_source_context = NULL;
 
-GdkDragContext *
-gdk_quartz_drag_source_context ()
+BdkDragContext *
+bdk_quartz_drag_source_context ()
 {
-  return _gdk_quartz_drag_source_context;
+  return _bdk_quartz_drag_source_context;
 }
 
-GdkDragContext * 
-gdk_drag_begin (GdkWindow     *window,
+BdkDragContext * 
+bdk_drag_begin (BdkWindow     *window,
 		GList         *targets)
 {
-  g_assert (_gdk_quartz_drag_source_context == NULL);
+  g_assert (_bdk_quartz_drag_source_context == NULL);
   
   /* Create fake context */
-  _gdk_quartz_drag_source_context = gdk_drag_context_new ();
-  _gdk_quartz_drag_source_context->is_source = TRUE;
+  _bdk_quartz_drag_source_context = bdk_drag_context_new ();
+  _bdk_quartz_drag_source_context->is_source = TRUE;
   
-  return _gdk_quartz_drag_source_context;
+  return _bdk_quartz_drag_source_context;
 }
 
 gboolean        
-gdk_drag_motion (GdkDragContext *context,
-		 GdkWindow      *dest_window,
-		 GdkDragProtocol protocol,
+bdk_drag_motion (BdkDragContext *context,
+		 BdkWindow      *dest_window,
+		 BdkDragProtocol protocol,
 		 gint            x_root, 
 		 gint            y_root,
-		 GdkDragAction   suggested_action,
-		 GdkDragAction   possible_actions,
+		 BdkDragAction   suggested_action,
+		 BdkDragAction   possible_actions,
 		 guint32         time)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
-GdkNativeWindow
-gdk_drag_get_protocol_for_display (GdkDisplay      *display,
-				   GdkNativeWindow  xid,
-				   GdkDragProtocol *protocol)
+BdkNativeWindow
+bdk_drag_get_protocol_for_display (BdkDisplay      *display,
+				   BdkNativeWindow  xid,
+				   BdkDragProtocol *protocol)
 {
   /* FIXME: Implement */
   return 0;
 }
 
 void
-gdk_drag_find_window_for_screen (GdkDragContext  *context,
-				 GdkWindow       *drag_window,
-				 GdkScreen       *screen,
+bdk_drag_find_window_for_screen (BdkDragContext  *context,
+				 BdkWindow       *drag_window,
+				 BdkScreen       *screen,
 				 gint             x_root,
 				 gint             y_root,
-				 GdkWindow      **dest_window,
-				 GdkDragProtocol *protocol)
+				 BdkWindow      **dest_window,
+				 BdkDragProtocol *protocol)
 {
   /* FIXME: Implement */
 }
 
 void
-gdk_drag_drop (GdkDragContext *context,
+bdk_drag_drop (BdkDragContext *context,
 	       guint32         time)
 {
   /* FIXME: Implement */
 }
 
 void
-gdk_drag_abort (GdkDragContext *context,
+bdk_drag_abort (BdkDragContext *context,
 		guint32         time)
 {
   g_return_if_fail (context != NULL);
@@ -172,15 +172,15 @@ gdk_drag_abort (GdkDragContext *context,
 }
 
 void             
-gdk_drag_status (GdkDragContext   *context,
-		 GdkDragAction     action,
+bdk_drag_status (BdkDragContext   *context,
+		 BdkDragAction     action,
 		 guint32           time)
 {
   context->action = action;
 }
 
 void 
-gdk_drop_reply (GdkDragContext   *context,
+bdk_drop_reply (BdkDragContext   *context,
 		gboolean          ok,
 		guint32           time)
 {
@@ -190,7 +190,7 @@ gdk_drop_reply (GdkDragContext   *context,
 }
 
 void             
-gdk_drop_finish (GdkDragContext   *context,
+bdk_drop_finish (BdkDragContext   *context,
 		 gboolean          success,
 		 guint32           time)
 {
@@ -198,27 +198,27 @@ gdk_drop_finish (GdkDragContext   *context,
 }
 
 void            
-gdk_window_register_dnd (GdkWindow *window)
+bdk_window_register_dnd (BdkWindow *window)
 {
   /* FIXME: Implement */
 }
 
-GdkAtom       
-gdk_drag_get_selection (GdkDragContext *context)
+BdkAtom       
+bdk_drag_get_selection (BdkDragContext *context)
 {
   /* FIXME: Implement */
-  return GDK_NONE;
+  return BDK_NONE;
 }
 
 gboolean 
-gdk_drag_drop_succeeded (GdkDragContext *context)
+bdk_drag_drop_succeeded (BdkDragContext *context)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
 id
-gdk_quartz_drag_context_get_dragging_info_libgtk_only (GdkDragContext *context)
+bdk_quartz_drag_context_get_dragging_info_libbtk_only (BdkDragContext *context)
 {
-  return GDK_DRAG_CONTEXT_PRIVATE (context)->dragging_info;
+  return BDK_DRAG_CONTEXT_PRIVATE (context)->dragging_info;
 }

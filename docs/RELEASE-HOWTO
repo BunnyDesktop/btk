@@ -1,13 +1,13 @@
-How to do a GTK+ release?
+How to do a BTK+ release?
 =========================
 
 Make sure you have suitable versions of autoconf and libtool.
 Also make sure you have the following packages installed with all their
 dependencies:
-* gtk-doc
+* btk-doc
 * docbook-utils
 Without those packages make distcheck will *not* pass.
-Make sure that gtk-doc is the latest released version.
+Make sure that btk-doc is the latest released version.
 
 
  0) Go back to a pristine working directory. With git, this works:
@@ -15,7 +15,7 @@ Make sure that gtk-doc is the latest released version.
     git clean -f -x
 
  1) autogen and build it, make sure to enable docs by specifying
-    --enable-gtk-doc --enable-man
+    --enable-btk-doc --enable-man
 
  2) Update NEWS based on the content of git log; follow the format
     of prior entries. This includes finding noteworthy new features,
@@ -72,7 +72,7 @@ Make sure that gtk-doc is the latest released version.
 
 11) Tag the release. The git command for doing that looks like
 
-    git tag -m "GTK+ 2.12.10" 2.12.10
+    git tag -m "BTK+ 2.12.10" 2.12.10
 
 12) Push the tagged commit upstream. The git command for doing that is
 
@@ -84,15 +84,15 @@ Make sure that gtk-doc is the latest released version.
     it to download.gnome.org. If you don't have an account on master.gnome.org,
     find someone who can do it for you. The command for this looks like
 
-      scp gtk+-2.12.10.tar.gz matthiasc@master.gnome.org:
+      scp btk+-2.12.10.tar.gz matthiasc@master.gnome.org:
       ssh matthiasc@master.gnome.org
-      install-module gtk+-2.12.10.tar.gz
+      install-module btk+-2.12.10.tar.gz
 
 15) Get the .bz2 tarball and the .md5sum files back from master.gnome.org
     You can probably also create it locally, but I've experienced md5
     mismatches when doing so.
 
-16) Upload the .gz and .bz2 tarballs and checksums to ftp.gtk.org and put
+16) Upload the .gz and .bz2 tarballs and checksums to ftp.btk.org and put
     them in the right directory below /ftp/pub. Pay attention to correct
     ownership, and don't forget to update the LATEST file in the directory.
 
@@ -101,8 +101,8 @@ Make sure that gtk-doc is the latest released version.
     commentary at the top about "what this release is about" and the
     summary of changes.
 
-18) Send it to gnome-announce-list, gtk-list, gtk-app-devel-list and
-    gtk-devel-list. Set reply-to to desktop-devel-list.
+18) Send it to gnome-announce-list, btk-list, btk-app-devel-list and
+    btk-devel-list. Set reply-to to desktop-devel-list.
 
-19) Add a link to the release announcement to www.gtk.org which lives
-    in the gtk-web git module.
+19) Add a link to the release announcement to www.btk.org which lives
+    in the btk-web git module.
