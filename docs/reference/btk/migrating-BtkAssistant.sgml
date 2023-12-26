@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="btk-migrating-BtkAssistant">
+  <chapterinfo>
+    <author>
+      <firstname>Carlos</firstname>
+      <surname>Garnacho</surname>
+      <affiliation>
+	<address>
+	  <email>carlosg@bunny.org</email>
+	</address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Migrating from BunnyDruid to BtkAssistant</title>
+
+  <para>
+    Since version 2.10, BTK+ provides the BtkAssistant widget as a replacement
+    for the <structname>BunnyDruid</structname> widget in the libbunnyui 
+    library.
+  </para>
+
+  <para>
+    Conceptually, both <structname>BtkAssistant</structname> and
+    <structname>BunnyDruid</structname> do the same task, but there are 
+    several areas where the API has been completely redesigned, so this 
+    chapter covers the main changes between both widgets.
+  </para>
+
+  <section id="inserting-pages">
+    <title>Inserting pages</title>
+
+    <para>
+      <structname>BunnyDruid</structname> was implemented as a container for
+	 <structname>BunnyDruidPage</structname> abstract objects, which are
+         implemented by the <structname>BunnyDruidPageEdge</structname> and 
+         <structname>BunnyDruidPageStandard</structname> widgets. Instead, 
+         <structname>BtkAssistant</structname> allows any widget to be a page, 
+         and implements per-page settings (such as page type or title) as 
+         child properties. So instead of:
+    </para>
+
+    <programlisting>
+/* Page 1 */
+page = bunny_druid_page_edge_new (BUNNY_EDGE_START);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
+                                "Welcome to the assistant, it will make your life easier");
+btk_widget_show (page);
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
+
+/* Page 2 */
+page = bunny_druid_page_standard_new ();
+btk_container_add (BTK_CONTAINER (BUNNY_DRUID_PAGE_STANDARD (page)->vbox,
+                   create_page1 ());
+btk_widget_show_all (page);
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
+
+/* Page 3 */
+page = bunny_druid_page_edge_new (BUNNY_EDGE_FINISH);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
+                                "Now you are done, your life is easier");
+btk_widget_show (page);
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
+    </programlisting>
+
+    <para>
+      You have to write:
+    </para>
+
+    <programlisting>
+btk_assistant_append_page (BTK_ASSISTANT (assistant),
+                           btk_label_new ("Welcome to the assistant, it will make your life easier"));
+btk_assistant_append_page (BTK_ASSISTANT (assistant),
+                           create_page1 ());
+btk_assistant_append_page (BTK_ASSISTANT (assistant),
+                           btk_label_new ("Now you are done, your life is easier");
+    </programlisting>
+  </section>
+
+  <section id="decorating-the-assistant-pages">
+    <title>Decorating the assistant pages</title>
+
+    <para>
+      To decorate your assistant pages, <structname>BtkAssistant</structname> provides similar functions
+	 to <structname>BunnyDruid</structname>, so you have to transform code like this:
+    </para>
+
+    <programlisting>
+bunny_druid_page_edge_set_title (BUNNY_DRUID_PAGE_EDGE (page), "Welcome");
+bunny_druid_page_edge_set_logo (BUNNY_DRUID_PAGE_EDGE (page), logo_pixbuf);
+bunny_druid_page_edge_set_watermark (BUNNY_DRUID_PAGE_EDGE (page), watermark_pixbuf);
+    </programlisting>
+
+    <para>
+    Into this:
+    </para>
+
+    <programlisting>
+btk_assistant_set_page_title (BTK_ASSISTANT (assistant), page_widget, "Welcome");
+btk_assistant_set_page_header_image (BTK_ASSISTANT (assistant), page_widget, logo_pixbuf);
+btk_assistant_set_page_side_image (BTK_ASSISTANT (assistant), page_widget, watermark_pixbuf);
+    </programlisting>
+
+    <para>
+      Where page_widget is the widget used as a page.
+    </para>
+  </section>
+
+  <section id="setting-the-page-flow">
+    <title>Setting the page flow</title>
+
+    <para>
+      Here is the area where <structname>BtkAssistant</structname> and <structname>BunnyDruid</structname>
+	 differ the most. While <structname>BunnyDruid</structname> used the "next" and "back" signals from the 
+	 <structname>BunnyDruidPage</structname>, <structname>BtkAssistant</structname> uses the following
+	 techniques:
+    </para>
+
+    <itemizedlist>
+      <listitem>
+	   <para>btk_assistant_set_forward_page_func (): Allows to define a BtkAssistantPageFunc to let the
+	   assistant know which will be the following page given the current page.</para>
+      </listitem>
+      <listitem>
+	   <para>btk_assistant_set_page_complete (): Lets the assistant know whether the specified page is complete
+	   or not, updating buttons state accordingly.</para>
+      </listitem>
+      <listitem>
+	   <para>btk_assistant_set_page_type (): Lets the assistant know the page role and update the buttons
+	   state accordingly. Pages can have the following roles:</para>
+	   <simplelist>
+	     <member>Intro</member>
+		<member>Content</member>
+		<member>Progress</member>
+		<member>Confirmation</member>
+		<member>Summary</member>
+	   </simplelist>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+      A sample BtkAssistantPageFunc could look like this:
+    </para>
+
+    <programlisting>
+static gint
+forward_page_function (gint     current_page,
+                       gpointer data)
+{
+  switch (current_page)
+    {
+    case 0:
+      return 1;
+    case 1:
+      if (check_page1_data ())
+	   return 2;
+	 else
+	   return 3;
+    case 2:
+      return 3;
+    default:
+      return -1;
+    }
+}
+    </programlisting>
+
+  </section>
+</chapter>
+
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("btk-docs.sgml" "book" "part" "chapter")
+End:
+-->

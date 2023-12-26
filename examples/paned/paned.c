@@ -1,69 +1,69 @@
 
 #include <stdio.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
    
 /* Create the list of "messages" */
-static GtkWidget *create_list( void )
+static BtkWidget *create_list( void )
 {
 
-    GtkWidget *scrolled_window;
-    GtkWidget *tree_view;
-    GtkListStore *model;
-    GtkTreeIter iter;
-    GtkCellRenderer *cell;
-    GtkTreeViewColumn *column;
+    BtkWidget *scrolled_window;
+    BtkWidget *tree_view;
+    BtkListStore *model;
+    BtkTreeIter iter;
+    BtkCellRenderer *cell;
+    BtkTreeViewColumn *column;
 
     int i;
    
     /* Create a new scrolled window, with scrollbars only if needed */
-    scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				    GTK_POLICY_AUTOMATIC, 
-				    GTK_POLICY_AUTOMATIC);
+    scrolled_window = btk_scrolled_window_new (NULL, NULL);
+    btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+				    BTK_POLICY_AUTOMATIC, 
+				    BTK_POLICY_AUTOMATIC);
    
-    model = gtk_list_store_new (1, G_TYPE_STRING);
-    tree_view = gtk_tree_view_new ();
-    gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled_window), 
+    model = btk_list_store_new (1, G_TYPE_STRING);
+    tree_view = btk_tree_view_new ();
+    btk_scrolled_window_add_with_viewport (BTK_SCROLLED_WINDOW (scrolled_window), 
                                            tree_view);
-    gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (model));
-    gtk_widget_show (tree_view);
+    btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (model));
+    btk_widget_show (tree_view);
    
     /* Add some messages to the window */
     for (i = 0; i < 10; i++) {
         gchar *msg = g_strdup_printf ("Message #%d", i);
-        gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-        gtk_list_store_set (GTK_LIST_STORE (model), 
+        btk_list_store_append (BTK_LIST_STORE (model), &iter);
+        btk_list_store_set (BTK_LIST_STORE (model), 
 	                    &iter,
                             0, msg,
 	                    -1);
 	g_free (msg);
     }
    
-    cell = gtk_cell_renderer_text_new ();
+    cell = btk_cell_renderer_text_new ();
 
-    column = gtk_tree_view_column_new_with_attributes ("Messages",
+    column = btk_tree_view_column_new_with_attributes ("Messages",
                                                        cell,
                                                        "text", 0,
                                                        NULL);
   
-    gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view),
-	  		         GTK_TREE_VIEW_COLUMN (column));
+    btk_tree_view_append_column (BTK_TREE_VIEW (tree_view),
+	  		         BTK_TREE_VIEW_COLUMN (column));
 
     return scrolled_window;
 }
    
 /* Add some text to our text widget - this is a callback that is invoked
 when our window is realized. We could also force our window to be
-realized with gtk_widget_realize, but it would have to be part of
+realized with btk_widget_realize, but it would have to be part of
 a hierarchy first */
 
-static void insert_text( GtkTextBuffer *buffer )
+static void insert_text( BtkTextBuffer *buffer )
 {
-   GtkTextIter iter;
+   BtkTextIter iter;
  
-   gtk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
+   btk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
 
-   gtk_text_buffer_insert (buffer, &iter,   
+   btk_text_buffer_insert (buffer, &iter,   
     "From: pathfinder@nasa.gov\n"
     "To: mom@nasa.gov\n"
     "Subject: Made it!\n"
@@ -75,24 +75,24 @@ static void insert_text( GtkTextBuffer *buffer )
 }
    
 /* Create a scrolled text area that displays a "message" */
-static GtkWidget *create_text( void )
+static BtkWidget *create_text( void )
 {
-   GtkWidget *scrolled_window;
-   GtkWidget *view;
-   GtkTextBuffer *buffer;
+   BtkWidget *scrolled_window;
+   BtkWidget *view;
+   BtkTextBuffer *buffer;
 
-   view = gtk_text_view_new ();
-   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+   view = btk_text_view_new ();
+   buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (view));
 
-   scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-		   	           GTK_POLICY_AUTOMATIC,
-				   GTK_POLICY_AUTOMATIC);
+   scrolled_window = btk_scrolled_window_new (NULL, NULL);
+   btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+		   	           BTK_POLICY_AUTOMATIC,
+				   BTK_POLICY_AUTOMATIC);
 
-   gtk_container_add (GTK_CONTAINER (scrolled_window), view);
+   btk_container_add (BTK_CONTAINER (scrolled_window), view);
    insert_text (buffer);
 
-   gtk_widget_show_all (scrolled_window);
+   btk_widget_show_all (scrolled_window);
 
    return scrolled_window;
 }
@@ -100,38 +100,38 @@ static GtkWidget *create_text( void )
 int main( int   argc,
           char *argv[] )
 {
-    GtkWidget *window;
-    GtkWidget *vpaned;
-    GtkWidget *list;
-    GtkWidget *text;
+    BtkWidget *window;
+    BtkWidget *vpaned;
+    BtkWidget *list;
+    BtkWidget *text;
 
-    gtk_init (&argc, &argv);
+    btk_init (&argc, &argv);
    
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title (GTK_WINDOW (window), "Paned Windows");
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_window_set_title (BTK_WINDOW (window), "Paned Windows");
     g_signal_connect (G_OBJECT (window), "destroy",
-	              G_CALLBACK (gtk_main_quit), NULL);
-    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
-    gtk_widget_set_size_request (GTK_WIDGET (window), 450, 400);
+	              G_CALLBACK (btk_main_quit), NULL);
+    btk_container_set_border_width (BTK_CONTAINER (window), 10);
+    btk_widget_set_size_request (BTK_WIDGET (window), 450, 400);
 
     /* create a vpaned widget and add it to our toplevel window */
    
-    vpaned = gtk_vpaned_new ();
-    gtk_container_add (GTK_CONTAINER (window), vpaned);
-    gtk_widget_show (vpaned);
+    vpaned = btk_vpaned_new ();
+    btk_container_add (BTK_CONTAINER (window), vpaned);
+    btk_widget_show (vpaned);
    
     /* Now create the contents of the two halves of the window */
    
     list = create_list ();
-    gtk_paned_add1 (GTK_PANED (vpaned), list);
-    gtk_widget_show (list);
+    btk_paned_add1 (BTK_PANED (vpaned), list);
+    btk_widget_show (list);
    
     text = create_text ();
-    gtk_paned_add2 (GTK_PANED (vpaned), text);
-    gtk_widget_show (text);
-    gtk_widget_show (window);
+    btk_paned_add2 (BTK_PANED (vpaned), text);
+    btk_widget_show (text);
+    btk_widget_show (window);
 
-    gtk_main ();
+    btk_main ();
 
     return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * gtkimmoduleime
+ * btkimmoduleime
  * Copyright (C) 2003 Takuro Ashie
  *
  * This library is free software; you can redistribute it and/or
@@ -23,49 +23,49 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtk/gtkintl.h"
-#include "gtk/gtkimmodule.h"
-#include "gtkimcontextime.h"
+#include "btk/btkintl.h"
+#include "btk/btkimmodule.h"
+#include "btkimcontextime.h"
 
-static const GtkIMContextInfo ime_info = {
+static const BtkIMContextInfo ime_info = {
   "ime",
   "Windows IME",
-  "gtk+",
+  "btk+",
   "",
   "ja:ko:zh",
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &ime_info,
 };
 
 #ifndef INCLUDE_IM_ime
 #define MODULE_ENTRY(type,function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_ime_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_ime_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule * module)
 {
-  gtk_im_context_ime_register_type (module);
+  btk_im_context_ime_register_type (module);
 }
 
 MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo *** contexts, int *n_contexts)
+MODULE_ENTRY (void, list) (const BtkIMContextInfo *** contexts, int *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar * context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar * context_id)
 {
   g_return_val_if_fail (context_id, NULL);
 
   if (!strcmp (context_id, "ime"))
-    return g_object_new (GTK_TYPE_IM_CONTEXT_IME, NULL);
+    return g_object_new (BTK_TYPE_IM_CONTEXT_IME, NULL);
   else
     return NULL;
 }

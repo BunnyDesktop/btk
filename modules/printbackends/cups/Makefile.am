@@ -6,33 +6,33 @@ endif
 
 INCLUDES = \
 	-I$(top_srcdir) 				\
-	-I$(top_srcdir)/gtk				\
-	-I$(top_builddir)/gtk				\
-	-I$(top_srcdir)/gdk				\
-	-I$(top_builddir)/gdk				\
+	-I$(top_srcdir)/btk				\
+	-I$(top_builddir)/btk				\
+	-I$(top_srcdir)/bdk				\
+	-I$(top_builddir)/bdk				\
 	$(CUPS_CFLAGS)					\
-	-DGTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
-	$(GTK_DEP_CFLAGS)				\
-	$(GTK_DEBUG_FLAGS)
+	-DBTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
+	$(BTK_DEP_CFLAGS)				\
+	$(BTK_DEBUG_FLAGS)
 
 LDADDS = \
-	$(top_builddir)/gtk/$(gtktargetlib)		\
-	$(top_builddir)/gdk/$(gdktargetlib)		\
-	$(GTK_DEP_LIBS)
+	$(top_builddir)/btk/$(btktargetlib)		\
+	$(top_builddir)/bdk/$(bdktargetlib)		\
+	$(BTK_DEP_LIBS)
 
-backenddir = $(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/printbackends
+backenddir = $(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/printbackends
 
 backend_LTLIBRARIES = libprintbackend-cups.la
 
 libprintbackend_cups_la_SOURCES =	\
-	gtkprintbackendcups.c		\
-	gtkprintercups.c		\
-	gtkcupsutils.c
+	btkprintbackendcups.c		\
+	btkprintercups.c		\
+	btkcupsutils.c
 
 noinst_HEADERS =			\
-	gtkprintbackendcups.h		\
-	gtkprintercups.h		\
-	gtkcupsutils.h
+	btkprintbackendcups.h		\
+	btkprintercups.h		\
+	btkcupsutils.h
 
 libprintbackend_cups_la_LDFLAGS =  -avoid-version -module $(no_undefined)
 libprintbackend_cups_la_LIBADD = $(LDADDS) $(CUPS_LIBS)

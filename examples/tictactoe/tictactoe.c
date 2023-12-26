@@ -1,5 +1,5 @@
 
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#include <gtk/gtksignal.h>
-#include <gtk/gtktable.h>
-#include <gtk/gtktogglebutton.h>
+#include <btk/btksignal.h>
+#include <btk/btktable.h>
+#include <btk/btktogglebutton.h>
 #include "tictactoe.h"
 
 enum {
@@ -29,7 +29,7 @@ enum {
 
 static void tictactoe_class_init          (TictactoeClass *klass);
 static void tictactoe_init                (Tictactoe      *ttt);
-static void tictactoe_toggle              (GtkWidget *widget, Tictactoe *ttt);
+static void tictactoe_toggle              (BtkWidget *widget, Tictactoe *ttt);
 
 static guint tictactoe_signals[LAST_SIGNAL] = { 0 };
 
@@ -53,7 +53,7 @@ tictactoe_get_type (void)
 	(GInstanceInitFunc) tictactoe_init,
       };
 
-      ttt_type = g_type_register_static (GTK_TYPE_TABLE, "Tictactoe", &ttt_info, 0);
+      ttt_type = g_type_register_static (BTK_TYPE_TABLE, "Tictactoe", &ttt_info, 0);
     }
 
   return ttt_type;
@@ -80,25 +80,25 @@ tictactoe_init (Tictactoe *ttt)
 {
   gint i,j;
   
-  gtk_table_resize (GTK_TABLE (ttt), 3, 3);
-  gtk_table_set_homogeneous (GTK_TABLE (ttt), TRUE);
+  btk_table_resize (BTK_TABLE (ttt), 3, 3);
+  btk_table_set_homogeneous (BTK_TABLE (ttt), TRUE);
 
   for (i=0;i<3; i++)
     for (j=0;j<3; j++)      {
-	ttt->buttons[i][j] = gtk_toggle_button_new ();
-	gtk_table_attach_defaults (GTK_TABLE (ttt), ttt->buttons[i][j], 
+	ttt->buttons[i][j] = btk_toggle_button_new ();
+	btk_table_attach_defaults (BTK_TABLE (ttt), ttt->buttons[i][j], 
 				   i, i+1, j, j+1);
 	g_signal_connect (G_OBJECT (ttt->buttons[i][j]), "toggled",
 			  G_CALLBACK (tictactoe_toggle), (gpointer) ttt);
-	gtk_widget_set_size_request (ttt->buttons[i][j], 20, 20);
-	gtk_widget_show (ttt->buttons[i][j]);
+	btk_widget_set_size_request (ttt->buttons[i][j], 20, 20);
+	btk_widget_show (ttt->buttons[i][j]);
       }
 }
 
-GtkWidget*
+BtkWidget*
 tictactoe_new ()
 {
-  return GTK_WIDGET (g_object_new (tictactoe_get_type (), NULL));
+  return BTK_WIDGET (g_object_new (tictactoe_get_type (), NULL));
 }
 
 void	       
@@ -112,7 +112,7 @@ tictactoe_clear (Tictactoe *ttt)
 	g_signal_handlers_block_matched (G_OBJECT (ttt->buttons[i][j]), 
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (ttt->buttons[i][j]),
+	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (ttt->buttons[i][j]),
 				      FALSE);
 	g_signal_handlers_unblock_matched (G_OBJECT (ttt->buttons[i][j]),
                                            G_SIGNAL_MATCH_DATA,
@@ -121,7 +121,7 @@ tictactoe_clear (Tictactoe *ttt)
 }
 
 static void
-tictactoe_toggle (GtkWidget *widget, Tictactoe *ttt)
+tictactoe_toggle (BtkWidget *widget, Tictactoe *ttt)
 {
   int i,k;
 
@@ -142,7 +142,7 @@ tictactoe_toggle (GtkWidget *widget, Tictactoe *ttt)
       for (i = 0; i<3; i++)
 	{
 	  success = success && 
-	    GTK_TOGGLE_BUTTON (ttt->buttons[rwins[k][i]][cwins[k][i]])->active;
+	    BTK_TOGGLE_BUTTON (ttt->buttons[rwins[k][i]][cwins[k][i]])->active;
 	  found = found ||
 	    ttt->buttons[rwins[k][i]][cwins[k][i]] == widget;
 	}

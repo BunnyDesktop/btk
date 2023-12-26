@@ -1,0 +1,14 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+target=@bdktarget@
+
+btk_binary_version=@BTK_BINARY_VERSION@
+btk_host=@host@
+
+Name: BTK+
+Description: BTK+ Unix print support
+Version: @VERSION@
+Requires: btk+-${target}-2.0 @BTK_PACKAGES@
+Cflags: -I${includedir}/btk-unix-print-2.0

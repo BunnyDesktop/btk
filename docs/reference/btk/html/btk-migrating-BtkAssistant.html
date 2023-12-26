@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Migrating from BunnyDruid to BtkAssistant: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
+<link rel="prev" href="btk-migrating-BtkColorButton.html" title="Migrating from BunnyColorPicker to BtkColorButton">
+<link rel="next" href="decorating-the-assistant-pages.html" title="Decorating the assistant pages">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="migrating.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="btk-migrating-BtkColorButton.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="decorating-the-assistant-pages.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="btk-migrating-BtkAssistant"></a>Migrating from BunnyDruid to BtkAssistant</h2></div>
+<div><div class="author">
+<h3 class="author">
+<span class="firstname">Carlos</span> <span class="surname">Garnacho</span>
+</h3>
+<div class="affiliation"><div class="address"><p><br>
+	  <code class="email">&lt;<a class="email" href="mailto:carlosgbunny.org">carlosg<em class="parameter"><code>bunny.org</code></em></a>&gt;</code><br>
+	</p></div></div>
+</div></div>
+</div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="btk-migrating-BtkAssistant.html#inserting-pages">Inserting pages</a></span></dt>
+<dt><span class="section"><a href="decorating-the-assistant-pages.html">Decorating the assistant pages</a></span></dt>
+<dt><span class="section"><a href="setting-the-page-flow.html">Setting the page flow</a></span></dt>
+</dl></div>
+<p>
+    Since version 2.10, BTK+ provides the BtkAssistant widget as a replacement
+    for the <span class="structname">BunnyDruid</span> widget in the libbunnyui 
+    library.
+  </p>
+<p>
+    Conceptually, both <span class="structname">BtkAssistant</span> and
+    <span class="structname">BunnyDruid</span> do the same task, but there are 
+    several areas where the API has been completely redesigned, so this 
+    chapter covers the main changes between both widgets.
+  </p>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="inserting-pages"></a>Inserting pages</h2></div></div></div>
+<p>
+      <span class="structname">BunnyDruid</span> was implemented as a container for
+	 <span class="structname">BunnyDruidPage</span> abstract objects, which are
+         implemented by the <span class="structname">BunnyDruidPageEdge</span> and 
+         <span class="structname">BunnyDruidPageStandard</span> widgets. Instead, 
+         <span class="structname">BtkAssistant</span> allows any widget to be a page, 
+         and implements per-page settings (such as page type or title) as 
+         child properties. So instead of:
+    </p>
+<pre class="programlisting">
+/* Page 1 */
+page = bunny_druid_page_edge_new (BUNNY_EDGE_START);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
+                                "Welcome to the assistant, it will make your life easier");
+btk_widget_show (page);
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
+
+/* Page 2 */
+page = bunny_druid_page_standard_new ();
+btk_container_add (BTK_CONTAINER (BUNNY_DRUID_PAGE_STANDARD (page)-&gt;vbox,
+                   create_page1 ());
+btk_widget_show_all (page);
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
+
+/* Page 3 */
+page = bunny_druid_page_edge_new (BUNNY_EDGE_FINISH);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
+                                "Now you are done, your life is easier");
+btk_widget_show (page);
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
+    </pre>
+<p>
+      You have to write:
+    </p>
+<pre class="programlisting">
+btk_assistant_append_page (BTK_ASSISTANT (assistant),
+                           btk_label_new ("Welcome to the assistant, it will make your life easier"));
+btk_assistant_append_page (BTK_ASSISTANT (assistant),
+                           create_page1 ());
+btk_assistant_append_page (BTK_ASSISTANT (assistant),
+                           btk_label_new ("Now you are done, your life is easier");
+    </pre>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

@@ -1,0 +1,1686 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BtkSettings: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="btkbase.html" title="Part II. BTK+ Core Reference">
+<link rel="prev" href="btk2-Resource-Files.html" title="Resource Files">
+<link rel="next" href="btk2-Bindings.html" title="Bindings">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#BtkSettings.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#BtkSettings.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#BtkSettings.properties" class="shortcut">Properties</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="btkbase.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="btk2-Resource-Files.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="btk2-Bindings.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="BtkSettings"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="BtkSettings.top_of_page"></a>BtkSettings</span></h2>
+<p>BtkSettings</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="BtkSettings.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkSettings.html" title="BtkSettings"><span class="returnvalue">BtkSettings</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-get-default" title="btk_settings_get_default ()">btk_settings_get_default</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkSettings.html" title="BtkSettings"><span class="returnvalue">BtkSettings</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-get-for-screen" title="btk_settings_get_for_screen ()">btk_settings_get_for_screen</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-install-property" title="btk_settings_install_property ()">btk_settings_install_property</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()">btk_settings_install_property_parser</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-rc-property-parse-color" title="btk_rc_property_parse_color ()">btk_rc_property_parse_color</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-rc-property-parse-enum" title="btk_rc_property_parse_enum ()">btk_rc_property_parse_enum</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-rc-property-parse-flags" title="btk_rc_property_parse_flags ()">btk_rc_property_parse_flags</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-rc-property-parse-requisition" title="btk_rc_property_parse_requisition ()">btk_rc_property_parse_requisition</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-rc-property-parse-border" title="btk_rc_property_parse_border ()">btk_rc_property_parse_border</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-set-property-value" title="btk_settings_set_property_value ()">btk_settings_set_property_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-set-string-property" title="btk_settings_set_string_property ()">btk_settings_set_string_property</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-set-long-property" title="btk_settings_set_long_property ()">btk_settings_set_long_property</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkSettings.html#btk-settings-set-double-property" title="btk_settings_set_double_property ()">btk_settings_set_double_property</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type">
+<span class="type">GHashTable</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--color-hash" title="The “color-hash” property">color-hash</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-alternative-button-order" title="The “btk-alternative-button-order” property">btk-alternative-button-order</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-alternative-sort-arrows" title="The “btk-alternative-sort-arrows” property">btk-alternative-sort-arrows</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-auto-mnemonics" title="The “btk-auto-mnemonics” property">btk-auto-mnemonics</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-button-images" title="The “btk-button-images” property">btk-button-images</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-can-change-accels" title="The “btk-can-change-accels” property">btk-can-change-accels</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-color-palette" title="The “btk-color-palette” property">btk-color-palette</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-color-scheme" title="The “btk-color-scheme” property">btk-color-scheme</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-blink" title="The “btk-cursor-blink” property">btk-cursor-blink</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-blink-time" title="The “btk-cursor-blink-time” property">btk-cursor-blink-time</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-blink-timeout" title="The “btk-cursor-blink-timeout” property">btk-cursor-blink-timeout</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-theme-name" title="The “btk-cursor-theme-name” property">btk-cursor-theme-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-theme-size" title="The “btk-cursor-theme-size” property">btk-cursor-theme-size</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-dnd-drag-threshold" title="The “btk-dnd-drag-threshold” property">btk-dnd-drag-threshold</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-double-click-distance" title="The “btk-double-click-distance” property">btk-double-click-distance</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-double-click-time" title="The “btk-double-click-time” property">btk-double-click-time</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-enable-accels" title="The “btk-enable-accels” property">btk-enable-accels</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-enable-animations" title="The “btk-enable-animations” property">btk-enable-animations</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-enable-event-sounds" title="The “btk-enable-event-sounds” property">btk-enable-event-sounds</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-enable-input-feedback-sounds" title="The “btk-enable-input-feedback-sounds” property">btk-enable-input-feedback-sounds</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-enable-mnemonics" title="The “btk-enable-mnemonics” property">btk-enable-mnemonics</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-enable-tooltips" title="The “btk-enable-tooltips” property">btk-enable-tooltips</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-entry-password-hint-timeout" title="The “btk-entry-password-hint-timeout” property">btk-entry-password-hint-timeout</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-entry-select-on-focus" title="The “btk-entry-select-on-focus” property">btk-entry-select-on-focus</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-error-bell" title="The “btk-error-bell” property">btk-error-bell</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-fallback-icon-theme" title="The “btk-fallback-icon-theme” property">btk-fallback-icon-theme</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-file-chooser-backend" title="The “btk-file-chooser-backend” property">btk-file-chooser-backend</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-font-name" title="The “btk-font-name” property">btk-font-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-fontconfig-timestamp" title="The “btk-fontconfig-timestamp” property">btk-fontconfig-timestamp</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-icon-sizes" title="The “btk-icon-sizes” property">btk-icon-sizes</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-icon-theme-name" title="The “btk-icon-theme-name” property">btk-icon-theme-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-im-module" title="The “btk-im-module” property">btk-im-module</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkIMPreeditStyle" title="enum BtkIMPreeditStyle"><span class="type">BtkIMPreeditStyle</span></a></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-im-preedit-style" title="The “btk-im-preedit-style” property">btk-im-preedit-style</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkIMStatusStyle" title="enum BtkIMStatusStyle"><span class="type">BtkIMStatusStyle</span></a></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-im-status-style" title="The “btk-im-status-style” property">btk-im-status-style</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-key-theme-name" title="The “btk-key-theme-name” property">btk-key-theme-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-keynav-cursor-only" title="The “btk-keynav-cursor-only” property">btk-keynav-cursor-only</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-keynav-wrap-around" title="The “btk-keynav-wrap-around” property">btk-keynav-wrap-around</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-label-select-on-focus" title="The “btk-label-select-on-focus” property">btk-label-select-on-focus</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-menu-bar-accel" title="The “btk-menu-bar-accel” property">btk-menu-bar-accel</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-menu-bar-popup-delay" title="The “btk-menu-bar-popup-delay” property">btk-menu-bar-popup-delay</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-menu-images" title="The “btk-menu-images” property">btk-menu-images</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-menu-popdown-delay" title="The “btk-menu-popdown-delay” property">btk-menu-popdown-delay</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-menu-popup-delay" title="The “btk-menu-popup-delay” property">btk-menu-popup-delay</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-modules" title="The “btk-modules” property">btk-modules</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-primary-button-warps-slider" title="The “btk-primary-button-warps-slider” property">btk-primary-button-warps-slider</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-print-backends" title="The “btk-print-backends” property">btk-print-backends</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-print-preview-command" title="The “btk-print-preview-command” property">btk-print-preview-command</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-recent-files-limit" title="The “btk-recent-files-limit” property">btk-recent-files-limit</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-recent-files-max-age" title="The “btk-recent-files-max-age” property">btk-recent-files-max-age</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkCornerType" title="enum BtkCornerType"><span class="type">BtkCornerType</span></a></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-scrolled-window-placement" title="The “btk-scrolled-window-placement” property">btk-scrolled-window-placement</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-show-input-method-menu" title="The “btk-show-input-method-menu” property">btk-show-input-method-menu</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-show-unicode-menu" title="The “btk-show-unicode-menu” property">btk-show-unicode-menu</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-sound-theme-name" title="The “btk-sound-theme-name” property">btk-sound-theme-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-split-cursor" title="The “btk-split-cursor” property">btk-split-cursor</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-theme-name" title="The “btk-theme-name” property">btk-theme-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-timeout-expand" title="The “btk-timeout-expand” property">btk-timeout-expand</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-timeout-initial" title="The “btk-timeout-initial” property">btk-timeout-initial</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-timeout-repeat" title="The “btk-timeout-repeat” property">btk-timeout-repeat</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Themeable-Stock-Images.html#BtkIconSize" title="enum BtkIconSize"><span class="type">BtkIconSize</span></a></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-toolbar-icon-size" title="The “btk-toolbar-icon-size” property">btk-toolbar-icon-size</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkToolbarStyle" title="enum BtkToolbarStyle"><span class="type">BtkToolbarStyle</span></a></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-toolbar-style" title="The “btk-toolbar-style” property">btk-toolbar-style</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-tooltip-browse-mode-timeout" title="The “btk-tooltip-browse-mode-timeout” property">btk-tooltip-browse-mode-timeout</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-tooltip-browse-timeout" title="The “btk-tooltip-browse-timeout” property">btk-tooltip-browse-timeout</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-tooltip-timeout" title="The “btk-tooltip-timeout” property">btk-tooltip-timeout</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-touchscreen-mode" title="The “btk-touchscreen-mode” property">btk-touchscreen-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-xft-antialias" title="The “btk-xft-antialias” property">btk-xft-antialias</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-xft-dpi" title="The “btk-xft-dpi” property">btk-xft-dpi</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-xft-hinting" title="The “btk-xft-hinting” property">btk-xft-hinting</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-xft-hintstyle" title="The “btk-xft-hintstyle” property">btk-xft-hintstyle</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkSettings.html#BtkSettings--btk-xft-rgba" title="The “btk-xft-rgba” property">btk-xft-rgba</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="BtkSettings.html#BtkSettings-struct" title="BtkSettings">BtkSettings</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkSettings.html#BtkSettingsValue" title="struct BtkSettingsValue">BtkSettingsValue</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> BtkSettings
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;btk/btk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="btk-settings-get-default"></a><h3>btk_settings_get_default ()</h3>
+<pre class="programlisting"><a class="link" href="BtkSettings.html" title="BtkSettings"><span class="returnvalue">BtkSettings</span></a> *
+btk_settings_get_default (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the <a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> object for the default BDK screen, creating
+it if necessary. See <a class="link" href="BtkSettings.html#btk-settings-get-for-screen" title="btk_settings_get_for_screen ()"><code class="function">btk_settings_get_for_screen()</code></a>.</p>
+<div class="refsect3">
+<a name="btk-settings-get-default.returns"></a><h4>Returns</h4>
+<p>a <a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> object. If there is no default
+screen, then returns <code class="literal">NULL</code>. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-get-for-screen"></a><h3>btk_settings_get_for_screen ()</h3>
+<pre class="programlisting"><a class="link" href="BtkSettings.html" title="BtkSettings"><span class="returnvalue">BtkSettings</span></a> *
+btk_settings_get_for_screen (<em class="parameter"><code><a href="../html/BdkScreen.html#BdkScreen-struct"><span class="type">BdkScreen</span></a> *screen</code></em>);</pre>
+<p>Gets the <a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> object for <em class="parameter"><code>screen</code></em>
+, creating it if necessary.</p>
+<div class="refsect3">
+<a name="btk-settings-get-for-screen.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>screen</p></td>
+<td class="parameter_description"><p>a <a href="../html/BdkScreen.html#BdkScreen-struct"><span class="type">BdkScreen</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-settings-get-for-screen.returns"></a><h4>Returns</h4>
+<p>a <a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> object. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-install-property"></a><h3>btk_settings_install_property ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_settings_install_property (<em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-install-property-parser"></a><h3>btk_settings_install_property_parser ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_settings_install_property_parser (<em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
+                                      <em class="parameter"><code><a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> parser</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-rc-property-parse-color"></a><h3>btk_rc_property_parse_color ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_rc_property_parse_color (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+                             <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
+                             <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+<p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
+or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses a
+color given either by its name or in the form 
+<code class="literal">{ red, green, blue }</code> where <code class="literal">red</code>, <code class="literal">green</code> and
+<code class="literal">blue</code> are integers between 0 and 65535 or floating-point numbers
+between 0 and 1.</p>
+<div class="refsect3">
+<a name="btk-rc-property-parse-color.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pspec</p></td>
+<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>gstring</p></td>
+<td class="parameter_description"><p>the <span class="type">GString</span> to be parsed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>property_value</p></td>
+<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> values.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-rc-property-parse-color.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>gstring</code></em>
+could be parsed and <em class="parameter"><code>property_value</code></em>
+has been set to the resulting <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-rc-property-parse-enum"></a><h3>btk_rc_property_parse_enum ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_rc_property_parse_enum (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+                            <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
+                            <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+<p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
+or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses a single
+enumeration value.</p>
+<p>The enumeration value can be specified by its name, its nickname or
+its numeric value. For consistency with flags parsing, the value
+may be surrounded by parentheses.</p>
+<div class="refsect3">
+<a name="btk-rc-property-parse-enum.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pspec</p></td>
+<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>gstring</p></td>
+<td class="parameter_description"><p>the <span class="type">GString</span> to be parsed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>property_value</p></td>
+<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold enum values.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-rc-property-parse-enum.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>gstring</code></em>
+could be parsed and <em class="parameter"><code>property_value</code></em>
+has been set to the resulting <span class="type">GEnumValue</span>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-rc-property-parse-flags"></a><h3>btk_rc_property_parse_flags ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_rc_property_parse_flags (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+                             <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
+                             <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+<p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
+or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses flags. </p>
+<p>Flags can be specified by their name, their nickname or
+numerically. Multiple flags can be specified in the form 
+<code class="literal">"( flag1 | flag2 | ... )"</code>.</p>
+<div class="refsect3">
+<a name="btk-rc-property-parse-flags.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pspec</p></td>
+<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>gstring</p></td>
+<td class="parameter_description"><p>the <span class="type">GString</span> to be parsed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>property_value</p></td>
+<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold flags values.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-rc-property-parse-flags.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>gstring</code></em>
+could be parsed and <em class="parameter"><code>property_value</code></em>
+has been set to the resulting flags value.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-rc-property-parse-requisition"></a><h3>btk_rc_property_parse_requisition ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_rc_property_parse_requisition (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+                                   <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
+                                   <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+<p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
+or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses a
+requisition in the form 
+<code class="literal">"{ width, height }"</code> for integers <code class="literal">width</code> and <code class="literal">height</code>.</p>
+<div class="refsect3">
+<a name="btk-rc-property-parse-requisition.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pspec</p></td>
+<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>gstring</p></td>
+<td class="parameter_description"><p>the <span class="type">GString</span> to be parsed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>property_value</p></td>
+<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold boxed values.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-rc-property-parse-requisition.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>gstring</code></em>
+could be parsed and <em class="parameter"><code>property_value</code></em>
+has been set to the resulting <a class="link" href="BtkWidget.html#BtkRequisition"><span class="type">BtkRequisition</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-rc-property-parse-border"></a><h3>btk_rc_property_parse_border ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_rc_property_parse_border (<em class="parameter"><code>const <span class="type">GParamSpec</span> *pspec</code></em>,
+                              <em class="parameter"><code>const <span class="type">GString</span> *gstring</code></em>,
+                              <em class="parameter"><code><span class="type">GValue</span> *property_value</code></em>);</pre>
+<p>A <a class="link" href="BtkStyle.html#BtkRcPropertyParser" title="BtkRcPropertyParser ()"><span class="type">BtkRcPropertyParser</span></a> for use with <a class="link" href="BtkSettings.html#btk-settings-install-property-parser" title="btk_settings_install_property_parser ()"><code class="function">btk_settings_install_property_parser()</code></a>
+or <a class="link" href="BtkWidget.html#btk-widget-class-install-style-property-parser" title="btk_widget_class_install_style_property_parser ()"><code class="function">btk_widget_class_install_style_property_parser()</code></a> which parses
+borders in the form 
+<code class="literal">"{ left, right, top, bottom }"</code> for integers 
+<code class="literal">left</code>, <code class="literal">right</code>, <code class="literal">top</code> and <code class="literal">bottom</code>.</p>
+<div class="refsect3">
+<a name="btk-rc-property-parse-border.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pspec</p></td>
+<td class="parameter_description"><p>a <span class="type">GParamSpec</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>gstring</p></td>
+<td class="parameter_description"><p>the <span class="type">GString</span> to be parsed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>property_value</p></td>
+<td class="parameter_description"><p>a <span class="type">GValue</span> which must hold boxed values.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-rc-property-parse-border.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if <em class="parameter"><code>gstring</code></em>
+could be parsed and <em class="parameter"><code>property_value</code></em>
+has been set to the resulting <a class="link" href="BtkStyle.html#BtkBorder"><span class="type">BtkBorder</span></a>.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-set-property-value"></a><h3>btk_settings_set_property_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_settings_set_property_value (<em class="parameter"><code><a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> *settings</code></em>,
+                                 <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                 <em class="parameter"><code>const <a class="link" href="BtkSettings.html#BtkSettingsValue" title="struct BtkSettingsValue"><span class="type">BtkSettingsValue</span></a> *svalue</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-set-string-property"></a><h3>btk_settings_set_string_property ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_settings_set_string_property (<em class="parameter"><code><a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> *settings</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *v_string</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *origin</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-set-long-property"></a><h3>btk_settings_set_long_property ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_settings_set_long_property (<em class="parameter"><code><a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> *settings</code></em>,
+                                <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                <em class="parameter"><code><span class="type">glong</span> v_long</code></em>,
+                                <em class="parameter"><code>const <span class="type">gchar</span> *origin</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-settings-set-double-property"></a><h3>btk_settings_set_double_property ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_settings_set_double_property (<em class="parameter"><code><a class="link" href="BtkSettings.html" title="BtkSettings"><span class="type">BtkSettings</span></a> *settings</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
+                                  <em class="parameter"><code><span class="type">gdouble</span> v_double</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *origin</code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BtkSettings-struct"></a><h3>BtkSettings</h3>
+<pre class="programlisting">typedef struct _BtkSettings BtkSettings;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettingsValue"></a><h3>struct BtkSettingsValue</h3>
+<pre class="programlisting">struct BtkSettingsValue {
+  /* origin should be something like "filename:linenumber" for rc files,
+   * or e.g. "XProperty" for other sources
+   */
+  gchar *origin;
+
+  /* valid types are LONG, DOUBLE and STRING corresponding to the token parsed,
+   * or a GSTRING holding an unparsed statement
+   */
+  GValue value;
+};
+</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkSettings.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="BtkSettings--color-hash"></a><h3>The <code class="literal">“color-hash”</code> property</h3>
+<pre class="programlisting">  “color-hash”               <span class="type">GHashTable</span> *</pre>
+<p>Holds a hash table representation of the <a class="link" href="BtkSettings.html#BtkSettings--btk-color-scheme" title="The “btk-color-scheme” property"><span class="type">“btk-color-scheme”</span></a>
+
+setting, mapping color names to <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a>s.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-alternative-button-order"></a><h3>The <code class="literal">“btk-alternative-button-order”</code> property</h3>
+<pre class="programlisting">  “btk-alternative-button-order” <span class="type">gboolean</span></pre>
+<p>Whether buttons in dialogs should use the alternative button order.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-alternative-sort-arrows"></a><h3>The <code class="literal">“btk-alternative-sort-arrows”</code> property</h3>
+<pre class="programlisting">  “btk-alternative-sort-arrows” <span class="type">gboolean</span></pre>
+<p>Controls the direction of the sort indicators in sorted list and tree
+views. By default an arrow pointing down means the column is sorted
+in ascending order. When set to <code class="literal">TRUE</code>, this order will be inverted.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-auto-mnemonics"></a><h3>The <code class="literal">“btk-auto-mnemonics”</code> property</h3>
+<pre class="programlisting">  “btk-auto-mnemonics”       <span class="type">gboolean</span></pre>
+<p>Whether mnemonics should be automatically shown and hidden when the user
+presses the mnemonic activator.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: <a class="link" href="api-index-2-20.html#api-index-2.20">2.20</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-button-images"></a><h3>The <code class="literal">“btk-button-images”</code> property</h3>
+<pre class="programlisting">  “btk-button-images”        <span class="type">gboolean</span></pre>
+<p>Whether images should be shown on buttons.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-can-change-accels"></a><h3>The <code class="literal">“btk-can-change-accels”</code> property</h3>
+<pre class="programlisting">  “btk-can-change-accels”    <span class="type">gboolean</span></pre>
+<p>Whether menu accelerators can be changed by pressing a key over the menu item.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-color-palette"></a><h3>The <code class="literal">“btk-color-palette”</code> property</h3>
+<pre class="programlisting">  “btk-color-palette”        <span class="type">char</span> *</pre>
+<p>Palette to use in the color selector.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "black:white:gray50:red:purple:blue:light blue:green:yellow:orange:lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90"</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-color-scheme"></a><h3>The <code class="literal">“btk-color-scheme”</code> property</h3>
+<pre class="programlisting">  “btk-color-scheme”         <span class="type">char</span> *</pre>
+<p>A palette of named colors for use in themes. The format of the string is</p>
+<pre class="programlisting">
+name1: color1
+name2: color2
+...
+</pre>
+<p>Color names must be acceptable as identifiers in the </p>
+btkrc syntax, and
+<p>color specifications must be in the format accepted by
+<a href="../html/bdk2-Colormaps-and-Colors.html#bdk-color-parse"><code class="function">bdk_color_parse()</code></a>.</p>
+<p>Note that due to the way the color tables from different sources are
+merged, color specifications will be converted to hexadecimal form
+when getting this property.</p>
+<p>Starting with BTK+ 2.12, the entries can alternatively be separated
+by ';' instead of newlines:</p>
+<pre class="programlisting">
+name1: color1; name2: color2; ...
+</pre>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: ""</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-cursor-blink"></a><h3>The <code class="literal">“btk-cursor-blink”</code> property</h3>
+<pre class="programlisting">  “btk-cursor-blink”         <span class="type">gboolean</span></pre>
+<p>Whether the cursor should blink. </p>
+<p>Also see the <a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-blink-timeout" title="The “btk-cursor-blink-timeout” property"><span class="type">“btk-cursor-blink-timeout”</span></a> setting,
+
+which allows more flexible control over cursor blinking.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-cursor-blink-time"></a><h3>The <code class="literal">“btk-cursor-blink-time”</code> property</h3>
+<pre class="programlisting">  “btk-cursor-blink-time”    <span class="type">int</span></pre>
+<p>Length of the cursor blink cycle, in milliseconds.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 100</p>
+<p>Default value: 1200</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-cursor-blink-timeout"></a><h3>The <code class="literal">“btk-cursor-blink-timeout”</code> property</h3>
+<pre class="programlisting">  “btk-cursor-blink-timeout” <span class="type">int</span></pre>
+<p>Time after which the cursor stops blinking, in seconds.
+The timer is reset after each user interaction.</p>
+<p>Setting this to zero has the same effect as setting
+<a class="link" href="BtkSettings.html#BtkSettings--btk-cursor-blink" title="The “btk-cursor-blink” property"><span class="type">“btk-cursor-blink”</span></a> to <code class="literal">FALSE</code>.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 1</p>
+<p>Default value: 2147483647</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-cursor-theme-name"></a><h3>The <code class="literal">“btk-cursor-theme-name”</code> property</h3>
+<pre class="programlisting">  “btk-cursor-theme-name”    <span class="type">char</span> *</pre>
+<p>Name of the cursor theme to use, or NULL to use the default theme.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-cursor-theme-size"></a><h3>The <code class="literal">“btk-cursor-theme-size”</code> property</h3>
+<pre class="programlisting">  “btk-cursor-theme-size”    <span class="type">int</span></pre>
+<p>Size to use for cursors, or 0 to use the default size.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [0,128]</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-dnd-drag-threshold"></a><h3>The <code class="literal">“btk-dnd-drag-threshold”</code> property</h3>
+<pre class="programlisting">  “btk-dnd-drag-threshold”   <span class="type">int</span></pre>
+<p>Number of pixels the cursor can move before dragging.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 1</p>
+<p>Default value: 8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-double-click-distance"></a><h3>The <code class="literal">“btk-double-click-distance”</code> property</h3>
+<pre class="programlisting">  “btk-double-click-distance” <span class="type">int</span></pre>
+<p>Maximum distance allowed between two clicks for them to be considered a double click (in pixels).</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 5</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-double-click-time"></a><h3>The <code class="literal">“btk-double-click-time”</code> property</h3>
+<pre class="programlisting">  “btk-double-click-time”    <span class="type">int</span></pre>
+<p>Maximum time allowed between two clicks for them to be considered a double click (in milliseconds).</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 250</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-enable-accels"></a><h3>The <code class="literal">“btk-enable-accels”</code> property</h3>
+<pre class="programlisting">  “btk-enable-accels”        <span class="type">gboolean</span></pre>
+<p>Whether menu items should have visible accelerators which can be
+activated.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-enable-animations"></a><h3>The <code class="literal">“btk-enable-animations”</code> property</h3>
+<pre class="programlisting">  “btk-enable-animations”    <span class="type">gboolean</span></pre>
+<p>Whether to enable toolkit-wide animations.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-enable-event-sounds"></a><h3>The <code class="literal">“btk-enable-event-sounds”</code> property</h3>
+<pre class="programlisting">  “btk-enable-event-sounds”  <span class="type">gboolean</span></pre>
+<p>Whether to play any event sounds at all.</p>
+<p>See the <a class="ulink" href="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec" target="_top">Sound Theme spec</a>
+
+for more information on event sounds and sound themes.</p>
+<p>BTK+ itself does not support event sounds, you have to use a loadable
+
+module like the one that comes with libcanberra.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-14.html#api-index-2.14">2.14</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-enable-input-feedback-sounds"></a><h3>The <code class="literal">“btk-enable-input-feedback-sounds”</code> property</h3>
+<pre class="programlisting">  “btk-enable-input-feedback-sounds” <span class="type">gboolean</span></pre>
+<p>Whether to play event sounds as feedback to user input.</p>
+<p>See the <a class="ulink" href="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec" target="_top">Sound Theme spec</a>
+
+for more information on event sounds and sound themes.</p>
+<p>BTK+ itself does not support event sounds, you have to use a loadable
+
+module like the one that comes with libcanberra.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-14.html#api-index-2.14">2.14</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-enable-mnemonics"></a><h3>The <code class="literal">“btk-enable-mnemonics”</code> property</h3>
+<pre class="programlisting">  “btk-enable-mnemonics”     <span class="type">gboolean</span></pre>
+<p>Whether labels and menu items should have visible mnemonics which
+can be activated.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-enable-tooltips"></a><h3>The <code class="literal">“btk-enable-tooltips”</code> property</h3>
+<pre class="programlisting">  “btk-enable-tooltips”      <span class="type">gboolean</span></pre>
+<p>Whether tooltips should be shown on widgets.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-14.html#api-index-2.14">2.14</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-entry-password-hint-timeout"></a><h3>The <code class="literal">“btk-entry-password-hint-timeout”</code> property</h3>
+<pre class="programlisting">  “btk-entry-password-hint-timeout” <span class="type">guint</span></pre>
+<p>How long to show the last input character in hidden
+entries. This value is in milliseconds. 0 disables showing the
+last char. 600 is a good value for enabling it.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-entry-select-on-focus"></a><h3>The <code class="literal">“btk-entry-select-on-focus”</code> property</h3>
+<pre class="programlisting">  “btk-entry-select-on-focus” <span class="type">gboolean</span></pre>
+<p>Whether to select the contents of an entry when it is focused.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-error-bell"></a><h3>The <code class="literal">“btk-error-bell”</code> property</h3>
+<pre class="programlisting">  “btk-error-bell”           <span class="type">gboolean</span></pre>
+<p>When <code class="literal">TRUE</code>, keyboard navigation and other input-related errors
+will cause a beep. Since the error bell is implemented using
+<a href="../html/bdk2-Windows.html#bdk-window-beep"><code class="function">bdk_window_beep()</code></a>, the windowing system may offer ways to
+configure the error bell in many ways, such as flashing the
+window or similar visual effects.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-fallback-icon-theme"></a><h3>The <code class="literal">“btk-fallback-icon-theme”</code> property</h3>
+<pre class="programlisting">  “btk-fallback-icon-theme”  <span class="type">char</span> *</pre>
+<p>Name of a icon theme to fall back to.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-file-chooser-backend"></a><h3>The <code class="literal">“btk-file-chooser-backend”</code> property</h3>
+<pre class="programlisting">  “btk-file-chooser-backend” <span class="type">char</span> *</pre>
+<p>Name of the BtkFileChooser backend to use by default.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-font-name"></a><h3>The <code class="literal">“btk-font-name”</code> property</h3>
+<pre class="programlisting">  “btk-font-name”            <span class="type">char</span> *</pre>
+<p>Name of default font to use.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "Sans 10"</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-fontconfig-timestamp"></a><h3>The <code class="literal">“btk-fontconfig-timestamp”</code> property</h3>
+<pre class="programlisting">  “btk-fontconfig-timestamp” <span class="type">guint</span></pre>
+<p>Timestamp of current fontconfig configuration.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-icon-sizes"></a><h3>The <code class="literal">“btk-icon-sizes”</code> property</h3>
+<pre class="programlisting">  “btk-icon-sizes”           <span class="type">char</span> *</pre>
+<p>A list of icon sizes. The list is separated by colons, and
+item has the form:</p>
+<p><em class="replaceable"><code>size-name</code></em> = <em class="replaceable"><code>width</code></em> , <em class="replaceable"><code>height</code></em></p>
+<p>E.g. "btk-menu=16,16:btk-button=20,20:btk-dialog=48,48".
+
+BTK+ itself use the following named icon sizes: btk-menu,
+
+btk-button, btk-small-toolbar, btk-large-toolbar, btk-dnd,
+
+btk-dialog. Applications can register their own named icon
+
+sizes with <a class="link" href="btk2-Themeable-Stock-Images.html#btk-icon-size-register" title="btk_icon_size_register ()"><code class="function">btk_icon_size_register()</code></a>.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-icon-theme-name"></a><h3>The <code class="literal">“btk-icon-theme-name”</code> property</h3>
+<pre class="programlisting">  “btk-icon-theme-name”      <span class="type">char</span> *</pre>
+<p>Name of icon theme to use.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "hicolor"</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-im-module"></a><h3>The <code class="literal">“btk-im-module”</code> property</h3>
+<pre class="programlisting">  “btk-im-module”            <span class="type">char</span> *</pre>
+<p>Which IM (input method) module should be used by default. This is the
+
+input method that will be used if the user has not explicitly chosen
+
+another input method from the IM context menu.
+
+This also can be a colon-separated list of input methods, which BTK+
+will try in turn until it finds one available on the system.</p>
+<p>See <a class="link" href="BtkIMContext.html" title="BtkIMContext"><span class="type">BtkIMContext</span></a> and see the <a class="link" href="BtkSettings.html#BtkSettings--btk-show-input-method-menu" title="The “btk-show-input-method-menu” property"><span class="type">“btk-show-input-method-menu”</span></a> property.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-im-preedit-style"></a><h3>The <code class="literal">“btk-im-preedit-style”</code> property</h3>
+<pre class="programlisting">  “btk-im-preedit-style”     <a class="link" href="btk2-Standard-Enumerations.html#BtkIMPreeditStyle" title="enum BtkIMPreeditStyle"><span class="type">BtkIMPreeditStyle</span></a></pre>
+<p>How to draw the input method preedit string.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_IM_PREEDIT_CALLBACK</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-im-status-style"></a><h3>The <code class="literal">“btk-im-status-style”</code> property</h3>
+<pre class="programlisting">  “btk-im-status-style”      <a class="link" href="btk2-Standard-Enumerations.html#BtkIMStatusStyle" title="enum BtkIMStatusStyle"><span class="type">BtkIMStatusStyle</span></a></pre>
+<p>How to draw the input method statusbar.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_IM_STATUS_CALLBACK</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-key-theme-name"></a><h3>The <code class="literal">“btk-key-theme-name”</code> property</h3>
+<pre class="programlisting">  “btk-key-theme-name”       <span class="type">char</span> *</pre>
+<p>Name of key theme RC file to load.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-keynav-cursor-only"></a><h3>The <code class="literal">“btk-keynav-cursor-only”</code> property</h3>
+<pre class="programlisting">  “btk-keynav-cursor-only”   <span class="type">gboolean</span></pre>
+<p>When <code class="literal">TRUE</code>, keyboard navigation should be able to reach all widgets
+by using the cursor keys only. Tab, Shift etc. keys can't be expected
+to be present on the used input device.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-keynav-wrap-around"></a><h3>The <code class="literal">“btk-keynav-wrap-around”</code> property</h3>
+<pre class="programlisting">  “btk-keynav-wrap-around”   <span class="type">gboolean</span></pre>
+<p>When <code class="literal">TRUE</code>, some widgets will wrap around when doing keyboard
+navigation, such as menus, menubars and notebooks.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-label-select-on-focus"></a><h3>The <code class="literal">“btk-label-select-on-focus”</code> property</h3>
+<pre class="programlisting">  “btk-label-select-on-focus” <span class="type">gboolean</span></pre>
+<p>Whether to select the contents of a selectable label when it is focused.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-menu-bar-accel"></a><h3>The <code class="literal">“btk-menu-bar-accel”</code> property</h3>
+<pre class="programlisting">  “btk-menu-bar-accel”       <span class="type">char</span> *</pre>
+<p>Keybinding to activate the menu bar.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "F10"</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-menu-bar-popup-delay"></a><h3>The <code class="literal">“btk-menu-bar-popup-delay”</code> property</h3>
+<pre class="programlisting">  “btk-menu-bar-popup-delay” <span class="type">int</span></pre>
+<p>Delay before the submenus of a menu bar appear.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-menu-images"></a><h3>The <code class="literal">“btk-menu-images”</code> property</h3>
+<pre class="programlisting">  “btk-menu-images”          <span class="type">gboolean</span></pre>
+<p>Whether images should be shown in menus.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-menu-popdown-delay"></a><h3>The <code class="literal">“btk-menu-popdown-delay”</code> property</h3>
+<pre class="programlisting">  “btk-menu-popdown-delay”   <span class="type">int</span></pre>
+<p>The time before hiding a submenu when the pointer is moving towards the submenu.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 1000</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-menu-popup-delay"></a><h3>The <code class="literal">“btk-menu-popup-delay”</code> property</h3>
+<pre class="programlisting">  “btk-menu-popup-delay”     <span class="type">int</span></pre>
+<p>Minimum time the pointer must stay over a menu item before the submenu appear.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 225</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-modules"></a><h3>The <code class="literal">“btk-modules”</code> property</h3>
+<pre class="programlisting">  “btk-modules”              <span class="type">char</span> *</pre>
+<p>List of currently active BTK modules.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-primary-button-warps-slider"></a><h3>The <code class="literal">“btk-primary-button-warps-slider”</code> property</h3>
+<pre class="programlisting">  “btk-primary-button-warps-slider” <span class="type">gboolean</span></pre>
+<p>Whether a click in a <a class="link" href="BtkRange.html" title="BtkRange"><span class="type">BtkRange</span></a> trough should scroll to the click position or
+scroll by a single page in the respective direction.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: <a class="link" href="api-index-2-24.html#api-index-2.24">2.24</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-print-backends"></a><h3>The <code class="literal">“btk-print-backends”</code> property</h3>
+<pre class="programlisting">  “btk-print-backends”       <span class="type">char</span> *</pre>
+<p>A comma-separated list of print backends to use in the print
+dialog. Available print backends depend on the BTK+ installation,
+and may include "file", "cups", "lpr" or "papi".</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "file,cups"</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-print-preview-command"></a><h3>The <code class="literal">“btk-print-preview-command”</code> property</h3>
+<pre class="programlisting">  “btk-print-preview-command” <span class="type">char</span> *</pre>
+<p>A command to run for displaying the print preview. The command
+should contain a <code class="literal">f</code> placeholder, which will get replaced by
+the path to the pdf file. The command may also contain a <code class="literal">s</code>
+placeholder, which will get replaced by the path to a file
+containing the print settings in the format produced by
+
+<a class="link" href="BtkPrintSettings.html#btk-print-settings-to-file" title="btk_print_settings_to_file ()"><code class="function">btk_print_settings_to_file()</code></a>.</p>
+<p>The preview application is responsible for removing the pdf file
+and the print settings file when it is done.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "evince --unlink-tempfile --preview --print-settings %s %f"</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-recent-files-limit"></a><h3>The <code class="literal">“btk-recent-files-limit”</code> property</h3>
+<pre class="programlisting">  “btk-recent-files-limit”   <span class="type">int</span></pre>
+<p>The number of recently used files that should be displayed by default by
+<a class="link" href="BtkRecentChooser.html" title="BtkRecentChooser"><span class="type">BtkRecentChooser</span></a> implementations and by the <a class="link" href="BtkFileChooser.html" title="BtkFileChooser"><span class="type">BtkFileChooser</span></a>. A value of
+-1 means every recently used file stored.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= -1</p>
+<p>Default value: 50</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-recent-files-max-age"></a><h3>The <code class="literal">“btk-recent-files-max-age”</code> property</h3>
+<pre class="programlisting">  “btk-recent-files-max-age” <span class="type">int</span></pre>
+<p>The maximum age, in days, of the items inside the recently used
+resources list. Items older than this setting will be excised
+from the list. If set to 0, the list will always be empty; if
+set to -1, no item will be removed.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= -1</p>
+<p>Default value: 30</p>
+<p class="since">Since: <a class="link" href="api-index-2-14.html#api-index-2.14">2.14</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-scrolled-window-placement"></a><h3>The <code class="literal">“btk-scrolled-window-placement”</code> property</h3>
+<pre class="programlisting">  “btk-scrolled-window-placement” <a class="link" href="btk2-Standard-Enumerations.html#BtkCornerType" title="enum BtkCornerType"><span class="type">BtkCornerType</span></a></pre>
+<p>Where the contents of scrolled windows are located with respect to the
+
+scrollbars, if not overridden by the scrolled window's own placement.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_CORNER_TOP_LEFT</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-show-input-method-menu"></a><h3>The <code class="literal">“btk-show-input-method-menu”</code> property</h3>
+<pre class="programlisting">  “btk-show-input-method-menu” <span class="type">gboolean</span></pre>
+<p>Whether the context menus of entries and text views should offer to change the input method.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-show-unicode-menu"></a><h3>The <code class="literal">“btk-show-unicode-menu”</code> property</h3>
+<pre class="programlisting">  “btk-show-unicode-menu”    <span class="type">gboolean</span></pre>
+<p>Whether the context menus of entries and text views should offer to insert control characters.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-sound-theme-name"></a><h3>The <code class="literal">“btk-sound-theme-name”</code> property</h3>
+<pre class="programlisting">  “btk-sound-theme-name”     <span class="type">char</span> *</pre>
+<p>The XDG sound theme to use for event sounds.</p>
+<p>See the <a class="ulink" href="http://www.freedesktop.org/wiki/Specifications/sound-theme-spec" target="_top">Sound Theme spec</a>
+
+for more information on event sounds and sound themes.</p>
+<p>BTK+ itself does not support event sounds, you have to use a loadable
+
+module like the one that comes with libcanberra.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "freedesktop"</p>
+<p class="since">Since: <a class="link" href="api-index-2-14.html#api-index-2.14">2.14</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-split-cursor"></a><h3>The <code class="literal">“btk-split-cursor”</code> property</h3>
+<pre class="programlisting">  “btk-split-cursor”         <span class="type">gboolean</span></pre>
+<p>Whether two cursors should be displayed for mixed left-to-right and right-to-left text.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-theme-name"></a><h3>The <code class="literal">“btk-theme-name”</code> property</h3>
+<pre class="programlisting">  “btk-theme-name”           <span class="type">char</span> *</pre>
+<p>Name of theme RC file to load.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: "Raleigh"</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-timeout-expand"></a><h3>The <code class="literal">“btk-timeout-expand”</code> property</h3>
+<pre class="programlisting">  “btk-timeout-expand”       <span class="type">int</span></pre>
+<p>Expand value for timeouts, when a widget is expanding a new rebunnyion.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 500</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-timeout-initial"></a><h3>The <code class="literal">“btk-timeout-initial”</code> property</h3>
+<pre class="programlisting">  “btk-timeout-initial”      <span class="type">int</span></pre>
+<p>Starting value for timeouts, when button is pressed.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 200</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-timeout-repeat"></a><h3>The <code class="literal">“btk-timeout-repeat”</code> property</h3>
+<pre class="programlisting">  “btk-timeout-repeat”       <span class="type">int</span></pre>
+<p>Repeat value for timeouts, when button is pressed.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 20</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-toolbar-icon-size"></a><h3>The <code class="literal">“btk-toolbar-icon-size”</code> property</h3>
+<pre class="programlisting">  “btk-toolbar-icon-size”    <a class="link" href="btk2-Themeable-Stock-Images.html#BtkIconSize" title="enum BtkIconSize"><span class="type">BtkIconSize</span></a></pre>
+<p>The size of icons in default toolbars.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_ICON_SIZE_LARGE_TOOLBAR</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-toolbar-style"></a><h3>The <code class="literal">“btk-toolbar-style”</code> property</h3>
+<pre class="programlisting">  “btk-toolbar-style”        <a class="link" href="btk2-Standard-Enumerations.html#BtkToolbarStyle" title="enum BtkToolbarStyle"><span class="type">BtkToolbarStyle</span></a></pre>
+<p>Whether default toolbars have text only, text and icons, icons only, etc.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_TOOLBAR_BOTH</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-tooltip-browse-mode-timeout"></a><h3>The <code class="literal">“btk-tooltip-browse-mode-timeout”</code> property</h3>
+<pre class="programlisting">  “btk-tooltip-browse-mode-timeout” <span class="type">int</span></pre>
+<p>Amount of time, in milliseconds, after which the browse mode
+will be disabled.</p>
+<p>See <a class="link" href="BtkSettings.html#BtkSettings--btk-tooltip-browse-timeout" title="The “btk-tooltip-browse-timeout” property"><span class="type">“btk-tooltip-browse-timeout”</span></a> for more information
+about browse mode.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 500</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-tooltip-browse-timeout"></a><h3>The <code class="literal">“btk-tooltip-browse-timeout”</code> property</h3>
+<pre class="programlisting">  “btk-tooltip-browse-timeout” <span class="type">int</span></pre>
+<p>Controls the time after which tooltips will appear when
+browse mode is enabled, in milliseconds.</p>
+<p>Browse mode is enabled when the mouse pointer moves off an object
+where a tooltip was currently being displayed. If the mouse pointer
+hits another object before the browse mode timeout expires (see
+<a class="link" href="BtkSettings.html#BtkSettings--btk-tooltip-browse-mode-timeout" title="The “btk-tooltip-browse-mode-timeout” property"><span class="type">“btk-tooltip-browse-mode-timeout”</span></a>), it will take the
+
+amount of milliseconds specified by this setting to popup the tooltip
+for the new object.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 60</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-tooltip-timeout"></a><h3>The <code class="literal">“btk-tooltip-timeout”</code> property</h3>
+<pre class="programlisting">  “btk-tooltip-timeout”      <span class="type">int</span></pre>
+<p>Time, in milliseconds, after which a tooltip could appear if the
+cursor is hovering on top of a widget.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 500</p>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-touchscreen-mode"></a><h3>The <code class="literal">“btk-touchscreen-mode”</code> property</h3>
+<pre class="programlisting">  “btk-touchscreen-mode”     <span class="type">gboolean</span></pre>
+<p>When <code class="literal">TRUE</code>, there are no motion notify events delivered on this screen,
+and widgets can't use the pointer hovering them for any essential
+functionality.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+<p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-xft-antialias"></a><h3>The <code class="literal">“btk-xft-antialias”</code> property</h3>
+<pre class="programlisting">  “btk-xft-antialias”        <span class="type">int</span></pre>
+<p>Whether to antialias Xft fonts; 0=no, 1=yes, -1=default.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [-1,1]</p>
+<p>Default value: -1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-xft-dpi"></a><h3>The <code class="literal">“btk-xft-dpi”</code> property</h3>
+<pre class="programlisting">  “btk-xft-dpi”              <span class="type">int</span></pre>
+<p>Resolution for Xft, in 1024 * dots/inch. -1 to use default value.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [-1,1048576]</p>
+<p>Default value: -1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-xft-hinting"></a><h3>The <code class="literal">“btk-xft-hinting”</code> property</h3>
+<pre class="programlisting">  “btk-xft-hinting”          <span class="type">int</span></pre>
+<p>Whether to hint Xft fonts; 0=no, 1=yes, -1=default.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: [-1,1]</p>
+<p>Default value: -1</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-xft-hintstyle"></a><h3>The <code class="literal">“btk-xft-hintstyle”</code> property</h3>
+<pre class="programlisting">  “btk-xft-hintstyle”        <span class="type">char</span> *</pre>
+<p>What degree of hinting to use; hintnone, hintslight, hintmedium, or hintfull.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkSettings--btk-xft-rgba"></a><h3>The <code class="literal">“btk-xft-rgba”</code> property</h3>
+<pre class="programlisting">  “btk-xft-rgba”             <span class="type">char</span> *</pre>
+<p>Type of subpixel antialiasing; none, rgb, bgr, vrgb, vbgr.</p>
+<p>Owner: BtkSettings</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Migrating from BtkFileSelection to BtkFileChooser: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
+<link rel="prev" href="btk-changes-2-0.html" title="Changes from 1.2 to 2.0">
+<link rel="next" href="btkfilechooser-selection-modes.html" title="Selection Modes">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts"></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="migrating.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="btk-changes-2-0.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="btkfilechooser-selection-modes.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="chapter">
+<div class="titlepage"><div>
+<div><h2 class="title">
+<a name="btk-migrating-BtkFileChooser"></a>Migrating from BtkFileSelection to BtkFileChooser</h2></div>
+<div><div class="author">
+<h3 class="author">
+<span class="firstname">Federico</span> <span class="surname">Mena-Quintero</span>
+</h3>
+<div class="affiliation"><div class="address"><p><br>
+	  <code class="email">&lt;<a class="email" href="mailto:federicoximian.com">federico<em class="parameter"><code>ximian.com</code></em></a>&gt;</code><br>
+	</p></div></div>
+</div></div>
+</div></div>
+<div class="toc"><dl class="toc">
+<dt><span class="section"><a href="btk-migrating-BtkFileChooser.html#btkfilechooser-creating">Creating a BtkFileChooserDialog</a></span></dt>
+<dt><span class="section"><a href="btkfilechooser-selection-modes.html">Selection Modes</a></span></dt>
+<dt><span class="section"><a href="btkfilechooser-installing-preview.html">Installing a Preview widget</a></span></dt>
+<dt><span class="section"><a href="btkfilechooser-installing-extra-widgets.html">Installing Extra Widgets</a></span></dt>
+<dt><span class="section"><a href="btkfilechooser-new-features.html">New features</a></span></dt>
+</dl></div>
+<p>
+    <a class="link" href="BtkFileChooser.html" title="BtkFileChooser"><span class="type">BtkFileChooser</span></a>, starting with BTK+ 2.4, is the new set of APIs for file 
+    selection widgets and dialogs.  Previous versions of BTK+ used <a class="link" href="BtkFileSelection.html" title="BtkFileSelection"><span class="type">BtkFileSelection</span></a>, 
+    which has numerous problems.
+  </p>
+<p>
+    <a class="link" href="BtkFileChooser.html" title="BtkFileChooser"><span class="type">BtkFileChooser</span></a> is an abstract interface that can be implemented by widgets 
+    that perform file selection tasks.  Two widgets in BTK+ implement this
+    interface:  <a class="link" href="BtkFileChooserDialog.html" title="BtkFileChooserDialog"><span class="type">BtkFileChooserDialog</span></a> and <a class="link" href="BtkFileChooserWidget.html" title="BtkFileChooserWidget"><span class="type">BtkFileChooserWidget</span></a>. Most applications 
+    simply need to use <a class="link" href="BtkFileChooserDialog.html" title="BtkFileChooserDialog"><span class="type">BtkFileChooserDialog</span></a>, which is a dialog box that allows the 
+    user to select existing files for opening them, or to pick new filenames for 
+    saving documents. <a class="link" href="BtkFileChooserWidget.html" title="BtkFileChooserWidget"><span class="type">BtkFileChooserWidget</span></a> is for special applications that need to 
+    embed a file selection widget inside a larger window.  In the context of BTK+, 
+    <a class="link" href="BtkFileChooserDialog.html" title="BtkFileChooserDialog"><span class="type">BtkFileChooserDialog</span></a> is simply a <a class="link" href="BtkDialog.html" title="BtkDialog"><span class="type">BtkDialog</span></a> box with a <a class="link" href="BtkFileChooserWidget.html" title="BtkFileChooserWidget"><span class="type">BtkFileChooserWidget</span></a>.
+    inside.
+  </p>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="btkfilechooser-creating"></a>Creating a BtkFileChooserDialog</h2></div></div></div>
+<p>
+      To create a <a class="link" href="BtkFileChooserDialog.html" title="BtkFileChooserDialog"><span class="type">BtkFileChooserDialog</span></a>, you simply call <a class="link" href="BtkFileChooserDialog.html#btk-file-chooser-dialog-new" title="btk_file_chooser_dialog_new ()"><code class="function">btk_file_chooser_dialog_new()</code></a>.
+      This function is similar to <a class="link" href="BtkDialog.html#btk-dialog-new" title="btk_dialog_new ()"><code class="function">btk_dialog_new()</code></a> in that it takes parameters for the
+      title of the dialog box and its transient parent, as well as its
+      buttons.  In addition, it takes in an argument that determines
+      whether the file chooser dialog will be used for opening
+      existing files or for saving to a possibly new file.
+    </p>
+<p>
+      Please see <a class="xref" href="">???</a> for
+      how to create a simple file chooser dialog and extract the
+      selected filename from it.
+    </p>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

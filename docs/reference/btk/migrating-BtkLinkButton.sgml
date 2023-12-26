@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="btk-migrating-BtkLinkButton">
+
+  <title>Migrating from BunnyHRef to BtkLinkButton</title>
+
+  <para>
+    Since version 2.10, BTK+ provides the #BtkLinkButton widget as a
+    replacement for the <structname>BunnyHRef</structname> widget
+    in the libbunnyui library.
+  </para>
+
+  <para>
+    Porting an application from <structname>BunnyHRef</structname> to
+    #BtkLinkButton is very simple. #BtkLinkButton does not have a
+    default action for #BtkButton::clicked signal. So instead of simply 
+    creating the widget
+    <informalexample><programlisting>
+      BtkWidget *button;
+
+      button = bunny_href_new (url, "");
+    </programlisting></informalexample>
+    you will have to handle the activation of the #BtkLinkButton, using
+    the ::clicked signal for instance
+    <informalexample><programlisting>
+      static void
+      link_button_clicked_cb (BtkWidget *widget,
+                              gpointer   data)
+      {
+        const gchar *link;
+
+	link = btk_link_button_get_uri (BTK_LINK_BUTTON (widget));
+	open_browser_at_url (link);
+      }
+
+      /* ... */
+      
+        BtkWidget *button;
+
+	button = btk_link_button_new (url);
+	g_signal_connect (button, "clicked",
+	                  G_CALLBACK (link_button_clicked_cb), NULL);
+     </programlisting></informalexample>
+    If you have more than one #BtkLinkButton instead of connecting
+    a signal to each one, you can use a "hook function" which will be
+    called whenever a user activates a link button
+    <informalexample><programlisting>
+      static void
+      link_button_hook (BtkLinkButton *button,
+                        const gchar   *link,
+			gpointer       user_data)
+      
+      {
+        open_browser_at_url (link);
+      }
+      
+      /* ... */
+      
+        BtkWidget *button1 = btk_link_button_new (uri1);
+	BtkWidget *button2 = btk_link_button_new (uri2);
+
+        btk_link_button_set_uri_hook (link_button_hook, NULL, NULL);
+    </programlisting></informalexample>
+
+  </para>
+
+  <para>
+    Starting with BTK+ 2.16, it is no longer necessary to set up a uri hook
+    manually, since BTK+ now defaults to calling btk_show_uri() if no uri
+    hook has been set.
+  </para>
+</chapter>
+
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("btk-docs.sgml" "book" "part" "chapter")
+End:
+-->

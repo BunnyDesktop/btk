@@ -16,55 +16,55 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "gtkimcontextmultipress.h"
-#include <gtk/gtkimmodule.h> /* For GtkIMContextInfo */
+#include "btkimcontextmultipress.h"
+#include <btk/btkimmodule.h> /* For BtkIMContextInfo */
 #include <config.h>
-#include <glib/gi18n.h>
+#include <bunnylib/gi18n.h>
 #include <string.h> /* For strcmp() */
 
 #define CONTEXT_ID "multipress"
  
 /** NOTE: Change the default language from "" to "*" to enable this input method by default for all locales.
  */
-static const GtkIMContextInfo info = { 
+static const BtkIMContextInfo info = { 
   CONTEXT_ID,		   /* ID */
   N_("Multipress"),     /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain. Defined in configure.ac */
-  MULTIPRESS_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "gtk+"). Defined in the Makefile.am */
+  MULTIPRESS_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "btk+"). Defined in the Makefile.am */
   ""			   /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &info
 };
 
 #ifndef INCLUDE_IM_multipress
 #define MODULE_ENTRY(type, function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_multipress_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_multipress_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *module)
 {
-  gtk_im_context_multipress_register_type(module);
+  btk_im_context_multipress_register_type(module);
 }
 
 MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, CONTEXT_ID) == 0)
   {
-    GtkIMContext* imcontext = GTK_IM_CONTEXT(g_object_new (GTK_TYPE_IM_CONTEXT_MULTIPRESS, NULL));
+    BtkIMContext* imcontext = BTK_IM_CONTEXT(g_object_new (BTK_TYPE_IM_CONTEXT_MULTIPRESS, NULL));
     return imcontext;
   }
   else

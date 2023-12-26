@@ -1,0 +1,1929 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BtkCTree: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="DeprecatedObjects.html" title="Deprecated">
+<link rel="prev" href="BtkCList.html" title="BtkCList">
+<link rel="next" href="BtkCombo.html" title="BtkCombo">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#BtkCTree.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#BtkCTree.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#BtkCTree.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#BtkCTree.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#BtkCTree.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="DeprecatedObjects.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="BtkCList.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="BtkCombo.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="BtkCTree"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="BtkCTree.top_of_page"></a>BtkCTree</span></h2>
+<p>BtkCTree</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="BtkCTree.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#BTK-CTREE-ROW:CAPS" title="BTK_CTREE_ROW()">BTK_CTREE_ROW</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#BTK-CTREE-NODE:CAPS" title="BTK_CTREE_NODE()">BTK_CTREE_NODE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#BTK-CTREE-NODE-NEXT:CAPS" title="BTK_CTREE_NODE_NEXT()">BTK_CTREE_NODE_NEXT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#BTK-CTREE-NODE-PREV:CAPS" title="BTK_CTREE_NODE_PREV()">BTK_CTREE_NODE_PREV</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#BTK-CTREE-FUNC:CAPS" title="BTK_CTREE_FUNC()">BTK_CTREE_FUNC</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="BtkCTree.html#BtkCTreeFunc" title="BtkCTreeFunc ()">*BtkCTreeFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="BtkCTree.html#BtkCTreeGNodeFunc" title="BtkCTreeGNodeFunc ()">*BtkCTreeGNodeFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="BtkCTree.html#BtkCTreeCompareDragFunc" title="BtkCTreeCompareDragFunc ()">*BtkCTreeCompareDragFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-new-with-titles" title="btk_ctree_new_with_titles ()">btk_ctree_new_with_titles</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-new" title="btk_ctree_new ()">btk_ctree_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-insert-node" title="btk_ctree_insert_node ()">btk_ctree_insert_node</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-remove-node" title="btk_ctree_remove_node ()">btk_ctree_remove_node</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-insert-gnode" title="btk_ctree_insert_gnode ()">btk_ctree_insert_gnode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GNode</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-export-to-gnode" title="btk_ctree_export_to_gnode ()">btk_ctree_export_to_gnode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-post-recursive" title="btk_ctree_post_recursive ()">btk_ctree_post_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-post-recursive-to-depth" title="btk_ctree_post_recursive_to_depth ()">btk_ctree_post_recursive_to_depth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-pre-recursive" title="btk_ctree_pre_recursive ()">btk_ctree_pre_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-pre-recursive-to-depth" title="btk_ctree_pre_recursive_to_depth ()">btk_ctree_pre_recursive_to_depth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-is-viewable" title="btk_ctree_is_viewable ()">btk_ctree_is_viewable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-last" title="btk_ctree_last ()">btk_ctree_last</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-find-node-ptr" title="btk_ctree_find_node_ptr ()">btk_ctree_find_node_ptr</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-find" title="btk_ctree_find ()">btk_ctree_find</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-is-ancestor" title="btk_ctree_is_ancestor ()">btk_ctree_is_ancestor</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-find-by-row-data" title="btk_ctree_find_by_row_data ()">btk_ctree_find_by_row_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GList</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-find-all-by-row-data" title="btk_ctree_find_all_by_row_data ()">btk_ctree_find_all_by_row_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-find-by-row-data-custom" title="btk_ctree_find_by_row_data_custom ()">btk_ctree_find_by_row_data_custom</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GList</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-find-all-by-row-data-custom" title="btk_ctree_find_all_by_row_data_custom ()">btk_ctree_find_all_by_row_data_custom</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-is-hot-spot" title="btk_ctree_is_hot_spot ()">btk_ctree_is_hot_spot</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-move" title="btk_ctree_move ()">btk_ctree_move</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-expand" title="btk_ctree_expand ()">btk_ctree_expand</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-expand-recursive" title="btk_ctree_expand_recursive ()">btk_ctree_expand_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-expand-to-depth" title="btk_ctree_expand_to_depth ()">btk_ctree_expand_to_depth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-collapse" title="btk_ctree_collapse ()">btk_ctree_collapse</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-collapse-recursive" title="btk_ctree_collapse_recursive ()">btk_ctree_collapse_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-collapse-to-depth" title="btk_ctree_collapse_to_depth ()">btk_ctree_collapse_to_depth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-toggle-expansion" title="btk_ctree_toggle_expansion ()">btk_ctree_toggle_expansion</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-toggle-expansion-recursive" title="btk_ctree_toggle_expansion_recursive ()">btk_ctree_toggle_expansion_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-select" title="btk_ctree_select ()">btk_ctree_select</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-select-recursive" title="btk_ctree_select_recursive ()">btk_ctree_select_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-unselect" title="btk_ctree_unselect ()">btk_ctree_unselect</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-unselect-recursive" title="btk_ctree_unselect_recursive ()">btk_ctree_unselect_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-real-select-recursive" title="btk_ctree_real_select_recursive ()">btk_ctree_real_select_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-text" title="btk_ctree_node_set_text ()">btk_ctree_node_set_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-pixmap" title="btk_ctree_node_set_pixmap ()">btk_ctree_node_set_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-pixtext" title="btk_ctree_node_set_pixtext ()">btk_ctree_node_set_pixtext</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-node-info" title="btk_ctree_set_node_info ()">btk_ctree_set_node_info</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-shift" title="btk_ctree_node_set_shift ()">btk_ctree_node_set_shift</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-selectable" title="btk_ctree_node_set_selectable ()">btk_ctree_node_set_selectable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-selectable" title="btk_ctree_node_get_selectable ()">btk_ctree_node_get_selectable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCList.html#BtkCellType" title="enum BtkCellType"><span class="returnvalue">BtkCellType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-cell-type" title="btk_ctree_node_get_cell_type ()">btk_ctree_node_get_cell_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-text" title="btk_ctree_node_get_text ()">btk_ctree_node_get_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-pixmap" title="btk_ctree_node_get_pixmap ()">btk_ctree_node_get_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-pixtext" title="btk_ctree_node_get_pixtext ()">btk_ctree_node_get_pixtext</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-get-node-info" title="btk_ctree_get_node_info ()">btk_ctree_get_node_info</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-row-style" title="btk_ctree_node_set_row_style ()">btk_ctree_node_set_row_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-row-style" title="btk_ctree_node_get_row_style ()">btk_ctree_node_get_row_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-cell-style" title="btk_ctree_node_set_cell_style ()">btk_ctree_node_set_cell_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-cell-style" title="btk_ctree_node_get_cell_style ()">btk_ctree_node_get_cell_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-foreground" title="btk_ctree_node_set_foreground ()">btk_ctree_node_set_foreground</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-background" title="btk_ctree_node_set_background ()">btk_ctree_node_set_background</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-row-data" title="btk_ctree_node_set_row_data ()">btk_ctree_node_set_row_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-set-row-data-full" title="btk_ctree_node_set_row_data_full ()">btk_ctree_node_set_row_data_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gpointer</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-get-row-data" title="btk_ctree_node_get_row_data ()">btk_ctree_node_get_row_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-moveto" title="btk_ctree_node_moveto ()">btk_ctree_node_moveto</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="btk2-Standard-Enumerations.html#BtkVisibility" title="enum BtkVisibility"><span class="returnvalue">BtkVisibility</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-is-visible" title="btk_ctree_node_is_visible ()">btk_ctree_node_is_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-indent" title="btk_ctree_set_indent ()">btk_ctree_set_indent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-spacing" title="btk_ctree_set_spacing ()">btk_ctree_set_spacing</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-reorderable" title="btk_ctree_set_reorderable()">btk_ctree_set_reorderable</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-line-style" title="btk_ctree_set_line_style ()">btk_ctree_set_line_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-expander-style" title="btk_ctree_set_expander_style ()">btk_ctree_set_expander_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-drag-compare-func" title="btk_ctree_set_drag_compare_func ()">btk_ctree_set_drag_compare_func</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-sort-node" title="btk_ctree_sort_node ()">btk_ctree_sort_node</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-sort-recursive" title="btk_ctree_sort_recursive ()">btk_ctree_sort_recursive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-node-nth" title="btk_ctree_node_nth ()">btk_ctree_node_nth</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCTree.html#btk-ctree-set-show-stub" title="btk_ctree_set_show_stub ()">btk_ctree_set_show_stub</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><a class="link" href="BtkCTree.html#BtkCTreeExpanderStyle" title="enum BtkCTreeExpanderStyle"><span class="type">BtkCTreeExpanderStyle</span></a></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--expander-style" title="The “expander-style” property">expander-style</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--indent" title="The “indent” property">indent</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="BtkCTree.html#BtkCTreeLineStyle" title="enum BtkCTreeLineStyle"><span class="type">BtkCTreeLineStyle</span></a></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--line-style" title="The “line-style” property">line-style</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--n-columns" title="The “n-columns” property">n-columns</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--show-stub" title="The “show-stub” property">show-stub</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--spacing" title="The “spacing” property">spacing</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkCTree.html#BtkCTree--tree-column" title="The “tree-column” property">tree-column</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCTree.html#BtkCTree-change-focus-row-expansion" title="The “change-focus-row-expansion” signal">change-focus-row-expansion</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCTree.html#BtkCTree-tree-collapse" title="The “tree-collapse” signal">tree-collapse</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCTree.html#BtkCTree-tree-expand" title="The “tree-expand” signal">tree-expand</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCTree.html#BtkCTree-tree-move" title="The “tree-move” signal">tree-move</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCTree.html#BtkCTree-tree-select-row" title="The “tree-select-row” signal">tree-select-row</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCTree.html#BtkCTree-tree-unselect-row" title="The “tree-unselect-row” signal">tree-unselect-row</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTree-struct" title="struct BtkCTree">BtkCTree</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTreePos" title="enum BtkCTreePos">BtkCTreePos</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTreeLineStyle" title="enum BtkCTreeLineStyle">BtkCTreeLineStyle</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTreeExpanderStyle" title="enum BtkCTreeExpanderStyle">BtkCTreeExpanderStyle</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTreeExpansionType" title="enum BtkCTreeExpansionType">BtkCTreeExpansionType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTreeRow" title="struct BtkCTreeRow">BtkCTreeRow</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode">BtkCTreeNode</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="BtkCTree.html#BTK-TYPE-CTREE-NODE:CAPS" title="BTK_TYPE_CTREE_NODE">BTK_TYPE_CTREE_NODE</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> GInitiallyUnowned
+        <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
+            <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
+                <span class="lineart">╰──</span> <a class="link" href="BtkContainer.html" title="BtkContainer">BtkContainer</a>
+                    <span class="lineart">╰──</span> <a class="link" href="BtkCList.html" title="BtkCList">BtkCList</a>
+                        <span class="lineart">╰──</span> BtkCTree
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+BtkCTree implements
+ BatkImplementorIface and  <a class="link" href="BtkBuildable.html" title="BtkBuildable">BtkBuildable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;btk/btk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="BTK-CTREE-ROW:CAPS"></a><h3>BTK_CTREE_ROW()</h3>
+<pre class="programlisting">#define BTK_CTREE_ROW(_node_) ((BtkCTreeRow *)(((GList *)(_node_))-&gt;data))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CTREE_ROW</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CTREE-NODE:CAPS"></a><h3>BTK_CTREE_NODE()</h3>
+<pre class="programlisting">#define BTK_CTREE_NODE(_node_) ((BtkCTreeNode *)((_node_)))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CTREE_NODE</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CTREE-NODE-NEXT:CAPS"></a><h3>BTK_CTREE_NODE_NEXT()</h3>
+<pre class="programlisting">#define BTK_CTREE_NODE_NEXT(_nnode_) ((BtkCTreeNode *)(((GList *)(_nnode_))-&gt;next))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CTREE_NODE_NEXT</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CTREE-NODE-PREV:CAPS"></a><h3>BTK_CTREE_NODE_PREV()</h3>
+<pre class="programlisting">#define BTK_CTREE_NODE_PREV(_pnode_) ((BtkCTreeNode *)(((GList *)(_pnode_))-&gt;prev))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CTREE_NODE_PREV</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CTREE-FUNC:CAPS"></a><h3>BTK_CTREE_FUNC()</h3>
+<pre class="programlisting">#define BTK_CTREE_FUNC(_func_) ((BtkCTreeFunc)(_func_))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CTREE_FUNC</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeFunc"></a><h3>BtkCTreeFunc ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+<span class="c_punctuation">(</span>*BtkCTreeFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                 <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                 <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">BtkCTreeFunc</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeGNodeFunc"></a><h3>BtkCTreeGNodeFunc ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<span class="c_punctuation">(</span>*BtkCTreeGNodeFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                      <em class="parameter"><code><span class="type">guint</span> depth</code></em>,
+                      <em class="parameter"><code><span class="type">GNode</span> *gnode</code></em>,
+                      <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *cnode</code></em>,
+                      <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">BtkCTreeGNodeFunc</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeCompareDragFunc"></a><h3>BtkCTreeCompareDragFunc ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<span class="c_punctuation">(</span>*BtkCTreeCompareDragFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *source_node</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *new_parent</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *new_sibling</code></em>);</pre>
+<div class="warning"><p><code class="literal">BtkCTreeCompareDragFunc</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-new-with-titles"></a><h3>btk_ctree_new_with_titles ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_ctree_new_with_titles (<em class="parameter"><code><span class="type">gint</span> columns</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> tree_column</code></em>,
+                           <em class="parameter"><code><span class="type">gchar</span> *titles[]</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_new_with_titles</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-new"></a><h3>btk_ctree_new ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_ctree_new (<em class="parameter"><code><span class="type">gint</span> columns</code></em>,
+               <em class="parameter"><code><span class="type">gint</span> tree_column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_new</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-insert-node"></a><h3>btk_ctree_insert_node ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_insert_node (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *parent</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *sibling</code></em>,
+                       <em class="parameter"><code><span class="type">gchar</span> *text[]</code></em>,
+                       <em class="parameter"><code><span class="type">guint8</span> spacing</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap_closed</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask_closed</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap_opened</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask_opened</code></em>,
+                       <em class="parameter"><code><span class="type">gboolean</span> is_leaf</code></em>,
+                       <em class="parameter"><code><span class="type">gboolean</span> expanded</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_insert_node</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="btk-ctree-insert-node.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pixmap_closed</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>mask_closed</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pixmap_opened</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>mask_opened</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-remove-node"></a><h3>btk_ctree_remove_node ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_remove_node (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_remove_node</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-insert-gnode"></a><h3>btk_ctree_insert_gnode ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_insert_gnode (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                        <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *parent</code></em>,
+                        <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *sibling</code></em>,
+                        <em class="parameter"><code><span class="type">GNode</span> *gnode</code></em>,
+                        <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeGNodeFunc" title="BtkCTreeGNodeFunc ()"><span class="type">BtkCTreeGNodeFunc</span></a> func</code></em>,
+                        <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_insert_gnode</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-export-to-gnode"></a><h3>btk_ctree_export_to_gnode ()</h3>
+<pre class="programlisting"><span class="returnvalue">GNode</span> *
+btk_ctree_export_to_gnode (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                           <em class="parameter"><code><span class="type">GNode</span> *parent</code></em>,
+                           <em class="parameter"><code><span class="type">GNode</span> *sibling</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeGNodeFunc" title="BtkCTreeGNodeFunc ()"><span class="type">BtkCTreeGNodeFunc</span></a> func</code></em>,
+                           <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_export_to_gnode</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-post-recursive"></a><h3>btk_ctree_post_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_post_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                          <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                          <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeFunc" title="BtkCTreeFunc ()"><span class="type">BtkCTreeFunc</span></a> func</code></em>,
+                          <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_post_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-post-recursive-to-depth"></a><h3>btk_ctree_post_recursive_to_depth ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_post_recursive_to_depth (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                   <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                   <em class="parameter"><code><span class="type">gint</span> depth</code></em>,
+                                   <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeFunc" title="BtkCTreeFunc ()"><span class="type">BtkCTreeFunc</span></a> func</code></em>,
+                                   <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_post_recursive_to_depth</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-pre-recursive"></a><h3>btk_ctree_pre_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_pre_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeFunc" title="BtkCTreeFunc ()"><span class="type">BtkCTreeFunc</span></a> func</code></em>,
+                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_pre_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-pre-recursive-to-depth"></a><h3>btk_ctree_pre_recursive_to_depth ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_pre_recursive_to_depth (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                  <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                  <em class="parameter"><code><span class="type">gint</span> depth</code></em>,
+                                  <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeFunc" title="BtkCTreeFunc ()"><span class="type">BtkCTreeFunc</span></a> func</code></em>,
+                                  <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_pre_recursive_to_depth</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-is-viewable"></a><h3>btk_ctree_is_viewable ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_is_viewable (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_is_viewable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-last"></a><h3>btk_ctree_last ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_last (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_last</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-find-node-ptr"></a><h3>btk_ctree_find_node_ptr ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_find_node_ptr (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeRow" title="struct BtkCTreeRow"><span class="type">BtkCTreeRow</span></a> *ctree_row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_find_node_ptr</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-find"></a><h3>btk_ctree_find ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_find (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *child</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_find</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-is-ancestor"></a><h3>btk_ctree_is_ancestor ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_is_ancestor (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *child</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_is_ancestor</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-find-by-row-data"></a><h3>btk_ctree_find_by_row_data ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_find_by_row_data (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                            <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_find_by_row_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-find-all-by-row-data"></a><h3>btk_ctree_find_all_by_row_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">GList</span> *
+btk_ctree_find_all_by_row_data (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_find_all_by_row_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-find-by-row-data-custom"></a><h3>btk_ctree_find_by_row_data_custom ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_find_by_row_data_custom (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                   <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                   <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                   <em class="parameter"><code><span class="type">GCompareFunc</span> func</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_find_by_row_data_custom</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-find-all-by-row-data-custom"></a><h3>btk_ctree_find_all_by_row_data_custom ()</h3>
+<pre class="programlisting"><span class="returnvalue">GList</span> *
+btk_ctree_find_all_by_row_data_custom (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                       <em class="parameter"><code><span class="type">GCompareFunc</span> func</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_find_all_by_row_data_custom</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-is-hot-spot"></a><h3>btk_ctree_is_hot_spot ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_is_hot_spot (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_is_hot_spot</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-move"></a><h3>btk_ctree_move ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_move (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *new_parent</code></em>,
+                <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *new_sibling</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_move</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="btk-ctree-move.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>new_parent</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_sibling</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-expand"></a><h3>btk_ctree_expand ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_expand (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                  <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_expand</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-expand-recursive"></a><h3>btk_ctree_expand_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_expand_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_expand_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-expand-to-depth"></a><h3>btk_ctree_expand_to_depth ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_expand_to_depth (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> depth</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_expand_to_depth</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-collapse"></a><h3>btk_ctree_collapse ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_collapse (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                    <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_collapse</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-collapse-recursive"></a><h3>btk_ctree_collapse_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_collapse_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_collapse_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-collapse-to-depth"></a><h3>btk_ctree_collapse_to_depth ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_collapse_to_depth (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                             <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                             <em class="parameter"><code><span class="type">gint</span> depth</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_collapse_to_depth</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-toggle-expansion"></a><h3>btk_ctree_toggle_expansion ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_toggle_expansion (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_toggle_expansion</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-toggle-expansion-recursive"></a><h3>btk_ctree_toggle_expansion_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_toggle_expansion_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                      <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_toggle_expansion_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-select"></a><h3>btk_ctree_select ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_select (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                  <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_select</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-select-recursive"></a><h3>btk_ctree_select_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_select_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_select_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-unselect"></a><h3>btk_ctree_unselect ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_unselect (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                    <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_unselect</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-unselect-recursive"></a><h3>btk_ctree_unselect_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_unselect_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_unselect_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-real-select-recursive"></a><h3>btk_ctree_real_select_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_real_select_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                 <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                 <em class="parameter"><code><span class="type">gint</span> state</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_real_select_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-text"></a><h3>btk_ctree_node_set_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_text (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                         <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                         <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_text</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-pixmap"></a><h3>btk_ctree_node_set_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_pixmap (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                           <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
+                           <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_pixmap</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="btk-ctree-node-set-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mask</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-pixtext"></a><h3>btk_ctree_node_set_pixtext ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_pixtext (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                            <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                            <em class="parameter"><code><span class="type">guint8</span> spacing</code></em>,
+                            <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
+                            <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_pixtext</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="btk-ctree-node-set-pixtext.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mask</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-node-info"></a><h3>btk_ctree_set_node_info ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_node_info (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                         <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                         <em class="parameter"><code><span class="type">guint8</span> spacing</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap_closed</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask_closed</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap_opened</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask_opened</code></em>,
+                         <em class="parameter"><code><span class="type">gboolean</span> is_leaf</code></em>,
+                         <em class="parameter"><code><span class="type">gboolean</span> expanded</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_node_info</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="btk-ctree-set-node-info.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>pixmap_closed</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>mask_closed</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>pixmap_opened</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>mask_opened</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-shift"></a><h3>btk_ctree_node_set_shift ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_shift (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                          <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> vertical</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> horizontal</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_shift</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-selectable"></a><h3>btk_ctree_node_set_selectable ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_selectable (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                               <em class="parameter"><code><span class="type">gboolean</span> selectable</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_selectable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-selectable"></a><h3>btk_ctree_node_get_selectable ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_node_get_selectable (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_selectable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-cell-type"></a><h3>btk_ctree_node_get_cell_type ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCList.html#BtkCellType" title="enum BtkCellType"><span class="returnvalue">BtkCellType</span></a>
+btk_ctree_node_get_cell_type (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                              <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_cell_type</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-text"></a><h3>btk_ctree_node_get_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_node_get_text (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                         <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                         <em class="parameter"><code><span class="type">gchar</span> **text</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_text</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-pixmap"></a><h3>btk_ctree_node_get_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_node_get_pixmap (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                           <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> **pixmap</code></em>,
+                           <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_pixmap</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-pixtext"></a><h3>btk_ctree_node_get_pixtext ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_node_get_pixtext (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                            <em class="parameter"><code><span class="type">gchar</span> **text</code></em>,
+                            <em class="parameter"><code><span class="type">guint8</span> *spacing</code></em>,
+                            <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> **pixmap</code></em>,
+                            <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_pixtext</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-get-node-info"></a><h3>btk_ctree_get_node_info ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_ctree_get_node_info (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                         <em class="parameter"><code><span class="type">gchar</span> **text</code></em>,
+                         <em class="parameter"><code><span class="type">guint8</span> *spacing</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> **pixmap_closed</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> **mask_closed</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> **pixmap_opened</code></em>,
+                         <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> **mask_opened</code></em>,
+                         <em class="parameter"><code><span class="type">gboolean</span> *is_leaf</code></em>,
+                         <em class="parameter"><code><span class="type">gboolean</span> *expanded</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_get_node_info</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-row-style"></a><h3>btk_ctree_node_set_row_style ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_row_style (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_row_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-row-style"></a><h3>btk_ctree_node_get_row_style ()</h3>
+<pre class="programlisting"><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+btk_ctree_node_get_row_style (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_row_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-cell-style"></a><h3>btk_ctree_node_set_cell_style ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_cell_style (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                               <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_cell_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-cell-style"></a><h3>btk_ctree_node_get_cell_style ()</h3>
+<pre class="programlisting"><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+btk_ctree_node_get_cell_style (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                               <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_cell_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-foreground"></a><h3>btk_ctree_node_set_foreground ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_foreground (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                               <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *color</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_foreground</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-background"></a><h3>btk_ctree_node_set_background ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_background (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                               <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                               <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *color</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_background</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-row-data"></a><h3>btk_ctree_node_set_row_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_row_data (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                             <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                             <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_row_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-set-row-data-full"></a><h3>btk_ctree_node_set_row_data_full ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_set_row_data_full (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                  <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                                  <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                  <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_set_row_data_full</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-get-row-data"></a><h3>btk_ctree_node_get_row_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">gpointer</span>
+btk_ctree_node_get_row_data (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                             <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_get_row_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-moveto"></a><h3>btk_ctree_node_moveto ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_node_moveto (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                       <em class="parameter"><code><span class="type">gfloat</span> row_align</code></em>,
+                       <em class="parameter"><code><span class="type">gfloat</span> col_align</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_moveto</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-is-visible"></a><h3>btk_ctree_node_is_visible ()</h3>
+<pre class="programlisting"><a class="link" href="btk2-Standard-Enumerations.html#BtkVisibility" title="enum BtkVisibility"><span class="returnvalue">BtkVisibility</span></a>
+btk_ctree_node_is_visible (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_is_visible</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-indent"></a><h3>btk_ctree_set_indent ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_indent (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> indent</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_indent</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-spacing"></a><h3>btk_ctree_set_spacing ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_spacing (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> spacing</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_spacing</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-reorderable"></a><h3>btk_ctree_set_reorderable()</h3>
+<pre class="programlisting">#define btk_ctree_set_reorderable(t,r)                    btk_clist_set_reorderable((BtkCList*) (t),(r))
+</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_reorderable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-line-style"></a><h3>btk_ctree_set_line_style ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_line_style (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                          <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeLineStyle" title="enum BtkCTreeLineStyle"><span class="type">BtkCTreeLineStyle</span></a> line_style</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_line_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-expander-style"></a><h3>btk_ctree_set_expander_style ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_expander_style (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                              <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeExpanderStyle" title="enum BtkCTreeExpanderStyle"><span class="type">BtkCTreeExpanderStyle</span></a> expander_style</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_expander_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-drag-compare-func"></a><h3>btk_ctree_set_drag_compare_func ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_drag_compare_func (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                                 <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeCompareDragFunc" title="BtkCTreeCompareDragFunc ()"><span class="type">BtkCTreeCompareDragFunc</span></a> cmp_func</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_drag_compare_func</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-sort-node"></a><h3>btk_ctree_sort_node ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_sort_node (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                     <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_sort_node</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-sort-recursive"></a><h3>btk_ctree_sort_recursive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_sort_recursive (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                          <em class="parameter"><code><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *node</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_sort_recursive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-node-nth"></a><h3>btk_ctree_node_nth ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="returnvalue">BtkCTreeNode</span></a> *
+btk_ctree_node_nth (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                    <em class="parameter"><code><span class="type">guint</span> row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_node_nth</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-ctree-set-show-stub"></a><h3>btk_ctree_set_show_stub ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_ctree_set_show_stub (<em class="parameter"><code><a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a> *ctree</code></em>,
+                         <em class="parameter"><code><span class="type">gboolean</span> show_stub</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_ctree_set_show_stub</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BtkCTree-struct"></a><h3>struct BtkCTree</h3>
+<pre class="programlisting">struct BtkCTree;</pre>
+<div class="warning"><p><code class="literal">BtkCTree</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreePos"></a><h3>enum BtkCTreePos</h3>
+<div class="warning"><p><code class="literal">BtkCTreePos</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkCTreePos.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-POS-BEFORE:CAPS"></a>BTK_CTREE_POS_BEFORE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-POS-AS-CHILD:CAPS"></a>BTK_CTREE_POS_AS_CHILD</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-POS-AFTER:CAPS"></a>BTK_CTREE_POS_AFTER</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeLineStyle"></a><h3>enum BtkCTreeLineStyle</h3>
+<div class="warning"><p><code class="literal">BtkCTreeLineStyle</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkCTreeLineStyle.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-LINES-NONE:CAPS"></a>BTK_CTREE_LINES_NONE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-LINES-SOLID:CAPS"></a>BTK_CTREE_LINES_SOLID</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-LINES-DOTTED:CAPS"></a>BTK_CTREE_LINES_DOTTED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-LINES-TABBED:CAPS"></a>BTK_CTREE_LINES_TABBED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeExpanderStyle"></a><h3>enum BtkCTreeExpanderStyle</h3>
+<div class="warning"><p><code class="literal">BtkCTreeExpanderStyle</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkCTreeExpanderStyle.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANDER-NONE:CAPS"></a>BTK_CTREE_EXPANDER_NONE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANDER-SQUARE:CAPS"></a>BTK_CTREE_EXPANDER_SQUARE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANDER-TRIANGLE:CAPS"></a>BTK_CTREE_EXPANDER_TRIANGLE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANDER-CIRCULAR:CAPS"></a>BTK_CTREE_EXPANDER_CIRCULAR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeExpansionType"></a><h3>enum BtkCTreeExpansionType</h3>
+<div class="warning"><p><code class="literal">BtkCTreeExpansionType</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkCTreeExpansionType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANSION-EXPAND:CAPS"></a>BTK_CTREE_EXPANSION_EXPAND</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANSION-EXPAND-RECURSIVE:CAPS"></a>BTK_CTREE_EXPANSION_EXPAND_RECURSIVE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANSION-COLLAPSE:CAPS"></a>BTK_CTREE_EXPANSION_COLLAPSE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANSION-COLLAPSE-RECURSIVE:CAPS"></a>BTK_CTREE_EXPANSION_COLLAPSE_RECURSIVE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANSION-TOGGLE:CAPS"></a>BTK_CTREE_EXPANSION_TOGGLE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CTREE-EXPANSION-TOGGLE-RECURSIVE:CAPS"></a>BTK_CTREE_EXPANSION_TOGGLE_RECURSIVE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeRow"></a><h3>struct BtkCTreeRow</h3>
+<pre class="programlisting">struct BtkCTreeRow {
+  BtkCListRow row;
+
+  BtkCTreeNode *parent;
+  BtkCTreeNode *sibling;
+  BtkCTreeNode *children;
+
+  BdkPixmap *pixmap_closed;
+  BdkBitmap *mask_closed;
+  BdkPixmap *pixmap_opened;
+  BdkBitmap *mask_opened;
+
+  guint16 level;
+
+  guint is_leaf  : 1;
+  guint expanded : 1;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCTreeRow</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTreeNode"></a><h3>struct BtkCTreeNode</h3>
+<pre class="programlisting">struct BtkCTreeNode {
+  GList list;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCTreeNode</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-TYPE-CTREE-NODE:CAPS"></a><h3>BTK_TYPE_CTREE_NODE</h3>
+<pre class="programlisting">#define BTK_TYPE_CTREE_NODE (btk_ctree_node_get_type ())
+</pre>
+<div class="warning"><p><code class="literal">BTK_TYPE_CTREE_NODE</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="BtkCTree--expander-style"></a><h3>The <code class="literal">“expander-style”</code> property</h3>
+<pre class="programlisting">  “expander-style”           <a class="link" href="BtkCTree.html#BtkCTreeExpanderStyle" title="enum BtkCTreeExpanderStyle"><span class="type">BtkCTreeExpanderStyle</span></a></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_CTREE_EXPANDER_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree--indent"></a><h3>The <code class="literal">“indent”</code> property</h3>
+<pre class="programlisting">  “indent”                   <span class="type">guint</span></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree--line-style"></a><h3>The <code class="literal">“line-style”</code> property</h3>
+<pre class="programlisting">  “line-style”               <a class="link" href="BtkCTree.html#BtkCTreeLineStyle" title="enum BtkCTreeLineStyle"><span class="type">BtkCTreeLineStyle</span></a></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_CTREE_LINES_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree--n-columns"></a><h3>The <code class="literal">“n-columns”</code> property</h3>
+<pre class="programlisting">  “n-columns”                <span class="type">guint</span></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree--show-stub"></a><h3>The <code class="literal">“show-stub”</code> property</h3>
+<pre class="programlisting">  “show-stub”                <span class="type">gboolean</span></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree--spacing"></a><h3>The <code class="literal">“spacing”</code> property</h3>
+<pre class="programlisting">  “spacing”                  <span class="type">guint</span></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree--tree-column"></a><h3>The <code class="literal">“tree-column”</code> property</h3>
+<pre class="programlisting">  “tree-column”              <span class="type">guint</span></pre>
+<p>Owner: BtkCTree</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: 0</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkCTree.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="BtkCTree-change-focus-row-expansion"></a><h3>The <code class="literal">“change-focus-row-expansion”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a>             *ctree,
+               <a class="link" href="BtkCTree.html#BtkCTreeExpansionType" title="enum BtkCTreeExpansionType"><span class="type">BtkCTreeExpansionType</span></a> arg1,
+               <span class="type">gpointer</span>              user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree-tree-collapse"></a><h3>The <code class="literal">“tree-collapse”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a>     *ctree,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg1,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree-tree-expand"></a><h3>The <code class="literal">“tree-expand”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a>     *ctree,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg1,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree-tree-move"></a><h3>The <code class="literal">“tree-move”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a>     *ctree,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg1,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg2,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg3,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree-tree-select-row"></a><h3>The <code class="literal">“tree-select-row”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a>     *ctree,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg1,
+               <span class="type">int</span>           arg2,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCTree-tree-unselect-row"></a><h3>The <code class="literal">“tree-unselect-row”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCTree.html" title="BtkCTree"><span class="type">BtkCTree</span></a>     *ctree,
+               <a class="link" href="BtkCTree.html#BtkCTreeNode" title="struct BtkCTreeNode"><span class="type">BtkCTreeNode</span></a> *arg1,
+               <span class="type">int</span>           arg2,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

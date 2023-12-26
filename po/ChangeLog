@@ -4,11 +4,11 @@
 
 === ChangeLog discontinued ===
 
-	With the move to git, GTK+ is switching from a ChangeLog file
+	With the move to git, BTK+ is switching from a ChangeLog file
 	to relying on commit messages to provide change history. Please
 	see README.commits for guidance on the expected message format.
 
-2009-03-28  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-03-28  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Fixed wrong string.
 
@@ -16,7 +16,7 @@
 
 	* ru.po: Updated Russian translation.
 
-2009-03-18  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-03-18  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* ps.po: Updated Pashto translation by Zabeeh Khan
 
@@ -36,7 +36,7 @@
 
 	* tr.po: Updated Turkish translation
 
-2009-03-15  Hendrik Richter  <hendrikr@gnome.org>
+2009-03-15  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation, by
 	         Christian Kirbach
@@ -69,7 +69,7 @@
 
 	* lt.po: Updated Lithuanian translation.
 
-2009-03-11  Amitakhya Phukan <amitakhya@svn.gnome.org>
+2009-03-11  Amitakhya Phukan <amitakhya@svn.bunny.org>
 
 	* as.po: Updated Assamese translations.
 
@@ -93,7 +93,7 @@
 
 	* cs.po: Updated Czech translation.
 
-2009-03-07  Mișu Moldovan  <dumol@gnome.ro>
+2009-03-07  Mișu Moldovan  <dumol@bunny.ro>
 
 	* ro.po: Updated Romanian translation
 
@@ -111,7 +111,7 @@
 
 2009-03-23  Rajesh Ranjan  <rranjan@redhat.com>
 
-	* hi.po: Updated gtk+ for hindi
+	* hi.po: Updated btk+ for hindi
 	
 2009-03-03  Shankar Prasad  <svenkate@redhat.com>
 
@@ -129,7 +129,7 @@
 
 	* it.po: Updated Italian translation by Luca Ferretti.
 
-2009-03-02  Hendrik Richter  <hendrikr@gnome.org>
+2009-03-02  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -152,7 +152,7 @@
 
 2009-02-27  Rajesh Ranjan  <rajeshkajha@yahoo.com>
 
-	* mai.po: Updated gtk+ for maithili
+	* mai.po: Updated btk+ for maithili
 
 2009-02-26  Changwoo Ryu  <cwryu@debian.org>
 
@@ -167,11 +167,11 @@
 
 	* ku.po: Updated Kurdish translation
 
-2009-02-23  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-02-23  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
-2009-02-22  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+2009-02-22  Wouter Bolsterlee  <wbolster@svn.bunny.org>
 
 	* nl.po: Updated Dutch translation by Tino Meinen.
 
@@ -187,7 +187,7 @@
 
 	* ja.po: Updated Japanese translation.
 
-2009-02-18  Priit Laes  <plaes at svn dot gnome dot org>
+2009-02-18  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Mattias Põldaru
 
@@ -227,7 +227,7 @@
 
 	* be@latin.po: Updated Belarusian Latin translation by Ihar Hrachyshka.
 
-2009-02-13  Gil Forcada  <gforcada@gnome.org>
+2009-02-13  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Updated Catalan translation by David Planella.
 
@@ -239,7 +239,7 @@
 
 	* lv.po: Translation updated.
 
-2009-02-12  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-02-12  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -247,7 +247,7 @@
 
 	* th.po: Updated Thai translation.
 
-2009-02-11  Jonh Wendell  <jwendell@gnome.org>
+2009-02-11  Jonh Wendell  <jwendell@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -263,7 +263,7 @@
 
 	* eu.po: Updated Basque translation.
 
-2009-02-10  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-02-10  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -272,11 +272,11 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2009-02-10  Gil Forcada  <gforcada@gnome.org>
+2009-02-10  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Updated Catalan translation by David Planella.
 
-2009-02-10  Kjartan Maraas  <kmaraas@gnome.org>
+2009-02-10  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -288,7 +288,7 @@
 
 	* ja.po: Updated Japanese translation.
 
-2009-02-05  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-02-05  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -330,7 +330,7 @@
 	* zh_HK.po: Updated Traditional Chinese translation(Hong Kong).
 	* zh_TW.po: Updated Traditional Chinese translation(Taiwan).
 
-2009-01-30  Jonh Wendell  <jwendell@gnome.org>
+2009-01-30  Jonh Wendell  <jwendell@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation by Leonardo Fontenelle.
 
@@ -338,7 +338,7 @@
 
 	* th.po: Updated Thai translation.
 
-2009-01-28  Kjartan Maraas  <kmaraas@gnome.org>
+2009-01-28  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -362,7 +362,7 @@
 
 	* === Released 2.15.1 ===
 
-2009-01-23  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-01-23  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -378,7 +378,7 @@
 
 	* ko.po: Updated Korean translation.
 
-2009-01-20  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-01-20  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -386,7 +386,7 @@
 
 	* nn.po: Updated Norwegian Nynorsk translation.
 
-2009-01-19  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-01-19  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -398,7 +398,7 @@
 
 	* nn.po: Updated Norwegian Nynorsk translation.
 
-2009-01-15  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-01-15  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -406,23 +406,23 @@
 
 	* nn.po: Updated Norwegian Nynorsk translation.
 
-2009-01-13  Gabor Kelemen  <kelemeng@gnome.hu>
+2009-01-13  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
 2009-01-13  Luca Ferretti  <elle.uca@libero.it>
 
-	* POTFILES.in: adde missing gtk/gtkorientable.c
+	* POTFILES.in: adde missing btk/btkorientable.c
 
 2009-01-13  Luca Ferretti  <elle.uca@libero.it>
 
 	* it.po: Changed two conflicting accelerators.
 
-2009-01-12  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-01-12  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2009-01-12  Kjartan Maraas  <kmaraas@gnome.org>
+2009-01-12  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -451,19 +451,19 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2009-01-06  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-01-06  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2009-01-05  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-01-05  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2009-01-05  Kjartan Maraas  <kmaraas@gnome.org>
+2009-01-05  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2009-01-05  Kjartan Maraas  <kmaraas@gnome.org>
+2009-01-05  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -483,7 +483,7 @@
 
 	* it.po: Unfuzzy/Copy yet translated stuff after C_() migration.
 
-2009-01-02  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2009-01-02  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -505,7 +505,7 @@
 	* uz@cyrillic.po: Updated Uzbek translation.
 	* uz.po: Updated Uzbek translation
 
-2008-12-21  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-12-21  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -525,7 +525,7 @@
 
 	* he.po: fix a typo.
 
-2008-10-23  Gil Forcada  <gforcada@gnome.org>
+2008-10-23  Gil Forcada  <gforcada@bunny.org>
 
 	* LINGUAS: Added ast.
 	* ast.po: Added Asturian translation on behalf of Mikel González.
@@ -538,11 +538,11 @@
 
 	* gl.po: Updated Galician Translation.
 
-2008-10-17  Gil Forcada  <gforcada@gnome.org>
+2008-10-17  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Updated Catalan translation.
 
-2008-10-17  Vladimer Sichinava  <vsichi@gnome.org>
+2008-10-17  Vladimer Sichinava  <vsichi@bunny.org>
 
 	* ka.po: Updated Georgian translation.
 
@@ -550,7 +550,7 @@
 
 	* sk.po: Updated Slovak translation by Pavol Šimo.
 
-2008-10-14 Og Maciel <ogmaciel@gnome.org>
+2008-10-14 Og Maciel <ogmaciel@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation by Vladimir Melo.
 
@@ -558,11 +558,11 @@
 
 	* ja.po: Fixed wrong translations (Bug #556017).
 
-2008-10-12  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-10-12  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-09-27  Gil Forcada  <gforcada@gnome.org>
+2008-09-27  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Updated Catalan translation by David Planella.
 
@@ -586,10 +586,10 @@
 
 	* sr.po, sr@latin.po: Updated Serbian translation.
 
-2008-09-19  Mugurel Tudor  <mugurelu@gnome.ro>
+2008-09-19  Mugurel Tudor  <mugurelu@bunny.ro>
 
 	* ro.po: Updated Romanian translation by
-	Mişu Moldovan <dumol@gnome.ro>
+	Mişu Moldovan <dumol@bunny.ro>
 
 2008-09-18  Philip Withnall  <philip@tecnocode.co.uk>
 
@@ -599,11 +599,11 @@
 
 	* pt.po: Updated Portuguese translation.
 
-2008-09-18  Hendrik Richter  <hendrikr@gnome.org>
+2008-09-18  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-09-18  Hendrik Richter  <hendrikr@gnome.org>
+2008-09-18  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -639,7 +639,7 @@
 
 	* th.po: Updated Thai translation.
 
-2008-09-15  Gil Forcada  <gforcada@gnome.org>
+2008-09-15  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Updated Catalan translation by David Planella.
 
@@ -668,7 +668,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2008-09-13  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-09-13  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Fixed translation of "login" and improved some access keys.
 
@@ -700,11 +700,11 @@
 
 	* tr.po: Updated Turkish translation
 
-2008-09-08  Amitakhya Phukan <amitakhya@svn.gnome.org>
+2008-09-08  Amitakhya Phukan <amitakhya@svn.bunny.org>
 
 	* as.po: Updated Assamese translations.
 
-2008-09-07  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+2008-09-07  Wouter Bolsterlee  <wbolster@svn.bunny.org>
 
 	* nl.po: Updated Dutch translation by Tino Meinen.
 
@@ -712,7 +712,7 @@
 
 	* pt.po: Updated Portuguese translation.
 
-2008-09-05  Gil Forcada  <gforcada@gnome.org>
+2008-09-05  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Minor fix to terminology.
 
@@ -728,7 +728,7 @@
 
 	* === Released 2.14.0 ===
 
-2008-09-04  Kjartan Maraas  <kmaraas@gnome.org>
+2008-09-04  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -756,7 +756,7 @@
 
 	* he.po: Updated Hebrew translation.
 
-2008-08-31  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-08-31  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -781,15 +781,15 @@
 
 	* eu.po: Updated Basque translation.
 
-2008-08-29  Seán de Búrca  <sdeburca@svn.gnome.org>
+2008-08-29  Seán de Búrca  <sdeburca@svn.bunny.org>
 
 	* ga.po: Updated Irish translation.
 
-2008-08-29  Priit Laes  <plaes at svn dot gnome dot org>
+2008-08-29  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
-2008-08-28  Gabor Kelemen  <kelemeng@gnome.hu>
+2008-08-28  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -797,31 +797,31 @@
 
 	* pl.po: Updated Polish translation
 
-2008-08-28  Hendrik Richter  <hendrikr@gnome.org>
+2008-08-28  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-08-28  Hendrik Richter  <hendrikr@gnome.org>
+2008-08-28  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-08-28  Hendrik Richter  <hendrikr@gnome.org>
+2008-08-28  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-08-28  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-08-28  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-08-28  Seán de Búrca  <sdeburca@svn.gnome.org>
+2008-08-28  Seán de Búrca  <sdeburca@svn.bunny.org>
 
 	* ga.po: Updated Irish translation.
 
-2008-08-28  Hendrik Richter  <hendrikr@gnome.org>
+2008-08-28  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-08-27  Kjartan Maraas  <kmaraas@gnome.org>
+2008-08-27  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -858,7 +858,7 @@
 
 	* ko.po: Updated Korean translation.
 
-2008-08-24  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-08-24  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -870,7 +870,7 @@
 
 	* th.po: Updated Thai translation.
 
-2008-08-23  Priit Laes  <plaes at svn dot gnome dot org>
+2008-08-23  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -878,7 +878,7 @@
 
 	* ja.po: Updated Japanese translation.
 
-2008-08-22  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-08-22  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -894,12 +894,12 @@
 
 	* fr.po: Updated French translation.
 
-2008-08-19  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-08-19  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Brazilian Portuguese translation updated by Fábio Nogueira
 	and Leonardo Ferreira Fontenelle.
 
-2008-08-19  Priit Laes  <plaes at svn dot gnome dot org>
+2008-08-19  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -927,7 +927,7 @@
 
 	* pt.po: Updated Portuguese translation.
 
-2008-08-15  Kjartan Maraas  <kmaraas@gnome.org>
+2008-08-15  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -937,18 +937,18 @@
 
 2008-08-14  Sandeep Shedmake  <sshedmak@redhat.com>
 
-	* mr.po: Adding Marathi Translations for module 'gtk+/po'
+	* mr.po: Adding Marathi Translations for module 'btk+/po'
 
 2008-08-14  Sandeep Shedmake  <sshedmak@redhat.com>
 
 	* mr.po: Removing the translated mr.po consisting translations for
-	'gtk+/po-properties' module
+	'btk+/po-properties' module
 
 2008-08-13  Sandeep Shedmake  <sshedmak@redhat.com>
 
 	* mr.po: Updated Marathi translations
 
-2008-08-12  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-08-12  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -964,11 +964,11 @@
 
 	* eu.po: Updated Basque translation.
 
-2008-08-11  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-08-11  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Fixed typo in the Brazilian Portuguese translation.
 
-2008-08-11  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-08-11  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Brazilian Portuguese translation updated by Henrique
 	Machado and Leonardo Fontenelle.
@@ -985,7 +985,7 @@
 
 	* kn.po: Updated Kannada translation
 
-2008-08-10  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-08-10  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -1035,7 +1035,7 @@
 
 	* gl.po: Updated Galician translation
 
-2008-08-03  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-08-03  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -1043,7 +1043,7 @@
 
 	* pt.po: Updated Portuguese translation.
 
-2008-07-28  Kjartan Maraas  <kmaraas@gnome.org>
+2008-07-28  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -1051,7 +1051,7 @@
 
 	* ja.po: Updated Japanese translation.
 
-2008-07-25  Leonardo Ferreira Fontenelle  <leonardof@gnome.org>
+2008-07-25  Leonardo Ferreira Fontenelle  <leonardof@bunny.org>
 
 	* pt_BR.po: Terminology improvements by Vladimir Melo.
 
@@ -1075,11 +1075,11 @@
 
 	* de.po: Updated German translation.
 
-2008-07-18  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-07-18  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-07-17  Amitakhya Phukan <amitakhya@svn.gnome.org>
+2008-07-17  Amitakhya Phukan <amitakhya@svn.bunny.org>
 
 	* as.po: Updated Assamese translations.
 
@@ -1087,7 +1087,7 @@
 
 	* ps.po: Added Pashto Translations by Zabeeh Khan
 
-2008-07-16  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-07-16  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -1112,7 +1112,7 @@
 
 	* === Released 2.13.4 ===
 
-2008-07-05  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-07-05  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -1124,15 +1124,15 @@
 
 	* oc.po: Updated Occitan translation.
 
-2008-07-01  Kjartan Maraas  <kmaraas@gnome.org>
+2008-07-01  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2008-06-29  Gil Forcada  <gforcada@gnome.org>
+2008-06-29  Gil Forcada  <gforcada@bunny.org>
 
 	* ca.po: Minor update to Catalan translation.
 
-2008-06-24  Kjartan Maraas  <kmaraas@gnome.org>
+2008-06-24  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -1144,15 +1144,15 @@
 
 	* ko.po: Updated Korean translation.
 
-2008-06-21  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-06-21  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-06-21  Gabor Kelemen  <kelemeng@gnome.hu>
+2008-06-21  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
-2008-06-19  Priit Laes  <plaes at svn dot gnome dot org>
+2008-06-19  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -1176,11 +1176,11 @@
 
 	* he.po: Updated Hebrew translation.
 
-2008-06-07  Kjartan Maraas  <kmaraas@gnome.org>
+2008-06-07  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2008-06-05  Priit Laes  <plaes at svn dot gnome dot org>
+2008-06-05  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -1192,7 +1192,7 @@
 
 	* === Released 2.13.2 ===
 
-2008-06-03  Priit Laes  <plaes at svn dot gnome dot org>
+2008-06-03  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -1212,7 +1212,7 @@
 
 	* === Released 2.13.1 ===
 
-2008-05-28  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-05-28  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -1224,15 +1224,15 @@
 
 	* ar.po: Updated Arabic Translation by Khaled Hosny.
 
-2008-05-10  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-05-10  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-05-10  Priit Laes  <plaes at svn dot gnome dot org>
+2008-05-10  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
-2008-05-08  Vincent van Adrighem  <adrighem@gnome.org>
+2008-05-08  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -1240,11 +1240,11 @@
 
 	* kn.po: Updated Kannada translations
 
-2008-05-06  Kjartan Maraas  <kmaraas@gnome.org>
+2008-05-06  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2008-04-30  Vincent van Adrighem  <adrighem@gnome.org>
+2008-04-30  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -1252,15 +1252,15 @@
 
 	* gl.po: Updated Galician Translation.
 
-2008-04-27  Wouter Bolsterlee  <wbolster@svn.gnome.org>
+2008-04-27  Wouter Bolsterlee  <wbolster@svn.bunny.org>
 
 	* nl.po: Updated Dutch translation by Tino Meinen.
 
-2008-04-26  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-04-26  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-04-23  Kjartan Maraas  <kmaraas@gnome.org>
+2008-04-23  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* oc.po: Fix build. Please fix the translation if this
 	isn't the right way to fix it :-)
@@ -1269,13 +1269,13 @@
 
 	* oc.po: Updated Occitan translation.
 
-2008-04-22  Kjartan Maraas  <kmaraas@gnome.org>
+2008-04-22  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* POTFILES.in: Add all the io-gdip-* files and
-	gtkmountoperation.c
+	btkmountoperation.c
 	* nb.po: Updated Norwegian bokmål translation.
 
-2008-04-22  Adam Weinberger  <adamw@gnome.org>
+2008-04-22  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -1283,7 +1283,7 @@
 
 	* he.po: Updated Hebrew translation.
 
-2008-04-20  Vincent van Adrighem  <adrighem@gnome.org>
+2008-04-20  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -1291,11 +1291,11 @@
 
 	* sv.po: Updated Swedish translation.
 
-2008-04-19  Kjartan Maraas  <kmaraas@gnome.org>
+2008-04-19  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2008-04-15  Philip Withnall  <pwithnall@svn.gnome.org>
+2008-04-15  Philip Withnall  <pwithnall@svn.bunny.org>
 
 	* en_GB.po: Updated British English translation.
 
@@ -1303,11 +1303,11 @@
 
 	* gl.po: Updated Galician Translation.
 
-2008-04-12  Jorge Gonzalez  <jorgegonz@svn.gnome.org>
+2008-04-12  Jorge Gonzalez  <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2008-04-04  Eskild Hustvedt  <eskildh@gnome.org>
+2008-04-04  Eskild Hustvedt  <eskildh@bunny.org>
 
 	* nn.po: Updated Norwegian Nynorsk translation
 
@@ -1320,7 +1320,7 @@
 	* ca@valencia.po: Updated Valencian-Catalan translation by
 	Robert Millan.
 
-2008-03-29  Hendrik Richter  <hendrikr@gnome.org>
+2008-03-29  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation, fix #524115.
 
@@ -1328,7 +1328,7 @@
 
 	* vi.po: Update Vietnamese translation
 
-2008-03-24  Priit Laes  <plaes at svn dot gnome dot org>
+2008-03-24  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -1336,7 +1336,7 @@
 
 	* sq.po: Updated Albanian Translation.
 
-2008-03-19  Vladimer Sichinava  <vsichi@gnome.org>
+2008-03-19  Vladimer Sichinava  <vsichi@bunny.org>
 
 	* ka.po: Updated Georgian translation.
 
@@ -1371,15 +1371,15 @@
 	* ca@valencia.po: New Valencian-Catalan translation by
 	Robert Millan, based on the latest Catalan file.
 
-2008-03-04  Hendrik Richter  <hendrikr@gnome.org>
+2008-03-04  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-03-02  Priit Laes  <plaes at svn dot gnome dot org>
+2008-03-02  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
-2008-02-26  Gabor Kelemen  <kelemeng@gnome.hu>
+2008-02-26  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated, merge changes from 2-12 branch
 
@@ -1397,7 +1397,7 @@
 
 2008-02-15  Claude Paroz  <claude@2xlibre.net>
 
-	* fr.po: Updated French translation (synced with gtk-2-12).
+	* fr.po: Updated French translation (synced with btk-2-12).
 
 2008-02-14  Amitakhya Phukan <amitakhya@svn.gome.org>
 
@@ -1408,11 +1408,11 @@
 	* te.po: Updated Telugu translation done by
 	Krishna Babu K <kkrothap@redhat.com>.
 
-2008-02-12  Hendrik Richter  <hendrikr@gnome.org>
+2008-02-12  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2008-02-08  Hendrik Richter  <hendrikr@gnome.org>
+2008-02-08  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -1452,7 +1452,7 @@
 
 2008-01-25  Stéphane Raimbault  <stephane.raimbault@gmail.com>
 
-	* fr.po: Synced with gtk-2-12.
+	* fr.po: Synced with btk-2-12.
 
 2008-01-22  Marcel Telka  <marcel@telka.sk>
 
@@ -1470,7 +1470,7 @@
 
 	* ku.po: Completed Kurdish translation
 
-2008-01-07  Priit Laes  <plaes at svn dot gnome dot org>
+2008-01-07  Priit Laes  <plaes at svn dot bunny dot org>
 
 	* et.po: Translation updated by Ivar Smolin
 
@@ -1486,7 +1486,7 @@
 
 	* si.po: Updated Sinhala translation.
 
-2007-12-19  Seán de Búrca  <sdeburca@svn.gnome.org>
+2007-12-19  Seán de Búrca  <sdeburca@svn.bunny.org>
 
 	* ga.po: Updated Irish translation.
 
@@ -1494,7 +1494,7 @@
 
 	* sv.po: Updated Swedish translation.
 
-2007-12-11  Kostas Papadimas <pkst@gnome.org>
+2007-12-11  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated Greek translation.
 
@@ -1510,12 +1510,12 @@
 
 	* fr.po: Updated French translation.
 
-2007-11-26  Leonardo Ferreira Fontenelle  <leonardof@svn.gnome.org>
+2007-11-26  Leonardo Ferreira Fontenelle  <leonardof@svn.bunny.org>
 
 	* pt_BR.po: Brazilian Portuguese translation updated by Pedro de
 	Medeiros and myself.
 
-2007-11-26  Priit Laes  <plaes@svn.gnome.org>
+2007-11-26  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -1524,7 +1524,7 @@
 	* ru.po: Updated Russian translation
 	by Vasiliy Faronov <qvvx@yandex.ru>
 
-2007-11-24  Priit Laes  <plaes@svn.gnome.org>
+2007-11-24  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -1532,15 +1532,15 @@
 
 	* POTFILES.in: Add icns loader to the files to translate
 
-2007-11-14  Matej Urbančič <mateju@svn.gnome.org>
+2007-11-14  Matej Urbančič <mateju@svn.bunny.org>
 
 	* sl.po: Updated Slovenian Translation.
 
-2007-11-04  Priit Laes  <plaes@svn.gnome.org>
+2007-11-04  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2007-11-02  Kjartan Maraas  <kmaraas@gnome.org>
+2007-11-02  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -1552,7 +1552,7 @@
 
 	* fi.po: Updated Finnish translation.
 
-2007-10-24  Seán de Búrca  <sdeburca@svn.gnome.org>
+2007-10-24  Seán de Búrca  <sdeburca@svn.bunny.org>
 
 	* ga.po: Updated Irish translation.
 
@@ -1564,11 +1564,11 @@
 
 	* ar.po: Updated Arabic Translation by Djihed Afifi.
 
-2007-10-21  Seán de Búrca  <sdeburca@svn.gnome.org>
+2007-10-21  Seán de Búrca  <sdeburca@svn.bunny.org>
 
 	* ga.po: Updated Irish translation.
 
-2007-10-18  Priit Laes  <plaes@svn.gnome.org>
+2007-10-18  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Translation update by Ivar Smolin.
 
@@ -1580,7 +1580,7 @@
 
 	* io.po: Update translation.
 
-2007-10-08  Priit Laes  <plaes@svn.gnome.org>
+2007-10-08  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Translation update by Ivar Smolin.
 
@@ -1600,7 +1600,7 @@
 
 	* sl.po: Updated Slovenian translation by Martin Srebotnjak.
 
-2007-09-23  Vincent van Adrighem  <adrighem@gnome.org>
+2007-09-23  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -1632,20 +1632,20 @@
 
 	* lt.po: Updated Lithuanian translation.
 
-2007-09-17  Amitakhya Phukan  <amitakhya@svn.gnome.org>
+2007-09-17  Amitakhya Phukan  <amitakhya@svn.bunny.org>
 
 	* as.po: Updated assamese translations.
 
-2007-09-15  Mugurel Tudor  <mugurelu@gnome.ro>
+2007-09-15  Mugurel Tudor  <mugurelu@bunny.ro>
 
 	* ro.po: Updated Romanian translation
-	by Mişu Moldovan <dumol@gnome.ro>
+	by Mişu Moldovan <dumol@bunny.ro>
 
 2007-09-15  Takeshi AIHANA <takehsi.aihana@gmail.com>
 
 	* ja.po: Updated Japanese translation.
 
-2007-09-14  Vladimer Sichinava  <vsichi@gnome.org>
+2007-09-14  Vladimer Sichinava  <vsichi@bunny.org>
 
 	* ka.po: Updated Georgian translation.
 
@@ -1669,7 +1669,7 @@
 
 	* ml.po: Updated Malayalam Translation
 
-2007-09-10  Hendrik Richter  <hendrikr@gnome.org>
+2007-09-10  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -1693,10 +1693,10 @@
 
 	* ru.po: Updated Russian translation
 
-2007-09-07  Raphael Higino  <raphaelh@svn.gnome.org>
+2007-09-07  Raphael Higino  <raphaelh@svn.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation
-	by Og Maciel <ogmaciel@gnome.org>.
+	by Og Maciel <ogmaciel@bunny.org>.
 
 2007-09-07  Ani Peter  <peter.ani@gmail.com>
 
@@ -1710,11 +1710,11 @@
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2007-09-06  Vincent van Adrighem  <adrighem@gnome.org>
+2007-09-06  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2007-09-06  Priit Laes  <plaes@svn.gnome.org>
+2007-09-06  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation updates by Ivar Smolin
 
@@ -1743,7 +1743,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2007-08-25 Gabor Kelemen  <kelemeng@gnome.hu>
+2007-08-25 Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -1751,11 +1751,11 @@
 
 	* da.po: Updated Danish translation
 
-2007-08-23  Artur Flinta  <aflinta@svn.gnome.org>
+2007-08-23  Artur Flinta  <aflinta@svn.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
-2007-08-23  Priit Laes  <plaes@svn.gnome.org>
+2007-08-23  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation updates by Ivar Smolin <okul@linux.ee>
 
@@ -1763,11 +1763,11 @@
 
 	* fr.po: Updated French translation by Claude Paroz.
 
-2007-08-21  Priit Laes  <plaes@svn.gnome.org>
+2007-08-21  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation updates by Ivar Smolin <okul@linux.ee>
 
-2007-08-20  Kjartan Maraas  <kmaraas@gnome.org>
+2007-08-20  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -1783,15 +1783,15 @@
 
 	* sv.po: Updated Swedish translation.
 
-2007-08-19  Priit Laes  <plaes@svn.gnome.org>
+2007-08-19  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation updates by Ivar Smolin <okul@linux.ee>
 
-2007-08-17  Hendrik Richter  <hendrikr@gnome.org>
+2007-08-17  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2007-08-16  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-08-16  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -1807,16 +1807,16 @@
 
 	* fi.po: Updated Finnish translation.
 
-2007-08-15  Adam Weinberger  <adamw@gnome.org>
+2007-08-15  Adam Weinberger  <adamw@bunny.org>
 
 	* POTFILES.skip: Added demo file.
 
-2007-08-15  Adam Weinberger  <adamw@gnome.org>
+2007-08-15  Adam Weinberger  <adamw@bunny.org>
 
 	* POTFILES.in: Added missing files.
 	* en_CA.po: Updated Canadian English translation.
 
-2007-08-14  Hendrik Richter  <hendrikr@gnome.org>
+2007-08-14  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -1829,11 +1829,11 @@
 
 	* fi.po: Updated Finnish translation.
 
-2007-08-07  Artur Flinta  <aflinta@svn.gnome.org>
+2007-08-07  Artur Flinta  <aflinta@svn.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
-2007-08-07  Wadim Dziedzic  <wadimd@svn.gnome.org>
+2007-08-07  Wadim Dziedzic  <wadimd@svn.bunny.org>
 
 	* pl.po: Updated polish translation
 
@@ -1841,7 +1841,7 @@
 
 	* fi.po: Updated Finnish translation.
 
-2007-08-04  Vincent van Adrighem  <adrighem@gnome.org>
+2007-08-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -1857,7 +1857,7 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2007-08-01  Priit Laes  <plaes@svn.gnome.org>
+2007-08-01  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation update by Ivar Smolin.
 
@@ -1869,7 +1869,7 @@
 
 	* te.po: Updated Telugu translation, fixes Bug #355842.
 
-2007-07-21 Gabor Kelemen  <kelemeng@gnome.hu>
+2007-07-21 Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -1889,27 +1889,27 @@
 
 	* sv.po: Updated Swedish translation.
 
-2007-07-16  Vincent van Adrighem  <adrighem@gnome.org>
+2007-07-16  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2007-07-15  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-07-15  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2007-07-14  Žygimantas Beručka  <zygis@gnome.org>
+2007-07-14  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
-2007-07-14  Kjartan Maraas  <kmaraas@gnome.org>
+2007-07-14  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2007-07-13  Priit Laes  <plaes@svn.gnome.org>
+2007-07-13  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation update by Ivar Smolin.
 
-2007-07-10 Gabor Kelemen  <kelemeng@gnome.hu>
+2007-07-10 Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -1935,7 +1935,7 @@
 
 	* th.po: Updated Thai translation.
 
-2007-07-07  Kostas Papadimas <pkst@gnome.org>
+2007-07-07  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated Greek translation
 
@@ -1967,7 +1967,7 @@
 
 	* ko.po: Updated Korean translation.
 
-2007-06-28  Priit Laes  <plaes@svn.gnome.org>
+2007-06-28  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation update by Ivar Smolin.
 
@@ -1975,7 +1975,7 @@
 
 	* ru.po: Updated Russian translation.
 
-2007-06-27  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-06-27  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -1983,7 +1983,7 @@
 
 	* vi.po: Updated Vietnamese translation.
 
-2007-06-23  Kjartan Maraas  <kmaraas@gnome.org>
+2007-06-23  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -1991,16 +1991,16 @@
 
 	* vi.po: Updated Vietnamese translation.
 
-2007-06-22 Gabor Kelemen  <kelemeng@gnome.hu>
+2007-06-22 Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
-2007-06-22  I. Felix <ifelix@svn.gnome.org>
+2007-06-22  I. Felix <ifelix@svn.bunny.org>
 
 	* si.po:  Sinhala Translation updated by Danishka Navin
 	* LINGUAS: Added Sinhala (si) to The List of Languages.
 
-2007-06-20  Priit Laes  <plaes@svn.gnome.org>
+2007-06-20  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Estonian translation update by Ivar Smolin.
 
@@ -2016,7 +2016,7 @@
 
 	* sv.po: Updated Swedish translation.
 
-2007-06-08  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-06-08  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -2028,7 +2028,7 @@
 
 	* === Released 2.11.1 ===
 
-2007-06-04  Kjartan Maraas  <kmaraas@gnome.org>
+2007-06-04  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Update Norwegian bokmål translation.
 
@@ -2036,7 +2036,7 @@
 
 	* th.po: Updated Thai translation.
 
-2007-05-29  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-05-29  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -2048,7 +2048,7 @@
 
 	* cy.po: Updated Welsh translation.
 
-2007-05-22  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-05-22  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -2058,7 +2058,7 @@
 
 2007-05-21  Luca Ferretti  <elle.uca@libero.it>
 
-	* it.po: Backport updated Italian translation from gtk-2-10 branch.
+	* it.po: Backport updated Italian translation from btk-2-10 branch.
 
 2007-05-20  Bastien Nocera  <hadess@hadess.net>
 
@@ -2080,11 +2080,11 @@
 
 	* en_GB.po: Updated British English translation
 
-2007-05-15  Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-05-15  Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation
 
-2007-05-16  Ihar Hrachyshka <iharh@gnome.org>
+2007-05-16  Ihar Hrachyshka <iharh@bunny.org>
 
 	* be@latin.po: Updated Belarusian Latin translation.
 
@@ -2093,15 +2093,15 @@
 	* sv.po: Updated Swedish translation.
 	* POTFILES.in: Added missing files.
 
-2007-05-12 Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-05-12 Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2007-05-08  Kjartan Maraas  <kmaraas@gnome.org>
+2007-05-08  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2007-05-06  Ihar Hrachyshka <iharh@gnome.org>
+2007-05-06  Ihar Hrachyshka <iharh@bunny.org>
 
 	* be@latin.po: Updated Belarusian Latin translation.
 
@@ -2110,7 +2110,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2007-05-05 Jorge Gonzalez <jorgegonz@svn.gnome.org>
+2007-05-05 Jorge Gonzalez <jorgegonz@svn.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -2118,11 +2118,11 @@
 
 	* ar.po: Updated Arabic Translation by Khaled Hosny.
 
-2007-04-29  Ihar Hrachyshka <iharh@gnome.org>
+2007-04-29  Ihar Hrachyshka <iharh@bunny.org>
 
 	* be@latin.po: Updated Belarusian Latin translation.
 
-2007-04-15  Kostas Papadimas <pkst@gnome.org>
+2007-04-15  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated Greek translation
 
@@ -2142,12 +2142,12 @@
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2007-03-11  Mugurel Tudor  <mugurelu@gnome.ro>
+2007-03-11  Mugurel Tudor  <mugurelu@bunny.ro>
 
 	* ro.po: Updated Romanian translation by
-	Mişu Moldovan <dumol@gnome.ro>
+	Mişu Moldovan <dumol@bunny.ro>
 
-2007-03-06  Hendrik Richter  <hendrikr@gnome.org>
+2007-03-06  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2155,11 +2155,11 @@
 
 	* mk.po: Updated Macedonian translation.
 
-2007-03-04  Ihar Hrachyshka <iharh@gnome.org>
+2007-03-04  Ihar Hrachyshka <iharh@bunny.org>
 
 	* be@latin.po: Updated Belarusian translation by Ales Navicki.
 
-2007-03-04  Ihar Hrachyshka <iharh@gnome.org>
+2007-03-04  Ihar Hrachyshka <iharh@bunny.org>
 
 	* be@latin.po: Added Belarusian Latin translation by Ales Navicki.
 
@@ -2179,7 +2179,7 @@
 
 	* lt.po: Updated Lithuanian translation.
 
-2007-02-20  Hendrik Richter  <hendrikr@gnome.org>
+2007-02-20  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation, fix #410019.
 
@@ -2201,11 +2201,11 @@
 
 	* en_GB.po: Updated English (British) translation
 
-2007-01-23  Priit Laes  <plaes@svn.gnome.org>
+2007-01-23  Priit Laes  <plaes@svn.bunny.org>
 
 	* et.po: Updated Estonian translation by Ivar Smolin <okul@linux.ee>.
 
-2007-01-18  Gabor Kelemen  <kelemeng@gnome.hu>
+2007-01-18  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
@@ -2247,7 +2247,7 @@
 
 	* es.po: Updated Spanish transaltion.
 
-2006-12-07  Adam Weinberger  <adamw@gnome.org>
+2006-12-07  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -2256,7 +2256,7 @@
 	* POTFILES.in: Replace modules/input/imthai-broken.c with imthai.c.
 	* th.po: Updated Thai translation.
 
-2006-11-12  Priit Laes  <plaes@cvs.gnome.org>
+2006-11-12  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2264,11 +2264,11 @@
 
 	* he.po: Updated Hebrew translation.
 
-2006-11-01  Priit Laes  <plaes@cvs.gnome.org>
+2006-11-01  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2006-10-24  Priit Laes  <plaes@cvs.gnome.org>
+2006-10-24  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2288,7 +2288,7 @@
 
 	* es.po: Updated Spanish translation.
 
-2006-10-13  Gabor Kelemen  <kelemeng@gnome.hu>
+2006-10-13  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated by Kelemen Gábor.
 
@@ -2296,11 +2296,11 @@
 
 	* cs.po: Czech translation updated.
 
-2006-10-02  Priit Laes  <plaes@cvs.gnome.org>
+2006-10-02  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2006-09-27  Priit Laes  <plaes@cvs.gnome.org>
+2006-09-27  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2314,7 +2314,7 @@
 	* *.po: Copy existing translations for a new string
 	from the panel.
 
-2006-09-21  Priit Laes  <plaes@cvs.gnome.org>
+2006-09-21  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2326,7 +2326,7 @@
 
 	* es.po: Updated Spanish translation.
 
-2006-09-14 Kostas Papadimas <pkst@gnome.org>
+2006-09-14 Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated Greek Translation
 
@@ -2379,7 +2379,7 @@
 
 	* en_GB.po: Updated English (British) translation.
 
-2006-09-08  Priit Laes  <plaes@cvs.gnome.org>
+2006-09-08  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2395,7 +2395,7 @@
 
 	* id.po: Updated.
 
-2006-09-04  Danilo Šegan  <danilo@gnome.org>
+2006-09-04  Danilo Šegan  <danilo@bunny.org>
 
 	* sr.po, sr@Latn.po: Updated by Goran Rakić.
 
@@ -2407,12 +2407,12 @@
 	* tr.po: msgfmt 0.15 chokes on excess and broken plural forms,
 	remove / fix them.
 
-2006-09-04  Mugurel Tudor  <mugurelu@gnome.ro>
+2006-09-04  Mugurel Tudor  <mugurelu@bunny.ro>
 
 	* ro.po: Updated Romanian translation by
-	Mişu Moldovan <dumol@gnome.ro>
+	Mişu Moldovan <dumol@bunny.ro>
 
-2006-09-03  Lucas Rocha  <lucasr@gnome.org>
+2006-09-03  Lucas Rocha  <lucasr@bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation
 	by Leonardo Ferreira Fontenelle <leo.fontenelle@gmail.com>
@@ -2434,7 +2434,7 @@
 
 	* bn.po: Updated Bengali translation
 
-2006-09-02  Priit Laes  <plaes@cvs.gnome.org>
+2006-09-02  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2442,11 +2442,11 @@
 
 	* mr.po: Updated Marathi translation.
 
-2006-08-30  Gabor Kelemen  <kelemeng@gnome.hu>
+2006-08-30  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
-2006-08-30  Lucas Rocha  <lucasr@gnome.org>
+2006-08-30  Lucas Rocha  <lucasr@bunny.org>
 
 	* pt_BR.po: Small fix on Brazilian Portuguese translation.
 
@@ -2454,7 +2454,7 @@
 
 	* ta.po: Translation updated.
 
-2006-08-28  Priit Laes  <plaes@cvs.gnome.org>
+2006-08-28  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2471,7 +2471,7 @@
 
 	* th.po: Fixed plural strings.
 
-2006-08-26  Priit Laes  <plaes@cvs.gnome.org>
+2006-08-26  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2491,7 +2491,7 @@
 
 	* sv.po: Updated Swedish translation.
 
-2006-08-20  Hendrik Richter  <hendrikr@gnome.org>
+2006-08-20  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2519,7 +2519,7 @@
 
 	* pt.po: Updated Portuguese translation.
 
-2006-08-17  Priit Laes  <plaes@cvs.gnome.org>
+2006-08-17  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2535,7 +2535,7 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-08-17  Satoru SATOH <ss@gnome.gr.jp>
+2006-08-17  Satoru SATOH <ss@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -2543,7 +2543,7 @@
 
 	* ku.po: Updated Kurdish translations
 
-2006-08-17  Wouter Bolsterlee  <uws+gnome@xs4all.nl>
+2006-08-17  Wouter Bolsterlee  <uws+bunny@xs4all.nl>
 
 	* nl.po: Translation updated by Wouter Bolsterlee.
 
@@ -2556,7 +2556,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2006-08-16  Satoru SATOH <ss@gnome.gr.jp>
+2006-08-16  Satoru SATOH <ss@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -2576,19 +2576,19 @@
 
 	* ko.po: Updated Korean translation.
 
-2006-08-16  Gabor Kelemen  <kelemeng@gnome.hu>
+2006-08-16  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Translation updated.
 
-2006-08-16  Artur Flinta  <aflinta@cvs.gnome.org>
+2006-08-16  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
-2006-08-15  Hendrik Richter  <hendrikr@gnome.org>
+2006-08-15  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2006-08-15  Wouter Bolsterlee  <uws+gnome@xs4all.nl>
+2006-08-15  Wouter Bolsterlee  <uws+bunny@xs4all.nl>
 
 	* nl.po: Translation updated by Wouter Bolsterlee.
 
@@ -2596,7 +2596,7 @@
 
 	* *.po: Adjust a changed msgid.
 
-2006-08-15  Žygimantas Beručka  <zygis@gnome.org>
+2006-08-15  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
@@ -2613,7 +2613,7 @@
 
 	* ko.po: Updated Korean translation.
 
-2006-08-11  Hendrik Richter  <hendrikr@gnome.org>
+2006-08-11  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2634,7 +2634,7 @@
 
 	* eu.po: Updated Basque translation.
 
-2006-08-05  Hendrik Richter  <hendrikr@gnome.org>
+2006-08-05  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2642,7 +2642,7 @@
 
 	* th.po: Updated Thai translation.
 
-2006-08-04  Priit Laes  <plaes@cvs.gnome.org>
+2006-08-04  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2650,7 +2650,7 @@
 
 	* es.po: Updated Spanish translation.
 
-2006-08-04  Vincent van Adrighem  <adrighem@gnome.org>
+2006-08-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -2658,15 +2658,15 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-08-03  Priit Laes  <plaes@cvs.gnome.org>
+2006-08-03  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2006-08-03  Kjartan Maraas  <kmaraas@gnome.org>
+2006-08-03  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
-2006-08-02  Priit Laes  <plaes@cvs.gnome.org>
+2006-08-02  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -2678,11 +2678,11 @@
 
 	* or.po: Updated Oriya Translation.
 
-2006-07-31  Hendrik Richter  <hendrikr@gnome.org>
+2006-07-31  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2006-07-31  Hendrik Richter  <hendrikr@gnome.org>
+2006-07-31  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2703,7 +2703,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2006-07-28  Simos Xenitellis  <simos@gnome.org>
+2006-07-28  Simos Xenitellis  <simos@bunny.org>
 
 	* tt.po: Updated Tatar translationb by Albert Fazlí.
 
@@ -2749,7 +2749,7 @@
 
 	* Makefile.in.in: Add POTFILES.skip to DIST
 
-2006-07-22  Žygimantas Beručka  <zygis@gnome.org>
+2006-07-22  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
@@ -2762,7 +2762,7 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2006-07-22  Žygimantas Beručka  <zygis@gnome.org>
+2006-07-22  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
@@ -2774,11 +2774,11 @@
 
 	* fr.po: Updated French translation.
 
-2006-07-20  Žygimantas Beručka  <zygis@gnome.org>
+2006-07-20  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
-2006-07-20  Vincent van Adrighem  <adrighem@gnome.org>
+2006-07-20  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -2807,7 +2807,7 @@
 
 	* cs.po: Updated Czech translation.
 
-2006-07-17  Hendrik Richter  <hendrikr@gnome.org>
+2006-07-17  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2820,7 +2820,7 @@
 	* POTFILES.in: Remove gk/paper_names.c.  (#347224,
 	Hendrik Richter)
 
-2006-07-16  Lukas Novotny  <lukasnov@cvs.gnome.org>
+2006-07-16  Lukas Novotny  <lukasnov@cvs.bunny.org>
 
 	* cs.po: Updated Czech translation.
 
@@ -2832,7 +2832,7 @@
 
 	* he.po: Updated Hebrew translation.
 
-2005-07-16  Kostas Papadimas <pkst@gnome.org>
+2005-07-16  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -2845,7 +2845,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2006-07-11  Hendrik Richter  <hendrikr@gnome.org>
+2006-07-11  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -2869,7 +2869,7 @@
 
 	* eu.po: Updated Basque translation.
 
-2006-07-06  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-07-06  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -2902,7 +2902,7 @@
 	* dz.po: Updated Hindi translation by
 	Dzongkhalinux team, DIT
 
-2006-06-26  Kjartan Maraas  <kmaraas@gnome.org>
+2006-06-26  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -2925,7 +2925,7 @@
 	by Leonid Kanter <leon@asplinux.ru> and
 	Alexander Sigachov <alexander.sigachov@gmail.com>
 
-2006-06-25  Vincent van Adrighem  <adrighem@gnome.org>
+2006-06-25  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -2958,7 +2958,7 @@
 
 	* cs.po: Partial update for Czech translation.
 
-2006-06-21  Christian Persch  <chpe@cvs.gnome.org>
+2006-06-21  Christian Persch  <chpe@cvs.bunny.org>
 
 	* POTFILES.in: Fix for bug #345518, use printbackends/file
 	instead of pdf.
@@ -2985,9 +2985,9 @@
 
 2006-06-19  Matthias Clasen  <mclasen@redhat.com>
 
-	* POTFILES.in: add gtk/updateiconcache.c
+	* POTFILES.in: add btk/updateiconcache.c
 
-2006-06-19  Hendrik Richter  <hendrikr@gnome.org>
+2006-06-19  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -3015,7 +3015,7 @@
 
 	* gl.po: Updated Galician Translation.
 
-2006-06-15  Hendrik Richter  <hendrikr@gnome.org>
+2006-06-15  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -3068,7 +3068,7 @@
 
 	* cy.po: Updated Welsh translation.
 
-2006-05-31  Raphael Higino  <raphaelh@cvs.gnome.org>
+2006-05-31  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -3076,7 +3076,7 @@
 
 	* es.po: Updated Spanish translation.
 
-2006-05-30  Ignacio Casal Quinteiro  <icq@cvs.gnome.org>
+2006-05-30  Ignacio Casal Quinteiro  <icq@cvs.bunny.org>
 
 	* gl.po: Updated Galician Translation.
 
@@ -3084,7 +3084,7 @@
 
 	* dz.po: Updated Dzongkha translation.
 
-2006-05-27  Hendrik Richter  <hendrikr@gnome.org>
+2006-05-27  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -3096,7 +3096,7 @@
 
 	* vi.po: Updated Vietnamese translation.
 
-2006-05-25  Vincent van Adrighem  <adrighem@gnome.org>
+2006-05-25  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3104,7 +3104,7 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-05-24  Kjartan Maraas  <kmaraas@gnome.org>
+2006-05-24  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -3133,7 +3133,7 @@
 
 	* gl.po: Updated Galician Translation.
 
-2006-05-19  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-05-19  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3157,7 +3157,7 @@
 
 	* === Released 2.9.1 ====
 
-2006-05-15  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-05-15  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3177,7 +3177,7 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-05-10  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-05-10  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3185,7 +3185,7 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-05-08  Wouter Bolsterlee  <uws+gnome@xs4all.nl>
+2006-05-08  Wouter Bolsterlee  <uws+bunny@xs4all.nl>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -3193,11 +3193,11 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-05-06  Hendrik Richter  <hendrikr@gnome.org>
+2006-05-06  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2006-04-14  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-04-14  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3211,7 +3211,7 @@
 
 2006-05-03  Matthias Clasen  <mclasen@redhat.com>
 
-	* POTFILES.in: Add gtkprintoperation-unix.c
+	* POTFILES.in: Add btkprintoperation-unix.c
 
 2006-05-03  Ankit Patel  <ankit644@yahoo.com>
 
@@ -3229,12 +3229,12 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2006-04-30  Kjartan Maraas  <kmaraas@gnome.org>
+2006-04-30  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* POTFILES.in: Add a whole bunch of missing files.
 	* nb.po: Updated Norwegian bokmål translation.
 
-2006-04-26  Vincent van Adrighem  <adrighem@gnome.org>
+2006-04-26  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3242,7 +3242,7 @@
 
 	* gu.po: Updated Gujarati Translation.
 
-2006-04-25  Kjartan Maraas  <kmaraas@gnome.org>
+2006-04-25  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 
@@ -3266,7 +3266,7 @@
 
 	* vi.po: Updated Vietnamese translation.
 
-2006-04-11  Vincent van Adrighem  <adrighem@gnome.org>
+2006-04-11  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3293,7 +3293,7 @@
 	* ne.po: Updated nepali translation
 		LTR made default
 
-2006-04-01  Gora Mohanty  <gmohanty@cvs.gnome.org>
+2006-04-01  Gora Mohanty  <gmohanty@cvs.bunny.org>
 
 	* or.po: Added Oriya translation.
 
@@ -3305,17 +3305,17 @@
 
 	* cs.po: Progress bar fix (#336645).
 
-2006-03-13  Mugurel Tudor  <mugurelu@gnome.ro>
+2006-03-13  Mugurel Tudor  <mugurelu@bunny.ro>
 
 	* ro.po: Updated Romanian translation
-	by Mişu Moldovan <dumol@gnome.ro>
+	by Mişu Moldovan <dumol@bunny.ro>
 
 2006-03-10  Alexander Shopov  <ash@contact.bg>
 
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2006-03-08  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-03-08  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3323,7 +3323,7 @@
 
 	* br.po: Updated Breton (Thierry Vignaud <tvignaud@mandriva.com>)
 
-2006-03-07  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-03-07  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3331,15 +3331,15 @@
 
 	* cy.po: Remove progress bar label translation before "|".
 
-2006-03-03  Artur Flinta  <aflinta@cvs.gnome.org>
+2006-03-03  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
-2006-03-01  Hendrik Richter  <hendrikr@gnome.org>
+2006-03-01  Hendrik Richter  <hendrikr@bunny.org>
 
 	* de.po: Updated German translation.
 
-2006-02-28  Simos Xenitellis  <simos@gnome.org>
+2006-02-28  Simos Xenitellis  <simos@bunny.org>
 
 	* el.po: Updated Greek translation.
 
@@ -3347,7 +3347,7 @@
 
 	* eu.po: Updated Basque translation.
 
-2006-01-21  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-01-21  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3364,11 +3364,11 @@
 
 	* hi.po: Updated Hindi translation for Bug 325940.
 
-2006-01-03  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-01-03  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-12-18  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-12-18  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3380,7 +3380,7 @@
 
 	* fr.po: Updated French translation.
 
-2005-12-09  Žygimantas Beručka  <zygis@gnome.org>
+2005-12-09  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
@@ -3396,7 +3396,7 @@
 
 	* th.po: Fixed typo.
 
-2005-11-17  Žygimantas Beručka  <zygis@gnome.org>
+2005-11-17  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Updated Lithuanian translation.
 
@@ -3404,7 +3404,7 @@
 
 	* be.po: Updated Belarusian translation by Vital Khilko.
 
-2005-11-10  Simos Xenitellis  <simos@gnome.org>
+2005-11-10  Simos Xenitellis  <simos@bunny.org>
 
 	* tt.po: Added Tatar translation Albert Fazlí.
 
@@ -3416,19 +3416,19 @@
 
 	* cs.po: Updated Czech translation.
 
-2005-11-01  Vincent van Adrighem  <adrighem@gnome.org>
+2005-11-01  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2005-10-27  Dan Damian  <dand@gnome.ro>
+2005-10-27  Dan Damian  <dand@bunny.ro>
 
 	* ro.po: Updated Romanian translation by Misu Moldovan.
 
-2005-10-27  Vincent van Adrighem  <adrighem@gnome.org>
+2005-10-27  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2005-10-26  Takeshi AIHANA <aihana@gnome.gr.jp>
+2005-10-26  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Fixed typos reported by
 		kano@na.rim.or.jp.
@@ -3437,7 +3437,7 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2005-10-23  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-10-23  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3459,7 +3459,7 @@
 
 	* sk.po: Fixed translations with context (thanks to Sergej Chodarev).
 
-2005-10-17  Priit Laes  <plaes@cvs.gnome.org>
+2005-10-17  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -3475,18 +3475,18 @@
 
 	* sk.po: Updated Slovak translation.
 
-2005-10-15  Vincent van Adrighem  <adrighem@gnome.org>
+2005-10-15  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated.
 
-2005-10-14  Adam Weinberger  <adamw@gnome.org>
+2005-10-14  Adam Weinberger  <adamw@bunny.org>
 
 	* POTFILES.in: Add a bunch of files with translatable
 	strings. Most of them don't concern us here, but they
 	may someday.
 	* en_CA.po: Updated Canadian English translation.
 
-2005-10-13  Priit Laes  <plaes@cvs.gnome.org>
+2005-10-13  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -3521,15 +3521,15 @@
 
 	* ku.po: Added Kurdish Translation from Erdal Ronahi
 
-2005-08-28  Evandro Fernandes Giovanini <evandrofg@ig.com.br>
+2005-08-28  Evandro Fernandes Bunnyiovanini <evandrofg@ig.com.br>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
-2005-08-28  Mohammad DAMT  <mdamt@gnome.org>
+2005-08-28  Mohammad DAMT  <mdamt@bunny.org>
 
 	* id.po: Updated Indonesian translation.
 
-2005-08-28  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-08-28  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3547,15 +3547,15 @@
 
 	* === Released 2.8.1 ===
 
-2005-08-23  Gabor Kelemen  <kelemeng@gnome.hu>
+2005-08-23  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Hungarian translation updated.
 
-2005-08-23  Priit Laes  <plaes@cvs.gnome.org>
+2005-08-23  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2005-08-23  Žygimantas Beručka  <zygis@gnome.org>
+2005-08-23  Žygimantas Beručka  <zygis@bunny.org>
 
 	* lt.po: Fixed Lithuanian translation.
 
@@ -3563,11 +3563,11 @@
 
 	* ko.po: Updated Korean translation.
 
-2005-08-16  Priit Laes  <plaes@cvs.gnome.org>
+2005-08-16  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2005-08-16  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-08-16  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3575,12 +3575,12 @@
 
 	* uk.po: Updated Ukrainian translation.
 
-2005-08-15  Mugurel Tudor  <mugurelu@gnome.ro>
+2005-08-15  Mugurel Tudor  <mugurelu@bunny.ro>
 
 	* ro.po: Updated Romanian translation
-	by Mişu Moldovan <dumol@gnome.ro>
+	by Mişu Moldovan <dumol@bunny.ro>
 
-2005-08-15  Gabor Kelemen  <kelemeng@gnome.hu>
+2005-08-15  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Hungarian translation updated.
 
@@ -3588,15 +3588,15 @@
 
 	* === Released 2.8.0 ===
 
-2005-08-13  Vincent van Adrighem  <adrighem@gnome.org>
+2005-08-13  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2005-08-13  Mohammad DAMT  <mdamt@gnome.org>
+2005-08-13  Mohammad DAMT  <mdamt@bunny.org>
 
 	* id.po: Updated Indonesian translation
 
-2005-08-12  Kostas Papadimas <pkst@gnome.org>
+2005-08-12  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -3608,11 +3608,11 @@
 
 	* cy.po: Updated Welsh translation.
 
-2005-08-09  Hendrik Brandt  <heb@gnome-de.org>
+2005-08-09  Hendrik Brandt  <heb@bunny-de.org>
 
 	* de.po: Bugfixes.
 
-2005-08-07  Mohammad DAMT  <mdamt@gnome.org>
+2005-08-07  Mohammad DAMT  <mdamt@bunny.org>
 
 	* id.po: Updated Indonesian translation
 
@@ -3622,7 +3622,7 @@
 	Prajasakti Localisation Team
 	<localisation@prajasakti.com>
 
-2005-08-04  Hendrik Brandt  <heb@gnome-de.org>
+2005-08-04  Hendrik Brandt  <heb@bunny-de.org>
 
 	* de.po: Change translation of Justify|_Fill to _Blocksatz.
 
@@ -3630,21 +3630,21 @@
 
 	* === Released 2.7.5 ===
 
-2005-08-03  Hendrik Brandt  <heb@gnome-de.org>
+2005-08-03  Hendrik Brandt  <heb@bunny-de.org>
 
 	* de.po: Remove translation context of progress cell renderer.
 	* de.po: Remove translation context from keyboard labels.
 
-2005-08-01  Martin Kretzschmar  <martink@gnome.org>
+2005-08-01  Martin Kretzschmar  <martink@bunny.org>
 
 	* de.po: untranslate translation context of progress cell renderer
 
 2005-07-31  Ilkka Tuohela  <hile@iki.fi>
 
 	* fi.po: Bulk updates to Finnish translation for new
-	gnome.fi website.
+	bunny.fi website.
 
-2005-07-31  Vincent van Adrighem  <adrighem@gnome.org>
+2005-07-31  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3652,7 +3652,7 @@
 
 	* fi.po: Updated Finnish translation
 
-2005-07-30  Takeshi AIHANA <aihana@gnome.gr.jp>
+2005-07-30  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -3669,13 +3669,13 @@
 
 	* sq.po: Updated Albanian translation.
 
-2005-07-26  Hendrik Brandt  <heb@gnome-de.org>
+2005-07-26  Hendrik Brandt  <heb@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2005-07-26  Artur Flinta  <aflinta@cvs.gnome.org>
+2005-07-26  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2005-07-25 Matthias Clasen <mclasen@redhat.com>
 
@@ -3696,7 +3696,7 @@
 	* bg.po: Updated Bulgarian translation by
 	Alexander Shopov <ash@contact.bg>
 
-2005-07-24  Kjartan Maraas  <kmaraas@gnome.org>
+2005-07-24  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
 	* no.po: Same
@@ -3713,7 +3713,7 @@
 
 	* pt.po: Updated Portuguese translation.
 
-2005-07-22  Vincent van Adrighem  <adrighem@gnome.org>
+2005-07-22  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3729,7 +3729,7 @@
 
 	* gl.po: Updated Galician Translation.
 
-2005-07-22  Priit Laes  <plaes@cvs.gnome.org>
+2005-07-22  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -3743,11 +3743,11 @@
 
 	* sk.po: Updated Slovak translation.
 
-2005-07-18  Adam Weinberger  <adamw@gnome.org>
+2005-07-18  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-07-18  Vincent van Adrighem  <adrighem@gnome.org>
+2005-07-18  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3771,11 +3771,11 @@
 
 	* === Released 2.7.3 ===
 
-2005-07-15  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-07-15  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish trasnslation
 
-2005-07-15  Kjartan Maraas  <kmaraas@gnome.org>
+2005-07-15  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Update
 	* no.po: Update
@@ -3788,15 +3788,15 @@
 
 	* sk.po: Updated Slovak translation.
 
-2005-07-13  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-07-13  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-07-12  Gabor Kelemen  <kelemeng@gnome.hu>
+2005-07-12  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Hungarian translation updated.
 
-2005-07-12  Priit Laes  <plaes@cvs.gnome.org>
+2005-07-12  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -3804,7 +3804,7 @@
 
 	* cs.po: Updated Czech translation.
 
-2005-07-09  Vincent van Adrighem  <adrighem@gnome.org>
+2005-07-09  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3820,15 +3820,15 @@
 
 	* === Released 2.7.2 ===
 
-2005-07-08  Danilo Šegan  <danilo@gnome.org>
+2005-07-08  Danilo Šegan  <danilo@bunny.org>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2005-07-07  Adam Weinberger  <adamw@gnome.org>
+2005-07-07  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-07-03  Adam Weinberger  <adamw@gnome.org>
+2005-07-03  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -3838,17 +3838,17 @@
 
 2005-07-01  Abel Cheung  <maddog@linuxhall.org>
 
-	* zh_TW.po: Updated traditional Chinese translation from GNOME HK Team
+	* zh_TW.po: Updated traditional Chinese translation from BUNNY HK Team
 
 2005-06-28  Theppitak Karoonboonyanan  <thep@linux.thai.net>
 
 	* th.po: Updated Thai translation.
 
-2005-06-28  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-06-28  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-06-27  Priit Laes  <plaes@cvs.gnome.org>
+2005-06-27  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -3864,7 +3864,7 @@
 
 	* sk.po: Updated Slovak translation.
 
-2005-06-21  Vincent van Adrighem  <adrighem@gnome.org>
+2005-06-21  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3876,11 +3876,11 @@
 
 	* fr.po: Updated French translation.
 
-2005-06-17  Adam Weinberger  <adamw@gnome.org>
+2005-06-17  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-06-16  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-06-16  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3918,7 +3918,7 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2005-06-11  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-06-11  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -3932,9 +3932,9 @@
 
 2005-06-10  Matthias Clasen  <mclasen@redhat.com>
 
-	* POTFILES.in: Add gdk/keyname-table.h
+	* POTFILES.in: Add bdk/keyname-table.h
 
-2005-06-08  Priit Laes  <plaes@cvs.gnome.org>
+2005-06-08  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
@@ -3942,7 +3942,7 @@
 
 	* da.po: Updated Danish translation.
 
-2005-06-06  Vincent van Adrighem  <adrighem@gnome.org>
+2005-06-06  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -3963,16 +3963,16 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2005-05-25  Adam Weinberger  <adamw@gnome.org>
+2005-05-25  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-05-25  Kjartan Maraas  <kmaraas@gnome.org>
+2005-05-25  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Update
 	* no.po: Update
 
-2005-05-18  Mohammad DAMT  <mdamt@gnome.org>
+2005-05-18  Mohammad DAMT  <mdamt@bunny.org>
 
 	* id.po: Updated Indonesian translation
 
@@ -3985,11 +3985,11 @@
 	* bg.po: Updated Bulgarian translation by
 	Vladimir Petkov <vpetkov@i-space.org>
 
-2005-05-14  Vincent van Adrighem  <adrighem@gnome.org>
+2005-05-14  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2005-05-12  Kostas Papadimas <pkst@gnome.org>
+2005-05-12  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -4001,19 +4001,19 @@
 
 	* vi.po: Fixed calendar:MY
 
-2005-05-02  Priit Laes  <plaes@cvs.gnome.org>
+2005-05-02  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated by Ivar Smolin.
 
-2005-04-28  Gabor Kelemen  <kelemeng@gnome.hu>
+2005-04-28  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Hungarian translation updated.
 
-2005-04-28  Gabor Kelemen  <kelemeng@gnome.hu>
+2005-04-28  Gabor Kelemen  <kelemeng@bunny.hu>
 
 	* hu.po: Hungarian translation updated.
 
-2005-04-23  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-04-23  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -4046,7 +4046,7 @@
 
 	* cs.po: Updated Czech translation.
 
-2005-04-08  Adam Weinberger  <adamw@gnome.org>
+2005-04-08  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4056,21 +4056,21 @@
 
 2005-04-07  Abel Cheung  <maddog@linuxhall.org>
 
-	* zh_TW.po: Updated traditional Chinese translation from GNOME HK Team
+	* zh_TW.po: Updated traditional Chinese translation from BUNNY HK Team
 
 2005-04-06  Maxim Dziumanenko <mvd@mylinux.com.ua>
 
 	* uk.po: Updated Ukrainian translation.
 
-2005-04-05  Hendrik Richter  <hendi@gnome-de.org>
+2005-04-05  Hendrik Richter  <hendi@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2005-04-04  Vincent van Adrighem  <adrighem@gnome.org>
+2005-04-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2005-04-03  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-04-03  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -4088,21 +4088,21 @@
 
 2005-03-30  Abel Cheung  <maddog@linuxhall.org>
 
-	* zh_TW.po: Updated traditional Chinese translation from GNOME HK Team
+	* zh_TW.po: Updated traditional Chinese translation from BUNNY HK Team
 
-2005-03-27  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-03-27  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
-2005-03-27  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-03-27  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-03-26  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-03-26  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-03-26  Adam Weinberger  <adamw@gnome.org>
+2005-03-26  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4110,16 +4110,16 @@
 
 	* da.po: Updated Danish translation.
 
-2005-03-05  Dan Damian  <dand@gnome.ro>
+2005-03-05  Dan Damian  <dand@bunny.ro>
 
 	* ro.po: Updated Romanian translation by
 	Mişu Moldovan <dumol@go.ro>.
 
-2005-03-04  Adam Weinberger  <adamw@gnome.org>
+2005-03-04  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-03-04  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-03-04  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -4127,7 +4127,7 @@
 
 	* ca.po: Updated Catalan translation.
 
-2005-03-02  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-03-02  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -4135,7 +4135,7 @@
 
 	* ca.po: Updated Catalan translation.
 
-2005-02-16  Adi Attar  <aattar@cvs.gnome.org>
+2005-02-16  Adi Attar  <aattar@cvs.bunny.org>
 
 	* xh.po: Updated Xhosa translation.
 
@@ -4143,7 +4143,7 @@
 
 	* fa.po: Updated Persian translation.
 
-2005-02-11  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-02-11  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -4155,7 +4155,7 @@
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2005-02-10  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-02-10  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -4192,23 +4192,23 @@
 
 	* sk.po: Updated Slovak translation.
 
-2005-01-15  Takeshi AIHANA <aihana@gnome.gr.jp>
+2005-01-15  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation and Fixed wrong translation with a context.
 
-2005-01-15  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-01-15  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-01-14  Adam Weinberger  <adamw@gnome.org>
+2005-01-14  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2005-01-10  Raphael Higino  <raphaelh@cvs.gnome.org>
+2005-01-10  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
-2005-01-10  Adam Weinberger  <adamw@gnome.org>
+2005-01-10  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4220,15 +4220,15 @@
 
 	* cs.po: Updated Czech translation.
 
-2005-01-10  Artur Flinta  <aflinta@cvs.gnome.org>
+2005-01-10  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2005-01-09  Miloslav Trmac  <mitr@volny.cz>
 
 	* cs.po: Updated Czech translation.
 
-2005-01-09  Takeshi AIHANA <aihana@gnome.gr.jp>
+2005-01-09  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -4249,7 +4249,7 @@
 
 	* === Released 2.6.1 ===
 
-2005-01-08  Vincent van Adrighem  <adrighem@gnome.org>
+2005-01-08  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -4257,11 +4257,11 @@
 
 	* sv.po: Updated Swedish translation.
 
-2005-01-07  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-01-07  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2005-01-06  Adam Weinberger  <adamw@gnome.org>
+2005-01-06  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4269,11 +4269,11 @@
 
 	* cs.po: Updated Czech translation.
 
-2005-01-06  Vincent van Adrighem  <adrighem@gnome.org>
+2005-01-06  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2005-01-05  Adam Weinberger  <adamw@gnome.org>
+2005-01-05  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4289,7 +4289,7 @@
 
 	* da.po: Updated Danish translation.
 
-2005-01-04  Vincent van Adrighem  <adrighem@gnome.org>
+2005-01-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -4297,7 +4297,7 @@
 
 	* sq.po: Updated Albanian translation.
 
-2005-01-03  Adam Weinberger  <adamw@gnome.org>
+2005-01-03  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4313,7 +4313,7 @@
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2005-01-01  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2005-01-01  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated SPanish translation.
 
@@ -4338,15 +4338,15 @@
 
 	* cs.po: Updated Czech translation.
 
-2004-12-18  Vincent van Adrighem  <adrighem@gnome.org>
+2004-12-18  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2004-12-18  Hendrik Brandt  <heb@gnome-de.org>
+2004-12-18  Hendrik Brandt  <heb@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2004-12-18  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-12-18  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -4362,7 +4362,7 @@
 
 	* sq.po: Updated Albanian translation.
 
-2004-12-17  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-12-17  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -4370,7 +4370,7 @@
 
 	* === Released 2.6.0 ===
 
-2004-12-16  Adam Weinberger  <adamw@gnome.org>
+2004-12-16  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4386,11 +4386,11 @@
 
 	* bg.po: Updated Bulgarian translation
 
-2004-12-08  Raphael Higino  <raphaelh@cvs.gnome.org>
+2004-12-08  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
-2004-12-04  Kjartan Maraas  <kmaraas@gnome.org>
+2004-12-04  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Update
 	* no.po: Update
@@ -4414,10 +4414,10 @@
 
 2004-11-27  Matthias Clasen  <mclasen@redhat.com>
 
-	* POTFILES.in: Add gdk/gdkpango.c.  (pointed out by
+	* POTFILES.in: Add bdk/bdkbango.c.  (pointed out by
 	Marcel Telka)
 
-2004-11-22  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-11-22  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish transalation.
 
@@ -4443,11 +4443,11 @@
 	* rw.po: Added Kinyarwanda translation by
 	Steve Murphy <murf@e-tools.com>.
 
-2004-11-15  Kjartan Maraas  <kmaraas@gnome.org>
+2004-11-15  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Fix conflicting mnemonics.
 
-2004-11-15  Hendrik Richter  <hendrik@gnome-de.org>
+2004-11-15  Hendrik Richter  <hendrik@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -4459,11 +4459,11 @@
 
 	* === Released 2.5.5 ===
 
-2004-11-09  Adam Weinberger  <adamw@gnome.org>
+2004-11-09  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-11-05  Laszlo Dvornik  <dvornik@gnome.hu>
+2004-11-05  Laszlo Dvornik  <dvornik@bunny.hu>
 
 	* hu.po: Hungarian translation updated.
 
@@ -4471,7 +4471,7 @@
 
 	* da.po: Updated Danish translation.
 
-2004-11-03  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-11-03  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -4479,16 +4479,16 @@
 
 	* === Released 2.5.4 ===
 
-2004-10-27  Kjartan Maraas  <kmaraas@gnome.org>
+2004-10-27  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Update
 	* no.po: Update
 
-2004-10-25  Kjartan Maraas  <kmaraas@gnome.org>
+2004-10-25  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* nb.po: Add.
 
-2004-10-23  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-10-23  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -4500,11 +4500,11 @@
 
 	* cs.po: Updated Czech translation.
 
-2004-10-17  Adam Weinberger  <adamw@gnome.org>
+2004-10-17  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-10-17  Vincent van Adrighem  <adrighem@gnome.org>
+2004-10-17  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -4526,11 +4526,11 @@
 
 	* makefile.mingw: Remove, had been left here by mistake.
 
-2004-10-09  Vincent van Adrighem  <adrighem@gnome.org>
+2004-10-09  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2004-10-07  Raphael Higino  <raphaelh@cvs.gnome.org>
+2004-10-07  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
@@ -4542,7 +4542,7 @@
 
 	* cs.po: Updated Czech translation.
 
-2004-10-01  Adam Weinberger  <adamw@gnome.org>
+2004-10-01  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4553,22 +4553,22 @@
 
 2004-09-29  Abel Cheung  <maddog@linuxhall.org>
 
-	* zh_TW.po: Updated traditional Chinese translation by GNOME HK Team
+	* zh_TW.po: Updated traditional Chinese translation by BUNNY HK Team
 
 2004-09-27  Roozbeh Pournader  <roozbeh@farsiweb.info>
 
 	* az_IR.po: Added Iranian Azerbaijani translation by Amir Hedayaty
 	<amir@bamdad.org>.
 
-2004-09-27  Vincent van Adrighem  <adrighem@gnome.org>
+2004-09-27  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2004-09-24  Adam Weinberger  <adamw@gnome.org>
+2004-09-24  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-09-19  Adam Weinberger  <adamw@gnome.org>
+2004-09-19  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4576,16 +4576,16 @@
 
 	* === Released 2.5.3 ===
 
-2004-09-17  Raphael Higino  <raphaelh@cvs.gnome.org>
+2004-09-17  Raphael Higino  <raphaelh@cvs.bunny.org>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation.
 
 2004-09-16  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
-2004-09-16  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-09-16  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -4593,7 +4593,7 @@
 
 	* ro.po: updated
 
-2004-09-01  Adam Weinberger  <adamw@gnome.org>
+2004-09-01  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4667,7 +4667,7 @@
 2004-07-22  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-07-21  Christian Rose  <menthos@menthos.com>
 
@@ -4736,7 +4736,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* === Released 2.4.1 ===
 
-2004-04-27  Andras Timar  <timar@gnome.hu>
+2004-04-27  Andras Timar  <timar@bunny.hu>
 
 	* hu.po: Updated Hungarian translation.
 
@@ -4744,11 +4744,11 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* ca.po: Updated Catalan translation.
 
-2004-04-25  Christian Neumair  <chris@gnome-de.org>
+2004-04-25  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2004-04-25  Kostas Papadimas <pkst@gnome.org>
+2004-04-25  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -4756,18 +4756,18 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* fr.po: Updated French translation.
 
-2004-04-24  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-04-24  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2004-04-24  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-04-24  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
 2004-04-21  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-04-20  John C Barstow  <jbowtie@amathaine.com>
 
@@ -4783,11 +4783,11 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 	* fi.po: Updated Finnish
  translation.
 
-2004-04-18  Vincent van Adrighem  <adrighem@gnome.org>
+2004-04-18  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
-2004-04-18  Evandro Fernandes Giovanini  <evandrofg@ig.com.br>
+2004-04-18  Evandro Fernandes Bunnyiovanini  <evandrofg@ig.com.br>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation
 	from Raphael Higino <raphaelh@uai.com.br>.
@@ -4824,7 +4824,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* ko.po: Updated Korean translation.
 
-2004-04-16  Kjartan Maraas  <kmaraas@gnome.org>
+2004-04-16  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -4832,19 +4832,19 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* sv.po: Updated Swedish translation.
 
-2004-04-16  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-04-16  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
-2004-04-16  Adam Weinberger  <adamw@gnome.org>
+2004-04-16  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-04-16  Yuriy Syrota  <rasta@cvs.gnome.org>
+2004-04-16  Yuriy Syrota  <rasta@cvs.bunny.org>
 
 	* uk.po: Updated Ukrainian translation.
 
-2004-04-16  Vincent van Adrighem  <adrighem@gnome.org>
+2004-04-16  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -4872,15 +4872,15 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* en_GB.po: Updated British English translation
 
-2004-04-15  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-04-15  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-04-15  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Updated Swedish translation.
 
-2004-04-15  Andras Timar  <timar@gnome.hu>
+2004-04-15  Andras Timar  <timar@bunny.hu>
 
 	* hu.po: Updated Hungarian translation.
 
@@ -4888,13 +4888,13 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2004-04-14  Adam Weinberger  <adamw@gnome.org>
+2004-04-14  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-04-14  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-04-14  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-04-14  Duarte Loreto <happyguy_pt@hotmail.com>
 
@@ -4934,7 +4934,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* ko.po: Updated Korean translation.
 
-2004-04-09  Vincent van Adrighem  <adrighem@gnome.org>
+2004-04-09  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -4947,24 +4947,24 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* sq.po: Updated Albanian translation.
 
-2004-04-08  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-04-08  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2004-04-08  Adam Weinberger  <adamw@gnome.org>
+2004-04-08  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-04-07  Evandro Fernandes Giovanini  <evandrofg@ig.com.br>
+2004-04-07  Evandro Fernandes Bunnyiovanini  <evandrofg@ig.com.br>
 
 	* pt_BR.po: Updated Brazilian Portuguese translation
-	from Alex Camacho Castilho <gnomebr@uol.com.br>.
+	from Alex Camacho Castilho <bunnybr@uol.com.br>.
 
 2004-04-07  Miloslav Trmac  <mitr@volny.cz>
 
 	* cs.po: Updated Czech translation.
 
-2004-04-07  Yuriy Syrota  <rasta@cvs.gnome.org>
+2004-04-07  Yuriy Syrota  <rasta@cvs.bunny.org>
 
 	* uk.po: Updated Ukrainian translation.
 
@@ -4973,7 +4973,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 	* is.po: Updated Icelandic translation by
 	Helgi Þormar Þorbjörnsson  <helgi@trance.is>
 
-2004-04-06  Adam Weinberger  <adamw@gnome.org>
+2004-04-06  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -4994,7 +4994,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* id.po: Updated Indonesian translation
 
-2004-04-05  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-04-05  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation and
 	Fixed wrong message
@@ -5009,7 +5009,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 	* af.po: Updated Afrikaans translation by
 	Zuza Software Foundation <info@translate.org.za>.
 
-2004-03-30  Adam Weinberger  <adamw@gnome.org>
+2004-03-30  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -5022,11 +5022,11 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* fi.po: Updated Finnish translation.
 
-2004-03-28  Adam Weinberger  <adamw@gnome.org>
+2004-03-28  Adam Weinberger  <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
-2004-03-27  Priit Laes  <plaes@cvs.gnome.org>
+2004-03-27  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated.
 
@@ -5038,7 +5038,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* sk.po: Updated Slovak translation.
 
-2004-03-24  Adam Weinberger <adamw@gnome.org>
+2004-03-24  Adam Weinberger <adamw@bunny.org>
 
 	* en_CA.po: Updated Canadian English translation.
 
@@ -5070,7 +5070,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 2004-03-19  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-03-19  Arafat Medini  <lumina@silverpen.de>
 
@@ -5104,7 +5104,7 @@ Tue Jul 20 02:53:26 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 2004-03-18  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-03-17  Gustavo Noronha Silva  <kov@debian.org>
 
@@ -5135,11 +5135,11 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sq.po: Updated Albanian translation.
 
-2004-03-16  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-03-16  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanih translation.
 
-2004-03-16  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-03-16  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -5147,7 +5147,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* uk.po: Updated Ukrainian translation
 
-2004-03-16  Vincent van Adrighem  <adrighem@gnome.org>
+2004-03-16  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5158,7 +5158,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 2004-03-16  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-03-16  Dafydd Harries  <daf@muse.19inch.net>
 
@@ -5168,7 +5168,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* ko.po: Updated Korean translation.
 
-2004-03-15  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-03-15  Artur Flinta  <aflinta@cvs.bunny.org>
 
 	* pl.po: Updated Polish translation.
 
@@ -5185,7 +5185,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 	* ro.po: Updated Romanian translation
 	by Mi?u Moldovan  <dumol@go.ro>
 
-2004-03-15  Christian Neumair  <chris@gnome-de.org>
+2004-03-15  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -5197,7 +5197,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* zh_CN.po: Updated Simplified Chinese translation.
 
-2004-03-15  Kjartan Maraas  <kmaraas@gnome.org>
+2004-03-15  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -5213,7 +5213,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* fr.po: Updated French translation.
 
-2004-03-13  Christian Neumair  <chris@gnome-de.org>
+2004-03-13  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -5225,7 +5225,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* lt.po: Updated Lithuanian translation.
 
-2004-03-11  Vincent van Adrighem  <adrighem@gnome.org>
+2004-03-11  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5236,7 +5236,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 2004-03-11  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-03-10  M?tin ?mirov  <metin@karegen.com>
 
@@ -5258,7 +5258,7 @@ Tue Mar 16 13:17:18 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sq.po: Updated Albanian translation.
 
-2004-03-09  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-03-09  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spansih translation.
 
@@ -5283,13 +5283,13 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* cy.po: Updated Welsh translation.
 
-2004-03-09  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-03-09  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
-2004-03-09  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-03-09  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-03-09  Changwoo Ryu  <cwryu@debian.org>
 
@@ -5299,18 +5299,18 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2004-03-09  Kjartan Maraas  <kmaraas@gnome.org>
+2004-03-09  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
 2004-03-09  Sanlig Badral  <badral@openmn.org>
 	* mn.po: Updated Mongolian translation.
 
-2004-03-09  Kostas Papadimas <pkst@gnome.org>
+2004-03-09  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
-2004-03-09  Andras Timar  <timar@gnome.hu>
+2004-03-09  Andras Timar  <timar@bunny.hu>
 
 	* hu.po: Updated Hungarian translation.
 
@@ -5318,7 +5318,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sr.po, sr@Latn.po, sr@ije.po: Updated Serbian translations.
 
-	* POTFILES.in: Added gtk/gtkpathbar.c.
+	* POTFILES.in: Added btk/btkpathbar.c.
 
 2004-03-08 Alastair McKinstry <mckinstry@computer.org>
 
@@ -5341,7 +5341,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* az.po: Translation updated.
 
-2004-03-07  Vincent van Adrighem  <adrighem@gnome.org>
+2004-03-07  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5361,11 +5361,11 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* fr.po: Updated French translation.
 
-2004-03-07  Kostas Papadimas <pkst@gnome.org>
+2004-03-07  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
-2004-03-07  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-03-07  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -5381,7 +5381,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* az.po: Translation updated.
 
-2004-03-06  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-03-06  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spansih translation.
 
@@ -5389,7 +5389,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* lt.po: Updated Lithuanian translation.
 
-2004-03-06  Aratur Flinta  <aflinta@cvs.gnome.org>
+2004-03-06  Aratur Flinta  <aflinta@cvs.bunny.org>
 
 	* pl.po: Updated Polish translation.
 
@@ -5413,19 +5413,19 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* pt.po: Updated Portuguese translation.
 
-2004-03-04  Christian Neumair  <chris@gnome-de.org>
+2004-03-04  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2004-03-04  Kostas Papadimas <pkst@gnome.org>
+2004-03-04  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
-2004-03-05  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-03-05  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
-2004-03-04  Kjartan Maraas  <kmaraas@gnome.org>
+2004-03-04  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -5433,7 +5433,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2004-03-03  Vincent van Adrighem  <adrighem@gnome.org>
+2004-03-03  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5445,7 +5445,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* ko.po: Updated Korean translation.
 
-2004-03-03  Kjartan Maraas  <kmaraas@gnome.org>
+2004-03-03  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation
 
@@ -5457,7 +5457,7 @@ Tue Mar  9 10:04:02 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sq.po: Updated Albanian translation.
 
-2004-03-03  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-03-03  Artur Flinta  <aflinta@cvs.bunny.org>
 
 	* pl.po: Updated Polish translation.
 
@@ -5473,7 +5473,7 @@ Tue Mar  2 17:06:05 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* it.po: Corrected three strings.
 
-2004-03-02  Kostas Papadimas <pkst@gnome.org>
+2004-03-02  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -5522,11 +5522,11 @@ Tue Mar  2 17:06:05 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* th.po: Updated Thai translation.
 
-2004-02-27  Priit Laes  <plaes@cvs.gnome.org>
+2004-02-27  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated.
 
-2004-02-27  Priit Laes  <plaes@cvs.gnome.org>
+2004-02-27  Priit Laes  <plaes@cvs.bunny.org>
 
 	* et.po: Translation updated.
 
@@ -5538,11 +5538,11 @@ Tue Mar  2 17:06:05 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* pt.po: Updated Portuguese translation.
 
-2004-02-26  Christian Neumair  <chris@gnome-de.org>
+2004-02-26  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2004-02-26  Vincent van Adrighem  <adrighem@gnome.org>
+2004-02-26  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5555,7 +5555,7 @@ Tue Mar  2 17:06:05 2004  Owen Taylor  <otaylor@redhat.com>
 	* sr@ije.po: Added Serbian Jekavian translation by
 	Bojan Suzi? <bojans@teol.net>.
 
-2004-02-25  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-02-25  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -5579,7 +5579,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* cs.po: Updated Czech translation.
 
-2004-02-24  Kostas Papadimas <pkst@gnome.org>
+2004-02-24  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -5603,11 +5603,11 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sq.po: Updated Albanian translation.
 
-2004-02-24  Kjartan Maraas  <kmaraas@gnome.org>
+2004-02-24  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
-2004-02-24  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-02-24  Artur Flinta  <aflinta@cvs.bunny.org>
 
 	* pl.po: Updated Polish translation.
 
@@ -5623,15 +5623,15 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* sq.po: Fixed Albanian translation.
 
-2004-02-23  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-02-23  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-02-23  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Updated Swedish translation.
 
-2004-02-23  Kostas Papadimas <pkst@gnome.org>
+2004-02-23  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -5646,7 +5646,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 2004-02-21  Christian Rose  <menthos@menthos.com>
 
-	* sv.po: Use %m instead of %b for month in gtkfilechooser
+	* sv.po: Use %m instead of %b for month in btkfilechooser
 	date.
 
 2004-02-20  Christian Rose  <menthos@menthos.com>
@@ -5690,7 +5690,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 2004-02-13  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-02-12  Danilo ? egan  <dsegan@gmx.net>
 
@@ -5700,7 +5700,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* ar.po: Updated Arabic translation.
 
-2004-02-11  Christian Neumair  <chris@gnome-de.org>
+2004-02-11  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -5708,7 +5708,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* fi.po: Updated Finnish translation.
 
-2004-02-09  Vincent van Adrighem  <adrighem@gnome.org>
+2004-02-09  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5717,7 +5717,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 	* mi.po: Updated Maori translation by
 	John C Barstow <jbowtie@amathaine.com>.
 
-2004-02-08  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-02-08  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spansih translation.
 
@@ -5746,7 +5746,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* hr.po: Updated Croatian translation.
 
-2004-02-07  Kjartan Maraas  <kmaraas@gnome.org>
+2004-02-07  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -5754,9 +5754,9 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* cs.po: Updated Czech translation.
 
-2004-02-06  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-02-06  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-02-05  Duarte Loreto <happyguy_pt@hotmail.com>
 
@@ -5773,7 +5773,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 2004-02-05  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-02-05  Christian Rose  <menthos@menthos.com>
 
@@ -5783,7 +5783,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* cs.po: Updated Czech translation.
 
-2004-02-03  Kjartan Maraas  <kmaraas@gnome.org>
+2004-02-03  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -5796,15 +5796,15 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* ga.po: Updated Irish translation.
 
-2004-02-02  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-02-02  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-02-02  Laurent Dhima  <laurenti@alblinux.net>
 
 	* sq.po: Updated Albanian translation.
 
-2004-02-02  Vincent van Adrighem  <adrighem@gnome.org>
+2004-02-02  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5818,7 +5818,7 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* POTFILES.in: Added missing files.
 
-2004-02-01  Christian Neumair  <chris@gnome-de.org>
+2004-02-01  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -5834,11 +5834,11 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* ko.po: Updated Korean translation.
 
-2004-01-30  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-01-30  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spansih translation.
 
-2004-01-30  Kjartan Maraas  <kmaraas@gnome.org>
+2004-01-30  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -5854,19 +5854,19 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 2004-01-30  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-01-30  Changwoo Ryu  <cwryu@debian.org>
 
 	* ko.po: Updated Korean translation.
 
-2004-01-29  Kostas Papadimas <pkst@gnome.org>
+2004-01-29  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
-2004-01-29  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-01-29  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-01-28  Miloslav Trmac  <mitr@volny.cz>
 
@@ -5890,9 +5890,9 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* el.po: Updated Greek translation.
 
-2004-01-26  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-01-26  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-01-26  Christian Rose  <menthos@menthos.com>
 
@@ -5907,11 +5907,11 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 	* mi.po: Added Maori translation by
 	John C Barstow <jbowtie@amathaine.com>.
 
-2004-01-25  Takeshi AIHANA <aihana@gnome.gr.jp>
+2004-01-25  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
-2004-01-25  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-25  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -5919,11 +5919,11 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* fr.po: Updated French translation.
 
-2004-01-24  Kjartan Maraas  <kmaraas@gnome.org>
+2004-01-24  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
-2004-01-24  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-01-24  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanih translation.
 
@@ -5950,40 +5950,40 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 2004-01-21  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
-2004-01-21  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-01-21  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-01-20  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2004-01-21  Changwoo Ryu  <cwryu@debian.org>
 
 	* ko.po: Updated Korean translation.
 
-2004-01-19  Kjartan Maraas  <kmaraas@gnome.org>
+2004-01-19  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
-2004-01-19  Christian Neumair  <chris@gnome-de.org>
+2004-01-19  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2004-01-19  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-01-19  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-01-19  Hasbullah Bin Pit <sebol@my-penguin.org>
 
 	* ms.po: Updated Malay translation.
 
-2004-01-19  Artur Flinta  <aflinta@cvs.gnome.org>
+2004-01-19  Artur Flinta  <aflinta@cvs.bunny.org>
 
-	* pl.po: Updated Polish translation by GNOME PL Team.
+	* pl.po: Updated Polish translation by BUNNY PL Team.
 
 2004-01-19  Pablo Saratxaga  <pablo@mandriva.com>
 
@@ -6029,7 +6029,7 @@ Sat Jan 17 23:12:45 2004  Matthias Clasen  <maclas@gmx.de>
 	* wa.po: Updated Walloon file
 	* br.po: Added Britton file
 
-2004-01-17  Kjartan Maraas  <kmaraas@gnome.org>
+2004-01-17  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -6047,7 +6047,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sq.po: Updated Albanian translation.
 
-2004-01-15  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-15  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -6059,7 +6059,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2004-01-14  Christian Neumair  <chris@gnome-de.org>
+2004-01-14  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -6067,15 +6067,15 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* ga.po: Update Irish translation.
 
-2004-01-14  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-01-14  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
-2004-01-13  Kjartan Maraas  <kmaraas@gnome.org>
+2004-01-13  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
-2004-01-13  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-13  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Kees van den Broek.
 
@@ -6091,7 +6091,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* pt.po: Updated Portuguese translation.
 
-2004-01-10  Kjartan Maraas  <kmaraas@gnome.org>
+2004-01-10  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -6103,7 +6103,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* ar.po: Updated Arabic translation
 
-2004-01-09  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-09  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -6128,7 +6128,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 	* cy.po: Welsh translation update by Rhys Jones <rhys@sucs.org> and
 	myself.
 
-2004-01-07  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-07  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -6140,16 +6140,16 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sv.po: Updated Swedish translation.
 
-2004-01-05  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-05  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
 2004-01-05  Danilo ? egan  <dsegan@gmx.net>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
-	* POTFILES.in: Added gdk-pixbuf/gdk-pixbuf.c.
+	* POTFILES.in: Added bdk-pixbuf/bdk-pixbuf.c.
 
-2004-01-04  Vincent van Adrighem  <adrighem@gnome.org>
+2004-01-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Translation updated by Tino Meinen.
 
@@ -6184,9 +6184,9 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 2004-01-01  Taneem Ahmed  <taneem@bengalinux.org>
 
 	* bn.po: Added Bangla translation by
-	of Ankur group <gnome-translation@bengalinux.org>.
+	of Ankur group <bunny-translation@bengalinux.org>.
 
-2004-01-01  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2004-01-01  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -6206,7 +6206,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* cs.po: Updated Czech translation.
 
-2003-12-31  Christian Neumair  <chris@gnome-de.org>
+2003-12-31  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -6243,7 +6243,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sq.po: Updated Albanian translation.
 
-2003-12-20  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2003-12-20  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po Updated Spanish translation.
 
@@ -6251,11 +6251,11 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sv.po: Updated Swedish translation.
 
-2003-12-20  Vincent van Adrighem  <adrighem@gnome.org>
+2003-12-20  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
-2003-12-19  Christian Neumair  <chris@gnome-de.org>
+2003-12-19  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -6283,7 +6283,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* cs.po: Updated Czech translation.
 
-2003-12-15  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2003-12-15  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -6291,11 +6291,11 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2003-12-14  Kjartan Maraas  <kmaraas@gnome.org>
+2003-12-14  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
-2003-12-14  Takeshi AIHANA <aihana@gnome.gr.jp>
+2003-12-14  Takeshi AIHANA <aihana@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -6303,7 +6303,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sv.po: Updated Swedish translation.
 
-2003-12-13  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2003-12-13  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po: Updated Spanish translation
 
@@ -6311,7 +6311,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* cs.po: Updated Czech translation.
 
-2003-12-11  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2003-12-11  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* es.po Updates Spanish translation.
 
@@ -6322,7 +6322,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 2003-12-10  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2003-12-08  Miloslav Trmac  <mitr@volny.cz>
 
@@ -6336,11 +6336,11 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* th.po: Added Thai (th) translation.
 
-2003-12-05  Christian Neumair  <chris@gnome-de.org>
+2003-12-05  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2003-12-04  Vincent van Adrighem  <adrighem@gnome.org>
+2003-12-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -6348,7 +6348,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* cs.po: Updated Czech translation.
 
-2003-12-03  Vincent van Adrighem  <adrighem@gnome.org>
+2003-12-03  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -6360,13 +6360,13 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-	* POTFILES.in: Added gtk/gtkfilesystemwin32.c.
+	* POTFILES.in: Added btk/btkfilesystemwin32.c.
 
 2003-12-02  ?smund Skj?Šveland  <aasmunds@fys.uio.no>
 
 	* nn.po: Updated Norwegian Nynorsk translation.
 
-2003-12-01  Vincent van Adrighem  <adrighem@gnome.org>
+2003-12-01  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -6374,7 +6374,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* cs.po: Updated Czech translation.
 
-2003-11-22  Kostas Papadimas <pkst@gnome.org>
+2003-11-22  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated Greek translation.
 
@@ -6397,13 +6397,13 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 2003-11-15  Arkadiusz Lipiec <arkadiusz.lipiec@gazeta.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>
+	BUNNY PL Team <translators@bunny.pl>
 
 2003-11-14  Danilo ? egan  <dsegan@gmx.net>
 
 	* sr.po, sr@Latn.po: Updated Serbian translation.
 
-2003-11-13  Vincent van Adrighem  <adrighem@gnome.org>
+2003-11-13  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -6439,7 +6439,7 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 
 2003-11-04  Dafydd Harries  <daf@parnassus.ath.cx>
 
-	* cy.po: Translation ported from gnome-2-4 branch.
+	* cy.po: Translation ported from bunny-2-4 branch.
 
 2003-11-04  Danilo ? egan  <dsegan@gmx.net>
 
@@ -6450,20 +6450,20 @@ Fri Jan 16 23:56:43 2004  Matthias Clasen  <maclas@gmx.de>
 	* POTFILES.in: Added missing files.
 	* sv.po: Updated Swedish translation.
 
-2003-11-04  Vincent van Adrighem  <adrighem@gnome.org>
+2003-11-04  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
 Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 
-	* POTFILES.in: Add gtk/gtkactiongroup.c
+	* POTFILES.in: Add btk/btkactiongroup.c
 
 2003-11-03  Federico Mena Quintero  <federico@ximian.com>
 
-	* POTFILES.in: Added gtkfilechooser.c, gtkfilechooserdefault.c,
-	gtkfilesystemmodel.c, gtkfilesystemunix.c.
+	* POTFILES.in: Added btkfilechooser.c, btkfilechooserdefault.c,
+	btkfilesystemmodel.c, btkfilesystemunix.c.
 
-2003-11-02  Kostas Papadimas <pkst@gnome.org>
+2003-11-02  Kostas Papadimas <pkst@bunny.org>
 
 	* el.po: Updated  Greek translation.
 
@@ -6471,11 +6471,11 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* nn.po: Updated Norwegian Nynorsk translation.
 
-2003-10-31  Christian Neumair  <chris@gnome-de.org>
+2003-10-31  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
-2003-10-31  Kjartan Maraas  <kmaraas@gnome.org>
+2003-10-31  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Update Norwegian translation.
 
@@ -6484,11 +6484,11 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 	* nn.po: Updated Norwegian Nynorsk translation. Resolved a number
 	of CVS conflicts.
 
-2003-10-28  KAMAGASAKO Masatoshi  <emerald@gnome.gr.jp>
+2003-10-28  KAMAGASAKO Masatoshi  <emerald@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
-2003-10-22  Vincent van Adrighem  <adrighem@gnome.org>
+2003-10-22  Vincent van Adrighem  <adrighem@bunny.org>
 
 	* nl.po: Dutch translation updated by Tino Meinen.
 
@@ -6513,7 +6513,7 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 
 	* sv.po: Updated Swedish translation somewhat.
 
-2003-10-05  KAMAGASAKO Masatoshi  <emerald@gnome.gr.jp>
+2003-10-05  KAMAGASAKO Masatoshi  <emerald@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -6538,7 +6538,7 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 	* pt_BR.po: Applied revision by Augusta Marques da Silva
 	<augusta.marques@gmx.net>.
 
-2003-09-25  KAMAGASAKO Masatoshi  <emerald@gnome.gr.jp>
+2003-09-25  KAMAGASAKO Masatoshi  <emerald@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -6569,10 +6569,10 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 	* ro.po: Updated Romanian translation by
 		Mi?u Moldovan  <dumol@go.ro>
 
-2003-09-02  KAMAGASAKO Masatoshi  <emerald@gnome.gr.jp>
+2003-09-02  KAMAGASAKO Masatoshi  <emerald@bunny.gr.jp>
 
 	* ja.po: merged Japanese translation by
-	Takeshi AIHANA <aihana@gnome.gr.jp>.
+	Takeshi AIHANA <aihana@bunny.gr.jp>.
 
 2003-08-29  Laurent Dhima  <laurenti@alblinux.net>
 
@@ -6611,7 +6611,7 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 
 2003-07-11  Matthias Clasen  <maclas@gmx.de>
 
-	* POTFILES.in: Add gtkcolorbutton.c and gtkfontbutton.c.
+	* POTFILES.in: Add btkcolorbutton.c and btkfontbutton.c.
 
 2003-07-07  Pablo Saratxaga  <pablo@mandriva.com>
 
@@ -6619,7 +6619,7 @@ Mon Nov  3 22:41:08 2003  Matthias Clasen  <maclas@gmx.de>
 
 Wed Jul  2 18:00:32 2003  Owen Taylor  <otaylor@redhat.com>
 
-	* POTFILES.in: add gtkicontheme.c
+	* POTFILES.in: add btkicontheme.c
 
 2003-06-30  Mohammad DAMT  <mdamt@bisnisweb.com>
 
@@ -6647,7 +6647,7 @@ Wed Jul  2 18:00:32 2003  Owen Taylor  <otaylor@redhat.com>
 2003-06-17  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2003-06-14  Christian Rose  <menthos@menthos.com>
 
@@ -6661,7 +6661,7 @@ Wed Jul  2 18:00:32 2003  Owen Taylor  <otaylor@redhat.com>
 2003-06-11  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: Updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2003-06-10  Pablo Gonzalo del Campo  <pablodc@bigfoot.com>
 
@@ -6675,8 +6675,8 @@ Wed Jul  2 18:00:32 2003  Owen Taylor  <otaylor@redhat.com>
 
 2003-06-03  Abel Cheung  <maddog@linux.org.hk>
 
-	* POTFILES.in: Added gdk-pixbuf/io-pcx.c and
-	gtk/gtkcalendar.c
+	* POTFILES.in: Added bdk-pixbuf/io-pcx.c and
+	btk/btkcalendar.c
 
 2003-06-02  Noah Levitt  <nlevitt@columbia.edu>
 
@@ -6688,13 +6688,13 @@ Wed Jul  2 18:00:32 2003  Owen Taylor  <otaylor@redhat.com>
 
 Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 
-	* POTFILES.in: add gtk/gtkimmodule.c (#113850)
+	* POTFILES.in: add btk/btkimmodule.c (#113850)
 
 2003-05-19 Arafat Medini <lumina@silverpen.de>
 
 	* ar.po: Added Arabic translation by Arabeyes.
 
-2003-05-18  KAMAGASAKO Masatoshi  <emerald@gnome.gr.jp>
+2003-05-18  KAMAGASAKO Masatoshi  <emerald@bunny.gr.jp>
 
 	* ja.po: Updated Japanese translation.
 
@@ -6758,7 +6758,7 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 2003-03-24  Pablo Gonzalo del Campo  <pablodc@bigfoot.com>
 
 	* es.po: Updated Spanish translation by
-	Carlos Perell?³ Mar?­n <carlos@gnome-db.org>.
+	Carlos Perell?³ Mar?­n <carlos@bunny-db.org>.
 
 2003-03-23  Christian Rose  <menthos@menthos.com>
 
@@ -6884,7 +6884,7 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 2003-01-15  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2003-01-14  Daniel Yacob <locales@geez.org>
 
@@ -6894,7 +6894,7 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* de.po: Fixed a small bug.
 
-2003-01-13  Christian Neumair  <chris@gnome-de.org>
+2003-01-13  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -6910,7 +6910,7 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* am.po: Updated Amharic translation.
 
-2002-01-06  Christian Neumair  <chris@gnome-de.org>
+2002-01-06  Christian Neumair  <chris@bunny-de.org>
 
 	* .cvsignore: Added "missing".
 	* de.po: Updated German translation.
@@ -6922,7 +6922,7 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 2003-01-06  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: updated Russian translation
-	from Russian team <gnome-cyr@gnome.org>.
+	from Russian team <bunny-cyr@bunny.org>.
 
 2003-01-05  Gustavo Noronha Silva  <kov@debian.org>
 
@@ -6936,9 +6936,9 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 2002-12-20  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: updated Russian translation
-	* from Russian team <gnome-cyr@gnome.org>.
+	* from Russian team <bunny-cyr@bunny.org>.
 
-2002-12-20  Akira TAGOH  <tagoh@gnome.gr.jp>
+2002-12-20  Akira TAGOH  <tagoh@bunny.gr.jp>
 
 	* ja.po: Un translation.
 
@@ -6957,7 +6957,7 @@ Thu May 29 09:46:26 2003  Hidetoshi Tajima  <hidetoshi.tajima@sun.com>
 2002-12-18  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* ru.po: updated Russian translation
-	* from Russian team <gnome-cyr@gnome.org>.
+	* from Russian team <bunny-cyr@bunny.org>.
 
 2002-12-18  Christian Rose  <menthos@menthos.com>
 
@@ -6993,7 +6993,7 @@ Wed Dec 11 14:06:50 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* fi.po: Updated Finnish translation.
 
-2002-12-11  Christian Neumair  <chris@gnome-de.org>
+2002-12-11  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -7013,11 +7013,11 @@ Wed Dec 11 14:06:50 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* lv.po: Added Latvian translation by Artis Trops.
 
-2002-12-07  Kjartan Maraas  <kmaraas@gnome.org>
+2002-12-07  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-12-07  Andras Timar  <timar@gnome.hu>
+2002-12-07  Andras Timar  <timar@bunny.hu>
 
 	* hu.po : Updated Hungarian Translation.
 
@@ -7045,7 +7045,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* da.po: Updated Danish translation.
 
-2002-11-28  Kjartan Maraas  <kmaraas@gnome.org>
+2002-11-28  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7061,7 +7061,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* *.po: Convert all to UTF-8.
 
-2002-11-15  Kjartan Maraas  <kmaraas@gnome.org>
+2002-11-15  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7070,7 +7070,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 	* be.po: Updated Belarusian translation
 	* from Belarusian team <i18n@infonet.by>.
 
-2002-11-21  Christian Neumair  <chris@gnome-de.org>
+2002-11-21  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 	* POTFILES.in: Added missing files.
@@ -7088,15 +7088,15 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 	* be.po: Updated Belarusian translation
 	* from Belarusian team <i18n@infonet.by>.
 
-2002-11-15  Kjartan Maraas  <kmaraas@gnome.org>
+2002-11-15  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-11-10  Kjartan Maraas  <kmaraas@gnome.org>
+2002-11-10  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-11-09  Christian Neumair  <chris@gnome-de.org>
+2002-11-09  Christian Neumair  <chris@bunny-de.org>
 
 	* de.po: Updated German translation.
 
@@ -7115,7 +7115,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 	* be.po: Added Belorusian translation from
 	Ales Nyakhaychyk <i18b@infonet.by>.
 
-2002-10-26 Szabolcs Ban <shooby@gnome.hu>
+2002-10-26 Szabolcs Ban <shooby@bunny.hu>
 
 	* hu.po : Updated Hungarian Translation.
 
@@ -7123,11 +7123,11 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* ro.po: updated
 
-2002-10-21  Kjartan Maraas  <kmaraas@gnome.org>
+2002-10-21  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-10-04  Kjartan Maraas  <kmaraas@gnome.org>
+2002-10-04  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7150,7 +7150,7 @@ Tue Dec  3 20:40:56 2002  Owen Taylor  <otaylor@redhat.com>
 
 2002-08-13  Gustavo Noronha Silva  <kov@debian.org>
 
-	* pt_BR.po: merge with gtk+-20 branch's translation
+	* pt_BR.po: merge with btk+-20 branch's translation
 
 2002-08-05  Christian Rose  <menthos@menthos.com>
 
@@ -7209,10 +7209,10 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* sv.po: Updated Swedish translation.
 
-2002-05-05  Zbigniew Chyla  <cyba@gnome.pl>
+2002-05-05  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
 2002-05-05  Duarte Loreto <happyguy_pt@hotmail.com>
 
@@ -7234,11 +7234,11 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* tr.po: Committed updated Turkish translation by ???mer.
 
-2002-04-23  Kjartan Maraas  <kmaraas@gnome.org>
+2002-04-23  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-04-22  Kjartan Maraas  <kmaraas@gnome.org>
+2002-04-22  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7272,7 +7272,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* ko.po: Updated Korean translation.
 
-2002-04-13  Abigail Brady  <morwen@evilmagic.org>
+2002-04-13  Abibail Brady  <morwen@evilmagic.org>
 
 	* en_GB.po: Updated British translation.
 
@@ -7294,10 +7294,10 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* da.po: Updated Danish translation.
 
-2002-04-06  Zbigniew Chyla  <cyba@gnome.pl>
+2002-04-06  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
 2002-04-05  Hasbullah Bin Pit <sebol@ikhlas.com>
 
@@ -7324,7 +7324,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* ru.po: updated russian translation from Dmitry G. Mastrukov.
 
-2002-03-28  Kjartan Maraas  <kmaraas@gnome.org>
+2002-03-28  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7340,10 +7340,10 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* sk.po: Updated Slovak translation.
 
-2002-03-24  Zbigniew Chyla  <cyba@gnome.pl>
+2002-03-24  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
 2002-03-21  Takayuki KUSANO  <AE5T-KSN@asahi-net.or.jp>
 
@@ -7361,11 +7361,11 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* ru.po: updated russian translation.
 
-2002-03-17  Kjartan Maraas  <kmaraas@gnome.org>
+2002-03-17  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-03-16  Christian Meyer  <chrisime@gnome.org>
+2002-03-16  Christian Meyer  <chrisime@bunny.org>
 
 	* de.po: Fixed many typos + small update.
 
@@ -7381,7 +7381,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* ru.po: updated russian translation.
 
-2002-03-08  Matthias Warkus  <mawarkus@gnome.org>
+2002-03-08  Matthias Warkus  <mawarkus@bunny.org>
 
 	* de.po: Last-minute update.
 
@@ -7389,7 +7389,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* da.po: Updated Danish translation.
 
-2002-03-07  Carlos Perello Marin <carlos@gnome-db.org>
+2002-03-07  Carlos Perello Marin <carlos@bunny-db.org>
 
 	* es.po: Updated Spanish translation.
 
@@ -7401,7 +7401,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* nl.po: Updated Dutch translation (by Ronald Hummelink).
 
-2002-03-06  Kjartan Maraas  <kmaraas@gnome.org>
+2002-03-06  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7421,14 +7421,14 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* sk.po: Updated Slovak translation.
 
-2002-03-03  Kjartan Maraas  <kmaraas@gnome.org>
+2002-03-03  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-03-03  Zbigniew Chyla  <cyba@gnome.pl>
+2002-03-03  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
 2002-03-02  Sven Neumann  <sven@gimp.org>
 
@@ -7450,10 +7450,10 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* et.po: Updated Estonian translation.
 
-2002-02-28  Zbigniew Chyla  <cyba@gnome.pl>
+2002-02-28  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
 2002-02-28  Christophe Merlet  <christophe@merlet.net>
 
@@ -7463,7 +7463,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* sv.po: Updated Swedish translation.
 
-2002-02-28  Christian Meyer  <chrisime@gnome.org>
+2002-02-28  Christian Meyer  <chrisime@bunny.org>
 
 	* de.po: Updated German translation.
 
@@ -7483,7 +7483,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* sv.po: Updated Swedish translation.
 
-2002-02-24  Matthias Warkus  <mawarkus@gnome.org>
+2002-02-24  Matthias Warkus  <mawarkus@bunny.org>
 
 	* de.po: Updated for release.
 
@@ -7491,7 +7491,7 @@ Mon Jun 03 16:42:53 2002  George Lebl <jirka@5z.com>
 
 	* ms.po: Updated Malay Translation.
 
-2002-02-23  Kjartan Maraas  <kmaraas@gnome.org>
+2002-02-23  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7515,7 +7515,7 @@ Sun Feb 17 21:24:55 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* et.po: Updated Estonian translation.
 
-2002-02-12  Kjartan Maraas  <kmaraas@gnome.org>
+2002-02-12  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7523,7 +7523,7 @@ Sun Feb 17 21:24:55 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* pt.po: Updated Portuguese translation.
 
-2002-02-10  Kjartan Maraas  <kmaraas@gnome.org>
+2002-02-10  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7555,7 +7555,7 @@ Sun Feb 17 21:24:55 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2002-02-01  Kjartan Maraas  <kmaraas@gnome.org>
+2002-02-01  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
@@ -7576,12 +7576,12 @@ Thu Jan 31 09:41:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* da.po: Updated Danish translation.
 
-2002-01-29  Zbigniew Chyla  <cyba@gnome.pl>
+2002-01-29  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
-2002-01-28 Szabolcs Ban <shooby@gnome.hu>
+2002-01-28 Szabolcs Ban <shooby@bunny.hu>
 
 	* hu.po : Updated Hungarian Translation.
 
@@ -7614,14 +7614,14 @@ Thu Jan 31 09:41:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* ms.po : Added Malay Translation.
 
-2002-01-11  Kjartan Maraas  <kmaraas@gnome.org>
+2002-01-11  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¥l) translation.
 
-2002-01-07  Zbigniew Chyla  <cyba@gnome.pl>
+2002-01-07  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation by
-	GNOME PL Team <translators@gnome.pl>.
+	BUNNY PL Team <translators@bunny.pl>.
 
 2002-01-04  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
@@ -7651,7 +7651,7 @@ Thu Jan 31 09:41:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* ro.po: updated
 
-2001-12-13  Kjartan Maraas  <kmaraas@gnome.org>
+2001-12-13  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
@@ -7668,7 +7668,7 @@ Thu Jan 31 09:41:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2001-12-05  Kjartan Maraas  <kmaraas@gnome.org>
+2001-12-05  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
@@ -7680,11 +7680,11 @@ Thu Jan 31 09:41:09 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2001-12-01  Kjartan Maraas  <kmaraas@gnome.org>
+2001-12-01  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
-2001-11-28  Carlos Perell Mar???¯?????œ <carlos@gnome-db.org>
+2001-11-28  Carlos Perell Mar???¯?????œ <carlos@bunny-db.org>
 
 	* es.po: Some fixes.
 
@@ -7700,7 +7700,7 @@ Sat Nov 24 13:19:58 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* tr.po: Committed updated Turkish translation by Nilgn.
 
-2001-11-14  Kjartan Maraas  <kmaraas@gnome.org>
+2001-11-14  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
@@ -7746,7 +7746,7 @@ Sat Nov 24 13:19:58 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* ta.po: Committed updated Tamil translation by Dinesh.
 
-2001-09-27  Kjartan Maraas  <kmaraas@gnome.org>
+2001-09-27  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
@@ -7770,7 +7770,7 @@ Wed Sep 26 15:34:46 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* sk.po: Updated Slovak translation.
 
-2001-09-19  Kjartan Maraas  <kmaraas@gnome.org>
+2001-09-19  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
@@ -7790,7 +7790,7 @@ Sat Sep  8 01:44:32 2001  Jonathan Blandford  <jrb@redhat.com>
 
 2001-09-07  Darin Adler  <darin@bentspoon.com>
 
-	* POTFILES.in: Removed gtk/gtkcellrenderertextpixbuf.c
+	* POTFILES.in: Removed btk/btkcellrenderertextpixbuf.c
 	since it's not around any more.
 
 2001-09-07  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
@@ -7821,7 +7821,7 @@ Sat Sep  8 01:44:32 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* zh_TW.po: Updated traditional Chinese translation.
 
-2001-08-30  Yukihiro Nakai <nakai@gnome.gr.jp>
+2001-08-30  Yukihiro Nakai <nakai@bunny.gr.jp>
 
 	* ja.po: Update Japanese translation.
 
@@ -7836,7 +7836,7 @@ Sat Sep  8 01:44:32 2001  Jonathan Blandford  <jrb@redhat.com>
 
 2001-08-20  Sven Neumann  <sven@gimp.org>
 
-	* POTFILES.in: removed gtk/gtkpacker.c since it is not part of the
+	* POTFILES.in: removed btk/btkpacker.c since it is not part of the
 	build anymore.
 
 2001-08-20  Sven Neumann  <sven@gimp.org>
@@ -7852,7 +7852,7 @@ Sat Sep  8 01:44:32 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* tr.po: Updated Turkish translation by Mehmet.
 
-2001-08-06  Kjartan Maraas  <kmaraas@gnome.org>
+2001-08-06  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian (bokm???¯?????œ) translation.
 
@@ -7860,25 +7860,25 @@ Sat Sep  8 01:44:32 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* az.po: Updated Azeri file
 
-2001-07-15  Matthias Warkus  <mawarkus@gnome.org>
+2001-07-15  Matthias Warkus  <mawarkus@bunny.org>
 
 	* de.po: Enormous update.
 	* POTFILES.in: Added all missing files that contain strings.
 
-2001-07-10  Matthias Warkus  <mawarkus@gnome.org>
+2001-07-10  Matthias Warkus  <mawarkus@bunny.org>
 
 	* de.po: Update.
 
 2001-07-09  Christian Rose  <menthos@menthos.com>
 
 	* sv.po: Updated Swedish translation.
-	* .cvsignore: Added gtk+.pot to the list of files.
+	* .cvsignore: Added btk+.pot to the list of files.
 
 2001-07-06  Pablo Saratxaga  <pablo@mandriva.com>
 
 	* az.po: Updated Azeri file
 
-2001-06-28  Kjartan Maraas  <kmaraas@gnome.org>
+2001-06-28  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
@@ -7895,16 +7895,16 @@ Sat Sep  8 01:44:32 2001  Jonathan Blandford  <jrb@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2001-05-22  Kjartan Maraas  <kmaraas@gnome.org>
+2001-05-22  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
 Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
-	* Move to glib-gettext.m4, to avoid including, buildding
+	* Move to bunnylib-gettext.m4, to avoid including, buildding
 	intl/.
 
-2001-05-15  Matthias Warkus  <mawarkus@gnome.org>
+2001-05-15  Matthias Warkus  <mawarkus@bunny.org>
 
 	* de.po: Brought this up to date.
 
@@ -7940,11 +7940,11 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 	* ja.po: corrected default:LTR tag
 	* nn;po,vi.po: Added Nynorsk and Vietnamese files from 1.2
 
-2001-03-01  Kjartan Maraas  <kmaraas@gnome.org>
+2001-03-01  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 
-2001-02-27  Kjartan Maraas  <kmaraas@gnome.org>
+2001-02-27  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 	* POTFILES.in: Added a bunch of new files.
@@ -7959,18 +7959,18 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 2001-02-06  Christophe Merlet  <christophe@merlet.net>
 
-	* update.sh: PACKAGE must be gtk20, isn't it ?.
+	* update.sh: PACKAGE must be btk20, isn't it ?.
 
 2001-02-06  Christophe Merlet  <christophe@merlet.net>
 
 	* fr.po: Updated French translation.
 
-2001-01-29  Kjartan Maraas  <kmaraas@gnome.org>
+2001-01-29  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* no.po: Updated Norwegian translation.
 	* POTFILES.in: Updated some.
 
-2001-01-01  Yukihiro Nakai <nakai@gnome.gr.jp>
+2001-01-01  Yukihiro Nakai <nakai@bunny.gr.jp>
 
 	* ja.po: Update Japanese translation
 
@@ -8010,13 +8010,13 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 2000-11-10  Robert Brady  <robert@suse.co.uk>
 
-	* update.pl: Module name is "gtk20" now.
+	* update.pl: Module name is "btk20" now.
 
 2000-11-09  Jarkko Ranta  <jjranta@cc.joensuu.fi>
 
 	* fi.po: Updated Finnish translation
 
-2000-11-08  Szabolcs Ban <shooby@gnome.hu>
+2000-11-08  Szabolcs Ban <shooby@bunny.hu>
 
 	* hu.po: Updated Hungarian translation
 
@@ -8028,7 +8028,7 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* ru.po: updated russian translation.
 
-2000-10-30  Zbigniew Chyla  <cyba@gnome.pl>
+2000-10-30  Zbigniew Chyla  <cyba@bunny.pl>
 
 	* pl.po: Updated Polish translation.
 
@@ -8038,7 +8038,7 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 2000-10-27  Robert Brady  <robert@suse.co.uk>
 
-	* POTFILES.in: Added gtkstock.c
+	* POTFILES.in: Added btkstock.c
 
 	* en_GB.po: Added British translation.
 
@@ -8062,8 +8062,8 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* fa.po: s/utf-8/UTF-8/, so it works on Red Hat 7.0.
 	(well, it doesn't actually work, you need to patch
-	gtkmain.c, to have
-	bind_textdomain_codeset("gtk20", "UTF-8")
+	btkmain.c, to have
+	bind_textdomain_codeset("btk20", "UTF-8")
 	in it somewhere.
 
 	But apart from that it works.
@@ -8091,7 +8091,7 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* sv.po: Updated Swedish translation.
 
-2000-10-06  Yukihiro Nakai <nakai@gnome.gr.jp>
+2000-10-06  Yukihiro Nakai <nakai@bunny.gr.jp>
 
 	* ja.po: Update Japanse translation.
 
@@ -8108,7 +8108,7 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 	* makefile.cygwin
 	* makefile.mingw: Renamed. Use iconv, not native2ascii.
 
-2000-07-24  Szabolcs BAN <shooby@gnome.hu>
+2000-07-24  Szabolcs BAN <shooby@bunny.hu>
 
 	* hu.po: Updated Hungarian translations.
 
@@ -8116,9 +8116,9 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* ru.po: microupdated russian translation.
 
-2000-07-12  Kjartan Maraas  <kmaraas@gnome.org>
+2000-07-12  Kjartan Maraas  <kmaraas@bunny.org>
 
-	* POTFILES.in: Added gtkcolorseldialog.c
+	* POTFILES.in: Added btkcolorseldialog.c
 	* no.po: Updated Norwegian translation.
 
 2000-07-12  Benedikt Roth  <Benedikt.Roth@gmx.net>
@@ -8155,11 +8155,11 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* fi.po: minor finnish update.
 
-2000-05-10  Szabolcs BAN <shooby@gnome.hu>
+2000-05-10  Szabolcs BAN <shooby@bunny.hu>
 
 	* hu.po: corrected header
 
-2000-05-08  Szabolcs BAN <shooby@gnome.hu>
+2000-05-08  Szabolcs BAN <shooby@bunny.hu>
 
 	* hu.po: updated it.
 
@@ -8277,7 +8277,7 @@ Fri May 18 11:22:04 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* ga.po: Added Gaeilge (irish gaelic) file from
 	Sean V. Kelley <s_oceallaigh@yahoo.com>
-	* sk.po, sl.po: added them from gtk+ 1.2.2
+	* sk.po, sl.po: added them from btk+ 1.2.2
 
 1999-08-24  Karsten Weiss  <karsten@addx.au.s.shuttle.de>
 
@@ -8376,7 +8376,7 @@ Sat Jan  9 17:35:19 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* ko.po: Added Korean translation.
 
-Thu Dec 24 00:45:21 CST 1998 Shawn T. Amundson <amundson@gtk.org>
+Thu Dec 24 00:45:21 CST 1998 Shawn T. Amundson <amundson@btk.org>
 
 	* no.po: added translation by Kjartan Maraas <kmaraas@fib.hl.no>
 
@@ -8385,7 +8385,7 @@ Tue Dec 22 14:24:37 1998  Owen Taylor  <otaylor@redhat.com>
 	* pl.po: Added translation by
 	Krzysztof Krzyaniak <eloy@venco.com.pl>
 
-Sat Dec 19 18:42:39 PST 1998 Shawn T. Amundson <amundson@gtk.org>
+Sat Dec 19 18:42:39 PST 1998 Shawn T. Amundson <amundson@btk.org>
 
 	* sv.po: added translation by Tomas ???¯?????œren <stric@ing.umu.se>
 

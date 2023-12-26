@@ -1,0 +1,1395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BtkActionGroup: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="Actions.html" title="Action-based menus and toolbars">
+<link rel="prev" href="BtkUIManager.html" title="BtkUIManager">
+<link rel="next" href="BtkAction.html" title="BtkAction">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#BtkActionGroup.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#BtkActionGroup.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#BtkActionGroup.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#BtkActionGroup.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#BtkActionGroup.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="Actions.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="BtkUIManager.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="BtkAction.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="BtkActionGroup"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="BtkActionGroup.top_of_page"></a>BtkActionGroup</span></h2>
+<p>BtkActionGroup</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="BtkActionGroup.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="returnvalue">BtkActionGroup</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-new" title="btk_action_group_new ()">btk_action_group_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-get-name" title="btk_action_group_get_name ()">btk_action_group_get_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-get-sensitive" title="btk_action_group_get_sensitive ()">btk_action_group_get_sensitive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-set-sensitive" title="btk_action_group_set_sensitive ()">btk_action_group_set_sensitive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-get-visible" title="btk_action_group_get_visible ()">btk_action_group_get_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-set-visible" title="btk_action_group_set_visible ()">btk_action_group_set_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkAction.html" title="BtkAction"><span class="returnvalue">BtkAction</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-get-action" title="btk_action_group_get_action ()">btk_action_group_get_action</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GList</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-list-actions" title="btk_action_group_list_actions ()">btk_action_group_list_actions</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-action" title="btk_action_group_add_action ()">btk_action_group_add_action</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-action-with-accel" title="btk_action_group_add_action_with_accel ()">btk_action_group_add_action_with_accel</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-remove-action" title="btk_action_group_remove_action ()">btk_action_group_remove_action</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-actions" title="btk_action_group_add_actions ()">btk_action_group_add_actions</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-actions-full" title="btk_action_group_add_actions_full ()">btk_action_group_add_actions_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-toggle-actions" title="btk_action_group_add_toggle_actions ()">btk_action_group_add_toggle_actions</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-toggle-actions-full" title="btk_action_group_add_toggle_actions_full ()">btk_action_group_add_toggle_actions_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-radio-actions" title="btk_action_group_add_radio_actions ()">btk_action_group_add_radio_actions</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-radio-actions-full" title="btk_action_group_add_radio_actions_full ()">btk_action_group_add_radio_actions_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-set-translate-func" title="btk_action_group_set_translate_func ()">btk_action_group_set_translate_func</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-set-translation-domain" title="btk_action_group_set_translation_domain ()">btk_action_group_set_translation_domain</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkActionGroup.html#btk-action-group-translate-string" title="btk_action_group_translate_string ()">btk_action_group_translate_string</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type">
+<span class="type">char</span> *</td>
+<td class="property_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup--name" title="The “name” property">name</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup--sensitive" title="The “sensitive” property">sensitive</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup--visible" title="The “visible” property">visible</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup-connect-proxy" title="The “connect-proxy” signal">connect-proxy</a></td>
+<td class="signal_flags"> </td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup-disconnect-proxy" title="The “disconnect-proxy” signal">disconnect-proxy</a></td>
+<td class="signal_flags"> </td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup-post-activate" title="The “post-activate” signal">post-activate</a></td>
+<td class="signal_flags"> </td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup-pre-activate" title="The “pre-activate” signal">pre-activate</a></td>
+<td class="signal_flags"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup-struct" title="struct BtkActionGroup">BtkActionGroup</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkActionGroup.html#BtkActionEntry" title="struct BtkActionEntry">BtkActionEntry</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkActionGroup.html#BtkToggleActionEntry" title="struct BtkToggleActionEntry">BtkToggleActionEntry</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkActionGroup.html#BtkRadioActionEntry" title="struct BtkRadioActionEntry">BtkRadioActionEntry</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> BtkActionGroup
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+BtkActionGroup implements
+ <a class="link" href="BtkBuildable.html" title="BtkBuildable">BtkBuildable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;btk/btk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="btk-action-group-new"></a><h3>btk_action_group_new ()</h3>
+<pre class="programlisting"><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="returnvalue">BtkActionGroup</span></a> *
+btk_action_group_new (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<p>Creates a new <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> object. The name of the action group
+is used when associating keybindings 
+with the actions.</p>
+<div class="refsect3">
+<a name="btk-action-group-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>the name of the action group.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-new.returns"></a><h4>Returns</h4>
+<p> the new <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a></p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-get-name"></a><h3>btk_action_group_get_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+btk_action_group_get_name (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
+<p>Gets the name of the action group.</p>
+<div class="refsect3">
+<a name="btk-action-group-get-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-get-name.returns"></a><h4>Returns</h4>
+<p> the name of the action group.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-get-sensitive"></a><h3>btk_action_group_get_sensitive ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_action_group_get_sensitive (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
+<p>Returns <code class="literal">TRUE</code> if the group is sensitive.  The constituent actions
+can only be logically sensitive (see <a class="link" href="BtkAction.html#btk-action-is-sensitive" title="btk_action_is_sensitive ()"><code class="function">btk_action_is_sensitive()</code></a>) if
+they are sensitive (see <a class="link" href="BtkAction.html#btk-action-get-sensitive" title="btk_action_get_sensitive ()"><code class="function">btk_action_get_sensitive()</code></a>) and their group
+is sensitive.</p>
+<div class="refsect3">
+<a name="btk-action-group-get-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-get-sensitive.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if the group is sensitive.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-set-sensitive"></a><h3>btk_action_group_set_sensitive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_set_sensitive (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                <em class="parameter"><code><span class="type">gboolean</span> sensitive</code></em>);</pre>
+<p>Changes the sensitivity of <em class="parameter"><code>action_group</code></em>
+</p>
+<div class="refsect3">
+<a name="btk-action-group-set-sensitive.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>sensitive</p></td>
+<td class="parameter_description"><p>new sensitivity</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-get-visible"></a><h3>btk_action_group_get_visible ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_action_group_get_visible (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
+<p>Returns <code class="literal">TRUE</code> if the group is visible.  The constituent actions
+can only be logically visible (see <a class="link" href="BtkAction.html#btk-action-is-visible" title="btk_action_is_visible ()"><code class="function">btk_action_is_visible()</code></a>) if
+they are visible (see <a class="link" href="BtkAction.html#btk-action-get-visible" title="btk_action_get_visible ()"><code class="function">btk_action_get_visible()</code></a>) and their group
+is visible.</p>
+<div class="refsect3">
+<a name="btk-action-group-get-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-get-visible.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if the group is visible.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-set-visible"></a><h3>btk_action_group_set_visible ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_set_visible (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                              <em class="parameter"><code><span class="type">gboolean</span> visible</code></em>);</pre>
+<p>Changes the visible of <em class="parameter"><code>action_group</code></em>
+.</p>
+<div class="refsect3">
+<a name="btk-action-group-set-visible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>visible</p></td>
+<td class="parameter_description"><p>new visiblity</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-get-action"></a><h3>btk_action_group_get_action ()</h3>
+<pre class="programlisting"><a class="link" href="BtkAction.html" title="BtkAction"><span class="returnvalue">BtkAction</span></a> *
+btk_action_group_get_action (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                             <em class="parameter"><code>const <span class="type">gchar</span> *action_name</code></em>);</pre>
+<p>Looks up an action in the action group by name.</p>
+<div class="refsect3">
+<a name="btk-action-group-get-action.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action_name</p></td>
+<td class="parameter_description"><p>the name of the action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-get-action.returns"></a><h4>Returns</h4>
+<p>the action, or <code class="literal">NULL</code> if no action by that name exists. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-list-actions"></a><h3>btk_action_group_list_actions ()</h3>
+<pre class="programlisting"><span class="returnvalue">GList</span> *
+btk_action_group_list_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
+<p>Lists the actions in the action group.</p>
+<div class="refsect3">
+<a name="btk-action-group-list-actions.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-list-actions.returns"></a><h4>Returns</h4>
+<p>an allocated list of the action objects in the action group. </p>
+<p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> BtkAction][<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>]</span></p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-action"></a><h3>btk_action_group_add_action ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_action (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                             <em class="parameter"><code><a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a> *action</code></em>);</pre>
+<p>Adds an action object to the action group. Note that this function
+does not set up the accel path of the action, which can lead to problems
+if a user tries to modify the accelerator of a menuitem associated with
+the action. Therefore you must either set the accel path yourself with
+<a class="link" href="BtkAction.html#btk-action-set-accel-path" title="btk_action_set_accel_path ()"><code class="function">btk_action_set_accel_path()</code></a>, or use 
+<code class="literal">btk_action_group_add_action_with_accel (..., NULL)</code>.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-action.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>an action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-action-with-accel"></a><h3>btk_action_group_add_action_with_accel ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_action_with_accel
+                               (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                <em class="parameter"><code><a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a> *action</code></em>,
+                                <em class="parameter"><code>const <span class="type">gchar</span> *accelerator</code></em>);</pre>
+<p>Adds an action object to the action group and sets up the accelerator.</p>
+<p>If <em class="parameter"><code>accelerator</code></em>
+ is <code class="literal">NULL</code>, attempts to use the accelerator associated 
+with the stock_id of the action. </p>
+<p>Accel paths are set to
+<code class="literal">&lt;Actions&gt;/<em class="replaceable"><code>group-name</code></em>/<em class="replaceable"><code>action-name</code></em></code>.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-action-with-accel.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>the action to add</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>accelerator</p></td>
+<td class="parameter_description"><p>the accelerator for the action, in
+the format understood by <a class="link" href="btk2-Keyboard-Accelerators.html#btk-accelerator-parse" title="btk_accelerator_parse ()"><code class="function">btk_accelerator_parse()</code></a>, or "" for no accelerator, or
+<code class="literal">NULL</code> to use the stock accelerator. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-remove-action"></a><h3>btk_action_group_remove_action ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_remove_action (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                <em class="parameter"><code><a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a> *action</code></em>);</pre>
+<p>Removes an action object from the action group.</p>
+<div class="refsect3">
+<a name="btk-action-group-remove-action.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>an action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-actions"></a><h3>btk_action_group_add_actions ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                              <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkActionEntry" title="struct BtkActionEntry"><span class="type">BtkActionEntry</span></a> *entries</code></em>,
+                              <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
+                              <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+<p>This is a convenience function to create a number of actions and add them 
+to the action group.</p>
+<p>The "activate" signals of the actions are connected to the callbacks and 
+their accel paths are set to 
+<code class="literal">&lt;Actions&gt;/<em class="replaceable"><code>group-name</code></em>/<em class="replaceable"><code>action-name</code></em></code>.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-actions.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entries</p></td>
+<td class="parameter_description"><p>an array of action descriptions</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_entries</p></td>
+<td class="parameter_description"><p>the number of entries</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data to pass to the action callbacks</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-actions-full"></a><h3>btk_action_group_add_actions_full ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_actions_full (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                   <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkActionEntry" title="struct BtkActionEntry"><span class="type">BtkActionEntry</span></a> *entries</code></em>,
+                                   <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
+                                   <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                   <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
+<p>This variant of <a class="link" href="BtkActionGroup.html#btk-action-group-add-actions" title="btk_action_group_add_actions ()"><code class="function">btk_action_group_add_actions()</code></a> adds a <span class="type">GDestroyNotify</span>
+callback for <em class="parameter"><code>user_data</code></em>
+.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-actions-full.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entries</p></td>
+<td class="parameter_description"><p>an array of action descriptions</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_entries</p></td>
+<td class="parameter_description"><p>the number of entries</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data to pass to the action callbacks</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>destroy</p></td>
+<td class="parameter_description"><p>destroy notification callback for <em class="parameter"><code>user_data</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-toggle-actions"></a><h3>btk_action_group_add_toggle_actions ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_toggle_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                     <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkToggleActionEntry" title="struct BtkToggleActionEntry"><span class="type">BtkToggleActionEntry</span></a> *entries</code></em>,
+                                     <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
+                                     <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+<p>This is a convenience function to create a number of toggle actions and add them 
+to the action group.</p>
+<p>The "activate" signals of the actions are connected to the callbacks and 
+their accel paths are set to 
+<code class="literal">&lt;Actions&gt;/<em class="replaceable"><code>group-name</code></em>/<em class="replaceable"><code>action-name</code></em></code>.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-toggle-actions.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entries</p></td>
+<td class="parameter_description"><p>an array of toggle action descriptions</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_entries</p></td>
+<td class="parameter_description"><p>the number of entries</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data to pass to the action callbacks</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-toggle-actions-full"></a><h3>btk_action_group_add_toggle_actions_full ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_toggle_actions_full
+                               (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkToggleActionEntry" title="struct BtkToggleActionEntry"><span class="type">BtkToggleActionEntry</span></a> *entries</code></em>,
+                                <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
+                                <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
+<p>This variant of <a class="link" href="BtkActionGroup.html#btk-action-group-add-toggle-actions" title="btk_action_group_add_toggle_actions ()"><code class="function">btk_action_group_add_toggle_actions()</code></a> adds a 
+<span class="type">GDestroyNotify</span> callback for <em class="parameter"><code>user_data</code></em>
+.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-toggle-actions-full.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entries</p></td>
+<td class="parameter_description"><p>an array of toggle action descriptions</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_entries</p></td>
+<td class="parameter_description"><p>the number of entries</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data to pass to the action callbacks</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>destroy</p></td>
+<td class="parameter_description"><p>destroy notification callback for <em class="parameter"><code>user_data</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-radio-actions"></a><h3>btk_action_group_add_radio_actions ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_radio_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                    <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkRadioActionEntry" title="struct BtkRadioActionEntry"><span class="type">BtkRadioActionEntry</span></a> *entries</code></em>,
+                                    <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
+                                    <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                    <em class="parameter"><code><span class="type">GCallback</span> on_change</code></em>,
+                                    <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+<p>This is a convenience routine to create a group of radio actions and
+add them to the action group. </p>
+<p>The "changed" signal of the first radio action is connected to the 
+<em class="parameter"><code>on_change</code></em>
+ callback and the accel paths of the actions are set to 
+<code class="literal">&lt;Actions&gt;/<em class="replaceable"><code>group-name</code></em>/<em class="replaceable"><code>action-name</code></em></code>.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-radio-actions.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entries</p></td>
+<td class="parameter_description"><p>an array of radio action descriptions</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_entries</p></td>
+<td class="parameter_description"><p>the number of entries</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>the value of the action to activate initially, or -1 if
+no action should be activated</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>on_change</p></td>
+<td class="parameter_description"><p>the callback to connect to the changed signal</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data to pass to the action callbacks</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-add-radio-actions-full"></a><h3>btk_action_group_add_radio_actions_full ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_add_radio_actions_full
+                               (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkRadioActionEntry" title="struct BtkRadioActionEntry"><span class="type">BtkRadioActionEntry</span></a> *entries</code></em>,
+                                <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                <em class="parameter"><code><span class="type">GCallback</span> on_change</code></em>,
+                                <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
+<p>This variant of <a class="link" href="BtkActionGroup.html#btk-action-group-add-radio-actions" title="btk_action_group_add_radio_actions ()"><code class="function">btk_action_group_add_radio_actions()</code></a> adds a 
+<span class="type">GDestroyNotify</span> callback for <em class="parameter"><code>user_data</code></em>
+.</p>
+<div class="refsect3">
+<a name="btk-action-group-add-radio-actions-full.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the action group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>entries</p></td>
+<td class="parameter_description"><p>an array of radio action descriptions</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>n_entries</p></td>
+<td class="parameter_description"><p>the number of entries</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>the value of the action to activate initially, or -1 if
+no action should be activated</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>on_change</p></td>
+<td class="parameter_description"><p>the callback to connect to the changed signal</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>data to pass to the action callbacks</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>destroy</p></td>
+<td class="parameter_description"><p>destroy notification callback for <em class="parameter"><code>user_data</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-set-translate-func"></a><h3>btk_action_group_set_translate_func ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_set_translate_func (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                     <em class="parameter"><code><a class="link" href="BtkItemFactory.html#BtkTranslateFunc" title="BtkTranslateFunc ()"><span class="type">BtkTranslateFunc</span></a> func</code></em>,
+                                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                     <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
+<p>Sets a function to be used for translating the <em class="parameter"><code>label</code></em>
+ and <em class="parameter"><code>tooltip</code></em>
+ of 
+<span class="type">BtkActionGroupEntry</span>s added by <a class="link" href="BtkActionGroup.html#btk-action-group-add-actions" title="btk_action_group_add_actions ()"><code class="function">btk_action_group_add_actions()</code></a>.</p>
+<p>If you're using <code class="function">gettext()</code>, it is enough to set the translation domain
+with <a class="link" href="BtkActionGroup.html#btk-action-group-set-translation-domain" title="btk_action_group_set_translation_domain ()"><code class="function">btk_action_group_set_translation_domain()</code></a>.</p>
+<div class="refsect3">
+<a name="btk-action-group-set-translate-func.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>a <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>func</p></td>
+<td class="parameter_description"><p>a <a class="link" href="BtkItemFactory.html#BtkTranslateFunc" title="BtkTranslateFunc ()"><span class="type">BtkTranslateFunc</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>data to be passed to <em class="parameter"><code>func</code></em>
+and <em class="parameter"><code>notify</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>notify</p></td>
+<td class="parameter_description"><p>a <span class="type">GDestroyNotify</span> function to be called when <em class="parameter"><code>action_group</code></em>
+is
+destroyed and when the translation function is changed again</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-set-translation-domain"></a><h3>btk_action_group_set_translation_domain ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_action_group_set_translation_domain
+                               (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                <em class="parameter"><code>const <span class="type">gchar</span> *domain</code></em>);</pre>
+<p>Sets the translation domain and uses <code class="function">g_dgettext()</code> for translating the 
+<em class="parameter"><code>label</code></em>
+ and <em class="parameter"><code>tooltip</code></em>
+ of <a class="link" href="BtkActionGroup.html#BtkActionEntry" title="struct BtkActionEntry"><span class="type">BtkActionEntry</span></a>s added by 
+<a class="link" href="BtkActionGroup.html#btk-action-group-add-actions" title="btk_action_group_add_actions ()"><code class="function">btk_action_group_add_actions()</code></a>.</p>
+<p>If you're not using <code class="function">gettext()</code> for localization, see 
+<a class="link" href="BtkActionGroup.html#btk-action-group-set-translate-func" title="btk_action_group_set_translate_func ()"><code class="function">btk_action_group_set_translate_func()</code></a>.</p>
+<div class="refsect3">
+<a name="btk-action-group-set-translation-domain.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>a <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>domain</p></td>
+<td class="parameter_description"><p>the translation domain to use for <code class="function">g_dgettext()</code> calls</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-action-group-translate-string"></a><h3>btk_action_group_translate_string ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+btk_action_group_translate_string (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
+                                   <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>);</pre>
+<p>Translates a string using the specified <code class="function">translate_func()</code>. This
+is mainly intended for language bindings.</p>
+<div class="refsect3">
+<a name="btk-action-group-translate-string.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>a <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>string</p></td>
+<td class="parameter_description"><p>a string</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-action-group-translate-string.returns"></a><h4>Returns</h4>
+<p> the translation of <em class="parameter"><code>string</code></em>
+</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-6.html#api-index-2.6">2.6</a></p>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BtkActionGroup-struct"></a><h3>struct BtkActionGroup</h3>
+<pre class="programlisting">struct BtkActionGroup;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkActionEntry"></a><h3>struct BtkActionEntry</h3>
+<pre class="programlisting">struct BtkActionEntry {
+  const gchar     *name;
+  const gchar     *stock_id;
+  const gchar     *label;
+  const gchar     *accelerator;
+  const gchar     *tooltip;
+  GCallback  callback;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkToggleActionEntry"></a><h3>struct BtkToggleActionEntry</h3>
+<pre class="programlisting">struct BtkToggleActionEntry {
+  const gchar     *name;
+  const gchar     *stock_id;
+  const gchar     *label;
+  const gchar     *accelerator;
+  const gchar     *tooltip;
+  GCallback  callback;
+  gboolean   is_active;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkRadioActionEntry"></a><h3>struct BtkRadioActionEntry</h3>
+<pre class="programlisting">struct BtkRadioActionEntry {
+  const gchar *name;
+  const gchar *stock_id;
+  const gchar *label;
+  const gchar *accelerator;
+  const gchar *tooltip;
+  gint   value;
+
+};
+</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="BtkActionGroup--name"></a><h3>The <code class="literal">“name”</code> property</h3>
+<pre class="programlisting">  “name”                     <span class="type">char</span> *</pre>
+<p>A name for the action group.</p>
+<p>Owner: BtkActionGroup</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkActionGroup--sensitive"></a><h3>The <code class="literal">“sensitive”</code> property</h3>
+<pre class="programlisting">  “sensitive”                <span class="type">gboolean</span></pre>
+<p>Whether the action group is enabled.</p>
+<p>Owner: BtkActionGroup</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkActionGroup--visible"></a><h3>The <code class="literal">“visible”</code> property</h3>
+<pre class="programlisting">  “visible”                  <span class="type">gboolean</span></pre>
+<p>Whether the action group is visible.</p>
+<p>Owner: BtkActionGroup</p>
+<p>Flags: Read / Write</p>
+<p>Default value: TRUE</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkActionGroup.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="BtkActionGroup-connect-proxy"></a><h3>The <code class="literal">“connect-proxy”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
+               <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
+               <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>      *proxy,
+               <span class="type">gpointer</span>        user_data)</pre>
+<p>The ::connect-proxy signal is emitted after connecting a proxy to
+
+an action in the group. Note that the proxy may have been connected
+
+to a different action before.</p>
+<p>This is intended for simple customizations for which a custom action
+class would be too clumsy, e.g. showing tooltips for menuitems in the
+statusbar.</p>
+<p><a class="link" href="BtkUIManager.html" title="BtkUIManager"><span class="type">BtkUIManager</span></a> proxies the signal and provides global notification
+
+just before any action is connected to a proxy, which is probably more
+convenient to use.</p>
+<div class="refsect3">
+<a name="BtkActionGroup-connect-proxy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>the action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>proxy</p></td>
+<td class="parameter_description"><p>the proxy</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkActionGroup-disconnect-proxy"></a><h3>The <code class="literal">“disconnect-proxy”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
+               <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
+               <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>      *proxy,
+               <span class="type">gpointer</span>        user_data)</pre>
+<p>The ::disconnect-proxy signal is emitted after disconnecting a proxy
+
+from an action in the group. </p>
+<p><a class="link" href="BtkUIManager.html" title="BtkUIManager"><span class="type">BtkUIManager</span></a> proxies the signal and provides global notification
+
+just before any action is connected to a proxy, which is probably more
+convenient to use.</p>
+<div class="refsect3">
+<a name="BtkActionGroup-disconnect-proxy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>the action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>proxy</p></td>
+<td class="parameter_description"><p>the proxy</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkActionGroup-post-activate"></a><h3>The <code class="literal">“post-activate”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
+               <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
+               <span class="type">gpointer</span>        user_data)</pre>
+<p>The ::post-activate signal is emitted just after the <em class="parameter"><code>action</code></em>
+ in the
+<em class="parameter"><code>action_group</code></em>
+ is activated</p>
+<p>This is intended for <a class="link" href="BtkUIManager.html" title="BtkUIManager"><span class="type">BtkUIManager</span></a> to proxy the signal and provide global
+notification just after any action is activated.</p>
+<div class="refsect3">
+<a name="BtkActionGroup-post-activate.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>the action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkActionGroup-pre-activate"></a><h3>The <code class="literal">“pre-activate”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
+               <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
+               <span class="type">gpointer</span>        user_data)</pre>
+<p>The ::pre-activate signal is emitted just before the <em class="parameter"><code>action</code></em>
+ in the
+<em class="parameter"><code>action_group</code></em>
+ is activated</p>
+<p>This is intended for <a class="link" href="BtkUIManager.html" title="BtkUIManager"><span class="type">BtkUIManager</span></a> to proxy the signal and provide global
+notification just before any action is activated.</p>
+<div class="refsect3">
+<a name="BtkActionGroup-pre-activate.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>action_group</p></td>
+<td class="parameter_description"><p>the group</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>action</p></td>
+<td class="parameter_description"><p>the action</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

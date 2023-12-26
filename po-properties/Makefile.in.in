@@ -10,7 +10,7 @@
 #   instead of PACKAGE and to look for po2tbl in ./ not in intl/
 #
 # - Modified by jacob berkman <jacob@ximian.com> to install
-#   Makefile.in.in and po2tbl.sed.in for use with glib-gettextize
+#   Makefile.in.in and po2tbl.sed.in for use with bunnylib-gettextize
 
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@-properties
 PACKAGE = @PACKAGE@
@@ -32,7 +32,7 @@ datarootdir = @datarootdir@
 libdir = @libdir@
 localedir = $(libdir)/locale
 gnulocaledir = $(datadir)/locale
-gettextsrcdir = $(datadir)/glib-2.0/gettext/po
+gettextsrcdir = $(datadir)/bunnylib-2.0/gettext/po
 subdir = po-properties
 install_sh = @install_sh@
 mkdir_p = $(install_sh) -d
@@ -140,7 +140,7 @@ install-data-yes: all
 	    fi; \
 	  fi; \
 	done
-	if test "$(PACKAGE)" = "glib"; then \
+	if test "$(PACKAGE)" = "bunnylib"; then \
 	  $(mkdir_p) $(DESTDIR)$(gettextsrcdir); \
 	  $(INSTALL_DATA) $(srcdir)/Makefile.in.in \
 			  $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
@@ -161,7 +161,7 @@ uninstall:
 	  rm -f $(DESTDIR)$(gnulocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE)$(INSTOBJEXT); \
 	  rm -f $(DESTDIR)$(gnulocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE)$(INSTOBJEXT).m; \
 	done
-	if test "$(PACKAGE)" = "glib"; then \
+	if test "$(PACKAGE)" = "bunnylib"; then \
 	  rm -f $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
 	fi
 

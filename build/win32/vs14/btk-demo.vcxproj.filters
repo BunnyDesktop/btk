@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+   <ClCompile Include="..\..\..\demos\btk-demo\appwindow.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\assistant.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\builder.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\button_box.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\changedisplay.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\clipboard.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\colorsel.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\combobox.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\dialog.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\drawingarea.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\editable_cells.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\entry_buffer.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\entry_completion.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\expander.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\hypertext.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\iconview.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\iconview_edit.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\images.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\infobar.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\links.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\list_store.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\menus.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\offscreen_window.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\offscreen_window2.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\panes.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\pickers.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\pixbufs.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\printing.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\rotated_text.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\search_entry.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\sizegroup.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\spinner.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\stock_browser.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\textview.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\textscroll.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\toolpalette.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\tree_store.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\ui_manager.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\demos\btk-demo\main.c"><Filter>Source Files</Filter></ClCompile>
+  </ItemGroup>
+</Project>

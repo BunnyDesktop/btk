@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="btk-build-defines.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <CopyConfigH>copy ..\..\..\config.h.win32 ..\..\..\config.h</CopyConfigH>
+    <CopyBdkConfigH>copy ..\..\..\bdk\bdkconfig.h.win32 ..\..\..\bdk\bdkconfig.h</CopyBdkConfigH>
+    <BtkGenerateBdkDef>
+echo EXPORTS &gt; $(DefDir)\bdk.def
+cl /EP -DBDK_WINDOWING_WIN32 -DALL_FILES -DG_GNUC_CONST= ..\..\..\bdk\bdk.symbols &gt;&gt; $(DefDir)\bdk.def
+    </BtkGenerateBdkDef>
+    <BtkGenerateBtkDef>
+echo EXPORTS &gt; $(DefDir)\btk.def
+cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\btk\btk.symbols &gt;&gt; $(DefDir)\btk.def
+    </BtkGenerateBtkDef>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>btkgensrcsprops</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="CopyConfigH">
+      <Value>$(CopyConfigH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyBdkConfigH">
+      <Value>$(CopyBdkConfigH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BtkGenerateBdkDef">
+      <Value>$(BtkGenerateBdkDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BtkGenerateBtkDef">
+      <Value>$(BtkGenerateBtkDef)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat Software
  * Copyright (C) 2000 SuSE Linux Ltd
  *
@@ -26,235 +26,235 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtk/gtk.h"
-#include "gdk/gdkkeysyms.h"
+#include "btk/btk.h"
+#include "bdk/bdkkeysyms.h"
 
-#include "gtk/gtkimmodule.h"
-#include "gtk/gtkintl.h"
+#include "btk/btkimmodule.h"
+#include "btk/btkintl.h"
 
 GType type_viqr_translit = 0;
 
-static void viqr_class_init (GtkIMContextSimpleClass *class);
-static void viqr_init (GtkIMContextSimple *im_context);
+static void viqr_class_init (BtkIMContextSimpleClass *class);
+static void viqr_init (BtkIMContextSimple *im_context);
 
 static void
 viqr_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
   {
-    sizeof (GtkIMContextSimpleClass),
+    sizeof (BtkIMContextSimpleClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
     (GClassInitFunc) viqr_class_init,
     NULL,           /* class_finalize */
     NULL,           /* class_data */
-    sizeof (GtkIMContextSimple),
+    sizeof (BtkIMContextSimple),
     0,
     (GInstanceInitFunc) viqr_init,
   };
 
   type_viqr_translit = 
     g_type_module_register_type (module,
-				 GTK_TYPE_IM_CONTEXT_SIMPLE,
-				 "GtkIMContextViqr",
+				 BTK_TYPE_IM_CONTEXT_SIMPLE,
+				 "BtkIMContextViqr",
 				 &object_info, 0);
 }
 
 static guint16 viqr_compose_seqs[] = {
-  GDK_A,                   0,                0, 0, 0, 'A',
-  GDK_A,                   GDK_apostrophe,   0, 0, 0, 0xc1,
-  GDK_A,  GDK_parenleft,   0,                0, 0,    0x102,
-  GDK_A,  GDK_parenleft,   GDK_apostrophe,   0, 0,    0x1eae,
-  GDK_A,  GDK_parenleft,   GDK_period,       0, 0,    0x1eb6,
-  GDK_A,  GDK_parenleft,   GDK_question,     0, 0,    0x1eb2,
-  GDK_A,  GDK_parenleft,   GDK_grave,        0, 0,    0x1eb0,
-  GDK_A,  GDK_parenleft,   GDK_asciitilde,   0, 0,    0x1eb4,
-  GDK_A,                   GDK_period,       0, 0, 0, 0x1ea0,
-  GDK_A,                   GDK_question,     0, 0, 0, 0x1ea2,
-  GDK_A,  GDK_asciicircum, 0,                0, 0,    0xc2,
-  GDK_A,  GDK_asciicircum, GDK_apostrophe,   0, 0,    0x1ea4,
-  GDK_A,  GDK_asciicircum, GDK_period,       0, 0,    0x1eac,
-  GDK_A,  GDK_asciicircum, GDK_question,     0, 0,    0x1ea8,
-  GDK_A,  GDK_asciicircum, GDK_grave,        0, 0,    0x1ea6,
-  GDK_A,  GDK_asciicircum, GDK_asciitilde,   0, 0,    0x1eaa,
-  GDK_A,                   GDK_grave,        0, 0, 0, 0xc0,
-  GDK_A,                   GDK_asciitilde,   0, 0, 0, 0xc3,
-  GDK_D,                   0,                0, 0, 0, 'D',
-  GDK_D,                   GDK_D,            0, 0, 0, 0x110,
-  GDK_D,                   GDK_d,            0, 0, 0, 0x110,
-  GDK_E,                   0,                0, 0, 0, 'E',
-  GDK_E,                   GDK_apostrophe,   0, 0, 0, 0xc9,
-  GDK_E,                   GDK_period,       0, 0, 0, 0x1eb8,
-  GDK_E,                   GDK_question,     0, 0, 0, 0x1eba,
-  GDK_E,  GDK_asciicircum, 0,                0, 0,    0xca,
-  GDK_E,  GDK_asciicircum, GDK_apostrophe,   0, 0,    0x1ebe,
-  GDK_E,  GDK_asciicircum, GDK_period,       0, 0,    0x1ec6,
-  GDK_E,  GDK_asciicircum, GDK_question,     0, 0,    0x1ec2,
-  GDK_E,  GDK_asciicircum, GDK_grave,        0, 0,    0x1ec0,
-  GDK_E,  GDK_asciicircum, GDK_asciitilde,   0, 0,    0x1ec4,
-  GDK_E,                   GDK_grave,        0, 0, 0, 0xc8,
-  GDK_E,                   GDK_asciitilde,   0, 0, 0, 0x1ebc,
-  GDK_I,                   0,                0, 0, 0, 'I',
-  GDK_I,                   GDK_apostrophe,   0, 0, 0, 0xcd,
-  GDK_I,                   GDK_period,       0, 0, 0, 0x1eca,
-  GDK_I,                   GDK_question,     0, 0, 0, 0x1ec8,
-  GDK_I,                   GDK_grave,        0, 0, 0, 0xcc,
-  GDK_I,                   GDK_asciitilde,   0, 0, 0, 0x128,
-  GDK_O,                   0,                0, 0, 0, 'O',
-  GDK_O,                   GDK_apostrophe,   0, 0, 0, 0xD3,
-  GDK_O,  GDK_plus,        0,                0, 0,    0x1a0,
-  GDK_O,  GDK_plus,        GDK_apostrophe,   0, 0,    0x1eda,
-  GDK_O,  GDK_plus,        GDK_period,       0, 0,    0x1ee2,
-  GDK_O,  GDK_plus,        GDK_question,     0, 0,    0x1ede,
-  GDK_O,  GDK_plus,        GDK_grave,        0, 0,    0x1edc,
-  GDK_O,  GDK_plus,        GDK_asciitilde,   0, 0,    0x1ee0,
-  GDK_O,                   GDK_period,       0, 0, 0, 0x1ecc,
-  GDK_O,                   GDK_question,     0, 0, 0, 0x1ece,
-  GDK_O,  GDK_asciicircum, 0,                0, 0,    0xd4,
-  GDK_O,  GDK_asciicircum, GDK_apostrophe,   0, 0,    0x1ed0,
-  GDK_O,  GDK_asciicircum, GDK_period,       0, 0,    0x1ed8,
-  GDK_O,  GDK_asciicircum, GDK_question,     0, 0,    0x1ed4,
-  GDK_O,  GDK_asciicircum, GDK_grave,        0, 0,    0x1ed2,
-  GDK_O,  GDK_asciicircum, GDK_asciitilde,   0, 0,    0x1ed6,
-  GDK_O,                   GDK_grave,        0, 0, 0, 0xD2,
-  GDK_O,                   GDK_asciitilde,   0, 0, 0, 0xD5,
-  GDK_U,                   0,                0, 0, 0, 'U',
-  GDK_U,                   GDK_apostrophe,   0, 0, 0, 0xDA,
-  GDK_U,  GDK_plus,        0,                0, 0,    0x1af,
-  GDK_U,  GDK_plus,        GDK_apostrophe,   0, 0,    0x1ee8,
-  GDK_U,  GDK_plus,        GDK_period,       0, 0,    0x1ef0,
-  GDK_U,  GDK_plus,        GDK_question,     0, 0,    0x1eec,
-  GDK_U,  GDK_plus,        GDK_grave,        0, 0,    0x1eea,
-  GDK_U,  GDK_plus,        GDK_asciitilde,   0, 0,    0x1eee,
-  GDK_U,                   GDK_period,       0, 0, 0, 0x1ee4,
-  GDK_U,                   GDK_question,     0, 0, 0, 0x1ee6,
-  GDK_U,                   GDK_grave,        0, 0, 0, 0xd9,
-  GDK_U,                   GDK_asciitilde,   0, 0, 0, 0x168,
-  GDK_Y,                   0,                0, 0, 0, 'Y',
-  GDK_Y,                   GDK_apostrophe,   0, 0, 0, 0xdd,
-  GDK_Y,                   GDK_period,       0, 0, 0, 0x1ef4,
-  GDK_Y,                   GDK_question,     0, 0, 0, 0x1ef6,
-  GDK_Y,                   GDK_grave,        0, 0, 0, 0x1ef2,
-  GDK_Y,                   GDK_asciitilde,   0, 0, 0, 0x1ef8,
+  BDK_A,                   0,                0, 0, 0, 'A',
+  BDK_A,                   BDK_apostrophe,   0, 0, 0, 0xc1,
+  BDK_A,  BDK_parenleft,   0,                0, 0,    0x102,
+  BDK_A,  BDK_parenleft,   BDK_apostrophe,   0, 0,    0x1eae,
+  BDK_A,  BDK_parenleft,   BDK_period,       0, 0,    0x1eb6,
+  BDK_A,  BDK_parenleft,   BDK_question,     0, 0,    0x1eb2,
+  BDK_A,  BDK_parenleft,   BDK_grave,        0, 0,    0x1eb0,
+  BDK_A,  BDK_parenleft,   BDK_asciitilde,   0, 0,    0x1eb4,
+  BDK_A,                   BDK_period,       0, 0, 0, 0x1ea0,
+  BDK_A,                   BDK_question,     0, 0, 0, 0x1ea2,
+  BDK_A,  BDK_asciicircum, 0,                0, 0,    0xc2,
+  BDK_A,  BDK_asciicircum, BDK_apostrophe,   0, 0,    0x1ea4,
+  BDK_A,  BDK_asciicircum, BDK_period,       0, 0,    0x1eac,
+  BDK_A,  BDK_asciicircum, BDK_question,     0, 0,    0x1ea8,
+  BDK_A,  BDK_asciicircum, BDK_grave,        0, 0,    0x1ea6,
+  BDK_A,  BDK_asciicircum, BDK_asciitilde,   0, 0,    0x1eaa,
+  BDK_A,                   BDK_grave,        0, 0, 0, 0xc0,
+  BDK_A,                   BDK_asciitilde,   0, 0, 0, 0xc3,
+  BDK_D,                   0,                0, 0, 0, 'D',
+  BDK_D,                   BDK_D,            0, 0, 0, 0x110,
+  BDK_D,                   BDK_d,            0, 0, 0, 0x110,
+  BDK_E,                   0,                0, 0, 0, 'E',
+  BDK_E,                   BDK_apostrophe,   0, 0, 0, 0xc9,
+  BDK_E,                   BDK_period,       0, 0, 0, 0x1eb8,
+  BDK_E,                   BDK_question,     0, 0, 0, 0x1eba,
+  BDK_E,  BDK_asciicircum, 0,                0, 0,    0xca,
+  BDK_E,  BDK_asciicircum, BDK_apostrophe,   0, 0,    0x1ebe,
+  BDK_E,  BDK_asciicircum, BDK_period,       0, 0,    0x1ec6,
+  BDK_E,  BDK_asciicircum, BDK_question,     0, 0,    0x1ec2,
+  BDK_E,  BDK_asciicircum, BDK_grave,        0, 0,    0x1ec0,
+  BDK_E,  BDK_asciicircum, BDK_asciitilde,   0, 0,    0x1ec4,
+  BDK_E,                   BDK_grave,        0, 0, 0, 0xc8,
+  BDK_E,                   BDK_asciitilde,   0, 0, 0, 0x1ebc,
+  BDK_I,                   0,                0, 0, 0, 'I',
+  BDK_I,                   BDK_apostrophe,   0, 0, 0, 0xcd,
+  BDK_I,                   BDK_period,       0, 0, 0, 0x1eca,
+  BDK_I,                   BDK_question,     0, 0, 0, 0x1ec8,
+  BDK_I,                   BDK_grave,        0, 0, 0, 0xcc,
+  BDK_I,                   BDK_asciitilde,   0, 0, 0, 0x128,
+  BDK_O,                   0,                0, 0, 0, 'O',
+  BDK_O,                   BDK_apostrophe,   0, 0, 0, 0xD3,
+  BDK_O,  BDK_plus,        0,                0, 0,    0x1a0,
+  BDK_O,  BDK_plus,        BDK_apostrophe,   0, 0,    0x1eda,
+  BDK_O,  BDK_plus,        BDK_period,       0, 0,    0x1ee2,
+  BDK_O,  BDK_plus,        BDK_question,     0, 0,    0x1ede,
+  BDK_O,  BDK_plus,        BDK_grave,        0, 0,    0x1edc,
+  BDK_O,  BDK_plus,        BDK_asciitilde,   0, 0,    0x1ee0,
+  BDK_O,                   BDK_period,       0, 0, 0, 0x1ecc,
+  BDK_O,                   BDK_question,     0, 0, 0, 0x1ece,
+  BDK_O,  BDK_asciicircum, 0,                0, 0,    0xd4,
+  BDK_O,  BDK_asciicircum, BDK_apostrophe,   0, 0,    0x1ed0,
+  BDK_O,  BDK_asciicircum, BDK_period,       0, 0,    0x1ed8,
+  BDK_O,  BDK_asciicircum, BDK_question,     0, 0,    0x1ed4,
+  BDK_O,  BDK_asciicircum, BDK_grave,        0, 0,    0x1ed2,
+  BDK_O,  BDK_asciicircum, BDK_asciitilde,   0, 0,    0x1ed6,
+  BDK_O,                   BDK_grave,        0, 0, 0, 0xD2,
+  BDK_O,                   BDK_asciitilde,   0, 0, 0, 0xD5,
+  BDK_U,                   0,                0, 0, 0, 'U',
+  BDK_U,                   BDK_apostrophe,   0, 0, 0, 0xDA,
+  BDK_U,  BDK_plus,        0,                0, 0,    0x1af,
+  BDK_U,  BDK_plus,        BDK_apostrophe,   0, 0,    0x1ee8,
+  BDK_U,  BDK_plus,        BDK_period,       0, 0,    0x1ef0,
+  BDK_U,  BDK_plus,        BDK_question,     0, 0,    0x1eec,
+  BDK_U,  BDK_plus,        BDK_grave,        0, 0,    0x1eea,
+  BDK_U,  BDK_plus,        BDK_asciitilde,   0, 0,    0x1eee,
+  BDK_U,                   BDK_period,       0, 0, 0, 0x1ee4,
+  BDK_U,                   BDK_question,     0, 0, 0, 0x1ee6,
+  BDK_U,                   BDK_grave,        0, 0, 0, 0xd9,
+  BDK_U,                   BDK_asciitilde,   0, 0, 0, 0x168,
+  BDK_Y,                   0,                0, 0, 0, 'Y',
+  BDK_Y,                   BDK_apostrophe,   0, 0, 0, 0xdd,
+  BDK_Y,                   BDK_period,       0, 0, 0, 0x1ef4,
+  BDK_Y,                   BDK_question,     0, 0, 0, 0x1ef6,
+  BDK_Y,                   BDK_grave,        0, 0, 0, 0x1ef2,
+  BDK_Y,                   BDK_asciitilde,   0, 0, 0, 0x1ef8,
   /* Do we need anything else here? */
-  GDK_backslash,           0,                0, 0, 0, 0,
-  GDK_backslash,           GDK_apostrophe,   0, 0, 0, '\'',
-  GDK_backslash,           GDK_parenleft,    0, 0, 0, '(',
-  GDK_backslash,           GDK_plus,         0, 0, 0, '+',
-  GDK_backslash,           GDK_period,       0, 0, 0, '.',
-  GDK_backslash,           GDK_question,     0, 0, 0, '?',
-  GDK_backslash,           GDK_D,            0, 0, 0, 'D',
-  GDK_backslash,           GDK_backslash,    0, 0, 0, '\\',
-  GDK_backslash,           GDK_asciicircum,  0, 0, 0, '^',
-  GDK_backslash,           GDK_grave,        0, 0, 0, '`',
-  GDK_backslash,           GDK_d,            0, 0, 0, 'd',
-  GDK_backslash,           GDK_asciitilde,   0, 0, 0, '~',
-  GDK_a,                   0,                0, 0, 0, 'a',
-  GDK_a,                   GDK_apostrophe,   0, 0, 0, 0xe1,
-  GDK_a, GDK_parenleft,    0,                0, 0,    0x103,
-  GDK_a, GDK_parenleft,    GDK_apostrophe,   0, 0,    0x1eaf,
-  GDK_a, GDK_parenleft,    GDK_period,       0, 0,    0x1eb7,
-  GDK_a, GDK_parenleft,    GDK_question,     0, 0,    0x1eb3,
-  GDK_a, GDK_parenleft,    GDK_grave,        0, 0,    0x1eb1,
-  GDK_a, GDK_parenleft,    GDK_asciitilde,   0, 0,    0x1eb5,
-  GDK_a,                   GDK_period,       0, 0, 0, 0x1ea1,
-  GDK_a,                   GDK_question,     0, 0, 0, 0x1ea3,
-  GDK_a, GDK_asciicircum,  0,                0, 0,    0xe2,
-  GDK_a, GDK_asciicircum,  GDK_apostrophe,   0, 0,    0x1ea5,
-  GDK_a, GDK_asciicircum,  GDK_period,       0, 0,    0x1ead,
-  GDK_a, GDK_asciicircum,  GDK_question,     0, 0,    0x1ea9,
-  GDK_a, GDK_asciicircum,  GDK_grave,        0, 0,    0x1ea7,
-  GDK_a, GDK_asciicircum,  GDK_asciitilde,   0, 0,    0x1eab,
-  GDK_a,                   GDK_grave,        0, 0, 0, 0xe0,
-  GDK_a,                   GDK_asciitilde,   0, 0, 0, 0xe3,
-  GDK_d,                   0,                0, 0, 0, 'd',
-  GDK_d,                   GDK_d,            0, 0, 0, 0x111,
-  GDK_e,                   0,                0, 0, 0, 'e',
-  GDK_e,                   GDK_apostrophe,   0, 0, 0, 0xe9,
-  GDK_e,                   GDK_period,       0, 0, 0, 0x1eb9,
-  GDK_e,                   GDK_question,     0, 0, 0, 0x1ebb,
-  GDK_e, GDK_asciicircum,  0,                0, 0,    0xea,
-  GDK_e, GDK_asciicircum,  GDK_apostrophe,   0, 0,    0x1ebf,
-  GDK_e, GDK_asciicircum,  GDK_period,       0, 0,    0x1ec7,
-  GDK_e, GDK_asciicircum,  GDK_question,     0, 0,    0x1ec3,
-  GDK_e, GDK_asciicircum,  GDK_grave,        0, 0,    0x1ec1,
-  GDK_e, GDK_asciicircum,  GDK_asciitilde,   0, 0,    0x1ec5,
-  GDK_e,                   GDK_grave,        0, 0, 0, 0xe8,
-  GDK_e,                   GDK_asciitilde,   0, 0, 0, 0x1ebd,
-  GDK_i,                   0,                0, 0, 0, 'i',
-  GDK_i,                   GDK_apostrophe,   0, 0, 0, 0xed,
-  GDK_i,                   GDK_period,       0, 0, 0, 0x1ecb,
-  GDK_i,                   GDK_question,     0, 0, 0, 0x1ec9,
-  GDK_i,                   GDK_grave,        0, 0, 0, 0xec,
-  GDK_i,                   GDK_asciitilde,   0, 0, 0, 0x129,
-  GDK_o,                   0,                0, 0, 0, 'o',
-  GDK_o,                   GDK_apostrophe,   0, 0, 0, 0xF3,
-  GDK_o,  GDK_plus,        0,                0, 0,    0x1a1,
-  GDK_o,  GDK_plus,        GDK_apostrophe,   0, 0,    0x1edb,
-  GDK_o,  GDK_plus,        GDK_period,       0, 0,    0x1ee3,
-  GDK_o,  GDK_plus,        GDK_question,     0, 0,    0x1edf,
-  GDK_o,  GDK_plus,        GDK_grave,        0, 0,    0x1edd,
-  GDK_o,  GDK_plus,        GDK_asciitilde,   0, 0,    0x1ee1,
-  GDK_o,                   GDK_period,       0, 0, 0, 0x1ecd,
-  GDK_o,                   GDK_question,     0, 0, 0, 0x1ecf,
-  GDK_o,  GDK_asciicircum, 0,                0, 0,    0xf4,
-  GDK_o,  GDK_asciicircum, GDK_apostrophe,   0, 0,    0x1ed1,
-  GDK_o,  GDK_asciicircum, GDK_period,       0, 0,    0x1ed9,
-  GDK_o,  GDK_asciicircum, GDK_question,     0, 0,    0x1ed5,
-  GDK_o,  GDK_asciicircum, GDK_grave,        0, 0,    0x1ed3,
-  GDK_o,  GDK_asciicircum, GDK_asciitilde,   0, 0,    0x1ed7,
-  GDK_o,                   GDK_grave,        0, 0, 0, 0xF2,
-  GDK_o,                   GDK_asciitilde,   0, 0, 0, 0xF5,
-  GDK_u,                   0,                0, 0, 0, 'u',
-  GDK_u,                   GDK_apostrophe,   0, 0, 0, 0xFA,
-  GDK_u,  GDK_plus,        0,                0, 0,    0x1b0,
-  GDK_u,  GDK_plus,        GDK_apostrophe,   0, 0,    0x1ee9,
-  GDK_u,  GDK_plus,        GDK_period,       0, 0,    0x1ef1,
-  GDK_u,  GDK_plus,        GDK_question,     0, 0,    0x1eed,
-  GDK_u,  GDK_plus,        GDK_grave,        0, 0,    0x1eeb,
-  GDK_u,  GDK_plus,        GDK_asciitilde,   0, 0,    0x1eef,
-  GDK_u,                   GDK_period,       0, 0, 0, 0x1ee5,
-  GDK_u,                   GDK_question,     0, 0, 0, 0x1ee7,
-  GDK_u,                   GDK_grave,        0, 0, 0, 0xf9,
-  GDK_u,                   GDK_asciitilde,   0, 0, 0, 0x169,
-  GDK_y,                   0,                0, 0, 0, 'y',
-  GDK_y,                   GDK_apostrophe,   0, 0, 0, 0xfd,
-  GDK_y,                   GDK_period,       0, 0, 0, 0x1ef5,
-  GDK_y,                   GDK_question,     0, 0, 0, 0x1ef7,
-  GDK_y,                   GDK_grave,        0, 0, 0, 0x1ef3,
-  GDK_y,                   GDK_asciitilde,   0, 0, 0, 0x1ef9,
+  BDK_backslash,           0,                0, 0, 0, 0,
+  BDK_backslash,           BDK_apostrophe,   0, 0, 0, '\'',
+  BDK_backslash,           BDK_parenleft,    0, 0, 0, '(',
+  BDK_backslash,           BDK_plus,         0, 0, 0, '+',
+  BDK_backslash,           BDK_period,       0, 0, 0, '.',
+  BDK_backslash,           BDK_question,     0, 0, 0, '?',
+  BDK_backslash,           BDK_D,            0, 0, 0, 'D',
+  BDK_backslash,           BDK_backslash,    0, 0, 0, '\\',
+  BDK_backslash,           BDK_asciicircum,  0, 0, 0, '^',
+  BDK_backslash,           BDK_grave,        0, 0, 0, '`',
+  BDK_backslash,           BDK_d,            0, 0, 0, 'd',
+  BDK_backslash,           BDK_asciitilde,   0, 0, 0, '~',
+  BDK_a,                   0,                0, 0, 0, 'a',
+  BDK_a,                   BDK_apostrophe,   0, 0, 0, 0xe1,
+  BDK_a, BDK_parenleft,    0,                0, 0,    0x103,
+  BDK_a, BDK_parenleft,    BDK_apostrophe,   0, 0,    0x1eaf,
+  BDK_a, BDK_parenleft,    BDK_period,       0, 0,    0x1eb7,
+  BDK_a, BDK_parenleft,    BDK_question,     0, 0,    0x1eb3,
+  BDK_a, BDK_parenleft,    BDK_grave,        0, 0,    0x1eb1,
+  BDK_a, BDK_parenleft,    BDK_asciitilde,   0, 0,    0x1eb5,
+  BDK_a,                   BDK_period,       0, 0, 0, 0x1ea1,
+  BDK_a,                   BDK_question,     0, 0, 0, 0x1ea3,
+  BDK_a, BDK_asciicircum,  0,                0, 0,    0xe2,
+  BDK_a, BDK_asciicircum,  BDK_apostrophe,   0, 0,    0x1ea5,
+  BDK_a, BDK_asciicircum,  BDK_period,       0, 0,    0x1ead,
+  BDK_a, BDK_asciicircum,  BDK_question,     0, 0,    0x1ea9,
+  BDK_a, BDK_asciicircum,  BDK_grave,        0, 0,    0x1ea7,
+  BDK_a, BDK_asciicircum,  BDK_asciitilde,   0, 0,    0x1eab,
+  BDK_a,                   BDK_grave,        0, 0, 0, 0xe0,
+  BDK_a,                   BDK_asciitilde,   0, 0, 0, 0xe3,
+  BDK_d,                   0,                0, 0, 0, 'd',
+  BDK_d,                   BDK_d,            0, 0, 0, 0x111,
+  BDK_e,                   0,                0, 0, 0, 'e',
+  BDK_e,                   BDK_apostrophe,   0, 0, 0, 0xe9,
+  BDK_e,                   BDK_period,       0, 0, 0, 0x1eb9,
+  BDK_e,                   BDK_question,     0, 0, 0, 0x1ebb,
+  BDK_e, BDK_asciicircum,  0,                0, 0,    0xea,
+  BDK_e, BDK_asciicircum,  BDK_apostrophe,   0, 0,    0x1ebf,
+  BDK_e, BDK_asciicircum,  BDK_period,       0, 0,    0x1ec7,
+  BDK_e, BDK_asciicircum,  BDK_question,     0, 0,    0x1ec3,
+  BDK_e, BDK_asciicircum,  BDK_grave,        0, 0,    0x1ec1,
+  BDK_e, BDK_asciicircum,  BDK_asciitilde,   0, 0,    0x1ec5,
+  BDK_e,                   BDK_grave,        0, 0, 0, 0xe8,
+  BDK_e,                   BDK_asciitilde,   0, 0, 0, 0x1ebd,
+  BDK_i,                   0,                0, 0, 0, 'i',
+  BDK_i,                   BDK_apostrophe,   0, 0, 0, 0xed,
+  BDK_i,                   BDK_period,       0, 0, 0, 0x1ecb,
+  BDK_i,                   BDK_question,     0, 0, 0, 0x1ec9,
+  BDK_i,                   BDK_grave,        0, 0, 0, 0xec,
+  BDK_i,                   BDK_asciitilde,   0, 0, 0, 0x129,
+  BDK_o,                   0,                0, 0, 0, 'o',
+  BDK_o,                   BDK_apostrophe,   0, 0, 0, 0xF3,
+  BDK_o,  BDK_plus,        0,                0, 0,    0x1a1,
+  BDK_o,  BDK_plus,        BDK_apostrophe,   0, 0,    0x1edb,
+  BDK_o,  BDK_plus,        BDK_period,       0, 0,    0x1ee3,
+  BDK_o,  BDK_plus,        BDK_question,     0, 0,    0x1edf,
+  BDK_o,  BDK_plus,        BDK_grave,        0, 0,    0x1edd,
+  BDK_o,  BDK_plus,        BDK_asciitilde,   0, 0,    0x1ee1,
+  BDK_o,                   BDK_period,       0, 0, 0, 0x1ecd,
+  BDK_o,                   BDK_question,     0, 0, 0, 0x1ecf,
+  BDK_o,  BDK_asciicircum, 0,                0, 0,    0xf4,
+  BDK_o,  BDK_asciicircum, BDK_apostrophe,   0, 0,    0x1ed1,
+  BDK_o,  BDK_asciicircum, BDK_period,       0, 0,    0x1ed9,
+  BDK_o,  BDK_asciicircum, BDK_question,     0, 0,    0x1ed5,
+  BDK_o,  BDK_asciicircum, BDK_grave,        0, 0,    0x1ed3,
+  BDK_o,  BDK_asciicircum, BDK_asciitilde,   0, 0,    0x1ed7,
+  BDK_o,                   BDK_grave,        0, 0, 0, 0xF2,
+  BDK_o,                   BDK_asciitilde,   0, 0, 0, 0xF5,
+  BDK_u,                   0,                0, 0, 0, 'u',
+  BDK_u,                   BDK_apostrophe,   0, 0, 0, 0xFA,
+  BDK_u,  BDK_plus,        0,                0, 0,    0x1b0,
+  BDK_u,  BDK_plus,        BDK_apostrophe,   0, 0,    0x1ee9,
+  BDK_u,  BDK_plus,        BDK_period,       0, 0,    0x1ef1,
+  BDK_u,  BDK_plus,        BDK_question,     0, 0,    0x1eed,
+  BDK_u,  BDK_plus,        BDK_grave,        0, 0,    0x1eeb,
+  BDK_u,  BDK_plus,        BDK_asciitilde,   0, 0,    0x1eef,
+  BDK_u,                   BDK_period,       0, 0, 0, 0x1ee5,
+  BDK_u,                   BDK_question,     0, 0, 0, 0x1ee7,
+  BDK_u,                   BDK_grave,        0, 0, 0, 0xf9,
+  BDK_u,                   BDK_asciitilde,   0, 0, 0, 0x169,
+  BDK_y,                   0,                0, 0, 0, 'y',
+  BDK_y,                   BDK_apostrophe,   0, 0, 0, 0xfd,
+  BDK_y,                   BDK_period,       0, 0, 0, 0x1ef5,
+  BDK_y,                   BDK_question,     0, 0, 0, 0x1ef7,
+  BDK_y,                   BDK_grave,        0, 0, 0, 0x1ef3,
+  BDK_y,                   BDK_asciitilde,   0, 0, 0, 0x1ef9,
 };
 
 static void
-viqr_class_init (GtkIMContextSimpleClass *class)
+viqr_class_init (BtkIMContextSimpleClass *class)
 {
 }
 
 static void
-viqr_init (GtkIMContextSimple *im_context)
+viqr_init (BtkIMContextSimple *im_context)
 {
-  gtk_im_context_simple_add_table (im_context,
+  btk_im_context_simple_add_table (im_context,
 				   viqr_compose_seqs,
 				   4,
 				   G_N_ELEMENTS (viqr_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo viqr_info = { 
+static const BtkIMContextInfo viqr_info = { 
   "viqr",		   /* ID */
   N_("Vietnamese (VIQR)"), /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain */
-   GTK_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "gtk+") */
+   BTK_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "btk+") */
   ""			   /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &viqr_info
 };
 
 #ifndef INCLUDE_IM_viqr
 #define MODULE_ENTRY(type, function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_viqr_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_viqr_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *module)
@@ -266,14 +266,14 @@ MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, "viqr") == 0)
     return g_object_new (type_viqr_translit, NULL);

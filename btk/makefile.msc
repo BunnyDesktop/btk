@@ -1,0 +1,670 @@
+## Makefile for building the btk DLL with Microsoft C
+## Use: nmake -f makefile.msc
+
+## There is no install target, you have to decide where and 
+## how to install for yourself.
+
+TOP = ..\..
+!INCLUDE $(TOP)/bunnylib/build/win32/make.msc
+
+################################################################
+
+# Not the real version but the one used in the DLL names
+BTK_VER = 2.0
+BDK_PIXBUF_VER = 2.0
+
+
+BDK_LIBS = ../bdk/bdk-win32-$(BTK_VER).lib
+BTK_LIBS = btk-win32-$(BTK_VER).lib
+BTK_BINARY_VERSION = 2.10.0
+
+# Perl and awk are needed to generate some source files.
+# These generated source files are distribuyted with the Win32 GTk+ source
+# distributions, so don't worry if you don't have perl and awk.
+PERL = perl
+AWK = gawk
+
+INCLUDES = -FImsvc_recommended_pragmas.h -I . -I .. -I ../bdk $(BDK_PIXBUF_CFLAGS)
+DEPCFLAGS = $(BANGO_CFLAGS) $(BUNNYLIB_CFLAGS) $(LIBICONV_CFLAGS) \
+		$(INTL_CFLAGS) $(BATK_CFLAGS) $(BAIRO_CFLAGS)
+LDFLAGS = $(BATK_LIBS) /link /machine:ix86 $(LINKDEBUG)
+# Some files use near as an identifier
+# Don't define BTK_COMPILATION here, because it's for btk-x.x.dll only
+DEFINES = \
+	-DHAVE_CONFIG_H \
+	$(G_DEBUGGING) -DBTK_DISABLE_COMPAT_H -DG_LOG_DOMAIN=\"Btk\" -Dnear=xxnear \
+	-DBANGO_ENABLE_BACKEND \
+	-DBTK_VERSION=\"$(BTK_VER)\" -DBTK_BINARY_VERSION=\"$(BTK_BINARY_VERSION)\" \
+	-DBTK_HOST=\"win32\" \
+	-DBTK_FILE_SYSTEM_ENABLE_UNSUPPORTED \
+	-DBTK_PRINT_BACKENDS=\"file,lpr\"	\
+	-DBTK_PRINT_PREVIEW_COMMAND="\"evince --unlink-tempfile --preview %f\"" \
+	-DBTK_LIBDIR=\"/magic/path/replaced/at/runtime\"
+
+TOUCH = copy makefile.msc+nul
+
+btkbuiltincache.h: btk-update-icon-cache.exe
+	del btkicontheme.obj
+	btk-update-icon-cache --force --ignore-theme-index 	\
+	   --source builtin_icons stock-icons > btkbuiltincache.h
+
+GENERATED = \
+	btktypebuiltins.h btktypebuiltins.c \
+	btkmarshal.h btkmarshal.c btkmarshalers.h btkmarshalers.c \
+	btk.def btkalias.h btkaliasdef.c btktypefuncs.c
+
+all :						\
+	..\config.h				\
+	$(GENERATED)				\
+	btk-update-icon-cache.exe		\
+	btkbuiltincache.h			\
+	libbtk-win32-$(BTK_VER)-0.dll		\
+	btk-query-immodules-$(BTK_VER).exe \
+#	btk-win32-$(BTK_VER)s.lib \
+#	btk-x11-$(BTK_VER).dll
+
+btk_OBJECTS_deprecated = \
+	btkcombo.obj \
+	btkclist.obj \
+	btkctree.obj \
+	btkfilesel.obj \
+	btktext.obj \
+	btktoolbar.obj \
+	btklist.obj \
+	btkitemfactory.obj \
+	btkoptionmenu.obj \
+	btktree.obj \
+	btktreeitem.obj \
+	btkoldeditable.obj \
+	btklistitem.obj \
+	btkprogress.obj \
+	btktipsquery.obj \
+	btkshow.obj \
+	btksignal.obj \
+	btkpixmap.obj \
+	btkpreview.obj \
+	btkseparatortoolitem.obj \
+	btktypeutils.obj \
+	btktooltips.obj \
+
+btk_OBJECTS_cell = \
+	btkcelleditable.obj \
+	btkcelllayout.obj \
+	btkcellrenderer.obj \
+	btkcellrendereraccel.obj \
+	btkcellrenderercombo.obj \
+	btkcellrendererspin.obj	\
+	btkcellrendererspinner.obj \
+	btkcellrenderertext.obj \
+	btkcellrenderertoggle.obj \
+	btkcellrendererpixbuf.obj \
+	btkcellrendererprogress.obj \
+	btkcellview.obj \
+	btkliststore.obj \
+	btktreednd.obj \
+	btktreemodel.obj \
+	btktreemodelfilter.obj \
+	btktreemodelsort.obj \
+	btktreeselection.obj \
+	btktreesortable.obj \
+	btktreestore.obj \
+	btktreeview.obj \
+	btktreeviewcolumn.obj \
+
+btk_OBJECTS_file = \
+	btkfilechooser.obj \
+	btkfilechooserbutton.obj \
+	btkfilechooserdefault.obj \
+	btkfilechooserdialog.obj \
+	btkfilechooserembed.obj \
+	btkfilechooserentry.obj \
+	btkfilechoosersettings.obj \
+	btkfilechooserutils.obj \
+	btkfilechooserwidget.obj \
+	btkfilefilter.obj \
+	btkfilesystem.obj \
+	btkfilesystemmodel.obj \
+
+btk_OBJECTS_print = \
+	btkprint-win32.obj \
+	btkprintcontext.obj \
+	btkprintoperation.obj \
+	btkprintoperationpreview.obj \
+	btkprintoperation-win32.obj \
+	btkprintsettings.obj \
+	btkprintutils.obj \
+
+btk_OBJECTS_text = \
+	btktestutils.obj \
+	btktextbtree.obj \
+	btktextbuffer.obj \
+	btktextbufferrichtext.obj \
+	btktextbufferserialize.obj \
+	btktextchild.obj \
+	btktextdisplay.obj \
+	btktextiter.obj \
+	btktextlayout.obj \
+	btktextmark.obj \
+	btktextsegment.obj \
+	btktexttag.obj \
+	btktexttagtable.obj \
+	btktexttypes.obj \
+	btktextutil.obj	\
+	btktextview.obj \
+
+btk_OBJECTS_recent = \
+	btkrecentaction.obj \
+	btkrecentchooserdefault.obj \
+	btkrecentchooserdialog.obj \
+	btkrecentchoosermenu.obj \
+	btkrecentchooserwidget.obj \
+	btkrecentchooserutils.obj \
+	btkrecentchooser.obj \
+	btkrecentfilter.obj \
+	btkrecentmanager.obj \
+
+btk_OBJECTS = \
+	fnmatch.obj \
+	btkaboutdialog.obj \
+	btkaccelgroup.obj \
+	btkaccellabel.obj \
+	btkaccelmap.obj	\
+	btkaccessible.obj \
+	btkaction.obj \
+	btkactiongroup.obj \
+	btkactivatable.obj \
+	btkadjustment.obj \
+	btkalignment.obj \
+	btkarrow.obj \
+	btkaspectframe.obj \
+	btkassistant.obj \
+	btkbin.obj \
+	btkbindings.obj \
+	btkbbox.obj \
+	btkbox.obj \
+	btkbuildable.obj \
+	btkbuilder.obj \
+	btkbuilderparser.obj \
+	btkbutton.obj \
+	btkcalendar.obj \
+	btkcheckbutton.obj \
+	btkcheckmenuitem.obj \
+	btkclipboard.obj \
+	btkcolorbutton.obj \
+	btkcolorsel.obj \
+	btkcolorseldialog.obj \
+	btkcombobox.obj	\
+	btkcomboboxentry.obj \
+	btkcomboboxtext.obj \
+	btkcontainer.obj \
+	btkcurve.obj \
+	btkdialog.obj \
+	btkdnd.obj \
+	btkdrawingarea.obj \
+	btkeditable.obj \
+	btkentry.obj \
+	btkentrybuffer.obj \
+	btkentrycompletion.obj \
+	btkeventbox.obj \
+	btkexpander.obj \
+	btkfixed.obj \
+	btkfontsel.obj \
+	btkfontbutton.obj \
+	btkframe.obj \
+	btkgamma.obj \
+	btkgc.obj \
+	btkhandlebox.obj \
+	btkhbbox.obj \
+	btkhbox.obj \
+	btkhpaned.obj \
+	btkhruler.obj \
+	btkhscale.obj \
+	btkhscrollbar.obj \
+	btkhseparator.obj \
+	btkhsv.obj \
+	btkiconcache.obj \
+	btkiconcachevalidator.obj \
+	btkiconfactory.obj \
+	btkicontheme.obj \
+	btkiconview.obj \
+	btkimage.obj \
+	btkimagemenuitem.obj \
+	btkimcontext.obj \
+	btkimcontextsimple.obj \
+	btkimmodule.obj	\
+	btkimmulticontext.obj \
+	btkinfobar.obj \
+	btkinputdialog.obj \
+	btkinvisible.obj \
+	btkitem.obj \
+	btkkeyhash.obj	\
+	btklabel.obj \
+	btklayout.obj \
+	btklinkbutton.obj \
+	btkmain.obj \
+	btkmarshalers.obj \
+	btkmarshal.obj \
+	btkmenu.obj \
+	btkmenubar.obj \
+	btkmenuitem.obj \
+	btkmenushell.obj \
+	btkmenutoolbutton.obj \
+	btkmessagedialog.obj \
+	btkmisc.obj \
+	btkmnemonichash.obj \
+	btkmodules.obj \
+	btkmountoperation.obj \
+	btkmountoperation-stub.obj \
+	btknotebook.obj \
+	btkobject.obj \
+	btkoffscreenwindow.obj \
+	btkorientable.obj \
+	btkpagesetup.obj \
+	btkpaned.obj \
+	btkbango.obj \
+	btkpapersize.obj \
+	btkpathbar.obj \
+	btkplug.obj \
+	btkplug-win32.obj \
+	btkprogressbar.obj \
+	btkquery.obj \
+	btkradioaction.obj \
+	btkradiobutton.obj \
+	btkradiotoolbutton.obj \
+	btkradiomenuitem.obj \
+	btkrange.obj \
+	btkrbtree.obj \
+	btkrc.obj \
+	btkruler.obj \
+	btkscale.obj \
+	btkscalebutton.obj \
+	btkscrollbar.obj \
+	btkscrolledwindow.obj \
+	btksearchengine.obj \
+	btksearchenginebeagle.obj \
+	btksearchenginesimple.obj \
+	btksearchenginetracker.obj \
+	btkselection.obj \
+	btkseparator.obj \
+	btkseparatormenuitem.obj \
+	btksettings.obj \
+	btksizegroup.obj \
+	btksocket.obj \
+	btksocket-win32.obj \
+	btkspinbutton.obj \
+	btkspinner.obj \
+	btkstatusicon.obj \
+	btkstyle.obj \
+	btkstatusbar.obj \
+	btkstock.obj \
+	btktable.obj \
+	btktearoffmenuitem.obj \
+	btkthemes.obj \
+	btktoggleaction.obj \
+	btktogglebutton.obj \
+	btktoggletoolbutton.obj \
+	btktoolbutton.obj \
+	btktoolitem.obj \
+	btktoolitemgroup.obj \
+	btktoolpalette.obj \
+	btktoolshell.obj \
+	btktooltip.obj \
+	btktreedatalist.obj \
+	btktypebuiltins.obj \
+	btkuimanager.obj \
+	btkvbbox.obj \
+	btkvbox.obj \
+	btkviewport.obj \
+	btkvolumebutton.obj \
+	btkvpaned.obj \
+	btkvruler.obj \
+	btkvscale.obj \
+	btkvscrollbar.obj \
+	btkvseparator.obj \
+	btkwidget.obj \
+	btkwin32embed.obj \
+	btkwin32embedwidget.obj \
+	btkwindow.obj \
+	btkwindow-decorate.obj
+
+# Source headers which are non-autogenerated headers
+btk_public_h_sources =		\
+	btk.h			\
+	btkaboutdialog.h	\
+	btkaccelgroup.h		\
+	btkaccellabel.h		\
+	btkaccelmap.h		\
+	btkaccessible.h		\
+	btkaction.h		\
+	btkactiongroup.h	\
+	btkactivatable.h	\
+	btkadjustment.h		\
+	btkalignment.h		\
+	btkarrow.h		\
+	btkaspectframe.h	\
+	btkassistant.h		\
+	btkbbox.h		\
+	btkbin.h		\
+	btkbindings.h		\
+	btkbox.h		\
+	btkbuilder.h		\
+	btkbuildable.h		\
+	btkbutton.h		\
+	btkcalendar.h		\
+	btkcelleditable.h	\
+	btkcelllayout.h		\
+	btkcellrenderer.h	\
+	btkcellrendereraccel.h	\
+	btkcellrenderercombo.h	\
+	btkcellrendererpixbuf.h	\
+	btkcellrendererprogress.h \
+	btkcellrendererspin.h   \
+	btkcellrendererspinner.h \
+	btkcellrenderertext.h	\
+	btkcellrenderertoggle.h	\
+	btkcellview.h		\
+	btkcheckbutton.h	\
+	btkcheckmenuitem.h	\
+	btkclipboard.h		\
+	btkclist.h		\
+	btkcolorbutton.h	\
+	btkcolorsel.h		\
+	btkcolorseldialog.h	\
+	btkcombo.h		\
+	btkcombobox.h		\
+	btkcomboboxentry.h	\
+	btkcomboboxtext.h	\
+	btkcontainer.h		\
+	btkctree.h		\
+	btkcurve.h		\
+	btkdebug.h              \
+	btkdialog.h		\
+	btkdnd.h		\
+	btkdrawingarea.h	\
+	btkeditable.h           \
+	btkentry.h		\
+	btkentrybuffer.h	\
+	btkentrycompletion.h	\
+	btkenums.h		\
+	btkeventbox.h		\
+	btkexpander.h		\
+	btkfilechooser.h        \
+	btkfilechooserbutton.h  \
+	btkfilechooserdialog.h  \
+	btkfilechooserwidget.h  \
+	btkfilefilter.h		\
+	btkfilesel.h		\
+	btkfixed.h		\
+	btkfontbutton.h		\
+	btkfontsel.h		\
+	btkframe.h		\
+	btkgamma.h		\
+	btkgc.h			\
+	btkhandlebox.h		\
+	btkhbbox.h		\
+	btkhbox.h		\
+	btkhpaned.h		\
+	btkhruler.h		\
+	btkhscale.h		\
+	btkhscrollbar.h		\
+	btkhseparator.h		\
+	btkiconfactory.h	\
+	btkicontheme.h		\
+	btkiconview.h		\
+	btkimage.h		\
+	btkimagemenuitem.h	\
+	btkimcontext.h		\
+	btkimcontextsimple.h	\
+	btkimmodule.h		\
+	btkimmulticontext.h	\
+	btkinputdialog.h	\
+	btkinvisible.h		\
+	btkitem.h		\
+	btkitemfactory.h	\
+	btklabel.h		\
+	btklayout.h             \
+	btklinkbutton.h		\
+	btklist.h		\
+	btklistitem.h		\
+	btkliststore.h		\
+	btkmain.h		\
+	btkmenu.h		\
+	btkmenubar.h		\
+	btkmenuitem.h		\
+	btkmenushell.h		\
+	btkmenutoolbutton.h	\
+	btkmessagedialog.h	\
+	btkmisc.h		\
+	btkmodules.h		\
+	btkmountoperation.h	\
+	btknotebook.h		\
+	btkobject.h		\
+	btkoffscreenwindow.h	\
+	btkoldeditable.h	\
+	btkoptionmenu.h		\
+	btkpagesetup.h		\
+	btkpaned.h		\
+	btkbango.h		\
+	btkpapersize.h		\
+	btkpixmap.h		\
+	btkplug.h		\
+	btkpreview.h		\
+	btkprintcontext.h	\
+	btkprintoperation.h	\
+	btkprintoperationpreview.h	\
+	btkprintsettings.h	\
+	btkprivate.h		\
+	btkprogress.h		\
+	btkprogressbar.h	\
+	btkradioaction.h	\
+	btkradiobutton.h	\
+	btkradiomenuitem.h	\
+	btkradiotoolbutton.h	\
+	btkrange.h		\
+	btkrc.h			\
+	btkrecentaction.h	\
+	btkrecentchooser.h 	\
+	btkrecentchooserdialog.h \
+	btkrecentchoosermenu.h 	\
+	btkrecentchooserwidget.h \
+	btkrecentfilter.h 	\
+	btkrecentmanager.h 	\
+	btkruler.h		\
+	btkscale.h		\
+	btkscalebutton.h	\
+	btkscrollbar.h		\
+	btkscrolledwindow.h	\
+	btkselection.h		\
+	btkseparator.h		\
+	btkseparatormenuitem.h	\
+	btkseparatortoolitem.h	\
+	btksettings.h		\
+	btksignal.h		\
+	btksizegroup.h		\
+	btksocket.h		\
+	btkspinbutton.h		\
+	btkspinner.h		\
+	btkstatusbar.h		\
+	btkstatusicon.h		\
+	btkstock.h		\
+	btkstyle.h		\
+	btktable.h		\
+	btktearoffmenuitem.h    \
+	btktext.h		\
+	btktextbuffer.h		\
+	btktextbufferrichtext.h	\
+	btktextchild.h		\
+	btktextdisplay.h	\
+	btktextiter.h		\
+	btktextmark.h		\
+	btktexttag.h		\
+	btktexttagtable.h	\
+	btktextview.h		\
+	btktipsquery.h		\
+	btktoggleaction.h	\
+	btktogglebutton.h	\
+	btktoggletoolbutton.h	\
+	btktoolbar.h		\
+	btktoolbutton.h		\
+	btktoolitem.h		\
+	btktoolitemgroup.h	\
+	btktoolpalette.h	\
+	btktooltip.h		\
+	btktooltips.h		\
+	btktree.h		\
+	btktreednd.h		\
+	btktreeitem.h		\
+	btktreemodel.h		\
+	btktreemodelfilter.h	\
+	btktreemodelsort.h	\
+	btktreeselection.h	\
+	btktreesortable.h	\
+	btktreestore.h		\
+	btktreeview.h		\
+	btktreeviewcolumn.h	\
+	btktypeutils.h		\
+	btkuimanager.h		\
+	btkvbbox.h		\
+	btkvbox.h		\
+	btkviewport.h		\
+	btkvolumebutton.h	\
+	btkvpaned.h		\
+	btkvruler.h		\
+	btkvscale.h		\
+	btkvscrollbar.h		\
+	btkvseparator.h		\
+	btkwidget.h		\
+	btkwindow.h
+
+# these aren't use here, but listed for reference
+btk_extra_sources = \
+	btkversion.h		\
+	btk-boxed.defs		\
+	btkmarshal.list		\
+
+..\config.h : ..\config.h.win32
+	copy ..\config.h.win32 ..\config.h
+
+btk.def: btk.symbols makefile.msc
+	echo EXPORTS > btk.def
+	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES \
+		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
+		-DG_GNUC_PRINTF=;G_GNUC_PRINTF btk.symbols >> btk.def
+
+btkalias.h: btk.symbols
+	$(PERL) makebtkalias.pl < btk.symbols > btkalias.h
+
+btkaliasdef.c: btk.symbols
+	 $(PERL) makebtkalias.pl -def < btk.symbols > btkaliasdef.c
+
+# generate type identifier header (BTK_TYPE_WIDGET_FLAGS)
+# use 'echo' to work around 'command line too long'
+btktypebuiltins.h: $(btk_public_h_sources) makefile.msc
+	echo #ifndef __BTK_TYPE_BUILTINS_H__ > btktypebuiltins.h
+	echo #define __BTK_TYPE_BUILTINS_H__ >> btktypebuiltins.h
+	echo #include "bunnylib-object.h" >> btktypebuiltins.h
+	echo G_BEGIN_DECLS >> btktypebuiltins.h
+	$(PERL) $(BUNNYLIB)\bobject\bunnylib-mkenums \
+		--fprod "/* enumerations from \"@filename@\" */\n" \
+		--vhead "GType @enum_name@_get_type (void);\n#define BTK_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
+		--ftail "G_END_DECLS\n\n#endif /* __BTK_TYPE_BUILTINS_H__ */" \
+		$(btk_public_h_sources) >> btktypebuiltins.h
+
+btktypebuiltins.c: $(btk_public_h_sources) makefile.msc
+	$(PERL) $(BUNNYLIB)\bobject\bunnylib-mkenums \
+		--fhead "#define BTK_ENABLE_BROKEN\n#include \"btk.h\"\n#include \"btkprivate.h\"" \
+		--fprod "\n/* enumerations from \"@filename@\" */" \
+		--vhead "GType\n@enum_name@_get_type (void)\n{\n  static GType etype = 0;\n  if (etype == 0) {\n    static const G@Type@Value values[] = {" \
+		--vprod "      { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
+		--vtail "      { 0, NULL, NULL }\n    };\n    etype = g_@type@_register_static (\"@EnumName@\", values);\n  }\n  return etype;\n}\n" \
+		$(btk_public_h_sources) > xgen-gtbc
+	copy xgen-gtbc btktypebuiltins.c
+
+# private marshalers
+btkmarshalers.h : btkmarshalers.list makefile.msc
+	$(BUNNYLIB)\bobject\bunnylib-genmarshal --prefix=_btk_marshal btkmarshalers.list --header >btkmarshalers.h
+
+btkmarshalers.c : btkmarshalers.list makefile.msc
+	$(BUNNYLIB)\bobject\bunnylib-genmarshal --prefix=_btk_marshal btkmarshalers.list --body >btkmarshalers.c
+
+# public, deprecated marshalers
+btkmarshal.h : btkmarshal.list
+	echo #ifndef BTK_DISABLE_DEPRECATED >btkmarshal.h
+	$(BUNNYLIB)\bobject\bunnylib-genmarshal --prefix=btk_marshal btkmarshal.list --header >>btkmarshal.h
+	echo #endif /* BTK_DISABLE_DEPRECATED */ >>btkmarshal.h
+
+btkmarshal.c : btkmarshal.list
+	$(BUNNYLIB)\bobject\bunnylib-genmarshal --prefix=btk_marshal btkmarshal.list --body >btkmarshal.c
+
+btktypefuncs.c : makefile.msc
+	echo /*none*/ > btktypefuncs.c
+btksignal.obj : btksignal.c btkmarshal.c btkmarshal.h
+	$(CC) $(CFLAGS) -GD -c -DBTK_COMPILATION -DG_LOG_DOMAIN=\"Btk\" btksignal.c
+
+btk-win32.res : btk-win32.rc
+	rc -DBUILDNUMBER=0 -r -fo btk-win32.res btk-win32.rc
+
+# build some static limits to covercome command line too long
+# may also speed up the build
+btk-deprecated.lib : $(btk_OBJECTS_deprecated)
+	lib /out:btk-deprecated.lib $(btk_OBJECTS_deprecated)
+
+btk-cell.lib : $(btk_OBJECTS_cell)
+	lib /out:btk-cell.lib $(btk_OBJECTS_cell)
+
+btk-file.lib : $(btk_OBJECTS_file)
+	lib /out:btk-file.lib $(btk_OBJECTS_file)
+
+btk-print.lib : $(btk_OBJECTS_print)
+	lib /out:btk-print.lib $(btk_OBJECTS_print)
+
+btk-recent.lib : $(btk_OBJECTS_recent)
+	lib /out:btk-recent.lib $(btk_OBJECTS_recent)
+
+btk-text.lib : $(btk_OBJECTS_text)
+	lib /out:btk-text.lib $(btk_OBJECTS_text)
+
+btk-core.lib : $(btk_OBJECTS) 
+	lib /out:btk-core.lib $(btk_OBJECTS)
+
+btk_SUBLIBS = \
+	btk-deprecated.lib \
+	btk-cell.lib \
+	btk-file.lib \
+	btk-print.lib \
+	btk-recent.lib \
+	btk-text.lib \
+	btk-core.lib
+
+#
+# Linking:
+#
+libbtk-win32-$(BTK_VER)-0.dll : $(btk_SUBLIBS) btk.def btk-win32.res
+	$(CC) $(CFLAGS) -LD -Fm -Fe$@ $(btk_SUBLIBS) btk-win32.res \
+	$(BDK_LIBS) $(BDK_PIXBUF_LIBS) $(BANGO_LIBS) $(INTL_LIBS) $(BUNNYLIB_LIBS) $(BMODULE_LIBS) \
+	$(BAIRO_LIBS) $(BANGOBAIRO_LIBS) \
+	gdi32.lib user32.lib advapi32.lib wsock32.lib shell32.lib ole32.lib comdlg32.lib winspool.lib comctl32.lib \
+	$(LDFLAGS) /implib:btk-win32-$(BTK_VER).lib /def:btk.def
+
+btk-win32-$(BTK_VER)s.lib : $(btk_OBJECTS)
+	lib /out:btk-win32-$(BTK_VER)s.lib $(btk_OBJECTS)
+
+btk-query-immodules-$(BTK_VER).exe : queryimmodules.obj
+	$(CC) $(CFLAGS) -Fe$@ queryimmodules.obj $(BTK_LIBS) $(BUNNYLIB_LIBS) $(BANGO_LIBS) $(LDFLAGS)
+
+btk-update-icon-cache.exe : updateiconcache.obj
+	$(CC) $(CFLAGS) -Fe$@ updateiconcache.obj $(BDK_PIXBUF_LIBS) $(BUNNYLIB_LIBS) $(INTL_LIBS) $(BANGO_LIBS) $(LDFLAGS)
+
+btk-x11-$(BTK_VER).dll : $(btk_OBJECTS) btk.def
+	$(CC) $(CFLAGS) -LD -Fm -Febtk-x11-$(BTK_VER).dll $(btk_OBJECTS) ../bdk/bdk-x11-$(BTK_VER).lib $(BDK_PIXBUF_LIBS) $(BANGO_LIBS) $(INTL_LIBS) $(BUNNYLIB_LIBS) gdi32.lib user32.lib advapi32.lib $(LDFLAGS) /def:btk.def
+
+# General rule for compiling the objects into the DLL
+.c.obj :
+	$(CC) $(CFLAGS) -GF -Zm400 -GD -c -DBTK_COMPILATION -DG_LOG_DOMAIN=\"Btk\" $<
+
+$(EXAMPLE).obj : ..\examples\$(EXAMPLE)\$(EXAMPLE).c
+	$(CC) $(CFLAGS) -c -DG_LOG_DOMAIN=\"$(EXAMPLE)\" ..\examples\$(EXAMPLE)\$(EXAMPLE).c
+
+$(EXAMPLE).exe : $(EXAMPLE).obj
+	$(CC) $(CFLAGS) $(EXAMPLE).obj $(BTK_LIBS) $(BDK_LIBS) $(BUNNYLIB_LIBS) $(LDFLAGS)
+

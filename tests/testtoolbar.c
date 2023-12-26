@@ -19,103 +19,103 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include "prop-editor.h"
 
 static void
-reload_clicked (GtkWidget *widget)
+reload_clicked (BtkWidget *widget)
 {
-  static GdkAtom atom_rcfiles = GDK_NONE;
+  static BdkAtom atom_rcfiles = BDK_NONE;
 
-  GdkEventClient sev;
+  BdkEventClient sev;
   int i;
   
   if (!atom_rcfiles)
-    atom_rcfiles = gdk_atom_intern("_GTK_READ_RCFILES", FALSE);
+    atom_rcfiles = bdk_atom_intern("_BTK_READ_RCFILES", FALSE);
 
   for(i = 0; i < 5; i++)
     sev.data.l[i] = 0;
   sev.data_format = 32;
   sev.message_type = atom_rcfiles;
-  gdk_event_send_clientmessage_toall ((GdkEvent *) &sev);
+  bdk_event_send_clientmessage_toall ((BdkEvent *) &sev);
 }
 
 static void
-change_orientation (GtkWidget *button, GtkWidget *toolbar)
+change_orientation (BtkWidget *button, BtkWidget *toolbar)
 {
-  GtkWidget *table;
-  GtkOrientation orientation;
+  BtkWidget *table;
+  BtkOrientation orientation;
 
-  table = gtk_widget_get_parent (toolbar);
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
-    orientation = GTK_ORIENTATION_VERTICAL;
+  table = btk_widget_get_parent (toolbar);
+  if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
+    orientation = BTK_ORIENTATION_VERTICAL;
   else
-    orientation = GTK_ORIENTATION_HORIZONTAL;
+    orientation = BTK_ORIENTATION_HORIZONTAL;
 
   g_object_ref (toolbar);
-  gtk_container_remove (GTK_CONTAINER (table), toolbar);
-  gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), orientation);
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+  btk_container_remove (BTK_CONTAINER (table), toolbar);
+  btk_toolbar_set_orientation (BTK_TOOLBAR (toolbar), orientation);
+  if (orientation == BTK_ORIENTATION_HORIZONTAL)
     {
-      gtk_table_attach (GTK_TABLE (table), toolbar,
-			0,2, 0,1, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+      btk_table_attach (BTK_TABLE (table), toolbar,
+			0,2, 0,1, BTK_FILL|BTK_EXPAND, BTK_FILL, 0, 0);
     }
   else
     {
-      gtk_table_attach (GTK_TABLE (table), toolbar,
-			0,1, 0,4, GTK_FILL, GTK_FILL|GTK_EXPAND, 0, 0);
+      btk_table_attach (BTK_TABLE (table), toolbar,
+			0,1, 0,4, BTK_FILL, BTK_FILL|BTK_EXPAND, 0, 0);
     }
   g_object_unref (toolbar);
 }
 
 static void
-change_show_arrow (GtkWidget *button, GtkWidget *toolbar)
+change_show_arrow (BtkWidget *button, BtkWidget *toolbar)
 {
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar),
-		gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)));
+  btk_toolbar_set_show_arrow (BTK_TOOLBAR (toolbar),
+		btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)));
 }
 
 static void
-set_toolbar_style_toggled (GtkCheckButton *button, GtkToolbar *toolbar)
+set_toolbar_style_toggled (BtkCheckButton *button, BtkToolbar *toolbar)
 {
-  GtkWidget *option_menu;
+  BtkWidget *option_menu;
   int style;
   
   option_menu = g_object_get_data (G_OBJECT (button), "option-menu");
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
+  if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
     {
-      style = gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
+      style = btk_option_menu_get_history (BTK_OPTION_MENU (option_menu));
 
-      gtk_toolbar_set_style (toolbar, style);
-      gtk_widget_set_sensitive (option_menu, TRUE);
+      btk_toolbar_set_style (toolbar, style);
+      btk_widget_set_sensitive (option_menu, TRUE);
     }
   else
     {
-      gtk_toolbar_unset_style (toolbar);
-      gtk_widget_set_sensitive (option_menu, FALSE);
+      btk_toolbar_unset_style (toolbar);
+      btk_widget_set_sensitive (option_menu, FALSE);
     }
 }
 
 static void
-change_toolbar_style (GtkWidget *option_menu, GtkWidget *toolbar)
+change_toolbar_style (BtkWidget *option_menu, BtkWidget *toolbar)
 {
-  GtkToolbarStyle style;
+  BtkToolbarStyle style;
 
-  style = gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), style);
+  style = btk_option_menu_get_history (BTK_OPTION_MENU (option_menu));
+  btk_toolbar_set_style (BTK_TOOLBAR (toolbar), style);
 }
 
 static void
-set_visible_func(GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
-		 GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+set_visible_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
+		 BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
 {
-  GtkToolItem *tool_item;
+  BtkToolItem *tool_item;
   gboolean visible;
 
-  gtk_tree_model_get (model, iter, 0, &tool_item, -1);
+  btk_tree_model_get (model, iter, 0, &tool_item, -1);
 
   g_object_get (tool_item, "visible", &visible, NULL);
   g_object_set (cell, "active", visible, NULL);
@@ -123,164 +123,164 @@ set_visible_func(GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
 }
 
 static void
-visibile_toggled(GtkCellRendererToggle *cell, const gchar *path_str,
-		 GtkTreeModel *model)
+visibile_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+		 BtkTreeModel *model)
 {
-  GtkTreePath *path;
-  GtkTreeIter iter;
-  GtkToolItem *tool_item;
+  BtkTreePath *path;
+  BtkTreeIter iter;
+  BtkToolItem *tool_item;
   gboolean visible;
 
-  path = gtk_tree_path_new_from_string (path_str);
-  gtk_tree_model_get_iter (model, &iter, path);
+  path = btk_tree_path_new_from_string (path_str);
+  btk_tree_model_get_iter (model, &iter, path);
 
-  gtk_tree_model_get (model, &iter, 0, &tool_item, -1);
+  btk_tree_model_get (model, &iter, 0, &tool_item, -1);
   g_object_get (tool_item, "visible", &visible, NULL);
   g_object_set (tool_item, "visible", !visible, NULL);
   g_object_unref (tool_item);
 
-  gtk_tree_model_row_changed (model, path, &iter);
-  gtk_tree_path_free (path);
+  btk_tree_model_row_changed (model, path, &iter);
+  btk_tree_path_free (path);
 }
 
 static void
-set_expand_func(GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
-		GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+set_expand_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
+		BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
 {
-  GtkToolItem *tool_item;
+  BtkToolItem *tool_item;
 
-  gtk_tree_model_get (model, iter, 0, &tool_item, -1);
+  btk_tree_model_get (model, iter, 0, &tool_item, -1);
 
-  g_object_set (cell, "active", gtk_tool_item_get_expand (tool_item), NULL);
+  g_object_set (cell, "active", btk_tool_item_get_expand (tool_item), NULL);
   g_object_unref (tool_item);
 }
 
 static void
-expand_toggled(GtkCellRendererToggle *cell, const gchar *path_str,
-	       GtkTreeModel *model)
+expand_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+	       BtkTreeModel *model)
 {
-  GtkTreePath *path;
-  GtkTreeIter iter;
-  GtkToolItem *tool_item;
+  BtkTreePath *path;
+  BtkTreeIter iter;
+  BtkToolItem *tool_item;
 
-  path = gtk_tree_path_new_from_string (path_str);
-  gtk_tree_model_get_iter (model, &iter, path);
+  path = btk_tree_path_new_from_string (path_str);
+  btk_tree_model_get_iter (model, &iter, path);
 
-  gtk_tree_model_get (model, &iter, 0, &tool_item, -1);
-  gtk_tool_item_set_expand (tool_item, !gtk_tool_item_get_expand (tool_item));
+  btk_tree_model_get (model, &iter, 0, &tool_item, -1);
+  btk_tool_item_set_expand (tool_item, !btk_tool_item_get_expand (tool_item));
   g_object_unref (tool_item);
 
-  gtk_tree_model_row_changed (model, path, &iter);
-  gtk_tree_path_free (path);
+  btk_tree_model_row_changed (model, path, &iter);
+  btk_tree_path_free (path);
 }
 
 static void
-set_homogeneous_func(GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
-		     GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
+set_homogeneous_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
+		     BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
 {
-  GtkToolItem *tool_item;
+  BtkToolItem *tool_item;
 
-  gtk_tree_model_get (model, iter, 0, &tool_item, -1);
+  btk_tree_model_get (model, iter, 0, &tool_item, -1);
 
-  g_object_set (cell, "active", gtk_tool_item_get_homogeneous (tool_item), NULL);
-  g_object_unref (tool_item);
-}
-
-static void
-homogeneous_toggled(GtkCellRendererToggle *cell, const gchar *path_str,
-		    GtkTreeModel *model)
-{
-  GtkTreePath *path;
-  GtkTreeIter iter;
-  GtkToolItem *tool_item;
-
-  path = gtk_tree_path_new_from_string (path_str);
-  gtk_tree_model_get_iter (model, &iter, path);
-
-  gtk_tree_model_get (model, &iter, 0, &tool_item, -1);
-  gtk_tool_item_set_homogeneous (tool_item, !gtk_tool_item_get_homogeneous (tool_item));
-  g_object_unref (tool_item);
-
-  gtk_tree_model_row_changed (model, path, &iter);
-  gtk_tree_path_free (path);
-}
-
-
-static void
-set_important_func(GtkTreeViewColumn *tree_column, GtkCellRenderer *cell,
-		   GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
-{
-  GtkToolItem *tool_item;
-
-  gtk_tree_model_get (model, iter, 0, &tool_item, -1);
-
-  g_object_set (cell, "active", gtk_tool_item_get_is_important (tool_item), NULL);
+  g_object_set (cell, "active", btk_tool_item_get_homogeneous (tool_item), NULL);
   g_object_unref (tool_item);
 }
 
 static void
-important_toggled(GtkCellRendererToggle *cell, const gchar *path_str,
-		  GtkTreeModel *model)
+homogeneous_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+		    BtkTreeModel *model)
 {
-  GtkTreePath *path;
-  GtkTreeIter iter;
-  GtkToolItem *tool_item;
+  BtkTreePath *path;
+  BtkTreeIter iter;
+  BtkToolItem *tool_item;
 
-  path = gtk_tree_path_new_from_string (path_str);
-  gtk_tree_model_get_iter (model, &iter, path);
+  path = btk_tree_path_new_from_string (path_str);
+  btk_tree_model_get_iter (model, &iter, path);
 
-  gtk_tree_model_get (model, &iter, 0, &tool_item, -1);
-  gtk_tool_item_set_is_important (tool_item, !gtk_tool_item_get_is_important (tool_item));
+  btk_tree_model_get (model, &iter, 0, &tool_item, -1);
+  btk_tool_item_set_homogeneous (tool_item, !btk_tool_item_get_homogeneous (tool_item));
   g_object_unref (tool_item);
 
-  gtk_tree_model_row_changed (model, path, &iter);
-  gtk_tree_path_free (path);
+  btk_tree_model_row_changed (model, path, &iter);
+  btk_tree_path_free (path);
 }
 
-static GtkListStore *
-create_items_list (GtkWidget **tree_view_p)
+
+static void
+set_important_func(BtkTreeViewColumn *tree_column, BtkCellRenderer *cell,
+		   BtkTreeModel *model, BtkTreeIter *iter, gpointer data)
 {
-  GtkWidget *tree_view;
-  GtkListStore *list_store;
-  GtkCellRenderer *cell;
+  BtkToolItem *tool_item;
+
+  btk_tree_model_get (model, iter, 0, &tool_item, -1);
+
+  g_object_set (cell, "active", btk_tool_item_get_is_important (tool_item), NULL);
+  g_object_unref (tool_item);
+}
+
+static void
+important_toggled(BtkCellRendererToggle *cell, const gchar *path_str,
+		  BtkTreeModel *model)
+{
+  BtkTreePath *path;
+  BtkTreeIter iter;
+  BtkToolItem *tool_item;
+
+  path = btk_tree_path_new_from_string (path_str);
+  btk_tree_model_get_iter (model, &iter, path);
+
+  btk_tree_model_get (model, &iter, 0, &tool_item, -1);
+  btk_tool_item_set_is_important (tool_item, !btk_tool_item_get_is_important (tool_item));
+  g_object_unref (tool_item);
+
+  btk_tree_model_row_changed (model, path, &iter);
+  btk_tree_path_free (path);
+}
+
+static BtkListStore *
+create_items_list (BtkWidget **tree_view_p)
+{
+  BtkWidget *tree_view;
+  BtkListStore *list_store;
+  BtkCellRenderer *cell;
   
-  list_store = gtk_list_store_new (2, GTK_TYPE_TOOL_ITEM, G_TYPE_STRING);
+  list_store = btk_list_store_new (2, BTK_TYPE_TOOL_ITEM, G_TYPE_STRING);
   
-  tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (list_store));
 
-  gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree_view),
+  btk_tree_view_insert_column_with_attributes (BTK_TREE_VIEW (tree_view),
 					       -1, "Tool Item",
-					       gtk_cell_renderer_text_new (),
+					       btk_cell_renderer_text_new (),
 					       "text", 1, NULL);
 
-  cell = gtk_cell_renderer_toggle_new ();
+  cell = btk_cell_renderer_toggle_new ();
   g_signal_connect (cell, "toggled", G_CALLBACK (visibile_toggled),
 		    list_store);
-  gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (tree_view),
+  btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (tree_view),
 					      -1, "Visible",
 					      cell,
 					      set_visible_func, NULL, NULL);
 
-  cell = gtk_cell_renderer_toggle_new ();
+  cell = btk_cell_renderer_toggle_new ();
   g_signal_connect (cell, "toggled", G_CALLBACK (expand_toggled),
 		    list_store);
-  gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (tree_view),
+  btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (tree_view),
 					      -1, "Expand",
 					      cell,
 					      set_expand_func, NULL, NULL);
 
-  cell = gtk_cell_renderer_toggle_new ();
+  cell = btk_cell_renderer_toggle_new ();
   g_signal_connect (cell, "toggled", G_CALLBACK (homogeneous_toggled),
 		    list_store);
-  gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (tree_view),
+  btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (tree_view),
 					      -1, "Homogeneous",
 					      cell,
 					      set_homogeneous_func, NULL,NULL);
 
-  cell = gtk_cell_renderer_toggle_new ();
+  cell = btk_cell_renderer_toggle_new ();
   g_signal_connect (cell, "toggled", G_CALLBACK (important_toggled),
 		    list_store);
-  gtk_tree_view_insert_column_with_data_func (GTK_TREE_VIEW (tree_view),
+  btk_tree_view_insert_column_with_data_func (BTK_TREE_VIEW (tree_view),
 					      -1, "Important",
 					      cell,
 					      set_important_func, NULL,NULL);
@@ -293,12 +293,12 @@ create_items_list (GtkWidget **tree_view_p)
 }
 
 static void
-add_item_to_list (GtkListStore *store, GtkToolItem *item, const gchar *text)
+add_item_to_list (BtkListStore *store, BtkToolItem *item, const gchar *text)
 {
-  GtkTreeIter iter;
+  BtkTreeIter iter;
 
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter,
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter,
 		      0, item,
 		      1, text,
 		      -1);
@@ -306,78 +306,78 @@ add_item_to_list (GtkListStore *store, GtkToolItem *item, const gchar *text)
 }
 
 static void
-bold_toggled (GtkToggleToolButton *button)
+bold_toggled (BtkToggleToolButton *button)
 {
   g_message ("Bold toggled (active=%d)",
-	     gtk_toggle_tool_button_get_active (button));
+	     btk_toggle_tool_button_get_active (button));
 }
 
 static void
-set_icon_size_toggled (GtkCheckButton *button, GtkToolbar *toolbar)
+set_icon_size_toggled (BtkCheckButton *button, BtkToolbar *toolbar)
 {
-  GtkWidget *option_menu;
+  BtkWidget *option_menu;
   int icon_size;
   
   option_menu = g_object_get_data (G_OBJECT (button), "option-menu");
 
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)))
+  if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
     {
-      icon_size = gtk_option_menu_get_history (GTK_OPTION_MENU (option_menu));
-      icon_size += GTK_ICON_SIZE_SMALL_TOOLBAR;
+      icon_size = btk_option_menu_get_history (BTK_OPTION_MENU (option_menu));
+      icon_size += BTK_ICON_SIZE_SMALL_TOOLBAR;
 
-      gtk_toolbar_set_icon_size (toolbar, icon_size);
-      gtk_widget_set_sensitive (option_menu, TRUE);
+      btk_toolbar_set_icon_size (toolbar, icon_size);
+      btk_widget_set_sensitive (option_menu, TRUE);
     }
   else
     {
-      gtk_toolbar_unset_icon_size (toolbar);
-      gtk_widget_set_sensitive (option_menu, FALSE);
+      btk_toolbar_unset_icon_size (toolbar);
+      btk_widget_set_sensitive (option_menu, FALSE);
     }
 }
 
 static void
-icon_size_history_changed (GtkOptionMenu *menu, GtkToolbar *toolbar)
+icon_size_history_changed (BtkOptionMenu *menu, BtkToolbar *toolbar)
 {
   int icon_size;
 
-  icon_size = gtk_option_menu_get_history (menu);
-  icon_size += GTK_ICON_SIZE_SMALL_TOOLBAR;
+  icon_size = btk_option_menu_get_history (menu);
+  icon_size += BTK_ICON_SIZE_SMALL_TOOLBAR;
 
-  gtk_toolbar_set_icon_size (toolbar, icon_size);
+  btk_toolbar_set_icon_size (toolbar, icon_size);
 }
 
 static gboolean
-toolbar_drag_drop (GtkWidget *widget, GdkDragContext *context,
-		   gint x, gint y, guint time, GtkWidget *label)
+toolbar_drag_drop (BtkWidget *widget, BdkDragContext *context,
+		   gint x, gint y, guint time, BtkWidget *label)
 {
   gchar buf[32];
 
   g_snprintf(buf, sizeof(buf), "%d",
-	     gtk_toolbar_get_drop_index (GTK_TOOLBAR (widget), x, y));
-  gtk_label_set_label (GTK_LABEL (label), buf);
+	     btk_toolbar_get_drop_index (BTK_TOOLBAR (widget), x, y));
+  btk_label_set_label (BTK_LABEL (label), buf);
 
   return TRUE;
 }
 
-static GtkTargetEntry target_table[] = {
+static BtkTargetEntry target_table[] = {
   { "application/x-toolbar-item", 0, 0 }
 };
 
-static GtkWidget *
+static BtkWidget *
 make_prop_editor (GObject *object)
 {
-  GtkWidget *prop_editor = create_prop_editor (object, 0);
-  gtk_widget_show (prop_editor);
+  BtkWidget *prop_editor = create_prop_editor (object, 0);
+  btk_widget_show (prop_editor);
   return prop_editor;
 }
 
 static void
-rtl_toggled (GtkCheckButton *check)
+rtl_toggled (BtkCheckButton *check)
 {
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check)))
-    gtk_widget_set_default_direction (GTK_TEXT_DIR_RTL);
+  if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (check)))
+    btk_widget_set_default_direction (BTK_TEXT_DIR_RTL);
   else
-    gtk_widget_set_default_direction (GTK_TEXT_DIR_LTR);
+    btk_widget_set_default_direction (BTK_TEXT_DIR_LTR);
 }
 
 typedef struct
@@ -387,7 +387,7 @@ typedef struct
 } MenuPositionData;
 
 static void
-position_function (GtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer user_data)
+position_function (BtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer user_data)
 {
   /* Do not do this in your own code */
 
@@ -404,41 +404,41 @@ position_function (GtkMenu *menu, gint *x, gint *y, gboolean *push_in, gpointer 
 }
 
 static gboolean
-popup_context_menu (GtkToolbar *toolbar, gint x, gint y, gint button_number)
+popup_context_menu (BtkToolbar *toolbar, gint x, gint y, gint button_number)
 {
   MenuPositionData position_data;
   
-  GtkMenu *menu = GTK_MENU (gtk_menu_new ());
+  BtkMenu *menu = BTK_MENU (btk_menu_new ());
   int i;
 
   for (i = 0; i < 5; i++)
     {
-      GtkWidget *item;
+      BtkWidget *item;
       gchar *label = g_strdup_printf ("Item _%d", i);
-      item = gtk_menu_item_new_with_mnemonic (label);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+      item = btk_menu_item_new_with_mnemonic (label);
+      btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
     }
-  gtk_widget_show_all (GTK_WIDGET (menu));
+  btk_widget_show_all (BTK_WIDGET (menu));
 
   if (button_number != -1)
     {
       position_data.x = x;
       position_data.y = y;
       
-      gtk_menu_popup (menu, NULL, NULL, position_function,
-		      &position_data, button_number, gtk_get_current_event_time());
+      btk_menu_popup (menu, NULL, NULL, position_function,
+		      &position_data, button_number, btk_get_current_event_time());
     }
   else
-    gtk_menu_popup (menu, NULL, NULL, NULL, NULL, 0, gtk_get_current_event_time());
+    btk_menu_popup (menu, NULL, NULL, NULL, NULL, 0, btk_get_current_event_time());
 
   return TRUE;
 }
 
-static GtkToolItem *drag_item = NULL;
+static BtkToolItem *drag_item = NULL;
 
 static gboolean
-toolbar_drag_motion (GtkToolbar     *toolbar,
-		     GdkDragContext *context,
+toolbar_drag_motion (BtkToolbar     *toolbar,
+		     BdkDragContext *context,
 		     gint            x,
 		     gint            y,
 		     guint           time,
@@ -448,22 +448,22 @@ toolbar_drag_motion (GtkToolbar     *toolbar,
   
   if (!drag_item)
     {
-      drag_item = gtk_tool_button_new (NULL, "A quite long button");
-      gtk_object_sink (GTK_OBJECT (g_object_ref (drag_item)));
+      drag_item = btk_tool_button_new (NULL, "A quite long button");
+      btk_object_sink (BTK_OBJECT (g_object_ref (drag_item)));
     }
   
-  gdk_drag_status (context, GDK_ACTION_MOVE, time);
+  bdk_drag_status (context, BDK_ACTION_MOVE, time);
 
-  index = gtk_toolbar_get_drop_index (toolbar, x, y);
+  index = btk_toolbar_get_drop_index (toolbar, x, y);
   
-  gtk_toolbar_set_drop_highlight_item (toolbar, drag_item, index);
+  btk_toolbar_set_drop_highlight_item (toolbar, drag_item, index);
   
   return TRUE;
 }
 
 static void
-toolbar_drag_leave (GtkToolbar     *toolbar,
-		    GdkDragContext *context,
+toolbar_drag_leave (BtkToolbar     *toolbar,
+		    BdkDragContext *context,
 		    guint           time,
 		    gpointer	    null)
 {
@@ -473,266 +473,266 @@ toolbar_drag_leave (GtkToolbar     *toolbar,
       drag_item = NULL;
     }
   
-  gtk_toolbar_set_drop_highlight_item (toolbar, NULL, 0);
+  btk_toolbar_set_drop_highlight_item (toolbar, NULL, 0);
 }
 
 static gboolean
-timeout_cb (GtkWidget *widget)
+timeout_cb (BtkWidget *widget)
 {
   static gboolean sensitive = TRUE;
   
   sensitive = !sensitive;
   
-  gtk_widget_set_sensitive (widget, sensitive);
+  btk_widget_set_sensitive (widget, sensitive);
   
   return TRUE;
 }
 
 static gboolean
-timeout_cb1 (GtkWidget *widget)
+timeout_cb1 (BtkWidget *widget)
 {
 	static gboolean sensitive = TRUE;
 	sensitive = !sensitive;
-	gtk_widget_set_sensitive (widget, sensitive);
+	btk_widget_set_sensitive (widget, sensitive);
 	return TRUE;
 }
 
 gint
 main (gint argc, gchar **argv)
 {
-  GtkWidget *window, *toolbar, *table, *treeview, *scrolled_window;
-  GtkWidget *hbox, *hbox1, *hbox2, *checkbox, *option_menu, *menu;
+  BtkWidget *window, *toolbar, *table, *treeview, *scrolled_window;
+  BtkWidget *hbox, *hbox1, *hbox2, *checkbox, *option_menu, *menu;
   gint i;
   static const gchar *toolbar_styles[] = { "icons", "text", "both (vertical)",
 					   "both (horizontal)" };
-  GtkToolItem *item;
-  GtkListStore *store;
-  GtkWidget *image;
-  GtkWidget *menuitem;
-  GtkWidget *button;
-  GtkWidget *label;
+  BtkToolItem *item;
+  BtkListStore *store;
+  BtkWidget *image;
+  BtkWidget *menuitem;
+  BtkWidget *button;
+  BtkWidget *label;
   GIcon *gicon;
   GSList *group;
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
-  g_signal_connect (window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+  g_signal_connect (window, "destroy", G_CALLBACK(btk_main_quit), NULL);
 
-  table = gtk_table_new (4, 2, FALSE);
-  gtk_container_add (GTK_CONTAINER (window), table);
+  table = btk_table_new (4, 2, FALSE);
+  btk_container_add (BTK_CONTAINER (window), table);
 
-  toolbar = gtk_toolbar_new ();
-  gtk_table_attach (GTK_TABLE (table), toolbar,
-		    0,2, 0,1, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+  toolbar = btk_toolbar_new ();
+  btk_table_attach (BTK_TABLE (table), toolbar,
+		    0,2, 0,1, BTK_FILL|BTK_EXPAND, BTK_FILL, 0, 0);
 
-  hbox1 = gtk_hbox_new (FALSE, 3);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox1), 5);
-  gtk_table_attach (GTK_TABLE (table), hbox1,
-		    1,2, 1,2, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+  hbox1 = btk_hbox_new (FALSE, 3);
+  btk_container_set_border_width (BTK_CONTAINER (hbox1), 5);
+  btk_table_attach (BTK_TABLE (table), hbox1,
+		    1,2, 1,2, BTK_FILL|BTK_EXPAND, BTK_FILL, 0, 0);
 
-  hbox2 = gtk_hbox_new (FALSE, 2);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox2), 5);
-  gtk_table_attach (GTK_TABLE (table), hbox2,
-		    1,2, 2,3, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+  hbox2 = btk_hbox_new (FALSE, 2);
+  btk_container_set_border_width (BTK_CONTAINER (hbox2), 5);
+  btk_table_attach (BTK_TABLE (table), hbox2,
+		    1,2, 2,3, BTK_FILL|BTK_EXPAND, BTK_FILL, 0, 0);
 
-  checkbox = gtk_check_button_new_with_mnemonic("_Vertical");
-  gtk_box_pack_start (GTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
+  checkbox = btk_check_button_new_with_mnemonic("_Vertical");
+  btk_box_pack_start (BTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
   g_signal_connect (checkbox, "toggled",
 		    G_CALLBACK (change_orientation), toolbar);
 
-  checkbox = gtk_check_button_new_with_mnemonic("_Show Arrow");
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), TRUE);
-  gtk_box_pack_start (GTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
+  checkbox = btk_check_button_new_with_mnemonic("_Show Arrow");
+  btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (checkbox), TRUE);
+  btk_box_pack_start (BTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
   g_signal_connect (checkbox, "toggled",
 		    G_CALLBACK (change_show_arrow), toolbar);
 
-  checkbox = gtk_check_button_new_with_mnemonic("_Set Toolbar Style:");
+  checkbox = btk_check_button_new_with_mnemonic("_Set Toolbar Style:");
   g_signal_connect (checkbox, "toggled", G_CALLBACK (set_toolbar_style_toggled), toolbar);
-  gtk_box_pack_start (GTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox1), checkbox, FALSE, FALSE, 0);
 
-  option_menu = gtk_combo_box_text_new ();
-  gtk_widget_set_sensitive (option_menu, FALSE);  
+  option_menu = btk_combo_box_text_new ();
+  btk_widget_set_sensitive (option_menu, FALSE);  
   g_object_set_data (G_OBJECT (checkbox), "option-menu", option_menu);
   
-  menu = gtk_menu_new();
+  menu = btk_menu_new();
   for (i = 0; i < G_N_ELEMENTS (toolbar_styles); i++)
-    gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), toolbar_styles[i]);
-  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu),
-                            gtk_toolbar_get_style (GTK_TOOLBAR (toolbar)));
-  gtk_box_pack_start (GTK_BOX (hbox2), option_menu, FALSE, FALSE, 0);
+    btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (option_menu), toolbar_styles[i]);
+  btk_combo_box_set_active (BTK_COMBO_BOX (option_menu),
+                            btk_toolbar_get_style (BTK_TOOLBAR (toolbar)));
+  btk_box_pack_start (BTK_BOX (hbox2), option_menu, FALSE, FALSE, 0);
   g_signal_connect (option_menu, "changed",
 		    G_CALLBACK (change_toolbar_style), toolbar);
 
-  checkbox = gtk_check_button_new_with_mnemonic("_Set Icon Size:"); 
+  checkbox = btk_check_button_new_with_mnemonic("_Set Icon Size:"); 
   g_signal_connect (checkbox, "toggled", G_CALLBACK (set_icon_size_toggled), toolbar);
-  gtk_box_pack_start (GTK_BOX (hbox2), checkbox, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox2), checkbox, FALSE, FALSE, 0);
 
-  option_menu = gtk_combo_box_text_new ();
+  option_menu = btk_combo_box_text_new ();
   g_object_set_data (G_OBJECT (checkbox), "option-menu", option_menu);
-  gtk_widget_set_sensitive (option_menu, FALSE);
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), "small toolbar");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (option_menu), "large toolbar");
+  btk_widget_set_sensitive (option_menu, FALSE);
+  btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (option_menu), "small toolbar");
+  btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (option_menu), "large toolbar");
 
-  gtk_box_pack_start (GTK_BOX (hbox2), option_menu, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox2), option_menu, FALSE, FALSE, 0);
   g_signal_connect (option_menu, "changed",
 		    G_CALLBACK (icon_size_history_changed), toolbar);
   
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-  gtk_table_attach (GTK_TABLE (table), scrolled_window,
-		    1,2, 3,4, GTK_FILL|GTK_EXPAND, GTK_FILL|GTK_EXPAND, 0, 0);
+  scrolled_window = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+				  BTK_POLICY_AUTOMATIC, BTK_POLICY_AUTOMATIC);
+  btk_table_attach (BTK_TABLE (table), scrolled_window,
+		    1,2, 3,4, BTK_FILL|BTK_EXPAND, BTK_FILL|BTK_EXPAND, 0, 0);
 
   store = create_items_list (&treeview);
-  gtk_container_add (GTK_CONTAINER (scrolled_window), treeview);
+  btk_container_add (BTK_CONTAINER (scrolled_window), treeview);
   
-  item = gtk_tool_button_new_from_stock (GTK_STOCK_NEW);
-  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), "Custom label");
-  gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), NULL);
+  item = btk_tool_button_new_from_stock (BTK_STOCK_NEW);
+  btk_tool_button_set_label (BTK_TOOL_BUTTON (item), "Custom label");
+  btk_tool_button_set_label (BTK_TOOL_BUTTON (item), NULL);
   add_item_to_list (store, item, "New");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gdk_threads_add_timeout (3000, (GSourceFunc) timeout_cb, item);
-  gtk_tool_item_set_expand (item, TRUE);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
+  bdk_threads_add_timeout (3000, (GSourceFunc) timeout_cb, item);
+  btk_tool_item_set_expand (item, TRUE);
 
-  menu = gtk_menu_new ();
+  menu = btk_menu_new ();
   for (i = 0; i < 20; i++)
     {
       char *text;
       text = g_strdup_printf ("Menuitem %d", i);
-      menuitem = gtk_menu_item_new_with_label (text);
+      menuitem = btk_menu_item_new_with_label (text);
       g_free (text);
-      gtk_widget_show (menuitem);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+      btk_widget_show (menuitem);
+      btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
     }
 
-  item = gtk_menu_tool_button_new_from_stock (GTK_STOCK_OPEN);
-  gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (item), menu);
+  item = btk_menu_tool_button_new_from_stock (BTK_STOCK_OPEN);
+  btk_menu_tool_button_set_menu (BTK_MENU_TOOL_BUTTON (item), menu);
   add_item_to_list (store, item, "Open");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gdk_threads_add_timeout (3000, (GSourceFunc) timeout_cb1, item);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
+  bdk_threads_add_timeout (3000, (GSourceFunc) timeout_cb1, item);
  
-  menu = gtk_menu_new ();
+  menu = btk_menu_new ();
   for (i = 0; i < 20; i++)
     {
       char *text;
       text = g_strdup_printf ("A%d", i);
-      menuitem = gtk_menu_item_new_with_label (text);
+      menuitem = btk_menu_item_new_with_label (text);
       g_free (text);
-      gtk_widget_show (menuitem);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+      btk_widget_show (menuitem);
+      btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
     }
 
-  item = gtk_menu_tool_button_new_from_stock (GTK_STOCK_GO_BACK);
-  gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (item), menu);
+  item = btk_menu_tool_button_new_from_stock (BTK_STOCK_GO_BACK);
+  btk_menu_tool_button_set_menu (BTK_MENU_TOOL_BUTTON (item), menu);
   add_item_to_list (store, item, "BackWithHistory");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
  
-  item = gtk_separator_tool_item_new ();
+  item = btk_separator_tool_item_new ();
   add_item_to_list (store, item, "-----");    
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
   
-  item = gtk_tool_button_new_from_stock (GTK_STOCK_REFRESH);
+  item = btk_tool_button_new_from_stock (BTK_STOCK_REFRESH);
   add_item_to_list (store, item, "Refresh");
   g_signal_connect (item, "clicked", G_CALLBACK (reload_clicked), NULL);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG);
-  item = gtk_tool_item_new ();
-  gtk_widget_show (image);
-  gtk_container_add (GTK_CONTAINER (item), image);
+  image = btk_image_new_from_stock (BTK_STOCK_DIALOG_WARNING, BTK_ICON_SIZE_DIALOG);
+  item = btk_tool_item_new ();
+  btk_widget_show (image);
+  btk_container_add (BTK_CONTAINER (item), image);
   add_item_to_list (store, item, "(Custom Item)");    
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
   
-  item = gtk_tool_button_new_from_stock (GTK_STOCK_GO_BACK);
+  item = btk_tool_button_new_from_stock (BTK_STOCK_GO_BACK);
   add_item_to_list (store, item, "Back");    
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  item = gtk_separator_tool_item_new ();
+  item = btk_separator_tool_item_new ();
   add_item_to_list (store, item, "-----");  
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
   
-  item = gtk_tool_button_new_from_stock (GTK_STOCK_GO_FORWARD);
+  item = btk_tool_button_new_from_stock (BTK_STOCK_GO_FORWARD);
   add_item_to_list (store, item, "Forward");  
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  item = gtk_toggle_tool_button_new_from_stock (GTK_STOCK_BOLD);
+  item = btk_toggle_tool_button_new_from_stock (BTK_STOCK_BOLD);
   g_signal_connect (item, "toggled", G_CALLBACK (bold_toggled), NULL);
   add_item_to_list (store, item, "Bold");  
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
+  btk_widget_set_sensitive (BTK_WIDGET (item), FALSE);
 
-  item = gtk_separator_tool_item_new ();
+  item = btk_separator_tool_item_new ();
   add_item_to_list (store, item, "-----");  
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_expand (item, TRUE);
-  gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
-  g_assert (gtk_toolbar_get_nth_item (GTK_TOOLBAR (toolbar), 0) != 0);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
+  btk_tool_item_set_expand (item, TRUE);
+  btk_separator_tool_item_set_draw (BTK_SEPARATOR_TOOL_ITEM (item), FALSE);
+  g_assert (btk_toolbar_get_nth_item (BTK_TOOLBAR (toolbar), 0) != 0);
   
-  item = gtk_radio_tool_button_new_from_stock (NULL, GTK_STOCK_JUSTIFY_LEFT);
-  group = gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item));
+  item = btk_radio_tool_button_new_from_stock (NULL, BTK_STOCK_JUSTIFY_LEFT);
+  group = btk_radio_tool_button_get_group (BTK_RADIO_TOOL_BUTTON (item));
   add_item_to_list (store, item, "Left");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
   
   
-  item = gtk_radio_tool_button_new_from_stock (group, GTK_STOCK_JUSTIFY_CENTER);
+  item = btk_radio_tool_button_new_from_stock (group, BTK_STOCK_JUSTIFY_CENTER);
   make_prop_editor (G_OBJECT (item));
 
-  group = gtk_radio_tool_button_get_group (GTK_RADIO_TOOL_BUTTON (item));
+  group = btk_radio_tool_button_get_group (BTK_RADIO_TOOL_BUTTON (item));
   add_item_to_list (store, item, "Center");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  item = gtk_radio_tool_button_new_from_stock (group, GTK_STOCK_JUSTIFY_RIGHT);
+  item = btk_radio_tool_button_new_from_stock (group, BTK_STOCK_JUSTIFY_RIGHT);
   add_item_to_list (store, item, "Right");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  item = gtk_tool_button_new (gtk_image_new_from_file ("apple-red.png"), "_Apple");
+  item = btk_tool_button_new (btk_image_new_from_file ("apple-red.png"), "_Apple");
   add_item_to_list (store, item, "Apple");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_button_set_use_underline (GTK_TOOL_BUTTON (item), TRUE);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
+  btk_tool_button_set_use_underline (BTK_TOOL_BUTTON (item), TRUE);
 
   gicon = g_content_type_get_icon ("video/ogg");
-  image = gtk_image_new_from_gicon (gicon, GTK_ICON_SIZE_LARGE_TOOLBAR);
+  image = btk_image_new_from_gicon (gicon, BTK_ICON_SIZE_LARGE_TOOLBAR);
   g_object_unref (gicon);
-  item = gtk_tool_button_new (image, "Video");
+  item = btk_tool_button_new (image, "Video");
   add_item_to_list (store, item, "Video");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  image = gtk_image_new_from_icon_name ("utility-terminal", GTK_ICON_SIZE_LARGE_TOOLBAR);
-  item = gtk_tool_button_new (image, "Terminal");
+  image = btk_image_new_from_icon_name ("utility-terminal", BTK_ICON_SIZE_LARGE_TOOLBAR);
+  item = btk_tool_button_new (image, "Terminal");
   add_item_to_list (store, item, "Terminal");
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+  btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, -1);
 
-  hbox = gtk_hbox_new (FALSE, 5);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
-  gtk_table_attach (GTK_TABLE (table), hbox,
-		    1,2, 4,5, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 0);
+  hbox = btk_hbox_new (FALSE, 5);
+  btk_container_set_border_width (BTK_CONTAINER (hbox), 5);
+  btk_table_attach (BTK_TABLE (table), hbox,
+		    1,2, 4,5, BTK_FILL|BTK_EXPAND, BTK_FILL, 0, 0);
 
-  button = gtk_button_new_with_label ("Drag me to the toolbar");
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Drag me to the toolbar");
+  btk_box_pack_start (BTK_BOX (hbox), button, FALSE, FALSE, 0);
 
-  label = gtk_label_new ("Drop index:");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  label = btk_label_new ("Drop index:");
+  btk_box_pack_start (BTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-  label = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+  label = btk_label_new ("");
+  btk_box_pack_start (BTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-  checkbox = gtk_check_button_new_with_mnemonic("_Right to left");
-  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), TRUE);
+  checkbox = btk_check_button_new_with_mnemonic("_Right to left");
+  if (btk_widget_get_default_direction () == BTK_TEXT_DIR_RTL)
+    btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (checkbox), TRUE);
   else
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbox), FALSE);
+    btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (checkbox), FALSE);
   g_signal_connect (checkbox, "toggled", G_CALLBACK (rtl_toggled), NULL);
 
-  gtk_box_pack_end (GTK_BOX (hbox), checkbox, FALSE, FALSE, 0);
+  btk_box_pack_end (BTK_BOX (hbox), checkbox, FALSE, FALSE, 0);
   
-  gtk_drag_source_set (button, GDK_BUTTON1_MASK,
+  btk_drag_source_set (button, BDK_BUTTON1_MASK,
 		       target_table, G_N_ELEMENTS (target_table),
-		       GDK_ACTION_MOVE);
-  gtk_drag_dest_set (toolbar, GTK_DEST_DEFAULT_DROP,
+		       BDK_ACTION_MOVE);
+  btk_drag_dest_set (toolbar, BTK_DEST_DEFAULT_DROP,
 		     target_table, G_N_ELEMENTS (target_table),
-		     GDK_ACTION_MOVE);
+		     BDK_ACTION_MOVE);
   g_signal_connect (toolbar, "drag_motion",
 		    G_CALLBACK (toolbar_drag_motion), NULL);
   g_signal_connect (toolbar, "drag_leave",
@@ -740,15 +740,15 @@ main (gint argc, gchar **argv)
   g_signal_connect (toolbar, "drag_drop",
 		    G_CALLBACK (toolbar_drag_drop), label);
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
   make_prop_editor (G_OBJECT (toolbar));
 
-  g_signal_connect (window, "delete_event", G_CALLBACK (gtk_main_quit), NULL);
+  g_signal_connect (window, "delete_event", G_CALLBACK (btk_main_quit), NULL);
   
   g_signal_connect (toolbar, "popup_context_menu", G_CALLBACK (popup_context_menu), NULL);
   
-  gtk_main ();
+  btk_main ();
   
   return 0;
 }

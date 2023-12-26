@@ -1,4 +1,4 @@
-/* GTK+ Pixbuf Engine
+/* BTK+ Pixbuf Engine
  * Copyright (C) 1998-2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include <math.h>
 #include <string.h>
 
-#undef GDK_DISABLE_DEPRECATED
+#undef BDK_DISABLE_DEPRECATED
 
 #include "pixbuf.h"
 #include "pixbuf-rc-style.h"
@@ -32,10 +32,10 @@
 static void pixbuf_style_init       (PixbufStyle      *style);
 static void pixbuf_style_class_init (PixbufStyleClass *klass);
 
-static GtkStyleClass *parent_class = NULL;
+static BtkStyleClass *parent_class = NULL;
 
 static ThemeImage *
-match_theme_image (GtkStyle       *style,
+match_theme_image (BtkStyle       *style,
 		   ThemeMatchData *match_data)
 {
   GList *tmp_list;
@@ -100,10 +100,10 @@ match_theme_image (GtkStyle       *style,
 }
 
 static gboolean
-draw_simple_image(GtkStyle       *style,
-		  GdkWindow      *window,
-		  GdkRectangle   *area,
-		  GtkWidget      *widget,
+draw_simple_image(BtkStyle       *style,
+		  BdkWindow      *window,
+		  BdkRectangle   *area,
+		  BtkWidget      *widget,
 		  ThemeMatchData *match_data,
 		  gboolean        draw_center,
 		  gboolean        allow_setbg,
@@ -115,26 +115,26 @@ draw_simple_image(GtkStyle       *style,
   ThemeImage *image;
   
   if ((width == -1) && (height == -1))
-    gdk_drawable_get_size(window, &width, &height);
+    bdk_drawable_get_size(window, &width, &height);
   else if (width == -1)
-    gdk_drawable_get_size(window, &width, NULL);
+    bdk_drawable_get_size(window, &width, NULL);
   else if (height == -1)
-    gdk_drawable_get_size(window, NULL, &height);
+    bdk_drawable_get_size(window, NULL, &height);
 
   if (!(match_data->flags & THEME_MATCH_ORIENTATION))
     {
       match_data->flags |= THEME_MATCH_ORIENTATION;
       
       if (height > width)
-	match_data->orientation = GTK_ORIENTATION_VERTICAL;
+	match_data->orientation = BTK_ORIENTATION_VERTICAL;
       else
-	match_data->orientation = GTK_ORIENTATION_HORIZONTAL;
+	match_data->orientation = BTK_ORIENTATION_HORIZONTAL;
     }
 
   if (widget && !(match_data->flags & THEME_MATCH_DIRECTION))
     {
       match_data->flags |= THEME_MATCH_DIRECTION;
-      match_data->direction = gtk_widget_get_direction (widget);
+      match_data->direction = btk_widget_get_direction (widget);
     }
 
   image = match_theme_image (style, match_data);
@@ -162,37 +162,37 @@ draw_simple_image(GtkStyle       *style,
 }
 
 static gboolean
-draw_gap_image(GtkStyle       *style,
-	       GdkWindow      *window,
-	       GdkRectangle   *area,
-	       GtkWidget      *widget,
+draw_gap_image(BtkStyle       *style,
+	       BdkWindow      *window,
+	       BdkRectangle   *area,
+	       BtkWidget      *widget,
 	       ThemeMatchData *match_data,
 	       gboolean        draw_center,
 	       gint            x,
 	       gint            y,
 	       gint            width,
 	       gint            height,
-	       GtkPositionType gap_side,
+	       BtkPositionType gap_side,
 	       gint            gap_x,
 	       gint            gap_width)
 {
   ThemeImage *image;
   
   if ((width == -1) && (height == -1))
-    gdk_drawable_get_size(window, &width, &height);
+    bdk_drawable_get_size(window, &width, &height);
   else if (width == -1)
-    gdk_drawable_get_size(window, &width, NULL);
+    bdk_drawable_get_size(window, &width, NULL);
   else if (height == -1)
-    gdk_drawable_get_size(window, NULL, &height);
+    bdk_drawable_get_size(window, NULL, &height);
 
   if (!(match_data->flags & THEME_MATCH_ORIENTATION))
     {
       match_data->flags |= THEME_MATCH_ORIENTATION;
       
       if (height > width)
-	match_data->orientation = GTK_ORIENTATION_VERTICAL;
+	match_data->orientation = BTK_ORIENTATION_VERTICAL;
       else
-	match_data->orientation = GTK_ORIENTATION_HORIZONTAL;
+	match_data->orientation = BTK_ORIENTATION_HORIZONTAL;
     }
 
   match_data->flags |= THEME_MATCH_GAP_SIDE;
@@ -202,8 +202,8 @@ draw_gap_image(GtkStyle       *style,
   if (image)
     {
       gint thickness;
-      GdkRectangle r1, r2, r3;
-      GdkPixbuf *pixbuf = NULL;
+      BdkRectangle r1, r2, r3;
+      BdkPixbuf *pixbuf = NULL;
       guint components = COMPONENT_ALL;
 
       if (!draw_center)
@@ -214,9 +214,9 @@ draw_gap_image(GtkStyle       *style,
 
       switch (gap_side)
 	{
-	case GTK_POS_TOP:
+	case BTK_POS_TOP:
 	  if (pixbuf)
-	    thickness = gdk_pixbuf_get_height (pixbuf);
+	    thickness = bdk_pixbuf_get_height (pixbuf);
 	  else
 	    thickness = style->ythickness;
 	  
@@ -237,9 +237,9 @@ draw_gap_image(GtkStyle       *style,
 	  r3.height = thickness;
 	  break;
 	  
-	case GTK_POS_BOTTOM:
+	case BTK_POS_BOTTOM:
 	  if (pixbuf)
-	    thickness = gdk_pixbuf_get_height (pixbuf);
+	    thickness = bdk_pixbuf_get_height (pixbuf);
 	  else
 	    thickness = style->ythickness;
 
@@ -260,9 +260,9 @@ draw_gap_image(GtkStyle       *style,
 	  r3.height = thickness;
 	  break;
 	  
-	case GTK_POS_LEFT:
+	case BTK_POS_LEFT:
 	  if (pixbuf)
-	    thickness = gdk_pixbuf_get_width (pixbuf);
+	    thickness = bdk_pixbuf_get_width (pixbuf);
 	  else
 	    thickness = style->xthickness;
 
@@ -283,9 +283,9 @@ draw_gap_image(GtkStyle       *style,
 	  r3.height = height - (gap_x + gap_width);
 	  break;
 	  
-	case GTK_POS_RIGHT:
+	case BTK_POS_RIGHT:
 	  if (pixbuf)
-	    thickness = gdk_pixbuf_get_width (pixbuf);
+	    thickness = bdk_pixbuf_get_width (pixbuf);
 	  else
 	    thickness = style->xthickness;
 
@@ -334,11 +334,11 @@ draw_gap_image(GtkStyle       *style,
 }
 
 static void
-draw_hline (GtkStyle     *style,
-	    GdkWindow    *window,
-	    GtkStateType  state,
-	    GdkRectangle *area,
-	    GtkWidget    *widget,
+draw_hline (BtkStyle     *style,
+	    BdkWindow    *window,
+	    BtkStateType  state,
+	    BdkRectangle *area,
+	    BtkWidget    *widget,
 	    const gchar  *detail,
 	    gint          x1,
 	    gint          x2,
@@ -354,7 +354,7 @@ draw_hline (GtkStyle     *style,
   match_data.detail = (gchar *)detail;
   match_data.flags = THEME_MATCH_ORIENTATION | THEME_MATCH_STATE;
   match_data.state = state;
-  match_data.orientation = GTK_ORIENTATION_HORIZONTAL;
+  match_data.orientation = BTK_ORIENTATION_HORIZONTAL;
   
   image = match_theme_image (style, &match_data);
   if (image)
@@ -370,11 +370,11 @@ draw_hline (GtkStyle     *style,
 }
 
 static void
-draw_vline (GtkStyle     *style,
-	    GdkWindow    *window,
-	    GtkStateType  state,
-	    GdkRectangle *area,
-	    GtkWidget    *widget,
+draw_vline (BtkStyle     *style,
+	    BdkWindow    *window,
+	    BtkStateType  state,
+	    BdkRectangle *area,
+	    BtkWidget    *widget,
 	    const gchar  *detail,
 	    gint          y1,
 	    gint          y2,
@@ -390,7 +390,7 @@ draw_vline (GtkStyle     *style,
   match_data.detail = (gchar *)detail;
   match_data.flags = THEME_MATCH_ORIENTATION | THEME_MATCH_STATE;
   match_data.state = state;
-  match_data.orientation = GTK_ORIENTATION_VERTICAL;
+  match_data.orientation = BTK_ORIENTATION_VERTICAL;
   
   image = match_theme_image (style, &match_data);
   if (image)
@@ -406,12 +406,12 @@ draw_vline (GtkStyle     *style,
 }
 
 static void
-draw_shadow(GtkStyle     *style,
-	    GdkWindow    *window,
-	    GtkStateType  state,
-	    GtkShadowType shadow,
-	    GdkRectangle *area,
-	    GtkWidget    *widget,
+draw_shadow(BtkStyle     *style,
+	    BdkWindow    *window,
+	    BtkStateType  state,
+	    BtkShadowType shadow,
+	    BdkRectangle *area,
+	    BtkWidget    *widget,
 	    const gchar  *detail,
 	    gint          x,
 	    gint          y,
@@ -435,7 +435,7 @@ draw_shadow(GtkStyle     *style,
 			       x, y, width, height);
 }
 
-/* This function makes up for some brokeness in gtkrange.c
+/* This function makes up for some brokeness in btkrange.c
  * where we never get the full arrow of the stepper button
  * and the type of button in a single drawing function.
  *
@@ -443,8 +443,8 @@ draw_shadow(GtkStyle     *style,
  * to the point we don't have room for full-sized steppers.
  */
 static void
-reverse_engineer_stepper_box (GtkWidget    *range,
-			      GtkArrowType  arrow_type,
+reverse_engineer_stepper_box (BtkWidget    *range,
+			      BtkArrowType  arrow_type,
 			      gint         *x,
 			      gint         *y,
 			      gint         *width,
@@ -454,15 +454,15 @@ reverse_engineer_stepper_box (GtkWidget    *range,
   gint box_width;
   gint box_height;
   
-  if (range && GTK_IS_RANGE (range))
+  if (range && BTK_IS_RANGE (range))
     {
-      gtk_widget_style_get (range,
+      btk_widget_style_get (range,
 			    "slider_width", &slider_width,
 			    "stepper_size", &stepper_size,
 			    NULL);
     }
 	
-  if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
+  if (arrow_type == BTK_ARROW_UP || arrow_type == BTK_ARROW_DOWN)
     {
       box_width = slider_width;
       box_height = stepper_size;
@@ -480,14 +480,14 @@ reverse_engineer_stepper_box (GtkWidget    *range,
 }
 
 static void
-draw_arrow (GtkStyle     *style,
-	    GdkWindow    *window,
-	    GtkStateType  state,
-	    GtkShadowType shadow,
-	    GdkRectangle *area,
-	    GtkWidget    *widget,
+draw_arrow (BtkStyle     *style,
+	    BdkWindow    *window,
+	    BtkStateType  state,
+	    BtkShadowType shadow,
+	    BdkRectangle *area,
+	    BtkWidget    *widget,
 	    const gchar  *detail,
-	    GtkArrowType  arrow_direction,
+	    BtkArrowType  arrow_direction,
 	    gint          fill,
 	    gint          x,
 	    gint          y,
@@ -567,12 +567,12 @@ draw_arrow (GtkStyle     *style,
 }
 
 static void
-draw_diamond (GtkStyle     *style,
-	      GdkWindow    *window,
-	      GtkStateType  state,
-	      GtkShadowType shadow,
-	      GdkRectangle *area,
-	      GtkWidget    *widget,
+draw_diamond (BtkStyle     *style,
+	      BdkWindow    *window,
+	      BtkStateType  state,
+	      BtkShadowType shadow,
+	      BdkRectangle *area,
+	      BtkWidget    *widget,
 	      const gchar  *detail,
 	      gint          x,
 	      gint          y,
@@ -597,11 +597,11 @@ draw_diamond (GtkStyle     *style,
 }
 
 static void
-draw_string (GtkStyle * style,
-	     GdkWindow * window,
-	     GtkStateType state,
-	     GdkRectangle * area,
-	     GtkWidget * widget,
+draw_string (BtkStyle * style,
+	     BdkWindow * window,
+	     BtkStateType state,
+	     BdkRectangle * area,
+	     BtkWidget * widget,
 	     const gchar *detail,
 	     gint x,
 	     gint y,
@@ -610,37 +610,37 @@ draw_string (GtkStyle * style,
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
 
-  if (state == GTK_STATE_INSENSITIVE)
+  if (state == BTK_STATE_INSENSITIVE)
     {
       if (area)
 	{
-	  gdk_gc_set_clip_rectangle(style->white_gc, area);
-	  gdk_gc_set_clip_rectangle(style->fg_gc[state], area);
+	  bdk_gc_set_clip_rectangle(style->white_gc, area);
+	  bdk_gc_set_clip_rectangle(style->fg_gc[state], area);
 	}
 
-      gdk_draw_string(window, gtk_style_get_font (style), style->fg_gc[state], x, y, string);
+      bdk_draw_string(window, btk_style_get_font (style), style->fg_gc[state], x, y, string);
       
       if (area)
 	{
-	  gdk_gc_set_clip_rectangle(style->white_gc, NULL);
-	  gdk_gc_set_clip_rectangle(style->fg_gc[state], NULL);
+	  bdk_gc_set_clip_rectangle(style->white_gc, NULL);
+	  bdk_gc_set_clip_rectangle(style->fg_gc[state], NULL);
 	}
     }
   else
     {
-      gdk_gc_set_clip_rectangle(style->fg_gc[state], area);
-      gdk_draw_string(window, gtk_style_get_font (style), style->fg_gc[state], x, y, string);
-      gdk_gc_set_clip_rectangle(style->fg_gc[state], NULL);
+      bdk_gc_set_clip_rectangle(style->fg_gc[state], area);
+      bdk_draw_string(window, btk_style_get_font (style), style->fg_gc[state], x, y, string);
+      bdk_gc_set_clip_rectangle(style->fg_gc[state], NULL);
     }
 }
 
 static void
-draw_box (GtkStyle     *style,
-	  GdkWindow    *window,
- 	  GtkStateType  state,
- 	  GtkShadowType shadow,
- 	  GdkRectangle *area,
- 	  GtkWidget    *widget,
+draw_box (BtkStyle     *style,
+	  BdkWindow    *window,
+ 	  BtkStateType  state,
+ 	  BtkShadowType shadow,
+ 	  BdkRectangle *area,
+ 	  BtkWidget    *widget,
 	  const gchar  *detail,
 	  gint          x,
 	  gint          y,
@@ -673,12 +673,12 @@ draw_box (GtkStyle     *style,
 }
 
 static void
-draw_flat_box (GtkStyle     *style,
-	       GdkWindow    *window,
-	       GtkStateType  state,
-	       GtkShadowType shadow,
-	       GdkRectangle *area,
-	       GtkWidget    *widget,
+draw_flat_box (BtkStyle     *style,
+	       BdkWindow    *window,
+	       BtkStateType  state,
+	       BtkShadowType shadow,
+	       BdkRectangle *area,
+	       BtkWidget    *widget,
 	       const gchar  *detail,
 	       gint          x,
 	       gint          y,
@@ -703,12 +703,12 @@ draw_flat_box (GtkStyle     *style,
 }
 
 static void
-draw_check (GtkStyle     *style,
-	    GdkWindow    *window,
-	    GtkStateType  state,
-	    GtkShadowType shadow,
-	    GdkRectangle *area,
-	    GtkWidget    *widget,
+draw_check (BtkStyle     *style,
+	    BdkWindow    *window,
+	    BtkStateType  state,
+	    BtkShadowType shadow,
+	    BdkRectangle *area,
+	    BtkWidget    *widget,
 	    const gchar  *detail,
 	    gint          x,
 	    gint          y,
@@ -733,12 +733,12 @@ draw_check (GtkStyle     *style,
 }
 
 static void
-draw_option (GtkStyle      *style,
-	     GdkWindow     *window,
-	     GtkStateType  state,
-	     GtkShadowType shadow,
-	     GdkRectangle *area,
-	     GtkWidget    *widget,
+draw_option (BtkStyle      *style,
+	     BdkWindow     *window,
+	     BtkStateType  state,
+	     BtkShadowType shadow,
+	     BdkRectangle *area,
+	     BtkWidget    *widget,
 	     const gchar  *detail,
 	     gint          x,
 	     gint          y,
@@ -763,12 +763,12 @@ draw_option (GtkStyle      *style,
 }
 
 static void
-draw_tab (GtkStyle     *style,
-	  GdkWindow    *window,
-	  GtkStateType  state,
-	  GtkShadowType shadow,
-	  GdkRectangle *area,
-	  GtkWidget    *widget,
+draw_tab (BtkStyle     *style,
+	  BdkWindow    *window,
+	  BtkStateType  state,
+	  BtkShadowType shadow,
+	  BdkRectangle *area,
+	  BtkWidget    *widget,
 	  const gchar  *detail,
 	  gint          x,
 	  gint          y,
@@ -793,18 +793,18 @@ draw_tab (GtkStyle     *style,
 }
 
 static void
-draw_shadow_gap (GtkStyle       *style,
-		 GdkWindow      *window,
-		 GtkStateType    state,
-		 GtkShadowType   shadow,
-		 GdkRectangle   *area,
-		 GtkWidget      *widget,
+draw_shadow_gap (BtkStyle       *style,
+		 BdkWindow      *window,
+		 BtkStateType    state,
+		 BtkShadowType   shadow,
+		 BdkRectangle   *area,
+		 BtkWidget      *widget,
 		 const gchar    *detail,
 		 gint            x,
 		 gint            y,
 		 gint            width,
 		 gint            height,
-		 GtkPositionType gap_side,
+		 BtkPositionType gap_side,
 		 gint            gap_x,
 		 gint            gap_width)
 {
@@ -826,18 +826,18 @@ draw_shadow_gap (GtkStyle       *style,
 }
 
 static void
-draw_box_gap (GtkStyle       *style,
-	      GdkWindow      *window,
-	      GtkStateType    state,
-	      GtkShadowType   shadow,
-	      GdkRectangle   *area,
-	      GtkWidget      *widget,
+draw_box_gap (BtkStyle       *style,
+	      BdkWindow      *window,
+	      BtkStateType    state,
+	      BtkShadowType   shadow,
+	      BdkRectangle   *area,
+	      BtkWidget      *widget,
 	      const gchar    *detail,
 	      gint            x,
 	      gint            y,
 	      gint            width,
 	      gint            height,
-	      GtkPositionType gap_side,
+	      BtkPositionType gap_side,
 	      gint            gap_x,
 	      gint            gap_width)
 {
@@ -859,18 +859,18 @@ draw_box_gap (GtkStyle       *style,
 }
 
 static void
-draw_extension (GtkStyle       *style,
-		GdkWindow      *window,
-		GtkStateType    state,
-		GtkShadowType   shadow,
-		GdkRectangle   *area,
-		GtkWidget      *widget,
+draw_extension (BtkStyle       *style,
+		BdkWindow      *window,
+		BtkStateType    state,
+		BtkShadowType   shadow,
+		BdkRectangle   *area,
+		BtkWidget      *widget,
 		const gchar    *detail,
 		gint            x,
 		gint            y,
 		gint            width,
 		gint            height,
-		GtkPositionType gap_side)
+		BtkPositionType gap_side)
 {
   ThemeMatchData match_data;
   
@@ -891,11 +891,11 @@ draw_extension (GtkStyle       *style,
 }
 
 static void
-draw_focus (GtkStyle     *style,
-	    GdkWindow    *window,
-	    GtkStateType  state_type,
-	    GdkRectangle *area,
-	    GtkWidget    *widget,
+draw_focus (BtkStyle     *style,
+	    BdkWindow    *window,
+	    BtkStateType  state_type,
+	    BdkRectangle *area,
+	    BtkWidget    *widget,
 	    const gchar  *detail,
 	    gint          x,
 	    gint          y,
@@ -918,18 +918,18 @@ draw_focus (GtkStyle     *style,
 }
 
 static void
-draw_slider (GtkStyle      *style,
-	     GdkWindow     *window,
-	     GtkStateType   state,
-	     GtkShadowType  shadow,
-	     GdkRectangle  *area,
-	     GtkWidget     *widget,
+draw_slider (BtkStyle      *style,
+	     BdkWindow     *window,
+	     BtkStateType   state,
+	     BtkShadowType  shadow,
+	     BdkRectangle  *area,
+	     BtkWidget     *widget,
 	     const gchar   *detail,
 	     gint           x,
 	     gint           y,
 	     gint           width,
 	     gint           height,
-	     GtkOrientation orientation)
+	     BtkOrientation orientation)
 {
   ThemeMatchData           match_data;
   
@@ -953,18 +953,18 @@ draw_slider (GtkStyle      *style,
 
 
 static void
-draw_handle (GtkStyle      *style,
-	     GdkWindow     *window,
-	     GtkStateType   state,
-	     GtkShadowType  shadow,
-	     GdkRectangle  *area,
-	     GtkWidget     *widget,
+draw_handle (BtkStyle      *style,
+	     BdkWindow     *window,
+	     BtkStateType   state,
+	     BtkShadowType  shadow,
+	     BdkRectangle  *area,
+	     BtkWidget     *widget,
 	     const gchar   *detail,
 	     gint           x,
 	     gint           y,
 	     gint           width,
 	     gint           height,
-	     GtkOrientation orientation)
+	     BtkOrientation orientation)
 {
   ThemeMatchData match_data;
   
@@ -987,15 +987,15 @@ draw_handle (GtkStyle      *style,
 }
 
 static void
-draw_expander (GtkStyle      *style,
-	       GdkWindow     *window,
-	       GtkStateType   state,
-	       GdkRectangle  *area,
-	       GtkWidget     *widget,
+draw_expander (BtkStyle      *style,
+	       BdkWindow     *window,
+	       BtkStateType   state,
+	       BdkRectangle  *area,
+	       BtkWidget     *widget,
 	       const gchar   *detail,
 	       gint           x,
 	       gint           y,
-	       GtkExpanderStyle expander_style)
+	       BtkExpanderStyle expander_style)
 {
 #define DEFAULT_EXPANDER_SIZE 12
 
@@ -1007,10 +1007,10 @@ draw_expander (GtkStyle      *style,
   g_return_if_fail (window != NULL);
 
   if (widget &&
-      gtk_widget_class_find_style_property (GTK_WIDGET_GET_CLASS (widget),
+      btk_widget_class_find_style_property (BTK_WIDGET_GET_CLASS (widget),
                                             "expander-size"))
     {
-      gtk_widget_style_get (widget,
+      btk_widget_style_get (widget,
 			    "expander-size", &expander_size,
 			    NULL);
     }
@@ -1033,13 +1033,13 @@ draw_expander (GtkStyle      *style,
 }
 
 static void
-draw_resize_grip (GtkStyle      *style,
-		     GdkWindow     *window,
-		     GtkStateType   state,
-		     GdkRectangle  *area,
-		     GtkWidget     *widget,
+draw_resize_grip (BtkStyle      *style,
+		     BdkWindow     *window,
+		     BtkStateType   state,
+		     BdkRectangle  *area,
+		     BtkWidget     *widget,
 		     const gchar   *detail,
-		     GdkWindowEdge  edge,
+		     BdkWindowEdge  edge,
 		     gint           x,
 		     gint           y,
 		     gint           width,
@@ -1082,7 +1082,7 @@ pixbuf_style_register_type (GTypeModule *module)
   };
   
   pixbuf_type_style = g_type_module_register_type (module,
-						   GTK_TYPE_STYLE,
+						   BTK_TYPE_STYLE,
 						   "PixbufStyle",
 						   &object_info, 0);
 }
@@ -1095,7 +1095,7 @@ pixbuf_style_init (PixbufStyle *style)
 static void
 pixbuf_style_class_init (PixbufStyleClass *klass)
 {
-  GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
+  BtkStyleClass *style_class = BTK_STYLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 

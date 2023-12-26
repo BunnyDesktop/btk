@@ -1,9 +1,9 @@
 
 #include <stdlib.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include "tictactoe.h"
 
-void win( GtkWidget *widget,
+void win( BtkWidget *widget,
           gpointer   data )
 {
   g_print ("Yay!\n");
@@ -13,32 +13,32 @@ void win( GtkWidget *widget,
 int main( int   argc,
           char *argv[] )
 {
-  GtkWidget *window;
-  GtkWidget *ttt;
+  BtkWidget *window;
+  BtkWidget *ttt;
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   
-  gtk_window_set_title (GTK_WINDOW (window), "Aspect Frame");
+  btk_window_set_title (BTK_WINDOW (window), "Aspect Frame");
   
   g_signal_connect (G_OBJECT (window), "destroy",
 		    G_CALLBACK (exit), NULL);
   
-  gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+  btk_container_set_border_width (BTK_CONTAINER (window), 10);
 
   ttt = tictactoe_new ();
   
-  gtk_container_add (GTK_CONTAINER (window), ttt);
-  gtk_widget_show (ttt);
+  btk_container_add (BTK_CONTAINER (window), ttt);
+  btk_widget_show (ttt);
 
   /* And attach to its "tictactoe" signal */
   g_signal_connect (G_OBJECT (ttt), "tictactoe",
 		    G_CALLBACK (win), NULL);
 
-  gtk_widget_show (window);
+  btk_widget_show (window);
   
-  gtk_main ();
+  btk_main ();
   
   return 0;
 }

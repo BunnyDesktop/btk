@@ -1,7 +1,7 @@
-## Makefile.am for GTK+
+## Makefile.am for BTK+
 include $(top_srcdir)/Makefile.decl
 
-SRC_SUBDIRS = gdk gtk modules demos tests perf
+SRC_SUBDIRS = bdk btk modules demos tests perf
 SUBDIRS = po po-properties $(SRC_SUBDIRS) docs m4macros build
 
 # require automake 1.4
@@ -23,13 +23,13 @@ EXTRA_DIST +=			\
 	ChangeLog.pre-2-12	\
 	ChangeLog.pre-2-14	\
 	ChangeLog.pre-2-16	\
-	ChangeLog.gtk-async-file-chooser	\
-	ChangeLog.gtk-printing	\
+	ChangeLog.btk-async-file-chooser	\
+	ChangeLog.btk-printing	\
 	README.commits	\
 	README.win32		\
 	config.h.win32		\
 	makefile.msc	\
-	gtk-zip.sh.in		\
+	btk-zip.sh.in		\
 	sanitize-la.sh		\
 	po/README.translators	\
 	po/po2tbl.sed.in	\
@@ -58,10 +58,10 @@ EXTRA_DIST +=			\
 	examples/eventbox/eventbox.c  \
 	examples/filesel/Makefile  \
 	examples/filesel/filesel.c  \
-	examples/gtkdial/Makefile  \
-	examples/gtkdial/dial_test.c  \
-	examples/gtkdial/gtkdial.c  \
-	examples/gtkdial/gtkdial.h  \
+	examples/btkdial/Makefile  \
+	examples/btkdial/dial_test.c  \
+	examples/btkdial/btkdial.c  \
+	examples/btkdial/btkdial.h  \
 	examples/helloworld/Makefile  \
 	examples/helloworld/helloworld.c  \
 	examples/helloworld2/Makefile  \
@@ -136,44 +136,44 @@ MAINTAINERCLEANFILES = \
 	$(srcdir)/mkinstalldirs \
 	$(srcdir)/omf.make \
 	$(srcdir)/xmldocs.make \
-	$(srcdir)/gtk-doc.make \
+	$(srcdir)/btk-doc.make \
 	$(srcdir)/ChangeLog \
 	`find "$(srcdir)" -type f -name Makefile.in -print`
 
-GDKTARGET=@gdktarget@
+BDKTARGET=@bdktarget@
 
 ## Copy .pc files to target-specific names
-gtk+-$(GDKTARGET)-2.0.pc: gtk+-2.0.pc
-	rm -f gtk+-$(GDKTARGET)-2.0.pc && \
-	cp gtk+-2.0.pc gtk+-$(GDKTARGET)-2.0.pc
+btk+-$(BDKTARGET)-2.0.pc: btk+-2.0.pc
+	rm -f btk+-$(BDKTARGET)-2.0.pc && \
+	cp btk+-2.0.pc btk+-$(BDKTARGET)-2.0.pc
 
-gdk-$(GDKTARGET)-2.0.pc: gdk-2.0.pc
-	rm -f gdk-$(GDKTARGET)-2.0.pc && \
-	cp gdk-2.0.pc gdk-$(GDKTARGET)-2.0.pc
+bdk-$(BDKTARGET)-2.0.pc: bdk-2.0.pc
+	rm -f bdk-$(BDKTARGET)-2.0.pc && \
+	cp bdk-2.0.pc bdk-$(BDKTARGET)-2.0.pc
 
-gtk+-$(GDKTARGET)-2.0-uninstalled.pc: gtk+-2.0-uninstalled.pc
-	rm -f gtk+-$(GDKTARGET)-2.0-uninstalled.pc && \
-	cp gtk+-2.0-uninstalled.pc gtk+-$(GDKTARGET)-2.0-uninstalled.pc
+btk+-$(BDKTARGET)-2.0-uninstalled.pc: btk+-2.0-uninstalled.pc
+	rm -f btk+-$(BDKTARGET)-2.0-uninstalled.pc && \
+	cp btk+-2.0-uninstalled.pc btk+-$(BDKTARGET)-2.0-uninstalled.pc
 
-gdk-$(GDKTARGET)-2.0-uninstalled.pc: gdk-2.0-uninstalled.pc
-	rm -f gdk-$(GDKTARGET)-2.0-uninstalled.pc && \
-	cp gdk-2.0-uninstalled.pc gdk-$(GDKTARGET)-2.0-uninstalled.pc
+bdk-$(BDKTARGET)-2.0-uninstalled.pc: bdk-2.0-uninstalled.pc
+	rm -f bdk-$(BDKTARGET)-2.0-uninstalled.pc && \
+	cp bdk-2.0-uninstalled.pc bdk-$(BDKTARGET)-2.0-uninstalled.pc
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA= gdk-$(GDKTARGET)-2.0.pc gtk+-$(GDKTARGET)-2.0.pc gail.pc
+pkgconfig_DATA= bdk-$(BDKTARGET)-2.0.pc btk+-$(BDKTARGET)-2.0.pc bail.pc
 
 if OS_UNIX
-pkgconfig_DATA += gtk+-unix-print-2.0.pc
+pkgconfig_DATA += btk+-unix-print-2.0.pc
 endif
 
 DISTCLEANFILES =				\
-	gtk+-unix-print-2.0.pc			\
-	gtk+-$(GDKTARGET)-2.0.pc		\
-	gdk-$(GDKTARGET)-2.0.pc			\
-	gail.pc					\
-	gtk+-$(GDKTARGET)-2.0-uninstalled.pc	\
-	gdk-$(GDKTARGET)-2.0-uninstalled.pc	\
-	gail-uninstalled.pc 			\
+	btk+-unix-print-2.0.pc			\
+	btk+-$(BDKTARGET)-2.0.pc		\
+	bdk-$(BDKTARGET)-2.0.pc			\
+	bail.pc					\
+	btk+-$(BDKTARGET)-2.0-uninstalled.pc	\
+	bdk-$(BDKTARGET)-2.0-uninstalled.pc	\
+	bail-uninstalled.pc 			\
 	config.lt
 
 distclean-local:
@@ -184,7 +184,7 @@ distclean-local:
 ChangeLog:
 	@echo Creating $@
 	@if test -d "$(srcdir)/.git"; then \
-	  (GIT_DIR=$(top_srcdir)/.git ./missing --run git log GTK_2_16_0^^.. --stat) | fmt --split-only > $@.tmp \
+	  (GIT_DIR=$(top_srcdir)/.git ./missing --run git log BTK_2_16_0^^.. --stat) | fmt --split-only > $@.tmp \
 	  && mv -f $@.tmp $@ \
 	  || ($(RM) $@.tmp; \
 	      echo Failed to generate ChangeLog, your ChangeLog may be outdated >&2; \
@@ -195,21 +195,21 @@ ChangeLog:
 	  echo A git checkout and git-log is required to generate this file >> $@); \
 	fi
 
-## copy the default target for this platform to gdk-2.0.pc and gtk+-2.0.pc
-DEFAULT_GDKTARGET=x11
+## copy the default target for this platform to bdk-2.0.pc and btk+-2.0.pc
+DEFAULT_BDKTARGET=x11
 install-data-hook:
 	(cd $(DESTDIR)$(pkgconfigdir) && \
-	 test -f gdk-$(DEFAULT_GDKTARGET)-2.0.pc && \
-	 test -f gtk+-$(DEFAULT_GDKTARGET)-2.0.pc && \
-	 rm -f gdk-2.0.pc && cp -f gdk-$(DEFAULT_GDKTARGET)-2.0.pc gdk-2.0.pc && \
-	 rm -f gtk+-2.0.pc && cp -f gtk+-$(DEFAULT_GDKTARGET)-2.0.pc gtk+-2.0.pc) || \
+	 test -f bdk-$(DEFAULT_BDKTARGET)-2.0.pc && \
+	 test -f btk+-$(DEFAULT_BDKTARGET)-2.0.pc && \
+	 rm -f bdk-2.0.pc && cp -f bdk-$(DEFAULT_BDKTARGET)-2.0.pc bdk-2.0.pc && \
+	 rm -f btk+-2.0.pc && cp -f btk+-$(DEFAULT_BDKTARGET)-2.0.pc btk+-2.0.pc) || \
 	(cd $(DESTDIR)$(pkgconfigdir) && \
-	 rm -f gdk-2.0.pc && cp -f gdk-$(GDKTARGET)-2.0.pc gdk-2.0.pc && \
-	 rm -f gtk+-2.0.pc && cp -f gtk+-$(GDKTARGET)-2.0.pc gtk+-2.0.pc)
+	 rm -f bdk-2.0.pc && cp -f bdk-$(BDKTARGET)-2.0.pc bdk-2.0.pc && \
+	 rm -f btk+-2.0.pc && cp -f btk+-$(BDKTARGET)-2.0.pc btk+-2.0.pc)
 
 uninstall-local:
-	rm -f $(DESTDIR)$(pkgconfigdir)/gdk-2.0.pc
-	rm -f $(DESTDIR)$(pkgconfigdir)/gtk+-2.0.pc
+	rm -f $(DESTDIR)$(pkgconfigdir)/bdk-2.0.pc
+	rm -f $(DESTDIR)$(pkgconfigdir)/btk+-2.0.pc
 
 dist-hook:
 	if test -f $(srcdir)/INSTALL.in && test -f $(srcdir)/README.in ; then \
@@ -243,7 +243,7 @@ sanity:
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)-snap`date +"%Y%m%d"`
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man --disable-rebuilds --enable-introspection
+DISTCHECK_CONFIGURE_FLAGS = --enable-btk-doc --enable-man --disable-rebuilds --enable-introspection
 
 GITIGNOREFILES = \
 	po-properties/Makefile.in.in \

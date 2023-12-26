@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="btkbuilddefinesprops"
+	OutputDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin"
+	IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\$(ProjectName)"
+	InheritedPropertySheets=".\btk-version-paths.vsprops"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="..\..\..;$(BunnylibEtcInstallRoot)\include\bdk-pixbuf-2.0;$(BunnylibEtcInstallRoot)\include\bango-1.0;$(BunnylibEtcInstallRoot)\include\batk-1.0;$(BunnylibEtcInstallRoot)\include\bunnyio-win32-2.0;$(BunnylibEtcInstallRoot)\include\bunnylib-2.0;$(BunnylibEtcInstallRoot)\lib\bunnylib-2.0\include;$(BunnylibEtcInstallRoot)\include\bairo;$(BunnylibEtcInstallRoot)\include"
+		PreprocessorDefinitions="HAVE_CONFIG_H;G_DISABLE_SINGLE_INCLUDES;BATK_DISABLE_SINGLE_INCLUDES;BDK_PIXBUF_DISABLE_SINGLE_INCLUDES;BTK_DISABLE_SINGLE_INCLUDES"
+		ForcedIncludeFiles="msvc_recommended_pragmas.h"
+		AdditionalOptions="/MP"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalDependencies="bdk_pixbuf-2.0.lib bunnyio-2.0.lib bmodule-2.0.lib bobject-2.0.lib bunnylib-2.0.lib intl.lib"
+		AdditionalLibraryDirectories="$(BunnylibEtcInstallRoot)\lib"
+	/>
+	<UserMacro
+		Name="BtkBinaryVersion"
+		Value="2.10.0"
+	/>
+	<UserMacro
+		Name="BtkDummyPrefix"
+		Value="/dummy"
+	/>
+	<UserMacro
+		Name="BdkDefines"
+		Value="BDK_COMPILATION;G_LOG_DOMAIN=\&quot;Bdk\&quot;"
+	/>
+	<UserMacro
+		Name="BtkHost"
+		Value="i686-pc-vs$(VSVer)"
+	/>
+	<UserMacro
+		Name="BtkIncludedImmodulesDefines"
+		Value="INCLUDE_IM_am_et;INCLUDE_IM_cedilla;INCLUDE_IM_cyrillic_translit;INCLUDE_IM_ime;INCLUDE_IM_inuktitut;INCLUDE_IM_ipa;INCLUDE_IM_multipress;INCLUDE_IM_thai;INCLUDE_IM_ti_er;INCLUDE_IM_ti_et;INCLUDE_IM_viqr"
+	/>
+	<UserMacro
+		Name="BtkDefines"
+		Value="BTK_COMPILATION;G_LOG_DOMAIN=\&quot;Btk\&quot;;BTK_HOST=\&quot;$(BtkHost)\&quot;;BTK_PRINT_BACKENDS=\&quot;file\&quot;;BTK_PRINT_PREVIEW_COMMAND=\&quot;undefined-btk-print-preview-command\&quot;;$(BtkIncludedImmodulesDefines);BTK_LIBDIR=\&quot;$(BtkDummyPrefix)/lib\&quot;;BTK_SYSCONFDIR=&quot;$(BtkDummyPrefix)/etc&quot;;MULTIPRESS_CONFDIR=\&quot;$(BtkDummyPrefix)/etc/btk-$(ApiVersion)\&quot;;MULTIPRESS_LOCALEDIR=\&quot;$(BtkDummyPrefix)/share/locale\&quot;;BTK_VERSION=\&quot;$(BtkVersion)\&quot;;BTK_BINARY_VERSION=\&quot;$(BtkBinaryVersion)\&quot;"
+	/>
+</VisualStudioPropertySheet>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<refentry id="btk-directfb">
+<refmeta>
+<refentrytitle>Using BTK+ on DirectFB</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>BTK Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>Using BTK+ on DirectFB</refname>
+<refpurpose>
+DirectFB-specific aspects of using BTK+
+</refpurpose>
+</refnamediv>
+
+<refsect1>
+<title>Using BTK+ on DirectFB</title>
+
+<para>
+The DirectFB port of BTK+ is an implementation of BDK (and therefore BTK+) 
+on top of the <ulink url="http://www.directfb.org">DirectFB</ulink> 
+libraries.
+</para>
+
+<para>
+Like the obsolete linux-fb port of BTK+, it runs on the Linux framebuffer,
+but the DirectFB libraries provide additional features like hardware graphics 
+acceleration, input device handling and abstraction and an integrated windowing 
+system.
+</para>
+
+<refsect2><title>Build requirements</title>
+
+<para>
+Beyond the usual BTK+ build requirements, the DirectFB backend (obviously) 
+needs the DirectFB libraries (at least 0.9.21) and bairo compiled with 
+DirectFB support.
+</para>
+</refsect2>
+</refsect1>
+</refentry>

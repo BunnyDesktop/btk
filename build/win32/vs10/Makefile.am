@@ -1,53 +1,53 @@
 include $(top_srcdir)/Makefile.decl
 
 GENERATED_ITEMS = \
-	gdk-win32.vcxproj	\
-	gdk.vcxproj		\
-	gtk.vcxproj		\
-	gailutil.vcxproj	\
+	bdk-win32.vcxproj	\
+	bdk.vcxproj		\
+	btk.vcxproj		\
+	bailutil.vcxproj	\
 	libwimp.vcxproj		\
-	gtk-demo.vcxproj	\
-	gdk-win32.vcxproj.filters	\
-	gdk.vcxproj.filters	\
-	gtk.vcxproj.filters	\
-	gailutil.vcxproj.filters	\
+	btk-demo.vcxproj	\
+	bdk-win32.vcxproj.filters	\
+	bdk.vcxproj.filters	\
+	btk.vcxproj.filters	\
+	bailutil.vcxproj.filters	\
 	libwimp.vcxproj.filters	\
-	gtk-demo.vcxproj.filters	\
-	gtk-install.props
+	btk-demo.vcxproj.filters	\
+	btk-install.props
 
 EXTRA_DIST +=	\
 	README.txt	\
-	gtk+.sln	\
-	gtk-build-defines.props	\
-	gtk-gen-srcs.props	\
-	gtk-install.propsin	\
-	gtk-version-paths.props	\
-	gdk-win32.vcxprojin	\
-	gdk-win32.vcxproj.filtersin	\
-	gdk.vcxprojin	\
-	gdk.vcxproj.filtersin	\
-	gtk.vcxprojin	\
-	gtk.vcxproj.filtersin	\
-	gtk-demo.vcxprojin	\
-	gtk-demo.vcxproj.filtersin	\
-	gailutil.vcxprojin	\
-	gailutil.vcxproj.filtersin	\
+	btk+.sln	\
+	btk-build-defines.props	\
+	btk-gen-srcs.props	\
+	btk-install.propsin	\
+	btk-version-paths.props	\
+	bdk-win32.vcxprojin	\
+	bdk-win32.vcxproj.filtersin	\
+	bdk.vcxprojin	\
+	bdk.vcxproj.filtersin	\
+	btk.vcxprojin	\
+	btk.vcxproj.filtersin	\
+	btk-demo.vcxprojin	\
+	btk-demo.vcxproj.filtersin	\
+	bailutil.vcxprojin	\
+	bailutil.vcxproj.filtersin	\
 	libwimp.vcxprojin	\
 	libwimp.vcxproj.filtersin	\
-	gtk-update-icon-cache.vcxproj	\
-	gtk-update-icon-cache.vcxproj.filters	\
-	gtk-install.vcxproj	\
-	gtk-install.vcxproj.filters	\
+	btk-update-icon-cache.vcxproj	\
+	btk-update-icon-cache.vcxproj.filters	\
+	btk-install.vcxproj	\
+	btk-install.vcxproj.filters	\
 	$(GENERATED_ITEMS)
 
-MSVC_INTERMEDIATE_FILES = gdk-win32.vs10.headers gdk.vs10.headers gtk.vs10.headers gailutil.vs10.headers
+MSVC_INTERMEDIATE_FILES = bdk-win32.vs10.headers bdk.vs10.headers btk.vs10.headers bailutil.vs10.headers
 
-gtk-install.props: $(MSVC_INTERMEDIATE_FILES)
-	-$(RM) $(top_builddir)/build/win32/vs11/gtk-install.props
-	-$(RM) $(top_builddir)/build/win32/vs12/gtk-install.props
-	-$(RM) $(top_builddir)/build/win32/vs14/gtk-install.props
-	-$(RM) $(top_builddir)/build/win32/vs15/gtk-install.props
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gtk-install.propsin >$@
+btk-install.props: $(MSVC_INTERMEDIATE_FILES)
+	-$(RM) $(top_builddir)/build/win32/vs11/btk-install.props
+	-$(RM) $(top_builddir)/build/win32/vs12/btk-install.props
+	-$(RM) $(top_builddir)/build/win32/vs14/btk-install.props
+	-$(RM) $(top_builddir)/build/win32/vs15/btk-install.props
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/btk-install.propsin >$@
 	rm $(MSVC_INTERMEDIATE_FILES)
 
 DISTCLEANFILES = $(GENERATED_ITEMS)

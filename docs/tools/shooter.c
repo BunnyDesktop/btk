@@ -1,13 +1,13 @@
-#include <gdk/gdk.h>
-#include <gtk/gtk.h>
-#include <gdkx.h>
+#include <bdk/bdk.h>
+#include <btk/btk.h>
+#include <bdkx.h>
 #include <stdio.h>
 #include <errno.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <X11/extensions/shape.h>
 
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -33,7 +33,7 @@ find_toplevel_window (Window xid)
 
   do
     {
-      if (XQueryTree (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), xid, &root,
+      if (XQueryTree (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()), xid, &root,
 		      &parent, &children, &nchildren) == 0)
 	{
 	  g_warning ("Couldn't find window manager window");
@@ -48,41 +48,41 @@ find_toplevel_window (Window xid)
   while (TRUE);
 }
 
-static GdkPixbuf *
-add_border_to_shot (GdkPixbuf *pixbuf)
+static BdkPixbuf *
+add_border_to_shot (BdkPixbuf *pixbuf)
 {
-  GdkPixbuf *retval;
+  BdkPixbuf *retval;
 
-  retval = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-			   gdk_pixbuf_get_width (pixbuf) + 2,
-			   gdk_pixbuf_get_height (pixbuf) + 2);
+  retval = bdk_pixbuf_new (BDK_COLORSPACE_RGB, TRUE, 8,
+			   bdk_pixbuf_get_width (pixbuf) + 2,
+			   bdk_pixbuf_get_height (pixbuf) + 2);
 
   /* Fill with solid black */
-  gdk_pixbuf_fill (retval, 0xFF);
-  gdk_pixbuf_copy_area (pixbuf,
+  bdk_pixbuf_fill (retval, 0xFF);
+  bdk_pixbuf_copy_area (pixbuf,
 			0, 0,
-			gdk_pixbuf_get_width (pixbuf),
-			gdk_pixbuf_get_height (pixbuf),
+			bdk_pixbuf_get_width (pixbuf),
+			bdk_pixbuf_get_height (pixbuf),
 			retval, 1, 1);
 
   return retval;
 }
 
-static GdkPixbuf *
-remove_shaped_area (GdkPixbuf *pixbuf,
+static BdkPixbuf *
+remove_shaped_area (BdkPixbuf *pixbuf,
 		    Window     window)
 {
-  GdkPixbuf *retval;
+  BdkPixbuf *retval;
   XRectangle *rectangles;
   int rectangle_count, rectangle_order;
   int i;
 
-  retval = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8,
-			   gdk_pixbuf_get_width (pixbuf),
-			   gdk_pixbuf_get_height (pixbuf));
+  retval = bdk_pixbuf_new (BDK_COLORSPACE_RGB, TRUE, 8,
+			   bdk_pixbuf_get_width (pixbuf),
+			   bdk_pixbuf_get_height (pixbuf));
   
-  gdk_pixbuf_fill (retval, 0);
-  rectangles = XShapeGetRectangles (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), window,
+  bdk_pixbuf_fill (retval, 0);
+  rectangles = XShapeGetRectangles (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()), window,
 				    ShapeBounding, &rectangle_count, &rectangle_order);
 
   for (i = 0; i < rectangle_count; i++)
@@ -93,11 +93,11 @@ remove_shaped_area (GdkPixbuf *pixbuf,
 	{
 	  guchar *src_pixels, *dest_pixels;
 
-	  src_pixels = gdk_pixbuf_get_pixels (pixbuf) +
-	    y * gdk_pixbuf_get_rowstride (pixbuf) +
-	    rectangles[i].x * (gdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3);
-	  dest_pixels = gdk_pixbuf_get_pixels (retval) +
-	    y * gdk_pixbuf_get_rowstride (retval) +
+	  src_pixels = bdk_pixbuf_get_pixels (pixbuf) +
+	    y * bdk_pixbuf_get_rowstride (pixbuf) +
+	    rectangles[i].x * (bdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3);
+	  dest_pixels = bdk_pixbuf_get_pixels (retval) +
+	    y * bdk_pixbuf_get_rowstride (retval) +
 	    rectangles[i].x * 4;
 
 	  for (x = rectangles[i].x; x < rectangles[i].x + rectangles[i].width; x++)
@@ -107,7 +107,7 @@ remove_shaped_area (GdkPixbuf *pixbuf,
 	      *dest_pixels++ = *src_pixels ++;
 	      *dest_pixels++ = 255;
 
-	      if (gdk_pixbuf_get_has_alpha (pixbuf))
+	      if (bdk_pixbuf_get_has_alpha (pixbuf))
 		src_pixels++;
 	    }
 	}
@@ -116,32 +116,32 @@ remove_shaped_area (GdkPixbuf *pixbuf,
   return retval;
 }
 
-static GdkPixbuf *
+static BdkPixbuf *
 take_window_shot (Window   child,
 		  gboolean include_decoration)
 {
-  GdkWindow *window;
+  BdkWindow *window;
   Display *disp;
   Window w, xid;
   gint x_orig, y_orig;
   gint x = 0, y = 0;
   gint width, height;
 
-  GdkPixbuf *tmp, *tmp2;
-  GdkPixbuf *retval;
+  BdkPixbuf *tmp, *tmp2;
+  BdkPixbuf *retval;
 
-  disp = GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
-  w = GDK_ROOT_WINDOW ();
+  disp = BDK_DISPLAY_XDISPLAY (bdk_display_get_default ());
+  w = BDK_ROOT_WINDOW ();
 
   if (include_decoration)
     xid = find_toplevel_window (child);
   else
     xid = child;
 
-  window = gdk_window_foreign_new (xid);
+  window = bdk_window_foreign_new (xid);
 
-  gdk_drawable_get_size (window, &width, &height);
-  gdk_window_get_origin (window, &x_orig, &y_orig);
+  bdk_drawable_get_size (window, &width, &height);
+  bdk_window_get_origin (window, &x_orig, &y_orig);
 
   if (x_orig < 0)
     {
@@ -157,13 +157,13 @@ take_window_shot (Window   child,
       y_orig = 0;
     }
 
-  if (x_orig + width > gdk_screen_width ())
-    width = gdk_screen_width () - x_orig;
+  if (x_orig + width > bdk_screen_width ())
+    width = bdk_screen_width () - x_orig;
 
-  if (y_orig + height > gdk_screen_height ())
-    height = gdk_screen_height () - y_orig;
+  if (y_orig + height > bdk_screen_height ())
+    height = bdk_screen_height () - y_orig;
 
-  tmp = gdk_pixbuf_get_from_drawable (NULL, window, NULL,
+  tmp = bdk_pixbuf_get_from_drawable (NULL, window, NULL,
 				      x, y, 0, 0, width, height);
 
   if (include_decoration)
@@ -181,49 +181,49 @@ take_window_shot (Window   child,
 int main (int argc, char **argv)
 {
   GList *toplevels;
-  GdkPixbuf *screenshot = NULL;
+  BdkPixbuf *screenshot = NULL;
   GList *node;
 
   /* If there's no DISPLAY, we silently error out.  We don't want to break
    * headless builds. */
-  if (! gtk_init_check (&argc, &argv))
+  if (! btk_init_check (&argc, &argv))
     return 0;
 
   toplevels = get_all_widgets ();
 
   for (node = toplevels; node; node = g_list_next (node))
     {
-      GdkWindow *window;
+      BdkWindow *window;
       WidgetInfo *info;
       XID id;
       char *filename;
 
       info = node->data;
 
-      gtk_widget_show (info->window);
+      btk_widget_show (info->window);
 
       window = info->window->window;
 
-      gtk_widget_show_now (info->window);
-      gtk_widget_draw (info->window, &(info->window->allocation));
+      btk_widget_show_now (info->window);
+      btk_widget_draw (info->window, &(info->window->allocation));
 
-      while (gtk_events_pending ())
+      while (btk_events_pending ())
 	{
-	  gtk_main_iteration ();
+	  btk_main_iteration ();
 	}
       sleep (1);
 
-      while (gtk_events_pending ())
+      while (btk_events_pending ())
 	{
-	  gtk_main_iteration ();
+	  btk_main_iteration ();
 	}
 
-      id = gdk_x11_drawable_get_xid (GDK_DRAWABLE (window));
+      id = bdk_x11_drawable_get_xid (BDK_DRAWABLE (window));
       screenshot = take_window_shot (id, info->include_decorations);
       filename = g_strdup_printf ("./%s.png", info->name);
-      gdk_pixbuf_save (screenshot, filename, "png", NULL, NULL);
+      bdk_pixbuf_save (screenshot, filename, "png", NULL, NULL);
       g_free(filename);
-      gtk_widget_hide (info->window);
+      btk_widget_hide (info->window);
     }
 
   return 0;

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="btk-migrating-ClientSideWindows">
+
+  <title>Migrating to client-side windows</title>
+
+  <para>
+    In version 2.18, BDK has been changed to use client-side windows. This
+    means that there is no longer a 1-1 correspondence between #BdkWindows
+    and windows in the underlying window system. In particular, it is no
+    longer correct to assume that each window has an associated XID.
+    Code that makes this assumption can sometimes be fixed by calling
+    bdk_window_ensure_native() on the windows in question.
+    Calling bdk_x11_drawable_get_xid() (or BDK_WINDOW_XID()) from the
+    X11-specific API on a non-native window will explicitly call
+    bdk_window_ensure_native(), so old code using this will continue to
+    work. A small gotcha is that the BDK_WINDOW_XID() call is no longer a
+    trivial accessor for the XID of the window, and thus must not be called
+    from another thread without taking locking precautions.
+  </para>
+
+  <para>
+    BDK looks for the <envar>BDK_NATIVE_WINDOWS</envar> environment variable
+    and makes all windows native if it is set. It also tries to be more
+    compatible with the way prior versions worked in some other ways.
+  </para>
+
+  <para>
+    Some applications assume that they can just operate on the X windows
+    corresponding to their BDK windows without ever telling BDK. One
+    example that we've seen is changing the child window stacking order
+    using XRestackWindows(). Fixing this properly requires to fix the code
+    to use BDK functions to achieve whatever it is trying to achieve.
+    To make this easier in the case of stacking order changes, we've added
+    a bdk_window_restack() function.
+  </para>
+
+  <para>
+    One change that can cause problems for some applications is that BDK
+    is more aggressive about optimizing away expose events. Code that does
+    more than just repainting exposed areas in response to expose events
+    may be affected by this.
+  </para>
+
+  <para>
+    Problems can also occur when using bairo for drawing. One thing that can
+    go wrong is clip handling. If you ever need to reset the clip rebunnyion on
+    a bairo_t (i.e. use bairo_reset_clip()), you have to to use
+    bdk_bairo_reset_clip() instead. The reason for this is that the bairo_reset_clip() call will remove the initial clip rebunnyion that limits your drawing to
+    the client-side window at hand, so you will end up drawing over stuff
+    outside the window. You also need to use bdk_bairo_reset_clip() if you
+    use a bairo_t that was not allocated in a double-buffered expose handler
+    and keep it in use after window hierarchy changes (resizing, moving,
+    stacking order changes). The easiest fix for this kind of problem is to
+    simply create a new bairo context for each expose event.
+  </para>
+
+  <para>
+    Due to a weird API in XClearArea the bdk_window_clear_area() call handled
+    a specified width or height of zero to mean "to end of window" for
+    non-double-buffered drawing. This has been changed to be consistent with
+    the docs and what happens in the double-buffered case. All code in BTK+
+    that relied on this has been fixed, but it is possible (although unlikely)
+    that third party applications rely on this. If you need to do this, just
+    implement it yourself using bdk_drawable_get_size().
+  </para>
+
+</chapter>

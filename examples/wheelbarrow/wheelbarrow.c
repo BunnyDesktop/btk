@@ -1,6 +1,6 @@
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* XPM */
 static char * WheelbarrowFull_xpm[] = {
@@ -120,55 +120,55 @@ static char * WheelbarrowFull_xpm[] = {
 
 
 /* When invoked (via signal delete_event), terminates the application */
-gint close_application( GtkWidget *widget,
-                        GdkEvent  *event,
+gint close_application( BtkWidget *widget,
+                        BdkEvent  *event,
                         gpointer   data )
 {
-    gtk_main_quit();
+    btk_main_quit();
     return(FALSE);
 }
 
 int main (int argc,
           char *argv[] )
 {
-    /* GtkWidget is the storage type for widgets */
-    GtkWidget *window, *pixmap, *fixed;
-    GdkPixmap *gdk_pixmap;
-    GdkBitmap *mask;
-    GtkStyle *style;
-    GdkGC *gc;
+    /* BtkWidget is the storage type for widgets */
+    BtkWidget *window, *pixmap, *fixed;
+    BdkPixmap *bdk_pixmap;
+    BdkBitmap *mask;
+    BtkStyle *style;
+    BdkGC *gc;
     
     /* Create the main window, and attach delete_event signal to terminate
      * the application.  Note that the main window will not have a titlebar
      * since we're making it a popup. */
-    gtk_init (&argc, &argv);
-    window = gtk_window_new (GTK_WINDOW_POPUP);
+    btk_init (&argc, &argv);
+    window = btk_window_new (BTK_WINDOW_POPUP);
     g_signal_connect (G_OBJECT (window), "delete_event",
                       G_CALLBACK (close_application), NULL);
-    gtk_widget_show (window);
+    btk_widget_show (window);
 
     /* Now for the pixmap and the pixmap widget */
-    style = gtk_widget_get_default_style();
+    style = btk_widget_get_default_style();
     gc = style->black_gc;
-    gdk_pixmap = gdk_pixmap_create_from_xpm_d (window->window, &mask,
-                                               &style->bg[GTK_STATE_NORMAL],
+    bdk_pixmap = bdk_pixmap_create_from_xpm_d (window->window, &mask,
+                                               &style->bg[BTK_STATE_NORMAL],
                                                WheelbarrowFull_xpm);
-    pixmap = gtk_image_new_from_pixmap (gdk_pixmap, mask);
-    gtk_widget_show (pixmap);
+    pixmap = btk_image_new_from_pixmap (bdk_pixmap, mask);
+    btk_widget_show (pixmap);
 
     /* To display the pixmap, we use a fixed widget to place the pixmap */
-    fixed = gtk_fixed_new ();
-    gtk_widget_set_size_request (fixed, 200, 200);
-    gtk_fixed_put (GTK_FIXED (fixed), pixmap, 0, 0);
-    gtk_container_add (GTK_CONTAINER (window), fixed);
-    gtk_widget_show (fixed);
+    fixed = btk_fixed_new ();
+    btk_widget_set_size_request (fixed, 200, 200);
+    btk_fixed_put (BTK_FIXED (fixed), pixmap, 0, 0);
+    btk_container_add (BTK_CONTAINER (window), fixed);
+    btk_widget_show (fixed);
 
     /* This masks out everything except for the image itself */
-    gtk_widget_shape_combine_mask (window, mask, 0, 0);
+    btk_widget_shape_combine_mask (window, mask, 0, 0);
     
     /* show the window */
-    gtk_widget_show (window);
-    gtk_main ();
+    btk_widget_show (window);
+    btk_main ();
           
     return 0;
 }

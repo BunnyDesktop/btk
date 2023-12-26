@@ -17,29 +17,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* various combinations of use_underline and use_stock */
 
 int main (int argc, char *argv[])
 {
-	GtkWidget *window, *box, *button, *hbox;
+	BtkWidget *window, *box, *button, *hbox;
         gchar *text;
 	gboolean use_underline, use_stock;
-	GtkWidget *image, *label;
+	BtkWidget *image, *label;
 
-	gtk_init (&argc, &argv);
+	btk_init (&argc, &argv);
 
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
-	box = gtk_vbox_new (0, FALSE);
+	box = btk_vbox_new (0, FALSE);
 
-	gtk_container_add (GTK_CONTAINER (window), box);
+	btk_container_add (BTK_CONTAINER (window), box);
 
-	hbox = gtk_hbox_new (0, FALSE);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
-	button = gtk_button_new_from_stock (GTK_STOCK_SAVE);
-	gtk_container_add (GTK_CONTAINER (hbox), button);
+	hbox = btk_hbox_new (0, FALSE);
+	btk_container_add (BTK_CONTAINER (box), hbox);
+	button = btk_button_new_from_stock (BTK_STOCK_SAVE);
+	btk_container_add (BTK_CONTAINER (hbox), button);
 
 	g_object_get (button,
                       "label", &text,
@@ -48,17 +48,17 @@ int main (int argc, char *argv[])
 		      "image", &image,
                       NULL);
 	text = g_strdup_printf ("label: \"%s\" image: %p use-stock: %s use-underline: %s\n", text, image, use_stock ? "TRUE" : "FALSE", use_underline ? "TRUE" : "FALSE");
-	label = gtk_label_new (text);
+	label = btk_label_new (text);
 	g_free (text);
-	gtk_container_add (GTK_CONTAINER (hbox), label);
+	btk_container_add (BTK_CONTAINER (hbox), label);
 
-	hbox = gtk_hbox_new (0, FALSE);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
-	button = g_object_new (GTK_TYPE_BUTTON,
-                               "label", "gtk-save",
+	hbox = btk_hbox_new (0, FALSE);
+	btk_container_add (BTK_CONTAINER (box), hbox);
+	button = g_object_new (BTK_TYPE_BUTTON,
+                               "label", "btk-save",
 			       "use-stock", TRUE,
 			       NULL);
-	gtk_container_add (GTK_CONTAINER (hbox), button);
+	btk_container_add (BTK_CONTAINER (hbox), button);
 
 	g_object_get (button,
                       "label", &text,
@@ -67,14 +67,14 @@ int main (int argc, char *argv[])
 		      "image", &image,
                       NULL);
 	text = g_strdup_printf ("label: \"%s\" image: %p use-stock: %s use-underline: %s\n", text, image, use_stock ? "TRUE" : "FALSE", use_underline ? "TRUE" : "FALSE");
-	label = gtk_label_new (text);
+	label = btk_label_new (text);
 	g_free (text);
-	gtk_container_add (GTK_CONTAINER (hbox), label);
+	btk_container_add (BTK_CONTAINER (hbox), label);
 
-	hbox = gtk_hbox_new (0, FALSE);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
-	button = gtk_button_new_with_label ("_Save");
-	gtk_container_add (GTK_CONTAINER (hbox), button);
+	hbox = btk_hbox_new (0, FALSE);
+	btk_container_add (BTK_CONTAINER (box), hbox);
+	button = btk_button_new_with_label ("_Save");
+	btk_container_add (BTK_CONTAINER (hbox), button);
 
 	g_object_get (button,
                       "label", &text,
@@ -83,14 +83,14 @@ int main (int argc, char *argv[])
 		      "image", &image,
                       NULL);
 	text = g_strdup_printf ("label: \"%s\" image: %p use-stock: %s use-underline: %s\n", text, image, use_stock ? "TRUE" : "FALSE", use_underline ? "TRUE" : "FALSE");
-	label = gtk_label_new (text);
+	label = btk_label_new (text);
 	g_free (text);
-	gtk_container_add (GTK_CONTAINER (hbox), label);
+	btk_container_add (BTK_CONTAINER (hbox), label);
 
-	hbox = gtk_hbox_new (0, FALSE);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
-	button = gtk_button_new_with_mnemonic ("_Save");
-	gtk_container_add (GTK_CONTAINER (hbox), button);
+	hbox = btk_hbox_new (0, FALSE);
+	btk_container_add (BTK_CONTAINER (box), hbox);
+	button = btk_button_new_with_mnemonic ("_Save");
+	btk_container_add (BTK_CONTAINER (hbox), button);
 
 	g_object_get (button,
                       "label", &text,
@@ -99,15 +99,15 @@ int main (int argc, char *argv[])
 		      "image", &image,
                       NULL);
 	text = g_strdup_printf ("label: \"%s\" image: %p use-stock: %s use-underline: %s\n", text, image, use_stock ? "TRUE" : "FALSE", use_underline ? "TRUE" : "FALSE");
-	label = gtk_label_new (text);
+	label = btk_label_new (text);
 	g_free (text);
-	gtk_container_add (GTK_CONTAINER (hbox), label);
+	btk_container_add (BTK_CONTAINER (hbox), label);
 
-	hbox = gtk_hbox_new (0, FALSE);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
-	button = gtk_button_new_with_label ("_Save");
-	gtk_button_set_image (GTK_BUTTON (button), gtk_image_new_from_stock (GTK_STOCK_ABOUT, GTK_ICON_SIZE_BUTTON));
-	gtk_container_add (GTK_CONTAINER (hbox), button);
+	hbox = btk_hbox_new (0, FALSE);
+	btk_container_add (BTK_CONTAINER (box), hbox);
+	button = btk_button_new_with_label ("_Save");
+	btk_button_set_image (BTK_BUTTON (button), btk_image_new_from_stock (BTK_STOCK_ABOUT, BTK_ICON_SIZE_BUTTON));
+	btk_container_add (BTK_CONTAINER (hbox), button);
 
 	g_object_get (button,
                       "label", &text,
@@ -116,15 +116,15 @@ int main (int argc, char *argv[])
 		      "image", &image,
                       NULL);
 	text = g_strdup_printf ("label: \"%s\" image: %p use-stock: %s use-underline: %s\n", text, image, use_stock ? "TRUE" : "FALSE", use_underline ? "TRUE" : "FALSE");
-	label = gtk_label_new (text);
+	label = btk_label_new (text);
 	g_free (text);
-	gtk_container_add (GTK_CONTAINER (hbox), label);
+	btk_container_add (BTK_CONTAINER (hbox), label);
 
-	hbox = gtk_hbox_new (0, FALSE);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
-	button = gtk_button_new_with_mnemonic ("_Save");
-	gtk_button_set_image (GTK_BUTTON (button), gtk_image_new_from_stock (GTK_STOCK_ABOUT, GTK_ICON_SIZE_BUTTON));
-	gtk_container_add (GTK_CONTAINER (hbox), button);
+	hbox = btk_hbox_new (0, FALSE);
+	btk_container_add (BTK_CONTAINER (box), hbox);
+	button = btk_button_new_with_mnemonic ("_Save");
+	btk_button_set_image (BTK_BUTTON (button), btk_image_new_from_stock (BTK_STOCK_ABOUT, BTK_ICON_SIZE_BUTTON));
+	btk_container_add (BTK_CONTAINER (hbox), button);
 	g_object_get (button,
                       "label", &text,
                       "use-stock", &use_stock,
@@ -132,13 +132,13 @@ int main (int argc, char *argv[])
 		      "image", &image,
                       NULL);
 	text = g_strdup_printf ("label: \"%s\" image: %p use-stock: %s use-underline: %s\n", text, image, use_stock ? "TRUE" : "FALSE", use_underline ? "TRUE" : "FALSE");
-	label = gtk_label_new (text);
+	label = btk_label_new (text);
 	g_free (text);
-	gtk_container_add (GTK_CONTAINER (hbox), label);
+	btk_container_add (BTK_CONTAINER (hbox), label);
 
-	gtk_widget_show_all (window);
+	btk_widget_show_all (window);
 
-	gtk_main ();
+	btk_main ();
 
 	return 0;
 }

@@ -1,21 +1,21 @@
 # autoconf 2.13 / 2.50 compatibility macro
 
-# GLIB_AC_DIVERT_BEFORE_HELP(STUFF)
+# BUNNYLIB_AC_DIVERT_BEFORE_HELP(STUFF)
 # ---------------------------------
 # Put STUFF early enough so that they are available for $ac_help expansion.
 # Handle both classic (<= v2.13) and modern autoconf
-AC_DEFUN([GLIB_AC_DIVERT_BEFORE_HELP],
+AC_DEFUN([BUNNYLIB_AC_DIVERT_BEFORE_HELP],
 [ifdef([m4_divert_text], [m4_divert_text([NOTICE],[$1])],
        [ifdef([AC_DIVERT], [AC_DIVERT([NOTICE],[$1])],
               [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)dnl
 $1
 AC_DIVERT_POP()])])])
 
-# GTK_ADD_LIB(VAR,LIBNAME)
+# BTK_ADD_LIB(VAR,LIBNAME)
 # ---------------------------------
 # Helper macro to add a -lBlah to a variable, avoiding repeats
 # Note that this needs to be quoted when used in an enclosing macro
-AC_DEFUN([GTK_ADD_LIB],
+AC_DEFUN([BTK_ADD_LIB],
 [ case "$$1 " in
     *-l$2[[\ \	]]*)               ;;
     *)               $1="-l$2 $$1" ;;

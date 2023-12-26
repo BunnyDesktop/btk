@@ -1,4 +1,4 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Dom Lachowicz <cinamod@hotmail.com>
  *

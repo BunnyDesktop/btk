@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+<!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+<!ENTITY version SYSTEM "version.xml">
+]>
+<!--ENTITY index-Objects-Grouped SYSTEM "objects_grouped.sgml"-->
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>BTK+ 2 Reference Manual</title>
+    <releaseinfo>
+      This document is for the BTK+ 2 library; the latest versions can be found online at
+      <ulink role="online-location"
+      url="http://library.bunny.org/devel/btk2/">http://library.bunny.org/devel/btk2</ulink>.
+      If you're looking for the newer BTK+ 3 series of libraries,
+      see <ulink role="online-location"
+      url="http://library.bunny.org/devel/btk3/">http://library.bunny.org/devel/btk3/</ulink>.
+    </releaseinfo>
+  </bookinfo>
+
+  <part id="btk">
+    <title>BTK+ Overview</title>
+    <partintro>
+    <para>
+BTK+ is a library for creating graphical user interfaces. It
+works on many UNIX-like platforms, Windows, and on framebuffer
+devices. BTK+ is released under the GNU Library General Public License
+(GNU LGPL), which allows for flexible licensing of client
+applications. BTK+ has a C-based object-oriented architecture that
+allows for maximum flexibility.  Bindings for other languages have
+been written, including C++, Objective-C, Guile/Scheme, Perl, Python,
+TOM, Ada95, Free Pascal, and Eiffel.
+    </para>
+    <para>
+BTK+ depends on the following libraries:
+<variablelist>
+
+<varlistentry>
+<term>GLib</term>
+<listitem><para>
+A general-purpose utility library, not specific to graphical user interfaces.
+GLib provides many useful data types, macros, type conversions,
+string utilities, file utilities, a main loop abstraction, and so on.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Bango</term>
+<listitem><para>
+Bango is a library for internationalized text handling. It centers
+around the #BangoLayout object, representing a paragraph of text. 
+Bango provides the engine for #BtkTextView, #BtkLabel, #BtkEntry, and
+other widgets that display text.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>BATK</term>
+<listitem><para>
+BATK is the Accessibility Toolkit. It provides a set of generic
+interfaces allowing accessibility technologies to interact with a
+graphical user interface. For example, a screen reader uses BATK to
+discover the text in an interface and read it to blind users.  BTK+
+widgets have built-in support for accessibility using the BATK
+framework.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>BdkPixbuf</term>
+<listitem><para>
+This is a small library which allows you to create #BdkPixbuf
+("pixel buffer") objects from image data or image files. 
+Use a #BdkPixbuf in combination with #BtkImage to display images.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>BDK</term>
+<listitem><para>
+BDK is the abstraction layer that allows BTK+ to support multiple
+windowing systems. BDK provides drawing and window system facilities
+on X11, Windows, and the Linux framebuffer device.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>BTK+</term>
+<listitem><para>
+The BTK+ library itself contains <firstterm>widgets</firstterm>, 
+that is, GUI components such as #BtkButton or #BtkTextView.
+</para></listitem>
+</varlistentry>
+</variablelist>
+    </para>
+</partintro>
+    <xi:include href="building.sgml" />
+    <xi:include href="compiling.sgml" />
+    <xi:include href="running.sgml" />
+    <xi:include href="x11.sgml" />
+    <xi:include href="windows.sgml" />
+    <xi:include href="osx.sgml" />
+    <xi:include href="directfb.sgml" />
+    <xi:include href="resources.sgml" />
+    <xi:include href="xml/question_index.sgml" />
+    <xi:include href="drawing-model.xml" />
+  </part>
+
+
+  <part  id="btkbase">
+    <title>BTK+ Core Reference</title>
+    <xi:include href="xml/btkmain.xml" />
+    <xi:include href="xml/btkaccelgroup.xml" />
+    <xi:include href="xml/btkaccelmap.xml" />
+    <xi:include href="xml/btkclipboard.xml" />
+    <xi:include href="xml/btkdnd.xml" />
+    <xi:include href="xml/btkicontheme.xml" />
+    <xi:include href="xml/btkstock.xml" />
+    <xi:include href="xml/btkiconfactory.xml" />
+    <xi:include href="xml/btkrc.xml" />
+    <xi:include href="xml/btksettings.xml" />
+    <xi:include href="xml/btkbindings.xml" />
+    <xi:include href="xml/btkenums.xml" />
+    <xi:include href="xml/btkgc.xml" />
+    <xi:include href="xml/btkstyle.xml" />
+    <xi:include href="xml/btkselection.xml" />
+    <xi:include href="xml/btkfeatures.xml" />
+    <xi:include href="xml/btksignal.xml" />
+    <xi:include href="xml/btktypeutils.xml" />
+    <xi:include href="xml/btktesting.xml" />
+    <xi:include href="xml/filesystem.xml" />
+  </part>
+
+  <part id="btkobjects">
+    <title>BTK+ Widgets and Objects</title>
+
+    <chapter>
+      <title>Object Hierarchy</title>
+      <xi:include href="xml/tree_index.sgml" />
+    </chapter>
+
+    <chapter>
+      <title>Widget Gallery</title>
+      <xi:include href="visual_index.xml" />
+    </chapter>
+
+    <chapter id="WindowWidgets">
+      <title>Windows</title>
+      <xi:include href="xml/btkdialog.xml" />
+      <xi:include href="xml/btkinvisible.xml" />
+      <xi:include href="xml/btkmessagedialog.xml" />
+      <xi:include href="xml/btkwindow.xml" />
+      <xi:include href="xml/btkwindowgroup.xml" />
+      <xi:include href="xml/btkaboutdialog.xml" />
+      <xi:include href="xml/btkassistant.xml" />
+      <xi:include href="xml/btkoffscreenwindow.xml" />
+    </chapter>
+
+    <chapter id="DisplayWidgets">
+      <title>Display Widgets</title>
+      <xi:include href="xml/btkaccellabel.xml" />
+      <xi:include href="xml/btkimage.xml" />
+      <xi:include href="xml/btklabel.xml" />
+      <xi:include href="xml/btkprogressbar.xml" />
+      <xi:include href="xml/btkstatusbar.xml" />
+      <xi:include href="xml/btkinfobar.xml" />
+      <xi:include href="xml/btkstatusicon.xml" />
+      <xi:include href="xml/btkspinner.xml" />
+    </chapter>
+
+    <chapter id="ButtonWidgets">
+      <title>Buttons and Toggles</title>
+      <xi:include href="xml/btkbutton.xml" />
+      <xi:include href="xml/btkcheckbutton.xml" />
+      <xi:include href="xml/btkradiobutton.xml" />
+      <xi:include href="xml/btktogglebutton.xml" />
+      <xi:include href="xml/btklinkbutton.xml" />
+      <xi:include href="xml/btkscalebutton.xml" />
+      <xi:include href="xml/btkvolumebutton.xml" />
+    </chapter>
+
+    <chapter id="NumericEntry">
+      <title>Numeric/Text Data Entry</title>
+      <xi:include href="xml/btkentry.xml" />
+      <xi:include href="xml/btkentrybuffer.xml" />
+      <xi:include href="xml/btkentrycompletion.xml" />
+      <xi:include href="xml/btkhscale.xml" />
+      <xi:include href="xml/btkvscale.xml" />
+      <xi:include href="xml/btkspinbutton.xml" />
+      <xi:include href="xml/btkeditable.xml" />
+    </chapter>
+
+    <chapter id="TextWidgetObjects">
+      <title>Multiline Text Editor</title>
+      <xi:include href="xml/text_widget.sgml" />
+      <xi:include href="xml/btktextiter.xml" />
+      <xi:include href="xml/btktextmark.xml" />
+      <xi:include href="xml/btktextbuffer.xml" />
+      <xi:include href="xml/btktexttag.xml" />
+      <xi:include href="xml/btktexttagtable.xml" />
+      <xi:include href="xml/btktextview.xml" />
+    </chapter>
+
+    <chapter id="TreeWidgetObjects">
+      <title>Tree, List and Icon Grid Widgets</title>
+      <xi:include href="xml/tree_widget.sgml" />
+      <xi:include href="xml/btktreemodel.xml" />
+      <xi:include href="xml/btktreeselection.xml" />
+      <xi:include href="xml/btktreeviewcolumn.xml" />
+      <xi:include href="xml/btktreeview.xml" />
+      <xi:include href="xml/btktreednd.xml" />
+      <xi:include href="xml/btkcellview.xml" />
+      <xi:include href="xml/btkiconview.xml" />
+      <xi:include href="xml/btktreesortable.xml" />
+      <xi:include href="xml/btktreemodelsort.xml" />
+      <xi:include href="xml/btktreemodelfilter.xml" />
+      <xi:include href="xml/btkcelllayout.xml" />
+      <xi:include href="xml/btkcellrenderer.xml" />
+      <xi:include href="xml/btkcelleditable.xml" />
+      <xi:include href="xml/btkcellrendereraccel.xml" />
+      <xi:include href="xml/btkcellrenderercombo.xml" />
+      <xi:include href="xml/btkcellrendererpixbuf.xml" />
+      <xi:include href="xml/btkcellrendererprogress.xml" />
+      <xi:include href="xml/btkcellrendererspin.xml" />
+      <xi:include href="xml/btkcellrenderertext.xml" />
+      <xi:include href="xml/btkcellrenderertoggle.xml" />
+      <xi:include href="xml/btkcellrendererspinner.xml" />
+      <xi:include href="xml/btkliststore.xml" />
+      <xi:include href="xml/btktreestore.xml" />
+    </chapter>
+
+    <chapter id="MenusAndCombos">
+      <title>Menus, Combo Box, Toolbar</title>
+      <xi:include href="xml/btkcombobox.xml" />
+      <xi:include href="xml/btkcomboboxtext.xml" />
+      <xi:include href="xml/btkcomboboxentry.xml" />
+      <xi:include href="xml/btkmenu.xml" />
+      <xi:include href="xml/btkmenubar.xml" />
+      <xi:include href="xml/btkmenuitem.xml" />
+      <xi:include href="xml/btkimagemenuitem.xml" />
+      <xi:include href="xml/btkradiomenuitem.xml" />
+      <xi:include href="xml/btkcheckmenuitem.xml" />
+      <xi:include href="xml/btkseparatormenuitem.xml" />
+      <xi:include href="xml/btktearoffmenuitem.xml" />
+      <xi:include href="xml/btktoolshell.xml" />
+      <xi:include href="xml/btktoolbar.xml" />
+      <xi:include href="xml/btktoolitem.xml" />
+      <xi:include href="xml/btktoolpalette.xml" />
+      <xi:include href="xml/btktoolitemgroup.xml" />
+      <xi:include href="xml/btkseparatortoolitem.xml" />
+      <xi:include href="xml/btktoolbutton.xml" />
+      <xi:include href="xml/btkmenutoolbutton.xml" />
+      <xi:include href="xml/btktoggletoolbutton.xml" />
+      <xi:include href="xml/btkradiotoolbutton.xml" />
+    </chapter>
+
+    <chapter id="Actions">
+      <title>Action-based menus and toolbars</title>
+      <xi:include href="xml/btkuimanager.xml" />
+      <xi:include href="xml/btkactiongroup.xml" />
+      <xi:include href="xml/btkaction.xml" />
+      <xi:include href="xml/btktoggleaction.xml" />
+      <xi:include href="xml/btkradioaction.xml" />
+      <xi:include href="xml/btkrecentaction.xml" />
+      <xi:include href="xml/btkactivatable.xml" />
+    </chapter>
+
+    <chapter id="SelectorWidgets">
+      <title>Selectors (File/Font/Color/Input Devices)</title>
+      <xi:include href="xml/btkcolorbutton.xml" />
+      <xi:include href="xml/btkcolorseldlg.xml" />
+      <xi:include href="xml/btkcolorsel.xml" />
+      <xi:include href="xml/btkhsv.xml" />
+      <xi:include href="xml/btkfilechooser.xml" />
+      <xi:include href="xml/btkfilechooserbutton.xml" />
+      <xi:include href="xml/btkfilechooserdialog.xml" />
+      <xi:include href="xml/btkfilechooserwidget.xml" />
+      <xi:include href="xml/btkfilefilter.xml" />
+      <xi:include href="xml/btkfontbutton.xml" />
+      <xi:include href="xml/btkfontsel.xml" />
+      <xi:include href="xml/btkfontseldlg.xml" />
+      <xi:include href="xml/btkinputdialog.xml" />
+    </chapter>
+    
+    <chapter id="LayoutContainers">
+      <title>Layout Containers</title>
+      <xi:include href="xml/btkalignment.xml" />
+      <xi:include href="xml/btkaspectframe.xml" />
+      <xi:include href="xml/btkhbox.xml" />
+      <xi:include href="xml/btkvbox.xml" />
+      <xi:include href="xml/btkhbbox.xml" />
+      <xi:include href="xml/btkvbbox.xml" />
+      <xi:include href="xml/btkfixed.xml" />
+      <xi:include href="xml/btkhpaned.xml" />
+      <xi:include href="xml/btkvpaned.xml" />
+      <xi:include href="xml/btklayout.xml" />
+      <xi:include href="xml/btknotebook.xml" />
+      <xi:include href="xml/btktable.xml" />
+      <xi:include href="xml/btkexpander.xml" />
+      <xi:include href="xml/btkorientable.xml" />
+    </chapter>
+
+    <chapter id="Ornaments">
+      <title>Ornaments</title>
+      <xi:include href="xml/btkframe.xml" />
+      <xi:include href="xml/btkhseparator.xml" />
+      <xi:include href="xml/btkvseparator.xml" />
+    </chapter>
+
+    <chapter id="ScrollingWidgets">
+      <title>Scrolling</title>
+      <xi:include href="xml/btkhscrollbar.xml" />
+      <xi:include href="xml/btkvscrollbar.xml" />
+      <xi:include href="xml/btkscrolledwindow.xml" />
+    </chapter>
+
+    <chapter id="Printing">
+      <title>Printing</title>
+      <xi:include href="xml/btkprintoperation.xml" />
+      <xi:include href="xml/btkprintcontext.xml" />
+      <xi:include href="xml/btkprintsettings.xml" />
+      <xi:include href="xml/btkpagesetup.xml" />
+      <xi:include href="xml/btkpapersize.xml" />
+      <xi:include href="xml/btkprinter.xml" />
+      <xi:include href="xml/btkprintjob.xml" />
+      <xi:include href="xml/btkprintunixdialog.xml" />
+      <xi:include href="xml/btkpagesetupunixdialog.xml" />
+    </chapter>
+
+    <chapter id="MiscObjects">
+      <title>Miscellaneous</title>
+      <xi:include href="xml/btkadjustment.xml" />
+      <xi:include href="xml/btkarrow.xml" />
+      <xi:include href="xml/btkcalendar.xml" />
+      <xi:include href="xml/btkdrawingarea.xml" />
+      <xi:include href="xml/btkeventbox.xml" />
+      <xi:include href="xml/btkhandlebox.xml" />
+      <xi:include href="xml/btkimcontextsimple.xml" />
+      <xi:include href="xml/btkimmulticontext.xml" />
+      <xi:include href="xml/btksizegroup.xml" />
+      <xi:include href="xml/btktooltip.xml" />
+      <xi:include href="xml/btkviewport.xml" />
+      <xi:include href="xml/btkaccessible.xml" />
+    </chapter>
+
+    <chapter id="AbstractObjects">
+      <title>Abstract Base Classes</title>
+      <xi:include href="xml/btkbin.xml" />
+      <xi:include href="xml/btkbox.xml" />
+      <xi:include href="xml/btkbbox.xml" />
+      <xi:include href="xml/btkcontainer.xml" />
+      <xi:include href="xml/btkitem.xml" />
+      <xi:include href="xml/btkmenushell.xml" />
+      <xi:include href="xml/btkmisc.xml" />
+      <xi:include href="xml/btkobject.xml" />
+      <xi:include href="xml/btkpaned.xml" />
+      <xi:include href="xml/btkrange.xml" />
+      <xi:include href="xml/btkscale.xml" />
+      <xi:include href="xml/btkscrollbar.xml" />
+      <xi:include href="xml/btkseparator.xml" />
+      <xi:include href="xml/btkwidget.xml" />
+      <xi:include href="xml/btkimcontext.xml" />
+    </chapter>
+
+    <chapter id="PlugSocket">
+      <title>Cross-process Embedding</title>
+      <xi:include href="xml/btkplug.xml" />
+      <xi:include href="xml/btksocket.xml" />
+    </chapter>
+
+    <chapter id="SpecialObjects">
+      <title>Special-purpose features</title>
+      <xi:include href="xml/btkcurve.xml" />
+      <xi:include href="xml/btkgamma.xml" />
+      <xi:include href="xml/btkruler.xml" />
+      <xi:include href="xml/btkhruler.xml" />
+      <xi:include href="xml/btkvruler.xml" />
+    </chapter>
+
+    <chapter id="RecentDocuments">
+      <title>Recently Used Documents</title>
+      <xi:include href="xml/btkrecentmanager.xml" />
+      <xi:include href="xml/btkrecentchooser.xml" />
+      <xi:include href="xml/btkrecentchooserdialog.xml" />
+      <xi:include href="xml/btkrecentchoosermenu.xml" />
+      <xi:include href="xml/btkrecentchooserwidget.xml" />
+      <xi:include href="xml/btkrecentfilter.xml" />
+    </chapter>
+
+    <chapter id="Builder">
+      <title>Interface builder</title>
+      <xi:include href="xml/btkbuildable.xml" />
+      <xi:include href="xml/btkbuilder.xml" />
+    </chapter>
+
+    <chapter id="DeprecatedObjects">
+      <title>Deprecated</title>
+      <xi:include href="xml/btkclist.xml" />
+      <xi:include href="xml/btkctree.xml" />
+      <xi:include href="xml/btkcombo.xml" />
+      <xi:include href="xml/btkfilesel.xml" />
+      <xi:include href="xml/btkitemfactory.xml" />
+      <xi:include href="xml/btklist.xml" />
+      <xi:include href="xml/btklistitem.xml" />
+      <xi:include href="xml/btkoldeditable.xml" />
+      <xi:include href="xml/btkoptionmenu.xml" />
+      <xi:include href="xml/btkpixmap.xml" />
+      <xi:include href="xml/btkpreview.xml" />
+      <xi:include href="xml/btkprogress.xml" />
+      <xi:include href="xml/btktext.xml" />
+      <xi:include href="xml/btktooltips.xml" />
+      <xi:include href="xml/btktipsquery.xml" />
+      <xi:include href="xml/btktree.xml" />
+      <xi:include href="xml/btktreeitem.xml" />
+    </chapter>
+  </part>
+
+  <part id="migrating">
+    <title>Migrating from Previous Versions of BTK+</title>
+
+    <partintro>
+      <para>
+	This part describes what you need to change in programs use
+	older versions of BTK+ so that they can use the new features.
+        It also mentions how to convert applications using widgets
+        found in the libbunnyui library to use their counterparts
+        in BTK+.
+      </para>
+    </partintro>
+
+    <xi:include href="xml/migrating-checklist.sgml" />
+    <xi:include href="changes-1.2.sgml" />
+    <xi:include href="changes-2.0.sgml" />
+    <xi:include href="xml/migrating-BtkFileChooser.sgml" />
+    <xi:include href="xml/migrating-BtkAction.sgml" />
+    <xi:include href="xml/migrating-BtkComboBox.sgml" />
+    <xi:include href="xml/migrating-BtkIconView.sgml" />
+    <xi:include href="xml/migrating-BtkAboutDialog.sgml" />
+    <xi:include href="xml/migrating-BtkColorButton.sgml" />
+    <xi:include href="xml/migrating-BtkAssistant.sgml" />
+    <xi:include href="xml/migrating-BtkRecentChooser.sgml" />
+    <xi:include href="xml/migrating-BtkLinkButton.sgml" />
+    <xi:include href="xml/migrating-BtkBuilder.sgml" />
+    <xi:include href="xml/migrating-BtkTooltip.sgml" />
+    <xi:include href="xml/migrating-BtkEntry-icons.sgml" />
+    <xi:include href="xml/migrating-BtkLabel-links.sgml" />
+    <xi:include href="xml/migrating-ClientSideWindows.sgml" />
+  </part>
+
+  <part>
+    <title>BTK+ Tools</title>
+    <xi:include href="btk-query-immodules-2.0.xml" />
+    <xi:include href="btk-update-icon-cache.xml" />
+    <xi:include href="btk-builder-convert.xml" />
+  </part>
+
+  <xi:include href="glossary.xml" />
+
+  <index id="api-index-full">
+    <title>Index of all symbols</title>
+    <xi:include href="xml/api-index-full.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-deprecated" role="deprecated">
+    <title>Index of deprecated symbols</title>
+    <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-2" role="2.2">
+    <title>Index of new symbols in 2.2</title>
+    <xi:include href="xml/api-index-2.2.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-4" role="2.4">
+    <title>Index of new symbols in 2.4</title>
+    <xi:include href="xml/api-index-2.4.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-6" role="2.6">
+    <title>Index of new symbols in 2.6</title>
+    <xi:include href="xml/api-index-2.6.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-8" role="2.8">
+    <title>Index of new symbols in 2.8</title>
+    <xi:include href="xml/api-index-2.8.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-10" role="2.10">
+    <title>Index of new symbols in 2.10</title>
+    <xi:include href="xml/api-index-2.10.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-12" role="2.12">
+    <title>Index of new symbols in 2.12</title>
+    <xi:include href="xml/api-index-2.12.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-14" role="2.14">
+    <title>Index of new symbols in 2.14</title>
+    <xi:include href="xml/api-index-2.14.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-16" role="2.16">
+    <title>Index of new symbols in 2.16</title>
+    <xi:include href="xml/api-index-2.16.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-18" role="2.18">
+    <title>Index of new symbols in 2.18</title>
+    <xi:include href="xml/api-index-2.18.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-20" role="2.20">
+    <title>Index of new symbols in 2.20</title>
+    <xi:include href="xml/api-index-2.20.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-22" role="2.22">
+    <title>Index of new symbols in 2.22</title>
+    <xi:include href="xml/api-index-2.22.xml"><xi:fallback /></xi:include>
+  </index>
+  <index id="api-index-2-24" role="2.24">
+    <title>Index of new symbols in 2.24</title>
+    <xi:include href="xml/api-index-2.24.xml"><xi:fallback /></xi:include>
+  </index>
+
+  <xi:include href="xml/annotation-glossary.xml"><xi:fallback /></xi:include>
+
+</book>

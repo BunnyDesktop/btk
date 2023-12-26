@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# Build zipfiles for BTK on Win32
+
+ZIP=/tmp/btk+-@BTK_VERSION@.zip
+DEVZIP=/tmp/btk+-dev-@BTK_VERSION@.zip
+cd @prefix@
+
+mkdir -p share/doc/btk+-@BTK_VERSION@
+cp -p @abs_srcdir@/COPYING share/doc/btk+-@BTK_VERSION@
+
+mkdir -p share/doc/btk+-dev-@BTK_VERSION@
+cp -p @abs_srcdir@/COPYING share/doc/btk+-dev-@BTK_VERSION@
+
+rm $ZIP
+zip $ZIP -@ <<EOF
+etc/btk-2.0/btkrc
+lib/btk-2.0/@BTK_BINARY_VERSION/immodules.cache
+etc/btk-2.0/im-multipress.conf
+bin/libbdk-win32-@BTK_API_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
+bin/libbtk-win32-@BTK_API_VERSION@-@LT_CURRENT_MINUS_AGE@.dll
+bin/libbailutil-@BAIL_LT_CURRENT_MINUS_AGE@.dll
+bin/btk-query-immodules-2.0.exe
+EOF
+
+zip $ZIP lib/btk-2.0/modules/libbail.dll lib/btk-2.0/@BTK_BINARY_VERSION@/loaders/*.dll lib/btk-2.0/@BTK_BINARY_VERSION@/immodules/*.dll lib/btk-2.0/@BTK_BINARY_VERSION@/engines/*.dll
+
+zip $ZIP share/themes/Raleigh/btk-2.0/btkrc
+zip $ZIP share/themes/Default/btk-2.0-key/btkrc
+zip $ZIP share/themes/Emacs/btk-2.0-key/btkrc
+zip $ZIP share/themes/MS-Windows/btk-2.0/btkrc
+
+zip $ZIP share/locale/*/LC_MESSAGES/btk20.mo
+zip $ZIP share/locale/*/LC_MESSAGES/btk20-properties.mo
+
+zip -r -D $ZIP share/doc/btk+-@BTK_VERSION@
+
+rm $DEVZIP
+zip -r -D $DEVZIP -@ <<EOF
+include/btk-2.0
+include/bail-1.0
+bin/btk-builder-convert
+bin/btk-demo.exe
+bin/btk-update-icon-cache.exe
+share/man
+lib/libbdk-win32-@BTK_API_VERSION@.dll.a
+lib/bdk-win32-@BTK_API_VERSION@.lib
+lib/libbtk-win32-@BTK_API_VERSION@.dll.a
+lib/btk-win32-@BTK_API_VERSION@.lib
+lib/libbailutil.dll.a
+lib/bailutil.lib
+lib/btk-2.0/include
+lib/pkgconfig
+share/aclocal
+share/btk-2.0
+share/btk-doc
+EOF
+
+zip -r $DEVZIP share/doc/btk+-dev-@BTK_VERSION@

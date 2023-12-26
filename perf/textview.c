@@ -1,23 +1,23 @@
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include "widgets.h"
 
-GtkWidget *
+BtkWidget *
 text_view_new (void)
 {
-  GtkWidget *sw;
-  GtkWidget *text_view;
-  GtkTextBuffer *buffer;
+  BtkWidget *sw;
+  BtkWidget *text_view;
+  BtkTextBuffer *buffer;
 
-  sw = gtk_scrolled_window_new (NULL, NULL);
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw), GTK_SHADOW_IN);
+  sw = btk_scrolled_window_new (NULL, NULL);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (sw), BTK_SHADOW_IN);
 
-  text_view = gtk_text_view_new ();
-  gtk_widget_set_size_request (text_view, 400, 300);
-  gtk_container_add (GTK_CONTAINER (sw), text_view);
+  text_view = btk_text_view_new ();
+  btk_widget_set_size_request (text_view, 400, 300);
+  btk_container_add (BTK_CONTAINER (sw), text_view);
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
+  buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (text_view));
 
-  gtk_text_buffer_set_text (buffer,
+  btk_text_buffer_set_text (buffer,
 			    "In felaweshipe, and pilgrimes were they alle,\n"
 			    "That toward Caunterbury wolden ryde.\n"
 			    "The chambres and the stables weren wyde,\n"

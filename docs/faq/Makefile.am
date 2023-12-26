@@ -1,20 +1,20 @@
 include $(top_srcdir)/Makefile.decl
 
 EXTRA_DIST += 			\
-	gtk-faq.sgml
+	btk-faq.sgml
 
 if HAVE_DOCBOOK
 html:
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); \
-	   db2html gtk-faq.sgml; \
+	   db2html btk-faq.sgml; \
 	   test -d html && rm -r html; \
-	   mv gtk-faq html); \
+	   mv btk-faq html); \
 	fi
 
 pdf:
 	if test -w $(srcdir); then \
-	  (cd $(srcdir); db2pdf gtk-faq.sgml); \
+	  (cd $(srcdir); db2pdf btk-faq.sgml); \
 	fi
 
 all-local: html

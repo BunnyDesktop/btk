@@ -1,46 +1,46 @@
-gtk-icon-sizes = "gtk-menu=13,13:gtk-small-toolbar=16,16:gtk-large-toolbar=24,24:gtk-dnd=32,32"
-gtk-toolbar-icon-size = small-toolbar
+btk-icon-sizes = "btk-menu=13,13:btk-small-toolbar=16,16:btk-large-toolbar=24,24:btk-dnd=32,32"
+btk-toolbar-icon-size = small-toolbar
 
 # disable images in buttons. i've only seen ugly delphi apps use this feature.
-gtk-button-images = 0
+btk-button-images = 0
 
 # enable/disable images in menus. most "stock" microsoft apps don't use these, except sparingly.
 # the office apps use them heavily, though.
-gtk-menu-images = 1
+btk-menu-images = 1
 
-# use the win32 button ordering instead of the GNOME HIG one, where applicable
-gtk-alternative-button-order = 1
+# use the win32 button ordering instead of the BUNNY HIG one, where applicable
+btk-alternative-button-order = 1
 
 # use the win32 sort indicators direction, as in Explorer
-gtk-alternative-sort-arrows = 1
+btk-alternative-sort-arrows = 1
 
 # Windows users don't expect the PC Speaker beeping at them when they backspace in an empty textview and stuff like that
-gtk-error-bell = 0
+btk-error-bell = 0
 
 style "msw-default"
 {
-  GtkWidget::interior-focus = 1
-  GtkOptionMenu::indicator-size = { 9, 5 }
-  GtkOptionMenu::indicator-spacing = { 7, 5, 2, 2 }
-  GtkSpinButton::shadow-type = in
+  BtkWidget::interior-focus = 1
+  BtkOptionMenu::indicator-size = { 9, 5 }
+  BtkOptionMenu::indicator-spacing = { 7, 5, 2, 2 }
+  BtkSpinButton::shadow-type = in
 
   # Owen and I disagree that these should be themable
-  #GtkUIManager::add-tearoffs = 0
-  #GtkComboBox::add-tearoffs = 0
+  #BtkUIManager::add-tearoffs = 0
+  #BtkComboBox::add-tearoffs = 0
   
-  GtkComboBox::appears-as-list = 1
-  GtkComboBox::focus-on-click = 0
+  BtkComboBox::appears-as-list = 1
+  BtkComboBox::focus-on-click = 0
   
   GOComboBox::add_tearoffs = 0
 
-  GtkTreeView::allow-rules = 0
-  GtkTreeView::expander-size = 12
+  BtkTreeView::allow-rules = 0
+  BtkTreeView::expander-size = 12
 
-  GtkExpander::expander-size = 12
+  BtkExpander::expander-size = 12
 
-  GtkScrolledWindow::scrollbar_spacing = 1
+  BtkScrolledWindow::scrollbar_spacing = 1
 
-  GtkSeparatorMenuItem::horizontal-padding = 2
+  BtkSeparatorMenuItem::horizontal-padding = 2
 
   engine "wimp" 
   {
@@ -54,7 +54,7 @@ binding "ms-windows-tree-view"
   bind "Left" { "expand-collapse-cursor-row" (1,0,0) }
 }
 
-class "GtkTreeView" binding "ms-windows-tree-view"
+class "BtkTreeView" binding "ms-windows-tree-view"
 
 style "msw-combobox-thickness" = "msw-default"
 {
@@ -63,4 +63,4 @@ style "msw-combobox-thickness" = "msw-default"
 }
 
 widget_class "*TreeView*ComboBox*" style "msw-combobox-thickness"
-widget_class "*ComboBox*GtkFrame*" style "msw-combobox-thickness"
+widget_class "*ComboBox*BtkFrame*" style "msw-combobox-thickness"

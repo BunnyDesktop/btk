@@ -1,23 +1,23 @@
-## Makefile.am for gtk+/tests
+## Makefile.am for btk+/tests
 include $(top_srcdir)/Makefile.decl
 
 INCLUDES =				\
 	-I$(top_srcdir)			\
-	-I$(top_builddir)/gdk		\
-	-I$(top_srcdir)/gdk		\
-	-DGDK_DISABLE_DEPRECATED	\
-	-DGTK_DISABLE_DEPRECATED	\
-	$(GTK_DEBUG_FLAGS)		\
-	$(GTK_DEP_CFLAGS)
+	-I$(top_builddir)/bdk		\
+	-I$(top_srcdir)/bdk		\
+	-DBDK_DISABLE_DEPRECATED	\
+	-DBTK_DISABLE_DEPRECATED	\
+	$(BTK_DEBUG_FLAGS)		\
+	$(BTK_DEP_CFLAGS)
 
 DEPS =									\
-	$(top_builddir)/gdk/$(gdktargetlib)				\
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(top_builddir)/bdk/$(bdktargetlib)				\
+	$(top_builddir)/btk/$(btktargetlib)
 
 LDADD =								\
-	$(top_builddir)/gdk/$(gdktargetlib)				\
-	$(top_builddir)/gtk/$(gtktargetlib)				\
-	$(GTK_DEP_LIBS)							\
+	$(top_builddir)/bdk/$(bdktargetlib)				\
+	$(top_builddir)/btk/$(btktargetlib)				\
+	$(BTK_DEP_LIBS)							\
 	-lm
 
 if USE_X11
@@ -32,7 +32,7 @@ noinst_PROGRAMS =  $(TEST_PROGS)	\
 	testassistant			\
 	testbbox			\
 	testbuttons			\
-	testcairo			\
+	testbairo			\
 	testcalendar			\
 	testcombo			\
 	testcombochange			\
@@ -44,7 +44,7 @@ noinst_PROGRAMS =  $(TEST_PROGS)	\
 	testfilechooser			\
 	testfilechooserbutton		\
 	testframe			\
-	testgtk				\
+	testbtk				\
 	testiconview			\
 	testiconview-keynav		\
 	testicontheme			\
@@ -113,7 +113,7 @@ testassistant_DEPENDENCIES = $(TEST_DEPS)
 testbbox_DEPENDENCIES = $(TEST_DEPS)
 testbuttons_DEPENDENCIES = $(TEST_DEPS)
 testframe_DEPENDENCIES = $(TEST_DEPS)
-testcairo_DEPENDENCIES = $(TEST_DEPS)
+testbairo_DEPENDENCIES = $(TEST_DEPS)
 testcalendar_DEPENDENCIES = $(TEST_DEPS)
 testcombo_DEPENDENCIES = $(TEST_DEPS)
 testcombochange_DEPENDENCIES = $(TEST_DEPS)
@@ -124,7 +124,7 @@ testentrycompletion_DEPENDENCIES = $(TEST_DEPS)
 testentryicons_DEPENDENCIES = $(TEST_DEPS)
 testfilechooser_DEPENDENCIES = $(TEST_DEPS)
 testfilechooserbutton_DEPENDENCIES = $(TEST_DEPS)
-testgtk_DEPENDENCIES = $(TEST_DEPS)
+testbtk_DEPENDENCIES = $(TEST_DEPS)
 testinput_DEPENDENCIES = $(TEST_DEPS)
 testimage_DEPENDENCIES = $(TEST_DEPS)
 testmenus_DEPENDENCIES = $(TEST_DEPS)
@@ -182,9 +182,9 @@ testfilechooserbutton_SOURCES =	\
 	prop-editor.c		\
 	testfilechooserbutton.c 	
 
-testgtk_SOURCES =	\
+testbtk_SOURCES =	\
 	prop-editor.c   \
-	testgtk.c 	
+	testbtk.c 	
 
 testtreeedit_SOURCES = 	\
 	testtreeedit.c
@@ -263,8 +263,8 @@ testvolumebutton_SOURCES =	\
 	testvolumebutton.c
 
 testoffscreen_SOURCES = 	\
-	gtkoffscreenbox.c	\
-	gtkoffscreenbox.h	\
+	btkoffscreenbox.c	\
+	btkoffscreenbox.h	\
 	testoffscreen.c
 
 testoffscreenwindow_SOURCES =	\
@@ -275,9 +275,9 @@ testwindows_SOURCES = 	\
 
 EXTRA_DIST += 			\
 	prop-editor.h		\
-	testgtk.1 		\
-	testgtkrc 		\
-	testgtkrc2 		\
+	testbtk.1 		\
+	testbtkrc 		\
+	testbtkrc2 		\
 	circles.xbm		\
 	3DRings.xpm		\
 	FilesQueue.xpm		\
@@ -292,7 +292,7 @@ EXTRA_DIST += 			\
 	merge-1.ui		\
 	merge-2.ui		\
 	merge-3.ui		\
-	gnome-textfile.png	\
+	bunny-textfile.png	\
 	makefile.msc		\
 	file-chooser-test-dir/empty \
 	file-chooser-test-dir/text.txt

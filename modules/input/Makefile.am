@@ -1,4 +1,4 @@
-## Makefile.am for gtk+/modules/input
+## Makefile.am for btk+/modules/input
 include $(top_srcdir)/Makefile.decl
 
 if PLATFORM_WIN32
@@ -7,30 +7,30 @@ endif
 
 INCLUDES = \
 	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/gdk		\
-	-I$(top_builddir)/gdk		\
-	-DGDK_DISABLE_DEPRECATED	\
-	-DGTK_DISABLE_DEPRECATED 	\
-	$(GTK_DEBUG_FLAGS)		\
-	$(GTK_XIM_FLAGS)		\
-	$(GTK_DEP_CFLAGS)		\
+	-I$(top_srcdir)/bdk		\
+	-I$(top_builddir)/bdk		\
+	-DBDK_DISABLE_DEPRECATED	\
+	-DBTK_DISABLE_DEPRECATED 	\
+	$(BTK_DEBUG_FLAGS)		\
+	$(BTK_XIM_FLAGS)		\
+	$(BTK_DEP_CFLAGS)		\
 	$(INCLUDED_IMMODULE_DEFINE)
 
 DEPS = \
-	$(top_builddir)/gdk/$(gdktargetlib) 				\
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(top_builddir)/bdk/$(bdktargetlib) 				\
+	$(top_builddir)/btk/$(btktargetlib)
 
 LDADDS = \
-	$(top_builddir)/gdk/$(gdktargetlib)        			\
-	$(top_builddir)/gtk/$(gtktargetlib) 				\
-	$(GTK_DEP_LIBS)
+	$(top_builddir)/bdk/$(bdktargetlib)        			\
+	$(top_builddir)/btk/$(btktargetlib) 				\
+	$(BTK_DEP_LIBS)
 
-moduledir = $(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/immodules
+moduledir = $(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/immodules
 
 im_xim_la_LDFLAGS = -rpath $(moduledir) -avoid-version -module $(no_undefined)
 im_xim_la_SOURCES = 		\
-	gtkimcontextxim.c 	\
-	gtkimcontextxim.h	\
+	btkimcontextxim.c 	\
+	btkimcontextxim.h	\
 	imxim.c
 libstatic_im_xim_la_SOURCES = $(im_xim_la_SOURCES)
 im_xim_la_LIBADD = $(LDADDS)
@@ -96,8 +96,8 @@ im_thai_la_LDFLAGS = -rpath $(moduledir) -avoid-version -module $(no_undefined)
 im_thai_la_SOURCES = 		\
 	thai-charprop.c 	\
 	thai-charprop.h 	\
-	gtkimcontextthai.c 	\
-	gtkimcontextthai.h	\
+	btkimcontextthai.c 	\
+	btkimcontextthai.h	\
 	imthai.c
 libstatic_im_thai_la_SOURCES = $(im_thai_la_SOURCES)
 im_thai_la_LIBADD = $(LDADDS)
@@ -139,8 +139,8 @@ endif
 
 im_ime_la_LDFLAGS = -rpath $(moduledir) -avoid-version -module $(no_undefined)
 im_ime_la_SOURCES = \
-	gtkimcontextime.c \
-	gtkimcontextime.h \
+	btkimcontextime.c \
+	btkimcontextime.h \
 	imime.c 	  \
 	imm-extra.h
 libstatic_im_ime_la_SOURCES = $(im_ime_la_SOURCES)
@@ -167,13 +167,13 @@ QUARTZ_MODULE = im-quartz.la
 endif
 endif
 
-multipress_defs = -DMULTIPRESS_LOCALEDIR=\""$(mplocaledir)"\" -DMULTIPRESS_CONFDIR=\""$(sysconfdir)/gtk-2.0"\"
+multipress_defs = -DMULTIPRESS_LOCALEDIR=\""$(mplocaledir)"\" -DMULTIPRESS_CONFDIR=\""$(sysconfdir)/btk-2.0"\"
 im_multipress_la_CPPFLAGS = $(multipress_defs)
 libstatic_im_multipress_la_CPPFLAGS = $(im_multipress_la_CPPFLAGS)
 im_multipress_la_LDFLAGS = -rpath $(moduledir) -avoid-version -module $(no_undefined)
 im_multipress_la_SOURCES =	\
-	gtkimcontextmultipress.c	\
-	gtkimcontextmultipress.h	\
+	btkimcontextmultipress.c	\
+	btkimcontextmultipress.h	\
 	immultipress.c
 libstatic_im_multipress_la_SOURCES = $(im_multipress_la_SOURCES)
 im_multipress_la_LIBADD = $(LDADDS)
@@ -183,7 +183,7 @@ else
 MULTIPRESS_MODULE = im-multipress.la
 endif
 
-imconffiledir = $(sysconfdir)/gtk-2.0
+imconffiledir = $(sysconfdir)/btk-2.0
 dist_imconffile_DATA = im-multipress.conf
 
 if CROSS_COMPILING
@@ -200,21 +200,21 @@ endif
 # after the libraries are installed in their final locations.
 install-data-hook:
 	@if $(RUN_QUERY_IMMODULES_TEST) ; then \
-	  echo $(mkinstalldirs) $(DESTDIR)$(sysconfdir)/gtk-2.0 ; \
-	  $(mkinstalldirs) $(DESTDIR)$(sysconfdir)/gtk-2.0 ; \
-	  echo "$(DESTDOR)$(bindir)/gtk-query-immodules-2.0 > $(DESTDIR)$(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/immodules.cache" ; \
-	  $(DESTDIR)$(bindir)/gtk-query-immodules-2.0 > $(DESTDIR)$(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/immodules.cache ; \
+	  echo $(mkinstalldirs) $(DESTDIR)$(sysconfdir)/btk-2.0 ; \
+	  $(mkinstalldirs) $(DESTDIR)$(sysconfdir)/btk-2.0 ; \
+	  echo "$(DESTDOR)$(bindir)/btk-query-immodules-2.0 > $(DESTDIR)$(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/immodules.cache" ; \
+	  $(DESTDIR)$(bindir)/btk-query-immodules-2.0 > $(DESTDIR)$(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/immodules.cache ; \
 	else \
 	  echo "***" ; \
 	  echo "*** Warning: immodules.cache not built" ; \
 	  echo "***" ; \
 	  echo "*** Generate this file manually on host" ; \
-	  echo "*** system using gtk-query-immodules-2.0" ; \
+	  echo "*** system using btk-query-immodules-2.0" ; \
 	  echo "***" ; \
         fi
 
 uninstall-local:
-	rm -f $(DESTDIR)$(libdir)/gtk-2.0/2.10.0/immodules.cache
+	rm -f $(DESTDIR)$(libdir)/btk-2.0/2.10.0/immodules.cache
 
 if BUILD_DYNAMIC_MODULES
 
@@ -253,7 +253,7 @@ noinst_LTLIBRARIES =				\
 included-modules: $(noinst_LTLIBRARIES)
 
 immodules.cache: Makefile.am $(module_LTLIBRARIES)
-	$(top_builddir)/gtk/gtk-query-immodules-2.0 $(module_LTLIBRARIES) > immodules.cache
+	$(top_builddir)/btk/btk-query-immodules-2.0 $(module_LTLIBRARIES) > immodules.cache
 
 CLEANFILES = immodules.cache
 

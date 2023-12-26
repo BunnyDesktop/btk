@@ -1,0 +1,773 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Event Structures: BDK 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BDK 2 Reference Manual">
+<link rel="up" href="reference.html" title="API Reference">
+<link rel="prev" href="bdk2-Events.html" title="Events">
+<link rel="next" href="bdk2-Keyboard-Handling.html" title="Keyboard Handling">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#bdk2-Event-Structures.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="bdk2-Events.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="bdk2-Keyboard-Handling.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="bdk2-Event-Structures"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="bdk2-Event-Structures.top_of_page"></a>Event Structures</span></h2>
+<p>Event Structures</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="bdk2-Event-Structures.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">union</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent">BdkEvent</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventAny" title="struct BdkEventAny">BdkEventAny</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventKey" title="struct BdkEventKey">BdkEventKey</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventButton" title="struct BdkEventButton">BdkEventButton</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventScroll" title="struct BdkEventScroll">BdkEventScroll</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventMotion" title="struct BdkEventMotion">BdkEventMotion</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventExpose" title="struct BdkEventExpose">BdkEventExpose</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventVisibility" title="struct BdkEventVisibility">BdkEventVisibility</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventCrossing" title="struct BdkEventCrossing">BdkEventCrossing</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventFocus" title="struct BdkEventFocus">BdkEventFocus</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventConfigure" title="struct BdkEventConfigure">BdkEventConfigure</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventProperty" title="struct BdkEventProperty">BdkEventProperty</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventSelection" title="struct BdkEventSelection">BdkEventSelection</a></td>
+</tr>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkNativeWindow" title="BdkNativeWindow">BdkNativeWindow</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventDND" title="struct BdkEventDND">BdkEventDND</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventProximity" title="struct BdkEventProximity">BdkEventProximity</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventClient" title="struct BdkEventClient">BdkEventClient</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventNoExpose" title="struct BdkEventNoExpose">BdkEventNoExpose</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventWindowState" title="struct BdkEventWindowState">BdkEventWindowState</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventSetting" title="struct BdkEventSetting">BdkEventSetting</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventOwnerChange" title="struct BdkEventOwnerChange">BdkEventOwnerChange</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkEventGrabBroken" title="struct BdkEventGrabBroken">BdkEventGrabBroken</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkScrollDirection" title="enum BdkScrollDirection">BdkScrollDirection</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkVisibilityState" title="enum BdkVisibilityState">BdkVisibilityState</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkCrossingMode" title="enum BdkCrossingMode">BdkCrossingMode</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkNotifyType" title="enum BdkNotifyType">BdkNotifyType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkPropertyState" title="enum BdkPropertyState">BdkPropertyState</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkWindowState" title="enum BdkWindowState">BdkWindowState</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkSettingAction" title="enum BdkSettingAction">BdkSettingAction</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-Event-Structures.html#BdkOwnerChange" title="enum BdkOwnerChange">BdkOwnerChange</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="bdk2-Event-Structures.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;bdk/bdk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="bdk2-Event-Structures.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="bdk2-Event-Structures.functions_details"></a><h2>Functions</h2>
+<p></p>
+</div>
+<div class="refsect1">
+<a name="bdk2-Event-Structures.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BdkEvent"></a><h3>union BdkEvent</h3>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventAny"></a><h3>struct BdkEventAny</h3>
+<pre class="programlisting">struct BdkEventAny {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventKey"></a><h3>struct BdkEventKey</h3>
+<pre class="programlisting">struct BdkEventKey {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  guint32 time;
+  guint state;
+  guint keyval;
+  gint length;
+  gchar *string;
+  guint16 hardware_keycode;
+  guint8 group;
+  guint is_modifier : 1;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventButton"></a><h3>struct BdkEventButton</h3>
+<pre class="programlisting">struct BdkEventButton {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  guint32 time;
+  gdouble x;
+  gdouble y;
+  gdouble *axes;
+  guint state;
+  guint button;
+  BdkDevice *device;
+  gdouble x_root, y_root;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventScroll"></a><h3>struct BdkEventScroll</h3>
+<pre class="programlisting">struct BdkEventScroll {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  guint32 time;
+  gdouble x;
+  gdouble y;
+  guint state;
+  BdkScrollDirection direction;
+  BdkDevice *device;
+  gdouble x_root, y_root;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventMotion"></a><h3>struct BdkEventMotion</h3>
+<pre class="programlisting">struct BdkEventMotion {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  guint32 time;
+  gdouble x;
+  gdouble y;
+  gdouble *axes;
+  guint state;
+  gint16 is_hint;
+  BdkDevice *device;
+  gdouble x_root, y_root;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventExpose"></a><h3>struct BdkEventExpose</h3>
+<pre class="programlisting">struct BdkEventExpose {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkRectangle area;
+  BdkRebunnyion *rebunnyion;
+  gint count; /* If non-zero, how many more events follow. */
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventVisibility"></a><h3>struct BdkEventVisibility</h3>
+<pre class="programlisting">struct BdkEventVisibility {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkVisibilityState state;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventCrossing"></a><h3>struct BdkEventCrossing</h3>
+<pre class="programlisting">struct BdkEventCrossing {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkWindow *subwindow;
+  guint32 time;
+  gdouble x;
+  gdouble y;
+  gdouble x_root;
+  gdouble y_root;
+  BdkCrossingMode mode;
+  BdkNotifyType detail;
+  gboolean focus;
+  guint state;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventFocus"></a><h3>struct BdkEventFocus</h3>
+<pre class="programlisting">struct BdkEventFocus {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  gint16 in;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventConfigure"></a><h3>struct BdkEventConfigure</h3>
+<pre class="programlisting">struct BdkEventConfigure {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  gint x, y;
+  gint width;
+  gint height;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventProperty"></a><h3>struct BdkEventProperty</h3>
+<pre class="programlisting">struct BdkEventProperty {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkAtom atom;
+  guint32 time;
+  guint state;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventSelection"></a><h3>struct BdkEventSelection</h3>
+<pre class="programlisting">struct BdkEventSelection {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkAtom selection;
+  BdkAtom target;
+  BdkAtom property;
+  guint32 time;
+  BdkNativeWindow requestor;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkNativeWindow"></a><h3>BdkNativeWindow</h3>
+<pre class="programlisting">typedef gpointer BdkNativeWindow;
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventDND"></a><h3>struct BdkEventDND</h3>
+<pre class="programlisting">struct BdkEventDND {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkDragContext *context;
+
+  guint32 time;
+  gshort x_root, y_root;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventProximity"></a><h3>struct BdkEventProximity</h3>
+<pre class="programlisting">struct BdkEventProximity {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  guint32 time;
+  BdkDevice *device;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventClient"></a><h3>struct BdkEventClient</h3>
+<pre class="programlisting">struct BdkEventClient {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkAtom message_type;
+  gushort data_format;
+  union {
+    char b[20];
+    short s[10];
+    long l[5];
+  } data;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventNoExpose"></a><h3>struct BdkEventNoExpose</h3>
+<pre class="programlisting">struct BdkEventNoExpose {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventWindowState"></a><h3>struct BdkEventWindowState</h3>
+<pre class="programlisting">struct BdkEventWindowState {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkWindowState changed_mask;
+  BdkWindowState new_window_state;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventSetting"></a><h3>struct BdkEventSetting</h3>
+<pre class="programlisting">struct BdkEventSetting {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkSettingAction action;
+  char *name;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventOwnerChange"></a><h3>struct BdkEventOwnerChange</h3>
+<pre class="programlisting">struct BdkEventOwnerChange {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  BdkNativeWindow owner;
+  BdkOwnerChange reason;
+  BdkAtom selection;
+  guint32 time;
+  guint32 selection_time;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkEventGrabBroken"></a><h3>struct BdkEventGrabBroken</h3>
+<pre class="programlisting">struct BdkEventGrabBroken {
+  BdkEventType type;
+  BdkWindow *window;
+  gint8 send_event;
+  gboolean keyboard;
+  gboolean implicit;
+  BdkWindow *grab_window;
+};
+</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkScrollDirection"></a><h3>enum BdkScrollDirection</h3>
+<div class="refsect3">
+<a name="BdkScrollDirection.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SCROLL-UP:CAPS"></a>BDK_SCROLL_UP</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SCROLL-DOWN:CAPS"></a>BDK_SCROLL_DOWN</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SCROLL-LEFT:CAPS"></a>BDK_SCROLL_LEFT</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SCROLL-RIGHT:CAPS"></a>BDK_SCROLL_RIGHT</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkVisibilityState"></a><h3>enum BdkVisibilityState</h3>
+<div class="refsect3">
+<a name="BdkVisibilityState.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-VISIBILITY-UNOBSCURED:CAPS"></a>BDK_VISIBILITY_UNOBSCURED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-VISIBILITY-PARTIAL:CAPS"></a>BDK_VISIBILITY_PARTIAL</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-VISIBILITY-FULLY-OBSCURED:CAPS"></a>BDK_VISIBILITY_FULLY_OBSCURED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkCrossingMode"></a><h3>enum BdkCrossingMode</h3>
+<div class="refsect3">
+<a name="BdkCrossingMode.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-CROSSING-NORMAL:CAPS"></a>BDK_CROSSING_NORMAL</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-CROSSING-GRAB:CAPS"></a>BDK_CROSSING_GRAB</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-CROSSING-UNGRAB:CAPS"></a>BDK_CROSSING_UNGRAB</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-CROSSING-BTK-GRAB:CAPS"></a>BDK_CROSSING_BTK_GRAB</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-CROSSING-BTK-UNGRAB:CAPS"></a>BDK_CROSSING_BTK_UNGRAB</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-CROSSING-STATE-CHANGED:CAPS"></a>BDK_CROSSING_STATE_CHANGED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkNotifyType"></a><h3>enum BdkNotifyType</h3>
+<div class="refsect3">
+<a name="BdkNotifyType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-NOTIFY-ANCESTOR:CAPS"></a>BDK_NOTIFY_ANCESTOR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-NOTIFY-VIRTUAL:CAPS"></a>BDK_NOTIFY_VIRTUAL</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-NOTIFY-INFERIOR:CAPS"></a>BDK_NOTIFY_INFERIOR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-NOTIFY-NONLINEAR:CAPS"></a>BDK_NOTIFY_NONLINEAR</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-NOTIFY-NONLINEAR-VIRTUAL:CAPS"></a>BDK_NOTIFY_NONLINEAR_VIRTUAL</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-NOTIFY-UNKNOWN:CAPS"></a>BDK_NOTIFY_UNKNOWN</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkPropertyState"></a><h3>enum BdkPropertyState</h3>
+<div class="refsect3">
+<a name="BdkPropertyState.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-PROPERTY-NEW-VALUE:CAPS"></a>BDK_PROPERTY_NEW_VALUE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-PROPERTY-DELETE:CAPS"></a>BDK_PROPERTY_DELETE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkWindowState"></a><h3>enum BdkWindowState</h3>
+<div class="refsect3">
+<a name="BdkWindowState.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-WITHDRAWN:CAPS"></a>BDK_WINDOW_STATE_WITHDRAWN</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-ICONIFIED:CAPS"></a>BDK_WINDOW_STATE_ICONIFIED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-MAXIMIZED:CAPS"></a>BDK_WINDOW_STATE_MAXIMIZED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-STICKY:CAPS"></a>BDK_WINDOW_STATE_STICKY</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-FULLSCREEN:CAPS"></a>BDK_WINDOW_STATE_FULLSCREEN</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-ABOVE:CAPS"></a>BDK_WINDOW_STATE_ABOVE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-WINDOW-STATE-BELOW:CAPS"></a>BDK_WINDOW_STATE_BELOW</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkSettingAction"></a><h3>enum BdkSettingAction</h3>
+<div class="refsect3">
+<a name="BdkSettingAction.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SETTING-ACTION-NEW:CAPS"></a>BDK_SETTING_ACTION_NEW</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SETTING-ACTION-CHANGED:CAPS"></a>BDK_SETTING_ACTION_CHANGED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-SETTING-ACTION-DELETED:CAPS"></a>BDK_SETTING_ACTION_DELETED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BdkOwnerChange"></a><h3>enum BdkOwnerChange</h3>
+<div class="refsect3">
+<a name="BdkOwnerChange.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-OWNER-CHANGE-NEW-OWNER:CAPS"></a>BDK_OWNER_CHANGE_NEW_OWNER</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-OWNER-CHANGE-DESTROY:CAPS"></a>BDK_OWNER_CHANGE_DESTROY</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-OWNER-CHANGE-CLOSE:CAPS"></a>BDK_OWNER_CHANGE_CLOSE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

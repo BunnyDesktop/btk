@@ -19,11 +19,11 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <stdarg.h>
 
-GtkWidget *text_view;
-GtkListStore *model;
+BtkWidget *text_view;
+BtkListStore *model;
 GArray *contents;
 
 static char next_value = 'A';
@@ -31,11 +31,11 @@ static char next_value = 'A';
 static void
 test_init (void)
 {
-  if (g_file_test ("../gdk-pixbuf/libpixbufloader-pnm.la",
+  if (g_file_test ("../bdk-pixbuf/libpixbufloader-pnm.la",
 		   G_FILE_TEST_EXISTS))
     {
-      g_setenv ("GDK_PIXBUF_MODULE_FILE", "../gdk-pixbuf/gdk-pixbuf.loaders", TRUE);
-      g_setenv ("GTK_IM_MODULE_FILE", "../modules/input/immodules.cache", TRUE);
+      g_setenv ("BDK_PIXBUF_MODULE_FILE", "../bdk-pixbuf/bdk-pixbuf.loaders", TRUE);
+      g_setenv ("BTK_IM_MODULE_FILE", "../modules/input/immodules.cache", TRUE);
     }
 }
 
@@ -43,20 +43,20 @@ static void
 combochange_log (const char *fmt,
      ...)
 {
-  GtkTextBuffer *buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
-  GtkTextIter iter;
+  BtkTextBuffer *buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (text_view));
+  BtkTextIter iter;
   va_list vap;
   char *msg;
   GString *order_string;
-  GtkTextMark *tmp_mark;
+  BtkTextMark *tmp_mark;
   int i;
 
   va_start (vap, fmt);
   
   msg = g_strdup_vprintf (fmt, vap);
 
-  gtk_text_buffer_get_end_iter (buffer, &iter);
-  gtk_text_buffer_insert (buffer, &iter, msg, -1);
+  btk_text_buffer_get_end_iter (buffer, &iter);
+  btk_text_buffer_insert (buffer, &iter, msg, -1);
 
   order_string = g_string_new ("\n  ");
   for (i = 0; i < contents->len; i++)
@@ -66,52 +66,52 @@ combochange_log (const char *fmt,
       g_string_append_c (order_string, g_array_index (contents, char, i));
     }
   g_string_append_c (order_string, '\n');
-  gtk_text_buffer_insert (buffer, &iter, order_string->str, -1);
+  btk_text_buffer_insert (buffer, &iter, order_string->str, -1);
   g_string_free (order_string, TRUE);
 
-  tmp_mark = gtk_text_buffer_create_mark (buffer, NULL, &iter, FALSE);
-  gtk_text_view_scroll_mark_onscreen (GTK_TEXT_VIEW (text_view), tmp_mark);
-  gtk_text_buffer_delete_mark (buffer, tmp_mark);
+  tmp_mark = btk_text_buffer_create_mark (buffer, NULL, &iter, FALSE);
+  btk_text_view_scroll_mark_onscreen (BTK_TEXT_VIEW (text_view), tmp_mark);
+  btk_text_buffer_delete_mark (buffer, tmp_mark);
 
   g_free (msg);
 }
 
-static GtkWidget *
+static BtkWidget *
 align_button_new (const char *text)
 {
-  GtkWidget *button = gtk_button_new ();
-  GtkWidget *label = gtk_label_new (text);
+  BtkWidget *button = btk_button_new ();
+  BtkWidget *label = btk_label_new (text);
 
-  gtk_container_add (GTK_CONTAINER (button), label);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  btk_container_add (BTK_CONTAINER (button), label);
+  btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.5);
 
   return button;
 }
 
-static GtkWidget *
+static BtkWidget *
 create_combo (const char *name,
 	      gboolean is_list)
 {
-  GtkCellRenderer *cell_renderer;
-  GtkWidget *combo;
+  BtkCellRenderer *cell_renderer;
+  BtkWidget *combo;
   char *rc_string;
   
   rc_string = g_strdup_printf ("style \"%s-style\" {\n"
-			       "  GtkComboBox::appears-as-list = %d\n"
+			       "  BtkComboBox::appears-as-list = %d\n"
 			       "}\n"
 			       "\n"
 			       "widget \"*.%s\" style \"%s-style\"",
 			       name, is_list, name, name);
-  gtk_rc_parse_string (rc_string);
+  btk_rc_parse_string (rc_string);
   g_free (rc_string);
 
-  combo = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
-  cell_renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), cell_renderer, TRUE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), cell_renderer,
+  combo = btk_combo_box_new_with_model (BTK_TREE_MODEL (model));
+  cell_renderer = btk_cell_renderer_text_new ();
+  btk_cell_layout_pack_start (BTK_CELL_LAYOUT (combo), cell_renderer, TRUE);
+  btk_cell_layout_set_attributes (BTK_CELL_LAYOUT (combo), cell_renderer,
 				  "text", 0, NULL);
 
-  gtk_widget_set_name (combo, name);
+  btk_widget_set_name (combo, name);
   
   return combo;
 }
@@ -119,7 +119,7 @@ create_combo (const char *name,
 static void
 on_insert (void)
 {
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   
   int insert_pos;
   char new_value[2];
@@ -135,8 +135,8 @@ on_insert (void)
   else
     insert_pos = 0;
   
-  gtk_list_store_insert (model, &iter, insert_pos);
-  gtk_list_store_set (model, &iter, 0, new_value, -1);
+  btk_list_store_insert (model, &iter, insert_pos);
+  btk_list_store_set (model, &iter, 0, new_value, -1);
 
   g_array_insert_val (contents, insert_pos, new_value);
 
@@ -146,7 +146,7 @@ on_insert (void)
 static void
 on_delete (void)
 {
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   
   int delete_pos;
   char old_val;
@@ -155,9 +155,9 @@ on_delete (void)
     return;
   
   delete_pos = g_random_int_range (0, contents->len);
-  gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (model), &iter, NULL, delete_pos);
+  btk_tree_model_iter_nth_child (BTK_TREE_MODEL (model), &iter, NULL, delete_pos);
   
-  gtk_list_store_remove (model, &iter);
+  btk_list_store_remove (model, &iter);
 
   old_val = g_array_index (contents, char, delete_pos);
   g_array_remove_index (contents, delete_pos);
@@ -186,7 +186,7 @@ on_reorder (void)
       shuffle_array[pos] = tmp;
     }
 
-  gtk_list_store_reorder (model, shuffle_array);
+  btk_list_store_reorder (model, shuffle_array);
 
   new_contents = g_array_new (FALSE, FALSE, sizeof (char));
   for (i = 0; i < contents->len; i++)
@@ -228,98 +228,98 @@ on_animate (void)
 {
   n_animations += 20;
  
-  timer = gdk_threads_add_timeout (1000, (GSourceFunc) animation_timer, NULL);
+  timer = bdk_threads_add_timeout (1000, (GSourceFunc) animation_timer, NULL);
 }
 
 int
 main (int argc, char **argv)
 {
-  GtkWidget *dialog;
-  GtkWidget *scrolled_window;
-  GtkWidget *hbox;
-  GtkWidget *button_vbox;
-  GtkWidget *combo_vbox;
-  GtkWidget *button;
-  GtkWidget *menu_combo;
-  GtkWidget *alignment;
-  GtkWidget *label;
-  GtkWidget *list_combo;
+  BtkWidget *dialog;
+  BtkWidget *scrolled_window;
+  BtkWidget *hbox;
+  BtkWidget *button_vbox;
+  BtkWidget *combo_vbox;
+  BtkWidget *button;
+  BtkWidget *menu_combo;
+  BtkWidget *alignment;
+  BtkWidget *label;
+  BtkWidget *list_combo;
   
   test_init ();
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  model = gtk_list_store_new (1, G_TYPE_STRING);
+  model = btk_list_store_new (1, G_TYPE_STRING);
   contents = g_array_new (FALSE, FALSE, sizeof (char));
   
-  dialog = gtk_dialog_new_with_buttons ("GtkComboBox model changes",
-					NULL, GTK_DIALOG_NO_SEPARATOR,
-					GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
+  dialog = btk_dialog_new_with_buttons ("BtkComboBox model changes",
+					NULL, BTK_DIALOG_NO_SEPARATOR,
+					BTK_STOCK_CLOSE, BTK_RESPONSE_CLOSE,
 					NULL);
   
-  hbox = gtk_hbox_new (FALSE, 12);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox), hbox, TRUE, TRUE, 0);
+  hbox = btk_hbox_new (FALSE, 12);
+  btk_container_set_border_width (BTK_CONTAINER (hbox), 12);
+  btk_box_pack_start (BTK_BOX (BTK_DIALOG (dialog)->vbox), hbox, TRUE, TRUE, 0);
 
-  combo_vbox = gtk_vbox_new (FALSE, 8);
-  gtk_box_pack_start (GTK_BOX (hbox), combo_vbox, FALSE, FALSE, 0);
+  combo_vbox = btk_vbox_new (FALSE, 8);
+  btk_box_pack_start (BTK_BOX (hbox), combo_vbox, FALSE, FALSE, 0);
 
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), "<b>Menu mode</b>");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (combo_vbox), label, FALSE, FALSE, 0);
+  label = btk_label_new (NULL);
+  btk_label_set_markup (BTK_LABEL (label), "<b>Menu mode</b>");
+  btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.5);
+  btk_box_pack_start (BTK_BOX (combo_vbox), label, FALSE, FALSE, 0);
 
-  alignment = g_object_new (GTK_TYPE_ALIGNMENT, "left-padding", 12, NULL);
-  gtk_box_pack_start (GTK_BOX (combo_vbox), alignment, FALSE, FALSE, 0);
+  alignment = g_object_new (BTK_TYPE_ALIGNMENT, "left-padding", 12, NULL);
+  btk_box_pack_start (BTK_BOX (combo_vbox), alignment, FALSE, FALSE, 0);
 
   menu_combo = create_combo ("menu-combo", FALSE);
-  gtk_container_add (GTK_CONTAINER (alignment), menu_combo);
+  btk_container_add (BTK_CONTAINER (alignment), menu_combo);
 
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), "<b>List mode</b>");
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (combo_vbox), label, FALSE, FALSE, 0);
+  label = btk_label_new (NULL);
+  btk_label_set_markup (BTK_LABEL (label), "<b>List mode</b>");
+  btk_misc_set_alignment (BTK_MISC (label), 0.0, 0.5);
+  btk_box_pack_start (BTK_BOX (combo_vbox), label, FALSE, FALSE, 0);
 
-  alignment = g_object_new (GTK_TYPE_ALIGNMENT, "left-padding", 12, NULL);
-  gtk_box_pack_start (GTK_BOX (combo_vbox), alignment, FALSE, FALSE, 0);
+  alignment = g_object_new (BTK_TYPE_ALIGNMENT, "left-padding", 12, NULL);
+  btk_box_pack_start (BTK_BOX (combo_vbox), alignment, FALSE, FALSE, 0);
 
   list_combo = create_combo ("list-combo", TRUE);
-  gtk_container_add (GTK_CONTAINER (alignment), list_combo);
+  btk_container_add (BTK_CONTAINER (alignment), list_combo);
 
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-  gtk_box_pack_start (GTK_BOX (hbox), scrolled_window, TRUE, TRUE, 0);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+  scrolled_window = btk_scrolled_window_new (NULL, NULL);
+  btk_box_pack_start (BTK_BOX (hbox), scrolled_window, TRUE, TRUE, 0);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+				  BTK_POLICY_AUTOMATIC, BTK_POLICY_AUTOMATIC);
 
-  text_view = gtk_text_view_new ();
-  gtk_text_view_set_editable (GTK_TEXT_VIEW (text_view), FALSE);
-  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text_view), FALSE);
+  text_view = btk_text_view_new ();
+  btk_text_view_set_editable (BTK_TEXT_VIEW (text_view), FALSE);
+  btk_text_view_set_cursor_visible (BTK_TEXT_VIEW (text_view), FALSE);
 
-  gtk_container_add (GTK_CONTAINER (scrolled_window), text_view);
+  btk_container_add (BTK_CONTAINER (scrolled_window), text_view);
 
-  button_vbox = gtk_vbox_new (FALSE, 8);
-  gtk_box_pack_start (GTK_BOX (hbox), button_vbox, FALSE, FALSE, 0);
+  button_vbox = btk_vbox_new (FALSE, 8);
+  btk_box_pack_start (BTK_BOX (hbox), button_vbox, FALSE, FALSE, 0);
   
-  gtk_window_set_default_size (GTK_WINDOW (dialog), 500, 300);
+  btk_window_set_default_size (BTK_WINDOW (dialog), 500, 300);
 
   button = align_button_new ("Insert");
-  gtk_box_pack_start (GTK_BOX (button_vbox), button, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (button_vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", G_CALLBACK (on_insert), NULL);
   
   button = align_button_new ("Delete");
-  gtk_box_pack_start (GTK_BOX (button_vbox), button, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (button_vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", G_CALLBACK (on_delete), NULL);
 
   button = align_button_new ("Reorder");
-  gtk_box_pack_start (GTK_BOX (button_vbox), button, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (button_vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", G_CALLBACK (on_reorder), NULL);
 
   button = align_button_new ("Animate");
-  gtk_box_pack_start (GTK_BOX (button_vbox), button, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (button_vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", G_CALLBACK (on_animate), NULL);
 
-  gtk_widget_show_all (dialog);
-  gtk_dialog_run (GTK_DIALOG (dialog));
+  btk_widget_show_all (dialog);
+  btk_dialog_run (BTK_DIALOG (dialog));
 
   return 0;
 }

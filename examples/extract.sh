@@ -1,14 +1,14 @@
 #! /bin/sh
-# extract - extract C source files from GTK Tutorial
+# extract - extract C source files from BTK Tutorial
 # Copyright (C) Tony Gale 1998
-# Contact: gale@gtk.org
+# Contact: gale@btk.org
 #
 # extract.awk command Switches:
 # -c : Just do checking rather than output files
 # -f <filename> : Extract a specific file
 # -d : Extract files to current directory
 
-TUTORIAL=../docs/tutorial/gtk-tut.sgml
+TUTORIAL=../docs/tutorial/btk-tut.sgml
 
 if [ -x /usr/bin/gawk ]; then
  gawk -f extract.awk $TUTORIAL $1 $2 $3 $4 $5

@@ -10,7 +10,7 @@
 #   instead of PACKAGE and to look for po2tbl in ./ not in intl/
 #
 # - Modified by jacob berkman <jacob@ximian.com> to install
-#   Makefile.in.in and po2tbl.sed.in for use with glib-gettextize
+#   Makefile.in.in and po2tbl.sed.in for use with bunnylib-gettextize
 
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
 PACKAGE = @PACKAGE@
@@ -30,7 +30,7 @@ datarootdir = @datarootdir@
 libdir = @libdir@
 localedir = $(libdir)/locale
 gnulocaledir = $(datadir)/locale
-gettextsrcdir = $(datadir)/glib-2.0/gettext/po
+gettextsrcdir = $(datadir)/bunnylib-2.0/gettext/po
 subdir = po
 install_sh = @install_sh@
 mkdir_p = $(install_sh) -d
@@ -112,10 +112,10 @@ $(srcdir)/$(GETTEXT_PACKAGE).pot: $(POTFILES)
           --flag=g_snprintf:3:c-format \
           --flag=g_scanner_error:2:c-format \
           --flag=g_scanner_warn:2:c-format \
-          --flag=gtk_message_dialog_format_secondary_markup:2:c-format \
-          --flag=gtk_message_dialog_format_secondary_text:2:c-format \
-          --flag=gtk_message_dialog_new:5:c-format \
-          --flag=gtk_message_dialog_new_with_markup:5:c-format \
+          --flag=btk_message_dialog_format_secondary_markup:2:c-format \
+          --flag=btk_message_dialog_format_secondary_text:2:c-format \
+          --flag=btk_message_dialog_new:5:c-format \
+          --flag=btk_message_dialog_new_with_markup:5:c-format \
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& test ! -f $(GETTEXT_PACKAGE).po \
 	   || ( rm -f $(srcdir)/$(GETTEXT_PACKAGE).pot \
@@ -159,7 +159,7 @@ install-data-yes: all
 	    fi; \
 	  fi; \
 	done
-	if test "$(PACKAGE)" = "glib"; then \
+	if test "$(PACKAGE)" = "bunnylib"; then \
 	  $(mkdir_p) $(DESTDIR)$(gettextsrcdir); \
 	  $(INSTALL_DATA) $(srcdir)/Makefile.in.in \
 			  $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
@@ -180,7 +180,7 @@ uninstall:
 	  rm -f $(DESTDIR)$(gnulocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE)$(INSTOBJEXT); \
 	  rm -f $(DESTDIR)$(gnulocaledir)/$$lang/LC_MESSAGES/$(GETTEXT_PACKAGE)$(INSTOBJEXT).m; \
 	done
-	if test "$(PACKAGE)" = "glib"; then \
+	if test "$(PACKAGE)" = "bunnylib"; then \
 	  rm -f $(DESTDIR)$(gettextsrcdir)/Makefile.in.in; \
 	fi
 

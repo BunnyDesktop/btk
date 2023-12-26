@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F5}</ProjectGuid>
+    <RootNamespace>btk</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="btk-gen-srcs.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="btk-gen-srcs.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="btk-gen-srcs.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="btk-gen-srcs.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\btk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib</ImportLibrary>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\bdk\btk.symbols">
+      <Message>Generating btk.def</Message>
+      <Command>$(BtkGenerateBtkDef)</Command>
+      <Outputs>$(IntDir)btk.def;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\..\btk\btk-win32.rc" />
+  </ItemGroup>
+  <ItemGroup>
+   <ClCompile Include="..\..\..\btk\btkquery.c" />
+   <ClCompile Include="..\..\..\btk\btksearchengine.c" />
+   <ClCompile Include="..\..\..\btk\btksearchenginesimple.c" />
+   <ClCompile Include="..\..\..\btk\fnmatch.c" />
+   <ClCompile Include="..\..\..\btk\btkaboutdialog.c" />
+   <ClCompile Include="..\..\..\btk\btkaccelgroup.c" />
+   <ClCompile Include="..\..\..\btk\btkaccellabel.c" />
+   <ClCompile Include="..\..\..\btk\btkaccelmap.c" />
+   <ClCompile Include="..\..\..\btk\btkaccessible.c" />
+   <ClCompile Include="..\..\..\btk\btkaction.c" />
+   <ClCompile Include="..\..\..\btk\btkactiongroup.c" />
+   <ClCompile Include="..\..\..\btk\btkactivatable.c" />
+   <ClCompile Include="..\..\..\btk\btkadjustment.c" />
+   <ClCompile Include="..\..\..\btk\btkalignment.c" />
+   <ClCompile Include="..\..\..\btk\btkarrow.c" />
+   <ClCompile Include="..\..\..\btk\btkaspectframe.c" />
+   <ClCompile Include="..\..\..\btk\btkassistant.c" />
+   <ClCompile Include="..\..\..\btk\btkbbox.c" />
+   <ClCompile Include="..\..\..\btk\btkbin.c" />
+   <ClCompile Include="..\..\..\btk\btkbindings.c" />
+   <ClCompile Include="..\..\..\btk\btkbox.c" />
+   <ClCompile Include="..\..\..\btk\btkbuildable.c" />
+   <ClCompile Include="..\..\..\btk\btkbuilder.c" />
+   <ClCompile Include="..\..\..\btk\btkbuilderparser.c" />
+   <ClCompile Include="..\..\..\btk\btkbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkcalendar.c" />
+   <ClCompile Include="..\..\..\btk\btkcelleditable.c" />
+   <ClCompile Include="..\..\..\btk\btkcelllayout.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrenderer.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrendereraccel.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrenderercombo.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrendererpixbuf.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrendererprogress.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrendererspin.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrendererspinner.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrenderertext.c" />
+   <ClCompile Include="..\..\..\btk\btkcellrenderertoggle.c" />
+   <ClCompile Include="..\..\..\btk\btkcellview.c" />
+   <ClCompile Include="..\..\..\btk\btkcheckbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkcheckmenuitem.c" />
+   <ClCompile Include="..\..\..\btk\btkcolorbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkcolorsel.c" />
+   <ClCompile Include="..\..\..\btk\btkcolorseldialog.c" />
+   <ClCompile Include="..\..\..\btk\btkcombobox.c" />
+   <ClCompile Include="..\..\..\btk\btkcomboboxentry.c" />
+   <ClCompile Include="..\..\..\btk\btkcomboboxtext.c" />
+   <ClCompile Include="..\..\..\btk\btkcontainer.c" />
+   <ClCompile Include="..\..\..\btk\btkdialog.c" />
+   <ClCompile Include="..\..\..\btk\btkdrawingarea.c" />
+   <ClCompile Include="..\..\..\btk\btkeditable.c" />
+   <ClCompile Include="..\..\..\btk\btkentry.c" />
+   <ClCompile Include="..\..\..\btk\btkentrybuffer.c" />
+   <ClCompile Include="..\..\..\btk\btkentrycompletion.c" />
+   <ClCompile Include="..\..\..\btk\btkeventbox.c" />
+   <ClCompile Include="..\..\..\btk\btkexpander.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooser.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserdefault.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserdialog.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserembed.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserentry.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechoosersettings.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserutils.c" />
+   <ClCompile Include="..\..\..\btk\btkfilechooserwidget.c" />
+   <ClCompile Include="..\..\..\btk\btkfilefilter.c" />
+   <ClCompile Include="..\..\..\btk\btkfilesystem.c" />
+   <ClCompile Include="..\..\..\btk\btkfilesystemmodel.c" />
+   <ClCompile Include="..\..\..\btk\btkfixed.c" />
+   <ClCompile Include="..\..\..\btk\btkfontbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkfontsel.c" />
+   <ClCompile Include="..\..\..\btk\btkframe.c" />
+   <ClCompile Include="..\..\..\btk\btkgc.c" />
+   <ClCompile Include="..\..\..\btk\btkhandlebox.c" />
+   <ClCompile Include="..\..\..\btk\btkhbbox.c" />
+   <ClCompile Include="..\..\..\btk\btkhbox.c" />
+   <ClCompile Include="..\..\..\btk\btkhpaned.c" />
+   <ClCompile Include="..\..\..\btk\btkhruler.c" />
+   <ClCompile Include="..\..\..\btk\btkhscale.c" />
+   <ClCompile Include="..\..\..\btk\btkhscrollbar.c" />
+   <ClCompile Include="..\..\..\btk\btkhseparator.c" />
+   <ClCompile Include="..\..\..\btk\btkhsv.c" />
+   <ClCompile Include="..\..\..\btk\btkiconcache.c" />
+   <ClCompile Include="..\..\..\btk\btkiconcachevalidator.c" />
+   <ClCompile Include="..\..\..\btk\btkiconfactory.c" />
+   <ClCompile Include="..\..\..\btk\btkicontheme.c" />
+   <ClCompile Include="..\..\..\btk\btkiconview.c" />
+   <ClCompile Include="..\..\..\btk\btkimage.c" />
+   <ClCompile Include="..\..\..\btk\btkimagemenuitem.c" />
+   <ClCompile Include="..\..\..\btk\btkimcontext.c" />
+   <ClCompile Include="..\..\..\btk\btkimcontextsimple.c" />
+   <ClCompile Include="..\..\..\btk\btkimmodule.c" />
+   <ClCompile Include="..\..\..\btk\btkimmulticontext.c" />
+   <ClCompile Include="..\..\..\btk\btkinfobar.c" />
+   <ClCompile Include="..\..\..\btk\btkinputdialog.c" />
+   <ClCompile Include="..\..\..\btk\btkinvisible.c" />
+   <ClCompile Include="..\..\..\btk\btkitem.c" />
+   <ClCompile Include="..\..\..\btk\btkkeyhash.c" />
+   <ClCompile Include="..\..\..\btk\btklabel.c" />
+   <ClCompile Include="..\..\..\btk\btklayout.c" />
+   <ClCompile Include="..\..\..\btk\btklinkbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkliststore.c" />
+   <ClCompile Include="..\..\..\btk\btkmain.c" />
+   <ClCompile Include="..\..\..\btk\btkmarshal.c" />
+   <ClCompile Include="..\..\..\btk\btkmarshalers.c" />
+   <ClCompile Include="..\..\..\btk\btkmenu.c" />
+   <ClCompile Include="..\..\..\btk\btkmenubar.c" />
+   <ClCompile Include="..\..\..\btk\btkmenuitem.c" />
+   <ClCompile Include="..\..\..\btk\btkmenushell.c" />
+   <ClCompile Include="..\..\..\btk\btkmenutoolbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkmessagedialog.c" />
+   <ClCompile Include="..\..\..\btk\btkmisc.c" />
+   <ClCompile Include="..\..\..\btk\btkmnemonichash.c" />
+   <ClCompile Include="..\..\..\btk\btkmodules.c" />
+   <ClCompile Include="..\..\..\btk\btkmountoperation.c" />
+   <ClCompile Include="..\..\..\btk\btknotebook.c" />
+   <ClCompile Include="..\..\..\btk\btkobject.c" />
+   <ClCompile Include="..\..\..\btk\btkoffscreenwindow.c" />
+   <ClCompile Include="..\..\..\btk\btkorientable.c" />
+   <ClCompile Include="..\..\..\btk\btkpagesetup.c" />
+   <ClCompile Include="..\..\..\btk\btkpaned.c" />
+   <ClCompile Include="..\..\..\btk\btkbango.c" />
+   <ClCompile Include="..\..\..\btk\btkpapersize.c" />
+   <ClCompile Include="..\..\..\btk\btkpathbar.c" />
+   <ClCompile Include="..\..\..\btk\btkplug.c" />
+   <ClCompile Include="..\..\..\btk\btkprintcontext.c" />
+   <ClCompile Include="..\..\..\btk\btkprintoperation.c" />
+   <ClCompile Include="..\..\..\btk\btkprintoperationpreview.c" />
+   <ClCompile Include="..\..\..\btk\btkprintsettings.c" />
+   <ClCompile Include="..\..\..\btk\btkprintutils.c" />
+   <ClCompile Include="..\..\..\btk\btkprogressbar.c" />
+   <ClCompile Include="..\..\..\btk\btkradioaction.c" />
+   <ClCompile Include="..\..\..\btk\btkradiobutton.c" />
+   <ClCompile Include="..\..\..\btk\btkradiomenuitem.c" />
+   <ClCompile Include="..\..\..\btk\btkradiotoolbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkrange.c" />
+   <ClCompile Include="..\..\..\btk\btkrbtree.c" />
+   <ClCompile Include="..\..\..\btk\btkrc.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentaction.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentchooserdefault.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentchooserdialog.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentchoosermenu.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentchooserwidget.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentchooserutils.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentchooser.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentfilter.c" />
+   <ClCompile Include="..\..\..\btk\btkrecentmanager.c" />
+   <ClCompile Include="..\..\..\btk\btkruler.c" />
+   <ClCompile Include="..\..\..\btk\btkscale.c" />
+   <ClCompile Include="..\..\..\btk\btkscalebutton.c" />
+   <ClCompile Include="..\..\..\btk\btkscrollbar.c" />
+   <ClCompile Include="..\..\..\btk\btkscrolledwindow.c" />
+   <ClCompile Include="..\..\..\btk\btkselection.c" />
+   <ClCompile Include="..\..\..\btk\btkseparator.c" />
+   <ClCompile Include="..\..\..\btk\btkseparatormenuitem.c" />
+   <ClCompile Include="..\..\..\btk\btkseparatortoolitem.c" />
+   <ClCompile Include="..\..\..\btk\btksettings.c" />
+   <ClCompile Include="..\..\..\btk\btksizegroup.c" />
+   <ClCompile Include="..\..\..\btk\btkshow.c" />
+   <ClCompile Include="..\..\..\btk\btksocket.c" />
+   <ClCompile Include="..\..\..\btk\btkspinbutton.c" />
+   <ClCompile Include="..\..\..\btk\btkspinner.c" />
+   <ClCompile Include="..\..\..\btk\btkstatusbar.c" />
+   <ClCompile Include="..\..\..\btk\btkstatusicon.c" />
+   <ClCompile Include="..\..\..\btk\btkstock.c" />
+   <ClCompile Include="..\..\..\btk\btkstyle.c" />
+   <ClCompile Include="..\..\..\btk\btktable.c" />
+   <ClCompile Include="..\..\..\btk\btktearoffmenuitem.c" />
+   <ClCompile Include="..\..\..\btk\btktestutils.c" />
+   <ClCompile Include="..\..\..\btk\btktextbtree.c" />
+   <ClCompile Include="..\..\..\btk\btktextbuffer.c" />
+   <ClCompile Include="..\..\..\btk\btktextbufferrichtext.c" />
+   <ClCompile Include="..\..\..\btk\btktextbufferserialize.c" />
+   <ClCompile Include="..\..\..\btk\btktextchild.c" />
+   <ClCompile Include="..\..\..\btk\btktextdisplay.c" />
+   <ClCompile Include="..\..\..\btk\btktextiter.c" />
+   <ClCompile Include="..\..\..\btk\btktextlayout.c" />
+   <ClCompile Include="..\..\..\btk\btktextmark.c" />
+   <ClCompile Include="..\..\..\btk\btktextsegment.c" />
+   <ClCompile Include="..\..\..\btk\btktexttag.c" />
+   <ClCompile Include="..\..\..\btk\btktexttagtable.c" />
+   <ClCompile Include="..\..\..\btk\btktexttypes.c" />
+   <ClCompile Include="..\..\..\btk\btktextutil.c" />
+   <ClCompile Include="..\..\..\btk\btktextview.c" />
+   <ClCompile Include="..\..\..\btk\btkthemes.c" />
+   <ClCompile Include="..\..\..\btk\btktoggleaction.c" />
+   <ClCompile Include="..\..\..\btk\btktogglebutton.c" />
+   <ClCompile Include="..\..\..\btk\btktoggletoolbutton.c" />
+   <ClCompile Include="..\..\..\btk\btktoolbar.c" />
+   <ClCompile Include="..\..\..\btk\btktoolbutton.c" />
+   <ClCompile Include="..\..\..\btk\btktoolitem.c" />
+   <ClCompile Include="..\..\..\btk\btktoolitemgroup.c" />
+   <ClCompile Include="..\..\..\btk\btktoolpalette.c" />
+   <ClCompile Include="..\..\..\btk\btktoolshell.c" />
+   <ClCompile Include="..\..\..\btk\btktooltip.c" />
+   <ClCompile Include="..\..\..\btk\btktreedatalist.c" />
+   <ClCompile Include="..\..\..\btk\btktreednd.c" />
+   <ClCompile Include="..\..\..\btk\btktreemodel.c" />
+   <ClCompile Include="..\..\..\btk\btktreemodelfilter.c" />
+   <ClCompile Include="..\..\..\btk\btktreemodelsort.c" />
+   <ClCompile Include="..\..\..\btk\btktreeselection.c" />
+   <ClCompile Include="..\..\..\btk\btktreesortable.c" />
+   <ClCompile Include="..\..\..\btk\btktreestore.c" />
+   <ClCompile Include="..\..\..\btk\btktreeview.c" />
+   <ClCompile Include="..\..\..\btk\btktreeviewcolumn.c" />
+   <ClCompile Include="..\..\..\btk\btktypebuiltins.c" />
+   <ClCompile Include="..\..\..\btk\btktypeutils.c" />
+   <ClCompile Include="..\..\..\btk\btkuimanager.c" />
+   <ClCompile Include="..\..\..\btk\btkvbbox.c" />
+   <ClCompile Include="..\..\..\btk\btkvbox.c" />
+   <ClCompile Include="..\..\..\btk\btkvolumebutton.c" />
+   <ClCompile Include="..\..\..\btk\btkviewport.c" />
+   <ClCompile Include="..\..\..\btk\btkvpaned.c" />
+   <ClCompile Include="..\..\..\btk\btkvruler.c" />
+   <ClCompile Include="..\..\..\btk\btkvscale.c" />
+   <ClCompile Include="..\..\..\btk\btkvscrollbar.c" />
+   <ClCompile Include="..\..\..\btk\btkvseparator.c" />
+   <ClCompile Include="..\..\..\btk\btkwidget.c" />
+   <ClCompile Include="..\..\..\btk\btkwindow-decorate.c" />
+   <ClCompile Include="..\..\..\btk\btkwindow.c" />
+   <ClCompile Include="..\..\..\btk\btkclipboard.c" />
+   <ClCompile Include="..\..\..\btk\btkdnd.c" />
+   <ClCompile Include="..\..\..\btk\btktext.c" />
+   <ClCompile Include="..\..\..\btk\btktree.c" />
+   <ClCompile Include="..\..\..\btk\btktreeitem.c" />
+   <ClCompile Include="..\..\..\btk\btkclist.c" />
+   <ClCompile Include="..\..\..\btk\btkcombo.c" />
+   <ClCompile Include="..\..\..\btk\btkctree.c" />
+   <ClCompile Include="..\..\..\btk\btkcurve.c" />
+   <ClCompile Include="..\..\..\btk\btkfilesel.c" />
+   <ClCompile Include="..\..\..\btk\btkgamma.c" />
+   <ClCompile Include="..\..\..\btk\btkitemfactory.c" />
+   <ClCompile Include="..\..\..\btk\btklist.c" />
+   <ClCompile Include="..\..\..\btk\btklistitem.c" />
+   <ClCompile Include="..\..\..\btk\btkoldeditable.c" />
+   <ClCompile Include="..\..\..\btk\btkoptionmenu.c" />
+   <ClCompile Include="..\..\..\btk\btkpixmap.c" />
+   <ClCompile Include="..\..\..\btk\btkpreview.c" />
+   <ClCompile Include="..\..\..\btk\btkprogress.c" />
+   <ClCompile Include="..\..\..\btk\btksignal.c" />
+   <ClCompile Include="..\..\..\btk\btktipsquery.c" />
+   <ClCompile Include="..\..\..\btk\btktooltips.c" />
+   <ClCompile Include="..\..\..\btk\btkprint-win32.c" />
+   <ClCompile Include="..\..\..\btk\btkprintoperation-win32.c" />
+   <ClCompile Include="..\..\..\btk\btkplug-win32.c" />
+   <ClCompile Include="..\..\..\btk\btksocket-win32.c" />
+   <ClCompile Include="..\..\..\btk\btkwin32embed.c" />
+   <ClCompile Include="..\..\..\btk\btkwin32embedwidget.c" />
+   <ClCompile Include="..\..\..\btk\btkmountoperation-stub.c" />
+    <ClCompile Include="..\..\..\modules\input\btkimcontextime.c" />
+    <ClCompile Include="..\..\..\modules\input\btkimcontextmultipress.c" />
+    <ClCompile Include="..\..\..\modules\input\btkimcontextthai.c" />
+    <ClCompile Include="..\..\..\modules\input\imam-et.c" />
+    <ClCompile Include="..\..\..\modules\input\imcedilla.c" />
+    <ClCompile Include="..\..\..\modules\input\imcyrillic-translit.c" />
+    <ClCompile Include="..\..\..\modules\input\imime.c" />
+    <ClCompile Include="..\..\..\modules\input\iminuktitut.c" />
+    <ClCompile Include="..\..\..\modules\input\imipa.c" />
+    <ClCompile Include="..\..\..\modules\input\immultipress.c" />
+    <ClCompile Include="..\..\..\modules\input\imthai.c" />
+    <ClCompile Include="..\..\..\modules\input\imti-er.c" />
+    <ClCompile Include="..\..\..\modules\input\imti-et.c" />
+    <ClCompile Include="..\..\..\modules\input\imviqr.c" />
+    <ClCompile Include="..\..\..\modules\input\thai-charprop.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="bdk.vcxproj">
+      <Project>{fc5aadb5-95cd-4bf0-ba8b-0c16fe7073f7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

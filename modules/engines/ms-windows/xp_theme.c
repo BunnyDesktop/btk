@@ -1,4 +1,4 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Raymond Penners <raymond@dotsphinx.com>
  *
@@ -32,9 +32,9 @@
 #include <stdio.h>
 
 #ifdef BUILDING_STANDALONE
-#include "gdk/gdkwin32.h"
+#include "bdk/bdkwin32.h"
 #else
-#include "gdk/win32/gdkwin32.h"
+#include "bdk/win32/bdkwin32.h"
 #endif
 
 #include "xp_theme_defs.h"
@@ -466,7 +466,7 @@ xp_theme_get_handle_by_element (XpThemeElement element)
 }
 
 static int
-xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
+xp_theme_map_btk_state (XpThemeElement element, BtkStateType state)
 {
   int ret = 0;
 
@@ -493,12 +493,12 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_REBAR_CHEVRON:
       switch (state)
 	{
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = CHEVS_HOT;
 	  break;
 
-	case GTK_STATE_SELECTED:
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_SELECTED:
+	case BTK_STATE_ACTIVE:
 	  ret = CHEVS_PRESSED;
 	  break;
 
@@ -515,15 +515,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_TOOLBAR_BUTTON:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = TS_PRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = TS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = TS_DISABLED;
 	  break;
 
@@ -542,16 +542,16 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_TAB_ITEM:
       switch (state)
 	{
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = TIS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = TIS_DISABLED;
 	  break;
 
-	case GTK_STATE_SELECTED:
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_SELECTED:
+	case BTK_STATE_ACTIVE:
 	  ret = TIS_NORMAL;
 	  break;
 
@@ -563,16 +563,16 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_EDIT_TEXT:
       switch (state)
 	{
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = ETS_FOCUSED;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = ETS_READONLY;
 	  break;
 
-	case GTK_STATE_SELECTED:
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_SELECTED:
+	case BTK_STATE_ACTIVE:
 	default:
 	  ret = ETS_NORMAL;
 	}
@@ -587,16 +587,16 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_SCROLLBAR_V:
       switch (state)
 	{
-	case GTK_STATE_SELECTED:
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_SELECTED:
+	case BTK_STATE_ACTIVE:
 	  ret = SCRBS_PRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = SCRBS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = SCRBS_DISABLED;
 	  break;
 
@@ -608,15 +608,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_ARROW_DOWN:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = ABS_DOWNPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = ABS_DOWNHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = ABS_DOWNDISABLED;
 	  break;
 
@@ -628,15 +628,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_ARROW_UP:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = ABS_UPPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = ABS_UPHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = ABS_UPDISABLED;
 	  break;
 
@@ -648,15 +648,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_ARROW_LEFT:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = ABS_LEFTPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = ABS_LEFTHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = ABS_LEFTDISABLED;
 	  break;
 
@@ -668,15 +668,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_ARROW_RIGHT:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = ABS_RIGHTPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = ABS_RIGHTHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = ABS_RIGHTDISABLED;
 	  break;
 
@@ -689,15 +689,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_RADIO_BUTTON:
       switch (state)
 	{
-	case GTK_STATE_SELECTED:
+	case BTK_STATE_SELECTED:
 	  ret = CBS_UNCHECKEDPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = CBS_UNCHECKEDHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = CBS_UNCHECKEDDISABLED;
 	  break;
 
@@ -709,15 +709,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_INCONSISTENT_CHECKBOX:
       switch (state)
 	{
-	case GTK_STATE_SELECTED:
+	case BTK_STATE_SELECTED:
 	  ret = CBS_MIXEDPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = CBS_MIXEDHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = CBS_MIXEDDISABLED;
 	  break;
 
@@ -730,15 +730,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_PRESSED_RADIO_BUTTON:
       switch (state)
 	{
-	case GTK_STATE_SELECTED:
+	case BTK_STATE_SELECTED:
 	  ret = CBS_CHECKEDPRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = CBS_CHECKEDHOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = CBS_CHECKEDDISABLED;
 	  break;
 
@@ -750,15 +750,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_DEFAULT_BUTTON:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = PBS_PRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = PBS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = PBS_DISABLED;
 	  break;
 
@@ -770,15 +770,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_SPIN_BUTTON_DOWN:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = DNS_PRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = DNS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = DNS_DISABLED;
 	  break;
 
@@ -790,15 +790,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_SPIN_BUTTON_UP:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = UPS_PRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = UPS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = UPS_DISABLED;
 	  break;
 
@@ -829,15 +829,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     case XP_THEME_ELEMENT_MENU_ITEM:
       switch (state)
 	{
-	case GTK_STATE_SELECTED:
+	case BTK_STATE_SELECTED:
 	  ret = MS_SELECTED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = MBI_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = MBI_DISABLED;
 	  break;
 
@@ -872,15 +872,15 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
     default:
       switch (state)
 	{
-	case GTK_STATE_ACTIVE:
+	case BTK_STATE_ACTIVE:
 	  ret = PBS_PRESSED;
 	  break;
 
-	case GTK_STATE_PRELIGHT:
+	case BTK_STATE_PRELIGHT:
 	  ret = PBS_HOT;
 	  break;
 
-	case GTK_STATE_INSENSITIVE:
+	case BTK_STATE_INSENSITIVE:
 	  ret = PBS_DISABLED;
 	  break;
 
@@ -893,20 +893,20 @@ xp_theme_map_gtk_state (XpThemeElement element, GtkStateType state)
 }
 
 HDC
-get_window_dc (GtkStyle *style,
-	       GdkWindow *window,
-	       GtkStateType state_type,
+get_window_dc (BtkStyle *style,
+	       BdkWindow *window,
+	       BtkStateType state_type,
 	       XpDCInfo *dc_info_out,
 	       gint x, gint y, gint width, gint height,
 	       RECT *rect_out)
 {
-  GdkDrawable *drawable = NULL;
-  GdkGC *gc = style->dark_gc[state_type];
+  BdkDrawable *drawable = NULL;
+  BdkGC *gc = style->dark_gc[state_type];
   gint x_offset, y_offset;
   
   dc_info_out->data = NULL;
   
-  drawable = gdk_win32_begin_direct_draw_libgtk_only (window,
+  drawable = bdk_win32_begin_direct_draw_libbtk_only (window,
 						      gc, &dc_info_out->data,
 						      &x_offset, &y_offset);
   if (!drawable)
@@ -922,21 +922,21 @@ get_window_dc (GtkStyle *style,
   dc_info_out->x_offset = x_offset;
   dc_info_out->y_offset = y_offset;
   
-  return gdk_win32_hdc_get (drawable, gc, 0);
+  return bdk_win32_hdc_get (drawable, gc, 0);
 }
 
 void
 release_window_dc (XpDCInfo *dc_info)
 {
-  gdk_win32_hdc_release (dc_info->drawable, dc_info->gc, 0);
+  bdk_win32_hdc_release (dc_info->drawable, dc_info->gc, 0);
 
-  gdk_win32_end_direct_draw_libgtk_only (dc_info->data);
+  bdk_win32_end_direct_draw_libbtk_only (dc_info->data);
 }
 
 gboolean
-xp_theme_draw (GdkWindow *win, XpThemeElement element, GtkStyle *style,
+xp_theme_draw (BdkWindow *win, XpThemeElement element, BtkStyle *style,
 	       int x, int y, int width, int height,
-	       GtkStateType state_type, GdkRectangle *area)
+	       BtkStateType state_type, BdkRectangle *area)
 {
   HTHEME theme;
   RECT rect, clip, *pClip;
@@ -953,7 +953,7 @@ xp_theme_draw (GdkWindow *win, XpThemeElement element, GtkStyle *style,
     return FALSE;
 
   /* FIXME: Recheck its function */
-  hwnd = gdk_win32_window_get_impl_hwnd (win);
+  hwnd = bdk_win32_window_get_impl_hwnd (win);
   if (hwnd != NULL)
     enable_theme_dialog_texture_func (hwnd, ETDT_ENABLETAB);
 
@@ -977,7 +977,7 @@ xp_theme_draw (GdkWindow *win, XpThemeElement element, GtkStyle *style,
       pClip = NULL;
     }
 
-  part_state = xp_theme_map_gtk_state (element, state_type);
+  part_state = xp_theme_map_btk_state (element, state_type);
 
   /* Support transparency */
   if (is_theme_partially_transparent_func (theme, element_part_map[element], part_state))
@@ -1008,7 +1008,7 @@ xp_theme_is_drawable (XpThemeElement element)
 
 gboolean
 xp_theme_get_element_dimensions (XpThemeElement element,
-				 GtkStateType state_type,
+				 BtkStateType state_type,
 				 gint *cx, gint *cy)
 {
   HTHEME theme;
@@ -1022,7 +1022,7 @@ xp_theme_get_element_dimensions (XpThemeElement element,
   if (!theme)
     return FALSE;
 
-  part_state = xp_theme_map_gtk_state (element, state_type);
+  part_state = xp_theme_map_btk_state (element, state_type);
 
   get_theme_part_size_func (theme,
 			    NULL,

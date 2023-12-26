@@ -1,0 +1,531 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BtkCheckMenuItem: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="MenusAndCombos.html" title="Menus, Combo Box, Toolbar">
+<link rel="prev" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem">
+<link rel="next" href="BtkSeparatorMenuItem.html" title="BtkSeparatorMenuItem">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#btk2-btkcheckmenuitem.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#btk2-btkcheckmenuitem.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#btk2-btkcheckmenuitem.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#btk2-btkcheckmenuitem.properties" class="shortcut">Properties</a></span><span id="nav_style_properties">  <span class="dim">|</span> 
+                  <a href="#btk2-btkcheckmenuitem.style-properties" class="shortcut">Style Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#btk2-btkcheckmenuitem.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="MenusAndCombos.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="BtkRadioMenuItem.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="BtkSeparatorMenuItem.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="btk2-btkcheckmenuitem"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="btk2-btkcheckmenuitem.top_of_page"></a>BtkCheckMenuItem</span></h2>
+<p>BtkCheckMenuItem</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-new" title="btk_check_menu_item_new ()">btk_check_menu_item_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-new-with-label" title="btk_check_menu_item_new_with_label ()">btk_check_menu_item_new_with_label</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-new-with-mnemonic" title="btk_check_menu_item_new_with_mnemonic ()">btk_check_menu_item_new_with_mnemonic</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-get-active" title="btk_check_menu_item_get_active ()">btk_check_menu_item_get_active</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-active" title="btk_check_menu_item_set_active ()">btk_check_menu_item_set_active</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-show-toggle" title="btk_check_menu_item_set_show_toggle ()">btk_check_menu_item_set_show_toggle</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-toggled" title="btk_check_menu_item_toggled ()">btk_check_menu_item_toggled</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-get-inconsistent" title="btk_check_menu_item_get_inconsistent ()">btk_check_menu_item_get_inconsistent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-inconsistent" title="btk_check_menu_item_set_inconsistent ()">btk_check_menu_item_set_inconsistent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-draw-as-radio" title="btk_check_menu_item_set_draw_as_radio ()">btk_check_menu_item_set_draw_as_radio</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-get-draw-as-radio" title="btk_check_menu_item_get_draw_as_radio ()">btk_check_menu_item_get_draw_as_radio</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem--active" title="The “active” property">active</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem--draw-as-radio" title="The “draw-as-radio” property">draw-as-radio</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem--inconsistent" title="The “inconsistent” property">inconsistent</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.style-properties"></a><h2>Style Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="style_properties_type">
+<col width="300px" class="style_properties_name">
+<col width="200px" class="style_properties_flags">
+</colgroup>
+<tbody><tr>
+<td class="property_type"><span class="type">int</span></td>
+<td class="property_name"><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem--s-indicator-size" title="The “indicator-size” style property">indicator-size</a></td>
+<td class="property_flags">Read</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody><tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem-toggled" title="The “toggled” signal">toggled</a></td>
+<td class="signal_flags">Run First</td>
+</tr></tbody>
+</table></div>
+</div>
+<a name="BtkCheckMenuItem"></a><div class="refsect1">
+<a name="btk2-btkcheckmenuitem.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem-struct" title="struct BtkCheckMenuItem">BtkCheckMenuItem</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-state" title="btk_check_menu_item_set_state">btk_check_menu_item_set_state</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> GInitiallyUnowned
+        <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
+            <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
+                <span class="lineart">╰──</span> <a class="link" href="BtkContainer.html" title="BtkContainer">BtkContainer</a>
+                    <span class="lineart">╰──</span> <a class="link" href="BtkBin.html" title="BtkBin">BtkBin</a>
+                        <span class="lineart">╰──</span> <a class="link" href="BtkItem.html" title="BtkItem">BtkItem</a>
+                            <span class="lineart">╰──</span> <a class="link" href="BtkMenuItem.html" title="BtkMenuItem">BtkMenuItem</a>
+                                <span class="lineart">╰──</span> BtkCheckMenuItem
+                                    <span class="lineart">╰──</span> <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem">BtkRadioMenuItem</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+BtkCheckMenuItem implements
+ BatkImplementorIface,  <a class="link" href="BtkBuildable.html" title="BtkBuildable">BtkBuildable</a> and  <a class="link" href="BtkActivatable.html" title="BtkActivatable">BtkActivatable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;btk/btk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="btk-check-menu-item-new"></a><h3>btk_check_menu_item_new ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_check_menu_item_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-new-with-label"></a><h3>btk_check_menu_item_new_with_label ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_check_menu_item_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-new-with-mnemonic"></a><h3>btk_check_menu_item_new_with_mnemonic ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_check_menu_item_new_with_mnemonic (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+<p>Creates a new <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> containing a label. The label
+will be created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores
+in <em class="parameter"><code>label</code></em>
+ indicate the mnemonic for the menu item.</p>
+<div class="refsect3">
+<a name="btk-check-menu-item-new-with-mnemonic.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>label</p></td>
+<td class="parameter_description"><p>The text of the button, with an underscore in front of the
+mnemonic character</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>returns</p></td>
+<td class="parameter_description"><p>a new <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-get-active"></a><h3>btk_check_menu_item_get_active ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_check_menu_item_get_active (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>);</pre>
+<p>Returns whether the check menu item is active. See
+<a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-active" title="btk_check_menu_item_set_active ()"><code class="function">btk_check_menu_item_set_active()</code></a>.</p>
+<div class="refsect3">
+<a name="btk-check-menu-item-get-active.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>check_menu_item</p></td>
+<td class="parameter_description"><p>a <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-check-menu-item-get-active.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if the menu item is checked.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-set-active"></a><h3>btk_check_menu_item_set_active ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_check_menu_item_set_active (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>,
+                                <em class="parameter"><code><span class="type">gboolean</span> is_active</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-set-show-toggle"></a><h3>btk_check_menu_item_set_show_toggle ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_check_menu_item_set_show_toggle (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *menu_item</code></em>,
+                                     <em class="parameter"><code><span class="type">gboolean</span> always</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_check_menu_item_set_show_toggle</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-toggled"></a><h3>btk_check_menu_item_toggled ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_check_menu_item_toggled (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-get-inconsistent"></a><h3>btk_check_menu_item_get_inconsistent ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_check_menu_item_get_inconsistent (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>);</pre>
+<p>Retrieves the value set by <a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-inconsistent" title="btk_check_menu_item_set_inconsistent ()"><code class="function">btk_check_menu_item_set_inconsistent()</code></a>.</p>
+<div class="refsect3">
+<a name="btk-check-menu-item-get-inconsistent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>check_menu_item</p></td>
+<td class="parameter_description"><p>a <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-check-menu-item-get-inconsistent.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if inconsistent</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-set-inconsistent"></a><h3>btk_check_menu_item_set_inconsistent ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_check_menu_item_set_inconsistent (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>,
+                                      <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+<p>If the user has selected a range of elements (such as some text or
+spreadsheet cells) that are affected by a boolean setting, and the
+current values in that range are inconsistent, you may want to
+display the check in an "in between" state. This function turns on
+"in between" display.  Normally you would turn off the inconsistent
+state again if the user explicitly selects a setting. This has to be
+done manually, <a class="link" href="btk2-btkcheckmenuitem.html#btk-check-menu-item-set-inconsistent" title="btk_check_menu_item_set_inconsistent ()"><code class="function">btk_check_menu_item_set_inconsistent()</code></a> only affects
+visual appearance, it doesn't affect the semantics of the widget.</p>
+<div class="refsect3">
+<a name="btk-check-menu-item-set-inconsistent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>check_menu_item</p></td>
+<td class="parameter_description"><p>a <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>setting</p></td>
+<td class="parameter_description"><p><code class="literal">TRUE</code> to display an "inconsistent" third state check</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-set-draw-as-radio"></a><h3>btk_check_menu_item_set_draw_as_radio ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_check_menu_item_set_draw_as_radio (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>,
+                                       <em class="parameter"><code><span class="type">gboolean</span> draw_as_radio</code></em>);</pre>
+<p>Sets whether <em class="parameter"><code>check_menu_item</code></em>
+ is drawn like a <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a></p>
+<div class="refsect3">
+<a name="btk-check-menu-item-set-draw-as-radio.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>check_menu_item</p></td>
+<td class="parameter_description"><p>a <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>draw_as_radio</p></td>
+<td class="parameter_description"><p>whether <em class="parameter"><code>check_menu_item</code></em>
+is drawn like a <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-get-draw-as-radio"></a><h3>btk_check_menu_item_get_draw_as_radio ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_check_menu_item_get_draw_as_radio (<em class="parameter"><code><a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *check_menu_item</code></em>);</pre>
+<p>Returns whether <em class="parameter"><code>check_menu_item</code></em>
+ looks like a <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a></p>
+<div class="refsect3">
+<a name="btk-check-menu-item-get-draw-as-radio.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>check_menu_item</p></td>
+<td class="parameter_description"><p>a <a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="btk-check-menu-item-get-draw-as-radio.returns"></a><h4>Returns</h4>
+<p> Whether <em class="parameter"><code>check_menu_item</code></em>
+looks like a <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a></p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-4.html#api-index-2.4">2.4</a></p>
+</div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BtkCheckMenuItem-struct"></a><h3>struct BtkCheckMenuItem</h3>
+<pre class="programlisting">struct BtkCheckMenuItem;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-check-menu-item-set-state"></a><h3>btk_check_menu_item_set_state</h3>
+<pre class="programlisting">#define btk_check_menu_item_set_state		btk_check_menu_item_set_active
+</pre>
+<div class="warning"><p><code class="literal">btk_check_menu_item_set_state</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="BtkCheckMenuItem--active"></a><h3>The <code class="literal">“active”</code> property</h3>
+<pre class="programlisting">  “active”                   <span class="type">gboolean</span></pre>
+<p>Whether the menu item is checked.</p>
+<p>Owner: BtkCheckMenuItem</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCheckMenuItem--draw-as-radio"></a><h3>The <code class="literal">“draw-as-radio”</code> property</h3>
+<pre class="programlisting">  “draw-as-radio”            <span class="type">gboolean</span></pre>
+<p>Whether the menu item looks like a radio menu item.</p>
+<p>Owner: BtkCheckMenuItem</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCheckMenuItem--inconsistent"></a><h3>The <code class="literal">“inconsistent”</code> property</h3>
+<pre class="programlisting">  “inconsistent”             <span class="type">gboolean</span></pre>
+<p>Whether to display an "inconsistent" state.</p>
+<p>Owner: BtkCheckMenuItem</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.style-property-details"></a><h2>Style Property Details</h2>
+<div class="refsect2">
+<a name="BtkCheckMenuItem--s-indicator-size"></a><h3>The <code class="literal">“indicator-size”</code> style property</h3>
+<pre class="programlisting">  “indicator-size”           <span class="type">int</span></pre>
+<p>Size of check or radio indicator.</p>
+<p>Owner: BtkCheckMenuItem</p>
+<p>Flags: Read</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 13</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="btk2-btkcheckmenuitem.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="BtkCheckMenuItem-toggled"></a><h3>The <code class="literal">“toggled”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="btk2-btkcheckmenuitem.html#BtkCheckMenuItem"><span class="type">BtkCheckMenuItem</span></a> *checkmenuitem,
+               <span class="type">gpointer</span>          user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* gtkstatusicon-x11.c:
+/* btkstatusicon-x11.c:
  *
  * Copyright (C) 2003 Sun Microsystems, Inc.
  *
@@ -21,9 +21,9 @@
  *	Mark McLoughlin <mark@skynet.ie>
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <stdlib.h>
 
 #include "prop-editor.h"
@@ -39,33 +39,33 @@ static gint timeout = 0;
 static GSList *icons = NULL;
 
 static void
-size_changed_cb (GtkStatusIcon *icon,
+size_changed_cb (BtkStatusIcon *icon,
 		 int size)
 {
   g_print ("status icon %p size-changed size = %d\n", icon, size);
 }
 
 static void
-embedded_changed_cb (GtkStatusIcon *icon)
+embedded_changed_cb (BtkStatusIcon *icon)
 {
   g_print ("status icon %p embedded changed to %d\n", icon,
-	   gtk_status_icon_is_embedded (icon));
+	   btk_status_icon_is_embedded (icon));
 }
 
 static void
-orientation_changed_cb (GtkStatusIcon *icon)
+orientation_changed_cb (BtkStatusIcon *icon)
 {
-  GtkOrientation orientation;
+  BtkOrientation orientation;
 
   g_object_get (icon, "orientation", &orientation, NULL);
   g_print ("status icon %p orientation changed to %d\n", icon, orientation);
 }
 
 static void
-screen_changed_cb (GtkStatusIcon *icon)
+screen_changed_cb (BtkStatusIcon *icon)
 {
   g_print ("status icon %p screen changed to %p\n", icon,
-	   gtk_status_icon_get_screen (icon));
+	   btk_status_icon_get_screen (icon));
 }
 
 static void
@@ -88,10 +88,10 @@ update_icons (void)
 
   for (l = icons; l; l = l->next)
     {
-      GtkStatusIcon *status_icon = l->data;
+      BtkStatusIcon *status_icon = l->data;
 
-      gtk_status_icon_set_from_icon_name (status_icon, icon_name);
-      gtk_status_icon_set_tooltip_text (status_icon, tooltip);
+      btk_status_icon_set_from_icon_name (status_icon, icon_name);
+      btk_status_icon_set_tooltip_text (status_icon, tooltip);
     }
 }
 
@@ -109,27 +109,27 @@ timeout_handler (gpointer data)
 }
 
 static void
-blink_toggle_toggled (GtkToggleButton *toggle)
+blink_toggle_toggled (BtkToggleButton *toggle)
 {
   GSList *l;
 
   for (l = icons; l; l = l->next)
-    gtk_status_icon_set_blinking (GTK_STATUS_ICON (l->data), 
-                                  gtk_toggle_button_get_active (toggle));
+    btk_status_icon_set_blinking (BTK_STATUS_ICON (l->data), 
+                                  btk_toggle_button_get_active (toggle));
 }
 
 static void
-visible_toggle_toggled (GtkToggleButton *toggle)
+visible_toggle_toggled (BtkToggleButton *toggle)
 {
   GSList *l;
 
   for (l = icons; l; l = l->next)
-    gtk_status_icon_set_visible (GTK_STATUS_ICON (l->data),
-                                 gtk_toggle_button_get_active (toggle));
+    btk_status_icon_set_visible (BTK_STATUS_ICON (l->data),
+                                 btk_toggle_button_get_active (toggle));
 }
 
 static void
-timeout_toggle_toggled (GtkToggleButton *toggle)
+timeout_toggle_toggled (BtkToggleButton *toggle)
 {
   if (timeout)
     {
@@ -138,208 +138,208 @@ timeout_toggle_toggled (GtkToggleButton *toggle)
     }
   else
     {
-      timeout = gdk_threads_add_timeout (2000, timeout_handler, NULL);
+      timeout = bdk_threads_add_timeout (2000, timeout_handler, NULL);
     }
 }
 
 static void
-icon_activated (GtkStatusIcon *icon)
+icon_activated (BtkStatusIcon *icon)
 {
-  GtkWidget *dialog;
-  GtkWidget *toggle;
+  BtkWidget *dialog;
+  BtkWidget *toggle;
 
   dialog = g_object_get_data (G_OBJECT (icon), "test-status-icon-dialog");
   if (dialog == NULL)
     {
-      dialog = gtk_message_dialog_new (NULL, 0,
-				       GTK_MESSAGE_QUESTION,
-				       GTK_BUTTONS_CLOSE,
+      dialog = btk_message_dialog_new (NULL, 0,
+				       BTK_MESSAGE_QUESTION,
+				       BTK_BUTTONS_CLOSE,
 				       "You wanna test the status icon ?");
 
-      gtk_window_set_screen (GTK_WINDOW (dialog), gtk_status_icon_get_screen (icon));
-      gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER);
+      btk_window_set_screen (BTK_WINDOW (dialog), btk_status_icon_get_screen (icon));
+      btk_window_set_position (BTK_WINDOW (dialog), BTK_WIN_POS_CENTER);
 
       g_object_set_data_full (G_OBJECT (icon), "test-status-icon-dialog",
-			      dialog, (GDestroyNotify) gtk_widget_destroy);
+			      dialog, (GDestroyNotify) btk_widget_destroy);
 
       g_signal_connect (dialog, "response", 
-			G_CALLBACK (gtk_widget_hide), NULL);
+			G_CALLBACK (btk_widget_hide), NULL);
       g_signal_connect (dialog, "delete_event", 
-			G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+			G_CALLBACK (btk_widget_hide_on_delete), NULL);
 
-      toggle = gtk_toggle_button_new_with_mnemonic ("_Show the icon");
-      gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), toggle, TRUE, TRUE, 6);
-      gtk_widget_show (toggle);
+      toggle = btk_toggle_button_new_with_mnemonic ("_Show the icon");
+      btk_box_pack_end (BTK_BOX (BTK_DIALOG (dialog)->vbox), toggle, TRUE, TRUE, 6);
+      btk_widget_show (toggle);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-				    gtk_status_icon_get_visible (icon));
+      btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (toggle),
+				    btk_status_icon_get_visible (icon));
       g_signal_connect (toggle, "toggled", 
 			G_CALLBACK (visible_toggle_toggled), NULL);
 
-      toggle = gtk_toggle_button_new_with_mnemonic ("_Blink the icon");
-      gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), toggle, TRUE, TRUE, 6);
-      gtk_widget_show (toggle);
+      toggle = btk_toggle_button_new_with_mnemonic ("_Blink the icon");
+      btk_box_pack_end (BTK_BOX (BTK_DIALOG (dialog)->vbox), toggle, TRUE, TRUE, 6);
+      btk_widget_show (toggle);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
-				    gtk_status_icon_get_blinking (icon));
+      btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (toggle),
+				    btk_status_icon_get_blinking (icon));
       g_signal_connect (toggle, "toggled", 
 			G_CALLBACK (blink_toggle_toggled), NULL);
 
-      toggle = gtk_toggle_button_new_with_mnemonic ("_Change images");
-      gtk_box_pack_end (GTK_BOX (GTK_DIALOG (dialog)->vbox), toggle, TRUE, TRUE, 6);
-      gtk_widget_show (toggle);
+      toggle = btk_toggle_button_new_with_mnemonic ("_Change images");
+      btk_box_pack_end (BTK_BOX (BTK_DIALOG (dialog)->vbox), toggle, TRUE, TRUE, 6);
+      btk_widget_show (toggle);
 
-      gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (toggle),
+      btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (toggle),
 				    timeout != 0);
       g_signal_connect (toggle, "toggled", 
 			G_CALLBACK (timeout_toggle_toggled), NULL);
     }
 
-  gtk_window_present (GTK_WINDOW (dialog));
+  btk_window_present (BTK_WINDOW (dialog));
 }
 
 static void
-check_activated (GtkCheckMenuItem *item)
+check_activated (BtkCheckMenuItem *item)
 {
   GSList *l;
-  GdkScreen *screen;
+  BdkScreen *screen;
 
   screen = NULL;
 
   for (l = icons; l; l = l->next)
     {
-      GtkStatusIcon *icon = l->data;
-      GdkScreen *orig_screen;
+      BtkStatusIcon *icon = l->data;
+      BdkScreen *orig_screen;
 
-      orig_screen = gtk_status_icon_get_screen (icon);
+      orig_screen = btk_status_icon_get_screen (icon);
 
       if (screen != NULL)
-        gtk_status_icon_set_screen (icon, screen);
+        btk_status_icon_set_screen (icon, screen);
 
       screen = orig_screen;
 
-      gtk_status_icon_set_blinking (icon,
-                                    gtk_check_menu_item_get_active (item));
+      btk_status_icon_set_blinking (icon,
+                                    btk_check_menu_item_get_active (item));
     }
 
   g_assert (screen != NULL);
 
-  gtk_status_icon_set_screen (GTK_STATUS_ICON (icons->data), screen);
+  btk_status_icon_set_screen (BTK_STATUS_ICON (icons->data), screen);
 }
 
 static void
-do_properties (GtkMenuItem   *item,
-	       GtkStatusIcon *icon)
+do_properties (BtkMenuItem   *item,
+	       BtkStatusIcon *icon)
 {
-	static GtkWidget *editor = NULL;
+	static BtkWidget *editor = NULL;
 
 	if (editor == NULL) {
-		editor = create_prop_editor (G_OBJECT (icon), GTK_TYPE_STATUS_ICON);
-		g_signal_connect (editor, "destroy", G_CALLBACK (gtk_widget_destroyed), &editor);
+		editor = create_prop_editor (G_OBJECT (icon), BTK_TYPE_STATUS_ICON);
+		g_signal_connect (editor, "destroy", G_CALLBACK (btk_widget_destroyed), &editor);
 	}
 
-	gtk_window_present (GTK_WINDOW (editor));
+	btk_window_present (BTK_WINDOW (editor));
 }
 
 static void
-do_quit (GtkMenuItem *item)
+do_quit (BtkMenuItem *item)
 {
   GSList *l;
 
   for (l = icons; l; l = l->next)
     {
-      GtkStatusIcon *icon = l->data;
+      BtkStatusIcon *icon = l->data;
 
-      gtk_status_icon_set_visible (icon, FALSE);
+      btk_status_icon_set_visible (icon, FALSE);
       g_object_unref (icon);
     }
 
   g_slist_free (icons);
   icons = NULL;
 
-  gtk_main_quit ();
+  btk_main_quit ();
 }
 
 static void
-do_exit (GtkMenuItem *item)
+do_exit (BtkMenuItem *item)
 {
   exit (0);
 }
 
 static void 
-popup_menu (GtkStatusIcon *icon,
+popup_menu (BtkStatusIcon *icon,
 	    guint          button,
 	    guint32        activate_time)
 {
-  GtkWidget *menu, *menuitem;
+  BtkWidget *menu, *menuitem;
 
-  menu = gtk_menu_new ();
+  menu = btk_menu_new ();
 
-  gtk_menu_set_screen (GTK_MENU (menu),
-                       gtk_status_icon_get_screen (icon));
+  btk_menu_set_screen (BTK_MENU (menu),
+                       btk_status_icon_get_screen (icon));
 
-  menuitem = gtk_check_menu_item_new_with_label ("Blink");
-  gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), 
-				  gtk_status_icon_get_blinking (icon));
+  menuitem = btk_check_menu_item_new_with_label ("Blink");
+  btk_check_menu_item_set_active (BTK_CHECK_MENU_ITEM (menuitem), 
+				  btk_status_icon_get_blinking (icon));
   g_signal_connect (menuitem, "activate", G_CALLBACK (check_activated), NULL);
 
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+  btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
 
-  gtk_widget_show (menuitem);
+  btk_widget_show (menuitem);
 
-  menuitem = gtk_image_menu_item_new_from_stock (GTK_STOCK_PROPERTIES, NULL);
+  menuitem = btk_image_menu_item_new_from_stock (BTK_STOCK_PROPERTIES, NULL);
   g_signal_connect (menuitem, "activate", G_CALLBACK (do_properties), icon);
 
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+  btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
 
-  gtk_widget_show (menuitem);
+  btk_widget_show (menuitem);
 
-  menuitem = gtk_menu_item_new_with_label ("Quit");
+  menuitem = btk_menu_item_new_with_label ("Quit");
   g_signal_connect (menuitem, "activate", G_CALLBACK (do_quit), NULL);
 
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+  btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
 
-  gtk_widget_show (menuitem);
+  btk_widget_show (menuitem);
 
-  menuitem = gtk_menu_item_new_with_label ("Exit abruptly");
+  menuitem = btk_menu_item_new_with_label ("Exit abruptly");
   g_signal_connect (menuitem, "activate", G_CALLBACK (do_exit), NULL);
 
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
+  btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
 
-  gtk_widget_show (menuitem);
+  btk_widget_show (menuitem);
 
-  gtk_menu_popup (GTK_MENU (menu), 
+  btk_menu_popup (BTK_MENU (menu), 
 		  NULL, NULL,
-		  gtk_status_icon_position_menu, icon,
+		  btk_status_icon_position_menu, icon,
 		  button, activate_time);
 }
 
 int
 main (int argc, char **argv)
 {
-  GdkDisplay *display;
+  BdkDisplay *display;
   guint n_screens, i;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  display = gdk_display_get_default ();
+  display = bdk_display_get_default ();
 
-  n_screens = gdk_display_get_n_screens (display);
+  n_screens = bdk_display_get_n_screens (display);
 
   for (i = 0; i < n_screens; i++)
     {
-      GtkStatusIcon *icon;
+      BtkStatusIcon *icon;
 
-      icon = gtk_status_icon_new ();
-      gtk_status_icon_set_screen (icon, gdk_display_get_screen (display, i));
+      icon = btk_status_icon_new ();
+      btk_status_icon_set_screen (icon, bdk_display_get_screen (display, i));
       update_icons ();
 
       g_signal_connect (icon, "size-changed", G_CALLBACK (size_changed_cb), NULL);
       g_signal_connect (icon, "notify::embedded", G_CALLBACK (embedded_changed_cb), NULL);
       g_signal_connect (icon, "notify::orientation", G_CALLBACK (orientation_changed_cb), NULL);
       g_signal_connect (icon, "notify::screen", G_CALLBACK (screen_changed_cb), NULL);
-      g_print ("icon size %d\n", gtk_status_icon_get_size (icon));
-      gtk_status_icon_set_blinking (GTK_STATUS_ICON (icon), FALSE);
+      g_print ("icon size %d\n", btk_status_icon_get_size (icon));
+      btk_status_icon_set_blinking (BTK_STATUS_ICON (icon), FALSE);
 
       g_signal_connect (icon, "activate",
                         G_CALLBACK (icon_activated), NULL);
@@ -351,10 +351,10 @@ main (int argc, char **argv)
  
       update_icons ();
 
-      timeout = gdk_threads_add_timeout (2000, timeout_handler, icon);
+      timeout = bdk_threads_add_timeout (2000, timeout_handler, icon);
     }
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

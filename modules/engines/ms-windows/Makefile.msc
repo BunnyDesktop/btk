@@ -17,28 +17,28 @@ OBJS = \
 	xp_theme.obj
 
 ##
-# GTK
+# BTK
 #
-GTK_CFLAGS=\
-	-I$(GTK_DIR)/include/gtk-2.0 \
-	-I$(GTK_DIR)/lib/gtk-2.0/include \
-	-I$(GTK_DIR)/include/atk-1.0 \
-	-I$(GTK_DIR)/include/pango-1.0 \
-	-I$(GTK_DIR)/include/glib-2.0 \
-	-I$(GTK_DIR)/lib/glib-2.0/include
+BTK_CFLAGS=\
+	-I$(BTK_DIR)/include/btk-2.0 \
+	-I$(BTK_DIR)/lib/btk-2.0/include \
+	-I$(BTK_DIR)/include/batk-1.0 \
+	-I$(BTK_DIR)/include/bango-1.0 \
+	-I$(BTK_DIR)/include/bunnylib-2.0 \
+	-I$(BTK_DIR)/lib/bunnylib-2.0/include
 
-GTK_LDFLAGS=/libpath:$(GTK_DIR)/lib
+BTK_LDFLAGS=/libpath:$(BTK_DIR)/lib
 
-GTK_LIBS= \
-	gtk-win32-2.0.lib \
-	gdk-win32-2.0.lib \
-	atk-1.0.lib \
-	gdk_pixbuf-2.0.lib \
-	pangowin32-1.0.lib \
-	pango-1.0.lib \
-	gobject-2.0.lib \
-	gmodule-2.0.lib \
-	glib-2.0.lib
+BTK_LIBS= \
+	btk-win32-2.0.lib \
+	bdk-win32-2.0.lib \
+	batk-1.0.lib \
+	bdk_pixbuf-2.0.lib \
+	bangowin32-1.0.lib \
+	bango-1.0.lib \
+	bobject-2.0.lib \
+	bmodule-2.0.lib \
+	bunnylib-2.0.lib
 
 ##
 # WIN32
@@ -47,15 +47,15 @@ WIN32_LIBS = \
 	gdi32.lib \
 	user32.lib
 
-WIN32_CFLAGS=-I"$(SDK_DIR)\gtk-2.0" -I"$(SDK_DIR)\cairo" -I"$(SDK_DIR)\glib-2.0" -DBUILDING_STANDALONE
+WIN32_CFLAGS=-I"$(SDK_DIR)\btk-2.0" -I"$(SDK_DIR)\bairo" -I"$(SDK_DIR)\bunnylib-2.0" -DBUILDING_STANDALONE
 WIN32_LDFLAGS=/DLL /SUBSYSTEM:WINDOWS
 
 ##
 # Target
 #
-LIBS=$(GTK_LIBS) $(WIN32_LIBS)
-CFLAGS=$(WIN32_CFLAGS) $(GTK_CFLAGS)
-LDFLAGS= $(WIN32_LDFLAGS) $(GTK_LDFLAGS) 
+LIBS=$(BTK_LIBS) $(WIN32_LIBS)
+CFLAGS=$(WIN32_CFLAGS) $(BTK_CFLAGS)
+LDFLAGS= $(WIN32_LDFLAGS) $(BTK_LDFLAGS) 
 
 all: $(TARGET)
 

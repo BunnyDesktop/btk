@@ -1,0 +1,577 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BtkList: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="DeprecatedObjects.html" title="Deprecated">
+<link rel="prev" href="BtkItemFactory.html" title="BtkItemFactory">
+<link rel="next" href="BtkListItem.html" title="BtkListItem">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#BtkList.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#BtkList.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#BtkList.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#BtkList.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#BtkList.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="DeprecatedObjects.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="BtkItemFactory.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="BtkListItem.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="BtkList"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="BtkList.top_of_page"></a>BtkList</span></h2>
+<p>BtkList</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="BtkList.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-new" title="btk_list_new ()">btk_list_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-insert-items" title="btk_list_insert_items ()">btk_list_insert_items</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-append-items" title="btk_list_append_items ()">btk_list_append_items</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-prepend-items" title="btk_list_prepend_items ()">btk_list_prepend_items</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-remove-items" title="btk_list_remove_items ()">btk_list_remove_items</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-remove-items-no-unref" title="btk_list_remove_items_no_unref ()">btk_list_remove_items_no_unref</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-clear-items" title="btk_list_clear_items ()">btk_list_clear_items</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-select-item" title="btk_list_select_item ()">btk_list_select_item</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-unselect-item" title="btk_list_unselect_item ()">btk_list_unselect_item</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-select-child" title="btk_list_select_child ()">btk_list_select_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-unselect-child" title="btk_list_unselect_child ()">btk_list_unselect_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-child-position" title="btk_list_child_position ()">btk_list_child_position</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-set-selection-mode" title="btk_list_set_selection_mode ()">btk_list_set_selection_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-extend-selection" title="btk_list_extend_selection ()">btk_list_extend_selection</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-start-selection" title="btk_list_start_selection ()">btk_list_start_selection</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-end-selection" title="btk_list_end_selection ()">btk_list_end_selection</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-select-all" title="btk_list_select_all ()">btk_list_select_all</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-unselect-all" title="btk_list_unselect_all ()">btk_list_unselect_all</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-scroll-horizontal" title="btk_list_scroll_horizontal ()">btk_list_scroll_horizontal</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-scroll-vertical" title="btk_list_scroll_vertical ()">btk_list_scroll_vertical</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-toggle-add-mode" title="btk_list_toggle_add_mode ()">btk_list_toggle_add_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-toggle-focus-row" title="btk_list_toggle_focus_row ()">btk_list_toggle_focus_row</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-toggle-row" title="btk_list_toggle_row ()">btk_list_toggle_row</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-undo-selection" title="btk_list_undo_selection ()">btk_list_undo_selection</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkList.html#btk-list-end-drag-selection" title="btk_list_end_drag_selection ()">btk_list_end_drag_selection</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkList.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody><tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkSelectionMode" title="enum BtkSelectionMode"><span class="type">BtkSelectionMode</span></a></td>
+<td class="property_name"><a class="link" href="BtkList.html#BtkList--selection-mode" title="The “selection-mode” property">selection-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkList.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkList.html#BtkList-select-child" title="The “select-child” signal">select-child</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkList.html#BtkList-selection-changed" title="The “selection-changed” signal">selection-changed</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkList.html#BtkList-unselect-child" title="The “unselect-child” signal">unselect-child</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkList.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkList.html#BtkList-struct" title="struct BtkList">BtkList</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkList.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> GInitiallyUnowned
+        <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
+            <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
+                <span class="lineart">╰──</span> <a class="link" href="BtkContainer.html" title="BtkContainer">BtkContainer</a>
+                    <span class="lineart">╰──</span> BtkList
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkList.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+BtkList implements
+ BatkImplementorIface and  <a class="link" href="BtkBuildable.html" title="BtkBuildable">BtkBuildable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="BtkList.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;btk/btk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkList.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="BtkList.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="btk-list-new"></a><h3>btk_list_new ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_list_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_new</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-insert-items"></a><h3>btk_list_insert_items ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_insert_items (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                       <em class="parameter"><code><span class="type">GList</span> *items</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_insert_items</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-append-items"></a><h3>btk_list_append_items ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_append_items (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                       <em class="parameter"><code><span class="type">GList</span> *items</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_append_items</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-prepend-items"></a><h3>btk_list_prepend_items ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_prepend_items (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                        <em class="parameter"><code><span class="type">GList</span> *items</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_prepend_items</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-remove-items"></a><h3>btk_list_remove_items ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_remove_items (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                       <em class="parameter"><code><span class="type">GList</span> *items</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_remove_items</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-remove-items-no-unref"></a><h3>btk_list_remove_items_no_unref ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_remove_items_no_unref (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                                <em class="parameter"><code><span class="type">GList</span> *items</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_remove_items_no_unref</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-clear-items"></a><h3>btk_list_clear_items ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_clear_items (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> start</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> end</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_clear_items</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-select-item"></a><h3>btk_list_select_item ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_select_item (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> item</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_select_item</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-unselect-item"></a><h3>btk_list_unselect_item ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_unselect_item (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> item</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_unselect_item</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-select-child"></a><h3>btk_list_select_child ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_select_child (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                       <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_select_child</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-unselect-child"></a><h3>btk_list_unselect_child ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_unselect_child (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_unselect_child</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-child-position"></a><h3>btk_list_child_position ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_list_child_position (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_child_position</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-set-selection-mode"></a><h3>btk_list_set_selection_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_set_selection_mode (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                             <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkSelectionMode" title="enum BtkSelectionMode"><span class="type">BtkSelectionMode</span></a> mode</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_set_selection_mode</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-extend-selection"></a><h3>btk_list_extend_selection ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_extend_selection (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                           <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> scroll_type</code></em>,
+                           <em class="parameter"><code><span class="type">gfloat</span> position</code></em>,
+                           <em class="parameter"><code><span class="type">gboolean</span> auto_start_selection</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_extend_selection</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-start-selection"></a><h3>btk_list_start_selection ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_start_selection (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_start_selection</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-end-selection"></a><h3>btk_list_end_selection ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_end_selection (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_end_selection</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-select-all"></a><h3>btk_list_select_all ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_select_all (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_select_all</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-unselect-all"></a><h3>btk_list_unselect_all ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_unselect_all (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_unselect_all</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-scroll-horizontal"></a><h3>btk_list_scroll_horizontal ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_scroll_horizontal (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                            <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> scroll_type</code></em>,
+                            <em class="parameter"><code><span class="type">gfloat</span> position</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_scroll_horizontal</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-scroll-vertical"></a><h3>btk_list_scroll_vertical ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_scroll_vertical (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                          <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> scroll_type</code></em>,
+                          <em class="parameter"><code><span class="type">gfloat</span> position</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_scroll_vertical</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-toggle-add-mode"></a><h3>btk_list_toggle_add_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_toggle_add_mode (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_toggle_add_mode</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-toggle-focus-row"></a><h3>btk_list_toggle_focus_row ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_toggle_focus_row (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_toggle_focus_row</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-toggle-row"></a><h3>btk_list_toggle_row ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_toggle_row (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>,
+                     <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *item</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_toggle_row</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-undo-selection"></a><h3>btk_list_undo_selection ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_undo_selection (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_undo_selection</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-list-end-drag-selection"></a><h3>btk_list_end_drag_selection ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_list_end_drag_selection (<em class="parameter"><code><a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_list_end_drag_selection</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkList.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BtkList-struct"></a><h3>struct BtkList</h3>
+<pre class="programlisting">struct BtkList;</pre>
+<div class="warning"><p><code class="literal">BtkList</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkList.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="BtkList--selection-mode"></a><h3>The <code class="literal">“selection-mode”</code> property</h3>
+<pre class="programlisting">  “selection-mode”           <a class="link" href="btk2-Standard-Enumerations.html#BtkSelectionMode" title="enum BtkSelectionMode"><span class="type">BtkSelectionMode</span></a></pre>
+<p>Owner: BtkList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_SELECTION_NONE</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkList.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="BtkList-select-child"></a><h3>The <code class="literal">“select-child”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a>   *list,
+               <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkList-selection-changed"></a><h3>The <code class="literal">“selection-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a> *list,
+               <span class="type">gpointer</span> user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkList-unselect-child"></a><h3>The <code class="literal">“unselect-child”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkList.html" title="BtkList"><span class="type">BtkList</span></a>   *list,
+               <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

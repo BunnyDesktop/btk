@@ -19,114 +19,114 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget **images;
-static GtkWidget **vbox;
+static BtkWidget **images;
+static BtkWidget **vbox;
 
 static void
-hello (GtkWidget * button, char *label)
+hello (BtkWidget * button, char *label)
 {
   g_print ("Click from %s\n", label);
 }
 
 static void
-show_hide (GtkWidget * button, gpointer data)
+show_hide (BtkWidget * button, gpointer data)
 {
   gint num_screen = GPOINTER_TO_INT (data);
     
   static gboolean visible = TRUE;
   if (visible)
     {
-      gtk_widget_hide (images[num_screen]);
-      gtk_button_set_label (GTK_BUTTON (button), "Show Icon");
+      btk_widget_hide (images[num_screen]);
+      btk_button_set_label (BTK_BUTTON (button), "Show Icon");
       visible = FALSE;
     }
   else
     {
-      gtk_widget_show (images[num_screen]);
-      gtk_button_set_label (GTK_BUTTON (button), "Hide Icon");
+      btk_widget_show (images[num_screen]);
+      btk_button_set_label (BTK_BUTTON (button), "Hide Icon");
       visible = TRUE;
     }
 }
 
 static void
-move (GtkWidget *button, GtkVBox *vbox)
+move (BtkWidget *button, BtkVBox *vbox)
 {
-  GdkScreen *screen = gtk_widget_get_screen (button);
-  GtkWidget *toplevel = gtk_widget_get_toplevel (button);
-  GtkWidget *new_toplevel;  
-  GdkDisplay *display = gdk_screen_get_display (screen);
-  gint number_of_screens = gdk_display_get_n_screens (display);
-  gint screen_num = gdk_screen_get_number (screen);
+  BdkScreen *screen = btk_widget_get_screen (button);
+  BtkWidget *toplevel = btk_widget_get_toplevel (button);
+  BtkWidget *new_toplevel;  
+  BdkDisplay *display = bdk_screen_get_display (screen);
+  gint number_of_screens = bdk_display_get_n_screens (display);
+  gint screen_num = bdk_screen_get_number (screen);
   
-  g_print ("This button is on screen %d\n", gdk_screen_get_number (screen));
+  g_print ("This button is on screen %d\n", bdk_screen_get_number (screen));
   
-  new_toplevel = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  new_toplevel = btk_window_new (BTK_WINDOW_TOPLEVEL);
   
   if ((screen_num +1) < number_of_screens)
-    gtk_window_set_screen (GTK_WINDOW (new_toplevel), 
-			   gdk_display_get_screen (display,
+    btk_window_set_screen (BTK_WINDOW (new_toplevel), 
+			   bdk_display_get_screen (display,
 						   screen_num + 1));
   else
-    gtk_window_set_screen (GTK_WINDOW (new_toplevel), 
-			   gdk_display_get_screen (display, 0));
+    btk_window_set_screen (BTK_WINDOW (new_toplevel), 
+			   bdk_display_get_screen (display, 0));
   
-  gtk_widget_reparent (GTK_WIDGET (vbox), new_toplevel);
-  gtk_widget_destroy (toplevel);
-  gtk_widget_show_all (new_toplevel);
+  btk_widget_reparent (BTK_WIDGET (vbox), new_toplevel);
+  btk_widget_destroy (toplevel);
+  btk_widget_show_all (new_toplevel);
 }
 
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget **window;
-  GtkWidget *moving_window, *moving_button, *moving_vbox, *moving_image;
+  BtkWidget **window;
+  BtkWidget *moving_window, *moving_button, *moving_vbox, *moving_image;
   gint num_screen = 0;
   gchar *displayname = NULL;
   gint i;
-  GdkScreen **screen_list;
-  GdkDisplay *dpy;
+  BdkScreen **screen_list;
+  BdkDisplay *dpy;
   GSList *ids;
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  dpy = gdk_display_get_default ();
-  num_screen = gdk_display_get_n_screens (dpy);
-  displayname = g_strdup (gdk_display_get_name (dpy));
+  dpy = bdk_display_get_default ();
+  num_screen = bdk_display_get_n_screens (dpy);
+  displayname = g_strdup (bdk_display_get_name (dpy));
   g_print ("This X Server (%s) manages %d screen(s).\n",
 	   displayname, num_screen);
-  screen_list = g_new (GdkScreen *, num_screen);
-  window = g_new (GtkWidget *, num_screen);
-  images = g_new (GtkWidget *, num_screen);
-  vbox = g_new (GtkWidget *, num_screen);
+  screen_list = g_new (BdkScreen *, num_screen);
+  window = g_new (BtkWidget *, num_screen);
+  images = g_new (BtkWidget *, num_screen);
+  vbox = g_new (BtkWidget *, num_screen);
 
-  ids = gtk_stock_list_ids ();
+  ids = btk_stock_list_ids ();
 
   for (i = 0; i < num_screen; i++)
     {
       char *label = g_strdup_printf ("Screen %d", i);
-      GtkWidget *button;
+      BtkWidget *button;
       
-      screen_list[i] = gdk_display_get_screen (dpy, i);
+      screen_list[i] = bdk_display_get_screen (dpy, i);
 
-      window[i] = g_object_new (GTK_TYPE_WINDOW,
+      window[i] = g_object_new (BTK_TYPE_WINDOW,
 				  "screen", screen_list[i],
 				  "user_data", NULL,
-				  "type", GTK_WINDOW_TOPLEVEL,
+				  "type", BTK_WINDOW_TOPLEVEL,
 				  "title", label,
 				  "allow_grow", FALSE,
 				  "allow_shrink", FALSE,
 				  "border_width", 10, NULL,
 				  NULL);
       g_signal_connect (window[i], "destroy",
-			G_CALLBACK (gtk_main_quit), NULL);
+			G_CALLBACK (btk_main_quit), NULL);
 
-      vbox[i] = gtk_vbox_new (TRUE, 0);
-      gtk_container_add (GTK_CONTAINER (window[i]), vbox[i]);
+      vbox[i] = btk_vbox_new (TRUE, 0);
+      btk_container_add (BTK_CONTAINER (window[i]), vbox[i]);
 
-      button = g_object_new (GTK_TYPE_BUTTON,
+      button = g_object_new (BTK_TYPE_BUTTON,
 			       "label", label,
 			       "parent", vbox[i],
 			       "visible", TRUE, NULL,
@@ -134,12 +134,12 @@ main (int argc, char *argv[])
       g_signal_connect (button, "clicked",
 			G_CALLBACK (hello), label);
   
-      images[i] = gtk_image_new_from_stock (g_slist_nth (ids, i+1)->data,
-					     GTK_ICON_SIZE_BUTTON);
+      images[i] = btk_image_new_from_stock (g_slist_nth (ids, i+1)->data,
+					     BTK_ICON_SIZE_BUTTON);
       
-      gtk_container_add (GTK_CONTAINER (vbox[i]), images[i]);
+      btk_container_add (BTK_CONTAINER (vbox[i]), images[i]);
 
-      button = g_object_new (GTK_TYPE_BUTTON,
+      button = g_object_new (BTK_TYPE_BUTTON,
 			       "label", "Hide Icon",
 			       "parent", vbox[i],
 			       "visible", TRUE, NULL,
@@ -149,13 +149,13 @@ main (int argc, char *argv[])
     }
   
   for (i = 0; i < num_screen; i++)
-    gtk_widget_show_all (window[i]);
+    btk_widget_show_all (window[i]);
   
-  moving_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  moving_vbox = gtk_vbox_new (TRUE, 0);
+  moving_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  moving_vbox = btk_vbox_new (TRUE, 0);
   
-  gtk_container_add (GTK_CONTAINER (moving_window), moving_vbox);
-  moving_button = g_object_new (GTK_TYPE_BUTTON,
+  btk_container_add (BTK_CONTAINER (moving_window), moving_vbox);
+  moving_button = g_object_new (BTK_TYPE_BUTTON,
 				  "label", "Move to Next Screen",
 				  "visible", TRUE,
 				  NULL);
@@ -163,14 +163,14 @@ main (int argc, char *argv[])
   g_signal_connect (moving_button, "clicked", 
 		    G_CALLBACK (move), moving_vbox);
   
-  gtk_container_add (GTK_CONTAINER (moving_vbox), moving_button);
+  btk_container_add (BTK_CONTAINER (moving_vbox), moving_button);
   
-  moving_image = gtk_image_new_from_stock (g_slist_nth (ids, num_screen + 2)->data,
-					   GTK_ICON_SIZE_BUTTON);
-  gtk_container_add (GTK_CONTAINER (moving_vbox), moving_image);
-  gtk_widget_show_all (moving_window);
+  moving_image = btk_image_new_from_stock (g_slist_nth (ids, num_screen + 2)->data,
+					   BTK_ICON_SIZE_BUTTON);
+  btk_container_add (BTK_CONTAINER (moving_vbox), moving_image);
+  btk_widget_show_all (moving_window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

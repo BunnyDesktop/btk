@@ -25,155 +25,155 @@
  * grouping items.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkTreeModel *
+static BtkTreeModel *
 get_model (void)
 {
-  static GtkListStore *store;
-  GtkTreeIter iter;
+  static BtkListStore *store;
+  BtkTreeIter iter;
 
   if (store)
-    return (GtkTreeModel *) g_object_ref (store);
+    return (BtkTreeModel *) g_object_ref (store);
 
-  store = gtk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, G_TYPE_STRING);
 
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "One", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Two", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Three", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Four", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Five", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Six", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Seven", -1);
-  gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, 0, "Eight", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "One", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Two", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Three", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Four", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Five", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Six", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Seven", -1);
+  btk_list_store_append (store, &iter);
+  btk_list_store_set (store, &iter, 0, "Eight", -1);
 
-  return (GtkTreeModel *) store;
+  return (BtkTreeModel *) store;
 }
 
 static gboolean
-visible_func (GtkTreeModel *model,
-              GtkTreeIter  *iter,
+visible_func (BtkTreeModel *model,
+              BtkTreeIter  *iter,
               gpointer      data)
 {
   gboolean first = GPOINTER_TO_INT (data);
   gboolean visible;
-  GtkTreePath *path;
+  BtkTreePath *path;
 
-  path = gtk_tree_model_get_path (model, iter);
+  path = btk_tree_model_get_path (model, iter);
 
-  if (gtk_tree_path_get_indices (path)[0] < 4)
+  if (btk_tree_path_get_indices (path)[0] < 4)
     visible = first;
   else
     visible = !first;
 
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 
   return visible;
 }
 
-GtkTreeModel *
+BtkTreeModel *
 get_filter_model (gboolean first)
 {
-  GtkTreeModelFilter *model;
+  BtkTreeModelFilter *model;
 
-  model = (GtkTreeModelFilter *)gtk_tree_model_filter_new (get_model (), NULL);
+  model = (BtkTreeModelFilter *)btk_tree_model_filter_new (get_model (), NULL);
 
-  gtk_tree_model_filter_set_visible_func (model, visible_func, GINT_TO_POINTER (first), NULL);
+  btk_tree_model_filter_set_visible_func (model, visible_func, GINT_TO_POINTER (first), NULL);
 
-  return (GtkTreeModel *) model;
+  return (BtkTreeModel *) model;
 }
 
-static GtkWidget *
+static BtkWidget *
 get_view (gboolean first)
 {
-  GtkWidget *view;
+  BtkWidget *view;
 
-  view = gtk_icon_view_new_with_model (get_filter_model (first));
-  gtk_icon_view_set_text_column (GTK_ICON_VIEW (view), 0);
-  gtk_widget_set_size_request (view, 0, -1);
+  view = btk_icon_view_new_with_model (get_filter_model (first));
+  btk_icon_view_set_text_column (BTK_ICON_VIEW (view), 0);
+  btk_widget_set_size_request (view, 0, -1);
 
   return view;
 }
 
 typedef struct
 {
-  GtkWidget *header1;
-  GtkWidget *view1;
-  GtkWidget *header2;
-  GtkWidget *view2;
+  BtkWidget *header1;
+  BtkWidget *view1;
+  BtkWidget *header2;
+  BtkWidget *view2;
 } Views;
 
 static gboolean
-keynav_failed (GtkWidget        *view,
-               GtkDirectionType  direction,
+keynav_failed (BtkWidget        *view,
+               BtkDirectionType  direction,
                Views            *views)
 {
-  GtkTreePath *path;
-  GtkTreeModel *model;
-  GtkTreeIter iter;
+  BtkTreePath *path;
+  BtkTreeModel *model;
+  BtkTreeIter iter;
   gint col;
-  GtkTreePath *sel;
+  BtkTreePath *sel;
 
-  if (view == views->view1 && direction == GTK_DIR_DOWN)
+  if (view == views->view1 && direction == BTK_DIR_DOWN)
     {
-      if (gtk_icon_view_get_cursor (GTK_ICON_VIEW (views->view1), &path, NULL))
+      if (btk_icon_view_get_cursor (BTK_ICON_VIEW (views->view1), &path, NULL))
         {
-          col = gtk_icon_view_get_item_column (GTK_ICON_VIEW (views->view1), path);
-          gtk_tree_path_free (path);
+          col = btk_icon_view_get_item_column (BTK_ICON_VIEW (views->view1), path);
+          btk_tree_path_free (path);
 
           sel = NULL;
-          model = gtk_icon_view_get_model (GTK_ICON_VIEW (views->view2));
-          gtk_tree_model_get_iter_first (model, &iter);
+          model = btk_icon_view_get_model (BTK_ICON_VIEW (views->view2));
+          btk_tree_model_get_iter_first (model, &iter);
           do {
-            path = gtk_tree_model_get_path (model, &iter);
-            if (gtk_icon_view_get_item_column (GTK_ICON_VIEW (views->view2), path) == col)
+            path = btk_tree_model_get_path (model, &iter);
+            if (btk_icon_view_get_item_column (BTK_ICON_VIEW (views->view2), path) == col)
               {
                 sel = path;
                 break;
               }
-          } while (gtk_tree_model_iter_next (model, &iter));
+          } while (btk_tree_model_iter_next (model, &iter));
 
-          gtk_icon_view_set_cursor (GTK_ICON_VIEW (views->view2), sel, NULL, FALSE);
-          gtk_tree_path_free (sel);
+          btk_icon_view_set_cursor (BTK_ICON_VIEW (views->view2), sel, NULL, FALSE);
+          btk_tree_path_free (sel);
         }
-      gtk_widget_grab_focus (views->view2);
+      btk_widget_grab_focus (views->view2);
       return TRUE;
     }
 
-  if (view == views->view2 && direction == GTK_DIR_UP)
+  if (view == views->view2 && direction == BTK_DIR_UP)
     {
-      if (gtk_icon_view_get_cursor (GTK_ICON_VIEW (views->view2), &path, NULL))
+      if (btk_icon_view_get_cursor (BTK_ICON_VIEW (views->view2), &path, NULL))
         {
-          col = gtk_icon_view_get_item_column (GTK_ICON_VIEW (views->view2), path);
-          gtk_tree_path_free (path);
+          col = btk_icon_view_get_item_column (BTK_ICON_VIEW (views->view2), path);
+          btk_tree_path_free (path);
 
           sel = NULL;
-          model = gtk_icon_view_get_model (GTK_ICON_VIEW (views->view1));
-          gtk_tree_model_get_iter_first (model, &iter);
+          model = btk_icon_view_get_model (BTK_ICON_VIEW (views->view1));
+          btk_tree_model_get_iter_first (model, &iter);
           do {
-            path = gtk_tree_model_get_path (model, &iter);
-            if (gtk_icon_view_get_item_column (GTK_ICON_VIEW (views->view1), path) == col)
+            path = btk_tree_model_get_path (model, &iter);
+            if (btk_icon_view_get_item_column (BTK_ICON_VIEW (views->view1), path) == col)
               {
                 if (sel)
-                  gtk_tree_path_free (sel);
+                  btk_tree_path_free (sel);
                 sel = path;
               }
             else
-              gtk_tree_path_free (path);
-          } while (gtk_tree_model_iter_next (model, &iter));
+              btk_tree_path_free (path);
+          } while (btk_tree_model_iter_next (model, &iter));
 
-          gtk_icon_view_set_cursor (GTK_ICON_VIEW (views->view1), sel, NULL, FALSE);
-          gtk_tree_path_free (sel);
+          btk_icon_view_set_cursor (BTK_ICON_VIEW (views->view1), sel, NULL, FALSE);
+          btk_tree_path_free (sel);
         }
-      gtk_widget_grab_focus (views->view1);
+      btk_widget_grab_focus (views->view1);
       return TRUE;
     }
 
@@ -181,66 +181,66 @@ keynav_failed (GtkWidget        *view,
 }
 
 static gboolean
-focus_out (GtkWidget     *view,
-           GdkEventFocus *event,
+focus_out (BtkWidget     *view,
+           BdkEventFocus *event,
            gpointer       data)
 {
-  gtk_icon_view_unselect_all (GTK_ICON_VIEW (view));
+  btk_icon_view_unselect_all (BTK_ICON_VIEW (view));
 
   return FALSE;
 }
 
 static gboolean
-focus_in (GtkWidget     *view,
-          GdkEventFocus *event,
+focus_in (BtkWidget     *view,
+          BdkEventFocus *event,
           gpointer       data)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
 
-  if (!gtk_icon_view_get_cursor (GTK_ICON_VIEW (view), &path, NULL))
+  if (!btk_icon_view_get_cursor (BTK_ICON_VIEW (view), &path, NULL))
     {
-      path = gtk_tree_path_new_from_indices (0, -1);
-      gtk_icon_view_set_cursor (GTK_ICON_VIEW (view), path, NULL, FALSE);
+      path = btk_tree_path_new_from_indices (0, -1);
+      btk_icon_view_set_cursor (BTK_ICON_VIEW (view), path, NULL, FALSE);
     }
 
-  gtk_icon_view_select_path (GTK_ICON_VIEW (view), path);
-  gtk_tree_path_free (path);
+  btk_icon_view_select_path (BTK_ICON_VIEW (view), path);
+  btk_tree_path_free (path);
 
   return FALSE;
 }
 
 static void
-header_style_set (GtkWidget *widget,
-                  GtkStyle  *old_style)
+header_style_set (BtkWidget *widget,
+                  BtkStyle  *old_style)
 {
   g_signal_handlers_block_by_func (widget, header_style_set, NULL);
-  gtk_widget_modify_bg (widget, GTK_STATE_NORMAL,
-                        &widget->style->base[GTK_STATE_NORMAL]);
-  gtk_widget_modify_fg (widget, GTK_STATE_NORMAL,
-                        &widget->style->text[GTK_STATE_NORMAL]);
+  btk_widget_modify_bg (widget, BTK_STATE_NORMAL,
+                        &widget->style->base[BTK_STATE_NORMAL]);
+  btk_widget_modify_fg (widget, BTK_STATE_NORMAL,
+                        &widget->style->text[BTK_STATE_NORMAL]);
   g_signal_handlers_unblock_by_func (widget, header_style_set, NULL);
 }
 
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *window;
-  GtkWidget *vbox;
+  BtkWidget *window;
+  BtkWidget *vbox;
   Views views;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_add (BTK_CONTAINER (window), vbox);
 
-  views.header1 = g_object_new (GTK_TYPE_LABEL,
+  views.header1 = g_object_new (BTK_TYPE_LABEL,
                                 "label", "<b>Group 1</b>",
                                 "use-markup", TRUE,
                                 "xalign", 0.0,
                                 NULL);
   views.view1 = get_view (TRUE);
-  views.header2 = g_object_new (GTK_TYPE_LABEL,
+  views.header2 = g_object_new (BTK_TYPE_LABEL,
                                 "label", "<b>Group 2</b>",
                                 "use-markup", TRUE,
                                 "xalign", 0.0,
@@ -266,14 +266,14 @@ main (int argc, char *argv[])
   g_signal_connect (window, "style-set",
                     G_CALLBACK (header_style_set), NULL);
 
-  gtk_container_add (GTK_CONTAINER (vbox), views.header1);
-  gtk_container_add (GTK_CONTAINER (vbox), views.view1);
-  gtk_container_add (GTK_CONTAINER (vbox), views.header2);
-  gtk_container_add (GTK_CONTAINER (vbox), views.view2);
+  btk_container_add (BTK_CONTAINER (vbox), views.header1);
+  btk_container_add (BTK_CONTAINER (vbox), views.view1);
+  btk_container_add (BTK_CONTAINER (vbox), views.header2);
+  btk_container_add (BTK_CONTAINER (vbox), views.view2);
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

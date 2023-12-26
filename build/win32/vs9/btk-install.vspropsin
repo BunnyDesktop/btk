@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="btkinstallprops"
+	InheritedPropertySheets=".\btk-build-defines.vsprops"
+	>
+	<UserMacro
+		Name="BtkDoInstall"
+		Value="
+mkdir $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\$(BtkDllPrefix)bdk-win32$(BtkDllSuffix).dll $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\$(BtkDllPrefix)bdk-win32$(BtkDllSuffix).pdb $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\$(BtkDllPrefix)btk-win32$(BtkDllSuffix).dll $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\$(BtkDllPrefix)btk-win32$(BtkDllSuffix).pdb $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\$(BtkDllPrefix)bailutil$(BtkDllSuffix).dll $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\$(BtkDllPrefix)bailutil$(BtkDllSuffix).pdb $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\btk-demo.exe $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\btk-demo.pdb $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\btk-update-icon-cache.exe $(CopyDir)\bin&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\btk-update-icon-cache.pdb $(CopyDir)\bin&#x0D;&#x0A;
+
+mkdir $(CopyDir)\lib\btk-$(ApiVersion)\$(BtkHost)\engines&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\bdk-win32-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\btk-win32-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\bailutil-$(ApiVersion).lib $(CopyDir)\lib&#x0D;&#x0A;
+
+mkdir $(CopyDir)\include\btk-$(ApiVersion)\bdk&#x0D;&#x0A;
+#include "bdk.headers"
+#include "bdk-win32.headers"
+
+mkdir $(CopyDir)\include\btk-$(ApiVersion)\btk&#x0D;&#x0A;
+#include "btk.headers"
+
+mkdir $(CopyDir)\lib\btk-$(ApiVersion)\include&#x0D;&#x0A;
+copy ..\..\..\bdk\bdkconfig.h $(CopyDir)\lib\btk-$(ApiVersion)\include&#x0D;&#x0A;
+
+mkdir $(CopyDir)\include\bail-1.0\libbail-util&#x0D;&#x0A;
+#include "bailutil.headers"
+
+copy $(ConfigurationName)\$(PlatformName)\bin\libwimp.dll $(Outdir)\lib\btk-$(ApiVersion)\$(BtkHost)\engines&#x0D;&#x0A;
+copy $(ConfigurationName)\$(PlatformName)\bin\libwimp.pdb $(Outdir)\lib\btk-$(ApiVersion)\$(BtkHost)\engines&#x0D;&#x0A;
+
+mkdir $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+copy ..\..\..\demos\btk-demo\*.png $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+copy ..\..\..\demos\btk-demo\*.gif $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+copy ..\..\..\demos\btk-demo\*.ui $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+copy ..\..\..\demos\btk-demo\*.jpg $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+copy ..\..\..\demos\btk-demo\*.c $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+copy ..\..\..\demos\btk-demo\*.h $(CopyDir)\share\btk-$(ApiVersion)\demo&#x0D;&#x0A;
+
+mkdir $(CopyDir)\share\themes\Default\btk-$(ApiVersion)-key&#x0D;&#x0A;
+copy ..\..\..\btk\btkrc.key.default $(CopyDir)\share\themes\Default\btk-$(ApiVersion)-key\btkrc&#x0D;&#x0A;
+
+mkdir $(CopyDir)\share\themes\Emacs\btk-$(ApiVersion)-key&#x0D;&#x0A;
+copy ..\..\..\btk\btkrc.key.emacs $(CopyDir)\share\themes\Emacs\btk-$(ApiVersion)-key\btkrc&#x0D;&#x0A;
+
+mkdir $(CopyDir)\share\themes\MS-Windows\btk-$(ApiVersion)&#x0D;&#x0A;
+copy ..\..\..\modules\engines\ms-windows\Theme\btk-$(ApiVersion)\btkrc $(CopyDir)\share\themes\MS-Windows\btk-$(ApiVersion)&#x0D;&#x0A;
+
+mkdir $(CopyDir)\share\themes\Raleigh\btk-$(ApiVersion)&#x0D;&#x0A;
+copy ..\..\..\btk\btkrc.default $(CopyDir)\share\themes\Raleigh\btk-$(ApiVersion)\btkrc&#x0D;&#x0A;
+
+if exist $(CopyDir)\share\icons\hicolor $(CopyDir)\bin\btk-update-icon-cache.exe --ignore-theme-index --force &quot;$(CopyDir)\share\icons\hicolor&quot;&#x0D;&#x0A;
+
+if exist ..\btk+-2.0.pc mkdir $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+if exist ..\bdk-2.0.pc copy ..\bdk-2.0.pc $(CopyDir)\lib\pkgconfig&#x0D;&#x0A;
+if exist ..\bdk-2.0.pc copy ..\bdk-2.0.pc $(CopyDir)\lib\pkgconfig\bdk-win32-2.0.pc&#x0D;&#x0A;
+if exist ..\btk+-2.0.pc copy &quot;..\btk+-2.0.pc&quot; &quot;$(CopyDir)\lib\pkgconfig&quot;&#x0D;&#x0A;
+if exist ..\btk+-2.0.pc copy &quot;..\btk+-2.0.pc&quot; &quot;$(CopyDir)\lib\pkgconfig\btk+-win32-2.0.pc&quot;&#x0D;&#x0A;
+		      "
+	/>
+	<UserMacro
+		Name="GenerateBtkPC"
+		Value="if exist $(PythonPath)\python.exe $(PythonPath)\python ..\btkpc.py --prefix=$(CopyDir) --version=$(BtkVersion) --host=i686-pc-vs$(VSVer)"
+	/>
+	<UserMacro
+		Name="GenerateBtkPCX64"
+		Value="if exist $(PythonPathX64)\python.exe $(PythonPathX64)\python ..\btkpc.py --prefix=$(CopyDir) --version=$(BtkVersion) --host=x86_64-pc-vs$(VSVer)"
+	/>
+</VisualStudioPropertySheet>

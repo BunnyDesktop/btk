@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+target=@bdktarget@
+
+Name: BDK
+Description: BTK+ Drawing Kit (${target} target)
+Version: @VERSION@
+Requires: @BDK_PACKAGES@
+Libs: -L${libdir} -lbdk-${target}-@BTK_API_VERSION@ @BDK_EXTRA_LIBS@
+Cflags: -I${includedir}/btk-2.0 -I${libdir}/btk-2.0/include @BDK_EXTRA_CFLAGS@

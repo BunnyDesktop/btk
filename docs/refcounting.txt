@@ -1,4 +1,4 @@
-The Reference Counting Scheme of GDK an GTK+
+The Reference Counting Scheme of BDK an BTK+
 ============================================
 
 Each data structure that provides reference counting offers a bunch of
@@ -12,100 +12,100 @@ functions that follow these conventions:
 	      invoked at this point, if the data structure is not
               already in a destroyed state.
 
-GtkObjects also provide the following functions:
+BtkObjects also provide the following functions:
 
   *_destroy:  Render an object `unusable', but as long as there are
               references to it, its allocated memory will not be freed.
-  *_sink:     Clear a GtkObjects `floating' state and decrement the
+  *_sink:     Clear a BtkObjects `floating' state and decrement the
 	      reference count by 1.
 
-GdkWindow
+BdkWindow
 ---------
 
-A GdkWindow has to be explicitly destroyed with gdk_window_destroy.
+A BdkWindow has to be explicitly destroyed with bdk_window_destroy.
 This will send out a request to destroy this window and all its
-children, and will decrement the ref_count of the GdkWindow by one.
-Thus, it releases the initial reference created by gdk_window_new.
+children, and will decrement the ref_count of the BdkWindow by one.
+Thus, it releases the initial reference created by bdk_window_new.
 
-All GdkWindows are kept in a hash table to translate from their XId to
+All BdkWindows are kept in a hash table to translate from their XId to
 the actual structure and the pointer in the hash table is reflected in
 the reference count.  When a DestroyNotify event is received for a
-particular GdkWindow, it is removed from the hash table and the
+particular BdkWindow, it is removed from the hash table and the
 ref_count is updated accordingly.
 
-You can call gdk_window_destroy more than once on a particular
-GdkWindow, it will only be destroyed when it hasn't been yet.  The
+You can call bdk_window_destroy more than once on a particular
+BdkWindow, it will only be destroyed when it hasn't been yet.  The
 ref_count is *always* decremented, tho. Be careful.
 
 Remark: When writing NO_WINDOW widgets, care should be taken about
-        proper referencing/unreferencing of the parent's GdkWindow
+        proper referencing/unreferencing of the parent's BdkWindow
         that is used by the widget.
  
-GdkPixmap
+BdkPixmap
 ---------
 
-There is no gdk_pixmap_destroy function.  The Pixmap is destroyed when
+There is no bdk_pixmap_destroy function.  The Pixmap is destroyed when
 the last reference to it vanishes.
 
-GdkPixmaps are kept in the same hash table as GdkWindows but the
+BdkPixmaps are kept in the same hash table as BdkWindows but the
 pointer in the hash table is *not* reflected in the ref_count.
 
 This works only when Pixmaps never get XEvents.  I'm not sure if this
 is the case.
 
-GdkBitmap
+BdkBitmap
 ---------
 
-A GdkBitmap is only another name for a special use of GdkPixmap.
+A BdkBitmap is only another name for a special use of BdkPixmap.
 
-GdkVisual
+BdkVisual
 ---------
 
 There are no *_new or *_destroy functions and the *_ref and *_unref
-functions are no-ops.  GdkVisuals are static structures and thus do not
+functions are no-ops.  BdkVisuals are static structures and thus do not
 need reference counting.  The ref counting functions are only there
 for extra defensive programming.
 
-GdkColormap
+BdkColormap
 -----------
 
-Nothing special.  There is no gdk_colormap_destroy function.
+Nothing special.  There is no bdk_colormap_destroy function.
 
-GdkFont / GdkFontSet
+BdkFont / BdkFontSet
 --------------------
 
-GdkFont and GdkFontSet are equivalent as far as ref counting is
-concerned.  Use gdk_font_ref and gdk_font_unref for both.
+BdkFont and BdkFontSet are equivalent as far as ref counting is
+concerned.  Use bdk_font_ref and bdk_font_unref for both.
 
-There is no gdk_font_free or gdk_fontset_free function.
+There is no bdk_font_free or bdk_fontset_free function.
 
-GtkAcceleratorTable
+BtkAcceleratorTable
 -------------------
 
-There is no gtk_accelerator_table_destroy function.
+There is no btk_accelerator_table_destroy function.
 
-GtkTooltips
+BtkTooltips
 -----------
 
-There is no gtk_tooltips_destroy function.
+There is no btk_tooltips_destroy function.
 
-GtkStyle
+BtkStyle
 --------
 
-There is no gtk_style_destroy function.
+There is no btk_style_destroy function.
 
-GtkObject
+BtkObject
 ---------
 
-GtkObjects follow the usual ref_counting strategy, but with a twist.
+BtkObjects follow the usual ref_counting strategy, but with a twist.
 
-They are created with a ref_count of 1.  GtkObjects are able to
+They are created with a ref_count of 1.  BtkObjects are able to
 run finalization code when the ref_count drops to zero but you cannot
 register arbitrary signal handlers to run at finalization time.
 
-There is also the old gtk_object_destroy function and the "destroy"
+There is also the old btk_object_destroy function and the "destroy"
 signal but they are somewhat independent from finalization.  Just as
-stated at the top of this text, gtk_object_destroy merely renders an
+stated at the top of this text, btk_object_destroy merely renders an
 object unusable.  When the object is a container widget for example,
 it unrealizes that widget, removes all children and disconnects all
 signal handlers.  The finalization code is different, it would for
@@ -116,7 +116,7 @@ This is the biggest change.  Every widget must be revised to have a
 proper "destroy" function, etc.  Such a destroy function will only
 be called once and is expected to leave the widget in a minimal but
 consistent state.  Widgets that have been "destroyed" but not yet
-finalized are flagged with GTK_DESTROY.  The "finalization" function
+finalized are flagged with BTK_DESTROY.  The "finalization" function
 is new and should perform last-minute cleanup actions, in contrast
 to the destroy function it will not be emitted as signal though.
 It can assume that the "destroy" function has been called as the
@@ -125,22 +125,22 @@ last function on this widget.
 Essentially, the old "destroy" function has been split into a
 "finalize" plus a "destroy" function.
 
-It is not possible to create GtkObjects with a ref_count of 0
+It is not possible to create BtkObjects with a ref_count of 0
 because the first ref/unref pair will destroy it unintentionally.
 
-To be mostly backward compatible with existing practice, a GtkObject
+To be mostly backward compatible with existing practice, a BtkObject
 leads a more complicated life than the other reference counted structures.
 
-When a GtkObject is created, it starts out in a special state called
+When a BtkObject is created, it starts out in a special state called
 "floating" (this is the twist).  This means that it is alive and has a
 reference to it, but the `owner' of this reference is not known.
 There are certain `potential owners' that will adopt a floating
-GtkObject.  For GtkWidgets the most common adopters are the parent
+BtkObject.  For BtkWidgets the most common adopters are the parent
 widget.
 
-When you want to adopt a possibly floating GtkObject, you call
-gtk_object_sink on it.  This clears the floating state of the
-GtkObject and decrements the ref_count by one, if it has been floating
+When you want to adopt a possibly floating BtkObject, you call
+btk_object_sink on it.  This clears the floating state of the
+BtkObject and decrements the ref_count by one, if it has been floating
 previously.  Once the floating state has been cleared, it will never
 be set again.
 
@@ -149,75 +149,75 @@ parent/child tree.  The link from the parent to a child is reflected
 in the ref_count of the child, but the link from the child to the
 parent is not reflected in the ref_count of the parent.
 
-Like a GtkObject, a GtkWidget is created with a ref_count of 1 and
+Like a BtkObject, a BtkWidget is created with a ref_count of 1 and
 initially flagged as `floating'.  As soon as it is added as a child to
 a parent, the `floating' flag is cleared and never will be set again.
 Not even when it is later unparented.  The act of clearing the
 `floating' flag also decrements the ref_count of the widget by one.
 
-When the widget is unparented, its underlying GdkWindow is destroyed
+When the widget is unparented, its underlying BdkWindow is destroyed
 (when it has one), it loses its reference from the parent and
 naturally the ref_count is decremented.
 
-It is considered a bug if a widget still has a GdkWindow when it is
+It is considered a bug if a widget still has a BdkWindow when it is
 being freed.
 
 Toplevel widgets, which don't have a `natural' parent, are adopted by
 special registering functions.  Because the of the reference count that
 is set by the registering functions, toplevel widgets will have to be
-explicitly destroyed, with the exception of GtkMenus.  GtkMenus are a
+explicitly destroyed, with the exception of BtkMenus.  BtkMenus are a
 special case of toplevel widgets in that they will be `attached' to and
-`detached' from other widgets.  The act of attaching a GtkMenu to a
+`detached' from other widgets.  The act of attaching a BtkMenu to a
 widget will be reflected in its reference count.  The act of detaching
-a GtkMenu will revert that.  Therefore GtkMenus naturally get destroyed
+a BtkMenu will revert that.  Therefore BtkMenus naturally get destroyed
 and finalized once they are detached from their reference holder.
 
-So, the typical career of a GtkWindow a GtMenu attached to a
-GtkOptionMenu looks like this:
+So, the typical career of a BtkWindow a GtMenu attached to a
+BtkOptionMenu looks like this:
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   /* window is created with ref_count == 1.  It is not flagged as
    * `floating' because it has already been registered as a toplevel
    * widget.
    */
 
-  option_menu = gtk_option_menu_new ();
+  option_menu = btk_option_menu_new ();
   /* option_menu->ref_count == 1 and it is flagged as `floating'.
    */
   
-  gtk_container_add (window, option_menu);
+  btk_container_add (window, option_menu);
   /* option_menu->ref_count still == 1, but it is no longer `floating'.
    */
   
-  menu = gtk_menu_new ();
+  menu = btk_menu_new ();
   /* menu->ref_count == 1 and it is flagged as `floating'.
    */
   
-  menu_item = gtk_menu_item_new_with_label ("Choose Me");
+  menu_item = btk_menu_item_new_with_label ("Choose Me");
   /* menu_item->ref_count == 1 and it is flagged as `floating'.
    */
 
-  gtk_menu_append (GTK_MENU (menu), menu_item);
+  btk_menu_append (BTK_MENU (menu), menu_item);
   /* menu_item->ref_count still == 1, but it is no longer `floating'.
    */
   
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+  btk_option_menu_set_menu (BTK_OPTION_MENU (option_menu), menu);
   /* menu->ref_count still == 1, but it is no longer `floating'.
    */
 
-  gtk_widget_show (menu_item);
-  gtk_widget_show (option_menu);
-  gtk_widget_show (window);
+  btk_widget_show (menu_item);
+  btk_widget_show (option_menu);
+  btk_widget_show (window);
 
-  /* The widgets get their GdkWindows, nothing significant happens to
+  /* The widgets get their BdkWindows, nothing significant happens to
    * the ref_counts.
    */
 
 Then, when the user wants to get rid of the window:
 
-  gtk_widget_destroy (window);
+  btk_widget_destroy (window);
 
-  /* The GdkWindow of `window' and all its child GdkWindows are
+  /* The BdkWindow of `window' and all its child BdkWindows are
    * destroyed.
    *
    * window is unregistered from the toplevel list and its ref_count
@@ -247,63 +247,63 @@ widget, it needs to hold a reference to it.
 
 Example code sequences that require reference wraps:
 
-   /* gtk_container_remove() will unparent the child and therefore
+   /* btk_container_remove() will unparent the child and therefore
     * cause its reference count to be decremented by one.
     */
    g_object_ref (widget);
-   gtk_container_remove (container, widget);
+   btk_container_remove (container, widget);
    /* without the reference count, the widget would have been destroyed here.
    */
-   gtk_container_add (container, widget);
+   btk_container_add (container, widget);
    g_object_unref (widget);
 
 
   /* all items in item_list need to be referenced
-   * before gtk_list_remove_items() is invoked.
-   * this is somewhat tricky as gtk_list_append_items/gtk_list_prepend_items/
-   * gtk_list_insert_items will take over the lists nodes.
+   * before btk_list_remove_items() is invoked.
+   * this is somewhat tricky as btk_list_append_items/btk_list_prepend_items/
+   * btk_list_insert_items will take over the lists nodes.
    * we therefore have an extra GSList `*slist' for later unreferencing.
    */
    slist = NULL;
    for (list = item_list; list; list = list->next)
    {
-     g_object_ref (GTK_WIDGET (list->data));
+     g_object_ref (BTK_WIDGET (list->data));
      slist = g_slist_prepend (slist, list->data);
    }
-   gtk_list_remove_items (list, item_list);
-   gtk_list_append_items (other_list, item_list);
-   /* gtk_list_prepend_items (other_list, item_list); */
-   /* gtk_list_insert_items (other_list, item_list, 3); */
+   btk_list_remove_items (list, item_list);
+   btk_list_append_items (other_list, item_list);
+   /* btk_list_prepend_items (other_list, item_list); */
+   /* btk_list_insert_items (other_list, item_list, 3); */
    while (slist)
    {
      GSList *tmp;
      
      tmp = slist;
      slist = slist->next;
-     g_object_unref (GTK_WIDGET (tmp->data));
+     g_object_unref (BTK_WIDGET (tmp->data));
      g_slist_free_1 (tmp);
    }
    
    /* Alternatively to the removal above you could just use
-    * gtk_list_remove_items_no_unref() which will add the additional
+    * btk_list_remove_items_no_unref() which will add the additional
     * reference count to the widget.
     */
-   gtk_list_remove_items_no_unref (list, item_list);
-   gtk_list_prepend_items (other_list, item_list);
+   btk_list_remove_items_no_unref (list, item_list);
+   btk_list_prepend_items (other_list, item_list);
 
 
 Now a (hopefully) complete list of functions that require
 wrappers similar to the examples above:
 
-void       gtk_container_remove         (GtkContainer     *container,
-                                         GtkWidget        *widget);
-void       gtk_list_remove_items        (GtkList          *list,
+void       btk_container_remove         (BtkContainer     *container,
+                                         BtkWidget        *widget);
+void       btk_list_remove_items        (BtkList          *list,
                                          GList            *items);
-void       gtk_tree_remove_items        (GtkTree          *tree,
+void       btk_tree_remove_items        (BtkTree          *tree,
                                          GList            *items);
-void       gtk_tree_item_remove_subtree (GtkTreeItem      *tree_item);
-void       gtk_menu_item_remove_submenu (GtkMenuItem      *menu_item);
-void       gtk_option_menu_remove_menu  (GtkOptionMenu    *option_menu);
+void       btk_tree_item_remove_subtree (BtkTreeItem      *tree_item);
+void       btk_menu_item_remove_submenu (BtkMenuItem      *menu_item);
+void       btk_option_menu_remove_menu  (BtkOptionMenu    *option_menu);
 
 
 
@@ -311,5 +311,5 @@ Initial proposal:
 	- Marius Vollmer <mvo@zagadka.ping.de>
 
 Some modifications/additions, "Taking care of proper referencing" and
-reference counting solution for GtkMenus:
+reference counting solution for BtkMenus:
 	- Tim Janik <timj@gimp.org>

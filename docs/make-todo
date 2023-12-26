@@ -21,7 +21,7 @@ def bug_subst(s):
         return s.group(0)
     else:
         n = s.group(2)
-        return '<a href="http://bugs.gnome.org/db/%s/%s.html">#%s</a>' % (n[0:2], n, n)
+        return '<a href="http://bugs.bunny.org/db/%s/%s.html">#%s</a>' % (n[0:2], n, n)
 
 def bugify(str):
     str =  re.sub ("(<[^>]*>)|#(\d+)", bug_subst, str)

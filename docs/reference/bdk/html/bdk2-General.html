@@ -1,0 +1,776 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>General: BDK 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BDK 2 Reference Manual">
+<link rel="up" href="reference.html" title="API Reference">
+<link rel="prev" href="reference.html" title="API Reference">
+<link rel="next" href="multihead.html" title="Multi-head Support Overview">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#bdk2-General.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="reference.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="reference.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="multihead.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="bdk2-General"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="bdk2-General.top_of_page"></a>General</span></h2>
+<p>General</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="bdk2-General.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-init" title="bdk_init ()">bdk_init</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-init-check" title="bdk_init_check ()">bdk_init_check</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-parse-args" title="bdk_parse_args ()">bdk_parse_args</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-get-display-arg-name" title="bdk_get_display_arg_name ()">bdk_get_display_arg_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-set-locale" title="bdk_set_locale ()">bdk_set_locale</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-set-sm-client-id" title="bdk_set_sm_client_id ()">bdk_set_sm_client_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-exit" title="bdk_exit ()">bdk_exit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-notify-startup-complete" title="bdk_notify_startup_complete ()">bdk_notify_startup_complete</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-notify-startup-complete-with-id" title="bdk_notify_startup_complete_with_id ()">bdk_notify_startup_complete_with_id</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">char</span> *
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-get-program-class" title="bdk_get_program_class ()">bdk_get_program_class</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-set-program-class" title="bdk_set_program_class ()">bdk_set_program_class</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-get-display" title="bdk_get_display ()">bdk_get_display</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-flush" title="bdk_flush ()">bdk_flush</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-screen-width" title="bdk_screen_width ()">bdk_screen_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-screen-height" title="bdk_screen_height ()">bdk_screen_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-screen-width-mm" title="bdk_screen_width_mm ()">bdk_screen_width_mm</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-screen-height-mm" title="bdk_screen_height_mm ()">bdk_screen_height_mm</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="bdk2-General.html#BdkGrabStatus" title="enum BdkGrabStatus"><span class="returnvalue">BdkGrabStatus</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-pointer-grab" title="bdk_pointer_grab ()">bdk_pointer_grab</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-pointer-ungrab" title="bdk_pointer_ungrab ()">bdk_pointer_ungrab</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-pointer-is-grabbed" title="bdk_pointer_is_grabbed ()">bdk_pointer_is_grabbed</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-set-double-click-time" title="bdk_set_double_click_time ()">bdk_set_double_click_time</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="bdk2-General.html#BdkGrabStatus" title="enum BdkGrabStatus"><span class="returnvalue">BdkGrabStatus</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-keyboard-grab" title="bdk_keyboard_grab ()">bdk_keyboard_grab</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-keyboard-ungrab" title="bdk_keyboard_ungrab ()">bdk_keyboard_ungrab</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-beep" title="bdk_beep ()">bdk_beep</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-get-use-xshm" title="bdk_get_use_xshm ()">bdk_get_use_xshm</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-set-use-xshm" title="bdk_set_use_xshm ()">bdk_set_use_xshm</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-error-trap-push" title="bdk_error_trap_push ()">bdk_error_trap_push</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="bdk2-General.html#bdk-error-trap-pop" title="bdk_error_trap_pop ()">bdk_error_trap_pop</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="bdk2-General.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="bdk2-General.html#BdkGrabStatus" title="enum BdkGrabStatus">BdkGrabStatus</a></td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="bdk2-General.html#BDK-WINDOWING-X11:CAPS" title="BDK_WINDOWING_X11">BDK_WINDOWING_X11</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="bdk2-General.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;bdk/bdk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="bdk2-General.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="bdk2-General.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="bdk-init"></a><h3>bdk_init ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_init (<em class="parameter"><code><span class="type">gint</span> *argc</code></em>,
+          <em class="parameter"><code><span class="type">gchar</span> ***argv</code></em>);</pre>
+<div class="refsect3">
+<a name="bdk-init.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>argc</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for input and for returning results. Default is transfer full."><span class="acronym">inout</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>argv</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=argc][<acronym title="Parameter for input and for returning results. Default is transfer full."><span class="acronym">inout</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-init-check"></a><h3>bdk_init_check ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+bdk_init_check (<em class="parameter"><code><span class="type">gint</span> *argc</code></em>,
+                <em class="parameter"><code><span class="type">gchar</span> ***argv</code></em>);</pre>
+<p>Initialize the library for use.</p>
+<p>Arguments:
+  "argc" is the number of arguments.
+  "argv" is an array of strings.</p>
+<p>Results:
+  "argc" and "argv" are modified to reflect any arguments
+  which were not handled. (Such arguments should either
+  be handled by the application or dismissed). If initialization
+  fails, returns FALSE, otherwise TRUE.</p>
+<p>Side effects:
+  The library is initialized.</p>
+<div class="refsect3">
+<a name="id-1.2.2.7.3.8"></a><h4>Side effects:
+  The library is initialized.</h4>
+</div>
+<div class="refsect3">
+<a name="bdk-init-check.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>argc</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for input and for returning results. Default is transfer full."><span class="acronym">inout</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>argv</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=argc][<acronym title="Parameter for input and for returning results. Default is transfer full."><span class="acronym">inout</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-parse-args"></a><h3>bdk_parse_args ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_parse_args (<em class="parameter"><code><span class="type">gint</span> *argc</code></em>,
+                <em class="parameter"><code><span class="type">gchar</span> ***argv</code></em>);</pre>
+<p>Parse command line arguments, and store for future
+use by calls to <a class="link" href="BdkDisplay.html#bdk-display-open" title="bdk_display_open ()"><code class="function">bdk_display_open()</code></a>.</p>
+<p>Any arguments used by BDK are removed from the array and <em class="parameter"><code>argc</code></em>
+ and <em class="parameter"><code>argv</code></em>
+ are
+updated accordingly.</p>
+<p>You shouldn't call this function explicitely if you are using
+<a href="https://developer.bunny.org/btk4/btk4-General.html#btk-init"><code class="function">btk_init()</code></a>, <a href="https://developer.bunny.org/btk4/btk4-General.html#btk-init-check"><code class="function">btk_init_check()</code></a>, <a class="link" href="bdk2-General.html#bdk-init" title="bdk_init ()"><code class="function">bdk_init()</code></a>, or <a class="link" href="bdk2-General.html#bdk-init-check" title="bdk_init_check ()"><code class="function">bdk_init_check()</code></a>.</p>
+<div class="refsect3">
+<a name="bdk-parse-args.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>argc</p></td>
+<td class="parameter_description"><p>the number of command line arguments.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>argv</p></td>
+<td class="parameter_description"><p>the array of command line arguments. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for input and for returning results. Default is transfer full."><span class="acronym">inout</span></acronym>][<acronym title="Parameter points to an array of items."><span class="acronym">array</span></acronym> length=argc]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-get-display-arg-name"></a><h3>bdk_get_display_arg_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+bdk_get_display_arg_name (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Gets the display name specified in the command line arguments passed
+to <a class="link" href="bdk2-General.html#bdk-init" title="bdk_init ()"><code class="function">bdk_init()</code></a> or <a class="link" href="bdk2-General.html#bdk-parse-args" title="bdk_parse_args ()"><code class="function">bdk_parse_args()</code></a>, if any.</p>
+<div class="refsect3">
+<a name="bdk-get-display-arg-name.returns"></a><h4>Returns</h4>
+<p> the display name, if specified explicitely, otherwise <code class="literal">NULL</code>
+this string is owned by BTK+ and must not be modified or freed.</p>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-set-locale"></a><h3>bdk_set_locale ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+bdk_set_locale (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning"><p><code class="literal">bdk_set_locale</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-set-sm-client-id"></a><h3>bdk_set_sm_client_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_set_sm_client_id (<em class="parameter"><code>const <span class="type">gchar</span> *sm_client_id</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">bdk_set_sm_client_id</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
+<p>Use <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-set-sm-client-id" title="bdk_x11_set_sm_client_id ()"><code class="function">bdk_x11_set_sm_client_id()</code></a> instead</p>
+</div>
+<p>Sets the <code class="literal">SM_CLIENT_ID</code> property on the application's leader window so that
+the window manager can save the application's state using the X11R6 ICCCM
+session management protocol.</p>
+<p>See the X Session Management Library documentation for more information on
+session management and the Inter-Client Communication Conventions Manual
+(ICCCM) for information on the <code class="literal">WM_CLIENT_LEADER</code> property. 
+(Both documents are part of the X Window System distribution.)</p>
+<div class="refsect3">
+<a name="bdk-set-sm-client-id.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>sm_client_id</p></td>
+<td class="parameter_description"><p>the client id assigned by the session manager when the
+connection was opened, or <code class="literal">NULL</code> to remove the property.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-exit"></a><h3>bdk_exit ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_exit (<em class="parameter"><code><span class="type">gint</span> error_code</code></em>);</pre>
+<div class="warning"><p><code class="literal">bdk_exit</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-notify-startup-complete"></a><h3>bdk_notify_startup_complete ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_notify_startup_complete (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Indicates to the GUI environment that the application has finished
+loading. If the applications opens windows, this function is
+normally called after opening the application's initial set of
+windows.</p>
+<p>BTK+ will call this function automatically after opening the first
+<a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> unless <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-set-auto-startup-notification"><code class="function">btk_window_set_auto_startup_notification()</code></a> is called 
+to disable that feature.</p>
+<p class="since">Since: <a class="link" href="api-index-2-2.html#api-index-2.2">2.2</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-notify-startup-complete-with-id"></a><h3>bdk_notify_startup_complete_with_id ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_notify_startup_complete_with_id (<em class="parameter"><code>const <span class="type">gchar</span> *startup_id</code></em>);</pre>
+<p>Indicates to the GUI environment that the application has finished
+loading, using a given identifier.</p>
+<p>BTK+ will call this function automatically for <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> with custom
+startup-notification identifier unless
+<a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-set-auto-startup-notification"><code class="function">btk_window_set_auto_startup_notification()</code></a> is called to disable
+that feature.</p>
+<div class="refsect3">
+<a name="bdk-notify-startup-complete-with-id.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>startup_id</p></td>
+<td class="parameter_description"><p>a startup-notification identifier, for which notification
+process should be completed</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-get-program-class"></a><h3>bdk_get_program_class ()</h3>
+<pre class="programlisting">const <span class="returnvalue">char</span> *
+bdk_get_program_class (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-set-program-class"></a><h3>bdk_set_program_class ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_set_program_class (<em class="parameter"><code>const <span class="type">char</span> *program_class</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-get-display"></a><h3>bdk_get_display ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+bdk_get_display (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-flush"></a><h3>bdk_flush ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_flush (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-screen-width"></a><h3>bdk_screen_width ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+bdk_screen_width (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns the width of the default screen in pixels.</p>
+<div class="refsect3">
+<a name="bdk-screen-width.returns"></a><h4>Returns</h4>
+<p> the width of the default screen in pixels.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-screen-height"></a><h3>bdk_screen_height ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+bdk_screen_height (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns the height of the default screen in pixels.</p>
+<div class="refsect3">
+<a name="bdk-screen-height.returns"></a><h4>Returns</h4>
+<p> the height of the default screen in pixels.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-screen-width-mm"></a><h3>bdk_screen_width_mm ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+bdk_screen_width_mm (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns the width of the default screen in millimeters.
+Note that on many X servers this value will not be correct.</p>
+<div class="refsect3">
+<a name="bdk-screen-width-mm.returns"></a><h4>Returns</h4>
+<p> the width of the default screen in millimeters,
+though it is not always correct.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-screen-height-mm"></a><h3>bdk_screen_height_mm ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+bdk_screen_height_mm (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns the height of the default screen in millimeters.
+Note that on many X servers this value will not be correct.</p>
+<div class="refsect3">
+<a name="bdk-screen-height-mm.returns"></a><h4>Returns</h4>
+<p> the height of the default screen in millimeters,
+though it is not always correct.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-pointer-grab"></a><h3>bdk_pointer_grab ()</h3>
+<pre class="programlisting"><a class="link" href="bdk2-General.html#BdkGrabStatus" title="enum BdkGrabStatus"><span class="returnvalue">BdkGrabStatus</span></a>
+bdk_pointer_grab (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
+                  <em class="parameter"><code><span class="type">gboolean</span> owner_events</code></em>,
+                  <em class="parameter"><code><a class="link" href="bdk2-Events.html#BdkEventMask" title="enum BdkEventMask"><span class="type">BdkEventMask</span></a> event_mask</code></em>,
+                  <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *confine_to</code></em>,
+                  <em class="parameter"><code><a class="link" href="bdk2-Cursors.html#BdkCursor" title="BdkCursor"><span class="type">BdkCursor</span></a> *cursor</code></em>,
+                  <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-pointer-ungrab"></a><h3>bdk_pointer_ungrab ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_pointer_ungrab (<em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+<p>Ungrabs the pointer on the default display, if it is grabbed by this 
+application.</p>
+<div class="refsect3">
+<a name="bdk-pointer-ungrab.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>time_</p></td>
+<td class="parameter_description"><p>a timestamp from a <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a>, or <a class="link" href="bdk2-Events.html#BDK-CURRENT-TIME:CAPS" title="BDK_CURRENT_TIME"><code class="literal">BDK_CURRENT_TIME</code></a> if no
+timestamp is available.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-pointer-is-grabbed"></a><h3>bdk_pointer_is_grabbed ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+bdk_pointer_is_grabbed (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Returns <code class="literal">TRUE</code> if the pointer on the default display is currently 
+grabbed by this application.</p>
+<p>Note that this does not take the inmplicit pointer grab on button
+presses into account.</p>
+<div class="refsect3">
+<a name="bdk-pointer-is-grabbed.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if the pointer is currently grabbed by this application.* </p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-set-double-click-time"></a><h3>bdk_set_double_click_time ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_set_double_click_time (<em class="parameter"><code><span class="type">guint</span> msec</code></em>);</pre>
+<p>Set the double click time for the default display. See
+<a class="link" href="BdkDisplay.html#bdk-display-set-double-click-time" title="bdk_display_set_double_click_time ()"><code class="function">bdk_display_set_double_click_time()</code></a>. 
+See also <a class="link" href="BdkDisplay.html#bdk-display-set-double-click-distance" title="bdk_display_set_double_click_distance ()"><code class="function">bdk_display_set_double_click_distance()</code></a>.
+Applications should <span class="emphasis"><em>not</em></span> set this, it is a 
+global user-configured setting.</p>
+<div class="refsect3">
+<a name="bdk-set-double-click-time.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>msec</p></td>
+<td class="parameter_description"><p>double click time in milliseconds (thousandths of a second)</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-keyboard-grab"></a><h3>bdk_keyboard_grab ()</h3>
+<pre class="programlisting"><a class="link" href="bdk2-General.html#BdkGrabStatus" title="enum BdkGrabStatus"><span class="returnvalue">BdkGrabStatus</span></a>
+bdk_keyboard_grab (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
+                   <em class="parameter"><code><span class="type">gboolean</span> owner_events</code></em>,
+                   <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-keyboard-ungrab"></a><h3>bdk_keyboard_ungrab ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_keyboard_ungrab (<em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+<p>Ungrabs the keyboard on the default display, if it is grabbed by this 
+application.</p>
+<div class="refsect3">
+<a name="bdk-keyboard-ungrab.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>time_</p></td>
+<td class="parameter_description"><p>a timestamp from a <a class="link" href="bdk2-Event-Structures.html#BdkEvent" title="union BdkEvent"><span class="type">BdkEvent</span></a>, or <a class="link" href="bdk2-Events.html#BDK-CURRENT-TIME:CAPS" title="BDK_CURRENT_TIME"><code class="literal">BDK_CURRENT_TIME</code></a> if no
+timestamp is available.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-beep"></a><h3>bdk_beep ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_beep (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<p>Emits a short beep on the default display.</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-get-use-xshm"></a><h3>bdk_get_use_xshm ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+bdk_get_use_xshm (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<div class="warning"><p><code class="literal">bdk_get_use_xshm</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-set-use-xshm"></a><h3>bdk_set_use_xshm ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_set_use_xshm (<em class="parameter"><code><span class="type">gboolean</span> use_xshm</code></em>);</pre>
+<div class="warning"><p><code class="literal">bdk_set_use_xshm</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-error-trap-push"></a><h3>bdk_error_trap_push ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+bdk_error_trap_push (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="bdk-error-trap-pop"></a><h3>bdk_error_trap_pop ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+bdk_error_trap_pop (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="bdk2-General.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BdkGrabStatus"></a><h3>enum BdkGrabStatus</h3>
+<div class="refsect3">
+<a name="BdkGrabStatus.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-GRAB-SUCCESS:CAPS"></a>BDK_GRAB_SUCCESS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-GRAB-ALREADY-GRABBED:CAPS"></a>BDK_GRAB_ALREADY_GRABBED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-GRAB-INVALID-TIME:CAPS"></a>BDK_GRAB_INVALID_TIME</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-GRAB-NOT-VIEWABLE:CAPS"></a>BDK_GRAB_NOT_VIEWABLE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BDK-GRAB-FROZEN:CAPS"></a>BDK_GRAB_FROZEN</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BDK-WINDOWING-X11:CAPS"></a><h3>BDK_WINDOWING_X11</h3>
+<pre class="programlisting">#define BDK_WINDOWING_X11
+</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

@@ -8,7 +8,7 @@ dnl
 
 # serial 1
 
-m4_define([_GOBJECT_INTROSPECTION_CHECK_INTERNAL],
+m4_define([_BOBJECT_INTROSPECTION_CHECK_INTERNAL],
 [
     AC_BEFORE([AC_PROG_LIBTOOL],[$0])dnl setup libtool first
     AC_BEFORE([AM_PROG_LIBTOOL],[$0])dnl setup libtool first
@@ -25,7 +25,7 @@ m4_define([_GOBJECT_INTROSPECTION_CHECK_INTERNAL],
                                  [enable_introspection=auto])
     ])dnl
 
-    AC_MSG_CHECKING([for gobject-introspection])
+    AC_MSG_CHECKING([for bobject-introspection])
 
     dnl presence/version checking
     AS_CASE([$enable_introspection],
@@ -33,14 +33,14 @@ m4_define([_GOBJECT_INTROSPECTION_CHECK_INTERNAL],
         found_introspection="no (disabled, use --enable-introspection to enable)"
     ],dnl
     [yes],[dnl
-        PKG_CHECK_EXISTS([gobject-introspection-1.0],,
-                         AC_MSG_ERROR([gobject-introspection-1.0 is not installed]))
-        PKG_CHECK_EXISTS([gobject-introspection-1.0 >= $1],
+        PKG_CHECK_EXISTS([bobject-introspection-1.0],,
+                         AC_MSG_ERROR([bobject-introspection-1.0 is not installed]))
+        PKG_CHECK_EXISTS([bobject-introspection-1.0 >= $1],
                          found_introspection=yes,
-                         AC_MSG_ERROR([You need to have gobject-introspection >= $1 installed to build AC_PACKAGE_NAME]))
+                         AC_MSG_ERROR([You need to have bobject-introspection >= $1 installed to build AC_PACKAGE_NAME]))
     ],dnl
     [auto],[dnl
-        PKG_CHECK_EXISTS([gobject-introspection-1.0 >= $1], found_introspection=yes, found_introspection=no)
+        PKG_CHECK_EXISTS([bobject-introspection-1.0 >= $1], found_introspection=yes, found_introspection=no)
     ],dnl
     [dnl	
         AC_MSG_ERROR([invalid argument passed to --enable-introspection, should be one of @<:@no/auto/yes@:>@])
@@ -54,14 +54,14 @@ m4_define([_GOBJECT_INTROSPECTION_CHECK_INTERNAL],
     INTROSPECTION_GIRDIR=
     INTROSPECTION_TYPELIBDIR=
     if test "x$found_introspection" = "xyes"; then
-       INTROSPECTION_SCANNER=`$PKG_CONFIG --variable=g_ir_scanner gobject-introspection-1.0`
-       INTROSPECTION_COMPILER=`$PKG_CONFIG --variable=g_ir_compiler gobject-introspection-1.0`
-       INTROSPECTION_GENERATE=`$PKG_CONFIG --variable=g_ir_generate gobject-introspection-1.0`
-       INTROSPECTION_GIRDIR=`$PKG_CONFIG --variable=girdir gobject-introspection-1.0`
-       INTROSPECTION_TYPELIBDIR="$($PKG_CONFIG --variable=typelibdir gobject-introspection-1.0)"
-       INTROSPECTION_CFLAGS=`$PKG_CONFIG --cflags gobject-introspection-1.0`
-       INTROSPECTION_LIBS=`$PKG_CONFIG --libs gobject-introspection-1.0`
-       INTROSPECTION_MAKEFILE=`$PKG_CONFIG --variable=datadir gobject-introspection-1.0`/gobject-introspection-1.0/Makefile.introspection
+       INTROSPECTION_SCANNER=`$PKG_CONFIG --variable=g_ir_scanner bobject-introspection-1.0`
+       INTROSPECTION_COMPILER=`$PKG_CONFIG --variable=g_ir_compiler bobject-introspection-1.0`
+       INTROSPECTION_GENERATE=`$PKG_CONFIG --variable=g_ir_generate bobject-introspection-1.0`
+       INTROSPECTION_GIRDIR=`$PKG_CONFIG --variable=girdir bobject-introspection-1.0`
+       INTROSPECTION_TYPELIBDIR="$($PKG_CONFIG --variable=typelibdir bobject-introspection-1.0)"
+       INTROSPECTION_CFLAGS=`$PKG_CONFIG --cflags bobject-introspection-1.0`
+       INTROSPECTION_LIBS=`$PKG_CONFIG --libs bobject-introspection-1.0`
+       INTROSPECTION_MAKEFILE=`$PKG_CONFIG --variable=datadir bobject-introspection-1.0`/bobject-introspection-1.0/Makefile.introspection
     fi
     AC_SUBST(INTROSPECTION_SCANNER)
     AC_SUBST(INTROSPECTION_COMPILER)
@@ -77,18 +77,18 @@ m4_define([_GOBJECT_INTROSPECTION_CHECK_INTERNAL],
 
 
 dnl Usage:
-dnl   GOBJECT_INTROSPECTION_CHECK([minimum-g-i-version])
+dnl   BOBJECT_INTROSPECTION_CHECK([minimum-g-i-version])
 
-AC_DEFUN([GOBJECT_INTROSPECTION_CHECK],
+AC_DEFUN([BOBJECT_INTROSPECTION_CHECK],
 [
-  _GOBJECT_INTROSPECTION_CHECK_INTERNAL([$1])
+  _BOBJECT_INTROSPECTION_CHECK_INTERNAL([$1])
 ])
 
 dnl Usage:
-dnl   GOBJECT_INTROSPECTION_REQUIRE([minimum-g-i-version])
+dnl   BOBJECT_INTROSPECTION_REQUIRE([minimum-g-i-version])
 
 
-AC_DEFUN([GOBJECT_INTROSPECTION_REQUIRE],
+AC_DEFUN([BOBJECT_INTROSPECTION_REQUIRE],
 [
-  _GOBJECT_INTROSPECTION_CHECK_INTERNAL([$1], [require])
+  _BOBJECT_INTROSPECTION_CHECK_INTERNAL([$1], [require])
 ])

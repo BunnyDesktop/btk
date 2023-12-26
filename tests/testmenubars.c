@@ -18,72 +18,72 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget *
+static BtkWidget *
 create_menu (depth)
 {
-    GtkWidget *menu;
-    GtkWidget *menuitem;
+    BtkWidget *menu;
+    BtkWidget *menuitem;
 
     if (depth < 1)
         return NULL;
 
-    menu = gtk_menu_new ();
+    menu = btk_menu_new ();
 
-    menuitem = gtk_menu_item_new_with_label ("One");
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
-    gtk_widget_show (menuitem);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem),
+    menuitem = btk_menu_item_new_with_label ("One");
+    btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
+    btk_widget_show (menuitem);
+    btk_menu_item_set_submenu (BTK_MENU_ITEM (menuitem),
 			       create_menu (depth - 1));
 
-    menuitem = gtk_menu_item_new_with_mnemonic ("Two");
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
-    gtk_widget_show (menuitem);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem),
+    menuitem = btk_menu_item_new_with_mnemonic ("Two");
+    btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
+    btk_widget_show (menuitem);
+    btk_menu_item_set_submenu (BTK_MENU_ITEM (menuitem),
 			       create_menu (depth - 1));
 
-    menuitem = gtk_menu_item_new_with_mnemonic ("Three");
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menuitem);
-    gtk_widget_show (menuitem);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem),
+    menuitem = btk_menu_item_new_with_mnemonic ("Three");
+    btk_menu_shell_append (BTK_MENU_SHELL (menu), menuitem);
+    btk_widget_show (menuitem);
+    btk_menu_item_set_submenu (BTK_MENU_ITEM (menuitem),
 			       create_menu (depth - 1));
 
     return menu;
 }
 
-static GtkWidget*
-create_menubar (GtkPackDirection pack_dir,
-		GtkPackDirection child_pack_dir,
+static BtkWidget*
+create_menubar (BtkPackDirection pack_dir,
+		BtkPackDirection child_pack_dir,
 		gdouble          angle)
 {
-  GtkWidget *menubar;
-  GtkWidget *menuitem;
-  GtkWidget *menu;
+  BtkWidget *menubar;
+  BtkWidget *menuitem;
+  BtkWidget *menu;
 
-  menubar = gtk_menu_bar_new ();
-  gtk_menu_bar_set_pack_direction (GTK_MENU_BAR (menubar), 
+  menubar = btk_menu_bar_new ();
+  btk_menu_bar_set_pack_direction (BTK_MENU_BAR (menubar), 
 				   pack_dir);
-  gtk_menu_bar_set_child_pack_direction (GTK_MENU_BAR (menubar),
+  btk_menu_bar_set_child_pack_direction (BTK_MENU_BAR (menubar),
 					 child_pack_dir);
   
-  menuitem = gtk_image_menu_item_new_from_stock (GTK_STOCK_HOME, NULL);
-  gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
-  gtk_label_set_angle (GTK_LABEL (GTK_BIN (menuitem)->child), angle);
+  menuitem = btk_image_menu_item_new_from_stock (BTK_STOCK_HOME, NULL);
+  btk_menu_shell_append (BTK_MENU_SHELL (menubar), menuitem);
+  btk_label_set_angle (BTK_LABEL (BTK_BIN (menuitem)->child), angle);
   menu = create_menu (2, TRUE);
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu);
+  btk_menu_item_set_submenu (BTK_MENU_ITEM (menuitem), menu);
 
-  menuitem = gtk_menu_item_new_with_label ("foo");
-  gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
-  gtk_label_set_angle (GTK_LABEL (GTK_BIN (menuitem)->child), angle);
+  menuitem = btk_menu_item_new_with_label ("foo");
+  btk_menu_shell_append (BTK_MENU_SHELL (menubar), menuitem);
+  btk_label_set_angle (BTK_LABEL (BTK_BIN (menuitem)->child), angle);
   menu = create_menu (2, TRUE);
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu);
+  btk_menu_item_set_submenu (BTK_MENU_ITEM (menuitem), menu);
 
-  menuitem = gtk_menu_item_new_with_label ("bar");
-  gtk_menu_shell_append (GTK_MENU_SHELL (menubar), menuitem);
-  gtk_label_set_angle (GTK_LABEL (GTK_BIN (menuitem)->child), angle);
+  menuitem = btk_menu_item_new_with_label ("bar");
+  btk_menu_shell_append (BTK_MENU_SHELL (menubar), menuitem);
+  btk_label_set_angle (BTK_LABEL (BTK_BIN (menuitem)->child), angle);
   menu = create_menu (2, TRUE);
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), menu);
+  btk_menu_item_set_submenu (BTK_MENU_ITEM (menuitem), menu);
 
   return menubar;
 }
@@ -91,91 +91,91 @@ create_menubar (GtkPackDirection pack_dir,
 int 
 main (int argc, char **argv)
 {
-  static GtkWidget *window = NULL;
-  GtkWidget *box1;
-  GtkWidget *box2;
-  GtkWidget *box3;
-  GtkWidget *button;
-  GtkWidget *separator;
+  static BtkWidget *window = NULL;
+  BtkWidget *box1;
+  BtkWidget *box2;
+  BtkWidget *box3;
+  BtkWidget *button;
+  BtkWidget *separator;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
   
   if (!window)
     {
-      GtkWidget *menubar1;
-      GtkWidget *menubar2;
-      GtkWidget *menubar3;
-      GtkWidget *menubar4;
-      GtkWidget *menubar5;
-      GtkWidget *menubar6;
-      GtkAccelGroup *accel_group;
+      BtkWidget *menubar1;
+      BtkWidget *menubar2;
+      BtkWidget *menubar3;
+      BtkWidget *menubar4;
+      BtkWidget *menubar5;
+      BtkWidget *menubar6;
+      BtkAccelGroup *accel_group;
       
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
       
       g_signal_connect (window, "destroy",
-			G_CALLBACK(gtk_main_quit), NULL);
+			G_CALLBACK(btk_main_quit), NULL);
       g_signal_connect (window, "delete-event",
-			G_CALLBACK (gtk_true), NULL);
+			G_CALLBACK (btk_true), NULL);
       
-      accel_group = gtk_accel_group_new ();
-      gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
+      accel_group = btk_accel_group_new ();
+      btk_window_add_accel_group (BTK_WINDOW (window), accel_group);
 
-      gtk_window_set_title (GTK_WINDOW (window), "menus");
-      gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+      btk_window_set_title (BTK_WINDOW (window), "menus");
+      btk_container_set_border_width (BTK_CONTAINER (window), 0);
       
-      box1 = gtk_vbox_new (FALSE, 0);
-      box2 = gtk_hbox_new (FALSE, 0);
-      box3 = gtk_vbox_new (FALSE, 0);
+      box1 = btk_vbox_new (FALSE, 0);
+      box2 = btk_hbox_new (FALSE, 0);
+      box3 = btk_vbox_new (FALSE, 0);
       
-      /* Rotation by 0 and 180 degrees is broken in Pango, #166832 */
-      menubar1 = create_menubar (GTK_PACK_DIRECTION_LTR, GTK_PACK_DIRECTION_LTR, 0.01);
-      menubar2 = create_menubar (GTK_PACK_DIRECTION_BTT, GTK_PACK_DIRECTION_BTT, 90);
-      menubar3 = create_menubar (GTK_PACK_DIRECTION_TTB, GTK_PACK_DIRECTION_TTB, 270);
-      menubar4 = create_menubar (GTK_PACK_DIRECTION_RTL, GTK_PACK_DIRECTION_RTL, 180.01);
-      menubar5 = create_menubar (GTK_PACK_DIRECTION_LTR, GTK_PACK_DIRECTION_BTT, 90);
-      menubar6 = create_menubar (GTK_PACK_DIRECTION_BTT, GTK_PACK_DIRECTION_LTR, 0.01);
+      /* Rotation by 0 and 180 degrees is broken in Bango, #166832 */
+      menubar1 = create_menubar (BTK_PACK_DIRECTION_LTR, BTK_PACK_DIRECTION_LTR, 0.01);
+      menubar2 = create_menubar (BTK_PACK_DIRECTION_BTT, BTK_PACK_DIRECTION_BTT, 90);
+      menubar3 = create_menubar (BTK_PACK_DIRECTION_TTB, BTK_PACK_DIRECTION_TTB, 270);
+      menubar4 = create_menubar (BTK_PACK_DIRECTION_RTL, BTK_PACK_DIRECTION_RTL, 180.01);
+      menubar5 = create_menubar (BTK_PACK_DIRECTION_LTR, BTK_PACK_DIRECTION_BTT, 90);
+      menubar6 = create_menubar (BTK_PACK_DIRECTION_BTT, BTK_PACK_DIRECTION_LTR, 0.01);
 
-      gtk_container_add (GTK_CONTAINER (window), box1);
-      gtk_box_pack_start (GTK_BOX (box1), menubar1, FALSE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box1), box2, FALSE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box2), menubar2, FALSE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box2), box3, TRUE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box2), menubar3, FALSE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box1), menubar4, FALSE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box3), menubar5, TRUE, TRUE, 0);
-      gtk_box_pack_start (GTK_BOX (box3), menubar6, TRUE, TRUE, 0);
+      btk_container_add (BTK_CONTAINER (window), box1);
+      btk_box_pack_start (BTK_BOX (box1), menubar1, FALSE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box1), box2, FALSE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box2), menubar2, FALSE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box2), box3, TRUE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box2), menubar3, FALSE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box1), menubar4, FALSE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box3), menubar5, TRUE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (box3), menubar6, TRUE, TRUE, 0);
 
-      gtk_widget_show_all (box1);
+      btk_widget_show_all (box1);
             
-      separator = gtk_hseparator_new ();
-      gtk_box_pack_start (GTK_BOX (box1), separator, FALSE, TRUE, 0);
-      gtk_widget_show (separator);
+      separator = btk_hseparator_new ();
+      btk_box_pack_start (BTK_BOX (box1), separator, FALSE, TRUE, 0);
+      btk_widget_show (separator);
 
-      box2 = gtk_vbox_new (FALSE, 10);
-      gtk_container_set_border_width (GTK_CONTAINER (box2), 10);
-      gtk_box_pack_start (GTK_BOX (box1), box2, FALSE, TRUE, 0);
-      gtk_widget_show (box2);
+      box2 = btk_vbox_new (FALSE, 10);
+      btk_container_set_border_width (BTK_CONTAINER (box2), 10);
+      btk_box_pack_start (BTK_BOX (box1), box2, FALSE, TRUE, 0);
+      btk_widget_show (box2);
 
-      button = gtk_button_new_with_label ("close");
+      button = btk_button_new_with_label ("close");
       g_signal_connect_swapped (button, "clicked",
-				G_CALLBACK(gtk_widget_destroy), window);
-      gtk_box_pack_start (GTK_BOX (box2), button, TRUE, TRUE, 0);
-      gtk_widget_set_can_default (button, TRUE);
-      gtk_widget_grab_default (button);
-      gtk_widget_show (button);
+				G_CALLBACK(btk_widget_destroy), window);
+      btk_box_pack_start (BTK_BOX (box2), button, TRUE, TRUE, 0);
+      btk_widget_set_can_default (button, TRUE);
+      btk_widget_grab_default (button);
+      btk_widget_show (button);
     }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show (window);
+      btk_widget_show (window);
     }
   else
     {
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

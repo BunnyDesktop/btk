@@ -1,14 +1,14 @@
 #include <math.h>
-#include <pango/pangocairo.h>
-#include <gtk/gtk.h>
+#include <bango/bangobairo.h>
+#include <btk/btk.h>
 
-static GtkWidget *main_window;
+static BtkWidget *main_window;
 static char *filename = NULL;
-static GtkPageSetup *page_setup = NULL;
-static GtkPrintSettings *settings = NULL;
+static BtkPageSetup *page_setup = NULL;
+static BtkPrintSettings *settings = NULL;
 static gboolean file_changed = FALSE;
-static GtkTextBuffer *buffer;
-static GtkWidget *statusbar;
+static BtkTextBuffer *buffer;
+static BtkWidget *statusbar;
 static GList *active_prints = NULL;
 
 static void
@@ -25,7 +25,7 @@ update_title (void)
   title = g_strdup_printf ("Simple Editor with printing - %s", basename);
   g_free (basename);
   
-  gtk_window_set_title (GTK_WINDOW (main_window), title);
+  btk_window_set_title (BTK_WINDOW (main_window), title);
   g_free (title);
 }
 
@@ -34,23 +34,23 @@ update_statusbar (void)
 {
   gchar *msg;
   gint row, col;
-  GtkTextIter iter;
+  BtkTextIter iter;
   const char *print_str;
 
-  gtk_statusbar_pop (GTK_STATUSBAR (statusbar), 0);
+  btk_statusbar_pop (BTK_STATUSBAR (statusbar), 0);
   
-  gtk_text_buffer_get_iter_at_mark (buffer,
+  btk_text_buffer_get_iter_at_mark (buffer,
                                     &iter,
-                                    gtk_text_buffer_get_insert (buffer));
+                                    btk_text_buffer_get_insert (buffer));
 
-  row = gtk_text_iter_get_line (&iter);
-  col = gtk_text_iter_get_line_offset (&iter);
+  row = btk_text_iter_get_line (&iter);
+  col = btk_text_iter_get_line_offset (&iter);
 
   print_str = "";
   if (active_prints)
     {
-      GtkPrintOperation *op = active_prints->data;
-      print_str = gtk_print_operation_get_status_string (op);
+      BtkPrintOperation *op = active_prints->data;
+      print_str = btk_print_operation_get_status_string (op);
     }
   
   msg = g_strdup_printf ("%d, %d%s %s",
@@ -58,7 +58,7 @@ update_statusbar (void)
 			 file_changed?" - Modified":"",
 			 print_str);
 
-  gtk_statusbar_push (GTK_STATUSBAR (statusbar), 0, msg);
+  btk_statusbar_push (BTK_STATUSBAR (statusbar), 0, msg);
 
   g_free (msg);
 }
@@ -73,23 +73,23 @@ update_ui (void)
 static char *
 get_text (void)
 {
-  GtkTextIter start, end;
+  BtkTextIter start, end;
 
-  gtk_text_buffer_get_start_iter (buffer, &start);
-  gtk_text_buffer_get_end_iter (buffer, &end);
-  return gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+  btk_text_buffer_get_start_iter (buffer, &start);
+  btk_text_buffer_get_end_iter (buffer, &end);
+  return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
 static void
 set_text (const char *text, gsize len)
 {
-  gtk_text_buffer_set_text (buffer, text, len);
+  btk_text_buffer_set_text (buffer, text, len);
   file_changed = FALSE;
   update_ui ();
 }
 
 static void
-do_new (GtkAction *action)
+do_new (BtkAction *action)
 {
   g_free (filename);
   filename = NULL;
@@ -99,7 +99,7 @@ do_new (GtkAction *action)
 static void
 load_file (const char *open_filename)
 {
-  GtkWidget *error_dialog;
+  BtkWidget *error_dialog;
   char *contents;
   GError *error;
   gsize len;
@@ -116,10 +116,10 @@ load_file (const char *open_filename)
 	}
       else
 	{
-	  error_dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
-						 GTK_DIALOG_DESTROY_WITH_PARENT,
-						 GTK_MESSAGE_ERROR,
-						 GTK_BUTTONS_CLOSE,
+	  error_dialog = btk_message_dialog_new (BTK_WINDOW (main_window),
+						 BTK_DIALOG_DESTROY_WITH_PARENT,
+						 BTK_MESSAGE_ERROR,
+						 BTK_BUTTONS_CLOSE,
 						 "Error loading file %s:\n%s",
 						 open_filename,
 						 "Not valid utf8");
@@ -127,10 +127,10 @@ load_file (const char *open_filename)
     }
   else
     {
-      error_dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
-					     GTK_DIALOG_DESTROY_WITH_PARENT,
-					     GTK_MESSAGE_ERROR,
-					     GTK_BUTTONS_CLOSE,
+      error_dialog = btk_message_dialog_new (BTK_WINDOW (main_window),
+					     BTK_DIALOG_DESTROY_WITH_PARENT,
+					     BTK_MESSAGE_ERROR,
+					     BTK_BUTTONS_CLOSE,
 					     "Error loading file %s:\n%s",
 					     open_filename,
 					     error->message);
@@ -139,42 +139,42 @@ load_file (const char *open_filename)
     }
   if (error_dialog)
     {
-      g_signal_connect (error_dialog, "response", G_CALLBACK (gtk_widget_destroy), NULL);
-      gtk_widget_show (error_dialog);
+      g_signal_connect (error_dialog, "response", G_CALLBACK (btk_widget_destroy), NULL);
+      btk_widget_show (error_dialog);
     }
 }
 
 static void
-do_open (GtkAction *action)
+do_open (BtkAction *action)
 {
-  GtkWidget *dialog;
+  BtkWidget *dialog;
   gint response;
   char *open_filename;
   
-  dialog = gtk_file_chooser_dialog_new ("Select file",
-					GTK_WINDOW (main_window),
-					GTK_FILE_CHOOSER_ACTION_OPEN,
-					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					GTK_STOCK_OPEN, GTK_RESPONSE_OK,
+  dialog = btk_file_chooser_dialog_new ("Select file",
+					BTK_WINDOW (main_window),
+					BTK_FILE_CHOOSER_ACTION_OPEN,
+					BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL,
+					BTK_STOCK_OPEN, BTK_RESPONSE_OK,
 					NULL);
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-  response = gtk_dialog_run (GTK_DIALOG (dialog));
+  btk_dialog_set_default_response (BTK_DIALOG (dialog), BTK_RESPONSE_OK);
+  response = btk_dialog_run (BTK_DIALOG (dialog));
 
-  if (response == GTK_RESPONSE_OK)
+  if (response == BTK_RESPONSE_OK)
     {
-      open_filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      open_filename = btk_file_chooser_get_filename (BTK_FILE_CHOOSER (dialog));
       load_file (open_filename);
       g_free (open_filename);
     }
 
-  gtk_widget_destroy (dialog);
+  btk_widget_destroy (dialog);
 }
 
 static void
 save_file (const char *save_filename)
 {
   char *text = get_text ();
-  GtkWidget *error_dialog;
+  BtkWidget *error_dialog;
   GError *error;
 
   error = NULL;
@@ -191,49 +191,49 @@ save_file (const char *save_filename)
     }
   else
     {
-      error_dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
-					     GTK_DIALOG_DESTROY_WITH_PARENT,
-					     GTK_MESSAGE_ERROR,
-					     GTK_BUTTONS_CLOSE,
+      error_dialog = btk_message_dialog_new (BTK_WINDOW (main_window),
+					     BTK_DIALOG_DESTROY_WITH_PARENT,
+					     BTK_MESSAGE_ERROR,
+					     BTK_BUTTONS_CLOSE,
 					     "Error saving to file %s:\n%s",
 					     filename,
 					     error->message);
       
-      g_signal_connect (error_dialog, "response", G_CALLBACK (gtk_widget_destroy), NULL);
-      gtk_widget_show (error_dialog);
+      g_signal_connect (error_dialog, "response", G_CALLBACK (btk_widget_destroy), NULL);
+      btk_widget_show (error_dialog);
       
       g_error_free (error);
     }
 }
 
 static void
-do_save_as (GtkAction *action)
+do_save_as (BtkAction *action)
 {
-  GtkWidget *dialog;
+  BtkWidget *dialog;
   gint response;
   char *save_filename;
   
-  dialog = gtk_file_chooser_dialog_new ("Select file",
-					GTK_WINDOW (main_window),
-					GTK_FILE_CHOOSER_ACTION_SAVE,
-					GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-					GTK_STOCK_SAVE, GTK_RESPONSE_OK,
+  dialog = btk_file_chooser_dialog_new ("Select file",
+					BTK_WINDOW (main_window),
+					BTK_FILE_CHOOSER_ACTION_SAVE,
+					BTK_STOCK_CANCEL, BTK_RESPONSE_CANCEL,
+					BTK_STOCK_SAVE, BTK_RESPONSE_OK,
 					NULL);
-  gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_OK);
-  response = gtk_dialog_run (GTK_DIALOG (dialog));
+  btk_dialog_set_default_response (BTK_DIALOG (dialog), BTK_RESPONSE_OK);
+  response = btk_dialog_run (BTK_DIALOG (dialog));
 
-  if (response == GTK_RESPONSE_OK)
+  if (response == BTK_RESPONSE_OK)
     {
-      save_filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+      save_filename = btk_file_chooser_get_filename (BTK_FILE_CHOOSER (dialog));
       save_file (save_filename);
       g_free (save_filename);
     }
   
-  gtk_widget_destroy (dialog);
+  btk_widget_destroy (dialog);
 }
 
 static void
-do_save (GtkAction *action)
+do_save (BtkAction *action)
 {
   if (filename == NULL)
     do_save_as (action);
@@ -243,50 +243,50 @@ do_save (GtkAction *action)
 
 typedef struct {
   char *text;
-  PangoLayout *layout;
+  BangoLayout *layout;
   GList *page_breaks;
-  GtkWidget *font_button;
+  BtkWidget *font_button;
   char *font;
 } PrintData;
 
 static void
-begin_print (GtkPrintOperation *operation,
-	     GtkPrintContext *context,
+begin_print (BtkPrintOperation *operation,
+	     BtkPrintContext *context,
 	     PrintData *print_data)
 {
-  PangoFontDescription *desc;
-  PangoLayoutLine *layout_line;
+  BangoFontDescription *desc;
+  BangoLayoutLine *layout_line;
   double width, height;
   double page_height;
   GList *page_breaks;
   int num_lines;
   int line;
 
-  width = gtk_print_context_get_width (context);
-  height = gtk_print_context_get_height (context);
+  width = btk_print_context_get_width (context);
+  height = btk_print_context_get_height (context);
 
-  print_data->layout = gtk_print_context_create_pango_layout (context);
+  print_data->layout = btk_print_context_create_bango_layout (context);
 
-  desc = pango_font_description_from_string (print_data->font);
-  pango_layout_set_font_description (print_data->layout, desc);
-  pango_font_description_free (desc);
+  desc = bango_font_description_from_string (print_data->font);
+  bango_layout_set_font_description (print_data->layout, desc);
+  bango_font_description_free (desc);
 
-  pango_layout_set_width (print_data->layout, width * PANGO_SCALE);
+  bango_layout_set_width (print_data->layout, width * BANGO_SCALE);
   
-  pango_layout_set_text (print_data->layout, print_data->text, -1);
+  bango_layout_set_text (print_data->layout, print_data->text, -1);
 
-  num_lines = pango_layout_get_line_count (print_data->layout);
+  num_lines = bango_layout_get_line_count (print_data->layout);
 
   page_breaks = NULL;
   page_height = 0;
 
   for (line = 0; line < num_lines; line++)
     {
-      PangoRectangle ink_rect, logical_rect;
+      BangoRectangle ink_rect, logical_rect;
       double line_height;
       
-      layout_line = pango_layout_get_line (print_data->layout, line);
-      pango_layout_line_get_extents (layout_line, &ink_rect, &logical_rect);
+      layout_line = bango_layout_get_line (print_data->layout, line);
+      bango_layout_line_get_extents (layout_line, &ink_rect, &logical_rect);
 
       line_height = logical_rect.height / 1024.0;
 
@@ -300,21 +300,21 @@ begin_print (GtkPrintOperation *operation,
     }
 
   page_breaks = g_list_reverse (page_breaks);
-  gtk_print_operation_set_n_pages (operation, g_list_length (page_breaks) + 1);
+  btk_print_operation_set_n_pages (operation, g_list_length (page_breaks) + 1);
   
   print_data->page_breaks = page_breaks;
 }
 
 static void
-draw_page (GtkPrintOperation *operation,
-	   GtkPrintContext *context,
+draw_page (BtkPrintOperation *operation,
+	   BtkPrintContext *context,
 	   int page_nr,
 	   PrintData *print_data)
 {
-  cairo_t *cr;
+  bairo_t *cr;
   GList *pagebreak;
   int start, end, i;
-  PangoLayoutIter *iter;
+  BangoLayoutIter *iter;
   double start_pos;
 
   if (page_nr == 0)
@@ -327,51 +327,51 @@ draw_page (GtkPrintOperation *operation,
 
   pagebreak = g_list_nth (print_data->page_breaks, page_nr);
   if (pagebreak == NULL)
-    end = pango_layout_get_line_count (print_data->layout);
+    end = bango_layout_get_line_count (print_data->layout);
   else
     end = GPOINTER_TO_INT (pagebreak->data);
     
-  cr = gtk_print_context_get_cairo_context (context);
+  cr = btk_print_context_get_bairo_context (context);
 
-  cairo_set_source_rgb (cr, 0, 0, 0);
+  bairo_set_source_rgb (cr, 0, 0, 0);
   
   i = 0;
   start_pos = 0;
-  iter = pango_layout_get_iter (print_data->layout);
+  iter = bango_layout_get_iter (print_data->layout);
   do
     {
-      PangoRectangle   logical_rect;
-      PangoLayoutLine *line;
+      BangoRectangle   logical_rect;
+      BangoLayoutLine *line;
       int              baseline;
 
       if (i >= start)
 	{
-	  line = pango_layout_iter_get_line (iter);
+	  line = bango_layout_iter_get_line (iter);
 
-	  pango_layout_iter_get_line_extents (iter, NULL, &logical_rect);
-	  baseline = pango_layout_iter_get_baseline (iter);
+	  bango_layout_iter_get_line_extents (iter, NULL, &logical_rect);
+	  baseline = bango_layout_iter_get_baseline (iter);
 	  
 	  if (i == start)
 	    start_pos = logical_rect.y / 1024.0;
 	  
-	  cairo_move_to (cr, logical_rect.x / 1024.0, baseline / 1024.0 - start_pos);
+	  bairo_move_to (cr, logical_rect.x / 1024.0, baseline / 1024.0 - start_pos);
 	  
-	  pango_cairo_show_layout_line  (cr, line);
+	  bango_bairo_show_layout_line  (cr, line);
 	}
       i++;
     }
   while (i < end &&
-	 pango_layout_iter_next_line (iter));
+	 bango_layout_iter_next_line (iter));
 
-  pango_layout_iter_free (iter);
+  bango_layout_iter_free (iter);
 }
 
 static void
-do_page_setup (GtkAction *action)
+do_page_setup (BtkAction *action)
 {
-  GtkPageSetup *new_page_setup;
+  BtkPageSetup *new_page_setup;
 
-  new_page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (main_window),
+  new_page_setup = btk_print_run_page_setup_dialog (BTK_WINDOW (main_window),
 						    page_setup, settings);
 
   if (page_setup)
@@ -381,10 +381,10 @@ do_page_setup (GtkAction *action)
 }
 
 static void
-status_changed_cb (GtkPrintOperation *op,
+status_changed_cb (BtkPrintOperation *op,
 		   gpointer user_data)
 {
-  if (gtk_print_operation_is_finished (op))
+  if (btk_print_operation_is_finished (op))
     {
       active_prints = g_list_remove (active_prints, op);
       g_object_unref (op);
@@ -392,77 +392,77 @@ status_changed_cb (GtkPrintOperation *op,
   update_statusbar ();
 }
 
-static GtkWidget *
-create_custom_widget (GtkPrintOperation *operation,
+static BtkWidget *
+create_custom_widget (BtkPrintOperation *operation,
 		      PrintData *data)
 {
-  GtkWidget *vbox, *hbox, *font, *label;
+  BtkWidget *vbox, *hbox, *font, *label;
 
-  gtk_print_operation_set_custom_tab_label (operation, "Other");
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 12);
+  btk_print_operation_set_custom_tab_label (operation, "Other");
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_set_border_width (BTK_CONTAINER (vbox), 12);
 
-  hbox = gtk_hbox_new (FALSE, 8);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_widget_show (hbox);
+  hbox = btk_hbox_new (FALSE, 8);
+  btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  btk_widget_show (hbox);
 
-  label = gtk_label_new ("Font:");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-  gtk_widget_show (label);
+  label = btk_label_new ("Font:");
+  btk_box_pack_start (BTK_BOX (hbox), label, FALSE, FALSE, 0);
+  btk_widget_show (label);
   
-  font = gtk_font_button_new_with_font  (data->font);
-  gtk_box_pack_start (GTK_BOX (hbox), font, FALSE, FALSE, 0);
-  gtk_widget_show (font);
+  font = btk_font_button_new_with_font  (data->font);
+  btk_box_pack_start (BTK_BOX (hbox), font, FALSE, FALSE, 0);
+  btk_widget_show (font);
   data->font_button = font;
 
   return vbox;
 }
 
 static void
-custom_widget_apply (GtkPrintOperation *operation,
-		     GtkWidget *widget,
+custom_widget_apply (BtkPrintOperation *operation,
+		     BtkWidget *widget,
 		     PrintData *data)
 {
   const char *selected_font;
-  selected_font = gtk_font_button_get_font_name  (GTK_FONT_BUTTON (data->font_button));
+  selected_font = btk_font_button_get_font_name  (BTK_FONT_BUTTON (data->font_button));
   g_free (data->font);
   data->font = g_strdup (selected_font);
 }
 
 typedef struct 
 {
-  GtkPrintOperation *op;
-  GtkPrintOperationPreview *preview;
-  GtkWidget         *spin;
-  GtkWidget         *area;
+  BtkPrintOperation *op;
+  BtkPrintOperationPreview *preview;
+  BtkWidget         *spin;
+  BtkWidget         *area;
   gint               page;
-  GtkPrintContext   *context;
+  BtkPrintContext   *context;
   PrintData *data;
   gdouble dpi_x, dpi_y;
 } PreviewOp;
 
 static gboolean
-preview_expose (GtkWidget      *widget,
-		GdkEventExpose *event,
+preview_expose (BtkWidget      *widget,
+		BdkEventExpose *event,
 		gpointer        data)
 {
   PreviewOp *pop = data;
-  cairo_t *cr;
+  bairo_t *cr;
 
-  cr = gdk_cairo_create (pop->area->window);
-  gtk_print_context_set_cairo_context (pop->context, cr, pop->dpi_x, pop->dpi_y);
-  cairo_destroy (cr);
+  cr = bdk_bairo_create (pop->area->window);
+  btk_print_context_set_bairo_context (pop->context, cr, pop->dpi_x, pop->dpi_y);
+  bairo_destroy (cr);
 
-  gdk_window_clear (pop->area->window);
-  gtk_print_operation_preview_render_page (pop->preview,
+  bdk_window_clear (pop->area->window);
+  btk_print_operation_preview_render_page (pop->preview,
 					   pop->page - 1);
 
   return TRUE;
 }
 
 static void
-preview_ready (GtkPrintOperationPreview *preview,
-	       GtkPrintContext          *context,
+preview_ready (BtkPrintOperationPreview *preview,
+	       BtkPrintContext          *context,
 	       gpointer                  data)
 {
   PreviewOp *pop = data;
@@ -470,34 +470,34 @@ preview_ready (GtkPrintOperationPreview *preview,
 
   g_object_get (pop->op, "n-pages", &n_pages, NULL);
 
-  gtk_spin_button_set_range (GTK_SPIN_BUTTON (pop->spin), 
+  btk_spin_button_set_range (BTK_SPIN_BUTTON (pop->spin), 
 			     1.0, n_pages);
 
   g_signal_connect (pop->area, "expose_event",
 		    G_CALLBACK (preview_expose),
 		    pop);
 
-  gtk_widget_queue_draw (pop->area);
+  btk_widget_queue_draw (pop->area);
 }
 
 static void
-preview_got_page_size (GtkPrintOperationPreview *preview, 
-		       GtkPrintContext          *context,
-		       GtkPageSetup             *page_setup,
+preview_got_page_size (BtkPrintOperationPreview *preview, 
+		       BtkPrintContext          *context,
+		       BtkPageSetup             *page_setup,
 		       gpointer                  data)
 {
   PreviewOp *pop = data;
-  GtkPaperSize *paper_size;
+  BtkPaperSize *paper_size;
   double w, h;
-  cairo_t *cr;
+  bairo_t *cr;
   gdouble dpi_x, dpi_y;
 
-  paper_size = gtk_page_setup_get_paper_size (page_setup);
+  paper_size = btk_page_setup_get_paper_size (page_setup);
 
-  w = gtk_paper_size_get_width (paper_size, GTK_UNIT_INCH);
-  h = gtk_paper_size_get_height (paper_size, GTK_UNIT_INCH);
+  w = btk_paper_size_get_width (paper_size, BTK_UNIT_INCH);
+  h = btk_paper_size_get_height (paper_size, BTK_UNIT_INCH);
 
-  cr = gdk_cairo_create (pop->area->window);
+  cr = bdk_bairo_create (pop->area->window);
 
   dpi_x = pop->area->allocation.width/w;
   dpi_y = pop->area->allocation.height/h;
@@ -505,81 +505,81 @@ preview_got_page_size (GtkPrintOperationPreview *preview,
   if (fabs (dpi_x - pop->dpi_x) > 0.001 ||
       fabs (dpi_y - pop->dpi_y) > 0.001)
     {
-      gtk_print_context_set_cairo_context (context, cr, dpi_x, dpi_y);
+      btk_print_context_set_bairo_context (context, cr, dpi_x, dpi_y);
       pop->dpi_x = dpi_x;
       pop->dpi_y = dpi_y;
     }
 
-  pango_cairo_update_layout (cr, pop->data->layout);
-  cairo_destroy (cr);
+  bango_bairo_update_layout (cr, pop->data->layout);
+  bairo_destroy (cr);
 }
 
 static void
-update_page (GtkSpinButton *widget,
+update_page (BtkSpinButton *widget,
 	     gpointer       data)
 {
   PreviewOp *pop = data;
 
-  pop->page = gtk_spin_button_get_value_as_int (widget);
-  gtk_widget_queue_draw (pop->area);
+  pop->page = btk_spin_button_get_value_as_int (widget);
+  btk_widget_queue_draw (pop->area);
 }
 
 static void
-preview_destroy (GtkWindow *window, 
+preview_destroy (BtkWindow *window, 
 		 PreviewOp *pop)
 {
-  gtk_print_operation_preview_end_preview (pop->preview);
+  btk_print_operation_preview_end_preview (pop->preview);
   g_object_unref (pop->op);
 
   g_free (pop);
 }
 
 static gboolean 
-preview_cb (GtkPrintOperation        *op,
-	    GtkPrintOperationPreview *preview,
-	    GtkPrintContext          *context,
-	    GtkWindow                *parent,
+preview_cb (BtkPrintOperation        *op,
+	    BtkPrintOperationPreview *preview,
+	    BtkPrintContext          *context,
+	    BtkWindow                *parent,
 	    gpointer                  data)
 {
-  GtkPrintSettings *settings;
-  GtkWidget *window, *close, *page, *hbox, *vbox, *da;
+  BtkPrintSettings *settings;
+  BtkWidget *window, *close, *page, *hbox, *vbox, *da;
   gdouble width, height;
-  cairo_t *cr;
+  bairo_t *cr;
   PreviewOp *pop;
   PrintData *print_data = data;
 
   pop = g_new0 (PreviewOp, 1);
 
   pop->data = print_data;
-  settings = gtk_print_operation_get_print_settings (op);
+  settings = btk_print_operation_get_print_settings (op);
 
   width = 200;
   height = 300;
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_transient_for (GTK_WINDOW (window), 
-				GTK_WINDOW (main_window));
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
-  hbox = gtk_hbox_new (FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox,
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_window_set_transient_for (BTK_WINDOW (window), 
+				BTK_WINDOW (main_window));
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_add (BTK_CONTAINER (window), vbox);
+  hbox = btk_hbox_new (FALSE, 0);
+  btk_box_pack_start (BTK_BOX (vbox), hbox,
 		      FALSE, FALSE, 0);
-  page = gtk_spin_button_new_with_range (1, 100, 1);
-  gtk_box_pack_start (GTK_BOX (hbox), page, FALSE, FALSE, 0);
+  page = btk_spin_button_new_with_range (1, 100, 1);
+  btk_box_pack_start (BTK_BOX (hbox), page, FALSE, FALSE, 0);
   
-  close = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-  gtk_box_pack_start (GTK_BOX (hbox), close, FALSE, FALSE, 0);
+  close = btk_button_new_from_stock (BTK_STOCK_CLOSE);
+  btk_box_pack_start (BTK_BOX (hbox), close, FALSE, FALSE, 0);
 
-  da = gtk_drawing_area_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (da), width, height);
-  gtk_box_pack_start (GTK_BOX (vbox), da, TRUE, TRUE, 0);
+  da = btk_drawing_area_new ();
+  btk_widget_set_size_request (BTK_WIDGET (da), width, height);
+  btk_box_pack_start (BTK_BOX (vbox), da, TRUE, TRUE, 0);
 
-  gtk_widget_realize (da);
+  btk_widget_realize (da);
   
-  cr = gdk_cairo_create (da->window);
+  cr = bdk_bairo_create (da->window);
 
   /* TODO: What dpi to use here? This will be used for pagination.. */
-  gtk_print_context_set_cairo_context (context, cr, 72, 72);
-  cairo_destroy (cr);
+  btk_print_context_set_bairo_context (context, cr, 72, 72);
+  bairo_destroy (cr);
   
   pop->op = g_object_ref (op);
   pop->preview = preview;
@@ -591,7 +591,7 @@ preview_cb (GtkPrintOperation        *op,
   g_signal_connect (page, "value-changed", 
 		    G_CALLBACK (update_page), pop);
   g_signal_connect_swapped (close, "clicked", 
-			    G_CALLBACK (gtk_widget_destroy), window);
+			    G_CALLBACK (btk_widget_destroy), window);
 
   g_signal_connect (preview, "ready",
 		    G_CALLBACK (preview_ready), pop);
@@ -601,46 +601,46 @@ preview_cb (GtkPrintOperation        *op,
   g_signal_connect (window, "destroy", 
                     G_CALLBACK (preview_destroy), pop);
                             
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
   
   return TRUE;
 }
 
 static void
-print_done (GtkPrintOperation *op,
-	    GtkPrintOperationResult res,
+print_done (BtkPrintOperation *op,
+	    BtkPrintOperationResult res,
 	    PrintData *print_data)
 {
   GError *error = NULL;
 
-  if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
+  if (res == BTK_PRINT_OPERATION_RESULT_ERROR)
     {
 
-      GtkWidget *error_dialog;
+      BtkWidget *error_dialog;
       
-      gtk_print_operation_get_error (op, &error);
+      btk_print_operation_get_error (op, &error);
       
-      error_dialog = gtk_message_dialog_new (GTK_WINDOW (main_window),
-					     GTK_DIALOG_DESTROY_WITH_PARENT,
-					     GTK_MESSAGE_ERROR,
-					     GTK_BUTTONS_CLOSE,
+      error_dialog = btk_message_dialog_new (BTK_WINDOW (main_window),
+					     BTK_DIALOG_DESTROY_WITH_PARENT,
+					     BTK_MESSAGE_ERROR,
+					     BTK_BUTTONS_CLOSE,
 					     "Error printing file:\n%s",
 					     error ? error->message : "no details");
-      g_signal_connect (error_dialog, "response", G_CALLBACK (gtk_widget_destroy), NULL);
-      gtk_widget_show (error_dialog);
+      g_signal_connect (error_dialog, "response", G_CALLBACK (btk_widget_destroy), NULL);
+      btk_widget_show (error_dialog);
     }
-  else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+  else if (res == BTK_PRINT_OPERATION_RESULT_APPLY)
     {
       if (settings != NULL)
 	g_object_unref (settings);
-      settings = g_object_ref (gtk_print_operation_get_print_settings (op));
+      settings = g_object_ref (btk_print_operation_get_print_settings (op));
     }
 
   g_free (print_data->text);
   g_free (print_data->font);
   g_free (print_data);
   
-  if (!gtk_print_operation_is_finished (op))
+  if (!btk_print_operation_is_finished (op))
     {
       g_object_ref (op);
       active_prints = g_list_append (active_prints, op);
@@ -653,7 +653,7 @@ print_done (GtkPrintOperation *op,
 }
 
 static void
-end_print (GtkPrintOperation *op, GtkPrintContext *context, PrintData *print_data)
+end_print (BtkPrintOperation *op, BtkPrintContext *context, PrintData *print_data)
 {
   g_list_free (print_data->page_breaks);
   print_data->page_breaks = NULL;
@@ -662,9 +662,9 @@ end_print (GtkPrintOperation *op, GtkPrintContext *context, PrintData *print_dat
 }
 
 static void
-do_print_or_preview (GtkAction *action, GtkPrintOperationAction print_action)
+do_print_or_preview (BtkAction *action, BtkPrintOperationAction print_action)
 {
-  GtkPrintOperation *print;
+  BtkPrintOperation *print;
   PrintData *print_data;
 
   print_data = g_new0 (PrintData, 1);
@@ -672,15 +672,15 @@ do_print_or_preview (GtkAction *action, GtkPrintOperationAction print_action)
   print_data->text = get_text ();
   print_data->font = g_strdup ("Sans 12");
 
-  print = gtk_print_operation_new ();
+  print = btk_print_operation_new ();
 
-  gtk_print_operation_set_track_print_status (print, TRUE);
+  btk_print_operation_set_track_print_status (print, TRUE);
   
   if (settings != NULL)
-    gtk_print_operation_set_print_settings (print, settings);
+    btk_print_operation_set_print_settings (print, settings);
 
   if (page_setup != NULL)
-    gtk_print_operation_set_default_page_setup (print, page_setup);
+    btk_print_operation_set_default_page_setup (print, page_setup);
   
   g_signal_connect (print, "begin_print", G_CALLBACK (begin_print), print_data);
   g_signal_connect (print, "end-print", G_CALLBACK (end_print), print_data);
@@ -691,70 +691,70 @@ do_print_or_preview (GtkAction *action, GtkPrintOperationAction print_action)
 
   g_signal_connect (print, "done", G_CALLBACK (print_done), print_data);
 
-  gtk_print_operation_set_export_filename (print, "test.pdf");
+  btk_print_operation_set_export_filename (print, "test.pdf");
 
 #if 0
-  gtk_print_operation_set_allow_async (print, TRUE);
+  btk_print_operation_set_allow_async (print, TRUE);
 #endif
-  gtk_print_operation_run (print, print_action, GTK_WINDOW (main_window), NULL);
+  btk_print_operation_run (print, print_action, BTK_WINDOW (main_window), NULL);
 
   g_object_unref (print);
 }
 
 static void
-do_print (GtkAction *action)
+do_print (BtkAction *action)
 {
-  do_print_or_preview (action, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG);
+  do_print_or_preview (action, BTK_PRINT_OPERATION_ACTION_PRINT_DIALOG);
 }
 
 static void
-do_preview (GtkAction *action)
+do_preview (BtkAction *action)
 {
-  do_print_or_preview (action, GTK_PRINT_OPERATION_ACTION_PREVIEW);
+  do_print_or_preview (action, BTK_PRINT_OPERATION_ACTION_PREVIEW);
 }
 
 static void
-do_about (GtkAction *action)
+do_about (BtkAction *action)
 {
   const gchar *authors[] = {
     "Alexander Larsson",
     NULL
   };
-  gtk_show_about_dialog (GTK_WINDOW (main_window),
+  btk_show_about_dialog (BTK_WINDOW (main_window),
 			 "name", "print test editor",
 			 "version", "0.1",
 			 "copyright", "(C) Red Hat, Inc",
-			 "comments", "Program to demonstrate GTK+ printing.",
+			 "comments", "Program to demonstrate BTK+ printing.",
 			 "authors", authors,
 			 NULL);
 }
 
 static void
-do_quit (GtkAction *action)
+do_quit (BtkAction *action)
 {
-  gtk_main_quit ();
+  btk_main_quit ();
 }
 
-static GtkActionEntry entries[] = {
+static BtkActionEntry entries[] = {
   { "FileMenu", NULL, "_File" },               /* name, stock id, label */
   { "HelpMenu", NULL, "_Help" },               /* name, stock id, label */
-  { "New", GTK_STOCK_NEW,                      /* name, stock id */
+  { "New", BTK_STOCK_NEW,                      /* name, stock id */
     "_New", "<control>N",                      /* label, accelerator */
     "Create a new file",                       /* tooltip */ 
     G_CALLBACK (do_new) },      
-  { "Open", GTK_STOCK_OPEN,                    /* name, stock id */
+  { "Open", BTK_STOCK_OPEN,                    /* name, stock id */
     "_Open","<control>O",                      /* label, accelerator */     
     "Open a file",                             /* tooltip */
     G_CALLBACK (do_open) }, 
-  { "Save", GTK_STOCK_SAVE,                    /* name, stock id */
+  { "Save", BTK_STOCK_SAVE,                    /* name, stock id */
     "_Save","<control>S",                      /* label, accelerator */     
     "Save current file",                       /* tooltip */
     G_CALLBACK (do_save) },
-  { "SaveAs", GTK_STOCK_SAVE,                  /* name, stock id */
+  { "SaveAs", BTK_STOCK_SAVE,                  /* name, stock id */
     "Save _As...", NULL,                       /* label, accelerator */     
     "Save to a file",                          /* tooltip */
     G_CALLBACK (do_save_as) },
-  { "Quit", GTK_STOCK_QUIT,                    /* name, stock id */
+  { "Quit", BTK_STOCK_QUIT,                    /* name, stock id */
     "_Quit", "<control>Q",                     /* label, accelerator */     
     "Quit",                                    /* tooltip */
     G_CALLBACK (do_quit) },
@@ -770,7 +770,7 @@ static GtkActionEntry entries[] = {
     "Print Preview", NULL,                     /* label, accelerator */     
     "Preview the printed document",            /* tooltip */
     G_CALLBACK (do_preview) },
-  { "Print", GTK_STOCK_PRINT,                  /* name, stock id */
+  { "Print", BTK_STOCK_PRINT,                  /* name, stock id */
      NULL, NULL,                               /* label, accelerator */     
     "Print the document",                      /* tooltip */
     G_CALLBACK (do_print) }
@@ -798,124 +798,124 @@ static const gchar *ui_info =
 "</ui>";
 
 static void
-buffer_changed_callback (GtkTextBuffer *buffer)
+buffer_changed_callback (BtkTextBuffer *buffer)
 {
   file_changed = TRUE;
   update_statusbar ();
 }
 
 static void
-mark_set_callback (GtkTextBuffer     *buffer,
-                   const GtkTextIter *new_location,
-                   GtkTextMark       *mark,
+mark_set_callback (BtkTextBuffer     *buffer,
+                   const BtkTextIter *new_location,
+                   BtkTextMark       *mark,
                    gpointer           data)
 {
   update_statusbar ();
 }
 
 static void
-update_resize_grip (GtkWidget           *widget,
-		    GdkEventWindowState *event,
-		    GtkStatusbar        *statusbar)
+update_resize_grip (BtkWidget           *widget,
+		    BdkEventWindowState *event,
+		    BtkStatusbar        *statusbar)
 {
-  if (event->changed_mask & (GDK_WINDOW_STATE_MAXIMIZED | 
-			     GDK_WINDOW_STATE_FULLSCREEN))
+  if (event->changed_mask & (BDK_WINDOW_STATE_MAXIMIZED | 
+			     BDK_WINDOW_STATE_FULLSCREEN))
     {
       gboolean maximized;
 
-      maximized = event->new_window_state & (GDK_WINDOW_STATE_MAXIMIZED | 
-					     GDK_WINDOW_STATE_FULLSCREEN);
-      gtk_statusbar_set_has_resize_grip (statusbar, !maximized);
+      maximized = event->new_window_state & (BDK_WINDOW_STATE_MAXIMIZED | 
+					     BDK_WINDOW_STATE_FULLSCREEN);
+      btk_statusbar_set_has_resize_grip (statusbar, !maximized);
     }
 }
 
 static void
 create_window (void)
 {
-  GtkWidget *bar;
-  GtkWidget *table;
-  GtkWidget *contents;
-  GtkUIManager *ui;
-  GtkWidget *sw;
-  GtkActionGroup *actions;
+  BtkWidget *bar;
+  BtkWidget *table;
+  BtkWidget *contents;
+  BtkUIManager *ui;
+  BtkWidget *sw;
+  BtkActionGroup *actions;
   GError *error;
-  GtkWindowGroup *group;
+  BtkWindowGroup *group;
   
-  main_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  main_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
-  group = gtk_window_group_new ();
-  gtk_window_group_add_window (group, GTK_WINDOW (main_window));
+  group = btk_window_group_new ();
+  btk_window_group_add_window (group, BTK_WINDOW (main_window));
   g_object_unref (group);
 
-  gtk_window_set_default_size (GTK_WINDOW (main_window),
+  btk_window_set_default_size (BTK_WINDOW (main_window),
 			       400, 600);
   
   g_signal_connect (main_window, "delete-event",
-		    G_CALLBACK (gtk_main_quit), NULL);
+		    G_CALLBACK (btk_main_quit), NULL);
   
-  actions = gtk_action_group_new ("Actions");
-  gtk_action_group_add_actions (actions, entries, n_entries, NULL);
+  actions = btk_action_group_new ("Actions");
+  btk_action_group_add_actions (actions, entries, n_entries, NULL);
   
-  ui = gtk_ui_manager_new ();
-  gtk_ui_manager_insert_action_group (ui, actions, 0);
-  gtk_window_add_accel_group (GTK_WINDOW (main_window), 
-			      gtk_ui_manager_get_accel_group (ui));
-  gtk_container_set_border_width (GTK_CONTAINER (main_window), 0);
+  ui = btk_ui_manager_new ();
+  btk_ui_manager_insert_action_group (ui, actions, 0);
+  btk_window_add_accel_group (BTK_WINDOW (main_window), 
+			      btk_ui_manager_get_accel_group (ui));
+  btk_container_set_border_width (BTK_CONTAINER (main_window), 0);
 
   error = NULL;
-  if (!gtk_ui_manager_add_ui_from_string (ui, ui_info, -1, &error))
+  if (!btk_ui_manager_add_ui_from_string (ui, ui_info, -1, &error))
     {
       g_message ("building menus failed: %s", error->message);
       g_error_free (error);
     }
 
-  table = gtk_table_new (1, 3, FALSE);
-  gtk_container_add (GTK_CONTAINER (main_window), table);
+  table = btk_table_new (1, 3, FALSE);
+  btk_container_add (BTK_CONTAINER (main_window), table);
 
-  bar = gtk_ui_manager_get_widget (ui, "/MenuBar");
-  gtk_widget_show (bar);
-  gtk_table_attach (GTK_TABLE (table),
+  bar = btk_ui_manager_get_widget (ui, "/MenuBar");
+  btk_widget_show (bar);
+  btk_table_attach (BTK_TABLE (table),
 		    bar, 
 		    /* X direction */          /* Y direction */
 		    0, 1,                      0, 1,
-		    GTK_EXPAND | GTK_FILL,     0,
+		    BTK_EXPAND | BTK_FILL,     0,
 		    0,                         0);
 
   /* Create document  */
-  sw = gtk_scrolled_window_new (NULL, NULL);
+  sw = btk_scrolled_window_new (NULL, NULL);
 
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (sw),
+				  BTK_POLICY_AUTOMATIC,
+				  BTK_POLICY_AUTOMATIC);
   
-  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
-				       GTK_SHADOW_IN);
+  btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (sw),
+				       BTK_SHADOW_IN);
   
-  gtk_table_attach (GTK_TABLE (table),
+  btk_table_attach (BTK_TABLE (table),
 		    sw,
 		    /* X direction */       /* Y direction */
 		    0, 1,                   1, 2,
-		    GTK_EXPAND | GTK_FILL,  GTK_EXPAND | GTK_FILL,
+		    BTK_EXPAND | BTK_FILL,  BTK_EXPAND | BTK_FILL,
 		    0,                      0);
   
-  contents = gtk_text_view_new ();
-  gtk_widget_grab_focus (contents);
+  contents = btk_text_view_new ();
+  btk_widget_grab_focus (contents);
       
-  gtk_container_add (GTK_CONTAINER (sw),
+  btk_container_add (BTK_CONTAINER (sw),
 		     contents);
   
   /* Create statusbar */
   
-  statusbar = gtk_statusbar_new ();
-  gtk_table_attach (GTK_TABLE (table),
+  statusbar = btk_statusbar_new ();
+  btk_table_attach (BTK_TABLE (table),
 		    statusbar,
 		    /* X direction */       /* Y direction */
 		    0, 1,                   2, 3,
-		    GTK_EXPAND | GTK_FILL,  0,
+		    BTK_EXPAND | BTK_FILL,  0,
 		    0,                      0);
 
   /* Show text widget info in the statusbar */
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (contents));
+  buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (contents));
   
   g_signal_connect_object (buffer,
 			   "changed",
@@ -937,7 +937,7 @@ create_window (void)
   
   update_ui ();
   
-  gtk_widget_show_all (main_window);
+  btk_widget_show_all (main_window);
 }
 
 int
@@ -946,18 +946,18 @@ main (int argc, char **argv)
   GError *error = NULL;
 
   g_set_application_name ("Print editor");
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  settings = gtk_print_settings_new_from_file ("print-settings.ini", &error);
+  settings = btk_print_settings_new_from_file ("print-settings.ini", &error);
   if (error) {
     g_print ("Failed to load print settings: %s\n", error->message);
     g_clear_error (&error);
 
-    settings = gtk_print_settings_new ();
+    settings = btk_print_settings_new ();
   }
   g_assert (settings != NULL);
 
-  page_setup = gtk_page_setup_new_from_file ("page-setup.ini", &error);
+  page_setup = btk_page_setup_new_from_file ("page-setup.ini", &error);
   if (error) {
     g_print ("Failed to load page setup: %s\n", error->message);
     g_clear_error (&error);
@@ -968,14 +968,14 @@ main (int argc, char **argv)
   if (argc == 2)
     load_file (argv[1]);
   
-  gtk_main ();
+  btk_main ();
 
-  if (!gtk_print_settings_to_file (settings, "print-settings.ini", &error)) {
+  if (!btk_print_settings_to_file (settings, "print-settings.ini", &error)) {
     g_print ("Failed to save print settings: %s\n", error->message);
     g_clear_error (&error);
   }
   if (page_setup &&
-      !gtk_page_setup_to_file (page_setup, "page-setup.ini", &error)) {
+      !btk_page_setup_to_file (page_setup, "page-setup.ini", &error)) {
     g_print ("Failed to save page setup: %s\n", error->message);
     g_clear_error (&error);
   }

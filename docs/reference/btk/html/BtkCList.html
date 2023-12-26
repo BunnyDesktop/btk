@@ -1,0 +1,2281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>BtkCList: BTK+ 2 Reference Manual</title>
+<meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="DeprecatedObjects.html" title="Deprecated">
+<link rel="prev" href="DeprecatedObjects.html" title="Deprecated">
+<link rel="next" href="BtkCTree.html" title="BtkCTree">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#BtkCList.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#BtkCList.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#BtkCList.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#BtkCList.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#BtkCList.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="DeprecatedObjects.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="DeprecatedObjects.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="BtkCTree.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="BtkCList"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="BtkCList.top_of_page"></a>BtkCList</span></h2>
+<p>BtkCList</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="BtkCList.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_proto_type">
+<col class="functions_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-FLAGS:CAPS" title="BTK_CLIST_FLAGS()">BTK_CLIST_FLAGS</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-SET-FLAG:CAPS" title="BTK_CLIST_SET_FLAG()">BTK_CLIST_SET_FLAG</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-UNSET-FLAG:CAPS" title="BTK_CLIST_UNSET_FLAG()">BTK_CLIST_UNSET_FLAG</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-IN-DRAG:CAPS" title="BTK_CLIST_IN_DRAG()">BTK_CLIST_IN_DRAG</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-ROW-HEIGHT-SET:CAPS" title="BTK_CLIST_ROW_HEIGHT_SET()">BTK_CLIST_ROW_HEIGHT_SET</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-SHOW-TITLES:CAPS" title="BTK_CLIST_SHOW_TITLES()">BTK_CLIST_SHOW_TITLES</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-ADD-MODE:CAPS" title="BTK_CLIST_ADD_MODE()">BTK_CLIST_ADD_MODE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-AUTO-SORT:CAPS" title="BTK_CLIST_AUTO_SORT()">BTK_CLIST_AUTO_SORT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-AUTO-RESIZE-BLOCKED:CAPS" title="BTK_CLIST_AUTO_RESIZE_BLOCKED()">BTK_CLIST_AUTO_RESIZE_BLOCKED</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-REORDERABLE:CAPS" title="BTK_CLIST_REORDERABLE()">BTK_CLIST_REORDERABLE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-USE-DRAG-ICONS:CAPS" title="BTK_CLIST_USE_DRAG_ICONS()">BTK_CLIST_USE_DRAG_ICONS</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-DRAW-DRAG-LINE:CAPS" title="BTK_CLIST_DRAW_DRAG_LINE()">BTK_CLIST_DRAW_DRAG_LINE</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-DRAW-DRAG-RECT:CAPS" title="BTK_CLIST_DRAW_DRAG_RECT()">BTK_CLIST_DRAW_DRAG_RECT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CLIST-ROW:CAPS" title="BTK_CLIST_ROW()">BTK_CLIST_ROW</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CELL-TEXT:CAPS" title="BTK_CELL_TEXT()">BTK_CELL_TEXT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CELL-PIXMAP:CAPS" title="BTK_CELL_PIXMAP()">BTK_CELL_PIXMAP</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CELL-PIXTEXT:CAPS" title="BTK_CELL_PIXTEXT()">BTK_CELL_PIXTEXT</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="define_keyword">#define</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#BTK-CELL-WIDGET:CAPS" title="BTK_CELL_WIDGET()">BTK_CELL_WIDGET</a><span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="BtkCList.html#BtkCListCompareFunc" title="BtkCListCompareFunc ()">*BtkCListCompareFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-new" title="btk_clist_new ()">btk_clist_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-new-with-titles" title="btk_clist_new_with_titles ()">btk_clist_new_with_titles</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-shadow-type" title="btk_clist_set_shadow_type ()">btk_clist_set_shadow_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-selection-mode" title="btk_clist_set_selection_mode ()">btk_clist_set_selection_mode</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-freeze" title="btk_clist_freeze ()">btk_clist_freeze</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-thaw" title="btk_clist_thaw ()">btk_clist_thaw</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-column-titles-show" title="btk_clist_column_titles_show ()">btk_clist_column_titles_show</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-column-titles-hide" title="btk_clist_column_titles_hide ()">btk_clist_column_titles_hide</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-column-title-active" title="btk_clist_column_title_active ()">btk_clist_column_title_active</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-column-title-passive" title="btk_clist_column_title_passive ()">btk_clist_column_title_passive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-column-titles-active" title="btk_clist_column_titles_active ()">btk_clist_column_titles_active</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-column-titles-passive" title="btk_clist_column_titles_passive ()">btk_clist_column_titles_passive</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-title" title="btk_clist_set_column_title ()">btk_clist_set_column_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-widget" title="btk_clist_set_column_widget ()">btk_clist_set_column_widget</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-justification" title="btk_clist_set_column_justification ()">btk_clist_set_column_justification</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-visibility" title="btk_clist_set_column_visibility ()">btk_clist_set_column_visibility</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-resizeable" title="btk_clist_set_column_resizeable ()">btk_clist_set_column_resizeable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-auto-resize" title="btk_clist_set_column_auto_resize ()">btk_clist_set_column_auto_resize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-optimal-column-width" title="btk_clist_optimal_column_width ()">btk_clist_optimal_column_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-width" title="btk_clist_set_column_width ()">btk_clist_set_column_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-min-width" title="btk_clist_set_column_min_width ()">btk_clist_set_column_min_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-column-max-width" title="btk_clist_set_column_max_width ()">btk_clist_set_column_max_width</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-row-height" title="btk_clist_set_row_height ()">btk_clist_set_row_height</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-moveto" title="btk_clist_moveto ()">btk_clist_moveto</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="btk2-Standard-Enumerations.html#BtkVisibility" title="enum BtkVisibility"><span class="returnvalue">BtkVisibility</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-row-is-visible" title="btk_clist_row_is_visible ()">btk_clist_row_is_visible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkCList.html#BtkCellType" title="enum BtkCellType"><span class="returnvalue">BtkCellType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-cell-type" title="btk_clist_get_cell_type ()">btk_clist_get_cell_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-text" title="btk_clist_set_text ()">btk_clist_set_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-text" title="btk_clist_get_text ()">btk_clist_get_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-pixmap" title="btk_clist_set_pixmap ()">btk_clist_set_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-pixmap" title="btk_clist_get_pixmap ()">btk_clist_get_pixmap</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-pixtext" title="btk_clist_set_pixtext ()">btk_clist_set_pixtext</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-pixtext" title="btk_clist_get_pixtext ()">btk_clist_get_pixtext</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-foreground" title="btk_clist_set_foreground ()">btk_clist_set_foreground</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-background" title="btk_clist_set_background ()">btk_clist_set_background</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-cell-style" title="btk_clist_set_cell_style ()">btk_clist_set_cell_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-cell-style" title="btk_clist_get_cell_style ()">btk_clist_get_cell_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-row-style" title="btk_clist_set_row_style ()">btk_clist_set_row_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-row-style" title="btk_clist_get_row_style ()">btk_clist_get_row_style</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-shift" title="btk_clist_set_shift ()">btk_clist_set_shift</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-selectable" title="btk_clist_set_selectable ()">btk_clist_set_selectable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-selectable" title="btk_clist_get_selectable ()">btk_clist_get_selectable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-prepend" title="btk_clist_prepend ()">btk_clist_prepend</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-append" title="btk_clist_append ()">btk_clist_append</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-insert" title="btk_clist_insert ()">btk_clist_insert</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-remove" title="btk_clist_remove ()">btk_clist_remove</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-row-data" title="btk_clist_set_row_data ()">btk_clist_set_row_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-row-data-full" title="btk_clist_set_row_data_full ()">btk_clist_set_row_data_full</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gpointer</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-row-data" title="btk_clist_get_row_data ()">btk_clist_get_row_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-find-row-from-data" title="btk_clist_find_row_from_data ()">btk_clist_find_row_from_data</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-select-row" title="btk_clist_select_row ()">btk_clist_select_row</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-unselect-row" title="btk_clist_unselect_row ()">btk_clist_unselect_row</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-undo-selection" title="btk_clist_undo_selection ()">btk_clist_undo_selection</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-clear" title="btk_clist_clear ()">btk_clist_clear</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-selection-info" title="btk_clist_get_selection_info ()">btk_clist_get_selection_info</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-select-all" title="btk_clist_select_all ()">btk_clist_select_all</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-unselect-all" title="btk_clist_unselect_all ()">btk_clist_unselect_all</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-swap-rows" title="btk_clist_swap_rows ()">btk_clist_swap_rows</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-compare-func" title="btk_clist_set_compare_func ()">btk_clist_set_compare_func</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-sort-column" title="btk_clist_set_sort_column ()">btk_clist_set_sort_column</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-sort-type" title="btk_clist_set_sort_type ()">btk_clist_set_sort_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-sort" title="btk_clist_sort ()">btk_clist_sort</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-auto-sort" title="btk_clist_set_auto_sort ()">btk_clist_set_auto_sort</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-columns-autosize" title="btk_clist_columns_autosize ()">btk_clist_columns_autosize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-column-title" title="btk_clist_get_column_title ()">btk_clist_get_column_title</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-column-widget" title="btk_clist_get_column_widget ()">btk_clist_get_column_widget</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="returnvalue">BtkAdjustment</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-hadjustment" title="btk_clist_get_hadjustment ()">btk_clist_get_hadjustment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="returnvalue">BtkAdjustment</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-get-vadjustment" title="btk_clist_get_vadjustment ()">btk_clist_get_vadjustment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-row-move" title="btk_clist_row_move ()">btk_clist_row_move</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-button-actions" title="btk_clist_set_button_actions ()">btk_clist_set_button_actions</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-hadjustment" title="btk_clist_set_hadjustment ()">btk_clist_set_hadjustment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-reorderable" title="btk_clist_set_reorderable ()">btk_clist_set_reorderable</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-use-drag-icons" title="btk_clist_set_use_drag_icons ()">btk_clist_set_use_drag_icons</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="BtkCList.html#btk-clist-set-vadjustment" title="btk_clist_set_vadjustment ()">btk_clist_set_vadjustment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--n-columns" title="The “n-columns” property">n-columns</a></td>
+<td class="property_flags">Read / Write / Construct Only</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--reorderable" title="The “reorderable” property">reorderable</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">guint</span></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--row-height" title="The “row-height” property">row-height</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkSelectionMode" title="enum BtkSelectionMode"><span class="type">BtkSelectionMode</span></a></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--selection-mode" title="The “selection-mode” property">selection-mode</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--shadow-type" title="The “shadow-type” property">shadow-type</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><a class="link" href="btk2-Standard-Enumerations.html#BtkSortType" title="enum BtkSortType"><span class="type">BtkSortType</span></a></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--sort-type" title="The “sort-type” property">sort-type</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--titles-active" title="The “titles-active” property">titles-active</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_name"><a class="link" href="BtkCList.html#BtkCList--use-drag-icons" title="The “use-drag-icons” property">use-drag-icons</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signal_proto_type">
+<col width="300px" class="signal_proto_name">
+<col width="200px" class="signal_proto_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-abort-column-resize" title="The “abort-column-resize” signal">abort-column-resize</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-click-column" title="The “click-column” signal">click-column</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-end-selection" title="The “end-selection” signal">end-selection</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-extend-selection" title="The “extend-selection” signal">extend-selection</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-resize-column" title="The “resize-column” signal">resize-column</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-row-move" title="The “row-move” signal">row-move</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-scroll-horizontal" title="The “scroll-horizontal” signal">scroll-horizontal</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-scroll-vertical" title="The “scroll-vertical” signal">scroll-vertical</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-select-all" title="The “select-all” signal">select-all</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-select-row" title="The “select-row” signal">select-row</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-set-scroll-adjustments" title="The “set-scroll-adjustments” signal">set-scroll-adjustments</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-start-selection" title="The “start-selection” signal">start-selection</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-toggle-add-mode" title="The “toggle-add-mode” signal">toggle-add-mode</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-toggle-focus-row" title="The “toggle-focus-row” signal">toggle-focus-row</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-undo-selection" title="The “undo-selection” signal">undo-selection</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-unselect-all" title="The “unselect-all” signal">unselect-all</a></td>
+<td class="signal_flags">Action</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="BtkCList.html#BtkCList-unselect-row" title="The “unselect-row” signal">unselect-row</a></td>
+<td class="signal_flags">Run First</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="other_proto_type">
+<col class="other_proto_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCList-struct" title="struct BtkCList">BtkCList</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCellType" title="enum BtkCellType">BtkCellType</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkButtonAction" title="enum BtkButtonAction">BtkButtonAction</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCListColumn" title="struct BtkCListColumn">BtkCListColumn</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCListRow" title="struct BtkCListRow">BtkCListRow</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCellText" title="struct BtkCellText">BtkCellText</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCellPixmap" title="struct BtkCellPixmap">BtkCellPixmap</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCellPixText" title="struct BtkCellPixText">BtkCellPixText</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCellWidget" title="struct BtkCellWidget">BtkCellWidget</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCell" title="struct BtkCell">BtkCell</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCListCellInfo" title="struct BtkCListCellInfo">BtkCListCellInfo</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCListDestInfo" title="struct BtkCListDestInfo">BtkCListDestInfo</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="BtkCList.html#BtkCListDragPos" title="enum BtkCListDragPos">BtkCListDragPos</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> GInitiallyUnowned
+        <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
+            <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
+                <span class="lineart">╰──</span> <a class="link" href="BtkContainer.html" title="BtkContainer">BtkContainer</a>
+                    <span class="lineart">╰──</span> BtkCList
+                        <span class="lineart">╰──</span> <a class="link" href="BtkCTree.html" title="BtkCTree">BtkCTree</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkCList.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+BtkCList implements
+ BatkImplementorIface and  <a class="link" href="BtkBuildable.html" title="BtkBuildable">BtkBuildable</a>.</p>
+</div>
+<div class="refsect1">
+<a name="BtkCList.includes"></a><h2>Includes</h2>
+<pre class="synopsis">#include &lt;btk/btk.h&gt;
+</pre>
+</div>
+<div class="refsect1">
+<a name="BtkCList.description"></a><h2>Description</h2>
+</div>
+<div class="refsect1">
+<a name="BtkCList.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="BTK-CLIST-FLAGS:CAPS"></a><h3>BTK_CLIST_FLAGS()</h3>
+<pre class="programlisting">#define BTK_CLIST_FLAGS(clist)             (BTK_CLIST (clist)-&gt;flags)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_FLAGS</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-SET-FLAG:CAPS"></a><h3>BTK_CLIST_SET_FLAG()</h3>
+<pre class="programlisting">#define BTK_CLIST_SET_FLAG(clist,flag)     (BTK_CLIST_FLAGS (clist) |= (BTK_ ## flag))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_SET_FLAG</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-UNSET-FLAG:CAPS"></a><h3>BTK_CLIST_UNSET_FLAG()</h3>
+<pre class="programlisting">#define BTK_CLIST_UNSET_FLAG(clist,flag)   (BTK_CLIST_FLAGS (clist) &amp;= ~(BTK_ ## flag))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_UNSET_FLAG</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-IN-DRAG:CAPS"></a><h3>BTK_CLIST_IN_DRAG()</h3>
+<pre class="programlisting">#define BTK_CLIST_IN_DRAG(clist)           (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_IN_DRAG)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_IN_DRAG</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-ROW-HEIGHT-SET:CAPS"></a><h3>BTK_CLIST_ROW_HEIGHT_SET()</h3>
+<pre class="programlisting">#define BTK_CLIST_ROW_HEIGHT_SET(clist)    (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_ROW_HEIGHT_SET)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_ROW_HEIGHT_SET</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-SHOW-TITLES:CAPS"></a><h3>BTK_CLIST_SHOW_TITLES()</h3>
+<pre class="programlisting">#define BTK_CLIST_SHOW_TITLES(clist)       (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_SHOW_TITLES)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_SHOW_TITLES</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-ADD-MODE:CAPS"></a><h3>BTK_CLIST_ADD_MODE()</h3>
+<pre class="programlisting">#define BTK_CLIST_ADD_MODE(clist)          (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_ADD_MODE)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_ADD_MODE</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-AUTO-SORT:CAPS"></a><h3>BTK_CLIST_AUTO_SORT()</h3>
+<pre class="programlisting">#define BTK_CLIST_AUTO_SORT(clist)         (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_AUTO_SORT)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_AUTO_SORT</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-AUTO-RESIZE-BLOCKED:CAPS"></a><h3>BTK_CLIST_AUTO_RESIZE_BLOCKED()</h3>
+<pre class="programlisting">#define BTK_CLIST_AUTO_RESIZE_BLOCKED(clist) (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_AUTO_RESIZE_BLOCKED)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_AUTO_RESIZE_BLOCKED</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-REORDERABLE:CAPS"></a><h3>BTK_CLIST_REORDERABLE()</h3>
+<pre class="programlisting">#define BTK_CLIST_REORDERABLE(clist)       (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_REORDERABLE)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_REORDERABLE</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-USE-DRAG-ICONS:CAPS"></a><h3>BTK_CLIST_USE_DRAG_ICONS()</h3>
+<pre class="programlisting">#define BTK_CLIST_USE_DRAG_ICONS(clist)    (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_USE_DRAG_ICONS)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_USE_DRAG_ICONS</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-DRAW-DRAG-LINE:CAPS"></a><h3>BTK_CLIST_DRAW_DRAG_LINE()</h3>
+<pre class="programlisting">#define BTK_CLIST_DRAW_DRAG_LINE(clist)    (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_DRAW_DRAG_LINE)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_DRAW_DRAG_LINE</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-DRAW-DRAG-RECT:CAPS"></a><h3>BTK_CLIST_DRAW_DRAG_RECT()</h3>
+<pre class="programlisting">#define BTK_CLIST_DRAW_DRAG_RECT(clist)    (BTK_CLIST_FLAGS (clist) &amp; BTK_CLIST_DRAW_DRAG_RECT)
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_DRAW_DRAG_RECT</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CLIST-ROW:CAPS"></a><h3>BTK_CLIST_ROW()</h3>
+<pre class="programlisting">#define BTK_CLIST_ROW(_glist_) ((BtkCListRow *)((_glist_)-&gt;data))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CLIST_ROW</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CELL-TEXT:CAPS"></a><h3>BTK_CELL_TEXT()</h3>
+<pre class="programlisting">#define BTK_CELL_TEXT(cell)     (((BtkCellText *) &amp;(cell)))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CELL_TEXT</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CELL-PIXMAP:CAPS"></a><h3>BTK_CELL_PIXMAP()</h3>
+<pre class="programlisting">#define BTK_CELL_PIXMAP(cell)   (((BtkCellPixmap *) &amp;(cell)))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CELL_PIXMAP</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CELL-PIXTEXT:CAPS"></a><h3>BTK_CELL_PIXTEXT()</h3>
+<pre class="programlisting">#define BTK_CELL_PIXTEXT(cell)  (((BtkCellPixText *) &amp;(cell)))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CELL_PIXTEXT</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BTK-CELL-WIDGET:CAPS"></a><h3>BTK_CELL_WIDGET()</h3>
+<pre class="programlisting">#define BTK_CELL_WIDGET(cell)   (((BtkCellWidget *) &amp;(cell)))
+</pre>
+<div class="warning"><p><code class="literal">BTK_CELL_WIDGET</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCListCompareFunc"></a><h3>BtkCListCompareFunc ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+<span class="c_punctuation">(</span>*BtkCListCompareFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                        <em class="parameter"><code><span class="type">gconstpointer</span> ptr1</code></em>,
+                        <em class="parameter"><code><span class="type">gconstpointer</span> ptr2</code></em>);</pre>
+<div class="warning"><p><code class="literal">BtkCListCompareFunc</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-new"></a><h3>btk_clist_new ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_clist_new (<em class="parameter"><code><span class="type">gint</span> columns</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_new</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-new-with-titles"></a><h3>btk_clist_new_with_titles ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_clist_new_with_titles (<em class="parameter"><code><span class="type">gint</span> columns</code></em>,
+                           <em class="parameter"><code><span class="type">gchar</span> *titles[]</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_new_with_titles</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-shadow-type"></a><h3>btk_clist_set_shadow_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_shadow_type (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                           <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a> type</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_shadow_type</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-selection-mode"></a><h3>btk_clist_set_selection_mode ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_selection_mode (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                              <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkSelectionMode" title="enum BtkSelectionMode"><span class="type">BtkSelectionMode</span></a> mode</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_selection_mode</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-freeze"></a><h3>btk_clist_freeze ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_freeze (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_freeze</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-thaw"></a><h3>btk_clist_thaw ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_thaw (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_thaw</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-column-titles-show"></a><h3>btk_clist_column_titles_show ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_column_titles_show (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_column_titles_show</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-column-titles-hide"></a><h3>btk_clist_column_titles_hide ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_column_titles_hide (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_column_titles_hide</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-column-title-active"></a><h3>btk_clist_column_title_active ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_column_title_active (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                               <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_column_title_active</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-column-title-passive"></a><h3>btk_clist_column_title_passive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_column_title_passive (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_column_title_passive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-column-titles-active"></a><h3>btk_clist_column_titles_active ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_column_titles_active (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_column_titles_active</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-column-titles-passive"></a><h3>btk_clist_column_titles_passive ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_column_titles_passive (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_column_titles_passive</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-title"></a><h3>btk_clist_set_column_title ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_title (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                            <em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_title</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-widget"></a><h3>btk_clist_set_column_widget ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_widget (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                             <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                             <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_widget</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-justification"></a><h3>btk_clist_set_column_justification ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_justification (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                    <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                                    <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkJustification" title="enum BtkJustification"><span class="type">BtkJustification</span></a> justification</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_justification</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-visibility"></a><h3>btk_clist_set_column_visibility ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_visibility (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                 <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                                 <em class="parameter"><code><span class="type">gboolean</span> visible</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_visibility</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-resizeable"></a><h3>btk_clist_set_column_resizeable ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_resizeable (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                 <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                                 <em class="parameter"><code><span class="type">gboolean</span> resizeable</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_resizeable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-auto-resize"></a><h3>btk_clist_set_column_auto_resize ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_auto_resize (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                  <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                                  <em class="parameter"><code><span class="type">gboolean</span> auto_resize</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_auto_resize</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-optimal-column-width"></a><h3>btk_clist_optimal_column_width ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_optimal_column_width (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_optimal_column_width</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-width"></a><h3>btk_clist_set_column_width ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_width (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> width</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_width</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-min-width"></a><h3>btk_clist_set_column_min_width ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_min_width (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> min_width</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_min_width</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-column-max-width"></a><h3>btk_clist_set_column_max_width ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_column_max_width (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                                <em class="parameter"><code><span class="type">gint</span> max_width</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_column_max_width</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-row-height"></a><h3>btk_clist_set_row_height ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_row_height (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">guint</span> height</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_row_height</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-moveto"></a><h3>btk_clist_moveto ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_moveto (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                  <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                  <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                  <em class="parameter"><code><span class="type">gfloat</span> row_align</code></em>,
+                  <em class="parameter"><code><span class="type">gfloat</span> col_align</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_moveto</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-row-is-visible"></a><h3>btk_clist_row_is_visible ()</h3>
+<pre class="programlisting"><a class="link" href="btk2-Standard-Enumerations.html#BtkVisibility" title="enum BtkVisibility"><span class="returnvalue">BtkVisibility</span></a>
+btk_clist_row_is_visible (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_row_is_visible</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-cell-type"></a><h3>btk_clist_get_cell_type ()</h3>
+<pre class="programlisting"><a class="link" href="BtkCList.html#BtkCellType" title="enum BtkCellType"><span class="returnvalue">BtkCellType</span></a>
+btk_clist_get_cell_type (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                         <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                         <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_cell_type</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-text"></a><h3>btk_clist_set_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_text (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                    <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                    <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                    <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_text</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-text"></a><h3>btk_clist_get_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_get_text (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                    <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                    <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                    <em class="parameter"><code><span class="type">gchar</span> **text</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_text</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-pixmap"></a><h3>btk_clist_set_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_pixmap (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                      <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
+                      <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_pixmap</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="btk-clist-set-pixmap.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>mask</p></td>
+<td class="parameter_description"><p>. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-pixmap"></a><h3>btk_clist_get_pixmap ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_get_pixmap (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                      <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> **pixmap</code></em>,
+                      <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_pixmap</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-pixtext"></a><h3>btk_clist_set_pixtext ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_pixtext (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                       <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
+                       <em class="parameter"><code><span class="type">guint8</span> spacing</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_pixtext</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-pixtext"></a><h3>btk_clist_get_pixtext ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_get_pixtext (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                       <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                       <em class="parameter"><code><span class="type">gchar</span> **text</code></em>,
+                       <em class="parameter"><code><span class="type">guint8</span> *spacing</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> **pixmap</code></em>,
+                       <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_pixtext</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-foreground"></a><h3>btk_clist_set_foreground ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_foreground (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                          <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *color</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_foreground</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-background"></a><h3>btk_clist_set_background ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_background (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                          <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *color</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_background</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-cell-style"></a><h3>btk_clist_set_cell_style ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_cell_style (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                          <em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_cell_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-cell-style"></a><h3>btk_clist_get_cell_style ()</h3>
+<pre class="programlisting"><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+btk_clist_get_cell_style (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_cell_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-row-style"></a><h3>btk_clist_set_row_style ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_row_style (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                         <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                         <em class="parameter"><code><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="type">BtkStyle</span></a> *style</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_row_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-row-style"></a><h3>btk_clist_get_row_style ()</h3>
+<pre class="programlisting"><a class="link" href="BtkStyle.html" title="BtkStyle"><span class="returnvalue">BtkStyle</span></a> *
+btk_clist_get_row_style (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                         <em class="parameter"><code><span class="type">gint</span> row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_row_style</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-shift"></a><h3>btk_clist_set_shift ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_shift (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                     <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                     <em class="parameter"><code><span class="type">gint</span> column</code></em>,
+                     <em class="parameter"><code><span class="type">gint</span> vertical</code></em>,
+                     <em class="parameter"><code><span class="type">gint</span> horizontal</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_shift</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-selectable"></a><h3>btk_clist_set_selectable ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_selectable (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                          <em class="parameter"><code><span class="type">gboolean</span> selectable</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_selectable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-selectable"></a><h3>btk_clist_get_selectable ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+btk_clist_get_selectable (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                          <em class="parameter"><code><span class="type">gint</span> row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_selectable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-prepend"></a><h3>btk_clist_prepend ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_prepend (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                   <em class="parameter"><code><span class="type">gchar</span> *text[]</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_prepend</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-append"></a><h3>btk_clist_append ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_append (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                  <em class="parameter"><code><span class="type">gchar</span> *text[]</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_append</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-insert"></a><h3>btk_clist_insert ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_insert (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                  <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                  <em class="parameter"><code><span class="type">gchar</span> *text[]</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_insert</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-remove"></a><h3>btk_clist_remove ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_remove (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                  <em class="parameter"><code><span class="type">gint</span> row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_remove</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-row-data"></a><h3>btk_clist_set_row_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_row_data (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                        <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_row_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-row-data-full"></a><h3>btk_clist_set_row_data_full ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_row_data_full (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                             <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                             <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                             <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_row_data_full</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-row-data"></a><h3>btk_clist_get_row_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">gpointer</span>
+btk_clist_get_row_data (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_row_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-find-row-from-data"></a><h3>btk_clist_find_row_from_data ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_find_row_from_data (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                              <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_find_row_from_data</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-select-row"></a><h3>btk_clist_select_row ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_select_row (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                      <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_select_row</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-unselect-row"></a><h3>btk_clist_unselect_row ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_unselect_row (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> row</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_unselect_row</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-undo-selection"></a><h3>btk_clist_undo_selection ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_undo_selection (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_undo_selection</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-clear"></a><h3>btk_clist_clear ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_clear (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_clear</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-selection-info"></a><h3>btk_clist_get_selection_info ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_get_selection_info (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                              <em class="parameter"><code><span class="type">gint</span> *row</code></em>,
+                              <em class="parameter"><code><span class="type">gint</span> *column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_selection_info</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-select-all"></a><h3>btk_clist_select_all ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_select_all (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_select_all</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-unselect-all"></a><h3>btk_clist_unselect_all ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_unselect_all (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_unselect_all</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-swap-rows"></a><h3>btk_clist_swap_rows ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_swap_rows (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                     <em class="parameter"><code><span class="type">gint</span> row1</code></em>,
+                     <em class="parameter"><code><span class="type">gint</span> row2</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_swap_rows</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-compare-func"></a><h3>btk_clist_set_compare_func ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_compare_func (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                            <em class="parameter"><code><a class="link" href="BtkCList.html#BtkCListCompareFunc" title="BtkCListCompareFunc ()"><span class="type">BtkCListCompareFunc</span></a> cmp_func</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_compare_func</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-sort-column"></a><h3>btk_clist_set_sort_column ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_sort_column (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_sort_column</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-sort-type"></a><h3>btk_clist_set_sort_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_sort_type (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                         <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkSortType" title="enum BtkSortType"><span class="type">BtkSortType</span></a> sort_type</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_sort_type</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-sort"></a><h3>btk_clist_sort ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_sort (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_sort</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-auto-sort"></a><h3>btk_clist_set_auto_sort ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_auto_sort (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                         <em class="parameter"><code><span class="type">gboolean</span> auto_sort</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_auto_sort</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-columns-autosize"></a><h3>btk_clist_columns_autosize ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+btk_clist_columns_autosize (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_columns_autosize</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-column-title"></a><h3>btk_clist_get_column_title ()</h3>
+<pre class="programlisting"><span class="returnvalue">gchar</span> *
+btk_clist_get_column_title (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_column_title</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-column-widget"></a><h3>btk_clist_get_column_widget ()</h3>
+<pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
+btk_clist_get_column_widget (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                             <em class="parameter"><code><span class="type">gint</span> column</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_column_widget</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-hadjustment"></a><h3>btk_clist_get_hadjustment ()</h3>
+<pre class="programlisting"><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="returnvalue">BtkAdjustment</span></a> *
+btk_clist_get_hadjustment (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_hadjustment</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-get-vadjustment"></a><h3>btk_clist_get_vadjustment ()</h3>
+<pre class="programlisting"><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="returnvalue">BtkAdjustment</span></a> *
+btk_clist_get_vadjustment (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_get_vadjustment</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-row-move"></a><h3>btk_clist_row_move ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_row_move (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                    <em class="parameter"><code><span class="type">gint</span> source_row</code></em>,
+                    <em class="parameter"><code><span class="type">gint</span> dest_row</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_row_move</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-button-actions"></a><h3>btk_clist_set_button_actions ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_button_actions (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                              <em class="parameter"><code><span class="type">guint</span> button</code></em>,
+                              <em class="parameter"><code><span class="type">guint8</span> button_actions</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_button_actions</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-hadjustment"></a><h3>btk_clist_set_hadjustment ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_hadjustment (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_hadjustment</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-reorderable"></a><h3>btk_clist_set_reorderable ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_reorderable (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                           <em class="parameter"><code><span class="type">gboolean</span> reorderable</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_reorderable</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-use-drag-icons"></a><h3>btk_clist_set_use_drag_icons ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_use_drag_icons (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                              <em class="parameter"><code><span class="type">gboolean</span> use_icons</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_use_drag_icons</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="btk-clist-set-vadjustment"></a><h3>btk_clist_set_vadjustment ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+btk_clist_set_vadjustment (<em class="parameter"><code><a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist</code></em>,
+                           <em class="parameter"><code><a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *adjustment</code></em>);</pre>
+<div class="warning"><p><code class="literal">btk_clist_set_vadjustment</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="BtkCList-struct"></a><h3>struct BtkCList</h3>
+<pre class="programlisting">struct BtkCList;</pre>
+<div class="warning"><p><code class="literal">BtkCList</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCellType"></a><h3>enum BtkCellType</h3>
+<div class="warning"><p><code class="literal">BtkCellType</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkCellType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CELL-EMPTY:CAPS"></a>BTK_CELL_EMPTY</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CELL-TEXT:CAPS"></a>BTK_CELL_TEXT</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CELL-PIXMAP:CAPS"></a>BTK_CELL_PIXMAP</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CELL-PIXTEXT:CAPS"></a>BTK_CELL_PIXTEXT</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CELL-WIDGET:CAPS"></a>BTK_CELL_WIDGET</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkButtonAction"></a><h3>enum BtkButtonAction</h3>
+<div class="warning"><p><code class="literal">BtkButtonAction</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkButtonAction.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-BUTTON-IGNORED:CAPS"></a>BTK_BUTTON_IGNORED</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-BUTTON-SELECTS:CAPS"></a>BTK_BUTTON_SELECTS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-BUTTON-DRAGS:CAPS"></a>BTK_BUTTON_DRAGS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-BUTTON-EXPANDS:CAPS"></a>BTK_BUTTON_EXPANDS</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCListColumn"></a><h3>struct BtkCListColumn</h3>
+<pre class="programlisting">struct BtkCListColumn {
+  gchar *title;
+  BdkRectangle area;
+
+  BtkWidget *button;
+  BdkWindow *window;
+
+  gint width;
+  gint min_width;
+  gint max_width;
+  BtkJustification justification;
+
+  guint visible        : 1;
+
+  guint width_set      : 1;
+  guint resizeable     : 1;
+  guint auto_resize    : 1;
+  guint button_passive : 1;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCListColumn</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCListRow"></a><h3>struct BtkCListRow</h3>
+<pre class="programlisting">struct BtkCListRow {
+  BtkCell *cell;
+  BtkStateType state;
+
+  BdkColor foreground;
+  BdkColor background;
+
+  BtkStyle *style;
+
+  gpointer data;
+  GDestroyNotify destroy;
+
+  guint fg_set     : 1;
+  guint bg_set     : 1;
+  guint selectable : 1;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCListRow</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCellText"></a><h3>struct BtkCellText</h3>
+<pre class="programlisting">struct BtkCellText {
+  BtkCellType type;
+
+  gint16 vertical;
+  gint16 horizontal;
+
+  BtkStyle *style;
+
+  gchar *text;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCellText</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCellPixmap"></a><h3>struct BtkCellPixmap</h3>
+<pre class="programlisting">struct BtkCellPixmap {
+  BtkCellType type;
+
+  gint16 vertical;
+  gint16 horizontal;
+
+  BtkStyle *style;
+
+  BdkPixmap *pixmap;
+  BdkBitmap *mask;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCellPixmap</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCellPixText"></a><h3>struct BtkCellPixText</h3>
+<pre class="programlisting">struct BtkCellPixText {
+  BtkCellType type;
+
+  gint16 vertical;
+  gint16 horizontal;
+
+  BtkStyle *style;
+
+  gchar *text;
+  guint8 spacing;
+  BdkPixmap *pixmap;
+  BdkBitmap *mask;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCellPixText</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCellWidget"></a><h3>struct BtkCellWidget</h3>
+<pre class="programlisting">struct BtkCellWidget {
+  BtkCellType type;
+
+  gint16 vertical;
+  gint16 horizontal;
+
+  BtkStyle *style;
+
+  BtkWidget *widget;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCellWidget</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCell"></a><h3>struct BtkCell</h3>
+<pre class="programlisting">struct BtkCell {
+  BtkCellType type;
+
+  gint16 vertical;
+  gint16 horizontal;
+
+  BtkStyle *style;
+
+  union {
+    gchar *text;
+
+    struct {
+      BdkPixmap *pixmap;
+      BdkBitmap *mask;
+    } pm;
+
+    struct {
+      gchar *text;
+      guint8 spacing;
+      BdkPixmap *pixmap;
+      BdkBitmap *mask;
+    } pt;
+
+    BtkWidget *widget;
+  } u;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCell</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCListCellInfo"></a><h3>struct BtkCListCellInfo</h3>
+<pre class="programlisting">struct BtkCListCellInfo {
+  gint row;
+  gint column;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCListCellInfo</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCListDestInfo"></a><h3>struct BtkCListDestInfo</h3>
+<pre class="programlisting">struct BtkCListDestInfo {
+  BtkCListCellInfo cell;
+  BtkCListDragPos  insert_pos;
+};
+</pre>
+<div class="warning"><p><code class="literal">BtkCListDestInfo</code> is deprecated and should not be used in newly-written code.</p></div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCListDragPos"></a><h3>enum BtkCListDragPos</h3>
+<div class="warning"><p><code class="literal">BtkCListDragPos</code> is deprecated and should not be used in newly-written code.</p></div>
+<div class="refsect3">
+<a name="BtkCListDragPos.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CLIST-DRAG-NONE:CAPS"></a>BTK_CLIST_DRAG_NONE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CLIST-DRAG-BEFORE:CAPS"></a>BTK_CLIST_DRAG_BEFORE</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CLIST-DRAG-INTO:CAPS"></a>BTK_CLIST_DRAG_INTO</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="BTK-CLIST-DRAG-AFTER:CAPS"></a>BTK_CLIST_DRAG_AFTER</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="BtkCList--n-columns"></a><h3>The <code class="literal">“n-columns”</code> property</h3>
+<pre class="programlisting">  “n-columns”                <span class="type">guint</span></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write / Construct Only</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--reorderable"></a><h3>The <code class="literal">“reorderable”</code> property</h3>
+<pre class="programlisting">  “reorderable”              <span class="type">gboolean</span></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--row-height"></a><h3>The <code class="literal">“row-height”</code> property</h3>
+<pre class="programlisting">  “row-height”               <span class="type">guint</span></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--selection-mode"></a><h3>The <code class="literal">“selection-mode”</code> property</h3>
+<pre class="programlisting">  “selection-mode”           <a class="link" href="btk2-Standard-Enumerations.html#BtkSelectionMode" title="enum BtkSelectionMode"><span class="type">BtkSelectionMode</span></a></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_SELECTION_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--shadow-type"></a><h3>The <code class="literal">“shadow-type”</code> property</h3>
+<pre class="programlisting">  “shadow-type”              <a class="link" href="btk2-Standard-Enumerations.html#BtkShadowType" title="enum BtkShadowType"><span class="type">BtkShadowType</span></a></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_SHADOW_NONE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--sort-type"></a><h3>The <code class="literal">“sort-type”</code> property</h3>
+<pre class="programlisting">  “sort-type”                <a class="link" href="btk2-Standard-Enumerations.html#BtkSortType" title="enum BtkSortType"><span class="type">BtkSortType</span></a></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: BTK_SORT_ASCENDING</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--titles-active"></a><h3>The <code class="literal">“titles-active”</code> property</h3>
+<pre class="programlisting">  “titles-active”            <span class="type">gboolean</span></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList--use-drag-icons"></a><h3>The <code class="literal">“use-drag-icons”</code> property</h3>
+<pre class="programlisting">  “use-drag-icons”           <span class="type">gboolean</span></pre>
+<p>Owner: BtkCList</p>
+<p>Flags: Read / Write</p>
+<p>Default value: FALSE</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="BtkCList.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="BtkCList-abort-column-resize"></a><h3>The <code class="literal">“abort-column-resize”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-click-column"></a><h3>The <code class="literal">“click-column”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">int</span>       arg1,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-end-selection"></a><h3>The <code class="literal">“end-selection”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-extend-selection"></a><h3>The <code class="literal">“extend-selection”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a>     *clist,
+               <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
+               <span class="type">float</span>         arg2,
+               <span class="type">gboolean</span>      arg3,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-resize-column"></a><h3>The <code class="literal">“resize-column”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">int</span>       arg1,
+               <span class="type">int</span>       arg2,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-row-move"></a><h3>The <code class="literal">“row-move”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">int</span>       arg1,
+               <span class="type">int</span>       arg2,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-scroll-horizontal"></a><h3>The <code class="literal">“scroll-horizontal”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a>     *clist,
+               <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
+               <span class="type">float</span>         arg2,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-scroll-vertical"></a><h3>The <code class="literal">“scroll-vertical”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a>     *clist,
+               <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
+               <span class="type">float</span>         arg2,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-select-all"></a><h3>The <code class="literal">“select-all”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-select-row"></a><h3>The <code class="literal">“select-row”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">int</span>       arg1,
+               <span class="type">int</span>       arg2,
+               <a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a> *arg3,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-set-scroll-adjustments"></a><h3>The <code class="literal">“set-scroll-adjustments”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a>      *clist,
+               <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *arg1,
+               <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *arg2,
+               <span class="type">gpointer</span>       user_data)</pre>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-start-selection"></a><h3>The <code class="literal">“start-selection”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-toggle-add-mode"></a><h3>The <code class="literal">“toggle-add-mode”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-toggle-focus-row"></a><h3>The <code class="literal">“toggle-focus-row”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-undo-selection"></a><h3>The <code class="literal">“undo-selection”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-unselect-all"></a><h3>The <code class="literal">“unselect-all”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Action</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="BtkCList-unselect-row"></a><h3>The <code class="literal">“unselect-row”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="BtkCList.html" title="BtkCList"><span class="type">BtkCList</span></a> *clist,
+               <span class="type">int</span>       arg1,
+               <span class="type">int</span>       arg2,
+               <a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a> *arg3,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>Flags: Run First</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by BTK-Doc V1.33.0</div>
+</body>
+</html>

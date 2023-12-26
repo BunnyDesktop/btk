@@ -1,6 +1,6 @@
 /* testmultidisplay.c
  * Copyright (C) 2008 Christian Kellner
- * Author: Christian Kellner <gicmo@gnome.org>
+ * Author: Christian Kellner <gicmo@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -19,7 +19,7 @@
  */
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 static gboolean ask_question = FALSE;
 static gboolean anonymous = FALSE;
@@ -89,7 +89,7 @@ got_reply (GMountOperation       *op,
   else if (G_MOUNT_OPERATION_UNHANDLED)
     g_assert_not_reached ();
 
-  gtk_main_quit ();
+  btk_main_quit ();
 }
 
 int
@@ -109,7 +109,7 @@ main (int argc, char *argv[])
     { NULL }
   };
 
-  if (!gtk_init_with_args (&argc, &argv, "", options, NULL, &error))
+  if (!btk_init_with_args (&argc, &argv, "", options, NULL, &error))
     {
       g_print ("Failed to parse args: %s\n", error->message);
       g_error_free (error);
@@ -117,9 +117,9 @@ main (int argc, char *argv[])
     }
 
   if (force_rtl)
-    gtk_widget_set_default_direction (GTK_TEXT_DIR_RTL);
+    btk_widget_set_default_direction (BTK_TEXT_DIR_RTL);
 
-  op = gtk_mount_operation_new (NULL);
+  op = btk_mount_operation_new (NULL);
 
   g_signal_connect (op, "reply", G_CALLBACK (got_reply), NULL);
 
@@ -159,6 +159,6 @@ main (int argc, char *argv[])
                              flags);
     }
 
-  gtk_main ();
+  btk_main ();
   return 0;
 }

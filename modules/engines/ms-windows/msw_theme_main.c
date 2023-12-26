@@ -1,8 +1,8 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Raymond Penners <raymond@dotsphinx.com>
  * Includes code adapted from redmond95 by Owen Taylor, and
- * gtk-nativewin by Evan Martin
+ * btk-nativewin by Evan Martin
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,9 +22,9 @@
 
 #include <windows.h>
 
-#include <gmodule.h>
+#include <bmodule.h>
 
-#include "gtk/gtk.h"
+#include "btk/btk.h"
 
 #include "msw_style.h"
 #include "msw_rc_style.h"
@@ -35,32 +35,32 @@
 #endif
 
 static GModule *this_module = NULL;
-static void (*msw_rc_reset_styles) (GtkSettings *settings) = NULL;
-static GdkWindow *hidden_msg_window = NULL;
+static void (*msw_rc_reset_styles) (BtkSettings *settings) = NULL;
+static BdkWindow *hidden_msg_window = NULL;
 
-static GdkWindow *
+static BdkWindow *
 create_hidden_msg_window (void)
 {
-  GdkWindowAttr attributes;
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
   attributes.x = -100;
   attributes.y = -100;
   attributes.width = 10;
   attributes.height = 10;
-  attributes.window_type = GDK_WINDOW_TEMP;
-  attributes.wclass = GDK_INPUT_ONLY;
+  attributes.window_type = BDK_WINDOW_TEMP;
+  attributes.wclass = BDK_INPUT_ONLY;
   attributes.override_redirect = TRUE;
   attributes.event_mask = 0;
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_NOREDIR;
+  attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_NOREDIR;
 
-  return gdk_window_new (gdk_get_default_root_window (),
+  return bdk_window_new (bdk_get_default_root_window (),
 			 &attributes, attributes_mask);
 }
 
-static GdkFilterReturn
-global_filter_func (void *xevent, GdkEvent *event, gpointer data)
+static BdkFilterReturn
+global_filter_func (void *xevent, BdkEvent *event, gpointer data)
 {
   MSG *msg = (MSG *) xevent;
 
@@ -75,19 +75,19 @@ global_filter_func (void *xevent, GdkEvent *event, gpointer data)
 	  xp_theme_reset ();
 	  msw_style_init ();
 
-	  /* force all gtkwidgets to redraw */
-	  (*msw_rc_reset_styles) (gtk_settings_get_default ());
+	  /* force all btkwidgets to redraw */
+	  (*msw_rc_reset_styles) (btk_settings_get_default ());
 	}
 
-      return GDK_FILTER_REMOVE;
+      return BDK_FILTER_REMOVE;
 
     case WM_SETTINGCHANGE:
       /* catch cursor blink, etc... changes */
       msw_style_setup_system_settings ();
-      return GDK_FILTER_REMOVE;
+      return BDK_FILTER_REMOVE;
 
     default:
-      return GDK_FILTER_CONTINUE;
+      return BDK_FILTER_CONTINUE;
     }
 }
 
@@ -97,28 +97,28 @@ theme_init (GTypeModule * module)
   msw_rc_style_register_type (module);
   msw_style_register_type (module);
 
-  /* this craziness is required because only gtk 2.4.x and later have
-     gtk_rc_reset_styles(). But we want to be able to run acceptly well on
-     any GTK 2.x.x platform. */
-  if (gtk_check_version (2, 4, 0) == NULL)
+  /* this craziness is required because only btk 2.4.x and later have
+     btk_rc_reset_styles(). But we want to be able to run acceptly well on
+     any BTK 2.x.x platform. */
+  if (btk_check_version (2, 4, 0) == NULL)
     {
       this_module = g_module_open (NULL, 0);
 
       if (this_module)
-	g_module_symbol (this_module, "gtk_rc_reset_styles",
+	g_module_symbol (this_module, "btk_rc_reset_styles",
 			 (gpointer *) (&msw_rc_reset_styles));
     }
 
   msw_style_init ();
   hidden_msg_window = create_hidden_msg_window ();
-  gdk_window_add_filter (hidden_msg_window, global_filter_func, NULL);
+  bdk_window_add_filter (hidden_msg_window, global_filter_func, NULL);
 }
 
 G_MODULE_EXPORT void
 theme_exit (void)
 {
-  gdk_window_remove_filter (hidden_msg_window, global_filter_func, NULL);
-  gdk_window_destroy (hidden_msg_window);
+  bdk_window_remove_filter (hidden_msg_window, global_filter_func, NULL);
+  bdk_window_destroy (hidden_msg_window);
   hidden_msg_window = NULL;
   msw_style_finalize ();
 
@@ -129,18 +129,18 @@ theme_exit (void)
     }
 }
 
-G_MODULE_EXPORT GtkRcStyle *
+G_MODULE_EXPORT BtkRcStyle *
 theme_create_rc_style (void)
 {
   return g_object_new (MSW_TYPE_RC_STYLE, NULL);
 }
 
-/* The following function will be called by GTK+ when the module
+/* The following function will be called by BTK+ when the module
  * is loaded and checks to see if we are compatible with the
- * version of GTK+ that loads us.
+ * version of BTK+ that loads us.
  */
 G_MODULE_EXPORT const gchar *
 g_module_check_init (GModule *module)
 {
-  return gtk_check_version (2, 0, 0);
+  return btk_check_version (2, 0, 0);
 }

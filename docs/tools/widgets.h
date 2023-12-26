@@ -1,7 +1,7 @@
 #ifndef __WIDGETS_H__
 #define __WIDGETS_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 typedef enum
@@ -14,7 +14,7 @@ typedef enum
 
 typedef struct WidgetInfo
 {
-  GtkWidget *window;
+  BtkWidget *window;
   gchar *name;
   gboolean no_focus;
   gboolean include_decorations;

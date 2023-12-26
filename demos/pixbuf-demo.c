@@ -1,4 +1,4 @@
-/* GdkPixbuf library - Scaling and compositing demo
+/* BdkPixbuf library - Scaling and compositing demo
  *
  * Copyright (C) 1999 The Free Software Foundation
  *
@@ -22,7 +22,7 @@
 
 #include "config.h"
 #include <stdlib.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <math.h>
 
 
@@ -33,29 +33,29 @@
 
 static const char *image_names[] = {
 	"apple-red.png",
-	"gnome-applets.png",
-	"gnome-calendar.png",
-	"gnome-foot.png",
-	"gnome-gmush.png",
-	"gnome-gimp.png",
-	"gnome-gsame.png",
+	"bunny-applets.png",
+	"bunny-calendar.png",
+	"bunny-foot.png",
+	"bunny-gmush.png",
+	"bunny-gimp.png",
+	"bunny-gsame.png",
 	"gnu-keys.png"
 };
 
 #define N_IMAGES (sizeof (image_names) / sizeof (image_names[0]))
 
 /* Current frame */
-static GdkPixbuf *frame;
+static BdkPixbuf *frame;
 
 /* Background image */
-static GdkPixbuf *background;
+static BdkPixbuf *background;
 static int back_width, back_height;
 
 /* Images */
-static GdkPixbuf *images[N_IMAGES];
+static BdkPixbuf *images[N_IMAGES];
 
 /* Widgets */
-static GtkWidget *da;
+static BtkWidget *da;
 
 
 
@@ -69,15 +69,15 @@ load_pixbufs (void)
          * about the error message.
          */
         
-	background = gdk_pixbuf_new_from_file (BACKGROUND_NAME, NULL);
+	background = bdk_pixbuf_new_from_file (BACKGROUND_NAME, NULL);
 	if (!background)
 		return FALSE;
 
-	back_width = gdk_pixbuf_get_width (background);
-	back_height = gdk_pixbuf_get_height (background);
+	back_width = bdk_pixbuf_get_width (background);
+	back_height = bdk_pixbuf_get_height (background);
 
 	for (i = 0; i < N_IMAGES; i++) {
-		images[i] = gdk_pixbuf_new_from_file (image_names[i], NULL);
+		images[i] = bdk_pixbuf_new_from_file (image_names[i], NULL);
 		if (!images[i])
 			return FALSE;
 	}
@@ -87,16 +87,16 @@ load_pixbufs (void)
 
 /* Expose callback for the drawing area */
 static gint
-expose_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
+expose_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
 {
-        cairo_t *cr;
+        bairo_t *cr;
          
-        cr = gdk_cairo_create (event->window);
-        gdk_cairo_set_source_pixbuf (cr, frame, 0, 0);
-        gdk_cairo_rectangle (cr, &event->area);
-        cairo_fill (cr);
+        cr = bdk_bairo_create (event->window);
+        bdk_bairo_set_source_pixbuf (cr, frame, 0, 0);
+        bdk_bairo_rectangle (cr, &event->area);
+        bairo_fill (cr);
 
-        cairo_destroy (cr);
+        bairo_destroy (cr);
 
 	return TRUE;
 }
@@ -114,7 +114,7 @@ timeout (gpointer data)
 	double xmid, ymid;
 	double radius;
 
-	gdk_pixbuf_copy_area (background, 0, 0, back_width, back_height,
+	bdk_pixbuf_copy_area (background, 0, 0, back_width, back_height,
 			      frame, 0, 0);
 
 	f = (double) (frame_num % CYCLE_LEN) / CYCLE_LEN;
@@ -129,13 +129,13 @@ timeout (gpointer data)
 		int xpos, ypos;
 		int iw, ih;
 		double r;
-		GdkRectangle r1, r2, dest;
+		BdkRectangle r1, r2, dest;
 		double k;
 
 		ang = 2.0 * G_PI * (double) i / N_IMAGES - f * 2.0 * G_PI;
 
-		iw = gdk_pixbuf_get_width (images[i]);
-		ih = gdk_pixbuf_get_height (images[i]);
+		iw = bdk_pixbuf_get_width (images[i]);
+		ih = bdk_pixbuf_get_height (images[i]);
 
 		r = radius + (radius / 3.0) * sin (f * 2.0 * G_PI);
 
@@ -156,20 +156,20 @@ timeout (gpointer data)
 		r2.width = back_width;
 		r2.height = back_height;
 
-		if (gdk_rectangle_intersect (&r1, &r2, &dest))
-			gdk_pixbuf_composite (images[i],
+		if (bdk_rectangle_intersect (&r1, &r2, &dest))
+			bdk_pixbuf_composite (images[i],
 					      frame,
 					      dest.x, dest.y,
 					      dest.width, dest.height,
 					      xpos, ypos,
 					      k, k,
-					      GDK_INTERP_NEAREST,
+					      BDK_INTERP_NEAREST,
 					      ((i & 1)
 					       ? MAX (127, fabs (255 * sin (f * 2.0 * G_PI)))
 					       : MAX (127, fabs (255 * cos (f * 2.0 * G_PI)))));
 	}
 
-	gtk_widget_queue_draw (da);
+	btk_widget_queue_draw (da);
 
 	frame_num++;
 	return TRUE;
@@ -179,12 +179,12 @@ static guint timeout_id;
 
 /* Destroy handler for the window */
 static void
-destroy_cb (GtkObject *object, gpointer data)
+destroy_cb (BtkObject *object, gpointer data)
 {
 	g_source_remove (timeout_id);
 	timeout_id = 0;
 
-	gtk_main_quit ();
+	btk_main_quit ();
 }
 
 extern void pixbuf_init();
@@ -192,37 +192,37 @@ extern void pixbuf_init();
 int
 main (int argc, char **argv)
 {
-	GtkWidget *window;
+	BtkWidget *window;
 
 	pixbuf_init ();
-	gtk_init (&argc, &argv);
+	btk_init (&argc, &argv);
 
 	if (!load_pixbufs ()) {
 		g_message ("main(): Could not load all the pixbufs!");
 		exit (EXIT_FAILURE);
 	}
 
-	frame = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, back_width, back_height);
+	frame = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, back_width, back_height);
 
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
-	gtk_widget_set_size_request (window, back_width, back_height);
-        gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+	btk_widget_set_size_request (window, back_width, back_height);
+        btk_window_set_resizable (BTK_WINDOW (window), FALSE);
 
 	g_signal_connect (window, "destroy",
 			  G_CALLBACK (destroy_cb), NULL);
 
-	da = gtk_drawing_area_new ();
+	da = btk_drawing_area_new ();
 
 	g_signal_connect (da, "expose_event",
 			  G_CALLBACK (expose_cb), NULL);
 
-	gtk_container_add (GTK_CONTAINER (window), da);
+	btk_container_add (BTK_CONTAINER (window), da);
 
-	timeout_id = gdk_threads_add_timeout (FRAME_DELAY, timeout, NULL);
+	timeout_id = bdk_threads_add_timeout (FRAME_DELAY, timeout, NULL);
 
-	gtk_widget_show_all (window);
-	gtk_main ();
+	btk_widget_show_all (window);
+	btk_main ();
 
 	return 0;
 }

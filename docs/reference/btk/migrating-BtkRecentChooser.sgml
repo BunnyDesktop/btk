@@ -1,0 +1,323 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+               "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="btk-migrating-BtkRecentChooser">
+  <chapterinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <lastname>Bassi</lastname>
+      <affiliation>
+        <address>
+	  <email>ebassi@gmail.com</email>
+	</address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Migrating from EggRecent to BtkRecentChooser</title>
+
+  <para>
+    Since version 2.10, BTK+ provides a way of handling the recently used
+    documents. It is similar to the code that has lived inside the libegg
+    library and has been incorporated by many applications. The BTK+ version
+    aims to completely replace that code, and offers many distinctive features
+    that improve the registration and visualization of the recently used
+    documents, such as:
+  </para>
+
+  <para>
+    <itemizedlist>
+      <listitem><para>
+        Better performances while reading and writing the list of recently used
+	files
+      </para></listitem>
+      <listitem><para>
+        More meta-data available for each recent document, like the
+	applications that have registered a document inside the list, the last
+	time and the number of times the same application did register a
+	document inside the list, an optional user readable name and
+	description of the document
+      </para></listitem>
+      <listitem><para>
+        Improved the ability to sort and filter the documents, also using
+	custom sorting and filtering functions
+      </para></listitem>
+      <listitem><para>
+        New widgets for displaying the list, and better integration with
+	current #BtkFileChooser and #BtkUIManager widgets
+      </para></listitem>
+    </itemizedlist>
+  </para>
+
+  <section id="btkrecent-manager">
+    <title>Managing the Recently Used Documents</title>
+
+    <para>
+      #BtkRecentManager is used to manage the Recently Used Documents. To
+      create a new #BtkRecentManager, you simply call btk_recent_manager_new().
+      Like the <structname>EggRecentModel</structname> inside EggRecent, the
+      #BtkRecentManager loads the list of the recent documents and notifies
+      you of changes inside the list.
+    </para>
+
+    <para>
+      Usually, instead of creating a new #BtkRecentManager each time you
+      need it, you'll want to use the btk_recent_manager_get_default()
+      function.
+    </para>
+
+    <para>
+      To add a document to the list, you can use btk_recent_manager_add_item(),
+      like:
+      <informalexample><programlisting>
+        BtkRecentManager *manager;
+
+	manager = btk_recent_manager_new (<!-- -->);
+
+	if (!btk_recent_manager_add_item (manager, document_uri))
+	  {
+	    /* warn about the error */
+	  }
+	
+	g_object_unref (manager);
+      </programlisting></informalexample>
+      The btk_recent_manager_add_item() function will try and guess some of the
+      meta-data associated to a URI. If you know some of meta-data about the
+      document yourself, set the desired fields of a #BtkRecentData structure
+      and pass it to the btk_recent_manager_add_full() function instead:
+      <informalexample><programlisting>
+        BtkRecentManager *manager;
+        BtkRecentData *recent_data;
+
+	manager = btk_recent_manager_new (<!-- -->);
+	
+	recent_data = g_new0 (BtkRecentData, 1);
+	/* the user visible name of the document (maybe its title); should
+	 * be preferred when displaying the item into the list
+	 */
+        recent_data-&gt;display_name = document_name;
+	
+	/* the MIME type is mandatory */
+	recent_data-&gt;mime_type = document_mime_type;
+
+	/* the name of the application that is registering the document
+	 * (also mandatory); usually, the same name you used with
+	 * the g_set_application_name (<!-- -->) function.
+	 */
+	recent_data-&amp;app_name = APP_NAME;
+
+	/* the command to open a file; the %u string will be automagically
+	 * expanded to the document's URI when getting the application's
+	 * command line from the BtkRecentInfo object with
+	 * btk_recent_info_get_application_info (<!-- -->)
+	 */
+	recent_data-&amp;app_exec = g_strjoin (" ", g_get_prgname (<!-- -->), "--open-file", "%u", NULL);
+
+	if (!btk_recent_manager_add_full (manager, document_uri, recent_data))
+	  {
+	    /* warn about the error */
+	  }
+
+	g_free (recent_data-&gt;app_exec);
+	g_free (recent_data);
+	g_object_unref (manager);
+      </programlisting></informalexample>
+    </para>
+
+    <para>
+      Getting the list of items is also similar to
+      <structname>EggRecentModel</structname>; the BtkRecentInfo data is
+      allocated at look up time in order not to waste memory keeping it
+      around, so you must remember to free the data inside the list and then
+      the list itself when you are done using it:
+      <informalexample><programlisting>
+        BtkRecentManager *manager;
+        GList *recent_items, *l;
+
+	manager = btk_recent_manager_get_default(<!-- -->);
+
+	recent_items = btk_recent_manager_get_items (manager);
+	for (l = recent_items; l != NULL; l = l-&gt;next)
+	  {
+	    BtkRecentInfo *recent_info = l-&gt;data;
+
+	    do_something_with_the_item (recent_info);
+	  }
+	
+	/* free everything and the list */
+	g_list_foreach (recent_items, (GFunc) btk_recent_info_unref, NULL);
+	g_list_free (recent_items);
+      </programlisting></informalexample>
+      You can also look up a single item:
+      <informalexample><programlisting>
+        BtkRecentInfo *recent_info;
+	GError *error = NULL;
+
+	recent_info = btk_recent_manager_lookup_item (manager, document_uri, &amp;error);
+	if (error)
+	  {
+	    display_error (error);
+
+	    g_error_free (error);
+	  }
+	else
+	  {
+	    do_something_with_the_item (recent_info);
+
+	    btk_recent_info_unref (recent_info);
+	  }
+      </programlisting></informalexample>
+      The #BtkRecentInfo is a reference counted boxed type, and it holds all
+      the meta-data of a recently used document, like its display name, its
+      description, the list of each application that has registered the
+      document or the list of groups to which the document belong.
+    </para>
+  
+  </section> <!-- btkrecent-manager -->
+
+  <section id="btkrecent-chooser">
+    <title>Displaying the Recently Used Documents</title>
+
+    <para>
+      Displaying the Recently Used Documents list is handled by any widget
+      implementing the #BtkRecentChooser interface. These widgets also handle
+      the sorting and filtering of the list; they will create their own
+      #BtkRecentManager objects by default:
+      <informalexample><programlisting>
+        BtkWidget *chooser;
+	gint response;
+
+	/* create a new dialog with the recently used documents list shown
+	 * using a BtkTreeView widget
+	 */
+	chooser = btk_recent_chooser_dialog_new ("Recent Documents",
+	                                         parent_window,
+						 BTK_STOCK_CLOSE, BTK_RESPONSE_CANCEL,
+						 BTK_STOCK_OPEN, BTK_RESPONSE_OK,
+						 NULL);
+        /* set the sorting order to "most recently used first" */
+	btk_recent_chooser_set_sort_type (BTK_RECENT_CHOOSER (chooser), BTK_RECENT_SORT_MRU);
+	response = btk_dialog_run (BTK_DIALOG (chooser));
+	if (response == BTK_RESPONSE_OK)
+	  {
+	    BtkRecentInfo *info;
+
+            info = btk_recent_chooser_get_current_item (BTK_RECENT_CHOOSER (chooser));
+	    do_something_with_the_item (info);
+
+	    btk_recent_info_unref (info);
+	  }
+	
+	btk_widget_destroy (chooser);
+      </programlisting></informalexample>
+    </para>
+    
+  </section> <!-- btkrecent-chooser -->
+
+  <section id="btkrecent-advanced">
+    <title>Advanced usage</title>
+
+    <para>
+      The #BtkRecentChooser widgets might display items sorted and filtered,
+      either with already supplied or custom sorting and filtering functions.
+      The biggest difference from the <structname>EggRecentView</structname>
+      widgets in EggRecent is that the #BtkRecentChooser widgets will use
+      their own copy of the list and will apply the sorting and filtering
+      functions only on the copy; this allows the creation of many viewers
+      with a single controller, like using many #BtkTreeView with a single
+      #BtkTreeModel instance.
+    </para>
+
+    <para>
+      Available sorting methods are:
+      <informalexample><programlisting>
+        /* no sorting */
+	btk_recent_chooser_set_sort_type (BTK_RECENT_CHOOSER (chooser), BTK_RECENT_SORT_NONE);
+	
+        /* most recently used first */
+	btk_recent_chooser_set_sort_type (BTK_RECENT_CHOOSER (chooser), BTK_RECENT_SORT_MRU);
+	
+	/* most recently used last */
+	btk_recent_chooser_set_sort_type (BTK_RECENT_CHOOSER (chooser), BTK_RECENT_SORT_LRU);
+      </programlisting></informalexample>
+      You can create your own sorting function, and the use the
+      BTK_RECENT_SORT_CUSTOM method:
+      <informalexample><programlisting>
+	/* custom sorting function, based on the registration count
+	 * (most used first)
+	 */
+	static void
+	sort_by_usage_count (BtkRecentInfo *a,
+                             BtkRecentInfo *b,
+                             gpointer       data)
+        {
+	  gint count_a, count_b;
+
+	  count_a = count_b = 0;
+
+	  if (btk_recent_info_has_application (a, APP_NAME))
+	    btk_recent_info_get_application_info (a, APP_NAME, NULL, &amp;count_a, NULL);
+
+	  if (btk_recent_info_has_application (b, APP_NAME))
+	    btk_recent_info_get_application_info (b, APP_NAME, NULL, &amp;count_b, NULL);
+
+	  return count_a &lt; count_b;
+	}
+
+	...
+
+	  /* set custom sorting and set the custom sorting function */
+	  btk_recent_chooser_set_sort_type (BTK_RECENT_CHOOSER (chooser),
+	                                    BTK_RECENT_SORT_CUSTOM);
+	  btk_recent_chooser_set_sort_func (BTK_RECENT_CHOOSER,
+	                                    sort_by_usage_count,
+			  		    NULL, /* sort function data */
+					    NULL  /* destroy notify for the data */);
+      </programlisting></informalexample>
+    </para>
+
+    <para>
+      Filtering is done using the #BtkRecentFilter object, similar to the
+      #BtkFileFilter object used by the #BtkFileChooser widgets. The
+      #BtkRecentFilter object has a set of pre-defined options based on the
+      meta-data exposed by the #BtkRecentInfo object. It also allows custom
+      filtering function:
+      <informalexample><programlisting>
+        BtkRecentFilter *filter;
+
+	filter = btk_recent_filter_new (<!-- -->);
+	
+	/* set the user visible name of the filter */
+	btk_recent_filter_set_name (filter, "Since Last Month");
+
+	/* set the maximum age of a recently used document */
+	btk_recent_filter_set_age (filter, 31);
+
+	/* the chooser takes the ownership of the object */
+	btk_recent_chooser_add_filter (BTK_RECENT_CHOOSER (chooser), filter);
+
+	/* set the currently used filter */
+	btk_recent_chooser_set_filter (BTK_RECENT_CHOOSER (chooser), filter);
+
+	filter = btk_recent_filter_new (<!-- -->);
+	btk_recent_filter_set_name (filter, "Every text file");
+	btk_recent_filter_set_mime_type (filter, "text/plain");
+
+	btk_recent_chooser_add_filter (BTK_RECENT_CHOOSER (chooser), filter);
+      </programlisting></informalexample>
+      The #BtkRecentChooserWidget and #BtkRecentChooserDialog widgets allow
+      multiple filters and the selection of an appropriate one; the
+      #BtkRecentChooserMenu widget allows just a single filter object.
+    </para>
+    
+  </section> <!-- btkrecent-advanced -->
+  
+</chapter>
+
+<!--
+Local variables:
+mode: sgml
+sgml-parent-document: ("btk-docs.sgml" "book" "part" "chapter")
+End:
+-->

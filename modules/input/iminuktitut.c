@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat Software
  * Copyright (C) 2000 SuSE Linux Ltd
  *
@@ -26,37 +26,37 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtk/gtk.h"
-#include "gdk/gdkkeysyms.h"
+#include "btk/btk.h"
+#include "bdk/bdkkeysyms.h"
 
-#include "gtk/gtkimmodule.h"
-#include "gtk/gtkintl.h"
+#include "btk/btkimmodule.h"
+#include "btk/btkintl.h"
 
 GType type_inuktitut_translit = 0;
 
-static void inuktitut_class_init (GtkIMContextSimpleClass *class);
-static void inuktitut_init (GtkIMContextSimple *im_context);
+static void inuktitut_class_init (BtkIMContextSimpleClass *class);
+static void inuktitut_init (BtkIMContextSimple *im_context);
 
 static void
 inuktitut_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
   {
-    sizeof (GtkIMContextSimpleClass),
+    sizeof (BtkIMContextSimpleClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
     (GClassInitFunc) inuktitut_class_init,
     NULL,           /* class_finalize */
     NULL,           /* class_data */
-    sizeof (GtkIMContextSimple),
+    sizeof (BtkIMContextSimple),
     0,
     (GInstanceInitFunc) inuktitut_init,
   };
 
   type_inuktitut_translit = 
     g_type_module_register_type (module,
-				 GTK_TYPE_IM_CONTEXT_SIMPLE,
-				 "GtkIMContextInuktitut",
+				 BTK_TYPE_IM_CONTEXT_SIMPLE,
+				 "BtkIMContextInuktitut",
 				 &object_info, 0);
 }
 
@@ -104,40 +104,40 @@ static guint16 inuktitut_compose_seqs[] = {
   SYL('v', 0x1555, 0x155d, 2) /* as f */
   SYL('y', 0x1528, 0x153e, 2) /* As j */
 
-  SYL(GDK_lstroke, 0x15a0, 0x15a6, 3) /* l- */
-  SYL(GDK_eng, 0x158f, 0x1595, 3)     /* ng */
+  SYL(BDK_lstroke, 0x15a0, 0x15a6, 3) /* l- */
+  SYL(BDK_eng, 0x158f, 0x1595, 3)     /* ng */
 };
 
 static void
-inuktitut_class_init (GtkIMContextSimpleClass *class)
+inuktitut_class_init (BtkIMContextSimpleClass *class)
 {
 }
 
 static void
-inuktitut_init (GtkIMContextSimple *im_context)
+inuktitut_init (BtkIMContextSimple *im_context)
 {
-  gtk_im_context_simple_add_table (im_context,
+  btk_im_context_simple_add_table (im_context,
 				   inuktitut_compose_seqs,
 				   4,
 				   G_N_ELEMENTS (inuktitut_compose_seqs) / (4 + 2));
 }
 
-static const GtkIMContextInfo inuktitut_info = { 
+static const BtkIMContextInfo inuktitut_info = { 
   "inuktitut",		   /* ID */
   N_("Inuktitut (Transliterated)"),         /* Human readable name */
   GETTEXT_PACKAGE,	   /* Translation domain */
-  GTK_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "gtk+") */
+  BTK_LOCALEDIR,	   /* Dir for bindtextdomain (not strictly needed for "btk+") */
   "iu"			   /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &inuktitut_info
 };
 
 #ifndef INCLUDE_IM_inuktitut
 #define MODULE_ENTRY(type, function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_inuktitut_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_inuktitut_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *module)
@@ -149,14 +149,14 @@ MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, "inuktitut") == 0)
     return g_object_new (type_inuktitut_translit, NULL);
